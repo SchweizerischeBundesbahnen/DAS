@@ -2,11 +2,13 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -136,23 +138,74 @@ void main() {
   });
 
   group('timed advancement tests', () {
-    testWidgets('timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|6VsC8w1YfGUW4CkTbX7Q|tests:1419', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T46M');
+    testWidgets(
+      'timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|6VsC8w1YfGUW4CkTbX7Q|tests:1419',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T46M');
 
-      // Check journey position at journey start
-      expect(findChevronPositionAtRowWithText('Iselle'), findsAny);
+        // Check journey position at journey start
+        expect(findChevronPositionAtRowWithText('Iselle'), findsAny);
 
-      // Preglia is skipped, because Domodossola (bif) time is before Preglia
-      final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
+        // Preglia is skipped, because Domodossola (bif) time is before Preglia
+        final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
-      for (final location in locations) {
-        await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
-      }
+        for (final location in locations) {
+          await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
+        }
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets(
+      'timedAdvancement_whenJourneyLoaded_thenAdvancesByOperationalAndPlannedTimes|Kp3WqzT9rLxYhNv2QmDe|tests:939',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T50');
+
+        // Check journey position at journey start, signal B1 prevents a timed advancement onto Bravo
+        expect(findChevronPositionAtRowWithText('Alpha'), findsAny);
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B1'));
+
+        // Bravo has no VPro speed: advances at the operational arrival time, ignoring the reported 2min delay
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Bravo'));
+
+        // Charlie has a VPro speed: a signal event with a fresh delay report advances onto it
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Charlie'));
+
+        // Echo has no VPro speed and only a planned time: advances although the punctuality is hidden
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B4'));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Echo'));
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets(
+      'timedAdvancement_whenSignaledPositionBehindAndPunctualityHidden_thenSignalWins|Xw7RtLm2QpKvYc9HbNd3|tests:2491',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+        featureProvider.disableFeature(.plannedTimeDeviation);
+        await loadJourney(tester, trainNumber: 'T50');
+
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Bravo'));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Charlie'));
+
+        // journey advances up to Echo by time, the last event then signals B3 which lies before Echo
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Echo'));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Charlie'), maxWaitSeconds: 15);
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B3'));
+
+        // Delta (VPro speed) has a long past arrival time but must not advance without a PüA.
+        // No event follows, so this holds no matter how late it runs.
+        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B3'));
+        await waitUntilNotExists(tester, findChevronPositionAtRowWithText('Delta'));
+
+        await disconnect(tester);
+      },
+    );
   });
 }

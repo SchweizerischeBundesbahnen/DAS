@@ -37,7 +37,7 @@ class TimedRouteProviderImpl implements TimedRouteProvider {
     final nextServicePoint = servicePoints
         .skip(updatedPositionIndex + 1)
         .firstWhereOrNull(
-          (sP) => timedRoute.contains(sP.locationCode) && sP.arrivalDepartureTime?.plannedArrivalTime != null,
+          (sP) => timedRoute.contains(sP.locationCode) && sP.arrivalDepartureTime?.bestKnownArrivalTime != null,
         );
     return nextServicePoint;
   }
@@ -56,8 +56,8 @@ class TimedRouteProviderImpl implements TimedRouteProvider {
     if (nextServicePoint == null) return null;
 
     final currentTime = clock.now();
-    final plannedArrivalTime = nextServicePoint.arrivalDepartureTime!.plannedArrivalTime;
+    final arrivalTime = nextServicePoint.arrivalDepartureTime?.bestKnownArrivalTime;
 
-    return (plannedArrivalTime!.difference(currentTime), nextServicePoint);
+    return (arrivalTime!.difference(currentTime), nextServicePoint);
   }
 }

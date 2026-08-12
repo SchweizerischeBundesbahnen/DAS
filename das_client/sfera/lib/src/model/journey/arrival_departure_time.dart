@@ -32,10 +32,16 @@ class ArrivalDepartureTime {
 
   DateTime? get operationalDepartureTime => _isDepartureTimeCalculated ? _ambiguousDepartureTime : null;
 
+  /// The most accurate known departure time: operational time when available, planned time otherwise.
+  DateTime? get bestKnownDepartureTime => operationalDepartureTime ?? plannedDepartureTime;
+
   DateTime? get plannedArrivalTime =>
       _isArrivalTimeCalculated ? _plannedArrivalTime : _ambiguousArrivalTime ?? _plannedArrivalTime;
 
   DateTime? get operationalArrivalTime => _isArrivalTimeCalculated ? _ambiguousArrivalTime : null;
+
+  /// The most accurate known arrival time: operational time when available, planned time otherwise.
+  DateTime? get bestKnownArrivalTime => operationalArrivalTime ?? plannedArrivalTime;
 
   bool get _isDepartureTimeCalculated => _ambiguousDepartureTime != null && _plannedDepartureTime != null;
 
