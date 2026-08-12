@@ -53,6 +53,19 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _journeySubscription?.cancel();
+    _rxModel.close();
+    _rxTimedServicePointReached.close();
+    _rxManualPosition.close();
+    _servicePointReachedTimer?.cancel();
+    _servicePointReachedTimer = null;
+    _manuelPositionAdvancementTimer?.cancel();
+    _manuelPositionAdvancementTimer = null;
+  }
+
   void _startManualPositionTimer(ServicePoint manualPosition) {
     final arrivalTime = manualPosition.arrivalDepartureTime?.bestKnownArrivalTime;
     final manualPositionTime = _manualPositionTime;
@@ -88,18 +101,16 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
         ).listen((data) async {
           _servicePointReachedTimer?.cancel();
 
-          _log.info('Position update triggered');
+          _log.fine('Position update triggered');
 
           final journey = data.$1;
           final punctuality = data.$2;
 
-          if (journey == null) {
-            return;
-          }
+          if (journey == null) return;
 
           _resetAdvancementOnNewSignaledPosition(journey.metadata.signaledPosition);
 
-          final (updatedPosition, isManualPosition) = _calculateCurrentPosition(
+          final updatedPosition = _calculateCurrentPosition(
             journey.metadata.signaledPosition,
             journey.journeyPoints,
           );
@@ -118,12 +129,10 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
             nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
             previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
             nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
-            isManualPosition: isManualPosition,
+            isManualPosition: _isManualPosition(updatedPosition),
           );
 
-          if (!_rxModel.isClosed) {
-            _rxModel.add(model);
-          }
+          if (!_rxModel.isClosed) _rxModel.add(model);
         });
   }
 
@@ -162,17 +171,13 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     return position;
   }
 
-  /// Calculates the current position based on the signaled position, manual position, and timed service point.
-  /// Returns a tuple of the current position and a boolean indicating whether the position is manual.
-  (JourneyPoint?, bool) _calculateCurrentPosition(
+  JourneyPoint? _calculateCurrentPosition(
     SignaledPosition? signaledPosition,
     List<JourneyPoint> journeyPoints,
   ) {
-    bool isManualPosition = false;
-
-    if (journeyPoints.isEmpty) return (null, isManualPosition);
+    if (journeyPoints.isEmpty) return null;
     if (signaledPosition == null && _rxManualPosition.value == null && _rxTimedServicePointReached.value == null) {
-      return (journeyPoints.first, isManualPosition);
+      return journeyPoints.first;
     }
 
     JourneyPoint? currentPosition;
@@ -190,10 +195,9 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
     final manualPosition = _rxManualPosition.value;
     if (manualPosition != null && _currentAdvancementMode.isInManualCycle) {
       currentPosition = _rxManualPosition.value;
-      isManualPosition = true;
     }
 
-    return (currentPosition, isManualPosition);
+    return currentPosition;
   }
 
   ServicePoint? _calculatePreviousServicePoint(
@@ -283,51 +287,50 @@ class JourneyPositionViewModel extends JourneyAwareViewModel {
       if (punctuality is! Visible) return;
       arrivalTime = bestKnownArrivalTime.add(punctuality.delay.value);
     } else {
-      // without VPro speeds there is no PüA to consider
+      // no VPro => no PüA to consider
       arrivalTime = bestKnownArrivalTime;
     }
 
     final now = clock.now();
-    final untilNextServicePoint = arrivalTime.add(Duration(milliseconds: 100)).difference(now);
-    _setTimedServicePoint(untilNextServicePoint, nextServicePoint);
+    final untilNextServicePoint = arrivalTime.add(Duration(milliseconds: 50)).difference(now);
+    _setTimedServicePoint(durationUntilNextServicePoint: untilNextServicePoint, nextServicePoint: nextServicePoint);
   }
 
   void _handleTimedRoute(JourneyPoint updatedPosition, List<JourneyPoint> journeyPoints) {
     final nextTimedServicePoint = _timedRouteProvider.calculateNextTimedServicePoint(updatedPosition, journeyPoints);
     if (nextTimedServicePoint != null) {
-      final (secondsUntilNextServicePoint, nextServicePoint) = nextTimedServicePoint;
-      _setTimedServicePoint(secondsUntilNextServicePoint, nextServicePoint);
+      final (durationUntilNextServicePoint, nextServicePoint) = nextTimedServicePoint;
+      _setTimedServicePoint(
+        durationUntilNextServicePoint: durationUntilNextServicePoint,
+        nextServicePoint: nextServicePoint,
+      );
     }
   }
 
-  void _setTimedServicePoint(Duration nextServicePointDuration, ServicePoint nextServicePoint) {
+  void _setTimedServicePoint({
+    required Duration durationUntilNextServicePoint,
+    required ServicePoint nextServicePoint,
+  }) {
     final now = clock.now();
-    if (nextServicePointDuration.inMilliseconds <= 0) {
+    if (durationUntilNextServicePoint.inMilliseconds <= 0) {
       _log.info('Setting timed service point immediately to ${nextServicePoint.name}');
       _rxTimedServicePointReached.add(nextServicePoint);
     } else {
-      final arrivalTime = now.add(nextServicePointDuration);
+      final arrivalTime = now.add(durationUntilNextServicePoint);
       _log.info('Scheduling timed service point for ${nextServicePoint.name} at $arrivalTime');
       _servicePointReachedTimer = Timer(
-        nextServicePointDuration,
+        durationUntilNextServicePoint,
         () {
           _log.info('Setting timed service point to ${nextServicePoint.name}');
-          _rxTimedServicePointReached.add(nextServicePoint);
+          if (!_rxTimedServicePointReached.isClosed) _rxTimedServicePointReached.add(nextServicePoint);
         },
       );
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _journeySubscription?.cancel();
-    _rxModel.close();
-    _rxTimedServicePointReached.close();
-    _rxManualPosition.close();
-    _servicePointReachedTimer?.cancel();
-    _servicePointReachedTimer = null;
-    _manuelPositionAdvancementTimer?.cancel();
-    _manuelPositionAdvancementTimer = null;
+  bool _isManualPosition(JourneyPoint? updatedPosition) {
+    return _rxManualPosition.valueOrNull != null &&
+        updatedPosition == _rxManualPosition.value &&
+        _currentAdvancementMode.isInManualCycle;
   }
 }
