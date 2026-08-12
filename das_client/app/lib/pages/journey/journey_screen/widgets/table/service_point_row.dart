@@ -33,6 +33,7 @@ import 'package:sfera/component.dart';
 
 class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');
+  static const Key fixedPointRelevanceKey = Key('fixedPointRelevance');
   static const Key reducedSpeedKey = Key('reducedSpeed');
 
   static const double baseRowHeight = 64.0;
@@ -181,6 +182,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           showTimesInBrackets: !data.isStop,
           mandatoryStop: data.mandatoryStop,
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+          fixedPointRelevance: data.fixedPointRelevance,
         ),
         alignment: .bottomLeft,
         decoration: DASTableCellDecoration(color: specialCellColor),
