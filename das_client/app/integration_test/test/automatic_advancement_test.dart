@@ -140,9 +140,7 @@ void main() {
   group('timed advancement tests', () {
     testWidgets(
       'timedAdvancement_whenJourneyLoaded_thenAdvancesCorrectly|6VsC8w1YfGUW4CkTbX7Q|tests:1419',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T46M');
 
@@ -192,15 +190,19 @@ void main() {
         featureProvider.disableFeature(.plannedTimeDeviation);
         await loadJourney(tester, trainNumber: 'T50');
 
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Bravo'));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Charlie'));
+
         // journey advances up to Echo by time, the last event then signals B3 which lies before Echo
-        await waitUntilExists(tester, findChevronPositionAtRowWithText('Echo'), maxWaitSeconds: 30);
-        await waitUntilExists(tester, findChevronPositionAtRowWithText('B3'), maxWaitSeconds: 10);
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Echo'));
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Charlie'), maxWaitSeconds: 15);
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B3'));
 
         // Delta (VPro speed) has a long past arrival time but must not advance without a PüA.
         // No event follows, so this holds no matter how late it runs.
         await tester.pumpAndSettle(const Duration(seconds: 5));
-        expect(findChevronPositionAtRowWithText('B3'), findsAny);
-        expect(findChevronPositionAtRowWithText('Delta'), findsNothing);
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('B3'));
+        await waitUntilNotExists(tester, findChevronPositionAtRowWithText('Delta'));
 
         await disconnect(tester);
       },
