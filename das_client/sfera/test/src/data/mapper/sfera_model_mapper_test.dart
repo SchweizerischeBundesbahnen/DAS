@@ -295,7 +295,7 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 5000);
   });
 
-  test('Test servicePoints are parsed correctly', () async {
+  test('Test signals are parsed correctly', () async {
     final journey = getJourney('T9999');
     final signals = journey.data.where((it) => it.dataType == .signal).cast<Signal>().toList();
 
@@ -2127,7 +2127,7 @@ void main() {
     expect(speedRestrictions[0].kmTo, 56.062);
   });
 
-  test('Test nsp servicePoints', () async {
+  test('Test nsp signals', () async {
     final journey = getJourney('T45');
     expect(journey.valid, true);
 
