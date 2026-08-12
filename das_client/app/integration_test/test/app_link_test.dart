@@ -10,6 +10,7 @@ import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -307,14 +308,8 @@ void main() {
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
       trainIdentificationRepository.companyMatchData = {
-        CompanyMatch(
-          ru: RailwayUndertaking.sbbI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
+        CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
       };
 
       final journeys = [_trainJourneyLinkData('T9999')];
@@ -346,14 +341,8 @@ void main() {
         final trainIdentificationRepository =
             DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
         trainIdentificationRepository.companyMatchData = {
-          CompanyMatch(
-            ru: RailwayUndertaking.sbbI,
-            startDate: DateTime.now(),
-          ),
-          CompanyMatch(
-            ru: RailwayUndertaking.blsI,
-            startDate: DateTime.now(),
-          ),
+          CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+          CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
         };
 
         final journeys = [_trainJourneyLinkData('T1')];
@@ -390,11 +379,11 @@ void main() {
             DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
         trainIdentificationRepository.companyMatchData = {
           CompanyMatch(
-            ru: RailwayUndertaking.sbbP,
+            companyCode: '1285',
             startDate: DateTime.now(),
           ),
           CompanyMatch(
-            ru: RailwayUndertaking.blsI,
+            companyCode: '2263',
             startDate: DateTime.now(),
           ),
         };

@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -16,10 +15,9 @@ class JourneyIdentifier extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneyViewModel>();
     return StreamBuilder(
-      stream: viewModel.journey,
+      stream: viewModel.formattedTrainIdentifier,
       builder: (context, snapshot) {
-        final journey = snapshot.data;
-        final formattedIdentifier = journey?.formattedTrainIdentifier(context) ?? context.l10n.c_unknown;
+        final formattedIdentifier = snapshot.data ?? context.l10n.c_unknown;
         return JourneySearchOverlay(
           child: Padding(
             key: journeyIdentifierKey,

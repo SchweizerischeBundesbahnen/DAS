@@ -1,7 +1,6 @@
 import 'package:app/model/tour_system.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sfera/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalKeyValueStore {
@@ -49,18 +48,14 @@ class LocalKeyValueStore {
 
   bool get showEctsExtendedSpeedSignals => get(.showEctsExtendedSpeedSignals, true);
 
-  List<RailwayUndertaking> get railwayUndertakings =>
-      get(.railwayUndertakings, []).map((it) => RailwayUndertaking.values.byName(it)).toList();
+  List<String> get companyCodes => get(.companyCodes, []);
 
   TourSystem? get tourSystem {
     final tourSystemName = get<String?>(.tourSystem, null);
     return TourSystem.values.firstWhereOrNull((it) => it.name == tourSystemName);
   }
 
-  RailwayUndertaking? get lastUsedRailwayUndertaking {
-    final railwayUndertakingName = get<String?>(.lastUsedRailwayUndertaking, null);
-    return RailwayUndertaking.values.firstWhereOrNull((it) => it.companyCode == railwayUndertakingName);
-  }
+  String? get lastUsedCompanyCode => get<String?>(.lastUsedCompanyCode, null);
 
   bool get lastSettingsRequestSuccessful => get<bool>(.lastSettingsRequestSuccessful, false);
 
@@ -68,16 +63,20 @@ class LocalKeyValueStore {
     final dateString = get<String?>(.lastSuccessfulSettingsTimestamp, null);
     return dateString != null ? DateTime.tryParse(dateString) : null;
   }
+
+  void dispose() {
+    _rxModel.close();
+  }
 }
 
 enum LocalKeyValueStoreKeys {
   showDecisiveGradient,
-  railwayUndertakings,
+  companyCodes,
   tourSystem,
   showStationSignals,
   showEctsConventionalSpeedSignals,
   showEctsExtendedSpeedSignals,
-  lastUsedRailwayUndertaking,
+  lastUsedCompanyCode,
   lastSettingsRequestSuccessful,
   lastSuccessfulSettingsTimestamp,
 }

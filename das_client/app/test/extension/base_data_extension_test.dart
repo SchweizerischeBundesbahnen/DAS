@@ -40,7 +40,7 @@ void main() {
 
     final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
       trainIdentification: TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '123',
         date: DateTime.now(),
       ),
@@ -69,7 +69,7 @@ void main() {
 
     final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
       trainIdentification: TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '123',
         date: DateTime.now(),
       ),
@@ -103,7 +103,7 @@ void main() {
 
       final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
         trainIdentification: TrainIdentification(
-          ru: .sbbP,
+          companyCode: '1285',
           trainNumber: '123',
           date: DateTime.now(),
         ),

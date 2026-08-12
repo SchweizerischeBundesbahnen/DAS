@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_screen/view_model/departure_process_warning_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -74,7 +75,7 @@ void main() {
             Journey(
               metadata: Metadata(
                 trainIdentification: TrainIdentification(
-                  ru: RailwayUndertaking.sbbP,
+                  companyCode: '1285',
                   trainNumber: '1',
                   date: DateTime(2026, 3, 24),
                 ),
@@ -126,7 +127,7 @@ void main() {
             Journey(
               metadata: Metadata(
                 trainIdentification: TrainIdentification(
-                  ru: RailwayUndertaking.sbbP,
+                  companyCode: '1285',
                   trainNumber: '1',
                   date: DateTime(2026, 3, 24),
                 ),
@@ -158,7 +159,7 @@ void main() {
             Journey(
               metadata: Metadata(
                 trainIdentification: TrainIdentification(
-                  ru: RailwayUndertaking.sbbP,
+                  companyCode: '1285',
                   trainNumber: '1',
                   date: DateTime(2026, 3, 24),
                 ),
@@ -182,12 +183,12 @@ void main() {
     group('journeyIdentificationChanged – new train identification', () {
       test('whenTrainIdentificationChanges_showChronographWarningEmitsTrue', () {
         final trainId1 = TrainIdentification(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           trainNumber: '1234',
           date: DateTime(2026, 3, 24),
         );
         final trainId2 = TrainIdentification(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           trainNumber: '5678',
           date: DateTime(2026, 3, 24),
         );
@@ -223,7 +224,7 @@ void main() {
 
       test('whenTrainIdentificationUnchanged_chronographWarningStatePreserved', () {
         final trainId = TrainIdentification(
-          ru: RailwayUndertaking.sbbP,
+          companyCode: '1285',
           trainNumber: '9999',
           date: DateTime(2026, 3, 24),
         );
@@ -281,7 +282,7 @@ void main() {
             Journey(
               metadata: Metadata(
                 trainIdentification: TrainIdentification(
-                  ru: RailwayUndertaking.sbbP,
+                  companyCode: '1285',
                   trainNumber: '0',
                   date: DateTime(2026, 3, 24),
                 ),
@@ -303,7 +304,7 @@ void main() {
             Journey(
               metadata: Metadata(
                 trainIdentification: TrainIdentification(
-                  ru: RailwayUndertaking.sbbP,
+                  companyCode: '1285',
                   trainNumber: '42',
                   date: DateTime(2026, 3, 24),
                 ),

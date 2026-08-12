@@ -21,7 +21,7 @@ void main() {
   late MockRuIndicationsApiService mockRuIndicationsApiService;
   late MockMatchesRequest mockMatchesRequest;
 
-  const company = RailwayUndertaking.sbbP;
+  const companyCode = '1285';
   const trainNumber = 12345;
   final startDate = DateTime(2026, 1, 15);
   const Map<String, int> locationReferences = {
@@ -43,7 +43,7 @@ void main() {
     // ARRANGE
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -53,7 +53,11 @@ void main() {
     // ACT
     final result = await testee
         .fetchRuIndications(
-          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+          ),
           locationReferences: locationReferences,
         )
         .first;
@@ -67,7 +71,7 @@ void main() {
     const unsanitizedTrainNumber = 'T${trainNumber}M-S19';
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -77,7 +81,11 @@ void main() {
     // ACT
     await testee
         .fetchRuIndications(
-          trainIdentification: TrainIdentification(ru: company, trainNumber: unsanitizedTrainNumber, date: startDate),
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: unsanitizedTrainNumber,
+            date: startDate,
+          ),
           locationReferences: locationReferences,
         )
         .first;
@@ -85,7 +93,7 @@ void main() {
     // EXPECT
     verify(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -98,7 +106,7 @@ void main() {
     final operatingDay = DateTime(2026, 1, 16, 13, 37);
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: operatingDay,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -109,7 +117,7 @@ void main() {
     await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
-            ru: company,
+            companyCode: companyCode,
             trainNumber: trainNumber.toString(),
             date: startDate,
             operatingDay: operatingDay,
@@ -121,7 +129,7 @@ void main() {
     // EXPECT
     verify(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: operatingDay,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -137,7 +145,11 @@ void main() {
     await expectLater(
       () => testee
           .fetchRuIndications(
-            trainIdentification: TrainIdentification(ru: company, trainNumber: invalidTrainNumber, date: startDate),
+            trainIdentification: TrainIdentification(
+              companyCode: companyCode,
+              trainNumber: invalidTrainNumber,
+              date: startDate,
+            ),
             locationReferences: locationReferences,
           )
           .first,
@@ -159,7 +171,7 @@ void main() {
     var callCount = 0;
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -172,7 +184,11 @@ void main() {
     // ACT - Subscribe to the stream but don't complete (it retries indefinitely)
     final subscription = testee
         .fetchRuIndications(
-          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+          ),
           locationReferences: locationReferences,
         )
         .listen((_) {});
@@ -192,7 +208,7 @@ void main() {
     var callCount = 0;
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -208,7 +224,11 @@ void main() {
     // ACT
     final result = await testee
         .fetchRuIndications(
-          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+          ),
           locationReferences: locationReferences,
         )
         .first;
@@ -223,7 +243,7 @@ void main() {
     var callCount = 0;
     when(
       mockMatchesRequest.call(
-        company: company.companyCode,
+        company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
         tafTapLocationReferences: locationReferences.keys.toList(),
@@ -236,7 +256,11 @@ void main() {
     // ACT - Subscribe then cancel
     final subscription = testee
         .fetchRuIndications(
-          trainIdentification: TrainIdentification(ru: company, trainNumber: trainNumber.toString(), date: startDate),
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+          ),
           locationReferences: locationReferences,
         )
         .listen((_) {});

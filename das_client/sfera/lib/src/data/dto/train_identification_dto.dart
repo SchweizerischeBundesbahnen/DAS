@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 
@@ -27,7 +28,7 @@ class TrainIdentificationDto extends SferaXmlElementDto {
 extension TrainIdentificationMapperExtension on TrainIdentificationDto {
   TrainIdentification toModel({DateTime? operatingDay}) {
     return TrainIdentification(
-      ru: .fromCompanyCode(otnId.company),
+      companyCode: otnId.company,
       trainNumber: otnId.operationalTrainNumber,
       date: otnId.startDate,
       operatingDay: operatingDay,

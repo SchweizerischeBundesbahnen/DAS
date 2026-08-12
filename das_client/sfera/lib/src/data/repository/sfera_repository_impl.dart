@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:auth/component.dart';
 import 'package:collection/collection.dart';
 import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -171,7 +172,7 @@ class SferaRepoImpl implements SferaRepository {
 
   OtnId _toOtnId(TrainIdentification trainId) {
     final otnId = OtnId(
-      company: trainId.ru.companyCode,
+      company: trainId.companyCode,
       operationalTrainNumber: trainId.trainNumber,
       startDate: trainId.date,
     );
@@ -575,7 +576,7 @@ class SferaRepoImpl implements SferaRepository {
   @override
   TrainIdentification? get connectedTrain => _otnId != null
       ? TrainIdentification(
-          ru: .fromCompanyCode(_otnId!.company),
+          companyCode: _otnId!.company,
           trainNumber: _otnId!.operationalTrainNumber,
           date: _otnId!.startDate,
           operatingDay: _rxJourney.value?.metadata.trainIdentification?.operatingDay,

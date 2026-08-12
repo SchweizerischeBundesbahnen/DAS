@@ -16,7 +16,7 @@ import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
@@ -154,9 +154,9 @@ class _ContentState extends State<_Content> {
             children: [
               JourneyDateInput(),
               JourneyTrainNumberInput(),
-              SelectRailwayUndertakingInput(
-                selectedRailwayUndertakings: [?model.railwayUndertaking],
-                updateRailwayUndertaking: viewModel.updateRailwayUndertaking,
+              SelectCompanyInput(
+                selectedCompanyCodes: [?model.companyCode],
+                updateCompanies: viewModel.updateCompanies,
                 addClearButton: true,
               ),
             ],
@@ -250,21 +250,28 @@ class _ContentState extends State<_Content> {
     final dateTextStyle = isDateBold ? SBBTextStyles.smallBold : SBBTextStyles.smallLight;
     final subtitleColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
-    return SBBRadioListItem(
-      value: companyMatch,
-      title: Column(
-        crossAxisAlignment: .start,
-        children: [
-          Text(
-            '${companyMatch.ru.companyCode}, ${companyMatch.ru.name.toUpperCase()}',
-            style: SBBTextStyles.mediumLight,
+    final viewModel = context.read<JourneySelectionViewModel>();
+    return FutureBuilder(
+      future: viewModel.resolveCompanyName(companyMatch.companyCode),
+      builder: (context, snapshot) {
+        final companyName = snapshot.data ?? context.l10n.c_unknown;
+        return SBBRadioListItem(
+          value: companyMatch,
+          title: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                '${companyMatch.companyCode}, $companyName',
+                style: SBBTextStyles.mediumLight,
+              ),
+              Text(
+                Format.date(companyMatch.startDate),
+                style: dateTextStyle.copyWith(color: subtitleColor),
+              ),
+            ],
           ),
-          Text(
-            Format.date(companyMatch.startDate),
-            style: dateTextStyle.copyWith(color: subtitleColor),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

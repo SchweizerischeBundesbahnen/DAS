@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:settings/component.dart';
 import 'package:settings/src/api/dto/app_version_expiration_dto.dart';
+import 'package:settings/src/api/dto/company_dto.dart';
 import 'package:settings/src/api/dto/logging_setting_dto.dart';
 import 'package:settings/src/api/dto/preload_dto.dart';
 import 'package:settings/src/api/dto/ru_feature_dto.dart';
@@ -40,6 +42,7 @@ void main() {
     String accessKey = 'accessKey',
     String accessSecret = 'accessSecret',
     List<RuFeatureDto> ruFeatures = const [],
+    List<CompanyDto> companies = const [],
     bool appVersionExpired = false,
     DateTime? appVersionExpiryDate,
   }) {
@@ -50,6 +53,7 @@ void main() {
           SettingsDto(
             logging: LoggingSettingDto(url: loggingUrl, token: loggingToken),
             ruFeatures: ruFeatures,
+            companies: companies,
             preload: PreloadDto(bucketUrl: bucketUrl, accessKey: accessKey, accessSecret: accessSecret),
             currentAppVersion: AppVersionExpirationDto(expired: appVersionExpired, expiryDate: appVersionExpiryDate),
           ),
@@ -185,6 +189,21 @@ void main() {
 
     // EXPECT
     verify(mockCallbacks.awsCredentialsChanged(any)).called(1);
+  });
+
+  test('whenSettingsLoadedSuccessfully_savesCompaniesToDatabase', () async {
+    // ARRANGE
+    final companies = [
+      CompanyDto(code: '1285', shortName: 'SBBP'),
+      CompanyDto(code: '3356', shortName: 'BLSC'),
+    ];
+    when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(companies: companies)));
+
+    // ACT
+    await initTestee();
+
+    // EXPECT
+    verify(settingsDatabaseService.replaceAllCompanies(companies)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_awsCredentialsChangedCalledWithCorrectValues', () async {
@@ -458,6 +477,27 @@ void main() {
 
     // EXPECT
     verify(settingsDatabaseService.findRuFeature('OBB', RuFeatureKeys.departureProcess)).called(1);
+  });
+
+  test('whenLoadCompanies_returnsAllCompaniesFromDatabase', () async {
+    // ARRANGE
+    when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
+    await initTestee();
+    when(settingsDatabaseService.findAllCompanies()).thenAnswer(
+      (_) => Future.value([
+        CompanyDto(code: '1285', shortName: 'SBBP'),
+        CompanyDto(code: '3356', shortName: 'BLSC'),
+      ]),
+    );
+
+    // ACT
+    final result = await testee.getCompanies();
+
+    // EXPECT
+    expect(result, [
+      Company(code: '1285', shortName: 'SBBP'),
+      Company(code: '3356', shortName: 'BLSC'),
+    ]);
   });
 
   test('beforeSettingsLoaded_appVersionExpirationIsNull', () async {

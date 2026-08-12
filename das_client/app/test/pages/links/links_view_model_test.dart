@@ -37,7 +37,7 @@ void main() {
     mockLauncher = MockLauncher();
     linksController = StreamController<List<ExternalLink>>.broadcast();
 
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn(const []);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(const []);
     when(mockExternalLinksRepository.watchExternalLinksByCompanies(any)).thenAnswer((_) => linksController.stream);
   });
 
@@ -48,7 +48,7 @@ void main() {
     states.clear();
   });
 
-  test('state_whenNoRailwayUndertakings_thenEmpty', () async {
+  test('state_whenNoCompanies_thenEmpty', () async {
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
     await processStreams();
@@ -57,7 +57,7 @@ void main() {
   });
 
   test('state_whenCompanyAndLinksAvailable_thenLoaded', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -80,8 +80,8 @@ void main() {
     expect(states.last.single.link.localized, 'https://www.sbb.ch');
   });
 
-  test('state_whenRailwayUndertakingsConfigured_thenEmitsMatchingCompanyLinks', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.db]);
+  test('state_whenCompaniesConfigured_thenEmitsMatchingCompanyLinks', () async {
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1080']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -116,7 +116,7 @@ void main() {
   });
 
   test('state_whenDuplicateLinksWithSameTitleAndLink_thenDeduplicates', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -147,7 +147,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameTitleButDifferentLink_thenKeepsBoth', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -177,7 +177,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameLinkButDifferentTitle_thenKeepsBoth', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -207,7 +207,7 @@ void main() {
   });
 
   test('state_whenMultipleDuplicates_thenKeepsFirstOccurrence', () async {
-    when(mockLocalKeyValueStore.railwayUndertakings).thenReturn([RailwayUndertaking.sbbCH]);
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);

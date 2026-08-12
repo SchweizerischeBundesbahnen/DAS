@@ -13,6 +13,7 @@ import '../app_test.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -115,7 +116,7 @@ Future<void> _openJourneyOverSearchOverlay(WidgetTester tester, {required String
   // wait until journey opened
   await waitUntilExists(
     tester,
-    find.descendant(of: find.byType(Header), matching: find.text('$trainNumber ${l10n.c_ru_sbb_p}')),
+    find.descendant(of: find.byType(Header), matching: find.text('$trainNumber ${companySBBP.shortName}')),
   );
   await tester.pumpAndSettle();
 }

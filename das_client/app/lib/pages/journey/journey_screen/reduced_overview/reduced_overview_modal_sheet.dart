@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
@@ -27,6 +26,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
     body: MultiProvider(
       providers: [
         Provider<JourneyTableViewModel>.value(value: DI.get<JourneyTableViewModel>()),
+        Provider<JourneyViewModel>.value(value: DI.get<JourneyViewModel>()),
         Provider(
           create: (_) => ReducedOverviewViewModel(
             sferaLocalService: DI.get(),
@@ -59,8 +59,9 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
   }
 
   Widget _header(BuildContext context) {
+    final viewModel = context.read<ReducedOverviewViewModel>();
     return StreamBuilder(
-      stream: context.read<ReducedOverviewViewModel>().journey,
+      stream: viewModel.journey,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
 
@@ -72,17 +73,24 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
             children: [
               Text(_formattedJourneyDate(context, journey), style: sbbTextStyle.romanStyle.large),
               Spacer(),
-              Text(
-                journey.formattedTrainIdentifier(context),
-                style: sbbTextStyle.romanStyle.medium.copyWith(
-                  color: ThemeUtil.getColor(
-                    context,
-                    SBBColors.granite,
-                    SBBColors.white,
-                  ),
-                ),
-              ),
+              _trainIdentifier(context),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _trainIdentifier(BuildContext context) {
+    final vm = context.read<JourneyViewModel>();
+    return StreamBuilder(
+      stream: vm.formattedTrainIdentifier,
+      builder: (context, snapshot) {
+        final companyName = snapshot.data ?? context.l10n.c_unknown;
+        return Text(
+          companyName,
+          style: sbbTextStyle.romanStyle.medium.copyWith(
+            color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.white),
           ),
         );
       },

@@ -7,7 +7,11 @@ import 'package:sfera/component.dart';
 
 import 'reduced_overview_view_model_test.mocks.dart';
 
-final trainIdentification = TrainIdentification(ru: .sbbP, trainNumber: '1234', date: DateTime.now());
+final trainIdentification = TrainIdentification(
+  companyCode: '1285',
+  trainNumber: '1234',
+  date: DateTime.now(),
+);
 
 @GenerateNiceMocks([
   MockSpec<SferaLocalRepo>(),
@@ -147,7 +151,7 @@ MockSferaLocalRepo _setupSferaLocalRepoMock(Metadata metadata, List<BaseData> da
   final journey = Journey(metadata: metadata, data: data);
   when(
     sferaRepoMock.journeyStream(
-      company: trainIdentification.ru.companyCode,
+      company: trainIdentification.companyCode,
       trainNumber: trainIdentification.trainNumber,
       startDate: trainIdentification.date,
     ),

@@ -20,6 +20,5 @@ class CompanyMatchDto {
 }
 
 extension CompanyMatchDtoX on CompanyMatchDto {
-  CompanyMatch toCompanyMatch() =>
-      CompanyMatch(ru: RailwayUndertaking.fromCompanyCode(company.code), startDate: startDate);
+  CompanyMatch toCompanyMatch() => CompanyMatch(companyCode: company.code, startDate: startDate);
 }

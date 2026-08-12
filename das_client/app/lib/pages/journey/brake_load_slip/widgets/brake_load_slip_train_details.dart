@@ -1,4 +1,3 @@
-import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_train_details_table.dart';
@@ -9,7 +8,6 @@ import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class BrakeLoadSlipTrainDetails extends StatelessWidget {
   const BrakeLoadSlipTrainDetails({required this.formation, required this.formationRunChange, super.key});
@@ -54,35 +52,38 @@ class BrakeLoadSlipTrainDetails extends StatelessWidget {
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_from,
-          vm.resolveStationName(formationRunChange.formationRun.tafTapLocationReferenceStart),
+          vm.resolveStationName(_formationRun.tafTapLocationReferenceStart),
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_to,
-          vm.resolveStationName(formationRunChange.formationRun.tafTapLocationReferenceEnd),
+          vm.resolveStationName(_formationRun.tafTapLocationReferenceEnd),
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_train_series,
-          '${formationRunChange.formationRun.trainCategoryCode ?? ''} ${formationRunChange.formationRun.brakedWeightPercentage ?? ''}%',
+          '${_formationRun.trainCategoryCode ?? ''} ${_formationRun.brakedWeightPercentage ?? ''}%',
           hasChange:
               formationRunChange.hasChanged(.trainCategoryCode) ||
               formationRunChange.hasChanged(.brakedWeightPercentage),
         ),
-        KeyValueTableDataRow(
-          context.l10n.p_brake_load_slip_other_data_rru,
-          _resolveCompanyCode(context, formation.company),
-        ),
+        _companyShortName(context),
       ],
     );
   }
 
-  String _resolveCompanyCode(BuildContext context, String companyCode) {
-    final ru = RailwayUndertaking.fromCompanyCode(companyCode);
-    return ru != RailwayUndertaking.unknown ? ru.displayText(context) : companyCode;
+  Widget _companyShortName(BuildContext context) {
+    final vm = context.read<BrakeLoadSlipViewModel>();
+    return FutureBuilder(
+      future: vm.resolveCompanyName(formation.company),
+      builder: (context, snapshot) {
+        final companyName = snapshot.data ?? context.l10n.c_unknown;
+        return KeyValueTableDataRow(context.l10n.p_brake_load_slip_other_data_rru, companyName);
+      },
+    );
   }
 
   Widget _trainDataRow2(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: SBBSpacing.xSmall),
+      padding: const .symmetric(vertical: SBBSpacing.xSmall),
       child: BrakeLoadSlipTrainDetailsTable(formationRunChange: formationRunChange),
     );
   }
@@ -92,33 +93,29 @@ class BrakeLoadSlipTrainDetails extends StatelessWidget {
       rows: [
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_train_traction,
-          formationRunChange.formationRun.additionalTractions.isEmpty
-              ? '-'
-              : formationRunChange.formationRun.additionalTractions.join(' '),
+          _formationRun.additionalTractions.isEmpty ? '-' : _formationRun.additionalTractions.join(' '),
           hasChange: formationRunChange.hasChanged(.additionalTractions),
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_brake_position_g_leading_traction,
-          formationRunChange.formationRun.brakePositionGForLeadingTraction == true
-              ? context.l10n.c_yes
-              : context.l10n.c_no,
+          _formationRun.brakePositionGForLeadingTraction == true ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.brakePositionGForLeadingTraction),
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_brake_position_g_brake_unit,
-          formationRunChange.formationRun.brakePositionGForBrakeUnit1to5 == true
-              ? context.l10n.c_yes
-              : context.l10n.c_no,
+          _formationRun.brakePositionGForBrakeUnit1to5 == true ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.brakePositionGForBrakeUnit1to5),
         ),
         KeyValueTableDataRow(
           context.l10n.p_brake_load_slip_train_data_brake_position_g_load_hauled,
-          formationRunChange.formationRun.brakePositionGForLoadHauled == true ? context.l10n.c_yes : context.l10n.c_no,
+          _formationRun.brakePositionGForLoadHauled == true ? context.l10n.c_yes : context.l10n.c_no,
           hasChange: formationRunChange.hasChanged(.brakePositionGForLoadHauled),
         ),
       ],
     );
   }
+
+  FormationRun get _formationRun => formationRunChange.formationRun;
 
   bool _hasChange() {
     return formationRunChange.hasChanged(.tractionMaxSpeedInKmh) ||

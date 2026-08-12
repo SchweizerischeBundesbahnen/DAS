@@ -11,14 +11,16 @@ import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 import 'brake_load_slip_view_model_test.mocks.dart';
@@ -26,6 +28,7 @@ import 'brake_load_slip_view_model_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<JourneyViewModel>(),
   MockSpec<FormationRepository>(),
+  MockSpec<SettingsRepository>(),
   MockSpec<JourneyPositionViewModel>(),
   MockSpec<JourneySettingsViewModel>(),
   MockSpec<NotificationPriorityQueueViewModel>(),
@@ -42,6 +45,7 @@ void main() {
   late BrakeLoadSlipViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late MockFormationRepository mockFormationRepository;
+  late MockSettingsRepository mockSettingsRepository;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late MockJourneySettingsViewModel mockJourneySettingsViewModel;
   late MockNotificationPriorityQueueViewModel mockNotificationViewModel;
@@ -60,7 +64,7 @@ void main() {
   late MockLauncher mockLauncher;
 
   final trainIdentification = TrainIdentification(
-    ru: RailwayUndertaking.fromCompanyCode('2185'),
+    companyCode: '2185',
     trainNumber: 'T1234',
     date: DateTime.now(),
     operatingDay: DateTime.now().add(Duration(days: -1)),
@@ -115,7 +119,7 @@ void main() {
 
   final formation = Formation(
     operationalTrainNumber: trainIdentification.trainNumber,
-    company: trainIdentification.ru.companyCode,
+    company: trainIdentification.companyCode,
     operationalDay: trainIdentification.operatingDay!,
     formationRuns: [
       formationRun1,
@@ -139,7 +143,7 @@ void main() {
 
   final formationWithTransportPaper = Formation(
     operationalTrainNumber: trainIdentification.trainNumber,
-    company: trainIdentification.ru.companyCode,
+    company: trainIdentification.companyCode,
     operationalDay: trainIdentification.operatingDay!,
     formationRuns: [
       formationRunWithTransportPaper,
@@ -154,6 +158,7 @@ void main() {
   }) => BrakeLoadSlipViewModel(
     journeyViewModel: mockJourneyViewModel,
     formationRepository: mockFormationRepository,
+    settingsRepository: mockSettingsRepository,
     journeyPositionViewModel: mockJourneyPositionViewModel,
     journeySettingsViewModel: mockJourneySettingsViewModel,
     notificationViewModel: mockNotificationViewModel,
@@ -167,6 +172,7 @@ void main() {
   setUp(() {
     mockJourneyViewModel = MockJourneyViewModel();
     mockFormationRepository = MockFormationRepository();
+    mockSettingsRepository = MockSettingsRepository();
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockDetailModalViewModel = MockDetailModalViewModel();
     mockNotificationViewModel = MockNotificationPriorityQueueViewModel();
@@ -192,7 +198,7 @@ void main() {
     when(
       mockFormationRepository.watchFormation(
         operationalTrainNumber: trainIdentification.trainNumber,
-        company: trainIdentification.ru.companyCode,
+        company: trainIdentification.companyCode,
         operationalDay: trainIdentification.operatingDay!,
       ),
     ).thenAnswer((_) => formationSubject.stream);
@@ -227,7 +233,7 @@ void main() {
     verify(
       mockFormationRepository.watchFormation(
         operationalTrainNumber: trainIdentification.trainNumber,
-        company: trainIdentification.ru.companyCode,
+        company: trainIdentification.companyCode,
         operationalDay: trainIdentification.operatingDay,
       ),
     ).called(1);

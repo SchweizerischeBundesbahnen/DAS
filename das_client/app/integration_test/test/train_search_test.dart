@@ -4,7 +4,8 @@ import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -13,6 +14,7 @@ import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 
@@ -25,19 +27,21 @@ void main() {
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (tester) async {
+    testWidgets('trainSearch_whenCompanySelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
-      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
 
       // Verify modal is opened
-      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      final modal = find.byKey(SelectCompanyModal.modalKey);
       expect(modal, findsOneWidget);
 
-      expect(find.text(l10n.c_ru_db), findsOneWidget);
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
-      expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
-      final sobI = find.text(l10n.c_ru_sob);
+      expect(find.text(companyDB.shortName), findsOneWidget);
+      expect(find.descendant(of: modal, matching: find.text(companyBLSP.shortName)), findsOneWidget);
+      expect(find.text(companyBLSC.shortName), findsOneWidget);
+      final sobI = find.text(companySOB.shortName);
       await tester.dragUntilVisible(sobI, modal, const Offset(0, -50));
       expect(sobI, findsOneWidget);
       await tapElement(tester, sobI, warnIfMissed: false);
@@ -47,22 +51,22 @@ void main() {
     testWidgets('trainSearch_whenRuFilterEntered_thenFiltersResults|K9LxJibBfWA0sakjBxjU|tests:596', (tester) async {
       await IntegrationTestApp.start(tester);
 
-      await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+      await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
 
       // Verify modal is opened
-      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      final modal = find.byKey(SelectCompanyModal.modalKey);
       expect(modal, findsOneWidget);
 
       // Enter filter 'SO'
-      final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
+      final filterField = find.byKey(SelectCompanyModal.filterFieldKey);
       expect(filterField, findsOneWidget);
       await enterText(tester, filterField, 'SO');
       await tester.pumpAndSettle();
 
       // Verify results are filtered
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
-      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
-      expect(find.text(l10n.c_ru_sob), findsOneWidget);
+      expect(find.descendant(of: modal, matching: find.text(companySBBP.shortName)), findsNothing);
+      expect(find.descendant(of: modal, matching: find.text(companyBLSP.shortName)), findsNothing);
+      expect(find.text(companySOB.shortName), findsOneWidget);
     });
 
     testWidgets('trainSearch_whenNoTrainNumberEntered_thenDisablesButton|3JEyvxxjnxVGfeAOufjK|tests:92', (
@@ -205,16 +209,10 @@ void main() {
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
       trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(companyCode: '1285', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
+          companyCode: '3917',
           startDate: DateTime.now().add(Duration(days: 1)),
         ),
       };
@@ -253,26 +251,22 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|G6t83P9j45q6KfT4Y70f|tests:702', (tester) async {
+    testWidgets('trainSearch_whenLastCompanyCodeRemembered_thenAutoSelects|G6t83P9j45q6KfT4Y70f|tests:702', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
       final userSettings = DI.get<LocalKeyValueStore>();
-      userSettings.set(.lastUsedRailwayUndertaking, RailwayUndertaking.sbbP.companyCode);
+      userSettings.set(.lastUsedCompanyCode, '1285');
 
       trainIdentificationRepository.companyMatchData = {
+        CompanyMatch(companyCode: '1285', startDate: DateTime.now()),
+        CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
         CompanyMatch(
-          ru: RailwayUndertaking.sbbP,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.blsI,
-          startDate: DateTime.now(),
-        ),
-        CompanyMatch(
-          ru: RailwayUndertaking.thurbo,
+          companyCode: '3917',
           startDate: DateTime.now().add(Duration(days: 1)),
         ),
       };

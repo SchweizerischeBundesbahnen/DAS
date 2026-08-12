@@ -14,6 +14,7 @@ import 'package:train_identification/component.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 
@@ -106,7 +107,7 @@ void main() {
         // wait until T2 opened
         await waitUntilExists(
           tester,
-          find.descendant(of: find.byType(Header), matching: find.text('T2 ${l10n.c_ru_sbb_p}')),
+          find.descendant(of: find.byType(Header), matching: find.text('T2 ${companySBBP.shortName}')),
         );
         await tester.pumpAndSettle();
 
@@ -126,9 +127,7 @@ void main() {
 
     testWidgets(
       'journeySearchOverlay_whenMultipleCompanyMatches_thenRedirectsToSelectionScreen|78G6WgAFp4dv86tsGl14|tests:702',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         final trainIdentificationRepository =
@@ -138,9 +137,12 @@ void main() {
         final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
         trainIdentificationRepository.companyMatchData = {
-          CompanyMatch(ru: .sbbI, startDate: DateTime.now()),
-          CompanyMatch(ru: .blsI, startDate: DateTime.now()),
-          CompanyMatch(ru: .thurbo, startDate: DateTime.now().add(Duration(days: 1))),
+          CompanyMatch(companyCode: '5184', startDate: DateTime.now()),
+          CompanyMatch(companyCode: '2263', startDate: DateTime.now()),
+          CompanyMatch(
+            companyCode: '3917',
+            startDate: DateTime.now().add(Duration(days: 1)),
+          ),
         };
 
         // open

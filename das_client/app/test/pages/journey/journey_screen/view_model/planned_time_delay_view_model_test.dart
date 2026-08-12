@@ -5,6 +5,7 @@ import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_v
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:clock/clock.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -97,7 +98,11 @@ void main() {
         rxMockJourney.add(
           Journey(
             metadata: Metadata(
-              trainIdentification: TrainIdentification(ru: .blsC, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+              trainIdentification: TrainIdentification(
+                companyCode: '3356',
+                trainNumber: 'T9999',
+                date: DateTime(2024, 1, 1),
+              ),
             ),
             data: [],
           ),
@@ -127,7 +132,11 @@ void main() {
       (_) => rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            trainIdentification: TrainIdentification(ru: .blsI, trainNumber: 'T9999', date: DateTime(2024, 1, 1)),
+            trainIdentification: TrainIdentification(
+              companyCode: '1163',
+              trainNumber: 'T9999',
+              date: DateTime(2024, 1, 1),
+            ),
           ),
           data: [],
         ),

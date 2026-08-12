@@ -6,6 +6,7 @@ import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:auth/component.dart';
+import 'package:core_data/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +29,7 @@ import 'customer_oriented_departure_view_model_test.mocks.dart';
   MockSpec<Authenticator>(),
   MockSpec<JourneyViewModel>(),
   MockSpec<AppLifecycleViewModel>(),
+  MockSpec<SettingsRepository>(),
 ])
 void main() {
   group('CustomerOrientedDepartureViewModel', () {
@@ -39,6 +41,7 @@ void main() {
     late MockDASSounds mockDasSounds;
     late MockJourneyViewModel mockJourneyViewModel;
     late MockAppLifecycleViewModel mockAppLifecycleViewModel;
+    late MockSettingsRepository mockSettingsRepository;
 
     late BehaviorSubject<CustomerOrientedDeparture> rxCustomerOrientedDeparture;
     late BehaviorSubject<Journey?> rxJourney;
@@ -52,7 +55,7 @@ void main() {
     final initialJourney = _createJourney(
       trainNumber: initialTrainNumber,
       journeyEndTime: DateTime.now(),
-      ru: RailwayUndertaking.sbbP,
+      companyCode: '1285',
     );
 
     void setupTestee() {
@@ -66,6 +69,7 @@ void main() {
           authenticator: mockAuthenticator,
           journeyViewModel: mockJourneyViewModel,
           appLifecycleViewModel: mockAppLifecycleViewModel,
+          settingsRepository: mockSettingsRepository,
         );
 
         statusRegister = [];
@@ -82,6 +86,7 @@ void main() {
       mockAuthenticator = MockAuthenticator();
       mockJourneyViewModel = MockJourneyViewModel();
       mockAppLifecycleViewModel = MockAppLifecycleViewModel();
+      mockSettingsRepository = MockSettingsRepository();
 
       rxCustomerOrientedDeparture = BehaviorSubject<CustomerOrientedDeparture>();
       rxJourney = BehaviorSubject<Journey?>.seeded(initialJourney);
@@ -95,6 +100,9 @@ void main() {
       );
       when(mockDasSounds.customerOrientedDeparture).thenReturn(mockSound);
       when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.driver])));
+      when(
+        mockSettingsRepository.getCompanyForCode('1285'),
+      ).thenAnswer((_) => Future.value(Company(code: '1285', shortName: 'SBBP')));
 
       GetIt.I.registerSingleton<DASSounds>(mockDasSounds);
 
@@ -203,7 +211,11 @@ void main() {
     test('onJourneyChanged_whenJourneyWithTrainId_thenSubscribesWithCorrectParameters', () async {
       // WHEN
       final journeyEndTime = DateTime.now();
-      final journey = _createJourney(trainNumber: '9999', journeyEndTime: journeyEndTime, ru: RailwayUndertaking.sbbP);
+      final journey = _createJourney(
+        trainNumber: '9999',
+        journeyEndTime: journeyEndTime,
+        companyCode: '1285',
+      );
 
       // ACT
       testAsync.run((_) => rxJourney.add(journey));
@@ -212,7 +224,7 @@ void main() {
       // VERIFY
       verify(
         mockRepository.subscribe(
-          evu: RailwayUndertaking.sbbP.name.toUpperCase(),
+          evu: 'SBBP',
           trainNumber: '9999',
           journeyEndTime: journeyEndTime,
           isDriver: true,
@@ -263,7 +275,7 @@ void main() {
 
 Journey _createJourney({
   required String trainNumber,
-  RailwayUndertaking ru = RailwayUndertaking.sbbP,
+  String companyCode = '1285',
   DateTime? journeyEndTime,
   bool hasTrainId = true,
 }) {
@@ -279,7 +291,7 @@ Journey _createJourney({
     metadata: Metadata(
       trainIdentification: hasTrainId
           ? TrainIdentification(
-              ru: ru,
+              companyCode: companyCode,
               trainNumber: trainNumber,
               date: journeyEndTime ?? DateTime(2026, 5, 5, 12),
             )

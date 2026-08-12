@@ -4,10 +4,12 @@ import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 class JourneyViewModel {
   JourneyViewModel({
+    required this._settingsRepository,
     required this._sferaJourneyViewModel,
     required this._ruIndicationsRepository,
   }) {
@@ -16,12 +18,16 @@ class JourneyViewModel {
 
   Stream<Journey?> get journey => _rxJourney.stream;
 
+  Stream<String?> get formattedTrainIdentifier => _rxFormattedTrainIdentifier.stream;
+
   Journey? get journeyValue => _rxJourney.value;
 
+  final SettingsRepository _settingsRepository;
   final SferaJourneyViewModel _sferaJourneyViewModel;
   final RuIndicationsRepository _ruIndicationsRepository;
 
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
+  final _rxFormattedTrainIdentifier = BehaviorSubject<String?>.seeded(null);
   final _ruIndications = <RuIndication>[];
 
   StreamSubscription? _journeySubscription;
@@ -29,6 +35,7 @@ class JourneyViewModel {
 
   void dispose() {
     _rxJourney.close();
+    _rxFormattedTrainIdentifier.close();
     _journeySubscription?.cancel();
     _ruIndicationsSubscription?.cancel();
   }
@@ -42,6 +49,7 @@ class JourneyViewModel {
     _journeySubscription = _sferaJourneyViewModel.journey.listen((sferaJourney) async {
       final lastJourney = journeyValue;
       _handleRuIndications(sferaJourney, lastJourney);
+      _handleFormattedTrainIdentification(sferaJourney);
       _emit(sferaJourney);
     });
   }
@@ -53,6 +61,19 @@ class JourneyViewModel {
 
     if (_shouldLoadRuIndications(journey, lastJourney)) {
       _loadRuIndications(journey);
+    }
+  }
+
+  Future<void> _handleFormattedTrainIdentification(Journey? journey) async {
+    final trainIdentification = journey?.metadata.trainIdentification;
+    if (trainIdentification == null) {
+      _rxFormattedTrainIdentifier.add(null);
+    } else {
+      final trainNumber = trainIdentification.trainNumber;
+      final companyName = await _settingsRepository.getCompanyForCode(trainIdentification.companyCode);
+      final hasShuntingMovement = journeyValue?.data.any((data) => data is ShuntingMovement) ?? false;
+      final displayedTrainNumber = hasShuntingMovement ? '${trainNumber}R / $trainNumber' : trainNumber;
+      _rxFormattedTrainIdentifier.add('$displayedTrainNumber ${companyName?.shortName ?? ''}'.trim());
     }
   }
 

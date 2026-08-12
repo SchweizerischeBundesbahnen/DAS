@@ -199,11 +199,7 @@ extension AuthenticatedScopeExtension on GetIt {
     final repo = ExternalLinksComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
     registerSingleton<ExternalLinksRepository>(repo);
 
-    final companyCodes = DI
-        .get<LocalKeyValueStore>()
-        .railwayUndertakings
-        .map((undertaking) => undertaking.companyCode)
-        .toList();
+    final companyCodes = DI.get<LocalKeyValueStore>().companyCodes;
     repo.reloadExternalLinksByCompanies(companyCodes);
   }
 
@@ -237,6 +233,7 @@ extension AuthenticatedScopeExtension on GetIt {
     factoryFunc() async {
       return JourneySelectionViewModel(
         sferaRepo: DI.get(),
+        settingsRepository: DI.get(),
         trainIdentificationRepository: DI.get(),
         userSettings: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
@@ -255,6 +252,7 @@ extension AuthenticatedScopeExtension on GetIt {
       () async => JourneyViewModel(
         sferaJourneyViewModel: DI.get(),
         ruIndicationsRepository: DI.get(),
+        settingsRepository: DI.get(),
       ),
       dependsOn: [SferaJourneyViewModel],
       dispose: (vm) => vm.dispose(),

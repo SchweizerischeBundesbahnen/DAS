@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -375,7 +376,11 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            trainIdentification: TrainIdentification(ru: .blsI, trainNumber: '1111', date: DateTime(2026)),
+            trainIdentification: TrainIdentification(
+              companyCode: '2263',
+              trainNumber: '1111',
+              date: DateTime(2026),
+            ),
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],
@@ -395,7 +400,11 @@ void main() {
       rxMockJourney.add(
         Journey(
           metadata: Metadata(
-            trainIdentification: TrainIdentification(ru: .blsC, trainNumber: '1111', date: DateTime(2026)),
+            trainIdentification: TrainIdentification(
+              companyCode: '3356',
+              trainNumber: '1111',
+              date: DateTime(2026),
+            ),
             suspiciousSegments: [suspiciousSegmentAB],
           ),
           data: [signalA, stopA, stopB, stopC, stopD],

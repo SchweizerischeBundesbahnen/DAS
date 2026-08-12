@@ -92,7 +92,7 @@ class JourneyNavigationViewModel {
 
     if (trainId != null) {
       _log.fine('Establish connection to $trainId');
-      _userSettings.set(.lastUsedRailwayUndertaking, trainId.trainIdentification.ru.companyCode);
+      _userSettings.set(.lastUsedCompanyCode, trainId.trainIdentification.companyCode);
       await DI.get<ScopeHandler>().push<JourneyScope>();
       await _sferaRepo.connect(trainId.trainIdentification);
     }

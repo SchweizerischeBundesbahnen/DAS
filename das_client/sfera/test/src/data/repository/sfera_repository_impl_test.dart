@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -27,7 +28,7 @@ import 'sfera_repository_impl_test.mocks.dart';
 ])
 void main() {
   final TrainIdentification trainId = TrainIdentification(
-    ru: .sbbP,
+    companyCode: '1285',
     trainNumber: '12345',
     date: DateTime.now(),
   );

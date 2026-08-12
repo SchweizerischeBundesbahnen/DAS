@@ -37,8 +37,7 @@ class LinksViewModel {
   }
 
   void _init() {
-    final companyCodes = _userSettings.railwayUndertakings.map((undertaking) => undertaking.companyCode).toList();
-    _watchLinksForCompanies(companyCodes);
+    _watchLinksForCompanies(_userSettings.companyCodes);
   }
 
   void _watchLinksForCompanies(List<String> companyCodes) {

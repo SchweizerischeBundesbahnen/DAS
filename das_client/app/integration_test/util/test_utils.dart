@@ -8,10 +8,11 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancem
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/widgets/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -88,16 +89,19 @@ Finder findColoredRowCells({required FinderBase<Element> of, required Color colo
   );
 }
 
-/// Verifies, that SBB or the given RU is selected and loads train journey with [trainNumber]
-Future<void> loadJourney(WidgetTester tester, {required String trainNumber, RailwayUndertaking? ru}) async {
-  if (ru != null) {
-    await tapElement(tester, find.text(l10n.p_train_selection_ru_description), warnIfMissed: false);
+/// Verifies, that SBB or the given company is selected and loads train journey with [trainNumber]
+Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Company? company}) async {
+  if (company != null) {
+    await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
 
-    final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
+    final filterField = find.byKey(SelectCompanyModal.filterFieldKey);
     expect(filterField, findsOneWidget);
-    await enterText(tester, filterField, ru.name);
+    await enterText(tester, filterField, company.shortName);
 
-    await tapElement(tester, find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == ru));
+    await tapElement(
+      tester,
+      find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == company.code),
+    );
   }
 
   final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);

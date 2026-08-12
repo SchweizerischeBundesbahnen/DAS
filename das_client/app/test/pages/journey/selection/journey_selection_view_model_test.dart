@@ -6,9 +6,11 @@ import 'package:app/pages/journey/view_model/model/extended_train_identification
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 
@@ -16,11 +18,13 @@ import 'journey_selection_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SferaRepository>(),
+  MockSpec<SettingsRepository>(),
   MockSpec<TrainIdentificationRepository>(),
   MockSpec<LocalKeyValueStore>(),
 ])
 void main() {
   late SferaRepository mockSferaRepo;
+  late MockSettingsRepository mockSettingsRepository;
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
   late MockLocalKeyValueStore mockLocalKeyValueStore;
   late JourneySelectionViewModel testee;
@@ -31,11 +35,13 @@ void main() {
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
+    mockSettingsRepository = MockSettingsRepository();
     mockTrainIdentificationRepository = MockTrainIdentificationRepository();
     mockLocalKeyValueStore = MockLocalKeyValueStore();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
+        settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
         onJourneySelected: (trainIdentification) async {
@@ -58,6 +64,7 @@ void main() {
       // seventies testee
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
+        settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
         onJourneySelected: (_) async {},
@@ -71,7 +78,7 @@ void main() {
     final selecting = state as Selecting;
     expect(selecting.trainNumber, isNull);
     expect(selecting.startDate, equals(newYears1970));
-    expect(selecting.railwayUndertaking, null);
+    expect(selecting.companyCode, null);
     expect(selecting.isInputComplete, isFalse);
     expect(selecting.availableStartDates, hasLength(3));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
@@ -131,18 +138,18 @@ void main() {
     expect(selecting.startDate, today);
   });
 
-  test('updateRailwayUndertaking_whenCalled_thenUpdatesRailwayUndertaking', () {
+  test('updateCompanies_whenCalled_thenUpdatesCompanies', () {
     // ARRANGE
-    final newRU = RailwayUndertaking.blsP;
+    final newCompany = Company(code: '1163', shortName: 'BLSP');
 
     // ACT
-    testee.updateRailwayUndertaking([newRU]);
+    testee.updateCompanies([newCompany]);
 
     // EXPECT
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
-    expect(selecting.railwayUndertaking, newRU);
+    expect(selecting.companyCode, newCompany.code);
   });
 
   test('loadJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
@@ -156,9 +163,9 @@ void main() {
   test('loadJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('123');
-    testee.updateRailwayUndertaking([.sbbP]);
+    testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
-      ru: .sbbP,
+      companyCode: '1285',
       trainNumber: '123',
       date: fixedClock.now(),
     );
@@ -174,9 +181,9 @@ void main() {
   test('loadJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
     // ARRANGE
     testee.updateTrainNumber('  123  ');
-    testee.updateRailwayUndertaking([.sbbP]);
+    testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
-      ru: .sbbP,
+      companyCode: '1285',
       trainNumber: '123',
       date: fixedClock.now(),
     );
@@ -192,9 +199,9 @@ void main() {
   test('loadJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
     // ARRANGE
     testee.updateTrainNumber('lowercase123a');
-    testee.updateRailwayUndertaking([.sbbP]);
+    testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
-      ru: .sbbP,
+      companyCode: '1285',
       trainNumber: 'LOWERCASE123A',
       date: fixedClock.now(),
     );
@@ -233,11 +240,11 @@ void main() {
   test('loadJourney_whenMultipleMatchesForDay_thenEmitsSelectingCompanyMatch', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
-        CompanyMatch(ru: .blsP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
+        CompanyMatch(companyCode: '1163', startDate: today),
       },
     );
 
@@ -251,8 +258,8 @@ void main() {
     expect(state.trainNumber, '123');
     expect(state.startDate, today);
     expect(state.companyMatches, {
-      CompanyMatch(ru: .sbbP, startDate: today),
-      CompanyMatch(ru: .blsP, startDate: today),
+      CompanyMatch(companyCode: '1285', startDate: today),
+      CompanyMatch(companyCode: '1163', startDate: today),
     });
     expect(state.selectedCompanyMatch, isNull);
     expect(state.isInputComplete, isFalse);
@@ -262,12 +269,12 @@ void main() {
   test('loadJourney_whenMatchesForSelectedDay_thenOnlyShowExactDayMatches', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
-        CompanyMatch(ru: .sbbP, startDate: tomorrow),
-        CompanyMatch(ru: .blsP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: tomorrow),
+        CompanyMatch(companyCode: '1163', startDate: today),
       },
     );
 
@@ -281,8 +288,8 @@ void main() {
     expect(state.trainNumber, '123');
     expect(state.startDate, today);
     expect(state.companyMatches, {
-      CompanyMatch(ru: .sbbP, startDate: today),
-      CompanyMatch(ru: .blsP, startDate: today),
+      CompanyMatch(companyCode: '1285', startDate: today),
+      CompanyMatch(companyCode: '1163', startDate: today),
     });
     expect(state.selectedCompanyMatch, isNull);
     expect(state.isInputComplete, isFalse);
@@ -292,10 +299,10 @@ void main() {
   test('loadJourney_whenNoMatchesForSelectedDay_thenShowOtherDayMatches', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: tomorrow),
+        CompanyMatch(companyCode: '1285', startDate: tomorrow),
       },
     );
 
@@ -309,7 +316,7 @@ void main() {
     expect(state.trainNumber, '123');
     expect(state.startDate, today);
     expect(state.companyMatches, {
-      CompanyMatch(ru: .sbbP, startDate: tomorrow),
+      CompanyMatch(companyCode: '1285', startDate: tomorrow),
     });
     expect(state.selectedCompanyMatch, isNull);
     expect(state.isInputComplete, isFalse);
@@ -319,11 +326,11 @@ void main() {
   test('loadJourney_whenMultipleMatchesForDayAndLastUsedFound_thenLoadsJourneyDirectly', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(.blsP);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn('1163');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
-        CompanyMatch(ru: .blsP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
+        CompanyMatch(companyCode: '1163', startDate: today),
       },
     );
 
@@ -336,11 +343,7 @@ void main() {
     expect(callRegister, hasLength(1));
     expect(
       callRegister.first!.trainIdentification,
-      TrainIdentification(
-        ru: .blsP,
-        trainNumber: '123',
-        date: today,
-      ),
+      TrainIdentification(companyCode: '1163', trainNumber: '123', date: today),
     );
   });
 
@@ -349,7 +352,7 @@ void main() {
     testee.updateTrainNumber('456');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '456')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
       },
     );
 
@@ -361,27 +364,23 @@ void main() {
     expect(callRegister, hasLength(1));
     expect(
       callRegister.first!.trainIdentification,
-      TrainIdentification(
-        ru: .sbbP,
-        trainNumber: '456',
-        date: today,
-      ),
+      TrainIdentification(companyCode: '1285', trainNumber: '456', date: today),
     );
   });
 
   test('loadJourney_whenSelectingCompanyMatchAndSelectionSet_thenLoadsSelectedTrain', () async {
     // ARRANGE
     testee.updateTrainNumber('789');
-    when(mockLocalKeyValueStore.lastUsedRailwayUndertaking).thenReturn(.unknown);
+    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '789')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
-        CompanyMatch(ru: .blsP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
+        CompanyMatch(companyCode: '1163', startDate: today),
       },
     );
     await testee.loadJourney();
 
-    final selected = CompanyMatch(ru: .blsP, startDate: today);
+    final selected = CompanyMatch(companyCode: '1163', startDate: today);
     testee.updateSelectedCompanyMatch(selected);
 
     // ACT
@@ -392,11 +391,7 @@ void main() {
     expect(callRegister, hasLength(1));
     expect(
       callRegister.first!.trainIdentification,
-      TrainIdentification(
-        ru: .blsP,
-        trainNumber: '789',
-        date: today,
-      ),
+      TrainIdentification(companyCode: '1163', trainNumber: '789', date: today),
     );
   });
 
@@ -404,7 +399,7 @@ void main() {
     // ARRANGE
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '321')).thenAnswer(
       (_) async => {
-        CompanyMatch(ru: .sbbP, startDate: today),
+        CompanyMatch(companyCode: '1285', startDate: today),
       },
     );
     final linkData = TrainJourneyLinkData(
@@ -425,11 +420,7 @@ void main() {
     final deepLinkSelection = callRegister.first!;
     expect(
       deepLinkSelection.trainIdentification,
-      TrainIdentification(
-        ru: .sbbP,
-        trainNumber: '321',
-        date: today,
-      ),
+      TrainIdentification(companyCode: '1285', trainNumber: '321', date: today),
     );
     expect(deepLinkSelection.tafTapLocationReferenceStart, 'startRef');
     expect(deepLinkSelection.tafTapLocationReferenceEnd, 'endRef');
@@ -439,7 +430,7 @@ void main() {
     // no deeplink metadata should be forwarded anymore.
     testee.dismissSelection();
     testee.updateTrainNumber('777');
-    testee.updateRailwayUndertaking([.blsP]);
+    testee.updateCompanies([Company(code: '1163', shortName: 'BLSP')]);
     final expectedFollowUpDate = testee.modelValue.startDate;
     await testee.loadJourney();
 
@@ -447,11 +438,7 @@ void main() {
     final normalSelection = callRegister.last!;
     expect(
       normalSelection.trainIdentification,
-      TrainIdentification(
-        ru: .blsP,
-        trainNumber: '777',
-        date: expectedFollowUpDate,
-      ),
+      TrainIdentification(companyCode: '1163', trainNumber: '777', date: expectedFollowUpDate),
     );
     expect(normalSelection.tafTapLocationReferenceStart, isNull);
     expect(normalSelection.tafTapLocationReferenceEnd, isNull);

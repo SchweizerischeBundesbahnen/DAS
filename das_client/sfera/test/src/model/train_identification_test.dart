@@ -1,4 +1,4 @@
-import 'package:core_data/src/train_identification.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -16,12 +16,12 @@ void main() {
     test('equals_whenSameProperties_thenReturnsTrue', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
@@ -33,12 +33,12 @@ void main() {
     test('equals_whenDifferentRu_thenReturnsFalse', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbCH,
+        companyCode: '2185',
         trainNumber: '1234',
         date: now,
       );
@@ -50,12 +50,12 @@ void main() {
     test('equals_whenDifferentTrainNumber_thenReturnsFalse', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '5678',
         date: now,
       );
@@ -67,12 +67,12 @@ void main() {
     test('equals_whenDifferentDay_thenReturnsFalse', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: tomorrow,
       );
@@ -84,12 +84,12 @@ void main() {
     test('equals_whenOnSameDay_thenReturnsTrue', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: inFiveHours,
       );
@@ -101,12 +101,12 @@ void main() {
     test('hashCode_whenSameProperties_thenReturnsSameHashCode', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
@@ -118,12 +118,12 @@ void main() {
     test('hashCode_whenDifferentProperties_thenReturnsDifferentHashCode', () {
       // ARRANGE
       final testeeA = TrainIdentification(
-        ru: .sbbP,
+        companyCode: '1285',
         trainNumber: '1234',
         date: now,
       );
       final testeeB = TrainIdentification(
-        ru: .sbbCH,
+        companyCode: '2185',
         trainNumber: '1234',
         date: now,
       );

@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/src/api/dto/company_match_dto.dart';

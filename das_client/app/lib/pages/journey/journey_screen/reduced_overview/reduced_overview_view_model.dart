@@ -27,14 +27,14 @@ class ReducedOverviewViewModel {
 
   Stream<Metadata> get journeyMetadata => _rxJourneyMetadata.stream;
 
-  Future<void> _init() async {
-    await _initRxJourney();
-    await _initRxJourneyData();
-    await _initRxJourneyMetadata();
+  void _init() {
+    _initRxJourney();
+    _initRxJourneyData();
+    _initRxJourneyMetadata();
   }
 
-  Future<void> _initRxJourney() async {
-    final company = trainIdentification.ru.companyCode;
+  void _initRxJourney() {
+    final company = trainIdentification.companyCode;
     final trainNumber = trainIdentification.trainNumber;
     final date = trainIdentification.date;
     final subscription = _sferaLocalService
@@ -44,14 +44,14 @@ class ReducedOverviewViewModel {
     _subscriptions.add(subscription);
   }
 
-  Future<void> _initRxJourneyMetadata() async {
+  void _initRxJourneyMetadata() {
     final subscription = _rxJourney.stream
         .map((journey) => journey.metadata)
         .listen(_rxJourneyMetadata.add, onError: _rxJourneyMetadata.addError);
     _subscriptions.add(subscription);
   }
 
-  Future<void> _initRxJourneyData() async {
+  void _initRxJourneyData() {
     final subscription = _rxJourney.stream
         .map((journey) => _relevantDataForReducedOverview(journey))
         .listen(_rxJourneyData.add, onError: _rxJourneyData.addError);

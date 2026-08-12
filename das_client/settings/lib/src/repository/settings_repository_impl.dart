@@ -1,6 +1,8 @@
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:settings/component.dart';
 import 'package:settings/src/api/dto/app_version_expiration_dto.dart';
+import 'package:settings/src/api/dto/company_dto.dart';
 import 'package:settings/src/api/dto/settings_dto.dart';
 import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
@@ -50,6 +52,18 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
+  Future<List<Company>> getCompanies() async {
+    final companies = await databaseService.findAllCompanies();
+    return companies.map((company) => company.toDomain()).toList();
+  }
+
+  @override
+  Future<Company?> getCompanyForCode(String companyCode) async {
+    final company = await databaseService.findCompany(companyCode);
+    return company?.toDomain();
+  }
+
+  @override
   Future<bool> loadSettings() {
     return _pendingLoadSettings ??= _loadSettings().whenComplete(() => _pendingLoadSettings = null);
   }
@@ -69,6 +83,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     await _replaceAllRuFeatureSettings(remoteSettings);
+    await _replaceAllCompanies(remoteSettings);
 
     if (_shouldCallAwsCredentialsChanged(remoteSettings)) {
       final preload = remoteSettings.preload;
@@ -100,6 +115,11 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<void> _replaceAllRuFeatureSettings(SettingsDto remoteSettings) async {
     await databaseService.replaceAllRuFeatures(remoteSettings.ruFeatures);
     _log.info('RU settings saved successfully saved by replacing all.');
+  }
+
+  Future<void> _replaceAllCompanies(SettingsDto remoteSettings) async {
+    await databaseService.replaceAllCompanies(remoteSettings.companies);
+    _log.info('Companies saved successfully saved by replacing all.');
   }
 
   bool _shouldCallAwsCredentialsChanged(SettingsDto remoteSettings) =>
