@@ -6,14 +6,14 @@ import 'package:external_links/component.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class UserRuSelection extends StatefulWidget {
-  const UserRuSelection({super.key});
+class UserCompanySelection extends StatefulWidget {
+  const UserCompanySelection({super.key});
 
   @override
-  State<UserRuSelection> createState() => _UserRuSelectionState();
+  State<UserCompanySelection> createState() => _UserCompanySelectionState();
 }
 
-class _UserRuSelectionState extends State<UserRuSelection> {
+class _UserCompanySelectionState extends State<UserCompanySelection> {
   final _userSettings = DI.get<LocalKeyValueStore>();
   final _externalLinksRepo = DI.get<ExternalLinksRepository>();
 

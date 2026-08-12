@@ -4,6 +4,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
 import 'package:app/widgets/company_selection/select_company_input_view_model.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
+import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,8 +95,10 @@ class SelectCompanyInput extends StatelessWidget {
     );
   }
 
-  List<Company> _selectedCompanies(List<Company> availableCompanies) =>
-      availableCompanies.where((company) => selectedCompanyCodes.contains(company.code)).toList();
+  List<Company> _selectedCompanies(List<Company> availableCompanies) => availableCompanies
+      .where((company) => selectedCompanyCodes.contains(company.code))
+      .sortedBy((company) => company.shortName)
+      .toList();
 
   BoxConstraints get _modalConstraints => BoxConstraints(
     maxWidth: DeviceScreen.width - SBBSpacing.medium,

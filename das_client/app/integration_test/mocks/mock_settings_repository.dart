@@ -14,6 +14,7 @@ const companyDB = Company(code: '1080', shortName: 'DB');
 
 const availableCompanies = [
   companyBLSC,
+  companyBLSP,
   companyBLSI,
   companySBBP,
   companySBBCH,

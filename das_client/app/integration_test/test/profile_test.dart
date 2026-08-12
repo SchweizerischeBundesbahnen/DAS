@@ -18,7 +18,7 @@ void main() {
     expect(find.text('tester@testeee.com'), findsAny);
   });
 
-  testWidgets('profile_whenRuSelected_thenDisplaysSelection|O7WL0FgVcL2yp91SBkO3|tests:427', (tester) async {
+  testWidgets('profile_whenCompanySelected_thenDisplaysSelection|O7WL0FgVcL2yp91SBkO3|tests:427', (tester) async {
     await IntegrationTestApp.start(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -33,31 +33,17 @@ void main() {
     await tapElement(tester, find.text(companyBLSC.shortName).first);
     await tapElement(tester, find.text(companyDB.shortName).first);
 
-    await tapElement(
-      tester,
-      find.byWidgetPredicate(
-        (it) => it is IconButton && it.icon is Icon && (it.icon as Icon).icon == SBBIcons.cross_small,
-      ),
-    );
+    await _closeModal(tester);
     await tester.pumpAndSettle(Duration(seconds: 1));
 
-    // check that selected companies are shown in profile
-    final evuText = '${companyBLSI.shortName}, ${companyBLSC.shortName}, ${companyDB.shortName}';
+    // check that selected companies are shown in profile in alphabetical order
+    final evuText = '${companyBLSC.shortName}, ${companyBLSI.shortName}, ${companyDB.shortName}';
     expect(find.text(evuText), findsOneWidget);
 
-    await tapElement(
-      tester,
-      find.text(evuText),
-    );
-
+    await tapElement(tester, find.text(evuText));
     await tapElement(tester, find.text(companyBLSC.shortName).first);
 
-    await tapElement(
-      tester,
-      find.byWidgetPredicate(
-        (it) => it is IconButton && it.icon is Icon && (it.icon as Icon).icon == SBBIcons.cross_small,
-      ),
-    );
+    await _closeModal(tester);
 
     final evuText2 = '${companyBLSI.shortName}, ${companyDB.shortName}';
     expect(find.text(evuText2), findsOneWidget);
@@ -83,4 +69,13 @@ void main() {
 
     expect(find.text(l10n.c_tour_system_bls_ivu), findsOne);
   });
+}
+
+Future<void> _closeModal(WidgetTester tester) async {
+  await tapElement(
+    tester,
+    find.byWidgetPredicate(
+      (it) => it is IconButton && it.icon is Icon && (it.icon as Icon).icon == SBBIcons.cross_small,
+    ),
+  );
 }

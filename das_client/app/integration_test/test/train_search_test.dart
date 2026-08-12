@@ -27,7 +27,9 @@ void main() {
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('trainSearch_whenRuSelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (tester) async {
+    testWidgets('trainSearch_whenCompanySelectionOpened_thenShowsOptions|4V8lVLIAXkStk9lkHcFv|tests:92', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
@@ -249,7 +251,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('trainSearch_whenLastRuRemembered_thenAutoSelects|G6t83P9j45q6KfT4Y70f|tests:702', (tester) async {
+    testWidgets('trainSearch_whenLastCompanyCodeRemembered_thenAutoSelects|G6t83P9j45q6KfT4Y70f|tests:702', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       final trainIdentificationRepository =
