@@ -1,4 +1,4 @@
-import 'package:formation/src/model/formation.dart';
+import 'package:formation/component.dart';
 
 abstract class FormationRepository {
   const FormationRepository._();
@@ -10,4 +10,6 @@ abstract class FormationRepository {
     required String company,
     required DateTime operationalDay,
   });
+
+  Future<String?> resolveTransportPaperLink(TransportPaperLink transportPaperLink);
 }

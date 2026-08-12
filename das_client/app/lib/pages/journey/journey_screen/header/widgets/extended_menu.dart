@@ -42,7 +42,6 @@ class ExtendedMenu extends StatelessWidget {
                     children: SBBDivider.divideItems(
                       context: context,
                       items: [
-                        _transportDocumentItem(context),
                         _journeyOverviewItem(context, hideOverlay),
                         _maneuverItem(context, hideOverlay),
                         _waraItem(context, hideOverlay),
@@ -87,15 +86,6 @@ class ExtendedMenu extends StatelessWidget {
           iconData: SBBIcons.cross_small,
         ),
       ],
-    );
-  }
-
-  Widget _transportDocumentItem(BuildContext context) {
-    return SBBListItem(
-      titleText: context.l10n.w_extended_menu_transport_document_action,
-      onTap: () {
-        // Placeholder
-      },
     );
   }
 

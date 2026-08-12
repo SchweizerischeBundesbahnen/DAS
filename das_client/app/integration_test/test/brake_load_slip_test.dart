@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_header_box.dart';
@@ -19,6 +20,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_formation_repository.dart';
+import '../mocks/mock_launcher.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -390,4 +392,52 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets(
+    'brakeSlip_whenTransportDocumentsAreConfigured_thenButtonVisibilityAndLaunchBehaviorMatchFormationData|k2dX0Vd8r1sZ9fQm7uJm|tests:1620',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+      final launcher = DI.get<Launcher>() as MockLauncher;
+
+      formationRepository.emitT49Formation();
+      await loadJourney(tester, trainNumber: 'T49M');
+
+      await openBrakeSlipPage(tester);
+      expect(find.text(l10n.p_brake_load_slip_button_transport_documents), findsNothing);
+
+      launcher.launchedUrls.clear();
+      await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.p_brake_load_slip_button_transport_documents), findsOneWidget);
+      await tapElement(tester, find.text(l10n.p_brake_load_slip_button_transport_documents));
+      await tester.pumpAndSettle();
+
+      expect(launcher.launchedUrls, ['https://example.com/transport-paper-direct.pdf']);
+
+      launcher.launchedUrls.clear();
+      await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.p_brake_load_slip_button_transport_documents), findsOneWidget);
+      await tapElement(tester, find.text(l10n.p_brake_load_slip_button_transport_documents));
+      await tester.pumpAndSettle();
+
+      expect(launcher.launchedUrls, ['https://example.com/transport-paper.pdf']);
+
+      launcher.launchedUrls.clear();
+      await tapElement(tester, find.byKey(NavigationButtons.navigationButtonNextKey));
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.p_brake_load_slip_button_transport_documents), findsOneWidget);
+      await tapElement(tester, find.text(l10n.p_brake_load_slip_button_transport_documents));
+      await tester.pumpAndSettle();
+
+      expect(launcher.launchedUrls, isEmpty);
+
+      await disconnect(tester);
+    },
+  );
 }

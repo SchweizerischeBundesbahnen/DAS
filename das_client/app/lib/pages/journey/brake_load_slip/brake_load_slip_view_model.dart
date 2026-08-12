@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/launcher/launcher.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_builder.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
@@ -32,6 +33,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     required this._journeyPositionViewModel,
     required this._journeySettingsViewModel,
     required this._notificationViewModel,
+    required this._launcher,
     this._detailModalViewModel,
     this._connectivityManager,
     this._checkForUpdates = false,
@@ -47,6 +49,7 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
   final JourneySettingsViewModel _journeySettingsViewModel;
   final NotificationPriorityQueueViewModel _notificationViewModel;
   final ConnectivityManager? _connectivityManager;
+  final Launcher _launcher;
   final bool _checkForUpdates;
   final bool _updateOnPositionUpdate;
   bool _notifyOnUpdate = false;
@@ -308,6 +311,20 @@ class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
     } else {
       _detailModalViewModel?.open(BrakeLoadSlipModalBuilder(), maximize: false);
     }
+  }
+
+  bool showTransportPaperButton() {
+    return _rxFormationRun.value?.formationRun.transportPaperLink != null;
+  }
+
+  Future<bool> openTransportPaper() async {
+    final formationRun = _rxFormationRun.value?.formationRun;
+    if (formationRun == null || formationRun.transportPaperLink == null) return false;
+
+    final resolvedUrl = await _formationRepository.resolveTransportPaperLink(formationRun.transportPaperLink!);
+    if (resolvedUrl == null) return false;
+
+    return _launcher.launch(resolvedUrl);
   }
 
   @override
