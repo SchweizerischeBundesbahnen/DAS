@@ -54,7 +54,7 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
       await _ruFeatureTableManager.delete();
       await _ruFeatureTableManager.bulkCreate(
         (_) => ruFeatures.map((element) => element.toCompanion()),
-        mode: .insertOrReplace,
+        mode: .insertOrFail,
       );
     });
   }
