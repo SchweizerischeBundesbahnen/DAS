@@ -14,12 +14,12 @@ class TransportPaperRequest {
   final String relativeUrl;
 
   Future<TransportPaperResponse> call() async {
-    final url = Uri.https(
-      baseUrl,
-      relativeUrl,
-    );
+    final url = Uri.parse('https://$baseUrl$relativeUrl');
 
-    final response = await httpClient.get(url);
+    final request = Request('GET', url);
+    request.followRedirects = false;
+
+    final response = await httpClient.send(request);
     return TransportPaperResponse.fromHttpResponse(response);
   }
 }
@@ -27,7 +27,7 @@ class TransportPaperRequest {
 class TransportPaperResponse {
   const TransportPaperResponse({required this.headers});
 
-  factory TransportPaperResponse.fromHttpResponse(Response response) {
+  factory TransportPaperResponse.fromHttpResponse(StreamedResponse response) {
     final status = response.statusCode;
     if ([
       HttpStatus.movedPermanently,

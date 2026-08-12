@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 class HttpException {
   const HttpException(this.request, this.response);
 
-  factory HttpException.fromResponse(Response response) {
+  factory HttpException.fromResponse(BaseResponse response) {
     final request = response.request as Request;
     return switch (response.statusCode) {
       // Client errors
@@ -25,7 +25,7 @@ class HttpException {
   }
 
   final Request request;
-  final Response response;
+  final BaseResponse response;
 
   /// The URL to which the request was sent.
   String get url => request.url.toString();
@@ -50,7 +50,7 @@ class HttpException {
 
   @override
   String toString() {
-    return 'HttpException{label: $statusLabel, status: $statusCode, url: $url, body: ${response.body}}';
+    return 'HttpException{label: $statusLabel, status: $statusCode, url: $url, body: ${response is Response ? (response as Response).body : ''}}';
   }
 }
 
@@ -75,7 +75,7 @@ extension RequestToJsonX on Request {
   }
 }
 
-extension ResponseToJsonX on Response {
+extension ResponseToJsonX on BaseResponse {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
       'status_code': statusCode,
@@ -85,11 +85,15 @@ extension ResponseToJsonX on Response {
       'persistent connection': persistentConnection,
       'headers': headers,
     };
-    try {
-      json['body'] = jsonDecode(body);
-    } catch (_) {
-      json['body'] = body;
+
+    if (this is Response) {
+      try {
+        json['body'] = jsonDecode((this as Response).body);
+      } catch (_) {
+        json['body'] = (this as Response).body;
+      }
     }
+
     return json;
   }
 }

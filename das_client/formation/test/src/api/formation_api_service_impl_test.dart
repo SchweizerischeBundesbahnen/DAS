@@ -122,12 +122,12 @@ void main() {
     const relativeUrl = '/transport-paper/redirect';
     const location = 'https://example.com/transport-paper.pdf';
 
-    when(mockHttpClient.get(any)).thenAnswer(
+    when(mockHttpClient.send(any)).thenAnswer(
       (_) => Future.value(
-        Response(
-          '',
+        StreamedResponse(
+          Stream.value(<int>[]),
           HttpStatus.movedTemporarily,
-          headers: {'Location': location},
+          headers: {'location': location},
           request: Request('get', Uri.parse(baseUrl)),
         ),
       ),
@@ -137,19 +137,19 @@ void main() {
     final result = await testee.transportPaper(relativeUrl).call();
 
     // VERIFY
-    expect(result.headers['Location'], location);
-    final captured = verify(mockHttpClient.get(captureAny)).captured.single as Uri;
-    expect(captured, Uri.https(baseUrl, relativeUrl));
+    expect(result.headers['location'], location);
+    final captured = verify(mockHttpClient.send(captureAny)).captured.single as Request;
+    expect(captured.url, Uri.parse('https://$baseUrl$relativeUrl'));
   });
 
   test('transportPaper_whenStatusIsNotRedirect_thenThrowHttpException', () async {
     // GIVEN
     const relativeUrl = '/transport-paper/invalid';
 
-    when(mockHttpClient.get(any)).thenAnswer(
+    when(mockHttpClient.send(any)).thenAnswer(
       (_) => Future.value(
-        Response(
-          '',
+        StreamedResponse(
+          Stream.value(<int>[]),
           HttpStatus.ok,
           request: Request('get', Uri.parse(baseUrl)),
         ),
