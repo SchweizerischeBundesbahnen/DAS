@@ -143,7 +143,7 @@ void main() {
 
   final formationWithTransportPaper = Formation(
     operationalTrainNumber: trainIdentification.trainNumber,
-    company: trainIdentification.ru.companyCode,
+    company: trainIdentification.companyCode,
     operationalDay: trainIdentification.operatingDay!,
     formationRuns: [
       formationRunWithTransportPaper,
