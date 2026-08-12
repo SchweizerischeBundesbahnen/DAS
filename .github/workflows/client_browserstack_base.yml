@@ -150,11 +150,11 @@ jobs:
 
       - name: Notify Microsoft Teams
         if: ${{ failure() && github.event_name == 'schedule' }}
-        uses: skitionek/notify-microsoft-teams@v1.3.0
+        uses: ./.github/actions/notify-teams-failure
         with:
           webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
+          job_key: android
+          steps_context: ${{ toJson(steps) }}
 
 
   ios:
@@ -259,8 +259,8 @@ jobs:
 
       - name: Notify Microsoft Teams
         if: ${{ failure() && github.event_name == 'schedule' }}
-        uses: skitionek/notify-microsoft-teams@v1.3.0
+        uses: ./.github/actions/notify-teams-failure
         with:
           webhook_url: ${{ steps.vault-secrets.outputs.NIGHTLY_FAILURE_CHANNEL_WEBHOOK }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
+          job_key: ios
+          steps_context: ${{ toJson(steps) }}
