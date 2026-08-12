@@ -4,6 +4,7 @@ import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
 import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
+import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/speed.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
@@ -115,12 +116,12 @@ void main() {
 
     test(
       'fromJourneyProfileContextInfoNsp_whenParametersIsEmpty_thenReturnNull',
-      () => expect(SpeedMapper.fromJourneyProfileContextInfoNsp(JpContextInformationNspDto(children: [])), isNull),
+      () => expect(SpeedMapper.fromJourneyProfileContextInfoNsp(VProDataNspDto(children: [])), isNull),
     );
 
     test('fromJourneyProfileContextInfoNsp_whenParameterIsNotNewSpeedNetworkSpecificParameterDto_thenReturnNull', () {
       // ARRANGE
-      final jpContextInfoNsp = JpContextInformationNspDto(
+      final jpContextInfoNsp = VProDataNspDto(
         children: [JpContextInformationNspDto(type: 'SomeOtherType')],
       );
 
@@ -132,7 +133,7 @@ void main() {
       'fromJourneyProfileContextInfoNsp_whenParameterIsNewSpeedNetworkSpecificParameterDto_thenReturnSingleSpeed',
       () {
         // ARRANGE
-        final jpContextInfoNsp = JpContextInformationNspDto(
+        final jpContextInfoNsp = VProDataNspDto(
           children: [
             NewSpeedNetworkSpecificParameterDto(attributes: {'name': 'newSpeed', 'value': '50'}),
           ],

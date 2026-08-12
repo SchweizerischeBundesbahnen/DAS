@@ -4,11 +4,10 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
-import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
+import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 import 'package:sfera/src/data/mapper/draft_advised_speed_segment.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
@@ -82,13 +81,10 @@ class SpeedMapper {
     return result;
   }
 
-  static SingleSpeed? fromJourneyProfileContextInfoNsp(JpContextInformationNspDto? jpContextInfoNsp) {
-    if (jpContextInfoNsp == null) return null;
+  static SingleSpeed? fromJourneyProfileContextInfoNsp(VProDataNspDto? vProDataNsp) {
+    if (vProDataNsp == null || vProDataNsp.newSpeed == null) return null;
 
-    final nsp = jpContextInfoNsp.parameters.firstOrNull;
-    if (nsp is! NewSpeedNetworkSpecificParameterDto) return null;
-
-    return SingleSpeed(value: nsp.speed);
+    return SingleSpeed(value: vProDataNsp.newSpeed!.speed);
   }
 
   /// Parse advised speed segments.

@@ -295,7 +295,7 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 5000);
   });
 
-  test('Test signals are parsed correctly', () async {
+  test('Test servicePoints are parsed correctly', () async {
     final journey = getJourney('T9999');
     final signals = journey.data.where((it) => it.dataType == .signal).cast<Signal>().toList();
 
@@ -2127,7 +2127,7 @@ void main() {
     expect(speedRestrictions[0].kmTo, 56.062);
   });
 
-  test('Test nsp signals', () async {
+  test('Test nsp servicePoints', () async {
     final journey = getJourney('T45');
     expect(journey.valid, true);
 
@@ -2158,6 +2158,20 @@ void main() {
 
     expect(nonStandardSegments.isInEtcsLevel2ConventionalSpeedSegment(ess3.order), isFalse);
     expect(nonStandardSegments.isInEtcsLevel2ExtendedSpeedSegment(ess3.order), isTrue);
+  });
+
+  test('Test fixed point relevance', () async {
+    final journey = getJourney('T51');
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(5));
+
+    expect(servicePoints[0].fixedPointRelevance, false);
+    expect(servicePoints[1].fixedPointRelevance, false);
+    expect(servicePoints[2].fixedPointRelevance, true);
+    expect(servicePoints[3].fixedPointRelevance, true);
+    expect(servicePoints[4].fixedPointRelevance, true);
   });
 }
 

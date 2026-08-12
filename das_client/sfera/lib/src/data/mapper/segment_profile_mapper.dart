@@ -169,6 +169,7 @@ class SegmentProfileMapper {
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
           locationCode: tafTapLocation.locationIdent.locationCode,
+          fixedPointRelevance: _isFixedPointRelevance(segmentProfileReference, timingPoint.location),
           lastModificationDate: tafTapLocation.lastModificationDate,
           lastModificationType: tafTapLocation.lastModificationType?.modificationType,
         ),
@@ -648,5 +649,13 @@ class SegmentProfileMapper {
         footNote: FootNote(text: text, type: .contact, refText: 'SIM'),
       );
     });
+  }
+
+  static bool _isFixedPointRelevance(SegmentProfileReferenceDto segmentProfileReference, double location) {
+    final vProNsp = segmentProfileReference.jpContextInformation?.vProData
+        .where((it) => it.constraint?.startLocation == location)
+        .firstOrNull;
+
+    return vProNsp?.fixedPointRelevance == true;
   }
 }
