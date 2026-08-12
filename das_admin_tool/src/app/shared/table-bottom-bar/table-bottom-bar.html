@@ -8,17 +8,16 @@
     }}</sbb-secondary-button>
     @if (showDelete()) {
       <sbb-transparent-button
-        i18n="@@button_delete_selected_entries"
         iconName="trash-small"
         [disabled]="deleteDisabled()"
         [loading]="deleting()"
         (click)="deleteClicked.emit()"
       >
-        {selectedCount(), plural,
+        <ng-container i18n="@@button_delete_selected_entries">{selectedCount(), plural,
           =0 {Einträge löschen}
           one {Eintrag löschen}
           other {{{ selectedCount() }} Einträge löschen}
-        }
+        }</ng-container>
       </sbb-transparent-button>
     }
   </div>

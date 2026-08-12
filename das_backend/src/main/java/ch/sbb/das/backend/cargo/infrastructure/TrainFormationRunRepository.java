@@ -5,11 +5,11 @@ import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TrainFormationRunRepository extends ListCrudRepository<TrainFormationRunEntity, Integer> {
+public interface TrainFormationRunRepository extends JpaRepository<TrainFormationRunEntity, Integer> {
 
     List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(String operationalTrainNumber, LocalDate operationalDay, CompanyCode company);
 

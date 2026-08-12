@@ -9,18 +9,21 @@
   <form [formGroup]="specialHolidayForm">
     <sbb-form-field errorSpace="reserve" class="full-width">
       <label for="name" i18n="@@special_holidays_form_name_label">Name des Feiertags</label>
-      <input formControlName="name" placeholder="z.B. Güdeismontag" required />
+      <input
+        formControlName="name"
+        i18n-placeholder="@@special_holidays_form_name_placeholder"
+        placeholder="z.B. Güdeismontag"
+        required
+      />
       @if (
         specialHolidayForm.get('name')?.touched
         && specialHolidayForm.get('name')?.hasError('required')
       ) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required"
-          >Feld darf nicht leer sein</sbb-error
-        >
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
 
-    <sbb-form-field errorSpace="reserve" class="full-width">
+    <sbb-form-field class="full-width" errorSpace="reserve">
       <label for="date" i18n="@@special_holidays_form_date_label">Gültig am</label>
       <sbb-datepicker-previous-day />
       <sbb-date-input formControlName="date" required [min]="minDate" />
@@ -31,9 +34,7 @@
         specialHolidayForm.get('date')?.touched
         && specialHolidayForm.get('date')?.hasError('required')
       ) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required"
-          >Feld darf nicht leer sein</sbb-error
-        >
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </sbb-form-field>
 
@@ -48,9 +49,7 @@
         specialHolidayForm.get('scheduleType')?.touched
         && specialHolidayForm.get('scheduleType')?.hasError('required')
       ) {
-        <sbb-error i18n="@@special_holidays_form_field_error_required"
-          >Feld darf nicht leer sein</sbb-error
-        >
+        <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
       }
     </div>
 

@@ -259,6 +259,7 @@ extension JourneyScopeExtension on GetIt {
         journeyPositionViewModel: DI.get(),
         journeySettingsViewModel: DI.get(),
         notificationViewModel: DI.get(),
+        launcher: DI.get(),
         detailModalViewModel: DI.get(),
         connectivityManager: DI.get(),
         checkForUpdates: true,

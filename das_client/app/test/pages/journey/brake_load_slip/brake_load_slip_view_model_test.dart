@@ -1,3 +1,4 @@
+import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -38,6 +39,7 @@ import 'brake_load_slip_view_model_test.mocks.dart';
   MockSpec<ConnectivityManager>(),
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
+  MockSpec<Launcher>(),
 ])
 void main() {
   late BrakeLoadSlipViewModel testee;
@@ -59,6 +61,7 @@ void main() {
   late BehaviorSubject<bool> connectivitySubject;
   late DASSounds mockDasSounds;
   late Sound mockSound;
+  late MockLauncher mockLauncher;
 
   final trainIdentification = TrainIdentification(
     companyCode: '2185',
@@ -125,6 +128,30 @@ void main() {
     ],
   );
 
+  final transportPaperLink = TransportPaperLink(
+    url: '/transport-paper/redirect',
+    type: .pdfRedirect,
+  );
+
+  final formationRunWithTransportPaper = _generateFormationRun(
+    'CH00001',
+    'CH00002',
+    trainCategoryCode: brakeSeries.trainSeries.name,
+    brakedWeightPercentage: brakeSeries.brakedWeightPercentage,
+    transportPaperLink: transportPaperLink,
+  );
+
+  final formationWithTransportPaper = Formation(
+    operationalTrainNumber: trainIdentification.trainNumber,
+    company: trainIdentification.ru.companyCode,
+    operationalDay: trainIdentification.operatingDay!,
+    formationRuns: [
+      formationRunWithTransportPaper,
+      formationRun2,
+      formationRun3,
+    ],
+  );
+
   BrakeLoadSlipViewModel createTestee({
     bool checkForUpdates = true,
     bool updateOnPositionUpdate = true,
@@ -135,6 +162,7 @@ void main() {
     journeyPositionViewModel: mockJourneyPositionViewModel,
     journeySettingsViewModel: mockJourneySettingsViewModel,
     notificationViewModel: mockNotificationViewModel,
+    launcher: mockLauncher,
     detailModalViewModel: mockDetailModalViewModel,
     connectivityManager: mockConnectivityManager,
     checkForUpdates: checkForUpdates,
@@ -152,6 +180,7 @@ void main() {
     mockStackRouter = MockStackRouter();
     mockStackRouterScope = MockStackRouterScope();
     mockConnectivityManager = MockConnectivityManager();
+    mockLauncher = MockLauncher();
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
@@ -563,6 +592,82 @@ void main() {
     verifyNever(mockDetailModalViewModel.open(any, maximize: false));
   });
 
+  test('showTransportPaperButton_whenTransportPaperLinkIsMissing_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    // VERIFY
+    expect(testee.showTransportPaperButton(), isFalse);
+  });
+
+  test('showTransportPaperButton_whenTransportPaperLinkExists_returnsTrue', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formationWithTransportPaper);
+
+    await processStreams();
+
+    // VERIFY
+    expect(testee.showTransportPaperButton(), isTrue);
+  });
+
+  test('openTransportPaper_whenTransportPaperLinkIsMissing_returnsFalse', () async {
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formation);
+
+    await processStreams();
+
+    // VERIFY
+    expect(await testee.openTransportPaper(), isFalse);
+    verifyNever(mockFormationRepository.resolveTransportPaperLink(any));
+    verifyNever(mockLauncher.launch(any));
+  });
+
+  test('openTransportPaper_whenTransportPaperLinkIsPresent_resolvesAndLaunchesUrl', () async {
+    // GIVEN
+    const resolvedUrl = 'https://example.com/transport-paper.pdf';
+
+    when(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).thenAnswer(
+      (_) => Future.value(resolvedUrl),
+    );
+    when(mockLauncher.launch(resolvedUrl)).thenAnswer((_) => Future.value(true));
+
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formationWithTransportPaper);
+
+    await processStreams();
+
+    final result = await testee.openTransportPaper();
+
+    // VERIFY
+    expect(result, isTrue);
+    verify(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).called(1);
+    verify(mockLauncher.launch(resolvedUrl)).called(1);
+  });
+
+  test('openTransportPaper_whenResolvedUrlIsNull_returnsFalse', () async {
+    // GIVEN
+    when(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).thenAnswer((_) => Future.value(null));
+
+    // ACT
+    journeySubject.add(journey);
+    formationSubject.add(formationWithTransportPaper);
+
+    await processStreams();
+
+    final result = await testee.openTransportPaper();
+
+    // VERIFY
+    expect(result, isFalse);
+    verify(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).called(1);
+    verifyNever(mockLauncher.launch(any));
+  });
+
   test('model_whenFormationChangesBeforeNotificationDelay_emitsFormationChangedWithoutSound', () async {
     // ACT
     journeySubject.add(journey);
@@ -659,6 +764,7 @@ FormationRun _generateFormationRun(
   String tafTapEnd, {
   String? trainCategoryCode,
   int? brakedWeightPercentage,
+  TransportPaperLink? transportPaperLink,
 }) {
   return FormationRun(
     inspectionDateTime: DateTime.now(),
@@ -688,6 +794,7 @@ FormationRun _generateFormationRun(
     gradientDownhillMaxInPermille: 0,
     trainCategoryCode: trainCategoryCode,
     brakedWeightPercentage: brakedWeightPercentage,
+    transportPaperLink: transportPaperLink,
   );
 }
 

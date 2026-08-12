@@ -14,6 +14,7 @@ import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
@@ -59,14 +60,14 @@ class _Content extends StatefulWidget {
   State<_Content> createState() => _ContentState();
 }
 
-class _ContentState extends State<_Content> with WidgetsBindingObserver {
+class _ContentState extends State<_Content> {
   late StreamSubscription<JourneySelectionModel?> _subscription;
   late StreamSubscription<AppExpirationModel> _appExpirationSubscription;
+  late StreamSubscription<void> _onResumedSubscription;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
 
     final viewModel = context.read<JourneySelectionViewModel>();
     _subscription = viewModel.model.listen((model) {
@@ -96,6 +97,12 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BrightnessModalSheet.openIfNeeded(context);
     });
+
+    _onResumedSubscription = DI.get<AppLifecycleViewModel>().onResumed.listen((_) {
+      if (mounted) {
+        context.read<JourneySelectionViewModel>().refreshDatesIfDayChanged();
+      }
+    });
   }
 
   @override
@@ -121,20 +128,10 @@ class _ContentState extends State<_Content> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _subscription.cancel();
     _appExpirationSubscription.cancel();
+    _onResumedSubscription.cancel();
     super.dispose();
-  }
-
-  // TODO: use the AppLifecycleViewModel instead
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      if (mounted) {
-        context.read<JourneySelectionViewModel>().refreshDatesIfDayChanged();
-      }
-    }
   }
 
   Widget _header(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:formation/src/api/converter/local_data_time_converter.dart';
+import 'package:formation/src/model/transport_paper_link.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'formation_run.g.dart';
@@ -45,6 +46,7 @@ class FormationRun {
     this.europeanVehicleNumberLast,
     this.routeClass,
     this.slopeMaxForHoldingForceMinInPermille,
+    this.transportPaperLink,
   });
 
   factory FormationRun.fromJson(Map<String, dynamic> json) {
@@ -90,6 +92,7 @@ class FormationRun {
   final int gradientUphillMaxInPermille;
   final int gradientDownhillMaxInPermille;
   final String? slopeMaxForHoldingForceMinInPermille;
+  final TransportPaperLink? transportPaperLink;
 
   Map<String, dynamic> toJson() => _$FormationRunToJson(this);
 
@@ -135,7 +138,8 @@ class FormationRun {
           routeClass == other.routeClass &&
           gradientUphillMaxInPermille == other.gradientUphillMaxInPermille &&
           gradientDownhillMaxInPermille == other.gradientDownhillMaxInPermille &&
-          slopeMaxForHoldingForceMinInPermille == other.slopeMaxForHoldingForceMinInPermille;
+          slopeMaxForHoldingForceMinInPermille == other.slopeMaxForHoldingForceMinInPermille &&
+          transportPaperLink == other.transportPaperLink;
 
   @override
   int get hashCode => Object.hashAll([
@@ -177,6 +181,7 @@ class FormationRun {
     gradientUphillMaxInPermille,
     gradientDownhillMaxInPermille,
     slopeMaxForHoldingForceMinInPermille,
+    transportPaperLink,
   ]);
 
   @override
@@ -218,7 +223,8 @@ class FormationRun {
         'routeClass: $routeClass, '
         'gradientUphillMaxInPermille: $gradientUphillMaxInPermille, '
         'gradientDownhillMaxInPermille: $gradientDownhillMaxInPermille, '
-        'slopeMaxForHoldingForceMinInPermille: $slopeMaxForHoldingForceMinInPermille,}';
+        'slopeMaxForHoldingForceMinInPermille: $slopeMaxForHoldingForceMinInPermille, '
+        'transportPaperLink: $transportPaperLink,}';
   }
 }
 

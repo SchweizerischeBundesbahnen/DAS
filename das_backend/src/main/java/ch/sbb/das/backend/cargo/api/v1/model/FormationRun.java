@@ -95,11 +95,6 @@ public record FormationRun(
     @Schema(description = "Total number of vehicles (without traction unit(s)) in the formation.", requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesCount,
 
-    // todo: delete as soon as das_client v 0.49.0 released
-    @Deprecated(forRemoval = true)
-    @Schema(description = "Deprecated: Use vehiclesWithBrakeDesignLAndLlAndKCount. Number of vehicles in the formation whose brake block design is L, LL or K.", requiredMode = RequiredMode.REQUIRED, deprecated = true)
-    Integer vehiclesWithBrakeDesignLlAndKCount,
-
     @Schema(description = "Number of vehicles in the formation whose brake block design is L, LL or K.", requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignLAndLlAndKCount,
 

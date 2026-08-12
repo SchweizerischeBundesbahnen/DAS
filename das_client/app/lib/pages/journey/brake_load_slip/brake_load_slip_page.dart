@@ -41,6 +41,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             settingsRepository: DI.get(),
             notificationViewModel: DI.get(),
             formationRepository: DI.get(),
+            launcher: DI.get(),
             journeySettingsViewModel: settingsVM,
             updateOnPositionUpdate: false,
           );
@@ -90,7 +91,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.medium),
-                    child: _content(formation, formationRunChange),
+                    child: _content(context, formation, formationRunChange),
                   ),
                 ),
               ],
@@ -102,7 +103,9 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Widget _content(Formation formation, FormationRunChange formationRunChange) {
+  Widget _content(BuildContext context, Formation formation, FormationRunChange formationRunChange) {
+    final viewModel = context.read<BrakeLoadSlipViewModel>();
+
     return Row(
       crossAxisAlignment: .start,
       spacing: SBBSpacing.medium,
@@ -117,7 +120,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
                 formation: formation,
                 formationRunChange: formationRunChange,
               ),
-              BrakeLoadSlipOpenTransportDocumentsButton(),
+              if (viewModel.showTransportPaperButton()) BrakeLoadSlipOpenTransportDocumentsButton(),
             ],
           ),
         ),

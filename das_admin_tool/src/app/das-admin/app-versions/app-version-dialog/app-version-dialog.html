@@ -12,9 +12,7 @@
       <input formControlName="version" placeholder="0.0.0" required />
       @if (versionForm.touched) {
         @if (versionForm.get('version')?.hasError('required')) {
-          <sbb-error i18n="@@app_versions_form_version_error_required"
-            >Feld darf nicht leer sein</sbb-error
-          >
+          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
         }
         @if (versionForm.get('version')?.hasError('pattern')) {
           <sbb-error i18n="@@app_versions_form_version_error_pattern"

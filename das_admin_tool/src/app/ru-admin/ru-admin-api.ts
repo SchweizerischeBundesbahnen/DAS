@@ -114,7 +114,10 @@ export type RuFeatureKey =
   | 'DISPLAY_PLANNED_TIME_DEVIATION';
 
 export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[] => [
-  { value: 'WARNAPP', label: $localize`:@@ru_feature_toggles_key_label_warnapp:WarnApp` },
+  {
+    value: 'WARNAPP',
+    label: $localize`:@@ru_feature_toggles_key_label_warnapp:Warnfunktion geschlossenes Signal`,
+  },
   {
     value: 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS',
     label: $localize`:@@ru_feature_toggles_key_label_customer_oriented_departure_process:Kundenorientierter Abfahrprozess (KoA)`,

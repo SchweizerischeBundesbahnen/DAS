@@ -12,7 +12,11 @@
       <label for="trainNumber" i18n="@@ru_indications_form_train_number_input_label"
         >Zugnummer</label
       >
-      <input formControlName="trainNumber" placeholder="z.B. 1-6, 300-400" />
+      <input
+        formControlName="trainNumber"
+        i18n-placeholder="@@ru_indication_form_train_number_placeholder"
+        placeholder="z.B. 1-6, 300-400"
+      />
       <sbb-mini-button
         i18n-sbb-tooltip="@@ru_indication_form_train_number_tooltip"
         iconName="circle-information-small"
