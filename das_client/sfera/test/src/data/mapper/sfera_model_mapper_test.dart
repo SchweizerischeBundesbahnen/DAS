@@ -2167,11 +2167,11 @@ void main() {
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
     expect(servicePoints, hasLength(5));
 
-    expect(servicePoints[0].fixedPointRelevance, false);
-    expect(servicePoints[1].fixedPointRelevance, false);
-    expect(servicePoints[2].fixedPointRelevance, true);
-    expect(servicePoints[3].fixedPointRelevance, true);
-    expect(servicePoints[4].fixedPointRelevance, true);
+    expect(servicePoints[0].arrivalDepartureTime?.fixedPointRelevance, false);
+    expect(servicePoints[1].arrivalDepartureTime?.fixedPointRelevance, false);
+    expect(servicePoints[2].arrivalDepartureTime?.fixedPointRelevance, true);
+    expect(servicePoints[3].arrivalDepartureTime?.fixedPointRelevance, true);
+    expect(servicePoints[4].arrivalDepartureTime?.fixedPointRelevance, true);
   });
 }
 

@@ -81,7 +81,7 @@ class SpeedMapper {
     return result;
   }
 
-  static SingleSpeed? fromJourneyProfileContextInfoNsp(VProDataNspDto? vProDataNsp) {
+  static SingleSpeed? fromVProDataNsp(VProDataNspDto? vProDataNsp) {
     if (vProDataNsp == null || vProDataNsp.newSpeed == null) return null;
 
     return SingleSpeed(value: vProDataNsp.newSpeed!.speed);

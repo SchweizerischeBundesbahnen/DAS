@@ -17,7 +17,6 @@ class TimeCellBody extends StatelessWidget {
     required this.viewModel,
     required this.showTimesInBrackets,
     required this.mandatoryStop,
-    required this.fixedPointRelevance,
     this.times,
     this.fontColor,
     super.key,
@@ -27,7 +26,6 @@ class TimeCellBody extends StatelessWidget {
   final ArrivalDepartureTimeViewModel viewModel;
   final bool showTimesInBrackets;
   final bool mandatoryStop;
-  final bool fixedPointRelevance;
   final Color? fontColor;
 
   @override
@@ -100,6 +98,8 @@ class TimeCellBody extends StatelessWidget {
   }
 
   Widget _additionalIcon(BuildContext context) {
+    final fixedPointRelevance = times?.fixedPointRelevance == true;
+
     if (!mandatoryStop && fixedPointRelevance) {
       return Column(
         mainAxisSize: .min,

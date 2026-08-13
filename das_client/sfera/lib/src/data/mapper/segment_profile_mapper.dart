@@ -161,7 +161,7 @@ class SegmentProfileMapper {
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
-          arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
+          arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint, segmentProfileReference, timingPoint.location),
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
           trackGroup: tafTapLocation.routeTableDataNsp?.trackGroup,
@@ -169,7 +169,6 @@ class SegmentProfileMapper {
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
           locationCode: tafTapLocation.locationIdent.locationCode,
-          fixedPointRelevance: _isFixedPointRelevance(segmentProfileReference, timingPoint.location),
           lastModificationDate: tafTapLocation.lastModificationDate,
           lastModificationType: tafTapLocation.lastModificationType?.modificationType,
         ),
@@ -577,7 +576,11 @@ class SegmentProfileMapper {
     return DecisiveGradient(uphill: uphill, downhill: downhill);
   }
 
-  static ArrivalDepartureTime? _parseArrivalDepartureTime(TimingPointConstraintsDto timingPointConstraint) {
+  static ArrivalDepartureTime? _parseArrivalDepartureTime(
+    TimingPointConstraintsDto timingPointConstraint,
+    SegmentProfileReferenceDto segmentProfileReference,
+    double location,
+  ) {
     final departureDetails = timingPointConstraint.stoppingPointDepartureDetails;
     final operationalArrivalTime = timingPointConstraint.latestArrivalTime;
     final plannedArrivalTime = timingPointConstraint.plannedLatestArrivalTime;
@@ -589,6 +592,7 @@ class SegmentProfileMapper {
       ambiguousArrivalTime: operationalArrivalTime,
       plannedArrivalTime: plannedArrivalTime,
       plannedReleasedTime: timingPointConstraint.plannedReleasedTime,
+      fixedPointRelevance: _isFixedPointRelevance(segmentProfileReference, location),
     );
   }
 

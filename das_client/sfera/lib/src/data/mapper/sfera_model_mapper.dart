@@ -683,7 +683,7 @@ class SferaModelMapper {
     journeyProfile.segmentProfileReferences.forEachIndexed((index, segmentProfileReference) {
       final vProDataNsps = segmentProfileReference.jpContextInformation?.vProData ?? [];
       for (final vProDataNsp in vProDataNsps) {
-        final speedData = SpeedMapper.fromJourneyProfileContextInfoNsp(vProDataNsp);
+        final speedData = SpeedMapper.fromVProDataNsp(vProDataNsp);
         if (speedData != null && vProDataNsp.constraint?.startLocation != null) {
           result[calculateOrder(index, vProDataNsp.constraint!.startLocation!)] = speedData;
         }

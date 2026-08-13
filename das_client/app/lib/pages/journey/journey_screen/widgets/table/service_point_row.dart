@@ -182,7 +182,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           showTimesInBrackets: !data.isStop,
           mandatoryStop: data.mandatoryStop,
           fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
-          fixedPointRelevance: data.fixedPointRelevance,
         ),
         alignment: .bottomLeft,
         decoration: DASTableCellDecoration(color: specialCellColor),

@@ -9,6 +9,7 @@ class ArrivalDepartureTime {
     this._ambiguousArrivalTime,
     this._plannedArrivalTime,
     this.plannedReleasedTime,
+    this.fixedPointRelevance = false,
   });
 
   /// these are private since the logic of figuring out whether a time is planned or operational from the
@@ -19,6 +20,8 @@ class ArrivalDepartureTime {
   final DateTime? _plannedArrivalTime;
 
   final DateTime? plannedReleasedTime;
+
+  final bool fixedPointRelevance;
 
   bool get hasAnyTime =>
       operationalArrivalTime != null ||
