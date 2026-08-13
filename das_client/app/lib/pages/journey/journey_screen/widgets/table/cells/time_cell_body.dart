@@ -79,9 +79,9 @@ class TimeCellBody extends StatelessWidget {
             ],
           ),
         );
-        if (mandatoryStop) return timeTexts;
+
         if (!mandatoryStop && departureTime.isEmpty && arrivalTime.isEmpty) {
-          return Align(alignment: .centerRight, child: _mandatoryStopIcon(context));
+          return Align(alignment: .centerRight, child: _stopOnRequestIcon(context));
         }
 
         return Row(
@@ -90,14 +90,54 @@ class TimeCellBody extends StatelessWidget {
           spacing: SBBSpacing.xxSmall,
           children: [
             timeTexts,
-            Align(alignment: .topRight, child: _mandatoryStopIcon(context)),
+            Align(alignment: .topRight, child: _additionalIcon(context)),
           ],
         );
       },
     );
   }
 
-  SvgPicture _mandatoryStopIcon(BuildContext context) {
+  Widget _additionalIcon(BuildContext context) {
+    final fixedPointRelevance = times?.fixedPointRelevance == true;
+
+    if (!mandatoryStop && fixedPointRelevance) {
+      return Column(
+        mainAxisSize: .min,
+        children: [
+          _fixedPointRelevanceStopOnRequestIcon(context),
+          _stopOnRequestIcon(context),
+        ],
+      );
+    } else if (!mandatoryStop) {
+      return _stopOnRequestIcon(context);
+    } else if (fixedPointRelevance) {
+      return _fixedPointRelevanceIcon(context);
+    }
+
+    return SizedBox.shrink();
+  }
+
+  Widget _fixedPointRelevanceStopOnRequestIcon(BuildContext context) =>
+      _fixedPointRelevanceBase(context, AppAssets.iconFixedPointRelevanceStopOnRequest);
+
+  Widget _fixedPointRelevanceIcon(BuildContext context) =>
+      _fixedPointRelevanceBase(context, AppAssets.iconFixedPointRelevance);
+
+  Widget _fixedPointRelevanceBase(BuildContext context, String icon) {
+    return Padding(
+      padding: const EdgeInsets.only(top: SBBSpacing.xxSmall),
+      child: SvgPicture.asset(
+        icon,
+        key: ServicePointRow.fixedPointRelevanceKey,
+        colorFilter: ColorFilter.mode(
+          fontColor ?? ThemeUtil.getIconSecondaryColor(context),
+          BlendMode.srcIn,
+        ),
+      ),
+    );
+  }
+
+  Widget _stopOnRequestIcon(BuildContext context) {
     return SvgPicture.asset(
       AppAssets.iconStopOnRequest,
       key: ServicePointRow.stopOnRequestKey,

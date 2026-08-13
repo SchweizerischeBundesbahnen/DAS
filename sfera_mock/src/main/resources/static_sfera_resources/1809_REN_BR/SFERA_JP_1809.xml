@@ -30,7 +30,7 @@
             <!-- VPro for Renens_VD -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -54,7 +54,7 @@
             <!-- VPro for Prilly_Malley -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -78,7 +78,7 @@
             <!-- VPro for Lausanne -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -101,7 +101,7 @@
             <!-- VPro for Pully -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -124,7 +124,7 @@
             <!-- VPro for Taillepied -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -147,7 +147,7 @@
             <!-- VPro for Lutry -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -170,7 +170,7 @@
             <!-- VPro for Villette_VD -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -193,7 +193,7 @@
             <!-- VPro for Cully -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -216,7 +216,7 @@
             <!-- VPro for Epesses -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -239,7 +239,7 @@
             <!-- VPro for En_Grillon -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -262,7 +262,7 @@
             <!-- VPro for Rivaz -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -285,7 +285,7 @@
             <!-- VPro for St_Saphorin -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -309,7 +309,7 @@
             <!-- VPro for Vevey -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -332,7 +332,7 @@
             <!-- VPro for La_Tour_de_Peilz -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -355,7 +355,7 @@
             <!-- VPro for Burier -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -378,7 +378,7 @@
             <!-- VPro for Tunnel_des_Cretes -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -401,7 +401,7 @@
             <!-- VPro for Clarens -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -436,7 +436,7 @@
             <!-- VPro for Vernex -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -471,7 +471,7 @@
             <!-- VPro for Montreux -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -494,7 +494,7 @@
             <!-- VPro for Territet -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -517,7 +517,7 @@
             <!-- VPro for Veytaux_Chillon -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -540,7 +540,7 @@
             <!-- VPro for Villeneuve -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="130"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -563,7 +563,7 @@
             <!-- VPro for Roche_VD -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -587,7 +587,7 @@
             <!-- VPro for Aigle -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -610,7 +610,7 @@
             <!-- VPro for St_Triphon -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -633,7 +633,7 @@
             <!-- VPro for Bex -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="105"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -657,7 +657,7 @@
             <!-- VPro for St_Maurice -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -680,7 +680,7 @@
             <!-- VPro for Evionnaz -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -703,7 +703,7 @@
             <!-- VPro for Vernayaz -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -727,7 +727,7 @@
             <!-- VPro for Martigny -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -750,7 +750,7 @@
             <!-- VPro for Charrat_Fully -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -773,7 +773,7 @@
             <!-- VPro for Saxon -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -796,7 +796,7 @@
             <!-- VPro for Riddes -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -819,7 +819,7 @@
             <!-- VPro for Chamoson -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -842,7 +842,7 @@
             <!-- VPro for Ardon -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -865,7 +865,7 @@
             <!-- VPro for Chateauneuf_Conthey -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="140"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -889,7 +889,7 @@
             <!-- VPro for Sion -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -912,7 +912,7 @@
             <!-- VPro for St_Leonard -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -935,7 +935,7 @@
             <!-- VPro for Pramont -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -959,7 +959,7 @@
             <!-- VPro for Sierre_Siders -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -982,7 +982,7 @@
             <!-- VPro for Salgesch -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1023,7 +1023,7 @@
             <!-- VPro for Leuk -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1046,7 +1046,7 @@
             <!-- VPro for Turtmann -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="155"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1069,7 +1069,7 @@
             <!-- VPro for Gampel_Steg -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1092,7 +1092,7 @@
             <!-- VPro for Raron -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1116,7 +1116,7 @@
             <!-- VPro for Visp -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="125"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -1139,7 +1139,7 @@
             <!-- VPro for Gamsen -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="140"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>

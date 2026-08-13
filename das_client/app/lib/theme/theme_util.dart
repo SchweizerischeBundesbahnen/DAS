@@ -10,6 +10,8 @@ class ThemeUtil {
 
   static Color getIconColor(BuildContext context) => Theme.of(context).sbbBaseStyle.colorScheme.iconPrimary!;
 
+  static Color getIconSecondaryColor(BuildContext context) => Theme.of(context).sbbBaseStyle.colorScheme.iconSecondary!;
+
   static Color getDASTableColor(BuildContext context) => getColor(context, SBBColors.white, SBBColors.charcoal);
 
   static Color getDASTableBorderColor(BuildContext context) => getColor(context, SBBColors.cloud, SBBColors.iron);

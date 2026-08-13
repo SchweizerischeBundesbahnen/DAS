@@ -681,11 +681,11 @@ class SferaModelMapper {
     }
 
     journeyProfile.segmentProfileReferences.forEachIndexed((index, segmentProfileReference) {
-      final contextInformationNsps = segmentProfileReference.jpContextInformation?.contextInformationNsp ?? [];
-      for (final contextInformation in contextInformationNsps) {
-        final speedData = SpeedMapper.fromJourneyProfileContextInfoNsp(contextInformation);
-        if (speedData != null && contextInformation.constraint?.startLocation != null) {
-          result[calculateOrder(index, contextInformation.constraint!.startLocation!)] = speedData;
+      final vProDataNsps = segmentProfileReference.jpContextInformation?.vProData ?? [];
+      for (final vProDataNsp in vProDataNsps) {
+        final speedData = SpeedMapper.fromVProDataNsp(vProDataNsp);
+        if (speedData != null && vProDataNsp.constraint?.startLocation != null) {
+          result[calculateOrder(index, vProDataNsp.constraint!.startLocation!)] = speedData;
         }
       }
     });

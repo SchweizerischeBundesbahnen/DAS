@@ -4,6 +4,7 @@ import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
 import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
+import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/speed.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
@@ -109,37 +110,37 @@ void main() {
     });
 
     test(
-      'fromJourneyProfileContextInfoNsp_whenJpContextInfoNspIsNull_thenReturnNull',
-      () => expect(SpeedMapper.fromJourneyProfileContextInfoNsp(null), isNull),
+      'fromVProDataNsp_whenJpContextInfoNspIsNull_thenReturnNull',
+      () => expect(SpeedMapper.fromVProDataNsp(null), isNull),
     );
 
     test(
-      'fromJourneyProfileContextInfoNsp_whenParametersIsEmpty_thenReturnNull',
-      () => expect(SpeedMapper.fromJourneyProfileContextInfoNsp(JpContextInformationNspDto(children: [])), isNull),
+      'fromVProDataNsp_whenParametersIsEmpty_thenReturnNull',
+      () => expect(SpeedMapper.fromVProDataNsp(VProDataNspDto(children: [])), isNull),
     );
 
-    test('fromJourneyProfileContextInfoNsp_whenParameterIsNotNewSpeedNetworkSpecificParameterDto_thenReturnNull', () {
+    test('fromVProDataNsp_whenParameterIsNotNewSpeedNetworkSpecificParameterDto_thenReturnNull', () {
       // ARRANGE
-      final jpContextInfoNsp = JpContextInformationNspDto(
+      final vProDataNsp = VProDataNspDto(
         children: [JpContextInformationNspDto(type: 'SomeOtherType')],
       );
 
       // ACT & EXPECT
-      expect(SpeedMapper.fromJourneyProfileContextInfoNsp(jpContextInfoNsp), isNull);
+      expect(SpeedMapper.fromVProDataNsp(vProDataNsp), isNull);
     });
 
     test(
       'fromJourneyProfileContextInfoNsp_whenParameterIsNewSpeedNetworkSpecificParameterDto_thenReturnSingleSpeed',
       () {
         // ARRANGE
-        final jpContextInfoNsp = JpContextInformationNspDto(
+        final vProDataNsp = VProDataNspDto(
           children: [
             NewSpeedNetworkSpecificParameterDto(attributes: {'name': 'newSpeed', 'value': '50'}),
           ],
         );
 
         // ACT
-        final result = SpeedMapper.fromJourneyProfileContextInfoNsp(jpContextInfoNsp);
+        final result = SpeedMapper.fromVProDataNsp(vProDataNsp);
 
         // EXPECT
         expect(result, isNotNull);

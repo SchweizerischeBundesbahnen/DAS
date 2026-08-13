@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,29 @@ import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  testWidgets('timeCell_whenFixedPointRelevance_displayCorrectIcons|3lGb8LE756LixsOVIyG8|tests:1201', (tester) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T51');
+
+    final geneveRow = findDASTableRowByText('Genève');
+    expect(find.descendant(of: geneveRow, matching: find.byKey(ServicePointRow.fixedPointRelevanceKey)), findsNothing);
+    expect(find.descendant(of: geneveRow, matching: find.byKey(ServicePointRow.stopOnRequestKey)), findsNothing);
+
+    final nyonRow = findDASTableRowByText('Nyon');
+    expect(find.descendant(of: nyonRow, matching: find.byKey(ServicePointRow.fixedPointRelevanceKey)), findsOne);
+    expect(find.descendant(of: nyonRow, matching: find.byKey(ServicePointRow.stopOnRequestKey)), findsNothing);
+
+    final morgesRow = findDASTableRowByText('Morges');
+    expect(find.descendant(of: morgesRow, matching: find.byKey(ServicePointRow.fixedPointRelevanceKey)), findsOne);
+    expect(find.descendant(of: morgesRow, matching: find.byKey(ServicePointRow.stopOnRequestKey)), findsOne);
+
+    final lausanneRow = findDASTableRowByText('Lausanne');
+    expect(find.descendant(of: lausanneRow, matching: find.byKey(ServicePointRow.fixedPointRelevanceKey)), findsOne);
+    expect(find.descendant(of: lausanneRow, matching: find.byKey(ServicePointRow.stopOnRequestKey)), findsNothing);
+
+    await disconnect(tester);
+  });
+
   testWidgets('timeCell_whenFarFutureJourney_thenShowsPlannedTimesOnly|8vwuVlLyxynaCMpOv6jx|tests:84', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T4');

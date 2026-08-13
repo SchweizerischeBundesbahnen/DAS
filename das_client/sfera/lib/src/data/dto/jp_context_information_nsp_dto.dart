@@ -4,6 +4,7 @@ import 'package:sfera/src/data/dto/non_standard_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 
 class JpContextInformationNspDto extends NspDto {
   static const String elementType = 'JP_ContextInformation_NSPs';
@@ -22,6 +23,8 @@ class JpContextInformationNspDto extends NspDto {
       return KilometreReferencePointNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == NonStandardIndicationNspDto.groupNameValue) {
       return NonStandardIndicationNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == VProDataNspDto.groupNameValue) {
+      return VProDataNspDto(attributes: attributes, children: children, value: value);
     }
     return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
   }

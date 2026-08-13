@@ -33,6 +33,7 @@ import 'package:sfera/component.dart';
 
 class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');
+  static const Key fixedPointRelevanceKey = Key('fixedPointRelevance');
   static const Key reducedSpeedKey = Key('reducedSpeed');
 
   static const double baseRowHeight = 64.0;

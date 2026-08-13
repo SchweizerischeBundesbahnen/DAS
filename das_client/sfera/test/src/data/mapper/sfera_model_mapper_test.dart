@@ -2159,6 +2159,20 @@ void main() {
     expect(nonStandardSegments.isInEtcsLevel2ConventionalSpeedSegment(ess3.order), isFalse);
     expect(nonStandardSegments.isInEtcsLevel2ExtendedSpeedSegment(ess3.order), isTrue);
   });
+
+  test('Test fixed point relevance', () async {
+    final journey = getJourney('T51');
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(5));
+
+    expect(servicePoints[0].arrivalDepartureTime?.fixedPointRelevance, false);
+    expect(servicePoints[1].arrivalDepartureTime?.fixedPointRelevance, false);
+    expect(servicePoints[2].arrivalDepartureTime?.fixedPointRelevance, true);
+    expect(servicePoints[3].arrivalDepartureTime?.fixedPointRelevance, true);
+    expect(servicePoints[4].arrivalDepartureTime?.fixedPointRelevance, true);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

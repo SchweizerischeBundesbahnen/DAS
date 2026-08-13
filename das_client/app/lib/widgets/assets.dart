@@ -47,6 +47,8 @@ class AppAssets {
   static const iconTabIndicatorExclamationTurquoise = '$_iconsDir/icon_tab_indicator_exclamation_turquoise.svg';
   static const iconUturnTurquoise = '$_iconsDir/icon_uturn_turquoise.svg';
   static const iconTrainDriverTurnover = '$_iconsDir/icon_train_driver_turnover.svg';
+  static const iconFixedPointRelevance = '$_iconsDir/icon_fixed_point_relevance.svg';
+  static const iconFixedPointRelevanceStopOnRequest = '$_iconsDir/icon_fixed_point_relevance_stop_on_request.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

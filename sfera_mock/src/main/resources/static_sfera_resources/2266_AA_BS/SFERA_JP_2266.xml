@@ -30,7 +30,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="110"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -52,7 +52,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -74,7 +74,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -96,7 +96,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -118,7 +118,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -172,7 +172,7 @@
             <!--Olten -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="90"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -180,7 +180,7 @@
             <!--Tecknau -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="115"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="12000" endLocation="12000"/>
             </JP_ContextInformation_NSPs>
@@ -188,7 +188,7 @@
             <!--Gelterkinden-->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="14000" endLocation="14000"/>
             </JP_ContextInformation_NSPs>
@@ -196,7 +196,7 @@
             <!--Sissach-->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="16000" endLocation="16000"/>
             </JP_ContextInformation_NSPs>
@@ -233,7 +233,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -270,7 +270,7 @@
 
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -310,7 +310,7 @@
             <!-- Listal -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
@@ -318,7 +318,7 @@
             <!-- Muttenz -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="80"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000"/>
             </JP_ContextInformation_NSPs>

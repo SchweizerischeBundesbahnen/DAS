@@ -416,7 +416,7 @@ class JourneyTable extends StatelessWidget {
                   : context.l10n.p_journey_table_time_label_planned,
             ),
           ),
-          width: 110.0,
+          width: 111.0,
           onTap: () {
             final viewModel = context.read<ArrivalDepartureTimeViewModel>();
             viewModel.toggleOperationalTime();
