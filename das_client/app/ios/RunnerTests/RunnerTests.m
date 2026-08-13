@@ -44,7 +44,6 @@
       [self addAttachment:attachment];
   }];
 
-  INTEGRATION_TEST_IOS_RUNNER(RunnerTests)
   if (!allTestsPassed) {
     XCTFail(@"Flutter integration test failures:\n%@", [failures componentsJoinedByString:@"\n"]);
   }
