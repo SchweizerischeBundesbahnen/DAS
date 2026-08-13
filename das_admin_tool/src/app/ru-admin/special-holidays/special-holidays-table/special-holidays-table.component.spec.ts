@@ -160,7 +160,7 @@ describe('SpecialHolidaysTable', () => {
       comp['selection'].select(holidays[0]);
 
       await comp['deleteSelected']().catch(() => {
-        /* expected */
+        // expected
       });
       expect(comp['isDeleting']).toBe(false);
     });
