@@ -53,6 +53,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1900" endLocation="1900"/>
             </JP_ContextInformation_NSPs>
