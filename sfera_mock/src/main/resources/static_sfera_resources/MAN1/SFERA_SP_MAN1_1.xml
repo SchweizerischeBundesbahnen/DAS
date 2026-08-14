@@ -7,7 +7,7 @@
 
     <SP_Points>
 
-        <TimingPoint TP_ID="Bern" location="0">
+        <TimingPoint TP_ID="BP1" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>7000</teltsi_LocationPrimaryCode>
@@ -21,39 +21,27 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="G25" location="1000"/>
-            <SignalFunction>exit</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="G25"/>
+            <Signal_ID signal_ID_Physical="S1" location="1000"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S1"/>
         </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="R604" location="2100"/>
-            <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="R604"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="K556" location="2900"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="K556"/>
-        </Signal>
-
 
     </SP_Points>
 
     <SP_Areas>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SCHL" TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="BP1" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>3509</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Schlieren</teltsi_PrimaryLocationName>
+                <teltsi_LocationPrimaryCode>7000</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>BP1</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
             <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
+                <teltsi_Company>1285</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
-                <NetworkSpecificParameter name="departureAuth" value="false"/>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText" value="AE-BP1"/>
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
@@ -74,16 +62,7 @@
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="7.4"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="1000">
-            <KM_Reference kmRef="6.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="2100">
-            <KM_Reference kmRef="5.4"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="2900">
-            <KM_Reference kmRef="4.6"/>
-        </KilometreReferencePoint>
-
+        
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
