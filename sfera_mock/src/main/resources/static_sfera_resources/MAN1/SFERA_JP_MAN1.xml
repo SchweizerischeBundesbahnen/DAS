@@ -22,7 +22,7 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T06:59:00Z" plannedDepartureTime="2025-05-17T06:59:00Z"/>
         </TimingPointConstraints>
 
-        <TrainCharacteristicsRef TC_ID="MAN1_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+        <TrainCharacteristicsRef TC_ID="MAN1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
