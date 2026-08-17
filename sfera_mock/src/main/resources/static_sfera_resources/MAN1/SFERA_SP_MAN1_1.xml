@@ -62,6 +62,9 @@
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="7.4"/>
         </KilometreReferencePoint>
+                <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="6.4"/>
+        </KilometreReferencePoint>
         
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>

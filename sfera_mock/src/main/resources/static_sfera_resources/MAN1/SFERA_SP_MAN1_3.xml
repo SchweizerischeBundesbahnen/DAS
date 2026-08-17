@@ -49,6 +49,9 @@
             </Contact>
         </ContactList>
 
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="7.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="2900">
             <KM_Reference kmRef="4.6"/>
         </KilometreReferencePoint>

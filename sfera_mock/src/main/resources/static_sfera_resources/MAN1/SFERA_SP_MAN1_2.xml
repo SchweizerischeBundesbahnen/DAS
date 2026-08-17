@@ -50,6 +50,9 @@
             </Contact>
         </ContactList>
 
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="8.0"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="2100">
             <KM_Reference kmRef="5.4"/>
         </KilometreReferencePoint>
