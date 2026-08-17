@@ -73,7 +73,7 @@ runs:
                         "type": "Column",
                         "width": "auto",
                         "items": [
-                          { type: "TextBlock", size: "Medium", weight: "Bolder", color: "Attention", text: $title, wrap: true },
+                          { type: "TextBlock", size: "Medium", weight: "Bolder", color: "Attention", text: $title, wrap: true }
                         ]
                       }
                     ]
