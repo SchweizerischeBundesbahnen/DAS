@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="MAN3_1"
+                SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3300" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="BP1" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <NetworkSpecificPoint location="100" identifier="2">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 2 A Missing&quot; comment=&quot;Kurve 2 A Missing comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;100&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="150" identifier="2">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="200" identifier="3">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 2 A Missing&quot; comment=&quot;Kurve 2 A Missing comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;90&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="250" identifier="3">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="300" identifier="4">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 2 A Missing&quot; comment=&quot;Kurve 2 A Missing comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;80&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="350" identifier="4">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="400" identifier="5">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 2 A Missing&quot; comment=&quot;Kurve 2 A Missing comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;70&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="450" identifier="5">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="BP1" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0001</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>BP1</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1307"/>
+            </Contact>
+        </ContactList>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="7.5"/>
+        </KilometreReferencePoint>
+        
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="7.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="150">
+            <KM_Reference kmRef="7.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="6.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="250">
+            <KM_Reference kmRef="6.6"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="6.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="350">
+            <KM_Reference kmRef="6.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="6"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="450">
+            <KM_Reference kmRef="5.8"/>
+        </KilometreReferencePoint>
+        
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>
