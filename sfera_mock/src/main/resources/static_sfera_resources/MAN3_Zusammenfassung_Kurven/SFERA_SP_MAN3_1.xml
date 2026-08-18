@@ -118,27 +118,27 @@
         </ContactList>
 
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="7.5"/>
+            <KM_Reference kmRef="10.5"/>
         </KilometreReferencePoint>
         
         <KilometreReferencePoint location="100">
-            <KM_Reference kmRef="7.2"/>
+            <KM_Reference kmRef="10.0"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="150">
-            <KM_Reference kmRef="7.0"/>
+            <KM_Reference kmRef="8.5"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="200">
-            <KM_Reference kmRef="6.8"/>
+            <KM_Reference kmRef="8.5"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="250">
-            <KM_Reference kmRef="6.6"/>
+            <KM_Reference kmRef="7.0"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="300">
-            <KM_Reference kmRef="6.4"/>
+            <KM_Reference kmRef="7.0"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="350">
@@ -146,11 +146,11 @@
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="400">
-            <KM_Reference kmRef="6"/>
+            <KM_Reference kmRef="6.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="450">
-            <KM_Reference kmRef="5.8"/>
+            <KM_Reference kmRef="5.0"/>
         </KilometreReferencePoint>
         
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
