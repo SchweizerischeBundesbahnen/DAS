@@ -9,6 +9,14 @@
                     <teltsi_StartDate>2025-05-17</teltsi_StartDate>
                 </OTN_ID>
             </TrainIdentification>
+            <TrainLocationInformation>
+                <PositionSpeed SP_ID="MAN1_3" location="2900">
+                    <SP_Zone>
+                        <IM_ID>1285</IM_ID>
+                    </SP_Zone>
+                </PositionSpeed>
+                <Delay Delay="PT0M10S"/>
+            </TrainLocationInformation>
         </OwnTrain>
     </RelatedTrainInformation>
 </G2B_EventPayload>
