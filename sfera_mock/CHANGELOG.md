@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.19.0...sfera_mock-v0.20.0) (2026-08-20)
+
+
+### Features
+
+* fixed point relevance indicator ([#1201](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1201)) ([#2617](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2617)) ([08c47b5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/08c47b5a9faedafae87fcb390e5aff69ebefad5a))
+* timed advancement works without sfera delay ([#2491](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2491)) ([#2614](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2614)) ([7aa43c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7aa43c7d06777a801bdd3f1b5d0cdd39e0aa31fc))
+
+
+### Documentation
+
+* create testdata for manual tests ([#2628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2628)) ([6c64a01](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6c64a01decf9c7243d54dc663280a133fc4bb705))
+
 ## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.2...sfera_mock-v0.19.0) (2026-08-10)
 
 
