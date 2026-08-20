@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.16.0...backend-v0.17.0) (2026-08-20)
+
+
+### Features
+
+* transport paper proxy api and mock client ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2587](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2587)) ([498cbb5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/498cbb53ac384b919bb7238e230ad6dfaa4bc73a))
+
+
+### Bug Fixes
+
+* formation upsert transaction ([#2609](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2609)) ([1d618aa](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1d618aa9b1987f2e0d7cbc3a9739a00202662c7c))
+
 ## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.15.0...backend-v0.16.0) (2026-08-11)
 
 
