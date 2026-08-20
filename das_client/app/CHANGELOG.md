@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.51.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.50.1...das_client-v0.51.0) (2026-08-20)
+
+
+### Features
+
+* add transport paper launcher ([#1620](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1620)) ([#2589](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2589)) ([59e9dc2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/59e9dc269481a863a30b60929b0d3a68a1bbeb70))
+* fixed point relevance indicator ([#1201](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1201)) ([#2617](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2617)) ([08c47b5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/08c47b5a9faedafae87fcb390e5aff69ebefad5a))
+* load companies over settings api ([#2223](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2223)) ([#2602](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2602)) ([e634e94](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e634e9406e8cf8dd1450038ded8f02337e2674cc))
+* timed advancement works without sfera delay ([#2491](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2491)) ([#2614](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2614)) ([7aa43c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7aa43c7d06777a801bdd3f1b5d0cdd39e0aa31fc))
+
 ## [0.50.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.50.0...das_client-v0.50.1) (2026-08-11)
 
 
