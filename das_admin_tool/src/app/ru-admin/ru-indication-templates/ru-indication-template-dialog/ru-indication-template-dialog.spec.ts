@@ -55,6 +55,7 @@ describe('RuIndicationTemplateDialog', () => {
       });
     });
 
+    // eslint-disable-next-line sonarjs/parameterized-tests
     it('should be valid when de title is filled', () => {
       const dialog = createDialog();
       dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
@@ -94,6 +95,7 @@ describe('RuIndicationTemplateDialog', () => {
       expect(deGroup.get('title')!.errors).toEqual({ titleRequired: true });
     });
 
+    // eslint-disable-next-line sonarjs/parameterized-tests
     it('should be valid for a language group when title is set but text is empty', () => {
       const dialog = createDialog();
       const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;

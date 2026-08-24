@@ -68,6 +68,7 @@ describe('RuIndicationTemplatesTable', () => {
   });
 
   describe('searchFilter', () => {
+    // eslint-disable-next-line sonarjs/parameterized-tests
     it('should match on DE title', () => {
       component['form'].patchValue({ language: 'de' });
       expect(component['searchFilter']({ search: 'titel de', language: 'de' }, templates[0])).toBe(

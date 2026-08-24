@@ -26,6 +26,7 @@ describe('ExternalLinkDialog', () => {
       expect(dialog['externalLinkForm'].errors).toEqual({ oneLanguageRequired: true });
     });
 
+    // eslint-disable-next-line sonarjs/parameterized-tests
     it('should be valid when de title and link are filled', () => {
       const dialog = createDialog();
       dialog['externalLinkForm'].get('de.title')!.setValue('Titel');
