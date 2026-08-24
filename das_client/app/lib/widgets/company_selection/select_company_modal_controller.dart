@@ -75,7 +75,7 @@ class SelectCompanyModalController {
 
   void _resetToSelectedCompany() {
     _filter = _selectedCompanies().firstOrNull?.shortName;
-    _textController.text = _filter!;
+    _textController.text = _filter ?? '';
   }
 
   void _onTextControllerChanged() {
@@ -84,7 +84,7 @@ class SelectCompanyModalController {
     _filter = _textController.text;
 
     final search = _filter!.toLowerCase().trim();
-    final filteredResult = _rxFilteredCompanies.value
+    final filteredResult = availableCompanies
         .where((company) => company.shortName.toLowerCase().startsWith(search))
         .sortedAlphabeticallyWithSelectedFirst(_selectedCompanyCodes);
 
@@ -92,10 +92,8 @@ class SelectCompanyModalController {
     _rxFilteredCompanies.add(filteredResult);
   }
 
-  List<Company> _selectedCompanies() {
-    if (!_rxFilteredCompanies.hasValue) return [];
-    return _rxFilteredCompanies.value.where((company) => _selectedCompanyCodes.contains(company.code)).toList();
-  }
+  List<Company> _selectedCompanies() =>
+      availableCompanies.where((company) => _selectedCompanyCodes.contains(company.code)).toList();
 }
 
 extension _CompaniesSortX on Iterable<Company> {
