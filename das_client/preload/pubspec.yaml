@@ -27,11 +27,11 @@ dependencies:
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/archive
-  archive: ^4.0.9
+  archive: ^4.2.0
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/intl
-  intl: ^0.20.2
+  intl: ^0.20.3
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.6
   # https://pub.dev/packages/path
@@ -42,7 +42,7 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.15.0
+  build_runner: ^2.16.0
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/flutter_prunekit

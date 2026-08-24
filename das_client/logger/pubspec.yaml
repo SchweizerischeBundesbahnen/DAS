@@ -37,7 +37,7 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.15.0
+  build_runner: ^2.16.0
   # https://pub.dev/packages/json_serializable
   json_serializable: ^6.14.1
   # https://pub.dev/packages/mockito

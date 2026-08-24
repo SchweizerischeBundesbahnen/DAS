@@ -13,7 +13,7 @@ dependencies:
   core_data: 1.0.0
 
   # https://pub.dev/packages/intl
-  intl: ^0.20.2
+  intl: ^0.20.3
   # https://pub.dev/packages/json_annotation
   json_annotation: ^4.12.0
   # https://pub.dev/packages/logging
@@ -28,7 +28,7 @@ dev_dependencies:
   # https://pub.dev/packages/mockito
   mockito: ^5.6.7
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.15.0
+  build_runner: ^2.16.0
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/json_serializable

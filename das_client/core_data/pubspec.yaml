@@ -9,7 +9,7 @@ resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/meta
-  meta: ^1.18.0
+  meta: ^1.19.0
   # https://pub.dev/packages/collection
   collection: ^1.19.1
 
