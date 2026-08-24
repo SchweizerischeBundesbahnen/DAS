@@ -43,7 +43,7 @@
     "@eslint/json": "2.0.1",
     "@playwright/test": "1.62.1",
     "@types/ineum": "216.0.4",
-    "@types/node": "26.1.2",
+    "@types/node": "26.2.0",
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
     "@vitest/ui": "4.1.10",
