@@ -48,7 +48,7 @@ class LocalKeyValueStore {
 
   bool get showEctsExtendedSpeedSignals => get(.showEctsExtendedSpeedSignals, true);
 
-  List<String> get companyCodes => get(.companyCodes, []);
+  List<String> get companyCodes => List<String>.from(get(.companyCodes, []));
 
   TourSystem? get tourSystem {
     final tourSystemName = get<String?>(.tourSystem, null);
