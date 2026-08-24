@@ -13,7 +13,7 @@ dependencies:
 
 dev_dependencies:
   # https://pub.dev/packages/melos
-  melos: ^8.2.2
+  melos: ^8.3.0
 
 # Melos Configuration
 melos:
