@@ -54,7 +54,30 @@ runs:
                 version: "1.4",
                 msteams: { width: "Full" },
                 body: [
-                  { type: "TextBlock", size: "Medium", weight: "Bolder", color: "Attention", text: $title, wrap: true },
+                  {
+                    "type": "ColumnSet",
+                    "columns": [
+                      {
+                        "type": "Column",
+                        "items": [
+                          {
+                            "type": "Image",
+                            "style": "Person",
+                            "url": "https://avatars.githubusercontent.com/u/9919?v=4&size=268",
+                            "size": "Small"
+                          }
+                        ],
+                        "width": "auto"
+                      },
+                      {
+                        "type": "Column",
+                        "width": "auto",
+                        "items": [
+                          { type: "TextBlock", size: "Medium", weight: "Bolder", color: "Attention", text: $title, wrap: true }
+                        ]
+                      }
+                    ]
+                  },
                   { type: "FactSet", facts: [
                     { title: "Failed step", value: $steps },
                     { title: "Run", value: $run }
