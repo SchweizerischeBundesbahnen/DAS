@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.12.0
+  sdk: ^3.13.0
 
 resolution: workspace
 
@@ -31,5 +31,5 @@ dev_dependencies:
   # https://pub.dev/packages/json_serializable
   json_serializable: ^6.14.1
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.15.0
+  build_runner: ^2.16.0
 

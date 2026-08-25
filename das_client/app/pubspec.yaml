@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 0.50.1+93
 
 environment:
-  sdk: ^3.12.0
+  sdk: ^3.13.0
 
 resolution: workspace
 
@@ -55,9 +55,9 @@ dependencies:
   # https://pub.dev/packages/get_it
   get_it: ^9.2.1
   # https://pub.dev/packages/intl
-  intl: ^0.20.2
+  intl: ^0.20.3
   # https://pub.dev/packages/meta
-  meta: ^1.18.0
+  meta: ^1.19.0
   # https://pub.dev/packages/provider
   provider: ^6.1.5+1
   # https://pub.dev/packages/rxdart
@@ -66,7 +66,7 @@ dependencies:
   # https://pub.dev/packages/sbb_design_system_mobile
   sbb_design_system_mobile: ^5.0.0
   # https://pub.dev/packages/volume_controller
-  volume_controller: ^3.6.0
+  volume_controller: ^3.6.1
   # https://pub.dev/packages/wakelock_plus
   wakelock_plus: ^1.7.0
   # https://pub.dev/packages/screen_brightness/
@@ -99,7 +99,7 @@ dev_dependencies:
   # https://pub.dev/packages/auto_route_generator
   auto_route_generator: ^10.6.0
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.15.0
+  build_runner: ^2.16.0
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/mockito

@@ -135,7 +135,7 @@ extension _SpeedIterableX on List<SingleSpeed> {
 }
 
 extension _WidgetListExtension on Iterable<Widget> {
-  List<Widget> withDivider(final Widget divider) {
+  List<Widget> withDivider(Widget divider) {
     return expand((x) => [divider, x]).skip(1).toList();
   }
 }
