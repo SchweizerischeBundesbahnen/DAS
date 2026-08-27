@@ -15,7 +15,6 @@ linter:
     empty_container_bodies: true
     unnecessary_const_in_enum_constructor: true
     unnecessary_primary_constructor_body: true
-    use_declaring_parameters: true
 
 analyzer:
   exclude:

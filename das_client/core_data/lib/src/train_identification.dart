@@ -1,7 +1,6 @@
 import 'package:meta/meta.dart';
 
 @sealed
-@immutable
 class TrainIdentification({
   required final String companyCode,
   required final String trainNumber,
