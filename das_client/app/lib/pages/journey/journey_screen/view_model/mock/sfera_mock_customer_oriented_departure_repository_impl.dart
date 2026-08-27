@@ -5,16 +5,13 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class SferaMockCustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
-  SferaMockCustomerOrientedDepartureRepositoryImpl({
-    required this._sferaRepo,
-    required this._ruFeatureProvider,
-  }) {
+class SferaMockCustomerOrientedDepartureRepositoryImpl({
+  required final SferaRepository _sferaRepo,
+  required final RuFeatureProvider _ruFeatureProvider,
+}) implements CustomerOrientedDepartureRepository {
+  this {
     _init();
   }
-
-  final SferaRepository _sferaRepo;
-  final RuFeatureProvider _ruFeatureProvider;
 
   final _rxCustomerOrientedDepartureStatus = BehaviorSubject<CustomerOrientedDeparture>();
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);

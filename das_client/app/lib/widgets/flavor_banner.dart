@@ -17,7 +17,7 @@ class FlavorBanner extends StatelessWidget {
       return child;
     }
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: .ltr,
       child: Banner(
         color: flavor.color,
         message: flavor.displayName.toUpperCase(),

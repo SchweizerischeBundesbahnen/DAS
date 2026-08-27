@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-class SferaJourneyViewModel {
-  SferaJourneyViewModel({required this._sferaRepository}) {
+class SferaJourneyViewModel({required final SferaRepository _sferaRepository}) {
+  this {
     _init();
   }
 
@@ -15,8 +15,6 @@ class SferaJourneyViewModel {
   Journey? get journeyValue => _rxJourney.value;
 
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
-
-  final SferaRepository _sferaRepository;
 
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);

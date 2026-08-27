@@ -4,10 +4,11 @@ import 'package:app/pages/journey/view_model/model/app_expiration_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 
-class AppExpirationViewModel {
-  AppExpirationViewModel({required this._settingsRepository, required String currentAppVersion})
-    : _currentAppVersion = currentAppVersion,
-      _rxSubject = BehaviorSubject<AppExpirationModel>.seeded(Valid(currentAppVersion: currentAppVersion)) {
+class AppExpirationViewModel({
+  required final SettingsRepository _settingsRepository,
+  required final String _currentAppVersion,
+}) {
+  this : _rxSubject = BehaviorSubject<AppExpirationModel>.seeded(Valid(currentAppVersion: _currentAppVersion)) {
     checkIsAppExpired();
   }
 
@@ -17,9 +18,7 @@ class AppExpirationViewModel {
 
   static const throttleDuration = Duration(minutes: 30);
 
-  final SettingsRepository _settingsRepository;
   final BehaviorSubject<AppExpirationModel> _rxSubject;
-  final String _currentAppVersion;
   AppVersionExpiration? _lastSetting;
   bool _dialogDismissed = false;
 

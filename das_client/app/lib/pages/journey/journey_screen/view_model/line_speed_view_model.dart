@@ -3,14 +3,10 @@ import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:sfera/component.dart';
 
-class LineSpeedViewModel extends JourneyAwareViewModel {
-  LineSpeedViewModel({
-    required this._journeySettingsViewModel,
-    super.journeyViewModel,
-  });
-
-  final JourneySettingsViewModel _journeySettingsViewModel;
-
+class LineSpeedViewModel({
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
   ResolvedTrainSeriesSpeed getResolvedSpeedForOrder(int order) {
     final metadata = lastJourney?.metadata;
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();

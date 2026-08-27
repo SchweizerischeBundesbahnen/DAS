@@ -1,8 +1,6 @@
 import 'package:app/util/animation.dart';
 
-class TimeConstants {
-  const TimeConstants();
-
+class const TimeConstants() {
   int get punctualityStaleSeconds => 180;
 
   int get punctualityDisappearSeconds => 300;

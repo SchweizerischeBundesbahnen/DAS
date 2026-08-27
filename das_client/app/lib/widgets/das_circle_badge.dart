@@ -27,11 +27,7 @@ class DASCircleBadge extends StatelessWidget {
   }
 }
 
-class _CirclePainter extends CustomPainter {
-  _CirclePainter({required this.color});
-
-  final Color color;
-
+class _CirclePainter({required final Color color}) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

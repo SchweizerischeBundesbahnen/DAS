@@ -26,36 +26,26 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('BrakeLoadSlipViewModel');
 
-class BrakeLoadSlipViewModel extends JourneyAwareViewModel {
+class BrakeLoadSlipViewModel({
+  required final FormationRepository _formationRepository,
+  required final SettingsRepository _settingsRepository,
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  required final NotificationPriorityQueueViewModel _notificationViewModel,
+  required final Launcher _launcher,
+  final DetailModalViewModel? _detailModalViewModel,
+  final ConnectivityManager? _connectivityManager,
+  final bool _checkForUpdates = false,
+  final bool _updateOnPositionUpdate = true,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
   static const _formationUpdateInterval = Duration(minutes: 1);
   static const initialNotificationDelay = Duration(seconds: 2);
 
-  BrakeLoadSlipViewModel({
-    required this._formationRepository,
-    required this._settingsRepository,
-    required this._journeyPositionViewModel,
-    required this._journeySettingsViewModel,
-    required this._notificationViewModel,
-    required this._launcher,
-    this._detailModalViewModel,
-    this._connectivityManager,
-    this._checkForUpdates = false,
-    this._updateOnPositionUpdate = true,
-    super.journeyViewModel,
-  }) {
+  this {
     _init();
   }
 
-  final FormationRepository _formationRepository;
-  final SettingsRepository _settingsRepository;
-  final JourneyPositionViewModel _journeyPositionViewModel;
-  final DetailModalViewModel? _detailModalViewModel;
-  final JourneySettingsViewModel _journeySettingsViewModel;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
-  final ConnectivityManager? _connectivityManager;
-  final Launcher _launcher;
-  final bool _checkForUpdates;
-  final bool _updateOnPositionUpdate;
   bool _notifyOnUpdate = false;
 
   final Sound _brakeSlipUpdatedSound = DI.get<DASSounds>().brakeSlipUpdated;

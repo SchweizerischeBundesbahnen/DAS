@@ -5,9 +5,7 @@ import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 
 /// Represents the state of the journey selection process.
-sealed class JourneySelectionModel {
-  const JourneySelectionModel._();
-
+sealed class const JourneySelectionModel._() {
   factory JourneySelectionModel.selecting({
     required DateTime startDate,
     required List<DateTime> availableStartDates,
@@ -85,23 +83,14 @@ sealed class JourneySelectionModel {
   };
 }
 
-class Selecting extends JourneySelectionModel {
-  const Selecting({
-    required this.startDate,
-    required this.availableStartDates,
-    this.companyCode,
-    this.trainNumber,
-    this.isInputComplete = false,
-  }) : super._();
-  @override
-  final DateTime startDate;
-  @override
-  final List<DateTime> availableStartDates;
-  @override
-  final String? companyCode;
-  final String? trainNumber;
-  @override
-  final bool isInputComplete;
+class const Selecting({
+  @override required final DateTime startDate,
+  @override required final List<DateTime> availableStartDates,
+  @override final String? companyCode,
+  @override final bool isInputComplete = false,
+  final String? trainNumber,
+}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -146,24 +135,15 @@ class Selecting extends JourneySelectionModel {
   }
 }
 
-class SelectingCompanyMatch extends JourneySelectionModel {
-  const SelectingCompanyMatch({
-    required this.startDate,
-    required this.availableStartDates,
-    required this.companyMatches,
-    this.trainNumber,
-    this.selectedCompanyMatch,
-    this.isInputComplete = false,
-  }) : super._();
-  @override
-  final DateTime startDate;
-  @override
-  final List<DateTime> availableStartDates;
-  final String? trainNumber;
-  @override
-  final bool isInputComplete;
-  final Set<CompanyMatch> companyMatches;
-  final CompanyMatch? selectedCompanyMatch;
+class const SelectingCompanyMatch({
+  @override required final DateTime startDate,
+  @override required final List<DateTime> availableStartDates,
+  required final Set<CompanyMatch> companyMatches,
+  final String? trainNumber,
+  final CompanyMatch? selectedCompanyMatch,
+  @override final bool isInputComplete = false,
+}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -212,14 +192,11 @@ class SelectingCompanyMatch extends JourneySelectionModel {
   }
 }
 
-class LoadingCompanyMatches extends JourneySelectionModel {
-  const LoadingCompanyMatches({
-    required this.startDate,
-    required this.trainNumber,
-  }) : super._();
-  @override
-  final DateTime startDate;
-  final String trainNumber;
+class const LoadingCompanyMatches({
+  @override required final DateTime startDate,
+  required final String trainNumber,
+}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -242,12 +219,8 @@ class LoadingCompanyMatches extends JourneySelectionModel {
   }
 }
 
-class Loading extends JourneySelectionModel {
-  const Loading({
-    required this.trainIdentification,
-  }) : super._();
-
-  final TrainIdentification trainIdentification;
+class const Loading({required final TrainIdentification trainIdentification}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -263,12 +236,8 @@ class Loading extends JourneySelectionModel {
   }
 }
 
-class Loaded extends JourneySelectionModel {
-  const Loaded({
-    required this.trainIdentification,
-  }) : super._();
-
-  final TrainIdentification trainIdentification;
+class const Loaded({required final TrainIdentification trainIdentification}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -284,16 +253,12 @@ class Loaded extends JourneySelectionModel {
   }
 }
 
-class Error extends JourneySelectionModel {
-  const Error({
-    required this.trainIdentification,
-    required this.errorCode,
-    required this.availableStartDates,
-  }) : super._();
-  final TrainIdentification trainIdentification;
-  @override
-  final List<DateTime> availableStartDates;
-  final ErrorCode errorCode;
+class const Error({
+  required final TrainIdentification trainIdentification,
+  required final ErrorCode errorCode,
+  @override required final List<DateTime> availableStartDates,
+}) extends JourneySelectionModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>

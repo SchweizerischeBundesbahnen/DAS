@@ -7,13 +7,13 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('SplashNavigator');
 
-class SplashNavigator {
-  SplashNavigator({required this.viewModel, required this.router}) {
+class SplashNavigator({
+  required final SplashViewModel viewModel,
+  required final StackRouter router,
+}) {
+  this {
     _init();
   }
-
-  final SplashViewModel viewModel;
-  final StackRouter router;
 
   void _init() {
     _checkAuthenticationState();

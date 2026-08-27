@@ -6,14 +6,10 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('DepartureProcessWarningViewModel');
 
-class DepartureProcessWarningViewModel extends JourneyAwareViewModel {
-  DepartureProcessWarningViewModel({
-    required this._ruFeatureProvider,
-    super.journeyViewModel,
-  });
-
-  final RuFeatureProvider _ruFeatureProvider;
-
+class DepartureProcessWarningViewModel({
+  required final RuFeatureProvider _ruFeatureProvider,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
   final _rxShowChronographWarning = BehaviorSubject<bool>.seeded(false);
 
   bool _isDepartureProcessFeatureEnabled = false;

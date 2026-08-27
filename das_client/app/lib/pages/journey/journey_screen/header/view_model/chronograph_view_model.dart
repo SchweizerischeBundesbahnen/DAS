@@ -10,22 +10,20 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ChronographViewModel extends JourneyAwareViewModel {
-  ChronographViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required Stream<DelayModel> delayStream,
-    required Stream<Duration?> plannedTimeDelayStream,
-    required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
-    required this._calculatedSpeedViewModel,
-    super.journeyViewModel,
-  }) {
+class ChronographViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required Stream<DelayModel> delayStream,
+  required Stream<Duration?> plannedTimeDelayStream,
+  required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
+  required final CalculatedSpeedViewModel _calculatedSpeedViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _initJourneyPositionSubscription(journeyPositionStream);
     _initDelaySubscription(delayStream);
     _initPlannedTimeDelaySubscription(plannedTimeDelayStream);
     _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
-
-  final CalculatedSpeedViewModel _calculatedSpeedViewModel;
 
   bool _isAdvisedSpeedActive = false;
   int? _currentPositionOrder;

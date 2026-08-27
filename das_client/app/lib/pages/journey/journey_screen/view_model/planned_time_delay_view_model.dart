@@ -12,17 +12,16 @@ import 'package:sfera/component.dart';
 final _log = Logger('PlannedTimeDelayViewModel');
 
 /// Calculates the deviation to the planned time (current time - planned arrival time) at each service point.
-class PlannedTimeDelayViewModel extends JourneyAwareViewModel {
-  PlannedTimeDelayViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required this._ruFeatureProvider,
-    super.journeyViewModel,
-  }) {
+class PlannedTimeDelayViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required final RuFeatureProvider _ruFeatureProvider,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _updateFeatureEnabled();
     _positionSubscription = journeyPositionStream.listen(_positionUpdated);
   }
 
-  final RuFeatureProvider _ruFeatureProvider;
   StreamSubscription<JourneyPositionModel>? _positionSubscription;
 
   bool _hasPassedFirstServicePoint = false;

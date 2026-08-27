@@ -15,18 +15,15 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyPositionViewModel');
 
-class JourneyPositionViewModel extends JourneyAwareViewModel {
-  JourneyPositionViewModel({
-    required Stream<DelayModel> punctualityStream,
-    required super.journeyViewModel,
-    required this._journeySettingsViewModel,
-    required this._timedRouteProvider,
-  }) {
+class JourneyPositionViewModel({
+  required Stream<DelayModel> punctualityStream,
+  required super.journeyViewModel,
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  required final TimedRouteProvider _timedRouteProvider,
+}) extends JourneyAwareViewModel {
+  this {
     _initSubscription(journeyViewModel.journey, punctualityStream);
   }
-
-  final JourneySettingsViewModel _journeySettingsViewModel;
-  final TimedRouteProvider _timedRouteProvider;
 
   StreamSubscription<(Journey?, DelayModel, ServicePoint?, JourneyPoint?)>? _journeySubscription;
   final _rxModel = BehaviorSubject.seeded(JourneyPositionModel());

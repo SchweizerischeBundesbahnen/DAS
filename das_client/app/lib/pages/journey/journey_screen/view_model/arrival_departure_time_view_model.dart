@@ -8,13 +8,12 @@ import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ArrivalDepartureTimeViewModel {
-  ArrivalDepartureTimeViewModel({required this._journeyViewModel}) {
+class ArrivalDepartureTimeViewModel({required final JourneyViewModel _journeyViewModel}) {
+  this {
     _journeySubscription = _journeyViewModel.journey.listen(_journeyUpdated);
   }
 
   final _resetToOperationalAfterSeconds = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds;
-  final JourneyViewModel _journeyViewModel;
   StreamSubscription? _journeySubscription;
 
   Stream<bool> get showOperationalTime => _rxShowOperationalTimes;

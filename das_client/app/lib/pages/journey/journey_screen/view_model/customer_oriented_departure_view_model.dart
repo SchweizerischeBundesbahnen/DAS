@@ -15,25 +15,18 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('CustomerOrientedDepartureViewModel');
 
-class CustomerOrientedDepartureViewModel extends JourneyAwareViewModel {
-  CustomerOrientedDepartureViewModel({
-    required this._repository,
-    required this._ruFeatureProvider,
-    required this._notificationViewModel,
-    required this._authenticator,
-    required this._appLifecycleViewModel,
-    required this._settingsRepository,
-    super.journeyViewModel,
-  }) {
+class CustomerOrientedDepartureViewModel({
+  required final CustomerOrientedDepartureRepository _repository,
+  required final RuFeatureProvider _ruFeatureProvider,
+  required final NotificationPriorityQueueViewModel _notificationViewModel,
+  required final Authenticator _authenticator,
+  required final AppLifecycleViewModel _appLifecycleViewModel,
+  required final SettingsRepository _settingsRepository,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _init();
   }
-
-  final CustomerOrientedDepartureRepository _repository;
-  final RuFeatureProvider _ruFeatureProvider;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
-  final AppLifecycleViewModel _appLifecycleViewModel;
-  final Authenticator _authenticator;
-  final SettingsRepository _settingsRepository;
 
   final _rxStatus = BehaviorSubject<CustomerOrientedDepartureStatus>.seeded(.departure);
   final _subscriptions = <StreamSubscription>[];

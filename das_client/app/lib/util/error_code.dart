@@ -2,20 +2,14 @@ import 'package:app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
-sealed class ErrorCode {
-  const ErrorCode({required this.code});
-
+sealed class const ErrorCode({required final String code}) {
   factory ErrorCode.fromSfera({required SferaError error}) = SferaErrorCode;
-
-  final String code;
 
   String displayText(BuildContext context);
 }
 
-class SferaErrorCode extends ErrorCode {
-  SferaErrorCode({required this.error}) : super(code: error.code);
-
-  SferaError error;
+class SferaErrorCode({required var SferaError error}) extends ErrorCode {
+  this : super(code: error.code);
 
   @override
   String displayText(BuildContext context) {

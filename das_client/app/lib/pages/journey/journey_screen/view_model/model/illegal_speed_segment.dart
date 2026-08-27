@@ -1,18 +1,11 @@
 import 'package:sfera/component.dart';
 
-class IllegalSpeedSegment {
-  IllegalSpeedSegment({
-    required this.start,
-    required this.end,
-    required this.original,
-    this.replacement,
-  });
-
-  final ServicePoint start;
-  final ServicePoint end;
-  final BrakeSeries original;
-  final BrakeSeries? replacement;
-
+class IllegalSpeedSegment({
+  required final ServicePoint start,
+  required final ServicePoint end,
+  required final BrakeSeries original,
+  final BrakeSeries? replacement,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

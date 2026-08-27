@@ -8,11 +8,7 @@ import 'package:screen_brightness/screen_brightness.dart';
 
 final _log = Logger('BrightnessManagerImpl');
 
-class BrightnessManagerImpl implements BrightnessManager {
-  BrightnessManagerImpl(this._screenBrightness);
-
-  final ScreenBrightness _screenBrightness;
-
+class BrightnessManagerImpl(final ScreenBrightness _screenBrightness) implements BrightnessManager {
   final double minBrightness = 0.0;
   final double maxBrightness = 1.0;
   final double fallbackBrightness = 0.1;

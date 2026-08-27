@@ -8,18 +8,14 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('LinksViewModel');
 
-class LinksViewModel {
-  LinksViewModel({
-    required this._externalLinksRepository,
-    required this._userSettings,
-    required this._launcher,
-  }) {
+class LinksViewModel({
+  required final ExternalLinksRepository _externalLinksRepository,
+  required final LocalKeyValueStore _userSettings,
+  required final Launcher _launcher,
+}) {
+  this {
     _init();
   }
-
-  final ExternalLinksRepository _externalLinksRepository;
-  final LocalKeyValueStore _userSettings;
-  final Launcher _launcher;
 
   final BehaviorSubject<List<ExternalLink>> _rxExternalLinks = BehaviorSubject<List<ExternalLink>>.seeded(const []);
 

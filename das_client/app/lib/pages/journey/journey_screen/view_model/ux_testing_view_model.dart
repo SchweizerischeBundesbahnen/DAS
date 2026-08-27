@@ -7,18 +7,14 @@ import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class UxTestingViewModel {
-  UxTestingViewModel({
-    required this._sferaRepo,
-    required this._ruFeatureProvider,
-    required this._formationRepository,
-  }) {
+class UxTestingViewModel({
+  required final SferaRepository _sferaRepo,
+  required final RuFeatureProvider _ruFeatureProvider,
+  required final FormationRepository _formationRepository,
+}) {
+  this {
     _init();
   }
-
-  final SferaRepository _sferaRepo;
-  final RuFeatureProvider _ruFeatureProvider;
-  final FormationRepository _formationRepository;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;

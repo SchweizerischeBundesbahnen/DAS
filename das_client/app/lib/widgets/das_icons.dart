@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class DasIcons {
-  DasIcons._();
-
+class DasIcons._() {
   static const _kFontFam = 'DasIcons';
   static const String? _kFontPkg = null;
 

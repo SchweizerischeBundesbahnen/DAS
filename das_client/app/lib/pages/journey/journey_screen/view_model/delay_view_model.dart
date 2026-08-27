@@ -10,8 +10,8 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('DelayViewModel');
 
-class DelayViewModel {
-  DelayViewModel({required JourneyViewModel journeyViewModel}) {
+class DelayViewModel({required JourneyViewModel journeyViewModel}) {
+  this {
     _initTimers();
     _journeySubscription = journeyViewModel.journey.listen(_journeyUpdated);
   }

@@ -5,9 +5,8 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
-abstract class JourneyAwareViewModel {
-  JourneyAwareViewModel({JourneyViewModel? journeyViewModel})
-    : journeyViewModel = journeyViewModel ?? DI.get<JourneyViewModel>() {
+abstract class JourneyAwareViewModel({JourneyViewModel? journeyViewModel}) {
+  this : journeyViewModel = journeyViewModel ?? DI.get<JourneyViewModel>() {
     _init();
   }
 

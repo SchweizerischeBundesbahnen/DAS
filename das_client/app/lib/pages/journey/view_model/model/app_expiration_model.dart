@@ -1,8 +1,4 @@
-sealed class AppExpirationModel {
-  AppExpirationModel({required this.currentAppVersion});
-
-  final String currentAppVersion;
-
+sealed class AppExpirationModel({required final String currentAppVersion}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -17,20 +13,13 @@ sealed class AppExpirationModel {
   }
 }
 
-class Expired extends AppExpirationModel {
-  Expired({required super.currentAppVersion});
-}
+class Expired({required super.currentAppVersion}) extends AppExpirationModel;
 
-class ExpirySoon extends AppExpirationModel {
-  ExpirySoon({
-    required this.expiryDate,
-    required this.userDismissedDialog,
-    required super.currentAppVersion,
-  });
-
-  final DateTime expiryDate;
-  final bool userDismissedDialog;
-
+class ExpirySoon({
+  required final DateTime expiryDate,
+  required final bool userDismissedDialog,
+  required super.currentAppVersion,
+}) extends AppExpirationModel {
   @override
   String toString() {
     return 'ExpirySoon{expiryDate: $expiryDate, userConfirmed: $userDismissedDialog}';

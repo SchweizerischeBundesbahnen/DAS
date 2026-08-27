@@ -7,10 +7,8 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('ViewModeViewModel');
 
-class ViewModeViewModel {
-  ViewModeViewModel({
-    required JourneySettingsViewModel journeySettingsViewModel,
-  }) {
+class ViewModeViewModel({required JourneySettingsViewModel journeySettingsViewModel}) {
+  this {
     _subscription = journeySettingsViewModel.model.listen((settings) {
       updateZenViewMode(settings.journeyAdvancementModel);
     });

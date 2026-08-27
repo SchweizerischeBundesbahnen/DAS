@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class ThemeUtil {
-  const ThemeUtil._();
-
+class const ThemeUtil._() {
   static Color getColor(BuildContext context, Color bright, Color dark) {
     return Theme.of(context).sbbBaseStyle.themeValue(bright, dark);
   }

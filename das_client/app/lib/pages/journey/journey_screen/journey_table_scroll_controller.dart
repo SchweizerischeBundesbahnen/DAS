@@ -22,13 +22,11 @@ final _log = Logger('JourneyTableScrollController');
 /// If the target row is outside the viewport and therefore not laid out, falls
 /// back to the height-based calculation: it anchors on the nearest rendered
 /// row and sums up [DASTableRowBuilder.height] values to reach the target.
-class JourneyTableScrollController {
+class JourneyTableScrollController({ScrollController? controller, GlobalKey? tableKey}) {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
 
-  JourneyTableScrollController({ScrollController? controller, GlobalKey? tableKey})
-    : scrollController = controller ?? ScrollController(),
-      tableKey = tableKey ?? GlobalKey();
+  this : scrollController = controller ?? ScrollController(), tableKey = tableKey ?? GlobalKey();
 
   final ScrollController scrollController;
   final GlobalKey tableKey;

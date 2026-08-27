@@ -1,22 +1,14 @@
 import 'package:intl/intl.dart';
 import 'package:sfera/component.dart';
 
-sealed class DelayModel {
-  const DelayModel._();
+sealed class const DelayModel._() {
+  factory DelayModel.visible({required Delay delay}) = Visible;
 
-  factory DelayModel.visible({
-    required Delay delay,
-  }) = Visible;
-
-  factory DelayModel.stale({
-    required Delay delay,
-  }) = Stale;
+  factory DelayModel.stale({required Delay delay}) = Stale;
 
   factory DelayModel.hidden() = Hidden;
 
-  factory DelayModel.plannedTimeDeviation({
-    required Duration deviation,
-  }) = PlannedTimeDeviation;
+  factory DelayModel.plannedTimeDeviation({required Duration deviation}) = PlannedTimeDeviation;
 
   String get formattedDelay => switch (this) {
     final Visible v => v.delay.formatted,
@@ -32,9 +24,8 @@ sealed class DelayModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class Visible extends DelayModel {
-  const Visible({required this.delay}) : super._();
-  final Delay delay;
+class const Visible({required final Delay delay}) extends DelayModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -49,9 +40,8 @@ class Visible extends DelayModel {
   }
 }
 
-class Stale extends DelayModel {
-  const Stale({required this.delay}) : super._();
-  final Delay delay;
+class const Stale({required final Delay delay}) extends DelayModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -66,8 +56,8 @@ class Stale extends DelayModel {
   }
 }
 
-class Hidden extends DelayModel {
-  const Hidden() : super._();
+class const Hidden() extends DelayModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Hidden && runtimeType == other.runtimeType;
@@ -81,10 +71,8 @@ class Hidden extends DelayModel {
   }
 }
 
-class PlannedTimeDeviation extends DelayModel {
-  const PlannedTimeDeviation({required this.deviation}) : super._();
-
-  final Duration deviation;
+class const PlannedTimeDeviation({required final Duration deviation}) extends DelayModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>

@@ -5,9 +5,7 @@ enum ShortTermChangeType {
   passToStop,
 }
 
-sealed class ShortTermChangeModel {
-  const ShortTermChangeModel._();
-
+sealed class const ShortTermChangeModel._() {
   factory ShortTermChangeModel.noShortTermChanges() = NoShortTermChanges;
 
   factory ShortTermChangeModel.singleShortTermChange({
@@ -33,14 +31,11 @@ class NoShortTermChanges extends ShortTermChangeModel {
   }
 }
 
-class SingleShortTermChange extends ShortTermChangeModel {
-  const SingleShortTermChange({
-    required this.shortTermChangeType,
-    this.servicePointName,
-  }) : super._();
-
-  final ShortTermChangeType shortTermChangeType;
-  final String? servicePointName;
+class const SingleShortTermChange({
+  required final ShortTermChangeType shortTermChangeType,
+  final String? servicePointName,
+}) extends ShortTermChangeModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -59,8 +54,8 @@ class SingleShortTermChange extends ShortTermChangeModel {
   }
 }
 
-class MultipleShortTermChanges extends ShortTermChangeModel {
-  const MultipleShortTermChanges() : super._();
+class const MultipleShortTermChanges() extends ShortTermChangeModel {
+  this : super._();
 
   @override
   String toString() {

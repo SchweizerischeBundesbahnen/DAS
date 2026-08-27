@@ -1,6 +1,4 @@
-sealed class LoginModel {
-  const LoginModel._({required this.connectToTmsVad});
-
+sealed class const LoginModel._({required final bool connectToTmsVad}) {
   factory LoginModel.loggedOut({required bool connectToTmsVad}) = LoggedOut;
 
   factory LoginModel.loading({required bool connectToTmsVad}) = Loading;
@@ -8,8 +6,6 @@ sealed class LoginModel {
   factory LoginModel.loggedIn({required bool connectToTmsVad}) = LoggedIn;
 
   factory LoginModel.error({required String errorMessage, required bool connectToTmsVad}) = Error;
-
-  final bool connectToTmsVad;
 
   @override
   bool operator ==(Object other) =>
@@ -29,8 +25,8 @@ sealed class LoginModel {
   }
 }
 
-class LoggedOut extends LoginModel {
-  const LoggedOut({required super.connectToTmsVad}) : super._();
+class const LoggedOut({required super.connectToTmsVad}) extends LoginModel {
+  this : super._();
 
   @override
   LoggedOut copyWith({bool? connectToTmsVad}) {
@@ -40,8 +36,8 @@ class LoggedOut extends LoginModel {
   }
 }
 
-class Loading extends LoginModel {
-  const Loading({required super.connectToTmsVad}) : super._();
+class const Loading({required super.connectToTmsVad}) extends LoginModel {
+  this : super._();
 
   @override
   Loading copyWith({bool? connectToTmsVad}) {
@@ -51,8 +47,8 @@ class Loading extends LoginModel {
   }
 }
 
-class LoggedIn extends LoginModel {
-  const LoggedIn({required super.connectToTmsVad}) : super._();
+class const LoggedIn({required super.connectToTmsVad}) extends LoginModel {
+  this : super._();
 
   @override
   LoggedIn copyWith({bool? connectToTmsVad}) {
@@ -62,10 +58,8 @@ class LoggedIn extends LoginModel {
   }
 }
 
-class Error extends LoginModel {
-  const Error({required this.errorMessage, required super.connectToTmsVad}) : super._();
-
-  final String errorMessage;
+class const Error({required final String errorMessage, required super.connectToTmsVad}) extends LoginModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
