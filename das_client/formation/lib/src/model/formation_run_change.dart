@@ -1,16 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 
-class FormationRunChange {
-  FormationRunChange({
-    required this.formationRun,
-    required this.previousFormationRun,
-  }) {
+class FormationRunChange({
+  required final FormationRun formationRun,
+  required final FormationRun? previousFormationRun,
+}) {
+  this {
     _calculateChanges();
   }
 
-  final FormationRun formationRun;
-  final FormationRun? previousFormationRun;
   final Map<String, bool> _changes = {};
 
   bool hasChanged(FormationRunFields field) => _changes[field.fieldName] ?? false;

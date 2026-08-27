@@ -7,12 +7,10 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('FormationRepositoryImpl');
 
-class FormationRepositoryImpl implements FormationRepository {
-  FormationRepositoryImpl({required this._apiService, required this._databaseService});
-
-  final FormationApiService _apiService;
-  final FormationDatabaseService _databaseService;
-
+class FormationRepositoryImpl({
+  required final FormationApiService _apiService,
+  required final FormationDatabaseService _databaseService,
+}) implements FormationRepository {
   @override
   Future<Formation?> reloadFormation(String operationalTrainNumber, String company, DateTime operationalDay) async {
     operationalTrainNumber = _sanitizeTrainNumber(operationalTrainNumber);

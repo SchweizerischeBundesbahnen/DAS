@@ -5,23 +5,14 @@ import 'package:formation/src/api/dto/formation_response_dto.dart';
 import 'package:http_x/component.dart';
 import 'package:intl/intl.dart';
 
-class FormationRequest {
-  const FormationRequest({
-    required this.httpClient,
-    required this.baseUrl,
-    required this.operationalTrainNumber,
-    required this.company,
-    required this.operationalDay,
-    this.etag,
-  });
-
-  final Client httpClient;
-  final String baseUrl;
-  final String operationalTrainNumber;
-  final String company;
-  final DateTime operationalDay;
-  final String? etag;
-
+class const FormationRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+  required final String operationalTrainNumber,
+  required final String company,
+  required final DateTime operationalDay,
+  final String? etag,
+}) {
   Future<FormationResponse> call() async {
     final url = Uri.https(
       baseUrl,
@@ -42,9 +33,11 @@ class FormationRequest {
   }
 }
 
-class FormationResponse {
-  const FormationResponse({required this.headers, required this.body, this.etag});
-
+class const FormationResponse({
+  required final Map<String, String> headers,
+  required final FormationResponseDto? body,
+  final String? etag,
+}) {
   factory FormationResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status == HttpStatus.notFound || status == HttpStatus.notModified) {
@@ -62,8 +55,4 @@ class FormationResponse {
     // Failure
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
-  final FormationResponseDto? body;
-  final String? etag;
 }

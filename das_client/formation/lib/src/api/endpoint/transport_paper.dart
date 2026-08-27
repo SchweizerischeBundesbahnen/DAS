@@ -2,17 +2,11 @@ import 'dart:io';
 
 import 'package:http_x/component.dart';
 
-class TransportPaperRequest {
-  const TransportPaperRequest({
-    required this.httpClient,
-    required this.baseUrl,
-    required this.relativeUrl,
-  });
-
-  final Client httpClient;
-  final String baseUrl;
-  final String relativeUrl;
-
+class const TransportPaperRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+  required final String relativeUrl,
+}) {
   Future<TransportPaperResponse> call() async {
     final url = Uri.parse('https://$baseUrl$relativeUrl');
 

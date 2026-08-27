@@ -5,17 +5,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'transport_paper_link.g.dart';
 
 @JsonSerializable()
-class TransportPaperLink {
-  TransportPaperLink({required this.url, required this.type});
-
+class TransportPaperLink({
+  required final String url,
+  @TransportPaperLinkTypeConverter() required final TransportPaperLinkType type,
+}) {
   factory TransportPaperLink.fromJson(Map<String, dynamic> json) {
     return _$TransportPaperLinkFromJson(json);
   }
-
-  final String url;
-
-  @TransportPaperLinkTypeConverter()
-  final TransportPaperLinkType type;
 
   @override
   String toString() {
