@@ -1,6 +1,4 @@
-abstract class ConnectivityManager {
-  const ConnectivityManager._();
-
+abstract class const ConnectivityManager._() {
   Stream<bool> get onConnectivityChanged;
 
   bool isConnected();
