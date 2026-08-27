@@ -6,7 +6,7 @@ This file is the default instruction set for AI/code agents working in the whole
 
 - Scope: entire monorepo rooted at `DAS/`
 - Priority: more specific instructions in subfolders override this file (for example
-  `das_client/AGENT.md`)
+  `das_client/AGENTS.md`)
 - Goal: deliver minimal, safe, tested changes aligned with active repository conventions
 
 ## Read before editing
@@ -14,7 +14,7 @@ This file is the default instruction set for AI/code agents working in the whole
 For each task, read the closest docs first:
 
 1. module `README.md`
-2. module `AGENT.md` when present
+2. module `AGENTS.md` when present
 3. root `README.md`
 4. `CONTRIBUTING.md` and `CODING_STANDARDS.md`
 
@@ -42,17 +42,17 @@ Note: treat `docs/` as potentially outdated for now, unless the task explicitly 
 
 Build/test/run commands are maintained in module agent files:
 
-- `das_client/AGENT.md`
-- `das_backend/AGENT.md`
-- `das_admin_tool/AGENT.md`
-- `das_e2e_testsuite/AGENT.md`
+- `das_client/AGENTS.md`
+- `das_backend/AGENTS.md`
+- `das_admin_tool/AGENTS.md`
+- `das_e2e_testsuite/AGENTS.md`
 
-If a module has no `AGENT.md`, use its local `README.md` and package scripts/build tool defaults.
+If a module has no `AGENTS.md`, use its local `README.md` and package scripts/build tool defaults.
 
 ## Coding and quality standards
 
 - Follow `CODING_STANDARDS.md` at repo root.
-- For mobile, also follow `das_client/CODING_STANDARDS.md` and `das_client/AGENT.md`.
+- For mobile, also follow `das_client/CODING_STANDARDS.md` and `das_client/AGENTS.md`.
 - Ensure new features/bug fixes include tests (`CONTRIBUTING.md`).
 - Do not edit generated Dart files (`*.g.dart`, `*.gr.dart`) manually.
 - Keep formatting/linting consistent with the module toolchain.
