@@ -4,15 +4,10 @@ import 'package:http_x/component.dart';
 import 'package:intl/intl.dart';
 import 'package:train_identification/src/api/dto/train_identification_response_dto.dart';
 
-class CompaniesRequest {
-  const CompaniesRequest({
-    required this.httpClient,
-    required this.baseUrl,
-  });
-
-  final Client httpClient;
-  final String baseUrl;
-
+class const CompaniesRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+}) {
   Future<CompaniesResponse> call({
     required String operationalTrainNumber,
     required List<DateTime> startDates,
@@ -30,9 +25,10 @@ class CompaniesRequest {
   }
 }
 
-class CompaniesResponse {
-  const CompaniesResponse({required this.headers, required this.body});
-
+class CompaniesResponse({
+  required final Map<String, String> headers,
+  required final TrainIdentificationResponseDto body,
+}) {
   factory CompaniesResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
@@ -43,7 +39,4 @@ class CompaniesResponse {
     }
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
-  final TrainIdentificationResponseDto body;
 }
