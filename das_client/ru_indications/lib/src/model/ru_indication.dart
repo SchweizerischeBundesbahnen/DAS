@@ -1,14 +1,11 @@
 import 'package:core_data/component.dart';
 
-class RuIndication extends JourneyAnnotation {
-  const RuIndication({
-    required this.title,
-    required this.text,
-    required super.order,
-  }) : super(dataType: .ruIndication);
-
-  final String title;
-  final String text;
+class const RuIndication({
+  required final String title,
+  required final String text,
+  required super.order,
+}) extends JourneyAnnotation {
+  this : super(dataType: .ruIndication);
 
   @override
   bool operator ==(Object other) =>

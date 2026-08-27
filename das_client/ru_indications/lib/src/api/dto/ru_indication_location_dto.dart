@@ -8,16 +8,11 @@ part 'ru_indication_location_dto.g.dart';
 final _log = Logger('RuIndicationLocationDto');
 
 @JsonSerializable()
-class RuIndicationLocationDto {
-  RuIndicationLocationDto({
-    required this.tafTapLocationReference,
-    required this.ruIndicationContents,
-  });
-
+class RuIndicationLocationDto({
+  required final String tafTapLocationReference,
+  required final List<RuIndicationContentDto> ruIndicationContents,
+}) {
   factory RuIndicationLocationDto.fromJson(Map<String, dynamic> json) => _$RuIndicationLocationDtoFromJson(json);
-
-  final String tafTapLocationReference;
-  final List<RuIndicationContentDto> ruIndicationContents;
 
   Map<String, dynamic> toJson() => _$RuIndicationLocationDtoToJson(this);
 }
