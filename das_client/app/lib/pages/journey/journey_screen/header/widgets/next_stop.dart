@@ -44,10 +44,27 @@ class NextStop extends StatelessWidget {
 
         return Padding(
           padding: const .only(left: SBBSpacing.xSmall),
-          child: Text(
-            displayedStop?.name ?? context.l10n.c_unknown,
-            style: sbbTextStyle.boldStyle.xxLarge,
-            overflow: .ellipsis,
+          child: ShaderMask(
+            blendMode: .srcIn,
+            shaderCallback: (bounds) =>
+                LinearGradient(
+                  begin: Alignment(-1.00, 0.00),
+                  end: Alignment(1.00, 0.00),
+                  colors: [
+                    Color(0xFFF50000),
+                    Color(0xFFDEFF00),
+                    Color(0xFF68DE7B),
+                    Color(0xFF0C35C7),
+                    Color(0xFFDB14A8),
+                  ],
+                ).createShader(
+                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                ),
+            child: Text(
+              displayedStop?.name ?? context.l10n.c_unknown,
+              style: sbbTextStyle.boldStyle.xxLarge,
+              overflow: .ellipsis,
+            ),
           ),
         );
       },
