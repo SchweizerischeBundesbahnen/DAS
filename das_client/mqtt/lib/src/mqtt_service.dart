@@ -1,8 +1,6 @@
 import 'dart:core';
 
-abstract class MqttService {
-  MqttService._();
-
+abstract class MqttService._() {
   Stream<String> get messageStream;
 
   void disconnect();

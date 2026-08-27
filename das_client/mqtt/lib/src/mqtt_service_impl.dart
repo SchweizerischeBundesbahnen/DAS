@@ -12,16 +12,16 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('MqttServiceImpl');
 
-class MqttServiceImpl implements MqttService {
+class MqttServiceImpl({
+  required final String _mqttUrl,
+  required final MqttClientConnector _mqttClientConnector,
+  required final String deviceId,
+  required final String prefix,
+  required final String sferaVersion,
+}) implements MqttService {
   static const _keepAlivePeriodSeconds = 15;
 
-  MqttServiceImpl({
-    required this._mqttUrl,
-    required this._mqttClientConnector,
-    required this.deviceId,
-    required this.prefix,
-    required this.sferaVersion,
-  }) {
+  this {
     _init();
   }
 
@@ -29,13 +29,7 @@ class MqttServiceImpl implements MqttService {
   StreamSubscription? _connectivitySubscription;
   var _connected = false;
 
-  final String _mqttUrl;
-  final MqttClientConnector _mqttClientConnector;
-  final String prefix;
-  final String sferaVersion;
-
   late MqttServerClient _client;
-  late String deviceId;
 
   StreamSubscription? _updateSubscription;
 
@@ -61,18 +55,10 @@ class MqttServiceImpl implements MqttService {
   }
 
   void _logClientChanges() {
-    _client.onConnected = () {
-      _log.fine('Connected to MQTT broker');
-    };
-    _client.onAutoReconnect = () {
-      _log.fine('Reconnecting to MQTT broker');
-    };
-    _client.onAutoReconnected = () {
-      _log.fine('Reconnected to MQTT broker');
-    };
-    _client.onDisconnected = () {
-      _log.fine('Disconnected from MQTT broker');
-    };
+    _client.onConnected = () => _log.fine('Connected to MQTT broker');
+    _client.onAutoReconnect = () => _log.fine('Reconnecting to MQTT broker');
+    _client.onAutoReconnected = () => _log.fine('Reconnected to MQTT broker');
+    _client.onDisconnected = () => _log.fine('Disconnected from MQTT broker');
   }
 
   @override

@@ -5,11 +5,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 
 final _log = Logger('MqttClientOauthConnector');
 
-class MqttClientOauthConnector implements MqttClientConnector {
-  MqttClientOauthConnector({required this._mqttAuthProvider});
-
-  final MqttAuthProvider _mqttAuthProvider;
-
+class MqttClientOauthConnector({required final MqttAuthProvider _mqttAuthProvider}) implements MqttClientConnector {
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
     _log.info('Connecting to mqtt using oauth token');
