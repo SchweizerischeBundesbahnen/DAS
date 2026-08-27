@@ -25,6 +25,22 @@ mvn test -f das_backend/pom.xml -DskipSchemaDownload -Dtest="*Controller*"      
 mvn test -f das_backend/pom.xml -DskipSchemaDownload -Dtest="MyServiceTest#method_when_then"  # single method
 ```
 
+## Traceability IDs (CI-enforced)
+
+Every integration test **must** carry a traceability ID in its `@DisplayName`. Format: `description|<20-char-ID>|tests:<story-id>`
+
+```java
+@DisplayName("getAll_RuIndications_ok|loMRrjgmSDPkCPq9IwlO|tests:144,1657")
+```
+
+After writing tests, generate/assign IDs by running from the repo root:
+
+```sh
+node scripts/test_title_has_id_no_whitespace.mjs backend
+```
+
+CI will fail if any integration test is missing a traceability ID.
+
 ## Testing Strategy
 
 **Always write:**

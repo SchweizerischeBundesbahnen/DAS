@@ -14,6 +14,22 @@ description: 'Write and run tests for the DAS Admin Tool. Use when implementing 
 - Adding/changing a service → write a service unit test
 - Adding a new admin page or dialog → add a Playwright e2e test
 
+## Traceability IDs (CI-enforced)
+
+Every e2e test title **must** carry a traceability ID. Format: `description|<20-char-ID>|tests:<story-id>`
+
+```typescript
+test('ruIndication_whenCreatedEditedAndDeleted_thenSucceeds|mAxDTAXFUf6YgD74EcqA|tests:144', async ({
+```
+
+After writing tests, generate/assign IDs by running from the repo root:
+
+```sh
+node scripts/test_title_has_id_no_whitespace.mjs admin
+```
+
+CI will fail if any e2e test is missing a traceability ID.
+
 ## Testing Strategy
 
 **Always write:**
