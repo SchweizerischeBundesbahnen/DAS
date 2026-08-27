@@ -2,18 +2,15 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class TrainIdentification {
-  TrainIdentification({
-    required this.companyCode,
-    required this.trainNumber,
-    required DateTime date,
-    this.operatingDay,
-  }) : date = DateTime(date.year, date.month, date.day);
+class TrainIdentification({
+  required final String companyCode,
+  required final String trainNumber,
+  required DateTime date,
+  final DateTime? operatingDay,
+}) {
+  this : date = DateTime(date.year, date.month, date.day);
 
-  final String companyCode;
-  final String trainNumber;
   final DateTime date;
-  final DateTime? operatingDay;
 
   int? get sanitizedTrainNumber {
     final firstNumberMatch = RegExp(r'\d+').firstMatch(trainNumber);

@@ -1,16 +1,10 @@
 import 'dart:io';
 
-class LocalizedString {
-  const LocalizedString({
-    this.de,
-    this.fr,
-    this.it,
-  });
-
-  final String? de;
-  final String? fr;
-  final String? it;
-
+class const LocalizedString({
+  final String? de,
+  final String? fr,
+  final String? it,
+}) {
   String get localized {
     final localeName = Platform.localeName;
     if (localeName.startsWith('fr') && fr != null) {

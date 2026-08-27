@@ -1,12 +1,7 @@
-class CompanyMatch {
-  const CompanyMatch({
-    required this.companyCode,
-    required this.startDate,
-  });
-
-  final String companyCode;
-  final DateTime startDate;
-
+class const CompanyMatch({
+  required final String companyCode,
+  required final DateTime startDate,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
