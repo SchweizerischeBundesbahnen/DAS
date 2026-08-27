@@ -6,12 +6,10 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('ExternalLinksRepositoryImpl');
 
-class ExternalLinksRepositoryImpl implements ExternalLinksRepository {
-  ExternalLinksRepositoryImpl({required this._apiService, required this._databaseService});
-
-  final ExternalLinksApiService _apiService;
-  final ExternalLinksDatabaseService _databaseService;
-
+class ExternalLinksRepositoryImpl({
+  required final ExternalLinksApiService _apiService,
+  required final ExternalLinksDatabaseService _databaseService,
+}) implements ExternalLinksRepository {
   @override
   Future<List<ExternalLink>> reloadExternalLinksByCompanies(List<String> companies) async {
     await _loadExternalLinksAndUpdateDatabase(companies);

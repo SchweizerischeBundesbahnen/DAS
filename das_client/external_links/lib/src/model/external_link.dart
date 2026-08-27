@@ -1,23 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 
-class ExternalLink {
-  ExternalLink({
-    required this.id,
-    required this.companies,
-    required this.title,
-    required this.link,
-    required this.lastModifiedAt,
-    required this.lastModifiedBy,
-  });
-
-  final int id;
-  final List<String> companies;
-  final LocalizedString title;
-  final LocalizedString link;
-  final DateTime lastModifiedAt;
-  final String lastModifiedBy;
-
+class ExternalLink({
+  required final int id,
+  required final List<String> companies,
+  required final LocalizedString title,
+  required final LocalizedString link,
+  required final DateTime lastModifiedAt,
+  required final String lastModifiedBy,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

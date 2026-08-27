@@ -6,26 +6,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'external_link_dto.g.dart';
 
 @JsonSerializable()
-class ExternalLinkDto {
-  ExternalLinkDto({
-    required this.id,
-    required this.companies,
-    required this.de,
-    required this.fr,
-    required this.it,
-    required this.lastModifiedAt,
-    required this.lastModifiedBy,
-  });
-
+class ExternalLinkDto({
+  required final int id,
+  required final List<String> companies,
+  required final ExternalLinkTranslationDto? de,
+  required final ExternalLinkTranslationDto? fr,
+  required final ExternalLinkTranslationDto? it,
+  required final DateTime lastModifiedAt,
+  required final String lastModifiedBy,
+}) {
   factory ExternalLinkDto.fromJson(Map<String, dynamic> json) => _$ExternalLinkDtoFromJson(json);
-
-  final int id;
-  final List<String> companies;
-  final ExternalLinkTranslationDto? de;
-  final ExternalLinkTranslationDto? fr;
-  final ExternalLinkTranslationDto? it;
-  final DateTime lastModifiedAt;
-  final String lastModifiedBy;
 
   ExternalLink toModel() {
     return ExternalLink(
