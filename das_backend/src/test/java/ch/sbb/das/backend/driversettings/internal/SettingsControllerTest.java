@@ -40,6 +40,7 @@ class SettingsControllerTest {
             .andExpect(jsonPath("$.data[0].preload.bucketUrl").value("bucketUrl"))
             .andExpect(jsonPath("$.data[0].preload.accessKey").value("accessKey"))
             .andExpect(jsonPath("$.data[0].preload.accessSecret").value("accessSecret"))
+            .andExpect(jsonPath("$.data[0].preload.region").value("region"))
             .andExpect(jsonPath("$.data[0].currentAppVersion.expired").value(false))
             .andExpect(jsonPath("$.data[0].currentAppVersion.expiryDate").value("2026-12-31"));
     }

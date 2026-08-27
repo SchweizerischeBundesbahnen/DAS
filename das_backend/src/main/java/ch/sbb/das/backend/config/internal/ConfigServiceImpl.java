@@ -24,6 +24,9 @@ public class ConfigServiceImpl implements ConfigService {
     @Value("${preload.bucket.accessSecret}")
     private String accessSecret;
 
+    @Value("${preload.bucket.region}")
+    private String region;
+
     @Override
     public Logging getLogging() {
         return new Logging(url, token);
@@ -31,6 +34,6 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Preload getPreload() {
-        return new Preload(bucketUrl, accessKey, accessSecret);
+        return new Preload(bucketUrl, accessKey, accessSecret, region);
     }
 }

@@ -8,7 +8,9 @@ public record Preload(
     @Schema(description = "Read-only S3 user access key")
     String accessKey,
     @Schema(description = "Read-only S3 user access secret")
-    String accessSecret
+    String accessSecret,
+    @Schema(description = "AWS S3 region")
+    String region
 ) {
 
 }
