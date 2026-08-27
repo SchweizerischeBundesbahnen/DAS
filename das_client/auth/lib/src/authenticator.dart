@@ -1,9 +1,7 @@
 import 'package:auth/src/user.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
-abstract class Authenticator {
-  const Authenticator._();
-
+abstract class const Authenticator._() {
   Future<bool> get isAuthenticated;
 
   Future<OidcToken> login({String? tokenId});

@@ -9,9 +9,7 @@ abstract class OidcClientFactory {
   });
 }
 
-class SBBOidcClientFactory implements OidcClientFactory {
-  const SBBOidcClientFactory();
-
+class const SBBOidcClientFactory() implements OidcClientFactory {
   @override
   Future<OidcClient> createClient({
     required String discoveryUrl,

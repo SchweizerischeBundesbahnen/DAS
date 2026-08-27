@@ -9,27 +9,22 @@ import 'package:sbb_oidc/sbb_oidc.dart';
 
 final _log = Logger('AzureAuthenticator');
 
-class AzureAuthenticator implements Authenticator {
+class AzureAuthenticator({
+  required final AuthenticatorConfig _config,
+  final OidcClientFactory _oidcClientFactory = const SBBOidcClientFactory(),
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    iOptions: IOSOptions(
+      accountName: 'auth',
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+    ),
+    aOptions: AndroidOptions(
+      storageNamespace: 'auth',
+    ),
+  ),
+}) implements Authenticator {
   static const _offlineTokenValidityDuration = Duration(days: 1);
 
-  AzureAuthenticator({
-    required this._config,
-    this._oidcClientFactory = const SBBOidcClientFactory(),
-    this._storage = const FlutterSecureStorage(
-      iOptions: IOSOptions(
-        accountName: 'auth',
-        accessibility: KeychainAccessibility.first_unlock_this_device,
-      ),
-      aOptions: AndroidOptions(
-        storageNamespace: 'auth',
-      ),
-    ),
-  });
-
-  final AuthenticatorConfig _config;
-  final OidcClientFactory _oidcClientFactory;
   late final OidcClient _oidcClient;
-  final FlutterSecureStorage _storage;
   bool _isInitialized = false;
   final _reauthenticationRequiredSubject = BehaviorSubject.seeded(false);
 

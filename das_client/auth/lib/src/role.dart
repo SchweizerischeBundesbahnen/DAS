@@ -1,14 +1,10 @@
 import 'package:collection/collection.dart';
 
-enum Role {
+enum Role(final String name) {
   admin('admin'),
   ruAdmin('ru_admin'),
   observer('observer'),
   driver('driver');
-
-  final String name;
-
-  Role(this.name);
 
   static Role? fromName(String name) {
     return Role.values.where((element) => element.name == name.trim().toLowerCase()).firstOrNull;
