@@ -1,12 +1,7 @@
-class LocationAbfahrtDetector {
-  LocationAbfahrtDetector(this.length, this.laengeHalt, this.schwelleFahrt)
-    : _ringbuffer = List<double>.filled(length, 0.0) {
+class LocationAbfahrtDetector(final int length, final int laengeHalt, final double schwelleFahrt) {
+  this : _ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
-
-  final int length;
-  final int laengeHalt;
-  final double schwelleFahrt;
 
   final List<double> _ringbuffer;
   int _posRingbuffer = 0;
