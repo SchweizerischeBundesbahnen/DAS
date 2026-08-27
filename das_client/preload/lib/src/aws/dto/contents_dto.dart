@@ -1,19 +1,11 @@
 import 'package:xml/xml.dart';
 
-class ContentsDto {
+class ContentsDto({required final XmlElement xmlElement}) {
   static const String xmlTag = 'Contents';
 
-  ContentsDto({required this.xmlElement});
+  String get key => xmlElement.getElement('Key')?.innerText ?? '';
 
-  final XmlElement xmlElement;
-
-  String get key {
-    return xmlElement.getElement('Key')?.innerText ?? '';
-  }
-
-  String get eTag {
-    return xmlElement.getElement('ETag')?.innerText ?? '';
-  }
+  String get eTag => xmlElement.getElement('ETag')?.innerText ?? '';
 
   int get size {
     final sizeText = xmlElement.getElement('Size')?.innerText;

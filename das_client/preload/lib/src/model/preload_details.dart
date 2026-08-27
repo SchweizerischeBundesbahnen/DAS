@@ -2,18 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:preload/src/model/s3_file.dart';
 import 'package:sfera/component.dart';
 
-class PreloadDetails {
+class PreloadDetails({
+  required final List<S3File> files,
+  required final PreloadStatus status,
+  required final SferaDbMetrics metrics,
+}) {
   static const dateFormatUtcPattern = 'yyyy-MM-dd\'T\'HH-mm-ss\'Z\'';
-
-  PreloadDetails({
-    required this.files,
-    required this.status,
-    required this.metrics,
-  });
-
-  final List<S3File> files;
-  final PreloadStatus status;
-  final SferaDbMetrics metrics;
 
   int get totalFilesCount => files.length;
 

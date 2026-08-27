@@ -1,8 +1,6 @@
 import 'package:preload/src/model/s3_file.dart';
 
-abstract class PreloadLocalDatabaseService {
-  const PreloadLocalDatabaseService._();
-
+abstract class PreloadLocalDatabaseService._() {
   Future<int> saveS3File(S3File file);
 
   Future<List<S3File>> findAll();

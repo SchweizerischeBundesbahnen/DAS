@@ -17,11 +17,7 @@ const int _batchSize = 200;
 
 /// Decodes and processes preloaded ZIPs and saves the content to the local SFERA database.
 /// Uses background isolates with batch database inserts to prevent UI freezes.
-class PreloadZipProcessor {
-  PreloadZipProcessor({required this.sferaLocalRepo});
-
-  final SferaLocalRepo sferaLocalRepo;
-
+class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
   final Set<String> _processedFiles = {};
 
   Future<S3FileSyncStatus> extractToLocalDatabase(File zip) async {
@@ -106,17 +102,15 @@ class PreloadZipProcessor {
   }
 }
 
-const String _errorAttribute = 'error';
-const String _processedFilesAttribute = 'processedFiles';
-const String _batchAttribute = 'batch';
+const _errorAttribute = 'error';
+const _processedFilesAttribute = 'processedFiles';
+const _batchAttribute = 'batch';
 
-class _ZipWork {
-  _ZipWork(this.zipPath, this.sendPort, this.previouslyProcessed);
-
-  final String zipPath;
-  final SendPort sendPort;
-  final List<String> previouslyProcessed;
-
+class _ZipWork(
+  final String zipPath,
+  final SendPort sendPort,
+  final List<String> previouslyProcessed,
+) {
   void sendDone() => sendPort.send(null);
 }
 

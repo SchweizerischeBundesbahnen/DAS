@@ -11,17 +11,15 @@ import 'package:xml/xml.dart';
 
 final _log = Logger('S3Client');
 
-class S3Client {
-  S3Client({required AwsConfiguration configuration})
-    : _configuration = configuration,
-      _signer = AWSSigV4Signer(
+class S3Client({required final AwsConfiguration _configuration}) {
+  this
+    : _signer = AWSSigV4Signer(
         credentialsProvider: InMemoryCredentialProvider(
-          accessKey: configuration.accessKey,
-          secretKey: configuration.accessSecret,
+          accessKey: _configuration.accessKey,
+          secretKey: _configuration.accessSecret,
         ),
       );
 
-  final AwsConfiguration _configuration;
   final AWSSigV4Signer _signer;
 
   Future<ListBucketResultDto?> listBucket() async {

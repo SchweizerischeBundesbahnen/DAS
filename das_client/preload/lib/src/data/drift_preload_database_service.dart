@@ -17,15 +17,15 @@ part 'drift_preload_database_service.g.dart';
     S3PreloadTable,
   ],
 )
-class DriftPreloadDatabaseService extends _$DriftPreloadDatabaseService implements PreloadLocalDatabaseService {
+class DriftPreloadDatabaseService._() extends _$DriftPreloadDatabaseService implements PreloadLocalDatabaseService {
+  this : super(_openConnection());
+
   static DriftPreloadDatabaseService? _instance;
 
   static DriftPreloadDatabaseService get instance {
     _instance ??= DriftPreloadDatabaseService._();
     return _instance!;
   }
-
-  DriftPreloadDatabaseService._() : super(_openConnection());
 
   static QueryExecutor _openConnection() => LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
