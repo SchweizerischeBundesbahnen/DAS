@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:http_x/component.dart';
 import 'package:settings/src/api/dto/settings_response_dto.dart';
 
-class SettingsRequest {
+class const SettingsRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+  final Map<String, String>? headers,
+}) {
   static const appVersionHeader = 'X-App-Version';
-
-  const SettingsRequest({required this.httpClient, required this.baseUrl, this.headers});
-
-  final Client httpClient;
-  final String baseUrl;
-  final Map<String, String>? headers;
 
   Future<SettingsResponse> call() async {
     final url = Uri.https(baseUrl, 'driver/v1/settings');
@@ -19,9 +17,10 @@ class SettingsRequest {
   }
 }
 
-class SettingsResponse {
-  const SettingsResponse({required this.headers, required this.body});
-
+class const SettingsResponse({
+  required final Map<String, String> headers,
+  required final SettingsResponseDto body,
+}) {
   factory SettingsResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
@@ -37,7 +36,4 @@ class SettingsResponse {
     // Failure
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
-  final SettingsResponseDto body;
 }

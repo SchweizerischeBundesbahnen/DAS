@@ -17,15 +17,15 @@ part 'settings_database_service.g.dart';
     CompaniesTable,
   ],
 )
-class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFeatureDatabaseService {
+class SettingsDatabaseService._() extends _$SettingsDatabaseService implements RuFeatureDatabaseService {
+  this : super(driftDatabase(name: 'settings_db'));
+
   static SettingsDatabaseService? _instance;
 
   static SettingsDatabaseService get instance {
     _instance ??= SettingsDatabaseService._();
     return _instance!;
   }
-
-  SettingsDatabaseService._() : super(driftDatabase(name: 'settings_db'));
 
   @override
   int get schemaVersion => 2;

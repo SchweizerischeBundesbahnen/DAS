@@ -13,9 +13,7 @@ export 'package:settings/src/repository/settings_repository.dart';
 typedef AwsCredentialsChanged = void Function(AwsConfiguration? credentials);
 typedef SettingsLoaded = void Function(bool success);
 
-class SettingsComponent {
-  const SettingsComponent._();
-
+class SettingsComponent._() {
   static SettingsRepository createRepository({
     required String baseUrl,
     required Client client,

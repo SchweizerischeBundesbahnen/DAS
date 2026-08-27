@@ -4,15 +4,13 @@ import 'package:settings/component.dart';
 part 'app_version_expiration_dto.g.dart';
 
 @JsonSerializable()
-class AppVersionExpirationDto {
-  AppVersionExpirationDto({required this.expired, this.expiryDate});
-
+class AppVersionExpirationDto({
+  required final bool expired,
+  final DateTime? expiryDate,
+}) {
   factory AppVersionExpirationDto.fromJson(Map<String, dynamic> json) {
     return _$AppVersionExpirationDtoFromJson(json);
   }
-
-  final bool expired;
-  final DateTime? expiryDate;
 }
 
 extension AppVersionExpirationDtoX on AppVersionExpirationDto {

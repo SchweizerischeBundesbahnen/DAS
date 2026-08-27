@@ -3,16 +3,14 @@ import 'package:json_annotation/json_annotation.dart';
 part 'preload_dto.g.dart';
 
 @JsonSerializable()
-class PreloadDto {
-  PreloadDto({required this.bucketUrl, required this.accessKey, required this.accessSecret});
-
+class PreloadDto({
+  required final String bucketUrl,
+  required final String accessKey,
+  required final String accessSecret,
+}) {
   factory PreloadDto.fromJson(Map<String, dynamic> json) {
     return _$PreloadDtoFromJson(json);
   }
-
-  final String bucketUrl;
-  final String accessKey;
-  final String accessSecret;
 
   @override
   bool operator ==(Object other) =>
