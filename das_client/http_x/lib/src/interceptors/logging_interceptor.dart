@@ -7,12 +7,8 @@ import 'package:logging/logging.dart';
 final _log = Logger('LoggingInterceptor');
 
 /// A HTTP interceptor that logs requests and responses.
-class LoggingInterceptor implements HttpInterceptor {
-  const LoggingInterceptor({this.enabled = true, this.obfuscateSecrets = true});
-
-  final bool enabled;
-  final bool obfuscateSecrets;
-
+class const LoggingInterceptor({final bool enabled = true, final bool obfuscateSecrets = true})
+    implements HttpInterceptor {
   @override
   FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => enabled;
 

@@ -8,9 +8,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-error
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#500
-class InternalServerErrorException extends HttpException {
-  const InternalServerErrorException(super.request, super.response);
-
+class const InternalServerErrorException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '500 Internal Server Error';
 }

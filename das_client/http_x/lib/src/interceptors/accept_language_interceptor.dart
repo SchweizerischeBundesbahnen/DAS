@@ -6,9 +6,7 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('AcceptLanguageInterceptor');
 
-class AcceptLanguageInterceptor implements HttpInterceptor {
-  const AcceptLanguageInterceptor();
-
+class const AcceptLanguageInterceptor() implements HttpInterceptor {
   @override
   FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => true;
 
