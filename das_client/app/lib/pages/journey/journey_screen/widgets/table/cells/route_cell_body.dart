@@ -102,7 +102,7 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Widget _routeLine(BuildContext context, double height, double width) {
-    final lineColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
+    final lineColor = ThemeUtil.isDarkMode(context) ? SBBColors.turquoise : SBBColors.turquoiseDark;
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
     return Positioned(
@@ -115,7 +115,7 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Positioned _circle(BuildContext context) {
-    final circleColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
+    final circleColor = ThemeUtil.isDarkMode(context) ? SBBColors.turquoise : SBBColors.turquoiseDark;
     return Positioned(
       top: routeCirclePosition,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),

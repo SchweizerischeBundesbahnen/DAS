@@ -75,7 +75,7 @@ class _RouteChevronState extends State<RouteChevron> {
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, RouteChevron.chevronHeight),
             painter: _ChevronPainter(
-              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+              color: ThemeUtil.getColor(context, SBBColors.turquoise, SBBColors.turquoiseDark),
             ),
           ),
         ),
