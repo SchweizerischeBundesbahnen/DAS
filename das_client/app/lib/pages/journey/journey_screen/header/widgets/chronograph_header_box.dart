@@ -90,9 +90,22 @@ class ChronographHeaderBox extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.expand();
 
+        final evenTick = DateTime.now().second.isEven;
+        final colors = evenTick
+            ? const [Color(0xFFEB0000), Color(0xFFC60018)]
+            : const [Color(0xFF2D327D), Color(0xFF1B1F58)];
+
         return Padding(
           padding: const .all(SBBSpacing.xSmall),
-          child: Text(snapshot.requireData, key: currentTimeTextKey, style: sbbTextStyle.boldStyle.xLarge),
+          child: ShaderMask(
+            blendMode: .srcIn,
+            shaderCallback: (bounds) => LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: colors,
+            ).createShader(Offset.zero & bounds.size),
+            child: Text(snapshot.requireData, key: currentTimeTextKey, style: sbbTextStyle.boldStyle.xLarge),
+          ),
         );
       },
     );
