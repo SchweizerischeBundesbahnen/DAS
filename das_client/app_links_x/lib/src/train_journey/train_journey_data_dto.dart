@@ -4,18 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'train_journey_data_dto.g.dart';
 
 @JsonSerializable()
-class TrainJourneyDataDto {
-  TrainJourneyDataDto({
-    required this.journeys,
-    this.returnUrl,
-  });
-
+class TrainJourneyDataDto({
+  required final List<TrainJourneyDto> journeys,
+  final String? returnUrl,
+}) {
   factory TrainJourneyDataDto.fromJson(Map<String, dynamic> json) {
     return _$TrainJourneyDataDtoFromJson(json);
   }
-
-  final List<TrainJourneyDto> journeys;
-  final String? returnUrl;
 
   Map<String, dynamic> toJson() => _$TrainJourneyDataDtoToJson(this);
 }
