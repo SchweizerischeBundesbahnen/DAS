@@ -1,8 +1,6 @@
 import 'package:customer_oriented_departure/component.dart';
 
-abstract class CustomerOrientedDepartureRepository {
-  const CustomerOrientedDepartureRepository._();
-
+abstract class const CustomerOrientedDepartureRepository._() {
   Stream<CustomerOrientedDeparture> get customerOrientedDeparture;
 
   /// Checks if there was a new status received and publishes it over [customerOrientedDeparture]

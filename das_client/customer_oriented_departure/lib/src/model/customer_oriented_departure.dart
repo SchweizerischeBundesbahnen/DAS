@@ -1,11 +1,9 @@
 import 'package:customer_oriented_departure/component.dart';
 
-class CustomerOrientedDeparture {
-  CustomerOrientedDeparture({required this.trainNumber, required this.status});
-
-  final String trainNumber;
-  final CustomerOrientedDepartureStatus status;
-
+class CustomerOrientedDeparture({
+  required final String trainNumber,
+  required final CustomerOrientedDepartureStatus status,
+}) {
   @override
   String toString() {
     return 'CustomerOrientedDeparture{trainNumber: $trainNumber, status: $status}';
