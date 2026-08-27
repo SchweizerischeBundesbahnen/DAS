@@ -8,7 +8,7 @@ enum ServicePointModalTab {
   graduatedSpeeds(icon: DasIcons.appIconSmallTempo),
   localRegulations(icon: SBBIcons.location_pin_surrounding_area_small);
 
-  const ServicePointModalTab({required this.icon});
+  ServicePointModalTab({required this.icon});
 
   String localized(BuildContext context) => switch (this) {
     communication => context.l10n.w_service_point_modal_communication_label,

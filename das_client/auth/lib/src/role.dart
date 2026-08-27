@@ -8,7 +8,7 @@ enum Role {
 
   final String name;
 
-  const Role(this.name);
+  Role(this.name);
 
   static Role? fromName(String name) {
     return Role.values.where((element) => element.name == name.trim().toLowerCase()).firstOrNull;

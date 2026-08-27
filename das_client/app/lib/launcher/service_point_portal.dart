@@ -6,7 +6,7 @@ enum ServicePointPortal {
     'https://bls.sharepoint.com/sites/Lokpersonal_/SitePages/Anzeigeseiten/Bahnh%C3%B6fe.aspx?BLSParam00={abbreviation}',
   );
 
-  const ServicePointPortal(this.url);
+  ServicePointPortal(this.url);
 
   final String url;
 

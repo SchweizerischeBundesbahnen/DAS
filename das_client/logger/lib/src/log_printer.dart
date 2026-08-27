@@ -8,13 +8,11 @@ import 'dart:ui';
 import 'package:ansicolor/ansicolor.dart';
 import 'package:logging/logging.dart';
 
-class LogPrinter {
-  const LogPrinter({this.appName = '', this.forcePrint = false, this.isDebugMode = false});
-
-  final String appName;
-  final bool forcePrint;
-  final bool isDebugMode;
-
+class const LogPrinter({
+  final String appName = '',
+  final bool forcePrint = false,
+  final bool isDebugMode = false,
+}) {
   void call(LogRecord record) {
     if (!forcePrint && !isDebugMode) {
       return;

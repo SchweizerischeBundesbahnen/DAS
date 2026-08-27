@@ -33,10 +33,8 @@ sealed class const SferaError._({required final String code}) {
   int get hashCode => code.hashCode;
 }
 
-final class const ProtocolErrors({this.errors = const []}) extends SferaError {
+final class const ProtocolErrors({final Iterable<ProtocolError> errors = const []}) extends SferaError {
   this : super._(code: '0');
-
-  final Iterable<ProtocolError> errors;
 
   @override
   String toString() {
@@ -56,7 +54,10 @@ final class const ProtocolErrors({this.errors = const []}) extends SferaError {
   int get hashCode => Object.hash(super.hashCode, errors);
 }
 
-final class const ProtocolError({required final String code, final LocalizedString? additionalInfo}) {
+final class const ProtocolError({
+  required final String code,
+  final LocalizedString? additionalInfo,
+}) {
   @override
   String toString() {
     return 'ProtocolError{code: $code, additionalInfo: $additionalInfo}';

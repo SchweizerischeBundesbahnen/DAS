@@ -9,13 +9,14 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 final _log = Logger('DasLoggerImpl');
 
-class DASLoggerImpl extends DASLogger {
-  DASLoggerImpl({required this._loggerRepo, required this.deviceId}) {
+class DASLoggerImpl({
+  required final LoggerRepo _loggerRepo,
+  required final String deviceId,
+}) extends DASLogger {
+  this {
     _initialized = _init();
   }
 
-  final String deviceId;
-  final LoggerRepo _loggerRepo;
   final Map<String, String> metadata = {};
   late Future<void> _initialized;
 

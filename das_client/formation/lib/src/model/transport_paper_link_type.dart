@@ -3,7 +3,7 @@ enum TransportPaperLinkType {
   url('URL'),
   unknown('');
 
-  const TransportPaperLinkType(this.value);
+  TransportPaperLinkType(this.value);
 
   final String value;
 

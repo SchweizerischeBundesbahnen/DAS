@@ -17,7 +17,7 @@ enum LocalRegulationRelevance {
   /// Local regulations for traffic controllers
   trafficControllers(abbreviation: 'Fdl');
 
-  const LocalRegulationRelevance({required this.abbreviation});
+  LocalRegulationRelevance({required this.abbreviation});
 
   final String abbreviation;
 

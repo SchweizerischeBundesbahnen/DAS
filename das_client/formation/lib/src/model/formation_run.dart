@@ -268,7 +268,7 @@ enum FormationRunFields {
   gradientDownhillMaxInPermille('gradientDownhillMaxInPermille'),
   slopeMaxForHoldingForceMinInPermille('slopeMaxForHoldingForceMinInPermille');
 
-  const FormationRunFields(this.fieldName);
+  FormationRunFields(this.fieldName);
 
   final String fieldName;
 }

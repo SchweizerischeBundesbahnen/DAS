@@ -26,7 +26,7 @@ enum NotificationBoxStyle {
     SBBIcons.circle_information_small,
   );
 
-  const NotificationBoxStyle(
+  NotificationBoxStyle(
     this.backgroundColor,
     this.iconColor,
     this.iconColorDark,

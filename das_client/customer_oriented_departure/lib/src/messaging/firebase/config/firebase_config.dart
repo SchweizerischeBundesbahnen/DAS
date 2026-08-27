@@ -59,7 +59,7 @@ enum FirebaseConfig {
     ),
   );
 
-  const FirebaseConfig(this._android, this._iOS);
+  FirebaseConfig(this._android, this._iOS);
 
   final FirebaseOptions _android;
   final FirebaseOptions _iOS;

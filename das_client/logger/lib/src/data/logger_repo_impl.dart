@@ -12,14 +12,12 @@ import 'package:synchronized/synchronized.dart';
 
 final _log = Logger('LoggerRepoImpl');
 
-class LoggerRepoImpl implements LoggerRepo {
+class LoggerRepoImpl({
+  required final LogFileService fileService,
+  required final LogApiService apiService,
+}) implements LoggerRepo {
   static const _rolloverTimeMinutes = 5;
   static const _retryDelayAfterFailedSendMinutes = 1;
-
-  LoggerRepoImpl({required this.fileService, required this.apiService});
-
-  final LogFileService fileService;
-  final LogApiService apiService;
 
   final _senderLock = Lock();
   final _cacheLock = Lock();
