@@ -12,11 +12,9 @@ class TrainStatusMessageDto({
   required final String status,
   final String? bp,
 }) extends BaseMessageDto {
-  factory TrainStatusMessageDto.fromJson(Map<String, dynamic> json) {
-    return _$TrainStatusMessageDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$TrainStatusMessageDtoFromJson(json);
 
-  factory TrainStatusMessageDto.fromJsonString(String jsonString) {
+  factory fromJsonString(String jsonString) {
     final json = jsonDecode(jsonString);
     return TrainStatusMessageDto.fromJson(json);
   }

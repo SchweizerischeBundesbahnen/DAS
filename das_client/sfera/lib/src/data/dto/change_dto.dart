@@ -6,7 +6,7 @@ abstract class ChangeDto({super.type = elementType, super.attributes, super.chil
     extends SferaXmlElementDto {
   static const String elementType = 'change';
 
-  factory ChangeDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

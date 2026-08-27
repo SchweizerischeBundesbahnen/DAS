@@ -6,19 +6,18 @@ import 'package:flutter/material.dart';
 
 /// Represents the state of the journey selection process.
 sealed class const JourneySelectionModel._() {
-  factory JourneySelectionModel.selecting({
+  factory selecting({
     required DateTime startDate,
     required List<DateTime> availableStartDates,
     String? companyCode,
     String? trainNumber,
   }) = Selecting;
 
-  factory JourneySelectionModel.loading({required TrainIdentification trainIdentification}) = Loading;
+  factory loading({required TrainIdentification trainIdentification}) = Loading;
 
-  factory JourneySelectionModel.loadingCompanyMatches({required DateTime startDate, required String trainNumber}) =
-      LoadingCompanyMatches;
+  factory loadingCompanyMatches({required DateTime startDate, required String trainNumber}) = LoadingCompanyMatches;
 
-  factory JourneySelectionModel.selectingCompanyMatch({
+  factory selectingCompanyMatch({
     required DateTime startDate,
     required List<DateTime> availableStartDates,
     required Set<CompanyMatch> companyMatches,
@@ -27,9 +26,9 @@ sealed class const JourneySelectionModel._() {
     required bool isInputComplete,
   }) = SelectingCompanyMatch;
 
-  factory JourneySelectionModel.loaded({required TrainIdentification trainIdentification}) = Loaded;
+  factory loaded({required TrainIdentification trainIdentification}) = Loaded;
 
-  factory JourneySelectionModel.error({
+  factory error({
     required TrainIdentification trainIdentification,
     required List<DateTime> availableStartDates,
     required ErrorCode errorCode,

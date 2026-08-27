@@ -15,7 +15,7 @@ class SettingsDto({
   required final PreloadDto preload,
   required final AppVersionExpirationDto currentAppVersion,
 }) {
-  factory SettingsDto.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$SettingsDtoFromJson(json);
   }
 }

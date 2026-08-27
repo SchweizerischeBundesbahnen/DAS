@@ -6,19 +6,19 @@ import 'package:core_data/component.dart';
 /// [code]: The SFERA protocol currently defines error codes between 2 - 55 (ex. 50 "Could not process data").
 /// For custom error codes use the range from 1000 upwards.
 sealed class const SferaError._({required final String code}) {
-  factory SferaError.protocolError({Iterable<ProtocolError> errors}) = ProtocolErrors;
+  factory protocolError({Iterable<ProtocolError> errors}) = ProtocolErrors;
 
-  factory SferaError.connectionFailed() = ConnectionFailed;
+  factory connectionFailed() = ConnectionFailed;
 
-  factory SferaError.validationFailed() = ValidationFailed;
+  factory validationFailed() = ValidationFailed;
 
-  factory SferaError.handshakeRejected() = HandshakeRejected;
+  factory handshakeRejected() = HandshakeRejected;
 
-  factory SferaError.requestTimeout() = RequestTimeout;
+  factory requestTimeout() = RequestTimeout;
 
-  factory SferaError.jpUnavailable() = JpUnavailable;
+  factory jpUnavailable() = JpUnavailable;
 
-  factory SferaError.invalid() = Invalid;
+  factory invalid() = Invalid;
 
   @override
   String toString() {

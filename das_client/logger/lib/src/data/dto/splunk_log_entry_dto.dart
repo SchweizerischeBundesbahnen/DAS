@@ -23,9 +23,7 @@ class SplunkLogEntryDto({
 
   late final Map<String, dynamic> fields;
 
-  factory SplunkLogEntryDto.fromJson(Map<String, dynamic> json) {
-    return _$SplunkLogEntryDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$SplunkLogEntryDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$SplunkLogEntryDtoToJson(this);
 

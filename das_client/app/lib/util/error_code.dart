@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 sealed class const ErrorCode({required final String code}) {
-  factory ErrorCode.fromSfera({required SferaError error}) = SferaErrorCode;
+  factory fromSfera({required SferaError error}) = SferaErrorCode;
 
   String displayText(BuildContext context);
 }

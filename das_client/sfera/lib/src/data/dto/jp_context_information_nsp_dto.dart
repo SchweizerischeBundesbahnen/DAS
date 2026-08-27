@@ -10,7 +10,7 @@ class JpContextInformationNspDto({super.type = elementType, super.attributes, su
     extends NspDto {
   static const String elementType = 'JP_ContextInformation_NSPs';
 
-  factory JpContextInformationNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

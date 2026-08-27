@@ -11,7 +11,7 @@ class NetworkSpecificPointDto({super.type = elementType, super.attributes, super
 
   double get location => double.parse(attributes['location']!);
 
-  factory NetworkSpecificPointDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

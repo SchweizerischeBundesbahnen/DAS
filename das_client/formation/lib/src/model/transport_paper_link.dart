@@ -9,9 +9,7 @@ class TransportPaperLink({
   required final String url,
   @TransportPaperLinkTypeConverter() required final TransportPaperLinkType type,
 }) {
-  factory TransportPaperLink.fromJson(Map<String, dynamic> json) {
-    return _$TransportPaperLinkFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$TransportPaperLinkFromJson(json);
 
   @override
   String toString() {

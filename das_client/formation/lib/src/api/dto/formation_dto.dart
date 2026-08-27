@@ -12,7 +12,7 @@ class FormationDto({
   required final DateTime operationalDay,
   required final List<dynamic> formationRuns,
 }) {
-  factory FormationDto.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$FormationDtoFromJson(json);
   }
 

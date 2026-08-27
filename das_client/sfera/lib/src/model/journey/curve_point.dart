@@ -55,7 +55,7 @@ enum CurvePointType {
   summarized,
   unknown;
 
-  factory CurvePointType.from(String value) =>
+  factory from(String value) =>
       values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }
 
@@ -71,6 +71,6 @@ enum CurveType {
   curveAfterHalt,
   unknown;
 
-  factory CurveType.from(String value) =>
+  factory from(String value) =>
       values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }

@@ -6,7 +6,7 @@ class TrainIdentificationDto({super.type = elementType, super.attributes, super.
     extends SferaXmlElementDto {
   static const String elementType = 'TrainIdentification';
 
-  factory TrainIdentificationDto.create({OtnIdDto? otnId}) {
+  factory create({OtnIdDto? otnId}) {
     final trainIdentification = TrainIdentificationDto();
 
     if (otnId != null) {

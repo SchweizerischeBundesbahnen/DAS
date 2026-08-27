@@ -14,7 +14,7 @@ class const RetrieveAuthTokenRequest({required final String tokenExchangeUrl, re
 }
 
 class const RetrieveAuthTokenResponse({required final Map<String, String> headers, required final String token}) {
-  factory RetrieveAuthTokenResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {

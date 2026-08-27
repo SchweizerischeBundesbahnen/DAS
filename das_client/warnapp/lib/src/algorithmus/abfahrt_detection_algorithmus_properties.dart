@@ -102,7 +102,7 @@ class const AbfahrtDetectionAlgorithmusProperties({
   required final double locationHaltDetektorSchwelleMax,
   required final int minimaleAnzahlZwischenZweiAbfahrten,
 }) {
-  factory AbfahrtDetectionAlgorithmusProperties.defaultProperties() {
+  factory defaultProperties() {
     return AbfahrtDetectionAlgorithmusProperties(
       berechnungsZeit: 2,
       lengthForInitialization: 500,

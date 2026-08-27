@@ -5,7 +5,7 @@ class JpRequestDto({super.type = elementType, super.attributes, super.children, 
     extends SferaXmlElementDto {
   static const String elementType = 'JP_Request';
 
-  factory JpRequestDto.create(TrainIdentificationDto trainIdentification) {
+  factory create(TrainIdentificationDto trainIdentification) {
     final request = JpRequestDto();
     request.children.add(trainIdentification);
     return request;

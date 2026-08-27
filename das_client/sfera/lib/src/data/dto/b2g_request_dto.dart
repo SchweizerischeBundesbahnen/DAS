@@ -7,19 +7,19 @@ class B2gRequestDto({super.type = elementType, super.attributes, super.children,
     extends SferaXmlElementDto {
   static const String elementType = 'B2G_Request';
 
-  factory B2gRequestDto.createJPRequest(JpRequestDto jpRequest) {
+  factory createJPRequest(JpRequestDto jpRequest) {
     final request = B2gRequestDto();
     request.children.add(jpRequest);
     return request;
   }
 
-  factory B2gRequestDto.createSPRequest(List<SpRequestDto> spRequests) {
+  factory createSPRequest(List<SpRequestDto> spRequests) {
     final request = B2gRequestDto();
     request.children.addAll(spRequests);
     return request;
   }
 
-  factory B2gRequestDto.createTCRequest(List<TcRequestDto> tcRequests) {
+  factory createTCRequest(List<TcRequestDto> tcRequests) {
     final request = B2gRequestDto();
     request.children.addAll(tcRequests);
     return request;

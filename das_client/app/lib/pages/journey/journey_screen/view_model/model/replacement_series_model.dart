@@ -1,23 +1,13 @@
 import 'package:app/pages/journey/journey_screen/view_model/model/illegal_speed_segment.dart';
 
-sealed class const ReplacementSeriesModel._({
-  required final IllegalSpeedSegment segment,
-}) {
-  factory ReplacementSeriesModel.replacement({
-    required IllegalSpeedSegment segment,
-  }) = ReplacementSeriesAvailable;
+sealed class const ReplacementSeriesModel._({required final IllegalSpeedSegment segment}) {
+  factory replacement({required IllegalSpeedSegment segment}) = ReplacementSeriesAvailable;
 
-  factory ReplacementSeriesModel.original({
-    required IllegalSpeedSegment segment,
-  }) = OriginalSeriesAvailable;
+  factory original({required IllegalSpeedSegment segment}) = OriginalSeriesAvailable;
 
-  factory ReplacementSeriesModel.selected({
-    required IllegalSpeedSegment segment,
-  }) = ReplacementSeriesSelected;
+  factory selected({required IllegalSpeedSegment segment}) = ReplacementSeriesSelected;
 
-  factory ReplacementSeriesModel.none({
-    required IllegalSpeedSegment segment,
-  }) = NoReplacementSeries;
+  factory none({required IllegalSpeedSegment segment}) = NoReplacementSeries;
 
   @override
   bool operator ==(Object other) =>

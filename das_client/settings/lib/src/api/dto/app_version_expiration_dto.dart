@@ -8,7 +8,7 @@ class AppVersionExpirationDto({
   required final bool expired,
   final DateTime? expiryDate,
 }) {
-  factory AppVersionExpirationDto.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$AppVersionExpirationDtoFromJson(json);
   }
 }

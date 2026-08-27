@@ -6,7 +6,7 @@ class CalculatedSpeed({
   final bool isSameAsPrevious = false,
   final bool isReducedDueToLineSpeed = false,
 }) {
-  factory CalculatedSpeed.none() => CalculatedSpeed(speed: null);
+  factory none() => CalculatedSpeed(speed: null);
 
   @override
   bool operator ==(Object other) =>

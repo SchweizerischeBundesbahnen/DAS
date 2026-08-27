@@ -10,7 +10,7 @@ class GeneralJpInformationNspDto({super.type = elementType, super.attributes, su
     extends NspDto {
   static const String elementType = 'General_JP_Information_NSP';
 
-  factory GeneralJpInformationNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

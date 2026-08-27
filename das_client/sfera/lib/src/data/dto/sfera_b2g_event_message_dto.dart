@@ -7,7 +7,7 @@ class SferaB2gEventMessageDto({super.type = elementType, super.attributes, super
     extends SferaXmlElementDto {
   static const String elementType = 'SFERA_B2G_EventMessage';
 
-  factory SferaB2gEventMessageDto.createSessionTermination({required MessageHeaderDto messageHeader}) {
+  factory createSessionTermination({required MessageHeaderDto messageHeader}) {
     final eventMessage = SferaB2gEventMessageDto();
     eventMessage.children.add(messageHeader);
 

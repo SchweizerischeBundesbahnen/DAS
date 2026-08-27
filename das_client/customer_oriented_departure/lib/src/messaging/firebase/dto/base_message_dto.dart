@@ -6,11 +6,9 @@ part 'base_message_dto.g.dart';
 
 @JsonSerializable()
 class BaseMessageDto({required final String messageId}) {
-  factory BaseMessageDto.fromJson(Map<String, dynamic> json) {
-    return _$BaseMessageDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$BaseMessageDtoFromJson(json);
 
-  factory BaseMessageDto.fromJsonString(String jsonString) {
+  factory fromJsonString(String jsonString) {
     final json = jsonDecode(jsonString);
     return BaseMessageDto.fromJson(json);
   }

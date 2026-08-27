@@ -12,7 +12,7 @@ class RuIndicationLocationDto({
   required final String tafTapLocationReference,
   required final List<RuIndicationContentDto> ruIndicationContents,
 }) {
-  factory RuIndicationLocationDto.fromJson(Map<String, dynamic> json) => _$RuIndicationLocationDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$RuIndicationLocationDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$RuIndicationLocationDtoToJson(this);
 }

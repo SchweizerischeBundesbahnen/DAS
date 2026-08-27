@@ -15,11 +15,9 @@ class SubscribeRequestBody({
   required final String pushToken,
   @JsonKey(toJson: _dateTimeToUtcIso8601) required final DateTime expiresAt,
 }) {
-  factory SubscribeRequestBody.fromJson(Map<String, dynamic> json) {
-    return _$SubscribeRequestBodyFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$SubscribeRequestBodyFromJson(json);
 
-  factory SubscribeRequestBody.fromJsonString(String jsonString) {
+  factory fromJsonString(String jsonString) {
     final json = jsonDecode(jsonString);
     return SubscribeRequestBody.fromJson(json);
   }

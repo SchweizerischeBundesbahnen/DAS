@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 class const HttpException(final Request request, final BaseResponse response) {
-  factory HttpException.fromResponse(BaseResponse response) {
+  factory fromResponse(BaseResponse response) {
     final request = response.request as Request;
     return switch (response.statusCode) {
       // Client errors

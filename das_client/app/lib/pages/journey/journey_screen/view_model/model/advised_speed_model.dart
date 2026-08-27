@@ -1,13 +1,13 @@
 import 'package:sfera/component.dart';
 
 sealed class const AdvisedSpeedModel._() {
-  factory AdvisedSpeedModel.active({required AdvisedSpeedSegment segment, SingleSpeed? lineSpeed}) = Active;
+  factory active({required AdvisedSpeedSegment segment, SingleSpeed? lineSpeed}) = Active;
 
-  factory AdvisedSpeedModel.inactive() = Inactive;
+  factory inactive() = Inactive;
 
-  factory AdvisedSpeedModel.end() = End;
+  factory end() = End;
 
-  factory AdvisedSpeedModel.cancel() = Cancel;
+  factory cancel() = Cancel;
 
   @override
   bool operator ==(Object other) => identical(this, other) || runtimeType == other.runtimeType;

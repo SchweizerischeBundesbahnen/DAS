@@ -8,7 +8,7 @@ class RuFeatureDto({
   required final String key,
   required final bool enabled,
 }) {
-  factory RuFeatureDto.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$RuFeatureDtoFromJson(json);
   }
 }

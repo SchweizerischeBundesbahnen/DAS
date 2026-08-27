@@ -8,9 +8,7 @@ class TrainJourneyDataDto({
   required final List<TrainJourneyDto> journeys,
   final String? returnUrl,
 }) {
-  factory TrainJourneyDataDto.fromJson(Map<String, dynamic> json) {
-    return _$TrainJourneyDataDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$TrainJourneyDataDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TrainJourneyDataDtoToJson(this);
 }

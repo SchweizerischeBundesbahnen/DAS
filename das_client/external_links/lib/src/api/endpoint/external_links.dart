@@ -20,7 +20,7 @@ class const ExternalLinksResponse({
   required final Map<String, String> headers,
   required final ExternalLinksResponseDto body,
 }) {
-  factory ExternalLinksResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
       final body = utf8.decode(response.bodyBytes);

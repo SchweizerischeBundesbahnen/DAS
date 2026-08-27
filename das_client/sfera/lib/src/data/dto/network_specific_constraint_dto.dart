@@ -6,7 +6,7 @@ class NetworkSpecificConstraintDto({super.type = elementType, super.attributes, 
     extends NspDto {
   static const String elementType = 'NetworkSpecificConstraint';
 
-  factory NetworkSpecificConstraintDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

@@ -5,8 +5,7 @@ part 'train_identification_response_dto.g.dart';
 
 @JsonSerializable()
 class TrainIdentificationResponseDto({required final List<CompanyMatchDto> data}) {
-  factory TrainIdentificationResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$TrainIdentificationResponseDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$TrainIdentificationResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TrainIdentificationResponseDtoToJson(this);
 }

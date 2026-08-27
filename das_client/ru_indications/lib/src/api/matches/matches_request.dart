@@ -39,7 +39,7 @@ class MatchesResponse({
   required final Map<String, String> headers,
   required final RuIndicationMatchesResponseDto body,
 }) {
-  factory MatchesResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
       final bodyString = utf8.decode(response.bodyBytes);

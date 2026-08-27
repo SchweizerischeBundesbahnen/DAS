@@ -4,7 +4,7 @@ class MessageHeaderDto({super.type = elementType, super.attributes, super.childr
     extends SferaXmlElementDto {
   static const String elementType = 'MessageHeader';
 
-  factory MessageHeaderDto.create({
+  factory create({
     required String messageId,
     required String timestamp,
     required String sourceDevice,

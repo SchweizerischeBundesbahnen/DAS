@@ -7,7 +7,7 @@ class SferaB2gRequestMessageDto({super.type = elementType, super.attributes, sup
     extends SferaXmlElementDto {
   static const String elementType = 'SFERA_B2G_RequestMessage';
 
-  factory SferaB2gRequestMessageDto.create(
+  factory create(
     MessageHeaderDto header, {
     HandshakeRequestDto? handshakeRequest,
     B2gRequestDto? b2gRequest,

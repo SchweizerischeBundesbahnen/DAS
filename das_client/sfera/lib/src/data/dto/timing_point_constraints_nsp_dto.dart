@@ -6,7 +6,7 @@ class TimingPointConstraintsNspDto({super.type = elementType, super.attributes, 
     extends NspDto {
   static const String elementType = 'TimingPointConstraints_NSPs';
 
-  factory TimingPointConstraintsNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

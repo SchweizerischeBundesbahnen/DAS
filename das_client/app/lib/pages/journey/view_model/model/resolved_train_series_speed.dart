@@ -4,12 +4,7 @@ class ResolvedTrainSeriesSpeed({
   required final TrainSeriesSpeed? speed,
   required final bool isPrevious,
 }) {
-  factory ResolvedTrainSeriesSpeed.none() {
-    return ResolvedTrainSeriesSpeed(
-      speed: null,
-      isPrevious: false,
-    );
-  }
+  factory none() => ResolvedTrainSeriesSpeed(speed: null, isPrevious: false);
 
   @override
   bool operator ==(Object other) =>

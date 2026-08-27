@@ -12,9 +12,7 @@ class TrainJourneyDto({
   final String? tafTapLocationReferenceEnd,
   final String? tafTapLocationReferenceStart,
 }) {
-  factory TrainJourneyDto.fromJson(Map<String, dynamic> json) {
-    return _$TrainJourneyDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$TrainJourneyDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TrainJourneyDtoToJson(this);
 }

@@ -6,14 +6,14 @@ enum ShortTermChangeType {
 }
 
 sealed class const ShortTermChangeModel._() {
-  factory ShortTermChangeModel.noShortTermChanges() = NoShortTermChanges;
+  factory noShortTermChanges() = NoShortTermChanges;
 
-  factory ShortTermChangeModel.singleShortTermChange({
+  factory singleShortTermChange({
     required ShortTermChangeType shortTermChangeType,
     String? servicePointName,
   }) = SingleShortTermChange;
 
-  factory ShortTermChangeModel.multipleShortTermChanges() = MultipleShortTermChanges;
+  factory multipleShortTermChanges() = MultipleShortTermChanges;
 
   @override
   bool operator ==(Object other) => runtimeType == other.runtimeType;

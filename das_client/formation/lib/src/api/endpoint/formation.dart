@@ -38,7 +38,7 @@ class const FormationResponse({
   required final FormationResponseDto? body,
   final String? etag,
 }) {
-  factory FormationResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status == HttpStatus.notFound || status == HttpStatus.notModified) {
       return FormationResponse(headers: response.headers, body: null, etag: response.headers['etag']);

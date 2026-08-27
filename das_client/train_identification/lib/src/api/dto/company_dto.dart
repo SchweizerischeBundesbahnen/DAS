@@ -7,7 +7,7 @@ class CompanyDto({
   required final String code,
   required final String shortName,
 }) {
-  factory CompanyDto.fromJson(Map<String, dynamic> json) => _$CompanyDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CompanyDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompanyDtoToJson(this);
 }

@@ -1,7 +1,7 @@
 sealed class const SuspiciousSegmentModel._() {
-  factory SuspiciousSegmentModel.hidden() = SuspiciousSegmentHidden;
+  factory hidden() = SuspiciousSegmentHidden;
 
-  factory SuspiciousSegmentModel.visible() = SuspiciousSegmentVisible;
+  factory visible() = SuspiciousSegmentVisible;
 
   @override
   bool operator ==(Object other) => runtimeType == other.runtimeType;

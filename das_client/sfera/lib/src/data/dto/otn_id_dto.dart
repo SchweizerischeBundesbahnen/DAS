@@ -9,7 +9,7 @@ class OtnIdDto({super.type = elementType, super.attributes, super.children, supe
   static const String _startDateAttribute = 'teltsi_StartDate';
   static const String _additionalTrainNumberAttribute = 'AdditionalTrainNumber';
 
-  factory OtnIdDto.create(
+  factory create(
     String company,
     String operationalTrainNumber,
     DateTime startDate, {

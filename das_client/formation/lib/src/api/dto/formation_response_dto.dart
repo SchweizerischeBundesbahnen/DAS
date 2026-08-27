@@ -6,9 +6,7 @@ part 'formation_response_dto.g.dart';
 
 @JsonSerializable()
 class FormationResponseDto({required final List<FormationDto> data}) {
-  factory FormationResponseDto.fromJson(Map<String, dynamic> json) {
-    return _$FormationResponseDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$FormationResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$FormationResponseDtoToJson(this);
 

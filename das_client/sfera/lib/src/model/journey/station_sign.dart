@@ -10,7 +10,7 @@ enum StationSign(final String? value) {
   openLevelCrossingBeforeExitSignal('C'),
   unknown('UNKNOWN');
 
-  factory StationSign.from(String value) =>
+  factory from(String value) =>
       values.firstWhere((element) => element.value == value.toUpperCase(), orElse: () => .unknown);
 
   static StationSign? fromOptional(String? value) => values.firstWhereOrNull((e) => e.value == value?.toUpperCase());

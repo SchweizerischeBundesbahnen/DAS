@@ -9,7 +9,7 @@ class NetworkSpecificEventDto({super.type = elementType, super.attributes, super
     extends NspDto {
   static const String elementType = 'NetworkSpecificEvent';
 
-  factory NetworkSpecificEventDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

@@ -8,7 +8,7 @@ class PreloadDto({
   required final String accessKey,
   required final String accessSecret,
 }) {
-  factory PreloadDto.fromJson(Map<String, dynamic> json) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$PreloadDtoFromJson(json);
   }
 

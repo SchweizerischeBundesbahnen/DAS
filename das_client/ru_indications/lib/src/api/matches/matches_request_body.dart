@@ -12,7 +12,7 @@ class MatchesRequestBody({
   @JsonKey(toJson: _formatDateOnly) required final DateTime startDate,
   required final List<String> tafTapLocationReferences,
 }) {
-  factory MatchesRequestBody.fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
 
   Map<String, dynamic> toJson() => _$MatchesRequestBodyToJson(this);
 

@@ -16,7 +16,7 @@ class const ConfirmRequest({
 }
 
 class const ConfirmResponse({required final Map<String, String> headers}) {
-  factory ConfirmResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {

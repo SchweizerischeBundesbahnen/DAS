@@ -9,7 +9,7 @@ class CompanyMatchDto({
   required final CompanyDto company,
   required final DateTime startDate,
 }) {
-  factory CompanyMatchDto.fromJson(Map<String, dynamic> json) => _$CompanyMatchDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$CompanyMatchDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompanyMatchDtoToJson(this);
 }

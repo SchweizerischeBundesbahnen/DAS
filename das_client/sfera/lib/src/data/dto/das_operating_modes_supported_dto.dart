@@ -7,7 +7,7 @@ class DasOperatingModesSupportedDto({super.type = elementType, super.attributes,
     extends SferaXmlElementDto {
   static const String elementType = 'DAS_OperatingModesSupported';
 
-  factory DasOperatingModesSupportedDto.create(
+  factory create(
     DasDrivingModeDto drivingMode,
     DasArchitectureDto architecture,
     DasConnectivityDto connectivity,

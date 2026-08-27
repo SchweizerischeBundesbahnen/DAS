@@ -15,7 +15,7 @@ class ExternalLinkDto({
   required final DateTime lastModifiedAt,
   required final String lastModifiedBy,
 }) {
-  factory ExternalLinkDto.fromJson(Map<String, dynamic> json) => _$ExternalLinkDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$ExternalLinkDtoFromJson(json);
 
   ExternalLink toModel() {
     return ExternalLink(

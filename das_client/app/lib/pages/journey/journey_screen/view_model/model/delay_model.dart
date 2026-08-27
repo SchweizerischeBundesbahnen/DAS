@@ -2,13 +2,13 @@ import 'package:intl/intl.dart';
 import 'package:sfera/component.dart';
 
 sealed class const DelayModel._() {
-  factory DelayModel.visible({required Delay delay}) = Visible;
+  factory visible({required Delay delay}) = Visible;
 
-  factory DelayModel.stale({required Delay delay}) = Stale;
+  factory stale({required Delay delay}) = Stale;
 
-  factory DelayModel.hidden() = Hidden;
+  factory hidden() = Hidden;
 
-  factory DelayModel.plannedTimeDeviation({required Duration deviation}) = PlannedTimeDeviation;
+  factory plannedTimeDeviation({required Duration deviation}) = PlannedTimeDeviation;
 
   String get formattedDelay => switch (this) {
     final Visible v => v.delay.formatted,

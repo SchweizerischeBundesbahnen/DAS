@@ -4,7 +4,7 @@ class TcRequestDto({super.type = elementType, super.attributes, super.children, 
     extends SferaXmlElementDto {
   static const String elementType = 'TC_Request';
 
-  factory TcRequestDto.create({
+  factory create({
     required String id,
     required String versionMajor,
     required String versionMinor,

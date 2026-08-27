@@ -21,7 +21,7 @@ class const TransportPaperRequest({
 class TransportPaperResponse {
   const TransportPaperResponse({required this.headers});
 
-  factory TransportPaperResponse.fromHttpResponse(StreamedResponse response) {
+  factory fromHttpResponse(StreamedResponse response) {
     final status = response.statusCode;
     if ([
       HttpStatus.movedPermanently,

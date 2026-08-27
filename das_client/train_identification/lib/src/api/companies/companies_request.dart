@@ -29,7 +29,7 @@ class CompaniesResponse({
   required final Map<String, String> headers,
   required final TrainIdentificationResponseDto body,
 }) {
-  factory CompaniesResponse.fromHttpResponse(Response response) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
       final bodyString = utf8.decode(response.bodyBytes);

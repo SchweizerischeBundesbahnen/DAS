@@ -47,9 +47,7 @@ class FormationRun({
   final String? slopeMaxForHoldingForceMinInPermille,
   final TransportPaperLink? transportPaperLink,
 }) {
-  factory FormationRun.fromJson(Map<String, dynamic> json) {
-    return _$FormationRunFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$FormationRunFromJson(json);
 
   Map<String, dynamic> toJson() => _$FormationRunToJson(this);
 

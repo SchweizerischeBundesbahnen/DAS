@@ -25,11 +25,11 @@ sealed class const Flavor({
   final Map<String, String> mqttOpenIdProfileMap = const {},
   final bool connectToTmsVad = true,
 }) {
-  factory Flavor.dev() = _DevFlavor;
+  factory dev() = _DevFlavor;
 
-  factory Flavor.inte() = _InteFlavor;
+  factory inte() = _InteFlavor;
 
-  factory Flavor.prod() = _ProdFlavor;
+  factory prod() = _ProdFlavor;
 
   Flavor withSferaMockValues() => switch (this) {
     _DevFlavor() => _DevFlavor(

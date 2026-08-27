@@ -1,11 +1,11 @@
 sealed class const LoginModel._({required final bool connectToTmsVad}) {
-  factory LoginModel.loggedOut({required bool connectToTmsVad}) = LoggedOut;
+  factory loggedOut({required bool connectToTmsVad}) = LoggedOut;
 
-  factory LoginModel.loading({required bool connectToTmsVad}) = Loading;
+  factory loading({required bool connectToTmsVad}) = Loading;
 
-  factory LoginModel.loggedIn({required bool connectToTmsVad}) = LoggedIn;
+  factory loggedIn({required bool connectToTmsVad}) = LoggedIn;
 
-  factory LoginModel.error({required String errorMessage, required bool connectToTmsVad}) = Error;
+  factory error({required String errorMessage, required bool connectToTmsVad}) = Error;
 
   @override
   bool operator ==(Object other) =>

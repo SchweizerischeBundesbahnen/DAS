@@ -47,7 +47,7 @@ enum SignalFunction {
   trackEndSignal, // from NSP
   unknown;
 
-  factory SignalFunction.from(String value) => values.firstWhere(
+  factory from(String value) => values.firstWhere(
     (e) => e.name.toLowerCase() == value.toLowerCase(),
     orElse: () => .unknown,
   );

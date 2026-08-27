@@ -5,7 +5,7 @@ class SpRequestDto({super.type = elementType, super.attributes, super.children, 
     extends SferaXmlElementDto {
   static const String elementType = 'SP_Request';
 
-  factory SpRequestDto.create({
+  factory create({
     required String id,
     required String versionMajor,
     required String versionMinor,

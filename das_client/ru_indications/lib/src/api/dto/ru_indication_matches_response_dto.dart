@@ -5,8 +5,7 @@ part 'ru_indication_matches_response_dto.g.dart';
 
 @JsonSerializable()
 class RuIndicationMatchesResponseDto({required final List<RuIndicationLocationDto> data}) {
-  factory RuIndicationMatchesResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$RuIndicationMatchesResponseDtoFromJson(json);
+  factory fromJson(Map<String, dynamic> json) => _$RuIndicationMatchesResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$RuIndicationMatchesResponseDtoToJson(this);
 }

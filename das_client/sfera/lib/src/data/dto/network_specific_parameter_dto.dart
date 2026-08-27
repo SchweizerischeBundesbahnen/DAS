@@ -34,7 +34,7 @@ class NetworkSpecificParameterDto({super.type = elementType, super.attributes, s
     extends SferaXmlElementDto {
   static const String elementType = 'NetworkSpecificParameter';
 
-  factory NetworkSpecificParameterDto.from({
+  factory from({
     required XmlElement? parent,
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,

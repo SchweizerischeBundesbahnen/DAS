@@ -8,7 +8,7 @@ class AdditionalSpeedRestrictionData({
 }) extends JourneyPoint {
   this : assert(restrictions.isNotEmpty), super(dataType: .additionalSpeedRestriction);
 
-  factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
+  factory start(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
     final startRestriction = restrictions.getLowestByOrderFrom;
     return AdditionalSpeedRestrictionData(
@@ -18,7 +18,7 @@ class AdditionalSpeedRestrictionData({
     );
   }
 
-  factory AdditionalSpeedRestrictionData.end(List<AdditionalSpeedRestriction> restrictions) {
+  factory end(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
     final endRestriction = restrictions.getHighestByOrderTo;
     return AdditionalSpeedRestrictionData(

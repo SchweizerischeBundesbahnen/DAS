@@ -5,7 +5,5 @@ part 'settings_response_dto.g.dart';
 
 @JsonSerializable()
 class SettingsResponseDto({required final List<SettingsDto> data}) {
-  factory SettingsResponseDto.fromJson(Map<String, dynamic> json) {
-    return _$SettingsResponseDtoFromJson(json);
-  }
+  factory fromJson(Map<String, dynamic> json) => _$SettingsResponseDtoFromJson(json);
 }

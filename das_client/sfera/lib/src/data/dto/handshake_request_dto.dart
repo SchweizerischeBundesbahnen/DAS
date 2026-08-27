@@ -6,7 +6,7 @@ class HandshakeRequestDto({super.type = elementType, super.attributes, super.chi
     extends SferaXmlElementDto {
   static const String elementType = 'DAS_HandshakeRequest';
 
-  factory HandshakeRequestDto.create(
+  factory create(
     Iterable<DasOperatingModesSupportedDto> supportedOperatingModes, {
     bool? statusReportsEnabled,
     String? additionalInfo,
