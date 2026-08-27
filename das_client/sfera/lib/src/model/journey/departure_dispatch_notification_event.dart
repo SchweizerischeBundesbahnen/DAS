@@ -1,8 +1,4 @@
-class DepartureDispatchNotificationEvent {
-  const DepartureDispatchNotificationEvent({required this.type});
-
-  final DepartureDispatchNotificationType type;
-
+class DepartureDispatchNotificationEvent({required final DepartureDispatchNotificationType type}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

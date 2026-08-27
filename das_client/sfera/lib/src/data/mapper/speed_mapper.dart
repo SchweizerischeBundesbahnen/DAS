@@ -14,9 +14,7 @@ import 'package:sfera/src/data/mapper/mapper_utils.dart';
 final _log = Logger('SpeedMapper');
 
 /// Used to map data from SFERA to domain model speeds.
-class SpeedMapper {
-  SpeedMapper._();
-
+class SpeedMapper._() {
   /// Maps list of SFERA model [VelocityDto] to [TrainSeriesSpeed]
   static List<TrainSeriesSpeed>? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;

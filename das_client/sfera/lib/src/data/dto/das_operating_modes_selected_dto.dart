@@ -3,10 +3,9 @@ import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class DasOperatingModesSelectedDto extends SferaXmlElementDto {
+class DasOperatingModesSelectedDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'DAS_OperatingModeSelected';
-
-  DasOperatingModesSelectedDto({super.type = elementType, super.attributes, super.children, super.value});
 
   DasArchitectureDto get architecture => XmlEnum.valueOf(DasArchitectureDto.values, attributes['DAS_architecture']!)!;
 

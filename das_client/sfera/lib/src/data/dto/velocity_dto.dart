@@ -1,10 +1,9 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
 
-class VelocityDto extends SferaXmlElementDto {
+class VelocityDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'v';
-
-  VelocityDto({super.type = elementType, super.attributes, super.children, super.value});
 
   TrainSeries get trainSeries => TrainSeries.from(attributes['trainSeries']!);
 

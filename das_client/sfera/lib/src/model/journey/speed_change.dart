@@ -1,16 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class SpeedChange extends JourneyPoint {
-  const SpeedChange({
-    required super.order,
-    required super.kilometre,
-    this.text,
-    super.lastModificationDate,
-    super.lastModificationType,
-  }) : super(dataType: .speedChange);
-
-  final String? text;
+class const SpeedChange({
+  required super.order,
+  required super.kilometre,
+  final String? text,
+  super.lastModificationDate,
+  super.lastModificationType,
+}) extends JourneyPoint {
+  this : super(dataType: .speedChange);
 
   @override
   String toString() {

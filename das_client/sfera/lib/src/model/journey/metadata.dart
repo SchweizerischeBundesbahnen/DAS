@@ -5,52 +5,38 @@ import 'package:meta/meta.dart';
 import 'package:sfera/component.dart';
 
 @sealed
-@immutable
-class Metadata {
-  Metadata({
-    this.trainIdentification,
-    this.signaledPosition,
-    this.delay,
-    this.brakeSeries,
-    this.additionalSpeedRestrictions = const [],
-    this.nonStandardTrackEquipmentSegments = const [],
-    this.bracketStationSegments = const [],
-    this.advisedSpeedSegments = const [],
-    this.shortTermChanges = const [],
-    this.availableBrakeSeries = const {},
-    this.communicationNetworkChanges = const [],
-    this.lineFootNoteLocations = const {},
-    this.radioContactLists = const [],
-    this.levelCrossingGroups = const [],
-    this.suspiciousSegments = const [],
-    DateTime? timestamp,
-    bool? anyOperationalArrivalDepartureTimes,
-    SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
-    SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
-  }) : timestamp = timestamp ?? DateTime.now(),
-       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false,
-       lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
-       calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
-
-  final TrainIdentification? trainIdentification;
-  final DateTime timestamp;
+class Metadata({
+  final TrainIdentification? trainIdentification,
+  final Delay? delay,
+  final BrakeSeries? brakeSeries,
+  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions = const [],
+  final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments = const [],
+  final List<BracketStationSegment> bracketStationSegments = const [],
+  final Iterable<AdvisedSpeedSegment> advisedSpeedSegments = const [],
+  final Iterable<ShortTermChange> shortTermChanges = const [],
+  final Set<BrakeSeries> availableBrakeSeries = const {},
+  final List<CommunicationNetworkChange> communicationNetworkChanges = const [],
+  final Map<String, List<String>> lineFootNoteLocations = const {},
+  final Iterable<RadioContactList> radioContactLists = const [],
+  final List<LevelCrossingGroup> levelCrossingGroups = const [],
+  final List<SuspiciousSegment> suspiciousSegments = const [],
+  this.signaledPosition,
+  DateTime? timestamp,
+  bool? anyOperationalArrivalDepartureTimes,
+  SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
+  SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
+}) {
+  this
+    : timestamp = timestamp ?? DateTime.now(),
+      anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false,
+      lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
+      calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
 
   /// The position received by TMS VAD within a related train information event.
   final SignaledPosition? signaledPosition;
-  final Delay? delay;
-  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
+
+  final DateTime timestamp;
   final bool anyOperationalArrivalDepartureTimes;
-  final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
-  final List<CommunicationNetworkChange> communicationNetworkChanges;
-  final List<BracketStationSegment> bracketStationSegments;
-  final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
-  final Iterable<ShortTermChange> shortTermChanges;
-  final BrakeSeries? brakeSeries;
-  final Set<BrakeSeries> availableBrakeSeries;
-  final Map<String, List<String>> lineFootNoteLocations;
-  final Iterable<RadioContactList> radioContactLists;
   final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
   final SplayTreeMap<int, SingleSpeed?> calculatedSpeeds;
-  final List<LevelCrossingGroup> levelCrossingGroups;
-  final List<SuspiciousSegment> suspiciousSegments;
 }

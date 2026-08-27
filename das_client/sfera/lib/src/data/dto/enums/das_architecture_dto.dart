@@ -1,13 +1,6 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
-enum DasArchitectureDto implements XmlEnum {
+enum DasArchitectureDto({@override required final String xmlValue}) implements XmlEnum {
   groundAdviceCalculation(xmlValue: 'GroundAdviceCalculation'),
   boardAdviceCalculation(xmlValue: 'BoardAdviceCalculation');
-
-  const DasArchitectureDto({
-    required this.xmlValue,
-  });
-
-  @override
-  final String xmlValue;
 }

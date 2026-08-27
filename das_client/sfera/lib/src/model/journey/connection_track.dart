@@ -1,11 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class ConnectionTrack extends JourneyPoint {
-  const ConnectionTrack({required super.order, required super.kilometre, this.text})
-    : super(dataType: .connectionTrack);
-
-  final String? text;
+class const ConnectionTrack({required super.order, required super.kilometre, final String? text}) extends JourneyPoint {
+  this : super(dataType: .connectionTrack);
 
   @override
   String toString() {

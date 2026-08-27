@@ -1,9 +1,7 @@
 typedef StartEndInt = ({int? start, int? end});
 
 /// compares two ranges with start and end int
-class StartEndIntComparator {
-  StartEndIntComparator._();
-
+class StartEndIntComparator._() {
   static int compare(StartEndInt a, StartEndInt b) {
     // START TO START comparison
     if (a.start != null && b.start != null) {

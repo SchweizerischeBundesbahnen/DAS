@@ -2,16 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class GroupedJourneyPoint extends JourneyPoint {
-  const GroupedJourneyPoint({
-    required super.dataType,
-    required super.order,
-    required super.kilometre,
-    required this.groupedElements,
-  });
-
-  final List<JourneyPoint> groupedElements;
-
+class const GroupedJourneyPoint({
+  required super.dataType,
+  required super.order,
+  required super.kilometre,
+  required final List<JourneyPoint> groupedElements,
+}) extends JourneyPoint {
   @override
   String toString() {
     return 'GroupedJourneyPoint{order: $order, kilometre: $kilometre, groupedElements: $groupedElements}';

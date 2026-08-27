@@ -1,13 +1,6 @@
-sealed class Contact {
-  const Contact({required this.contactIdentifier, this.contactRole});
+sealed class Contact({required final String contactIdentifier, final String? contactRole});
 
-  final String contactIdentifier;
-  final String? contactRole;
-}
-
-class MainContact extends Contact {
-  MainContact({required super.contactIdentifier, super.contactRole});
-
+class MainContact({required super.contactIdentifier, super.contactRole}) extends Contact {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -25,9 +18,7 @@ class MainContact extends Contact {
   }
 }
 
-class SelectiveContact extends Contact {
-  SelectiveContact({required super.contactIdentifier, super.contactRole});
-
+class SelectiveContact({required super.contactIdentifier, super.contactRole}) extends Contact {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

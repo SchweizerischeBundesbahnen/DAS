@@ -30,10 +30,9 @@ import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_train_run_rerouting_dto.dart';
 import 'package:xml/xml.dart';
 
-class NetworkSpecificParameterDto extends SferaXmlElementDto {
+class NetworkSpecificParameterDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'NetworkSpecificParameter';
-
-  NetworkSpecificParameterDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory NetworkSpecificParameterDto.from({
     required XmlElement? parent,

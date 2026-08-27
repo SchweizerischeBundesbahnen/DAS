@@ -2,14 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class CABSignaling extends JourneyPoint {
-  const CABSignaling({
-    required super.order,
-    required super.kilometre,
-    this.isStart = false,
-  }) : super(dataType: .cabSignaling);
-
-  final bool isStart;
+class const CABSignaling({
+  required super.order,
+  required super.kilometre,
+  final bool isStart = false,
+}) extends JourneyPoint {
+  this : super(dataType: .cabSignaling);
 
   bool get isEnd => !isStart;
 

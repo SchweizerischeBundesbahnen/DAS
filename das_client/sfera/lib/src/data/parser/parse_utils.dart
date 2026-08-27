@@ -1,4 +1,4 @@
-class ParseUtils {
+class ParseUtils._() {
   static int? tryParseInt(String? value) {
     return value != null ? int.tryParse(value) : null;
   }

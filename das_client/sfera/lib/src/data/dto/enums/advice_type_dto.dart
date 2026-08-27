@@ -1,6 +1,6 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
-enum AdviceTypeDto implements XmlEnum {
+enum AdviceTypeDto({@override required final String xmlValue}) implements XmlEnum {
   stopAdvice(xmlValue: 'StopAdvice'),
   accelerationAdvice(xmlValue: 'AccelerationAdvice'),
   constantspeedAdvice(xmlValue: 'ConstantspeedAdvice'),
@@ -11,11 +11,4 @@ enum AdviceTypeDto implements XmlEnum {
   departureAdvice(xmlValue: 'DepartureAdvice'),
   textAdvice(xmlValue: 'TextAdvice'),
   deleteAdvice(xmlValue: 'DeleteAdvice');
-
-  const AdviceTypeDto({
-    required this.xmlValue,
-  });
-
-  @override
-  final String xmlValue;
 }

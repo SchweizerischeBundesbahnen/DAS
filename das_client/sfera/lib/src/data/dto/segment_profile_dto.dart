@@ -8,10 +8,9 @@ import 'package:sfera/src/data/dto/sp_context_information_dto.dart';
 import 'package:sfera/src/data/dto/sp_points_dto.dart';
 import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 
-class SegmentProfileDto extends SferaXmlElementDto {
+class SegmentProfileDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SegmentProfile';
-
-  SegmentProfileDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get versionMajor => attributes['SP_VersionMajor']!;
 

@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
 
-class Format {
-  const Format._();
-
+class Format._() {
   static String sferaDate(DateTime date) {
     final localDate = date.toLocal();
     final dateFormat = DateFormat('yyyy-MM-dd');

@@ -4,16 +4,13 @@ import 'package:sfera/component.dart';
 
 @sealed
 @immutable
-class CommunicationNetworkChange extends JourneyPoint {
-  const CommunicationNetworkChange({
-    required this.communicationNetworkType,
-    required super.order,
-    this.isServicePoint = false,
-    super.kilometre = const [],
-  }) : super(dataType: .communicationNetworkChannel);
-
-  final CommunicationNetworkType communicationNetworkType;
-  final bool isServicePoint;
+class const CommunicationNetworkChange({
+  required final CommunicationNetworkType communicationNetworkType,
+  required super.order,
+  final bool isServicePoint = false,
+  super.kilometre = const [],
+}) extends JourneyPoint {
+  this : super(dataType: .communicationNetworkChannel);
 
   @override
   bool operator ==(Object other) =>

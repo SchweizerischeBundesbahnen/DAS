@@ -2,10 +2,9 @@ import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 
-class TrainIdentificationDto extends SferaXmlElementDto {
+class TrainIdentificationDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'TrainIdentification';
-
-  TrainIdentificationDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory TrainIdentificationDto.create({OtnIdDto? otnId}) {
     final trainIdentification = TrainIdentificationDto();

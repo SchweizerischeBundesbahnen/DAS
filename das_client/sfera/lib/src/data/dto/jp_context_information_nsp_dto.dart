@@ -6,10 +6,9 @@ import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 
-class JpContextInformationNspDto extends NspDto {
+class JpContextInformationNspDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends NspDto {
   static const String elementType = 'JP_ContextInformation_NSPs';
-
-  JpContextInformationNspDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory JpContextInformationNspDto.from({
     Map<String, String>? attributes,

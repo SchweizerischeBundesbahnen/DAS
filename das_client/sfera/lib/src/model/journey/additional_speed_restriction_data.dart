@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class AdditionalSpeedRestrictionData extends JourneyPoint {
-  AdditionalSpeedRestrictionData({required this.restrictions, required super.order, required super.kilometre})
-    : assert(restrictions.isNotEmpty),
-      super(dataType: .additionalSpeedRestriction);
+class AdditionalSpeedRestrictionData({
+  required final List<AdditionalSpeedRestriction> restrictions,
+  required super.order,
+  required super.kilometre,
+}) extends JourneyPoint {
+  this : assert(restrictions.isNotEmpty), super(dataType: .additionalSpeedRestriction);
 
   factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
@@ -25,8 +27,6 @@ class AdditionalSpeedRestrictionData extends JourneyPoint {
       kilometre: [endRestriction.kmTo],
     );
   }
-
-  final List<AdditionalSpeedRestriction> restrictions;
 
   double get kmFrom => restrictions.getLowestByOrderFrom.kmFrom;
 

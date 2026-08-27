@@ -1,6 +1,6 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
-enum ReasonCodeDto implements XmlEnum {
+enum ReasonCodeDto({@override required final String xmlValue}) implements XmlEnum {
   /// host train is following a conflicting (slower) train
   followTrain(xmlValue: 'followTrain'),
 
@@ -55,11 +55,4 @@ enum ReasonCodeDto implements XmlEnum {
   nationalUse8(xmlValue: 'nationalUse8'),
   nationalUse9(xmlValue: 'nationalUse9'),
   nationalUse10(xmlValue: 'nationalUse10');
-
-  const ReasonCodeDto({
-    required this.xmlValue,
-  });
-
-  @override
-  final String xmlValue;
 }

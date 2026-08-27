@@ -3,7 +3,6 @@ import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
@@ -13,20 +12,13 @@ import 'package:sfera/src/model/otn_id.dart';
 
 final _log = Logger('HandshakeTask');
 
-class HandshakeTask extends SferaTask {
-  HandshakeTask({
-    required this._mqttService,
-    required this._sferaRepo,
-    required this.otnId,
-    required this.isDriver,
-    super.timeout,
-  });
-
-  final SferaRepository _sferaRepo;
-  final MqttService _mqttService;
-  final OtnId otnId;
-  final bool isDriver;
-
+class HandshakeTask({
+  required final MqttService _mqttService,
+  required final SferaRepository _sferaRepo,
+  required final OtnId otnId,
+  required final bool isDriver,
+  super.timeout,
+}) extends SferaTask {
   late TaskCompleted _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
 
@@ -44,11 +36,11 @@ class HandshakeTask extends SferaTask {
 
     _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain isDriver=$isDriver');
     final operationModes = [
-      DasOperatingModesSupportedDto.create(DasDrivingModeDto.readOnly, .boardAdviceCalculation, .connected),
+      DasOperatingModesSupportedDto.create(.readOnly, .boardAdviceCalculation, .connected),
     ];
     if (isDriver) {
       operationModes.add(
-        DasOperatingModesSupportedDto.create(DasDrivingModeDto.dasNotConnected, .boardAdviceCalculation, .connected),
+        DasOperatingModesSupportedDto.create(.dasNotConnected, .boardAdviceCalculation, .connected),
       );
     }
     final handshakeRequest = HandshakeRequestDto.create(

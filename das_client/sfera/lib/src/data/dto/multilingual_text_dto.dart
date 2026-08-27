@@ -1,10 +1,9 @@
 import 'package:core_data/component.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class MultilingualTextDto extends SferaXmlElementDto {
+class MultilingualTextDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'MultilingualText';
-
-  MultilingualTextDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get language => attributes['language']!;
 

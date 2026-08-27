@@ -3,26 +3,16 @@ import 'dart:math';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
-  DraftAdvisedSpeedSegment({
-    required this.type,
-    required this._previousSegmentEndOrder,
-    required this._nextSegmentStartOrder,
-    this.speed,
-    this._startOrder,
-    this._endOrder,
-    Set<AdvisedSpeedSegmentHint> additionalHints = const <AdvisedSpeedSegmentHint>{},
-  }) : additionalHints = {...additionalHints};
-
-  int? _startOrder;
-  int? _endOrder;
-
-  final int _previousSegmentEndOrder;
-  final int _nextSegmentStartOrder;
-
-  final DraftAdvisedSpeedType type;
-
-  final SingleSpeed? speed;
+class DraftAdvisedSpeedSegment({
+  required final DraftAdvisedSpeedType type,
+  required final int _previousSegmentEndOrder,
+  required final int _nextSegmentStartOrder,
+  final SingleSpeed? speed,
+  var int? _startOrder,
+  var int? _endOrder,
+  Set<AdvisedSpeedSegmentHint> additionalHints = const <AdvisedSpeedSegmentHint>{},
+}) implements Comparable<DraftAdvisedSpeedSegment> {
+  this : additionalHints = {...additionalHints};
 
   bool _isStartAmended = false;
   bool _isEndAmended = false;

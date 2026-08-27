@@ -16,22 +16,14 @@ import 'package:sfera/src/model/otn_id.dart';
 
 final _log = Logger('RequestTrainCharacteristicsTask');
 
-class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
-  RequestTrainCharacteristicsTask({
-    required this._mqttService,
-    required this._sferaRepo,
-    required this._sferaDatabaseRepository,
-    required this.otnId,
-    required this.journeyProfile,
-    super.timeout,
-  });
-
-  final MqttService _mqttService;
-  final OtnId otnId;
-  final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRepository _sferaRepo;
-  final JourneyProfileDto journeyProfile;
-
+class RequestTrainCharacteristicsTask({
+  required final MqttService _mqttService,
+  required final SferaRepository _sferaRepo,
+  required final SferaLocalDatabaseService _sferaDatabaseRepository,
+  required final OtnId otnId,
+  required final JourneyProfileDto journeyProfile,
+  super.timeout,
+}) extends SferaTask<List<TrainCharacteristicsDto>> {
   late TaskCompleted<List<TrainCharacteristicsDto>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
 

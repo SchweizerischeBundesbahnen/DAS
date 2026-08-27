@@ -6,10 +6,9 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 
-class JourneyProfileDto extends SferaXmlElementDto {
+class JourneyProfileDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'JourneyProfile';
-
-  JourneyProfileDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get version => attributes['JP_Version']!;
 

@@ -74,9 +74,7 @@ export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/sfera_db_metrics.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
-class SferaComponent {
-  const SferaComponent._();
-
+class SferaComponent._() {
   static SferaRepository createSferaRepository({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,

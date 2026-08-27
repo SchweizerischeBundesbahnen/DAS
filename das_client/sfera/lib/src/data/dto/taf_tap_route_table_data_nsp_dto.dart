@@ -3,10 +3,9 @@ import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/parser/parse_utils.dart';
 
-class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
+class TafTapRouteTableDataNspDto({super.type, super.attributes, super.children, super.value})
+    extends TafTapLocationNspDto {
   static const String groupNameValue = 'routeTableData';
-
-  TafTapRouteTableDataNspDto({super.type, super.attributes, super.children, super.value});
 
   StationSign? get stationSign1 =>
       children.whereNspWithName('stationSign1').map((it) => StationSign.from(it.nspValue)).firstOrNull;

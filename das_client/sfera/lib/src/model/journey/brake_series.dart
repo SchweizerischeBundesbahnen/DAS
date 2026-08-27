@@ -3,15 +3,10 @@ import 'package:sfera/src/model/journey/train_series.dart';
 
 @sealed
 @immutable
-class BrakeSeries {
-  const BrakeSeries({
-    required this.trainSeries,
-    required this.brakedWeightPercentage,
-  });
-
-  final TrainSeries trainSeries;
-  final int brakedWeightPercentage;
-
+class const BrakeSeries({
+  required final TrainSeries trainSeries,
+  required final int brakedWeightPercentage,
+}) {
   /// returns train series name + braked weight percentage (ie. R150)
   String get name => '${trainSeries.name}$brakedWeightPercentage';
 

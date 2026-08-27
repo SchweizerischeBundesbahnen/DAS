@@ -1,16 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class TramArea extends JourneyPoint {
-  const TramArea({
-    required super.order,
-    required super.kilometre,
-    required this.endKilometre,
-    required this.amountTramSignals,
-  }) : super(dataType: .tramArea);
-
-  final double endKilometre;
-  final int amountTramSignals;
+class const TramArea({
+  required super.order,
+  required super.kilometre,
+  required final double endKilometre,
+  required final int amountTramSignals,
+}) extends JourneyPoint {
+  this : super(dataType: .tramArea);
 
   @override
   String toString() {

@@ -7,10 +7,8 @@ import 'package:sfera/src/data/dto/signal_nsp_dto.dart';
 import 'package:sfera/src/data/dto/signal_physical_characteristics_dto.dart';
 import 'package:sfera/src/data/parser/parse_utils.dart';
 
-class SignalDto extends SferaXmlElementDto {
+class SignalDto({super.type = elementType, super.attributes, super.children, super.value}) extends SferaXmlElementDto {
   static const String elementType = 'Signal';
-
-  SignalDto({super.type = elementType, super.attributes, super.children, super.value});
 
   SignalIdDto get id => children.whereType<SignalIdDto>().first;
 

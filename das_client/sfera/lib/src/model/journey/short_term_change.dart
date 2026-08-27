@@ -1,15 +1,11 @@
 import 'package:sfera/component.dart';
 
 /// Short to medium term changes before journey departure (< 27h before journey departure).
-sealed class ShortTermChange extends Segment {
-  const ShortTermChange({
-    required int startOrder,
-    required int endOrder,
-    required this.startData,
-  }) : super(startOrder: startOrder, endOrder: endOrder);
-
-  final ServicePoint startData;
-
+sealed class const ShortTermChange({
+  required super.startOrder,
+  required super.endOrder,
+  required final ServicePoint startData,
+}) extends Segment {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -26,25 +22,21 @@ sealed class ShortTermChange extends Segment {
   @override
   String toString() {
     return 'ShortTermChange{'
-        'startData: $startData}'
+        'startData: $startData'
         ', startOrder: $startOrder'
         ', endOrder: $endOrder'
         '}';
   }
 }
 
-class StopToPassChange extends ShortTermChange {
-  const StopToPassChange({required super.startOrder, required super.endOrder, required super.startData});
-}
+class const StopToPassChange({required super.startOrder, required super.endOrder, required super.startData})
+    extends ShortTermChange;
 
-class PassToStopChange extends ShortTermChange {
-  const PassToStopChange({required super.startOrder, required super.endOrder, required super.startData});
-}
+class const PassToStopChange({required super.startOrder, required super.endOrder, required super.startData})
+    extends ShortTermChange;
 
-class TrainRunReroutingChange extends ShortTermChange {
-  const TrainRunReroutingChange({required super.startOrder, required super.endOrder, required super.startData});
-}
+class const TrainRunReroutingChange({required super.startOrder, required super.endOrder, required super.startData})
+    extends ShortTermChange;
 
-class EndDestinationChange extends ShortTermChange {
-  const EndDestinationChange({required super.startOrder, required super.endOrder, required super.startData});
-}
+class const EndDestinationChange({required super.startOrder, required super.endOrder, required super.startData})
+    extends ShortTermChange;

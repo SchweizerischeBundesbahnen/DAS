@@ -4,51 +4,32 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
 
-class ServicePoint extends JourneyPoint {
-  const ServicePoint({
-    required this.name,
-    required this.abbreviation,
-    required this.locationCode,
-    required super.order,
-    required super.kilometre,
-    super.localSpeeds,
-    this.mandatoryStop = false,
-    this.isStop = false,
-    this.isStation = false,
-    this.betweenBrackets = false,
-    this.isAdditional = false,
-    this.bracketMainStation,
-    this.graduatedSpeedInfo,
-    this.decisiveGradient,
-    this.arrivalDepartureTime,
-    this.stationSign1,
-    this.stationSign2,
-    this.trackGroup,
-    this.properties = const [],
-    this.localRegulationSections = const [],
-    this.departureAuthorization,
-    super.lastModificationDate,
-    super.lastModificationType,
-  }) : super(dataType: .servicePoint);
-
-  final String name;
-  final String abbreviation;
-  final bool mandatoryStop;
-  final bool isStop;
-  final bool isStation;
-  final bool isAdditional;
-  final bool betweenBrackets;
-  final BracketMainStation? bracketMainStation;
-  final List<TrainSeriesSpeed>? graduatedSpeedInfo;
-  final DecisiveGradient? decisiveGradient;
-  final ArrivalDepartureTime? arrivalDepartureTime;
-  final StationSign? stationSign1;
-  final StationSign? stationSign2;
-  final String? trackGroup;
-  final List<StationProperty> properties;
-  final List<LocalRegulationSection> localRegulationSections;
-  final DepartureAuthorization? departureAuthorization;
-  final String locationCode;
+class const ServicePoint({
+  required final String name,
+  required final String abbreviation,
+  required final String locationCode,
+  required super.order,
+  required super.kilometre,
+  super.localSpeeds,
+  final bool mandatoryStop = false,
+  final bool isStop = false,
+  final bool isStation = false,
+  final bool betweenBrackets = false,
+  final bool isAdditional = false,
+  final BracketMainStation? bracketMainStation,
+  final List<TrainSeriesSpeed>? graduatedSpeedInfo,
+  final DecisiveGradient? decisiveGradient,
+  final ArrivalDepartureTime? arrivalDepartureTime,
+  final StationSign? stationSign1,
+  final StationSign? stationSign2,
+  final String? trackGroup,
+  final List<StationProperty> properties = const [],
+  final List<LocalRegulationSection> localRegulationSections = const [],
+  final DepartureAuthorization? departureAuthorization,
+  super.lastModificationDate,
+  super.lastModificationType,
+}) extends JourneyPoint {
+  this : super(dataType: .servicePoint);
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BrakeSeries? brakeSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];

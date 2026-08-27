@@ -23,20 +23,12 @@ import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
 
-class _MapperData {
-  _MapperData(this.segmentProfile, this.segmentIndex, this.kilometreMap);
-
-  final SegmentProfileDto segmentProfile;
-  final int segmentIndex;
-  final KilometreMap kilometreMap;
-}
+class _MapperData(final SegmentProfileDto segmentProfile, final int segmentIndex, final KilometreMap kilometreMap);
 
 final _log = Logger('SegmentProfileMapper');
 
 /// Used to map journey data from a SFERA segment profile.
-class SegmentProfileMapper {
-  SegmentProfileMapper._();
-
+class SegmentProfileMapper._() {
   static const String invalidSpId = '';
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';

@@ -1,15 +1,13 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/format.dart';
 
-class OtnIdDto extends SferaXmlElementDto {
+class OtnIdDto({super.type = elementType, super.attributes, super.children, super.value}) extends SferaXmlElementDto {
   static const String elementType = 'OTN_ID';
 
   static const String _companyAttribute = 'teltsi_Company';
   static const String _operationalTrainNumberAttribute = 'teltsi_OperationalTrainNumber';
   static const String _startDateAttribute = 'teltsi_StartDate';
   static const String _additionalTrainNumberAttribute = 'AdditionalTrainNumber';
-
-  OtnIdDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory OtnIdDto.create(
     String company,

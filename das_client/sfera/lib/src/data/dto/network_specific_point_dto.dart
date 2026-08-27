@@ -5,10 +5,9 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/track_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/whistle_network_specific_point_dto.dart';
 
-class NetworkSpecificPointDto extends NspDto {
+class NetworkSpecificPointDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends NspDto {
   static const String elementType = 'NetworkSpecificPoint';
-
-  NetworkSpecificPointDto({super.type = elementType, super.attributes, super.children, super.value});
 
   double get location => double.parse(attributes['location']!);
 

@@ -2,10 +2,9 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/stop_pass_change_dto.dart';
 import 'package:sfera/src/data/dto/train_run_rerouting_change_dto.dart';
 
-abstract class ChangeDto extends SferaXmlElementDto {
+abstract class ChangeDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'change';
-
-  ChangeDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory ChangeDto.from({
     Map<String, String>? attributes,

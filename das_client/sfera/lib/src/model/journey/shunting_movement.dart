@@ -1,12 +1,10 @@
 import 'package:core_data/component.dart';
 
-class ShuntingMovement extends JourneyAnnotation {
-  const ShuntingMovement({
-    required super.order,
-    this.isStart = true,
-  }) : super(dataType: .shuntingMovement);
-
-  final bool isStart;
+class const ShuntingMovement({
+  required super.order,
+  final bool isStart = true,
+}) extends JourneyAnnotation {
+  this : super(dataType: .shuntingMovement);
 
   bool get isEnd => !isStart;
 

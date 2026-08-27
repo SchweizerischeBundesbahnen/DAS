@@ -1,9 +1,8 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class TcRequestDto extends SferaXmlElementDto {
+class TcRequestDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'TC_Request';
-
-  TcRequestDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory TcRequestDto.create({
     required String id,

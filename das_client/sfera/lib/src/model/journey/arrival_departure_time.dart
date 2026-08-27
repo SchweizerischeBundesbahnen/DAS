@@ -1,28 +1,17 @@
 import 'package:meta/meta.dart';
 
+/// Departure and arrival times are private since the logic of figuring out whether a time is planned or
+/// operational from the ambiguous times are handled in here
 @sealed
 @immutable
-class ArrivalDepartureTime {
-  const ArrivalDepartureTime({
-    this._ambiguousDepartureTime,
-    this._plannedDepartureTime,
-    this._ambiguousArrivalTime,
-    this._plannedArrivalTime,
-    this.plannedReleasedTime,
-    this.fixedPointRelevance = false,
-  });
-
-  /// these are private since the logic of figuring out whether a time is planned or operational from the
-  /// ambiguous times are handled in here
-  final DateTime? _ambiguousDepartureTime;
-  final DateTime? _ambiguousArrivalTime;
-  final DateTime? _plannedDepartureTime;
-  final DateTime? _plannedArrivalTime;
-
-  final DateTime? plannedReleasedTime;
-
-  final bool fixedPointRelevance;
-
+class const ArrivalDepartureTime({
+  final DateTime? _ambiguousDepartureTime,
+  final DateTime? _plannedDepartureTime,
+  final DateTime? _ambiguousArrivalTime,
+  final DateTime? _plannedArrivalTime,
+  final DateTime? plannedReleasedTime,
+  final bool fixedPointRelevance = false,
+}) {
   bool get hasAnyTime =>
       operationalArrivalTime != null ||
       plannedArrivalTime != null ||

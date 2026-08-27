@@ -1,7 +1,5 @@
-class SferaDbMetrics {
-  SferaDbMetrics({required this.jpCount, required this.spCount, required this.tcCount});
-
-  final int jpCount;
-  final int spCount;
-  final int tcCount;
-}
+class SferaDbMetrics({
+  required final int jpCount,
+  required final int spCount,
+  required final int tcCount,
+});
