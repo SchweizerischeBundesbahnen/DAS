@@ -148,9 +148,7 @@ void main() {
   });
 }
 
-class _TestSegment extends Segment {
-  const _TestSegment({
-    super.startOrder,
-    super.endOrder,
-  });
-}
+class const _TestSegment({
+  super.startOrder,
+  super.endOrder,
+}) extends Segment;

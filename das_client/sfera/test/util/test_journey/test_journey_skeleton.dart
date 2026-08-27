@@ -6,21 +6,13 @@ import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 
 import 'test_journey.dart';
 
-class TestJourneySkeleton {
-  const TestJourneySkeleton({
-    required this.journeyName,
-    required this.journeyProfile,
-    required this.segmentProfiles,
-    required this.trainCharacteristics,
-    this.journeyEvent,
-  });
-
-  final String journeyName;
-  final JourneyProfileDto journeyProfile;
-  final List<SegmentProfileDto> segmentProfiles;
-  final List<TrainCharacteristicsDto> trainCharacteristics;
-  final TestJourneyEvent? journeyEvent;
-
+class const TestJourneySkeleton({
+  required final String journeyName,
+  required final JourneyProfileDto journeyProfile,
+  required final List<SegmentProfileDto> segmentProfiles,
+  required final List<TrainCharacteristicsDto> trainCharacteristics,
+  final TestJourneyEvent? journeyEvent,
+}) {
   bool validate() =>
       journeyProfile.validate() &&
       segmentProfiles.every((sP) => sP.validate()) &&
@@ -28,15 +20,10 @@ class TestJourneySkeleton {
       (journeyEvent?.payload.validate() ?? true);
 }
 
-class TestJourneyEvent {
-  const TestJourneyEvent({
-    required this.name,
-    required this.payload,
-  });
-
-  final String name;
-  final G2bEventPayloadDto payload;
-}
+class const TestJourneyEvent({
+  required final String name,
+  required final G2bEventPayloadDto payload,
+});
 
 extension TestJourneySkeletonX on TestJourneySkeleton {
   TestJourney toTestJourney() {

@@ -1,22 +1,16 @@
 import 'package:connectivity_x/component.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MockConnectivityManager implements ConnectivityManager {
-  MockConnectivityManager();
-
+class MockConnectivityManager() implements ConnectivityManager {
   bool wifiActive = false;
   DateTime lastConnectedTime = DateTime.now();
   BehaviorSubject<bool> connectivitySubject = BehaviorSubject.seeded(true);
 
   @override
-  bool isConnected() {
-    return connectivitySubject.value;
-  }
+  bool isConnected() => connectivitySubject.value;
 
   @override
-  bool isWifiActive() {
-    return wifiActive;
-  }
+  bool isWifiActive() => wifiActive;
 
   @override
   DateTime? get lastConnected => lastConnectedTime;
