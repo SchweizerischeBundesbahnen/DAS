@@ -149,6 +149,7 @@ preload:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
     accessSecret: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
+    region: ${PRELOAD_BUCKET_REGION}
 
 trainjourneyplan:
   kafka:

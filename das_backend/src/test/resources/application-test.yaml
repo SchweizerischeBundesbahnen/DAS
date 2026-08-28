@@ -64,6 +64,7 @@ preload:
     bucketUrl: bucketUrl
     accessKey: accessKey
     accessSecret: accessSecret
+    region: region
 
 trainjourneyplan:
   train-clean-up:
