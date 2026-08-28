@@ -12,6 +12,7 @@ We prefer to use the following coding style principles:
 * Define private methods (e.g., `_header()`) inside widgets instead of creating separate private widget classes (e.g., `_Header()`) in the same file.
 * We create public widgets if they are used in multiple places across the application or if readability (ex. Widget to big) is improved over private methods.
 * We prefer using `_widget` as a naming convention instead of prefixing with build (e.g., `_buildWidget`).
+* Use the `logging` package instead of `print`.
 
 ## Formatting
 
