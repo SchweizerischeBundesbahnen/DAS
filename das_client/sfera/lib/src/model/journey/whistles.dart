@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class Whistle extends JourneyPoint {
-  const Whistle({required super.order, required super.kilometre}) : super(dataType: .whistle);
+class const Whistle({required super.order, required super.kilometre}) extends JourneyPoint {
+  this : super(dataType: .whistle);
 
   @override
   String toString() {

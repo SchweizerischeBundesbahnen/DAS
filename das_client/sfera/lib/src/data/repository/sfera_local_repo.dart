@@ -3,9 +3,7 @@ import 'dart:core';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-abstract class SferaLocalRepo {
-  const SferaLocalRepo._();
-
+abstract class SferaLocalRepo._() {
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate});
 
   Future<Journey?> getJourney({required String company, required String trainNumber, required DateTime startDate});

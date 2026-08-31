@@ -4,10 +4,8 @@ import 'package:http_x/component.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class HttpException {
-  const HttpException(this.request, this.response);
-
-  factory HttpException.fromResponse(BaseResponse response) {
+class const HttpException(final Request request, final BaseResponse response) {
+  factory fromResponse(BaseResponse response) {
     final request = response.request as Request;
     return switch (response.statusCode) {
       // Client errors
@@ -23,9 +21,6 @@ class HttpException {
       _ => HttpException(request, response),
     };
   }
-
-  final Request request;
-  final BaseResponse response;
 
   /// The URL to which the request was sent.
   String get url => request.url.toString();

@@ -5,15 +5,10 @@ import 'package:http_x/component.dart';
 import 'package:ru_indications/src/api/dto/ru_indication_matches_response_dto.dart';
 import 'package:ru_indications/src/api/matches/matches_request_body.dart';
 
-class MatchesRequest {
-  const MatchesRequest({
-    required this.httpClient,
-    required this.baseUrl,
-  });
-
-  final Client httpClient;
-  final String baseUrl;
-
+class MatchesRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+}) {
   Future<MatchesResponse> call({
     required String company,
     required int operationalTrainNumber,
@@ -40,10 +35,11 @@ class MatchesRequest {
   }
 }
 
-class MatchesResponse {
-  const MatchesResponse({required this.headers, required this.body});
-
-  factory MatchesResponse.fromHttpResponse(Response response) {
+class MatchesResponse({
+  required final Map<String, String> headers,
+  required final RuIndicationMatchesResponseDto body,
+}) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     if (status >= 200 && status < 300) {
       final bodyString = utf8.decode(response.bodyBytes);
@@ -53,7 +49,4 @@ class MatchesResponse {
     }
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
-  final RuIndicationMatchesResponseDto body;
 }

@@ -9,7 +9,7 @@ enum TrainSeries {
   W,
   S;
 
-  factory TrainSeries.from(String value) => values.firstWhere(
+  factory from(String value) => values.firstWhere(
     (e) => e.name.toLowerCase() == value.toLowerCase(),
   );
 

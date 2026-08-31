@@ -10,18 +10,14 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('TourSystemLinkVisibilityViewModel');
 
-class TourSystemLinkVisibilityViewModel {
-  TourSystemLinkVisibilityViewModel({
-    required this._journeySettingsViewModel,
-    required this._journeyPositionViewModel,
-    required this._journeyViewModel,
-  }) {
+class TourSystemLinkVisibilityViewModel({
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+  required final JourneyViewModel _journeyViewModel,
+}) {
+  this {
     _initSubscription();
   }
-
-  final JourneySettingsViewModel _journeySettingsViewModel;
-  final JourneyPositionViewModel _journeyPositionViewModel;
-  final JourneyViewModel _journeyViewModel;
 
   final _rxModel = BehaviorSubject<bool>.seeded(false);
 

@@ -3,19 +3,12 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class ExtendedTrainIdentification {
-  const ExtendedTrainIdentification({
-    required this.trainIdentification,
-    this.tafTapLocationReferenceStart,
-    this.tafTapLocationReferenceEnd,
-    this.returnUrl,
-  });
-
-  final TrainIdentification trainIdentification;
-  final String? tafTapLocationReferenceStart;
-  final String? tafTapLocationReferenceEnd;
-  final String? returnUrl;
-
+class const ExtendedTrainIdentification({
+  required final TrainIdentification trainIdentification,
+  final String? tafTapLocationReferenceStart,
+  final String? tafTapLocationReferenceEnd,
+  final String? returnUrl,
+}) {
   @override
   String toString() {
     return 'ExtendedTrainIdentification{trainIdentification: $trainIdentification, tafTapLocationReferenceStart: $tafTapLocationReferenceStart, tafTapLocationReferenceEnd: $tafTapLocationReferenceEnd, returnUrl: $returnUrl}';

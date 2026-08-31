@@ -9,9 +9,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-501-not-implemented
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#501
-class NotImplementedException extends HttpException {
-  const NotImplementedException(super.request, super.response);
-
+class const NotImplementedException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '501 Not Implemented';
 }

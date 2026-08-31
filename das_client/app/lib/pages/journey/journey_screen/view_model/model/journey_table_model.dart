@@ -10,8 +10,8 @@ sealed class JourneyTableModel {
   JourneyTableModel._();
 }
 
-class TableLoading extends JourneyTableModel {
-  TableLoading() : super._();
+class TableLoading() extends JourneyTableModel {
+  this : super._();
 
   @override
   String toString() {
@@ -19,17 +19,17 @@ class TableLoading extends JourneyTableModel {
   }
 }
 
-class TableLoaded extends JourneyTableModel {
-  TableLoaded({
-    required this.journeyTableRowData,
-    required this.journeyMetadata,
-    required this.journeySettings,
-    required this.collapsedRows,
-    required this.journeyPosition,
-    required this.chevronPosition,
-    this.detailModalType,
-    this.showDecisiveGradient,
-  }) : super._();
+class TableLoaded({
+  required final List<BaseData> journeyTableRowData,
+  required final Metadata journeyMetadata,
+  required final JourneySettings journeySettings,
+  required final Map<int, CollapsedState> collapsedRows,
+  required final JourneyPositionModel journeyPosition,
+  required final ChevronPositionModel chevronPosition,
+  final DetailModalType? detailModalType,
+  final bool? showDecisiveGradient,
+}) extends JourneyTableModel {
+  this : super._();
 
   @override
   String toString() {
@@ -43,15 +43,6 @@ class TableLoaded extends JourneyTableModel {
         ', showDecisiveGradient: $showDecisiveGradient'
         '}';
   }
-
-  final List<BaseData> journeyTableRowData;
-  final Metadata journeyMetadata;
-  final JourneySettings journeySettings;
-  final Map<int, CollapsedState> collapsedRows;
-  final JourneyPositionModel journeyPosition;
-  final ChevronPositionModel chevronPosition;
-  final DetailModalType? detailModalType;
-  final bool? showDecisiveGradient;
 
   @override
   bool operator ==(Object other) =>

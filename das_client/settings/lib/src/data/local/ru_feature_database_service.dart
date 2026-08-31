@@ -2,9 +2,7 @@ import 'package:settings/src/api/dto/company_dto.dart';
 import 'package:settings/src/api/dto/ru_feature_dto.dart';
 import 'package:settings/src/model/ru_feature_keys.dart';
 
-abstract class RuFeatureDatabaseService {
-  const RuFeatureDatabaseService._();
-
+abstract class RuFeatureDatabaseService._() {
   Future<void> replaceAllRuFeatures(List<RuFeatureDto> ruFeatures);
 
   Future<void> replaceAllCompanies(List<CompanyDto> companies);

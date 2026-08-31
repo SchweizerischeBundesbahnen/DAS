@@ -1,9 +1,7 @@
-sealed class SuspiciousSegmentModel {
-  const SuspiciousSegmentModel._();
+sealed class const SuspiciousSegmentModel._() {
+  factory hidden() = SuspiciousSegmentHidden;
 
-  factory SuspiciousSegmentModel.hidden() = SuspiciousSegmentHidden;
-
-  factory SuspiciousSegmentModel.visible() = SuspiciousSegmentVisible;
+  factory visible() = SuspiciousSegmentVisible;
 
   @override
   bool operator ==(Object other) => runtimeType == other.runtimeType;
@@ -12,15 +10,15 @@ sealed class SuspiciousSegmentModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class SuspiciousSegmentHidden extends SuspiciousSegmentModel {
-  const SuspiciousSegmentHidden() : super._();
+class const SuspiciousSegmentHidden() extends SuspiciousSegmentModel {
+  this : super._();
 
   @override
   String toString() => 'SuspiciousSegmentHidden{}';
 }
 
-class SuspiciousSegmentVisible extends SuspiciousSegmentModel {
-  const SuspiciousSegmentVisible() : super._();
+class const SuspiciousSegmentVisible() extends SuspiciousSegmentModel {
+  this : super._();
 
   @override
   String toString() => 'SuspiciousSegmentVisible{}';

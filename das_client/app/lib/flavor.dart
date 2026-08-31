@@ -6,50 +6,30 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-sealed class Flavor {
-  const Flavor({
-    required this.displayName,
-    required this.mqttUrl,
-    required this.authenticatorConfig,
-    required this.mqttTopicPrefix,
-    required this.backendUrl,
-    required this.mqttOauthProfile,
-    required this.waraAndroidPackageName,
-    required this.waraIOSUrlScheme,
-    required this.disablePreload,
-    required this.tourSystemUrls,
-    required this.sferaVersion,
-    required this.customerOrientedDepartureEnvironment,
-    this.color = SBBColors.transparent,
-    this.showBanner = false,
-    this.logLevel = Level.INFO,
-    this.mqttOpenIdProfileMap = const {},
-    this.connectToTmsVad = true,
-  });
+sealed class const Flavor({
+  required final String displayName,
+  required final String mqttUrl,
+  required final AuthenticatorConfig authenticatorConfig,
+  required final String mqttTopicPrefix,
+  required final String backendUrl,
+  required final String mqttOauthProfile,
+  required final String waraAndroidPackageName,
+  required final String waraIOSUrlScheme,
+  required final bool disablePreload,
+  required final Map<TourSystem, String> tourSystemUrls,
+  required final String sferaVersion,
+  required final CustomerOrientedDepartureEnvironment customerOrientedDepartureEnvironment,
+  final Color color = SBBColors.transparent,
+  final bool showBanner = false,
+  final Level logLevel = Level.INFO,
+  final Map<String, String> mqttOpenIdProfileMap = const {},
+  final bool connectToTmsVad = true,
+}) {
+  factory dev() = _DevFlavor;
 
-  final String displayName;
-  final String mqttUrl;
-  final AuthenticatorConfig authenticatorConfig;
-  final String mqttTopicPrefix;
-  final String mqttOauthProfile;
-  final String sferaVersion;
-  final Map<String, String> mqttOpenIdProfileMap;
-  final String backendUrl;
-  final bool showBanner;
-  final Color color;
-  final Level logLevel;
-  final String waraAndroidPackageName;
-  final String waraIOSUrlScheme;
-  final bool disablePreload;
-  final Map<TourSystem, String> tourSystemUrls;
-  final CustomerOrientedDepartureEnvironment customerOrientedDepartureEnvironment;
-  final bool connectToTmsVad;
+  factory inte() = _InteFlavor;
 
-  factory Flavor.dev() = _DevFlavor;
-
-  factory Flavor.inte() = _InteFlavor;
-
-  factory Flavor.prod() = _ProdFlavor;
+  factory prod() = _ProdFlavor;
 
   Flavor withSferaMockValues() => switch (this) {
     _DevFlavor() => _DevFlavor(
@@ -102,70 +82,73 @@ sealed class Flavor {
   };
 }
 
-class _DevFlavor extends Flavor {
-  _DevFlavor({
-    super.mqttUrl = '',
-    super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: 'dev/'),
-    super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
-    super.sferaVersion = '4.00',
-    super.mqttOpenIdProfileMap,
-  }) : super(
-         displayName: 'Dev',
-         backendUrl: 'das-dev-int.api.sbb.ch',
-         color: SBBColors.peach,
-         showBanner: true,
-         mqttOauthProfile: 'azureAdDev',
-         logLevel: Level.FINE,
-         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-         tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
-         customerOrientedDepartureEnvironment: .dev,
-         connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
-       );
+class _DevFlavor({
+  super.mqttUrl = '',
+  super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: 'dev/'),
+  super.authenticatorConfig = _emptyAuthenticatorConfig,
+  super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
+  super.sferaVersion = '4.00',
+  super.mqttOpenIdProfileMap,
+}) extends Flavor {
+  this
+    : super(
+        displayName: 'Dev',
+        backendUrl: 'das-dev-int.api.sbb.ch',
+        color: SBBColors.peach,
+        showBanner: true,
+        mqttOauthProfile: 'azureAdDev',
+        logLevel: Level.FINE,
+        waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+        waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+        tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
+        customerOrientedDepartureEnvironment: .dev,
+        connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
+      );
 }
 
-class _InteFlavor extends Flavor {
-  _InteFlavor({
-    super.mqttUrl = '',
-    super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: ''),
-    super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
-    super.sferaVersion = '4.00',
-    super.mqttOpenIdProfileMap,
-  }) : super(
-         displayName: 'Inte',
-         backendUrl: 'das-int.api.sbb.ch',
-         color: SBBColors.black,
-         showBanner: true,
-         mqttOauthProfile: 'azureAdInt',
-         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-         tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
-         customerOrientedDepartureEnvironment: .int,
-         connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
-       );
+class _InteFlavor({
+  super.mqttUrl = '',
+  super.mqttTopicPrefix = const String.fromEnvironment('MQTT_TOPIC_PREFIX', defaultValue: ''),
+  super.authenticatorConfig = _emptyAuthenticatorConfig,
+  super.disablePreload = const bool.fromEnvironment('DISABLE_PRELOAD', defaultValue: false),
+  super.sferaVersion = '4.00',
+  super.mqttOpenIdProfileMap,
+}) extends Flavor {
+  this
+    : super(
+        displayName: 'Inte',
+        backendUrl: 'das-int.api.sbb.ch',
+        color: SBBColors.black,
+        showBanner: true,
+        mqttOauthProfile: 'azureAdInt',
+        waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+        waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+        tourSystemUrls: Map.from(_prodTourSystemUrls)..update(.tip, (_) => 'tip3test://tours'),
+        customerOrientedDepartureEnvironment: .int,
+        connectToTmsVad: const bool.fromEnvironment('CONNECT_TO_TMS_VAD', defaultValue: true),
+      );
 }
 
-class _ProdFlavor extends Flavor {
-  const _ProdFlavor({
-    super.mqttUrl = '',
-    super.mqttTopicPrefix = '',
-    super.authenticatorConfig = _emptyAuthenticatorConfig,
-    super.disablePreload = false,
-    super.sferaVersion = '4.00',
-    super.mqttOpenIdProfileMap,
-  }) : super(
-         displayName: 'Prod',
-         backendUrl: 'das-backend-dev.app.sbb.ch',
-         color: SBBColors.transparent,
-         showBanner: false,
-         mqttOauthProfile: 'azureAdInt',
-         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-         tourSystemUrls: _prodTourSystemUrls,
-         customerOrientedDepartureEnvironment: .prod,
-       );
+class const _ProdFlavor({
+  super.mqttUrl = '',
+  super.mqttTopicPrefix = '',
+  super.authenticatorConfig = _emptyAuthenticatorConfig,
+  super.disablePreload = false,
+  super.sferaVersion = '4.00',
+  super.mqttOpenIdProfileMap,
+}) extends Flavor {
+  this
+    : super(
+        displayName: 'Prod',
+        backendUrl: 'das-backend-dev.app.sbb.ch',
+        color: SBBColors.transparent,
+        showBanner: false,
+        mqttOauthProfile: 'azureAdInt',
+        waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+        waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+        tourSystemUrls: _prodTourSystemUrls,
+        customerOrientedDepartureEnvironment: .prod,
+      );
 }
 
 const Map<TourSystem, String> _prodTourSystemUrls = {

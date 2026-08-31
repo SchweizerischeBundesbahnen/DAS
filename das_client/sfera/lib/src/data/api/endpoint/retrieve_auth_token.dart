@@ -3,12 +3,7 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('RetrieveAuthTokenRequest');
 
-class RetrieveAuthTokenRequest {
-  const RetrieveAuthTokenRequest({required this.tokenExchangeUrl, required this.httpClient});
-
-  final String tokenExchangeUrl;
-  final Client httpClient;
-
+class const RetrieveAuthTokenRequest({required final String tokenExchangeUrl, required final Client httpClient}) {
   Future<RetrieveAuthTokenResponse> call(String ru, String train, String role) async {
     _log.info('Trying to fetch sfera auth token for ru=$ru train=$train role=$role...');
     final url = Uri.parse('$tokenExchangeUrl?ru=$ru&train=$train&role=$role');
@@ -18,10 +13,8 @@ class RetrieveAuthTokenRequest {
   }
 }
 
-class RetrieveAuthTokenResponse {
-  const RetrieveAuthTokenResponse({required this.headers, required this.token});
-
-  factory RetrieveAuthTokenResponse.fromHttpResponse(Response response) {
+class const RetrieveAuthTokenResponse({required final Map<String, String> headers, required final String token}) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {
@@ -30,7 +23,4 @@ class RetrieveAuthTokenResponse {
     // Failure
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
-  final String token;
 }

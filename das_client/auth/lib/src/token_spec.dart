@@ -3,18 +3,12 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class TokenSpec {
+class const TokenSpec({
+  required final String id,
+  required final String displayName,
+  required final List<String> scopes,
+}) {
   static const String defaultTokenId = 'T1';
-
-  const TokenSpec({
-    required this.id,
-    required this.displayName,
-    required this.scopes,
-  });
-
-  final String id;
-  final String displayName;
-  final List<String> scopes;
 
   @override
   bool operator ==(Object other) {

@@ -12,9 +12,7 @@ import 'e2e_test_tms_scope.dart';
 
 final _log = Logger('E2ETestDI');
 
-class E2ETestDI {
-  const E2ETestDI._();
-
+class const E2ETestDI._() {
   static Future<void> init() async {
     _log.fine('Initialize e2e test dependency injection');
     await GetIt.I.reset();

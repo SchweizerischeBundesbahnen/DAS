@@ -1,19 +1,12 @@
 import 'package:sfera/component.dart';
 
-class CalculatedSpeed {
-  CalculatedSpeed({
-    required this.speed,
-    this.isPrevious = false,
-    this.isSameAsPrevious = false,
-    this.isReducedDueToLineSpeed = false,
-  });
-
-  factory CalculatedSpeed.none() => CalculatedSpeed(speed: null);
-
-  final SingleSpeed? speed;
-  final bool isPrevious;
-  final bool isSameAsPrevious;
-  final bool isReducedDueToLineSpeed;
+class CalculatedSpeed({
+  required final SingleSpeed? speed,
+  final bool isPrevious = false,
+  final bool isSameAsPrevious = false,
+  final bool isReducedDueToLineSpeed = false,
+}) {
+  factory none() => CalculatedSpeed(speed: null);
 
   @override
   bool operator ==(Object other) =>

@@ -1,10 +1,6 @@
 import 'package:sfera/component.dart';
 
-class DepartureAuthorizationModel {
-  DepartureAuthorizationModel({this.servicePoint});
-
-  final ServicePoint? servicePoint;
-
+class DepartureAuthorizationModel({final ServicePoint? servicePoint}) {
   String? get departureAuthText {
     final departureAuthText = servicePoint?.departureAuthorization?.text;
     if (departureAuthText == null) return null;

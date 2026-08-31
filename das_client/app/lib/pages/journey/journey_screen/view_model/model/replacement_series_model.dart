@@ -1,27 +1,13 @@
 import 'package:app/pages/journey/journey_screen/view_model/model/illegal_speed_segment.dart';
 
-sealed class ReplacementSeriesModel {
-  const ReplacementSeriesModel._({
-    required this.segment,
-  });
+sealed class const ReplacementSeriesModel._({required final IllegalSpeedSegment segment}) {
+  factory replacement({required IllegalSpeedSegment segment}) = ReplacementSeriesAvailable;
 
-  factory ReplacementSeriesModel.replacement({
-    required IllegalSpeedSegment segment,
-  }) = ReplacementSeriesAvailable;
+  factory original({required IllegalSpeedSegment segment}) = OriginalSeriesAvailable;
 
-  factory ReplacementSeriesModel.original({
-    required IllegalSpeedSegment segment,
-  }) = OriginalSeriesAvailable;
+  factory selected({required IllegalSpeedSegment segment}) = ReplacementSeriesSelected;
 
-  factory ReplacementSeriesModel.selected({
-    required IllegalSpeedSegment segment,
-  }) = ReplacementSeriesSelected;
-
-  factory ReplacementSeriesModel.none({
-    required IllegalSpeedSegment segment,
-  }) = NoReplacementSeries;
-
-  final IllegalSpeedSegment segment;
+  factory none({required IllegalSpeedSegment segment}) = NoReplacementSeries;
 
   @override
   bool operator ==(Object other) =>
@@ -31,18 +17,18 @@ sealed class ReplacementSeriesModel {
   int get hashCode => runtimeType.hashCode ^ segment.hashCode;
 }
 
-class ReplacementSeriesAvailable extends ReplacementSeriesModel {
-  const ReplacementSeriesAvailable({required super.segment}) : super._();
+class const ReplacementSeriesAvailable({required super.segment}) extends ReplacementSeriesModel {
+  this : super._();
 }
 
-class OriginalSeriesAvailable extends ReplacementSeriesModel {
-  const OriginalSeriesAvailable({required super.segment}) : super._();
+class const OriginalSeriesAvailable({required super.segment}) extends ReplacementSeriesModel {
+  this : super._();
 }
 
-class ReplacementSeriesSelected extends ReplacementSeriesModel {
-  const ReplacementSeriesSelected({required super.segment}) : super._();
+class const ReplacementSeriesSelected({required super.segment}) extends ReplacementSeriesModel {
+  this : super._();
 }
 
-class NoReplacementSeries extends ReplacementSeriesModel {
-  const NoReplacementSeries({required super.segment}) : super._();
+class const NoReplacementSeries({required super.segment}) extends ReplacementSeriesModel {
+  this : super._();
 }

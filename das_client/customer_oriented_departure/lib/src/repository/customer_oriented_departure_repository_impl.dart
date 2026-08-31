@@ -12,24 +12,20 @@ import 'package:uuid/uuid.dart';
 
 final _log = Logger('CustomerOrientedDepartureRepositoryImpl');
 
-class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartureRepository {
+class CustomerOrientedDepartureRepositoryImpl({
+  required final CustomerOrientedDepartureApiService apiService,
+  required final MessagingService messagingService,
+  required final String deviceId,
+}) implements CustomerOrientedDepartureRepository {
   /// buffer duration used on journey end time for possible delays
   static const expireAtBuffer = Duration(hours: 1);
 
   /// default expire at time for subscription. This value is currently used by LEA in production.
   static const defaultExpireAtDuration = Duration(hours: 6);
 
-  CustomerOrientedDepartureRepositoryImpl({
-    required this.apiService,
-    required this.messagingService,
-    required this.deviceId,
-  }) {
+  this {
     _init();
   }
-
-  final CustomerOrientedDepartureApiService apiService;
-  final MessagingService messagingService;
-  final String deviceId;
 
   final _rxCustomerOrientedDeparture = BehaviorSubject<CustomerOrientedDeparture>();
   final _subscriptions = <StreamSubscription>[];
@@ -243,23 +239,14 @@ class CustomerOrientedDepartureRepositoryImpl implements CustomerOrientedDepartu
   }
 }
 
-class _Subscription {
-  _Subscription({
-    required this.evu,
-    required this.trainNumber,
-    required this.expiresAt,
-    required this.messageId,
-    required this.isDriver,
-    this.pushToken,
-  });
-
-  final String evu;
-  final String trainNumber;
-  final DateTime expiresAt;
-  final bool isDriver;
-  final String? pushToken;
-  final String messageId;
-
+class _Subscription({
+  required final String evu,
+  required final String trainNumber,
+  required final DateTime expiresAt,
+  required final String messageId,
+  required final bool isDriver,
+  final String? pushToken,
+}) {
   _Subscription withToken({required String token}) => _Subscription(
     evu: evu,
     trainNumber: trainNumber,

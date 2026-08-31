@@ -1,16 +1,17 @@
-class PeakDetector {
-  PeakDetector(this.length, this.borderLength, this._differenzMittelwert, this._schwelle, this._schwelleBorder)
+class PeakDetector(
+  final int length,
+  final int borderLength,
+  final double _differenzMittelwert,
+  final double _schwelle,
+  final double _schwelleBorder,
+) {
+  this
     : assert(length > 0 && borderLength > 0, 'length and borderLength must be greater than zero'),
       assert(borderLength * 2 < length, 'length must be larger then two times borderLength'),
       x = List<double>.filled(length, 0.0) {
     initWithValue(0.0);
   }
 
-  final int length;
-  final int borderLength;
-  final double _differenzMittelwert;
-  final double _schwelle;
-  final double _schwelleBorder;
   final List<double> x;
   int index = 0;
 

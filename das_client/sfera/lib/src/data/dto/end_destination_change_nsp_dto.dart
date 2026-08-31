@@ -1,10 +1,9 @@
 import 'package:sfera/src/data/dto/general_jp_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 
-class EndDestinationChangeNspDto extends GeneralJpInformationNspDto {
+class EndDestinationChangeNspDto({super.type, super.attributes, super.children, super.value})
+    extends GeneralJpInformationNspDto {
   static const String groupNameValue = 'endDestinationChange';
-
-  EndDestinationChangeNspDto({super.type, super.attributes, super.children, super.value});
 
   String get oldLocationCode => parameters.withName('oldLocation')!.nspValue;
 

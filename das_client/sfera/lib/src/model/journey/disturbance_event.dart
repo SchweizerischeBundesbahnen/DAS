@@ -2,11 +2,7 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class DisturbanceEvent {
-  const DisturbanceEvent({required this.type});
-
-  final DisturbanceEventType type;
-
+class const DisturbanceEvent({required final DisturbanceEventType type}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) || other is DisturbanceEvent && runtimeType == other.runtimeType && type == other.type;

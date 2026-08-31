@@ -1,9 +1,4 @@
-class AppVersionExpiration {
-  AppVersionExpiration({required this.expired, this.expiryDate});
-
-  final bool expired;
-  final DateTime? expiryDate;
-
+class AppVersionExpiration({required final bool expired, final DateTime? expiryDate}) {
   bool get isExpired => expired || (expiryDate != null && expiryDate!.isBefore(DateTime.now()));
 
   @override

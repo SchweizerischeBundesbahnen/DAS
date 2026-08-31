@@ -2,18 +2,15 @@ import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class Signal extends JourneyPoint {
-  const Signal({
-    required super.order,
-    required super.kilometre,
-    this.visualIdentifier,
-    this.functions = const [],
-    super.lastModificationDate,
-    super.lastModificationType,
-  }) : super(dataType: .signal);
-
-  final List<SignalFunction> functions;
-  final String? visualIdentifier;
+class const Signal({
+  required super.order,
+  required super.kilometre,
+  final String? visualIdentifier,
+  final List<SignalFunction> functions = const [],
+  super.lastModificationDate,
+  super.lastModificationType,
+}) extends JourneyPoint {
+  this : super(dataType: .signal);
 
   @override
   OrderPriority get orderPriority => .signal;
@@ -50,10 +47,8 @@ enum SignalFunction {
   trackEndSignal, // from NSP
   unknown;
 
-  factory SignalFunction.from(String value) {
-    return values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => .unknown,
-    );
-  }
+  factory from(String value) => values.firstWhere(
+    (e) => e.name.toLowerCase() == value.toLowerCase(),
+    orElse: () => .unknown,
+  );
 }

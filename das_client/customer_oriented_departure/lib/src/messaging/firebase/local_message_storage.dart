@@ -7,10 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final _log = Logger('LocalMessageStorage');
 
-class LocalMessageStorage {
+class const LocalMessageStorage() {
   static const String _latestMessagesKey = 'latestDepartureOrientedDepartureMessages';
-
-  const LocalMessageStorage();
 
   /// Gets latest messages saved to local storage
   Future<List<BaseMessageDto>> getLatestMessages() async {

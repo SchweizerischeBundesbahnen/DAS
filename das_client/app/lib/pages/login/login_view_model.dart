@@ -8,9 +8,8 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('LoginViewModel');
 
-class LoginViewModel {
-  LoginViewModel({required Flavor flavor})
-    : _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: flavor.connectToTmsVad));
+class LoginViewModel({required Flavor flavor}) {
+  this : _rxModel = BehaviorSubject<LoginModel>.seeded(LoggedOut(connectToTmsVad: flavor.connectToTmsVad));
 
   final BehaviorSubject<LoginModel> _rxModel;
 

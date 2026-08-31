@@ -17,9 +17,7 @@ export 'package:http_x/src/exception/server/not_implemented_exception.dart';
 export 'package:http_x/src/exception/server/service_unavailable_exception.dart';
 export 'package:http_x/src/provider/auth_provider.dart';
 
-class HttpXComponent {
-  const HttpXComponent._();
-
+class const HttpXComponent._() {
   static Client createHttpClient({AuthProvider? authProvider}) {
     return InterceptedClient.build(
       client: Client(),

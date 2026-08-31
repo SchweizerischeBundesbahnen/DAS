@@ -9,10 +9,7 @@ typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
 
 final _log = Logger('SferaTask');
 
-abstract class SferaTask<T> {
-  SferaTask({this._timeout = const Duration(seconds: 15)});
-
-  final Duration _timeout;
+abstract class SferaTask<T>({final Duration _timeout = const Duration(seconds: 15)}) {
   Timer? timeoutTimer;
 
   /// executes given SFERA task. Use callback [TaskCompleted] and [TaskFailed] to handle result.

@@ -5,16 +5,11 @@ import 'package:train_identification/src/api/dto/company_dto.dart';
 part 'company_match_dto.g.dart';
 
 @JsonSerializable()
-class CompanyMatchDto {
-  CompanyMatchDto({
-    required this.company,
-    required this.startDate,
-  });
-
-  factory CompanyMatchDto.fromJson(Map<String, dynamic> json) => _$CompanyMatchDtoFromJson(json);
-
-  final CompanyDto company;
-  final DateTime startDate;
+class CompanyMatchDto({
+  required final CompanyDto company,
+  required final DateTime startDate,
+}) {
+  factory fromJson(Map<String, dynamic> json) => _$CompanyMatchDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CompanyMatchDtoToJson(this);
 }

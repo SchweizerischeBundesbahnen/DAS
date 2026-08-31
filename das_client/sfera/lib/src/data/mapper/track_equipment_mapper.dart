@@ -10,9 +10,7 @@ import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 final _log = Logger('TrackEquipmentMapper');
 
 /// used to map SFERA data to [NonStandardTrackEquipmentSegment]
-class TrackEquipmentMapper {
-  TrackEquipmentMapper._();
-
+class TrackEquipmentMapper._() {
   static List<NonStandardTrackEquipmentSegment> parseSegments(
     Iterable<SegmentProfileReferenceDto> segmentProfilesLists,
     Iterable<SegmentProfileDto> segmentProfiles,
@@ -133,25 +131,15 @@ class TrackEquipmentMapper {
 }
 
 /// data class used by mapper to be combined to NonStandardTrackEquipmentSegment
-class _NonStandardTrackEquipment implements Comparable {
-  _NonStandardTrackEquipment({
-    required this.startKm,
-    required this.endKm,
-    required this.type,
-    required this.segmentIndex,
-    this.startLocation,
-    this.endLocation,
-    this.appliesToWholeSp = false,
-  });
-
-  final SferaTrackEquipmentTypeDto type;
-  final double? startLocation;
-  final double? endLocation;
-  final List<double> startKm;
-  final List<double> endKm;
-  final bool appliesToWholeSp;
-  final int segmentIndex;
-
+class _NonStandardTrackEquipment({
+  required final List<double> startKm,
+  required final List<double> endKm,
+  required final SferaTrackEquipmentTypeDto type,
+  required final int segmentIndex,
+  final double? startLocation,
+  final double? endLocation,
+  final bool appliesToWholeSp = false,
+}) implements Comparable {
   @override
   int compareTo(other) {
     if (other is! _NonStandardTrackEquipment) return -1;

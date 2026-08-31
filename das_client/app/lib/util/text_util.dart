@@ -5,7 +5,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 final _log = Logger('TextUtil');
 
-class TextUtil {
+class TextUtil._() {
   static TextSpan parseHtmlTextWithMarkdownLinks(
     String text,
     TextStyle baseTextStyle, {

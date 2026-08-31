@@ -14,15 +14,13 @@ import 'package:sfera/component.dart';
 
 final _logger = Logger('ShortTermChangeViewModel');
 
-class ShortTermChangeViewModel extends JourneyAwareViewModel {
-  ShortTermChangeViewModel({
-    required super.journeyViewModel,
-    required this._journeyPositionViewModel,
-  }) {
+class ShortTermChangeViewModel({
+  required super.journeyViewModel,
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _initJourneyPositionSubscription();
   }
-
-  final JourneyPositionViewModel _journeyPositionViewModel;
 
   StreamSubscription<JourneyPositionModel>? _journeyPositionSubscription;
 

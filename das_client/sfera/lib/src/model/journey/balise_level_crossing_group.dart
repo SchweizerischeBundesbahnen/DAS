@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class BaliseLevelCrossingGroup extends GroupedJourneyPoint {
-  const BaliseLevelCrossingGroup({
-    required super.order,
-    required super.kilometre,
-    required super.groupedElements,
-  }) : super(dataType: .baliseLevelCrossingGroup);
+class const BaliseLevelCrossingGroup({
+  required super.order,
+  required super.kilometre,
+  required super.groupedElements,
+}) extends GroupedJourneyPoint {
+  this : super(dataType: .baliseLevelCrossingGroup);
 
   @override
   String toString() {

@@ -7,18 +7,14 @@ import 'package:app/sound/das_sounds.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class DepartureDispatchNotificationViewModel {
-  DepartureDispatchNotificationViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required this._sferaRepo,
-    required this._notificationVM,
-  }) {
+class DepartureDispatchNotificationViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required final SferaRepository _sferaRepo,
+  required final NotificationPriorityQueueViewModel _notificationVM,
+}) {
+  this {
     _init(journeyPositionStream);
   }
-
-  final SferaRepository _sferaRepo;
-
-  final NotificationPriorityQueueViewModel _notificationVM;
 
   final _rxDepartureDispatchNotificationType = BehaviorSubject<DepartureDispatchNotificationType?>.seeded(null);
 

@@ -5,10 +5,9 @@ import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 
-class SegmentProfileReferenceDto extends SferaXmlElementDto {
+class SegmentProfileReferenceDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SegmentProfileReference';
-
-  SegmentProfileReferenceDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get spId => attributes['SP_ID']!;
 

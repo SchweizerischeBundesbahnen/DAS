@@ -1,10 +1,8 @@
 import 'package:core_data/component.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 
-class LocalRegulationTitleNspDto extends NetworkSpecificParameterDto {
+class LocalRegulationTitleNspDto({super.attributes, super.children, super.value}) extends NetworkSpecificParameterDto {
   static bool matchesElementName(String name) => RegExp(r'^title_(de|fr|it)$').hasMatch(name);
-
-  LocalRegulationTitleNspDto({super.attributes, super.children, super.value});
 }
 
 extension LocalRegulationTitleNspDtoIterableX on Iterable<LocalRegulationTitleNspDto> {

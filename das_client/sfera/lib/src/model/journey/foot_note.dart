@@ -1,20 +1,12 @@
 import 'package:sfera/src/model/journey/train_series.dart';
 
-class FootNote {
-  FootNote({
-    required this.text,
-    this.type,
-    this.refText,
-    this.identifier,
-    this.trainSeries = const <TrainSeries>[],
-  });
-
-  final String text;
-  final FootNoteType? type;
-  final String? refText;
-  final String? identifier;
-  final List<TrainSeries> trainSeries;
-
+class FootNote({
+  required final String text,
+  final FootNoteType? type,
+  final String? refText,
+  final String? identifier,
+  final List<TrainSeries> trainSeries = const <TrainSeries>[],
+}) {
   // Whether this foot note is for indication of networking in a Simplon Inter Modal corridor
   bool get isSIM => type == .contact && refText == 'SIM';
 

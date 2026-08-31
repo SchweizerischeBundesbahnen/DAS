@@ -5,14 +5,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'formation_response_dto.g.dart';
 
 @JsonSerializable()
-class FormationResponseDto {
-  FormationResponseDto({required this.data});
-
-  factory FormationResponseDto.fromJson(Map<String, dynamic> json) {
-    return _$FormationResponseDtoFromJson(json);
-  }
-
-  final List<FormationDto> data;
+class FormationResponseDto({required final List<FormationDto> data}) {
+  factory fromJson(Map<String, dynamic> json) => _$FormationResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$FormationResponseDtoToJson(this);
 

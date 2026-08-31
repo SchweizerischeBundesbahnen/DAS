@@ -6,12 +6,11 @@ import 'package:sfera/src/data/dto/suspicious_segment_nsp_dto.dart';
 import 'package:sfera/src/data/dto/tms_data_dto.dart';
 import 'package:sfera/src/data/dto/train_run_rerouting_nsp_dto.dart';
 
-class GeneralJpInformationNspDto extends NspDto {
+class GeneralJpInformationNspDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends NspDto {
   static const String elementType = 'General_JP_Information_NSP';
 
-  GeneralJpInformationNspDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory GeneralJpInformationNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

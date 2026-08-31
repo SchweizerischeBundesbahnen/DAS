@@ -1,13 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 
-class OperationalIndication extends JourneyAnnotation {
-  const OperationalIndication({
-    required super.order,
-    required this.texts,
-  }) : super(dataType: .operationalIndication);
-
-  final List<String> texts;
+class const OperationalIndication({
+  required super.order,
+  required final List<String> texts,
+}) extends JourneyAnnotation {
+  this : super(dataType: .operationalIndication);
 
   String get combinedText => texts.join('\n');
 

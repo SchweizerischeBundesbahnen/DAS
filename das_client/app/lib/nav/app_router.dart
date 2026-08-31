@@ -17,12 +17,10 @@ import 'package:flutter/foundation.dart';
 part 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
-class AppRouter extends RootStackRouter {
-  AppRouter({required this.authGuard, required this.appExpirationGuard});
-
-  final AuthGuard authGuard;
-  final AppExpirationGuard appExpirationGuard;
-
+class AppRouter({
+  required final AuthGuard authGuard,
+  required final AppExpirationGuard appExpirationGuard,
+}) extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
     _splash,

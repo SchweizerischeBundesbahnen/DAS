@@ -23,27 +23,19 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyTableViewModel');
 
-class JourneyTableViewModel extends JourneyAwareViewModel {
-  JourneyTableViewModel({
-    required super.journeyViewModel,
-    required this._settingsVM,
-    required this._collapsibleRowsVM,
-    required this._positionVM,
-    required this._detailModalVM,
-    required this._decisiveGradientVM,
-    required this._navigationVM,
-    required this._userSettings,
-  }) {
+class JourneyTableViewModel({
+  required super.journeyViewModel,
+  required final JourneySettingsViewModel _settingsVM,
+  required final CollapsibleRowsViewModel _collapsibleRowsVM,
+  required final JourneyPositionViewModel _positionVM,
+  required final DetailModalViewModel _detailModalVM,
+  required final DecisiveGradientViewModel _decisiveGradientVM,
+  required final JourneyNavigationViewModel _navigationVM,
+  required final LocalKeyValueStore _userSettings,
+}) extends JourneyAwareViewModel {
+  this {
     _init();
   }
-
-  final JourneySettingsViewModel _settingsVM;
-  final CollapsibleRowsViewModel _collapsibleRowsVM;
-  final JourneyPositionViewModel _positionVM;
-  final DetailModalViewModel _detailModalVM;
-  final DecisiveGradientViewModel _decisiveGradientVM;
-  final JourneyNavigationViewModel _navigationVM;
-  final LocalKeyValueStore _userSettings;
 
   StreamSubscription? _streamSubscription;
 

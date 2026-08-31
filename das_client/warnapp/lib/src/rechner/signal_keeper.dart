@@ -1,6 +1,4 @@
-class SignalKeeper {
-  SignalKeeper();
-
+class SignalKeeper() {
   double _lastResult = 0.0;
   double _factor = 1.0;
 

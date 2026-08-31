@@ -1,11 +1,9 @@
 import 'package:http_x/component.dart';
 
-class ConfirmRequest {
-  const ConfirmRequest({required this.httpClient, required this.baseUrl});
-
-  final Client httpClient;
-  final String baseUrl;
-
+class const ConfirmRequest({
+  required final Client httpClient,
+  required final String baseUrl,
+}) {
   Future<ConfirmResponse> call({
     required String messageId,
     required String deviceId,
@@ -17,10 +15,8 @@ class ConfirmRequest {
   }
 }
 
-class ConfirmResponse {
-  const ConfirmResponse({required this.headers});
-
-  factory ConfirmResponse.fromHttpResponse(Response response) {
+class const ConfirmResponse({required final Map<String, String> headers}) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {
@@ -29,6 +25,4 @@ class ConfirmResponse {
     // Failure
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
 }

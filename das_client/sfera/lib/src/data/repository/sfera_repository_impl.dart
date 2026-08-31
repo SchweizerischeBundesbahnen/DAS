@@ -43,28 +43,19 @@ import 'package:uuid/uuid.dart';
 final _log = Logger('SferaRepoImpl');
 const int _missingSegmentProfilesMaxRetryCount = 3;
 
-class SferaRepoImpl implements SferaRepository {
-  SferaRepoImpl({
-    required this._mqttService,
-    required this._localService,
-    required this._authProvider,
-    required this._localRepo,
-    required this._connectivityManager,
-    required this.sferaVersion,
-    required this.deviceId,
-    required this._authenticator,
-  }) {
+class SferaRepoImpl({
+  required final MqttService _mqttService,
+  required final SferaLocalDatabaseService _localService,
+  required final SferaAuthProvider _authProvider,
+  required final SferaLocalRepo _localRepo,
+  required final ConnectivityManager _connectivityManager,
+  required final String sferaVersion,
+  required final String deviceId,
+  required final Authenticator _authenticator,
+}) implements SferaRepository {
+  this {
     _initialize();
   }
-
-  final String deviceId;
-  final String sferaVersion;
-  final MqttService _mqttService;
-  final SferaLocalDatabaseService _localService;
-  final SferaAuthProvider _authProvider;
-  final SferaLocalRepo _localRepo;
-  final ConnectivityManager _connectivityManager;
-  final Authenticator _authenticator;
 
   StreamSubscription? _mqttStreamSubscription;
   StreamSubscription? _connectivitySubscription;

@@ -3,8 +3,8 @@ import 'package:external_links/src/data/local/external_links_database.dart';
 import 'package:external_links/src/data/local/external_links_database_service.dart';
 import 'package:external_links/src/model/external_link.dart';
 
-class ExternalLinksDatabaseServiceImpl implements ExternalLinksDatabaseService {
-  ExternalLinksDatabaseServiceImpl._() : _database = _createDatabase();
+class ExternalLinksDatabaseServiceImpl._() implements ExternalLinksDatabaseService {
+  this : _database = _createDatabase();
 
   static final ExternalLinksDatabaseServiceImpl _instance = ExternalLinksDatabaseServiceImpl._();
 

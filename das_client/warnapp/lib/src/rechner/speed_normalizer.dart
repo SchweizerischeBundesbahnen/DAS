@@ -1,7 +1,4 @@
-class SpeedNormalizer {
-  SpeedNormalizer(this._gueltigkeitsDauer);
-
-  final int _gueltigkeitsDauer;
+class SpeedNormalizer(final int _gueltigkeitsDauer) {
   int _anzahlGueltigeSignale = 0;
   double speed = -1.0;
 

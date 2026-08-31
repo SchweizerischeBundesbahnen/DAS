@@ -25,25 +25,18 @@ class DASModalSheetBuilder {
 final _log = Logger('DASModalSheetController');
 
 /// Used to open and close the [DasModalSheet] and handle animation.
-class DASModalSheetController {
-  final _automaticCloseAfterSeconds = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds;
-
-  DASModalSheetController({
-    this.openAnimationDuration = const Duration(milliseconds: 350),
-    this.closeAnimationDuration = const Duration(milliseconds: 200),
-    this.maxExpandedWidth = 300.0,
-    this.onClose,
-    this.onOpen,
-  }) : _state = .closed;
-
-  final Duration openAnimationDuration;
-  final Duration closeAnimationDuration;
+class DASModalSheetController({
+  final Duration openAnimationDuration = const Duration(milliseconds: 350),
+  final Duration closeAnimationDuration = const Duration(milliseconds: 200),
 
   /// sets the maximum expanded width for the non-overlapping modal sheet.
-  final double maxExpandedWidth;
+  final double maxExpandedWidth = 300.0,
+  final VoidCallback? onClose,
+  final VoidCallback? onOpen,
+}) {
+  final _automaticCloseAfterSeconds = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds;
 
-  final VoidCallback? onClose;
-  final VoidCallback? onOpen;
+  this : _state = .closed;
 
   bool automaticCloseEnabled = true;
 

@@ -1,19 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:formation/src/model/formation_run.dart';
 
-class Formation {
-  Formation({
-    required this.operationalTrainNumber,
-    required this.company,
-    required this.operationalDay,
-    this.formationRuns = const [],
-  });
-
-  final String operationalTrainNumber;
-  final String company;
-  final DateTime operationalDay;
-  final List<FormationRun> formationRuns;
-
+class Formation({
+  required final String operationalTrainNumber,
+  required final String company,
+  required final DateTime operationalDay,
+  final List<FormationRun> formationRuns = const [],
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

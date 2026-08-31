@@ -2,9 +2,7 @@ import 'package:core_data/component.dart';
 import 'package:logger/component.dart';
 import 'package:settings/component.dart';
 
-abstract class SettingsRepository implements LogEndpoint {
-  const SettingsRepository._();
-
+abstract class SettingsRepository._() implements LogEndpoint {
   Future<bool> loadSettings();
 
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode);

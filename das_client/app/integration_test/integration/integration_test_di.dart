@@ -12,9 +12,7 @@ import 'integration_test_tms_scope.dart';
 
 final _log = Logger('IntegrationTestDI');
 
-class IntegrationTestDI {
-  const IntegrationTestDI._();
-
+class const IntegrationTestDI._() {
   static Future<void> init() async {
     _log.fine('Initialize integration test dependency injection');
     await GetIt.I.reset();

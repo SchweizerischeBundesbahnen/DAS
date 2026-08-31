@@ -1,14 +1,12 @@
 import 'package:core_data/component.dart';
 import 'package:sfera/src/model/journey/base_foot_note.dart';
 
-class LineFootNote extends BaseFootNote {
-  const LineFootNote({
-    required super.order,
-    required super.footNote,
-    required this.locationName,
-  }) : super(dataType: .lineFootNote);
-
-  final String locationName;
+class const LineFootNote({
+  required super.order,
+  required super.footNote,
+  required final String locationName,
+}) extends BaseFootNote {
+  this : super(dataType: .lineFootNote);
 
   @override
   OrderPriority get orderPriority => .lineFootNotes;

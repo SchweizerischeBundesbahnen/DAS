@@ -2,15 +2,10 @@ import 'package:core_data/component.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class BaseData implements Comparable {
-  const BaseData({
-    required this.dataType,
-    required this.order,
-  });
-
-  final Datatype dataType;
-  final int order;
-
+abstract class const BaseData({
+  required final Datatype dataType,
+  required final int order,
+}) implements Comparable {
   @override
   int compareTo(other) {
     if (other is! BaseData) return -1;

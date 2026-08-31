@@ -1,9 +1,4 @@
-class Company {
-  const Company({required this.code, required this.shortName});
-
-  final String code;
-  final String shortName;
-
+class const Company({required final String code, required final String shortName}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

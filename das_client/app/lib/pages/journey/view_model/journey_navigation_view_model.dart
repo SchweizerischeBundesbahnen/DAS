@@ -13,13 +13,14 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyNavigationViewModel');
 
-class JourneyNavigationViewModel {
-  JourneyNavigationViewModel({required this._sferaRepo, required this._userSettings}) {
+class JourneyNavigationViewModel({
+  required final SferaRepository _sferaRepo,
+  required final LocalKeyValueStore _userSettings,
+}) {
+  this {
     _initSferaRemoteStateSubscription();
   }
 
-  final SferaRepository _sferaRepo;
-  final LocalKeyValueStore _userSettings;
   StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<ExtendedTrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);

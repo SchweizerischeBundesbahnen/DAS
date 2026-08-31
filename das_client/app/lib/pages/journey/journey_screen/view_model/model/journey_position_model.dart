@@ -1,16 +1,14 @@
 import 'package:sfera/component.dart';
 
-class JourneyPositionModel {
-  JourneyPositionModel({
-    this.currentPosition,
-    this.lastPosition,
-    this.previousServicePoint,
-    this.nextServicePoint,
-    this.previousStop,
-    this.nextStop,
-    this.isManualPosition = false,
-  });
-
+class JourneyPositionModel({
+  this.currentPosition,
+  this.lastPosition,
+  this.previousServicePoint,
+  this.nextServicePoint,
+  this.previousStop,
+  this.nextStop,
+  this.isManualPosition = false,
+}) {
   /// The position of the vehicle in the journey indicating the last point **that has been passed**.
   ///
   /// Is usually set by an event received from TMS VAD, but can be set manually by the train driver

@@ -234,21 +234,13 @@ void _checkDetailsTable(Finder detailsTable, _ASRTestData asr) {
   }
 }
 
-class _ASRTestData {
-  _ASRTestData({
-    required this.kmText,
-    this.vmaxText,
-    this.fromText,
-    this.untilText,
-    this.reasonText,
-  });
-
-  final String kmText;
-  String? vmaxText;
-  String? fromText;
-  String? untilText;
-  String? reasonText;
-}
+class _ASRTestData({
+  required final String kmText,
+  var String? vmaxText,
+  var String? fromText,
+  var String? untilText,
+  var String? reasonText,
+});
 
 Future<void> _closeModalSheet(WidgetTester tester) =>
     tapElement(tester, find.byKey(DasModalSheet.modalSheetCloseButtonKey));

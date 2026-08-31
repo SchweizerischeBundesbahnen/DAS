@@ -1,190 +1,108 @@
-class AbfahrtDetectionAlgorithmusProperties {
-  final double berechnungsZeit;
-  final int lengthForInitialization;
-
-  final int slowWindowLength;
-  final int fastWindowLength;
+class const AbfahrtDetectionAlgorithmusProperties({
+  required final double berechnungsZeit,
+  required final int lengthForInitialization,
+  required final int slowWindowLength,
+  required final int fastWindowLength,
 
   // Algo3
-  final int haltDelayCount;
-  final double maxDistance;
+  required final int haltDelayCount,
+  required final double maxDistance,
 
   // Algo5
-  final int integratorWindowLength;
-  final double hystereseAbfahrt;
-  final double hystereseHalt;
-  final double hystereseHandbewegungPositiv;
-  final double hystereseHandbewegungNegativ;
-  final int hystereseHandbewegungAnzahlNegativ;
-  final int handbewegungWindowLength;
+  required final int integratorWindowLength,
+  required final double hystereseAbfahrt,
+  required final double hystereseHalt,
+  required final double hystereseHandbewegungPositiv,
+  required final double hystereseHandbewegungNegativ,
+  required final int hystereseHandbewegungAnzahlNegativ,
+  required final int handbewegungWindowLength,
 
   // Algo7
-  final int peakDetectorWindowLength;
-  final int peakDetectorBorderLength;
-  final double peakDetectorDifferenzMittelwert;
-  final double peakDetectorSchwelle;
-  final double peakDetectorSchwelleBorder;
-  final int peakDetectorDelay;
+  required final int peakDetectorWindowLength,
+  required final int peakDetectorBorderLength,
+  required final double peakDetectorDifferenzMittelwert,
+  required final double peakDetectorSchwelle,
+  required final double peakDetectorSchwelleBorder,
+  required final int peakDetectorDelay,
 
-  final int abfahrtDetektorLength;
-  final int abfahrtDetektorLaengeHalt;
-  final double abfahrtDetektorSchwelleFahrt;
-  final double abfahrtDetektorSchwelleQuiet;
+  required final int abfahrtDetektorLength,
+  required final int abfahrtDetektorLaengeHalt,
+  required final double abfahrtDetektorSchwelleFahrt,
+  required final double abfahrtDetektorSchwelleQuiet,
 
-  final int haltDetektorLength;
-  final int haltDetektorLaengeHalt;
-  final double haltDetektorSchwelleHalt;
-  final double haltDetektorSchwelleQuiet;
+  required final int haltDetektorLength,
+  required final int haltDetektorLaengeHalt,
+  required final double haltDetektorSchwelleHalt,
+  required final double haltDetektorSchwelleQuiet,
 
-  final int ruheDetektionLangAnzahlPositiv;
-  final double ruheDetektionLangSchwellePositiv;
-  final int ruheDetektionLangAnzahlNegativ;
-  final double ruheDetektionLangSchwelleNegativ;
+  required final int ruheDetektionLangAnzahlPositiv,
+  required final double ruheDetektionLangSchwellePositiv,
+  required final int ruheDetektionLangAnzahlNegativ,
+  required final double ruheDetektionLangSchwelleNegativ,
 
-  final int ruheDetektionKurzAnzahlPositiv;
-  final double ruheDetektionKurzSchwellePositiv;
-  final int ruheDetektionKurzAnzahlNegativ;
-  final double ruheDetektionKurzSchwelleNegativ;
+  required final int ruheDetektionKurzAnzahlPositiv,
+  required final double ruheDetektionKurzSchwellePositiv,
+  required final int ruheDetektionKurzAnzahlNegativ,
+  required final double ruheDetektionKurzSchwelleNegativ,
 
   // Algo11
-  final int slowIntegratorWindowLength;
-  final int slowAbfahrtDetektorLength;
-  final int slowAbfahrtDetektorLaengeHalt;
-  final double slowAbfahrtDetektorSchwelleFahrt;
-  final double slowAbfahrtDetektorSchwelleQuiet;
+  required final int slowIntegratorWindowLength,
+  required final int slowAbfahrtDetektorLength,
+  required final int slowAbfahrtDetektorLaengeHalt,
+  required final double slowAbfahrtDetektorSchwelleFahrt,
+  required final double slowAbfahrtDetektorSchwelleQuiet,
 
-  final int gravitationIntegratorWindowLength;
-  final int gravitationHystereseRotationAnzahlPositiv;
-  final double gravitationHystereseRotationSchwellePositiv;
-  final int gravitationHystereseRotationAnzahlNegativ;
-  final double gravitationHystereseRotationSchwelleNegativ;
-  final int gravitationAbfahrtDetektorLength;
-  final int gravitationAbfahrtDetektorLaengeHalt;
-  final double gravitationAbfahrtDetektorSchwelleFahrt;
-  final double gravitationAbfahrtDetektorSchwelleQuiet;
-  final int gravitationHaltDetektorLength;
-  final int gravitationHaltDetektorLaengeHalt;
-  final double gravitationHaltDetektorSchwelleHalt;
-  final double gravitationHaltDetektorSchwelleQuiet;
+  required final int gravitationIntegratorWindowLength,
+  required final int gravitationHystereseRotationAnzahlPositiv,
+  required final double gravitationHystereseRotationSchwellePositiv,
+  required final int gravitationHystereseRotationAnzahlNegativ,
+  required final double gravitationHystereseRotationSchwelleNegativ,
+  required final int gravitationAbfahrtDetektorLength,
+  required final int gravitationAbfahrtDetektorLaengeHalt,
+  required final double gravitationAbfahrtDetektorSchwelleFahrt,
+  required final double gravitationAbfahrtDetektorSchwelleQuiet,
+  required final int gravitationHaltDetektorLength,
+  required final int gravitationHaltDetektorLaengeHalt,
+  required final double gravitationHaltDetektorSchwelleHalt,
+  required final double gravitationHaltDetektorSchwelleQuiet,
 
-  final double hystereseHandbewegung2Positiv;
-  final double hystereseHandbewegung2Negativ;
-  final int hystereseHandbewegung2AnzahlNegativ;
-  final int touchDelay;
+  required final double hystereseHandbewegung2Positiv,
+  required final double hystereseHandbewegung2Negativ,
+  required final int hystereseHandbewegung2AnzahlNegativ,
+  required final int touchDelay,
 
   // Algo12
-  final int hystereseFahrtDeltaLength;
-  final double hystereseFahrtDeltaSchwelle;
-  final int hystereseFahrtDeltaAnzahlUeberSchwelle;
+  required final int hystereseFahrtDeltaLength,
+  required final double hystereseFahrtDeltaSchwelle,
+  required final int hystereseFahrtDeltaAnzahlUeberSchwelle,
 
   // Algo13
-  final double hystereseFahrtLocationSchwelleSpeed;
-  final int hystereseFahrtLocationGueltigkeitsDauer;
+  required final double hystereseFahrtLocationSchwelleSpeed,
+  required final int hystereseFahrtLocationGueltigkeitsDauer,
 
   // Algo14
-  final int lageaenderungWindowLength;
-  final double lageaenderungSchwelle;
-  final int lageaenderungDelay;
-  final int lageaenderungOrNachAnd;
+  required final int lageaenderungWindowLength,
+  required final double lageaenderungSchwelle,
+  required final int lageaenderungDelay,
+  required final int lageaenderungOrNachAnd,
 
   // Algo15
-  final int speedNormalizerGueltigkeitsDauer;
+  required final int speedNormalizerGueltigkeitsDauer,
 
-  final int locationAbfahrtDetektorLength;
-  final int locationAbfahrtDetektorLaengeHalt;
-  final double locationAbfahrtDetektorSchwelleFahrt;
+  required final int locationAbfahrtDetektorLength,
+  required final int locationAbfahrtDetektorLaengeHalt,
+  required final double locationAbfahrtDetektorSchwelleFahrt,
 
-  final int slowLocationAbfahrtDetektorLength;
-  final int slowLocationAbfahrtDetektorLaengeHalt;
-  final double slowLocationAbfahrtDetektorSchwelleFahrt;
+  required final int slowLocationAbfahrtDetektorLength,
+  required final int slowLocationAbfahrtDetektorLaengeHalt,
+  required final double slowLocationAbfahrtDetektorSchwelleFahrt,
 
-  final int locationHaltDetektorLength;
-  final double locationHaltDetektorSchwelleMin;
-  final double locationHaltDetektorSchwelleMax;
-
-  final int minimaleAnzahlZwischenZweiAbfahrten;
-
-  AbfahrtDetectionAlgorithmusProperties({
-    required this.berechnungsZeit,
-    required this.lengthForInitialization,
-    required this.slowWindowLength,
-    required this.fastWindowLength,
-    required this.haltDelayCount,
-    required this.maxDistance,
-    required this.integratorWindowLength,
-    required this.hystereseAbfahrt,
-    required this.hystereseHalt,
-    required this.hystereseHandbewegungPositiv,
-    required this.hystereseHandbewegungNegativ,
-    required this.hystereseHandbewegungAnzahlNegativ,
-    required this.handbewegungWindowLength,
-    required this.peakDetectorWindowLength,
-    required this.peakDetectorBorderLength,
-    required this.peakDetectorDifferenzMittelwert,
-    required this.peakDetectorSchwelle,
-    required this.peakDetectorSchwelleBorder,
-    required this.peakDetectorDelay,
-    required this.abfahrtDetektorLength,
-    required this.abfahrtDetektorLaengeHalt,
-    required this.abfahrtDetektorSchwelleFahrt,
-    required this.abfahrtDetektorSchwelleQuiet,
-    required this.haltDetektorLength,
-    required this.haltDetektorLaengeHalt,
-    required this.haltDetektorSchwelleHalt,
-    required this.haltDetektorSchwelleQuiet,
-    required this.ruheDetektionLangAnzahlPositiv,
-    required this.ruheDetektionLangSchwellePositiv,
-    required this.ruheDetektionLangAnzahlNegativ,
-    required this.ruheDetektionLangSchwelleNegativ,
-    required this.ruheDetektionKurzAnzahlPositiv,
-    required this.ruheDetektionKurzSchwellePositiv,
-    required this.ruheDetektionKurzAnzahlNegativ,
-    required this.ruheDetektionKurzSchwelleNegativ,
-    required this.slowIntegratorWindowLength,
-    required this.slowAbfahrtDetektorLength,
-    required this.slowAbfahrtDetektorLaengeHalt,
-    required this.slowAbfahrtDetektorSchwelleFahrt,
-    required this.slowAbfahrtDetektorSchwelleQuiet,
-    required this.gravitationIntegratorWindowLength,
-    required this.gravitationHystereseRotationAnzahlPositiv,
-    required this.gravitationHystereseRotationSchwellePositiv,
-    required this.gravitationHystereseRotationAnzahlNegativ,
-    required this.gravitationHystereseRotationSchwelleNegativ,
-    required this.gravitationAbfahrtDetektorLength,
-    required this.gravitationAbfahrtDetektorLaengeHalt,
-    required this.gravitationAbfahrtDetektorSchwelleFahrt,
-    required this.gravitationAbfahrtDetektorSchwelleQuiet,
-    required this.gravitationHaltDetektorLength,
-    required this.gravitationHaltDetektorLaengeHalt,
-    required this.gravitationHaltDetektorSchwelleHalt,
-    required this.gravitationHaltDetektorSchwelleQuiet,
-    required this.hystereseHandbewegung2Positiv,
-    required this.hystereseHandbewegung2Negativ,
-    required this.hystereseHandbewegung2AnzahlNegativ,
-    required this.touchDelay,
-    required this.hystereseFahrtDeltaLength,
-    required this.hystereseFahrtDeltaSchwelle,
-    required this.hystereseFahrtDeltaAnzahlUeberSchwelle,
-    required this.hystereseFahrtLocationSchwelleSpeed,
-    required this.hystereseFahrtLocationGueltigkeitsDauer,
-    required this.lageaenderungWindowLength,
-    required this.lageaenderungSchwelle,
-    required this.lageaenderungDelay,
-    required this.lageaenderungOrNachAnd,
-    required this.speedNormalizerGueltigkeitsDauer,
-    required this.locationAbfahrtDetektorLength,
-    required this.locationAbfahrtDetektorLaengeHalt,
-    required this.locationAbfahrtDetektorSchwelleFahrt,
-    required this.slowLocationAbfahrtDetektorLength,
-    required this.slowLocationAbfahrtDetektorLaengeHalt,
-    required this.slowLocationAbfahrtDetektorSchwelleFahrt,
-    required this.locationHaltDetektorLength,
-    required this.locationHaltDetektorSchwelleMin,
-    required this.locationHaltDetektorSchwelleMax,
-    required this.minimaleAnzahlZwischenZweiAbfahrten,
-  });
-
-  factory AbfahrtDetectionAlgorithmusProperties.defaultProperties() {
+  required final int locationHaltDetektorLength,
+  required final double locationHaltDetektorSchwelleMin,
+  required final double locationHaltDetektorSchwelleMax,
+  required final int minimaleAnzahlZwischenZweiAbfahrten,
+}) {
+  factory defaultProperties() {
     return AbfahrtDetectionAlgorithmusProperties(
       berechnungsZeit: 2,
       lengthForInitialization: 500,

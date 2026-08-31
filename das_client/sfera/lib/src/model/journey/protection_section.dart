@@ -1,18 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class ProtectionSection extends JourneyPoint {
-  const ProtectionSection({
-    required this.isOptional,
-    required this.isLong,
-    required super.order,
-    required super.kilometre,
-    super.lastModificationDate,
-    super.lastModificationType,
-  }) : super(dataType: .protectionSection);
-
-  final bool isOptional;
-  final bool isLong;
+class const ProtectionSection({
+  required final bool isOptional,
+  required final bool isLong,
+  required super.order,
+  required super.kilometre,
+  super.lastModificationDate,
+  super.lastModificationType,
+}) extends JourneyPoint {
+  this : super(dataType: .protectionSection);
 
   @override
   String toString() {

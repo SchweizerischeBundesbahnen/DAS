@@ -1,17 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class LevelCrossing extends JourneyPoint {
-  const LevelCrossing({
-    required super.order,
-    required super.kilometre,
-    int? originalOrder,
-    this.identifier,
-  }) : _originalOrder = originalOrder ?? order,
-       super(dataType: .levelCrossing);
+class const LevelCrossing({
+  required super.order,
+  required super.kilometre,
+  final String? identifier,
+  int? originalOrder,
+}) extends JourneyPoint {
+  this : _originalOrder = originalOrder ?? order, super(dataType: .levelCrossing);
 
   final int _originalOrder;
-  final String? identifier;
 
   @override
   String toString() {

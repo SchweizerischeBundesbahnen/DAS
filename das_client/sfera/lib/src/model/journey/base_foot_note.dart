@@ -1,15 +1,11 @@
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-abstract class BaseFootNote extends JourneyAnnotation {
-  const BaseFootNote({
-    required super.order,
-    required this.footNote,
-    required super.dataType,
-  });
-
-  final FootNote footNote;
-
+abstract class const BaseFootNote({
+  required super.order,
+  required super.dataType,
+  required final FootNote footNote,
+}) extends JourneyAnnotation {
   String get identifier => footNote.identifier ?? hashCode.toString();
 
   @override

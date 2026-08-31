@@ -8,22 +8,14 @@ import 'package:settings/src/api/dto/ru_feature_dto.dart';
 part 'settings_dto.g.dart';
 
 @JsonSerializable()
-class SettingsDto {
-  SettingsDto({
-    required this.logging,
-    required this.ruFeatures,
-    required this.companies,
-    required this.preload,
-    required this.currentAppVersion,
-  });
-
-  factory SettingsDto.fromJson(Map<String, dynamic> json) {
+class SettingsDto({
+  required final LoggingSettingDto logging,
+  required final List<RuFeatureDto> ruFeatures,
+  required final List<CompanyDto> companies,
+  required final PreloadDto preload,
+  required final AppVersionExpirationDto currentAppVersion,
+}) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$SettingsDtoFromJson(json);
   }
-
-  final LoggingSettingDto logging;
-  final List<RuFeatureDto> ruFeatures;
-  final List<CompanyDto> companies;
-  final PreloadDto preload;
-  final AppVersionExpirationDto currentAppVersion;
 }

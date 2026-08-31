@@ -9,20 +9,16 @@ final _log = Logger('SelectCompanyModalController');
 /// This Controller is responsible for filtering names of companies.
 ///
 /// The results are ordered alphabetically with the currently selected one always on top.
-class SelectCompanyModalController {
-  SelectCompanyModalController({
-    required this.availableCompanies,
-    required this.updateCompanies,
-    required List<String> initialCompanyCodes,
-    required this.allowMultiSelect,
-  }) {
+class SelectCompanyModalController({
+  required final List<Company> availableCompanies,
+  required final void Function(List<Company>) updateCompanies,
+  required List<String> initialCompanyCodes,
+  required final bool allowMultiSelect,
+}) {
+  this {
     _selectedCompanyCodes = initialCompanyCodes;
     _init();
   }
-
-  final List<Company> availableCompanies;
-  final bool allowMultiSelect;
-  final void Function(List<Company>) updateCompanies;
 
   late TextEditingController _textController;
   String? _filter;

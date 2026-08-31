@@ -9,22 +9,17 @@ import 'package:settings/src/data/local/ru_feature_database_service.dart';
 
 final _log = Logger('SettingsRepositoryImpl');
 
-class SettingsRepositoryImpl implements SettingsRepository {
-  SettingsRepositoryImpl({
-    required this.apiService,
-    required this.databaseService,
-    this._onAwsCredentialsChanged,
-    this._onSettingsLoaded,
-  }) {
+class SettingsRepositoryImpl({
+  required final SettingsApiService apiService,
+  required final RuFeatureDatabaseService databaseService,
+  final AwsCredentialsChanged? _onAwsCredentialsChanged,
+  final SettingsLoaded? _onSettingsLoaded,
+}) implements SettingsRepository {
+  this {
     _init();
   }
 
   static const retryDelay = Duration(minutes: 1);
-
-  final SettingsApiService apiService;
-  final RuFeatureDatabaseService databaseService;
-  final AwsCredentialsChanged? _onAwsCredentialsChanged;
-  final SettingsLoaded? _onSettingsLoaded;
 
   SettingsDto? _lastSettings;
   Future<bool>? _pendingLoadSettings;

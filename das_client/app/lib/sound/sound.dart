@@ -2,9 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:volume_controller/volume_controller.dart';
 
-abstract class Sound {
-  const Sound();
-
+abstract class const Sound() {
   Future<void> play();
 
   static Future<void> stop() async {

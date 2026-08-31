@@ -6,9 +6,7 @@ import 'package:app/sound/grid_overload_sound.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 
-class DASSounds {
-  const DASSounds();
-
+class const DASSounds() {
   Sound get advisedSpeedEnd => AdvisedSpeedEndSound();
 
   Sound get advisedSpeedStart => AdvisedSpeedStartSound();

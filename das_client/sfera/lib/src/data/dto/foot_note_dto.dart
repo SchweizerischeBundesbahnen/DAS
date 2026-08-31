@@ -3,10 +3,9 @@ import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/text_dto.dart';
 
-class SferaFootNoteDto extends SferaXmlElementDto {
+class SferaFootNoteDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'footNote';
-
-  SferaFootNoteDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get text => children.whereType<TextDto>().first.xmlValue;
 

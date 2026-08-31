@@ -5,10 +5,9 @@ import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 
-class JpContextInformationDto extends SferaXmlElementDto {
+class JpContextInformationDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'JP_ContextInformation';
-
-  JpContextInformationDto({super.type = elementType, super.attributes, super.children, super.value});
 
   Iterable<JpContextInformationNspDto> get contextInformationNsp => children.whereType<JpContextInformationNspDto>();
 

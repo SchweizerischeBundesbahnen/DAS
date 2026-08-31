@@ -3,10 +3,9 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/tc_features_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 
-class TrainCharacteristicsDto extends SferaXmlElementDto {
+class TrainCharacteristicsDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'TrainCharacteristics';
-
-  TrainCharacteristicsDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get tcId => attributes['TC_ID']!;
 

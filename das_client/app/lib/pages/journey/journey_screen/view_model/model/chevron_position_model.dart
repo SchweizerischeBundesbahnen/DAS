@@ -1,15 +1,9 @@
 import 'package:sfera/component.dart';
 
-class ChevronPositionModel {
-  ChevronPositionModel({
-    this.currentPosition,
-    this.lastPosition,
-  });
-
-  final JourneyPoint? currentPosition;
-
-  final JourneyPoint? lastPosition;
-
+class ChevronPositionModel({
+  final JourneyPoint? currentPosition,
+  final JourneyPoint? lastPosition,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

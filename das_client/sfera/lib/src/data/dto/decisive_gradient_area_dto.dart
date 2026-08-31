@@ -3,10 +3,9 @@ import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/sfera_segment_xml_element_dto.dart';
 
-class DecisiveGradientAreaDto extends SferaSegmentXmlElementDto {
+class DecisiveGradientAreaDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaSegmentXmlElementDto {
   static const String elementType = 'DecisiveGradientArea';
-
-  DecisiveGradientAreaDto({super.type = elementType, super.attributes, super.children, super.value});
 
   double get gradientValue => double.parse(attributes['gradientValue']!);
 

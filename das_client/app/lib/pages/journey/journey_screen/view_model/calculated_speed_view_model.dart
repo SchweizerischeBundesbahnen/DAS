@@ -4,14 +4,10 @@ import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/model/calculated_speed.dart';
 import 'package:sfera/component.dart';
 
-class CalculatedSpeedViewModel extends JourneyAwareViewModel {
-  CalculatedSpeedViewModel({
-    required this._lineSpeedViewModel,
-    super.journeyViewModel,
-  });
-
-  final LineSpeedViewModel _lineSpeedViewModel;
-
+class CalculatedSpeedViewModel({
+  required final LineSpeedViewModel _lineSpeedViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
   CalculatedSpeed getCalculatedSpeedForOrder(int order) {
     final metadata = lastJourney?.metadata;
     if (metadata == null) return CalculatedSpeed.none();

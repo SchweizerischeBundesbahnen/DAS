@@ -12,19 +12,17 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('ReplacementSeriesViewModel');
 
-class ReplacementSeriesViewModel {
-  ReplacementSeriesViewModel({
-    required this._journeyPositionViewModel,
-    required this._journeySettingsViewModel,
-    required JourneyViewModel journeyViewModel,
-  }) {
+class ReplacementSeriesViewModel({
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  required JourneyViewModel journeyViewModel,
+}) {
+  this {
     _initJourneyPositionSubscription();
     _initSettingsSubscription();
     _subscriptions.add(journeyViewModel.journey.listen(_journeyUpdated));
   }
 
-  final JourneyPositionViewModel _journeyPositionViewModel;
-  final JourneySettingsViewModel _journeySettingsViewModel;
   final List<StreamSubscription> _subscriptions = [];
   final _rxModel = BehaviorSubject<ReplacementSeriesModel?>.seeded(null);
 

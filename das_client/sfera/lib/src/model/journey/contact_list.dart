@@ -1,16 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/src/model/journey/contact.dart';
 
-class RadioContactList implements Comparable {
-  RadioContactList({
-    required this.order,
-    required this.endOrder,
-    required Iterable<Contact> contacts,
-  }) : mainContacts = contacts.whereType<MainContact>(),
-       selectiveContacts = contacts.whereType<SelectiveContact>();
+class RadioContactList({
+  required final int order,
+  required final int endOrder,
+  required Iterable<Contact> contacts,
+}) implements Comparable {
+  this : mainContacts = contacts.whereType<MainContact>(), selectiveContacts = contacts.whereType<SelectiveContact>();
 
-  final int order;
-  final int endOrder;
   final Iterable<MainContact> mainContacts;
   final Iterable<SelectiveContact> selectiveContacts;
 

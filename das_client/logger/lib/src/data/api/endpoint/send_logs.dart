@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/send_logs_exception.dart';
 
-class SendLogsRequest {
-  const SendLogsRequest({required this.httpClient, this.url, this.token});
-
-  final Client httpClient;
-  final String? url;
-  final String? token;
-
+class const SendLogsRequest({
+  required final Client httpClient,
+  final String? url,
+  final String? token,
+}) {
   /// Sends the given log file to the remote endpoint.
   ///
   /// Throws a [TransientSendLogsException] or [PermanentSendLogsException] on failure.
@@ -35,10 +33,8 @@ class SendLogsRequest {
   }
 }
 
-class SendLogsResponse {
-  const SendLogsResponse({required this.headers});
-
-  factory SendLogsResponse.fromHttpResponse(Response response) {
+class const SendLogsResponse({required final Map<String, String> headers}) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {
@@ -58,6 +54,4 @@ class SendLogsResponse {
       statusCode == HttpStatus.forbidden ||
       statusCode == HttpStatus.requestTimeout ||
       statusCode == HttpStatus.tooManyRequests;
-
-  final Map<String, String> headers;
 }

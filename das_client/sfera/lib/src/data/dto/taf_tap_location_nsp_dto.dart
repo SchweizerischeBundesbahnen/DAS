@@ -10,12 +10,10 @@ import 'package:sfera/src/data/dto/station_property_nsp_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_route_table_data_nsp_dto.dart';
 
-class TafTapLocationNspDto extends NspDto {
+class TafTapLocationNspDto({super.type = elementType, super.attributes, super.children, super.value}) extends NspDto {
   static const String elementType = 'TAF_TAP_Location_NSP';
 
-  TafTapLocationNspDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory TafTapLocationNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

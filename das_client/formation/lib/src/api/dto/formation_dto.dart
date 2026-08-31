@@ -6,22 +6,15 @@ import 'package:json_annotation/json_annotation.dart';
 part 'formation_dto.g.dart';
 
 @JsonSerializable()
-class FormationDto {
-  FormationDto({
-    required this.operationalTrainNumber,
-    required this.company,
-    required this.operationalDay,
-    required this.formationRuns,
-  });
-
-  factory FormationDto.fromJson(Map<String, dynamic> json) {
+class FormationDto({
+  required final String operationalTrainNumber,
+  required final String company,
+  required final DateTime operationalDay,
+  required final List<dynamic> formationRuns,
+}) {
+  factory fromJson(Map<String, dynamic> json) {
     return _$FormationDtoFromJson(json);
   }
-
-  final String operationalTrainNumber;
-  final String company;
-  final DateTime operationalDay;
-  final List<dynamic> formationRuns;
 
   Map<String, dynamic> toJson() => _$FormationDtoToJson(this);
 

@@ -1,9 +1,8 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class SignalIdDto extends SferaXmlElementDto {
+class SignalIdDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'Signal_ID';
-
-  SignalIdDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get physicalId => attributes['signal_ID_Physical']!;
 

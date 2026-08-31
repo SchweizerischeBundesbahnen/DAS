@@ -1,13 +1,8 @@
-class FahrtHysterese {
-  FahrtHysterese(this.length, this.schwelleFahrt, this.sollAnzahlUeberSchwelle)
-    : assert(length > 0),
-      ringbuffer = List<double>.filled(length, 0.0) {
+class FahrtHysterese(var int length, var double schwelleFahrt, var int sollAnzahlUeberSchwelle) {
+  this : assert(length > 0), ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
 
-  int length;
-  double schwelleFahrt;
-  int sollAnzahlUeberSchwelle;
   List<double> ringbuffer;
   int posRingbuffer = 0;
   bool fahrt = false;

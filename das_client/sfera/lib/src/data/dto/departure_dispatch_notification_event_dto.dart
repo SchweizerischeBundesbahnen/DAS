@@ -1,10 +1,9 @@
 import 'package:sfera/src/data/dto/departure_dispatch_notification_type_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
 
-class DepartureDispatchNotificationEventDto extends NetworkSpecificEventDto {
+class DepartureDispatchNotificationEventDto({super.type, super.attributes, super.children, super.value})
+    extends NetworkSpecificEventDto {
   static const String groupNameValue = 'ddMsg';
-
-  DepartureDispatchNotificationEventDto({super.type, super.attributes, super.children, super.value});
 
   DepartureDispatchNotificationTypeWrapperDto get message =>
       parameters.whereType<DepartureDispatchNotificationTypeWrapperDto>().first;

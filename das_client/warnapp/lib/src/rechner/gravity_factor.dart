@@ -8,16 +8,10 @@ enum GravityFactorStatusType {
   rotationBeendetImHalt,
 }
 
-class GravityFactorStatus {
-  GravityFactorStatusType type;
-  double factor;
-  bool disabled;
+class GravityFactorStatus(var GravityFactorStatusType type, var double factor, var bool disabled);
 
-  GravityFactorStatus(this.type, this.factor, this.disabled);
-}
-
-class GravityFactor {
-  GravityFactor({GravityFactorStatusType type = .init}) {
+class GravityFactor({GravityFactorStatusType type = .init}) {
+  this {
     _alleStatus = [
       GravityFactorStatus(.init, 1.0, true),
       GravityFactorStatus(.fahrtUndefiniert, 0.0002, false),

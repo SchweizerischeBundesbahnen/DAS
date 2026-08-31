@@ -1,12 +1,11 @@
-class LocationHaltDetector {
-  LocationHaltDetector(this.length, this.schwelleMin, this.schwelleMax)
-    : _ringbuffer = List<double>.filled(length, 0.0) {
+class LocationHaltDetector(
+  final int length,
+  final double schwelleMin,
+  final double schwelleMax,
+) {
+  this : _ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
-
-  final double schwelleMin;
-  final double schwelleMax;
-  final int length;
 
   final List<double> _ringbuffer;
   int _posRingbuffer = 0;

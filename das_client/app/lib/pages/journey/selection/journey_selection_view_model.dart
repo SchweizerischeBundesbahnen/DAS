@@ -17,24 +17,17 @@ import 'package:train_identification/component.dart';
 
 final _log = Logger('JourneySelectionViewModel');
 
-class JourneySelectionViewModel {
-  JourneySelectionViewModel({
-    required this._sferaRepo,
-    required this._settingsRepository,
-    required this._onJourneySelected,
-    required this._trainIdentificationRepository,
-    required this._userSettings,
-  }) {
+class JourneySelectionViewModel({
+  required final SferaRepository _sferaRepo,
+  required final SettingsRepository _settingsRepository,
+  required final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected,
+  required final TrainIdentificationRepository _trainIdentificationRepository,
+  required final LocalKeyValueStore _userSettings,
+}) {
+  this {
     _emitSelectingWithDefaults();
     _initSferaRepoSubscription();
   }
-
-  final SferaRepository _sferaRepo;
-  final SettingsRepository _settingsRepository;
-  final TrainIdentificationRepository _trainIdentificationRepository;
-  final LocalKeyValueStore _userSettings;
-
-  final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected;
 
   StreamSubscription? _sferaRepoSubscription;
   TrainJourneyLinkData? _pendingDeepLinkData;

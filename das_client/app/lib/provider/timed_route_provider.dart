@@ -1,8 +1,6 @@
 import 'package:sfera/component.dart';
 
-abstract class TimedRouteProvider {
-  const TimedRouteProvider._();
-
+abstract class const TimedRouteProvider._() {
   bool isInTimedAdvancementRoute(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints);
 
   // Returns a tuple containing the duration until next service point is reached and the next service point itself

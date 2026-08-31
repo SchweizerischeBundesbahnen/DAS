@@ -10,12 +10,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 final _log = Logger('LauncherImpl');
 
-class LauncherImpl implements Launcher {
-  LauncherImpl({required this._userSettings, required this.flavor});
-
-  final Flavor flavor;
-  final LocalKeyValueStore _userSettings;
-
+class LauncherImpl({
+  required final LocalKeyValueStore _userSettings,
+  required final Flavor flavor,
+}) implements Launcher {
   static const _blsCompanyCodes = [
     '3356', // BLSC
     '2263', // BLSI

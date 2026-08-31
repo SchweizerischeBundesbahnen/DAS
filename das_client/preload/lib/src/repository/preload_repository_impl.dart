@@ -15,25 +15,20 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PreloadRepositoryImpl');
 
-class PreloadRepositoryImpl implements PreloadRepository {
+class PreloadRepositoryImpl({
+  required final PreloadZipProcessor preloadZipProcessor,
+  required final PreloadLocalDatabaseService databaseService,
+  required final SferaLocalRepo sferaLocalRepo,
+
+  /// added only for development purposes
+  required final bool disablePreload,
+}) implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
   static const segmentPrefix = 'Segment';
 
-  PreloadRepositoryImpl({
-    required this.preloadZipProcessor,
-    required this.databaseService,
-    required this.sferaLocalRepo,
-    required this.disablePreload,
-  }) {
+  this {
     _init();
   }
-
-  final PreloadZipProcessor preloadZipProcessor;
-  final PreloadLocalDatabaseService databaseService;
-  final SferaLocalRepo sferaLocalRepo;
-
-  /// added only for development purposes
-  final bool disablePreload;
 
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
@@ -237,9 +232,4 @@ class PreloadRepositoryImpl implements PreloadRepository {
   }
 }
 
-class _ZipToProcess {
-  _ZipToProcess({required this.file, required this.zip});
-
-  final S3File file;
-  final File zip;
-}
+class _ZipToProcess({required final S3File file, required final File zip});

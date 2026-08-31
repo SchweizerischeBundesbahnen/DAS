@@ -1,6 +1,4 @@
-abstract class WarnappRepository {
-  const WarnappRepository._();
-
+abstract class WarnappRepository._() {
   bool get isEnabled;
 
   void enable();

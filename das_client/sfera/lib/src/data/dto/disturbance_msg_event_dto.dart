@@ -1,10 +1,9 @@
 import 'package:sfera/src/data/dto/disturbance_msg_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
 
-class DisturbanceMsgEventDto extends NetworkSpecificEventDto {
+class DisturbanceMsgEventDto({super.type, super.attributes, super.children, super.value})
+    extends NetworkSpecificEventDto {
   static const String groupNameValue = 'lmlcMsg';
-
-  DisturbanceMsgEventDto({super.type, super.attributes, super.children, super.value});
 
   DisturbanceMsgNspDto get disturbanceMsgNsp => parameters.whereType<DisturbanceMsgNspDto>().first;
 

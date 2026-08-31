@@ -6,11 +6,8 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 final _log = Logger('JourneyProfileEventHandler');
 
-class JourneyProfileEventHandler extends SferaEventMessageHandler<JourneyProfileDto> {
-  final SferaLocalDatabaseService _sferaDatabaseRepository;
-
-  JourneyProfileEventHandler(super.onMessageHandled, this._sferaDatabaseRepository);
-
+class JourneyProfileEventHandler(super.onMessageHandled, final SferaLocalDatabaseService _sferaDatabaseRepository)
+    extends SferaEventMessageHandler<JourneyProfileDto> {
   @override
   Future<bool> handleMessage(SferaG2bEventMessageDto eventMessage) async {
     if (eventMessage.payload == null || eventMessage.payload!.journeyProfiles.isEmpty) {

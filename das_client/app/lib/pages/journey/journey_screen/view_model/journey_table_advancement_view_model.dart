@@ -25,26 +25,20 @@ typedef AdvancementModeChangedCallback = void Function(JourneyAdvancementModel);
 /// * paused (automatic scrolling is disabled)
 /// * auto (automatic idle scrolling is enabled)
 /// * manual (automatic idle scrolling is enabled)
-class JourneyTableAdvancementViewModel {
-  JourneyTableAdvancementViewModel({
-    required this._scrollController,
-    required this._journeySettingsViewModel,
-    required this._detailModalViewModel,
-    required this._chevronPositionStream,
-    required this._journeyViewModel,
-  }) {
+class JourneyTableAdvancementViewModel({
+  required final JourneyTableScrollController _scrollController,
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  required final DetailModalViewModel _detailModalViewModel,
+  required final Stream<ChevronPositionModel> _chevronPositionStream,
+  required final JourneyViewModel _journeyViewModel,
+}) {
+  this {
     _initSubscription();
   }
 
   final List<StreamSubscription> _streamSubscription = [];
 
   final _idleTimeAutoScroll = Duration(seconds: DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll);
-
-  final JourneyTableScrollController _scrollController;
-  final JourneySettingsViewModel _journeySettingsViewModel;
-  final DetailModalViewModel _detailModalViewModel;
-  final Stream<ChevronPositionModel> _chevronPositionStream;
-  final JourneyViewModel _journeyViewModel;
 
   JourneyPoint? _currentPosition;
   JourneyPoint? _lastPosition;
