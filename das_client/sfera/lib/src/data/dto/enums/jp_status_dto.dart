@@ -5,5 +5,5 @@ enum JpStatusDto({@override required final String xmlValue}) implements XmlEnum 
   invalid(xmlValue: 'Invalid'),
   unavailable(xmlValue: 'Unavailable'),
   update(xmlValue: 'Update'),
-  overwrite(xmlValue: 'Overwrite');
+  overwrite(xmlValue: 'Overwrite'),
 }

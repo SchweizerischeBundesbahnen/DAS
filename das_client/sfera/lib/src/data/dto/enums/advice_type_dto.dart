@@ -10,5 +10,5 @@ enum AdviceTypeDto({@override required final String xmlValue}) implements XmlEnu
   endOfAdvice(xmlValue: 'EndOfAdvice'),
   departureAdvice(xmlValue: 'DepartureAdvice'),
   textAdvice(xmlValue: 'TextAdvice'),
-  deleteAdvice(xmlValue: 'DeleteAdvice');
+  deleteAdvice(xmlValue: 'DeleteAdvice'),
 }

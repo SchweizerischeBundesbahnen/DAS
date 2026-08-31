@@ -18,5 +18,5 @@ class G2bMessageResponseDto({super.type = elementType, super.attributes, super.c
 
 enum G2bMessageResponseResult({@override required final String xmlValue}) implements XmlEnum {
   ok(xmlValue: 'OK'),
-  error(xmlValue: 'ERROR');
+  error(xmlValue: 'ERROR'),
 }

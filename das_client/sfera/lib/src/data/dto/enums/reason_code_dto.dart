@@ -54,5 +54,5 @@ enum ReasonCodeDto({@override required final String xmlValue}) implements XmlEnu
   nationalUse7(xmlValue: 'nationalUse7'),
   nationalUse8(xmlValue: 'nationalUse8'),
   nationalUse9(xmlValue: 'nationalUse9'),
-  nationalUse10(xmlValue: 'nationalUse10');
+  nationalUse10(xmlValue: 'nationalUse10'),
 }

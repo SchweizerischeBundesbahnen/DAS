@@ -6,5 +6,5 @@ enum DisturbanceMsgTypeDto({
   required final DisturbanceEventType type,
 }) implements XmlEnum {
   start(xmlValue: 'grid_power_overlad', type: DisturbanceEventType.start),
-  end(xmlValue: 'grid_power_overload_end', type: DisturbanceEventType.end);
+  end(xmlValue: 'grid_power_overload_end', type: DisturbanceEventType.end),
 }

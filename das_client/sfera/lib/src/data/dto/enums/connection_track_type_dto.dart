@@ -13,5 +13,5 @@ enum ConnectionTrackTypeDto({@override required final String xmlValue}) implemen
   divergenceAtRight(xmlValue: 'DivergenceAtRight'),
   divergenceIntoLeft(xmlValue: 'DivergenceIntoLeft'),
   divergenceAtLeft(xmlValue: 'DivergenceAtLeft'),
-  unknown(xmlValue: 'Unknown');
+  unknown(xmlValue: 'Unknown'),
 }

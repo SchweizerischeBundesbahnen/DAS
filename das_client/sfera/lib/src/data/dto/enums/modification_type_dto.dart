@@ -6,5 +6,5 @@ enum ModificationTypeDto({
   required final ModificationType modificationType,
 }) implements XmlEnum {
   updated(xmlValue: 'updated', modificationType: .updated),
-  deleted(xmlValue: 'deleted', modificationType: .deleted);
+  deleted(xmlValue: 'deleted', modificationType: .deleted),
 }

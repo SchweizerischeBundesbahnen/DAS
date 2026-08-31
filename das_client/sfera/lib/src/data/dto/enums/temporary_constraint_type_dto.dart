@@ -10,5 +10,5 @@ enum TemporaryConstraintTypeDto({@override required final String xmlValue}) impl
   wind(xmlValue: 'Wind'),
   unavailableDasOperatingModes(xmlValue: 'Unavailable_DAS_OperatingModes'),
   advisedSpeed(xmlValue: 'AdvisedSpeed'),
-  networkSpecificConstraint(xmlValue: 'NetworkSpecificConstraint');
+  networkSpecificConstraint(xmlValue: 'NetworkSpecificConstraint'),
 }

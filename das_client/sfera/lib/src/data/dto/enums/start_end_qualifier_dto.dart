@@ -4,5 +4,5 @@ enum StartEndQualifierDto({@override required final String xmlValue}) implements
   starts(xmlValue: 'Starts'),
   ends(xmlValue: 'Ends'),
   startsEnds(xmlValue: 'StartsEnds'),
-  wholeSp(xmlValue: 'WholeSP');
+  wholeSp(xmlValue: 'WholeSP'),
 }

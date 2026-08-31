@@ -4,5 +4,5 @@ enum OperationalIndicationTypeDto({@override required final String xmlValue}) im
   uncoded(xmlValue: 'uncoded'),
   occupiedEntry(xmlValue: 'occupiedEntry'),
   limitedUsableTrack(xmlValue: 'limitedUsableTrack'),
-  dispatcherDepartureAuthorization(xmlValue: 'dispatcherDepartureAuthorization');
+  dispatcherDepartureAuthorization(xmlValue: 'dispatcherDepartureAuthorization'),
 }

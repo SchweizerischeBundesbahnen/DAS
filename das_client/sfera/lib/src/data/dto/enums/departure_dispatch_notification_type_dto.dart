@@ -24,5 +24,5 @@ enum DepartureDispatchNotificationTypeDto({
   departureProvisionWithdrawn(
     xmlValue: 'DEPARTURE_PROVISION_WITHDRAWN',
     type: .departureProvisionWithdrawn,
-  );
+  ),
 }

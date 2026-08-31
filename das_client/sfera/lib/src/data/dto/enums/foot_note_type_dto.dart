@@ -10,5 +10,5 @@ enum SferaFootNoteTypeDto({
   decisiveGradientDown(xmlValue: 'decisiveGradientDown', footNoteType: .decisiveGradientDown),
   contact(xmlValue: 'contact', footNoteType: .contact),
   networkType(xmlValue: 'networkType', footNoteType: .networkType),
-  journey(xmlValue: 'journey', footNoteType: .journey);
+  journey(xmlValue: 'journey', footNoteType: .journey),
 }

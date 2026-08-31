@@ -24,5 +24,5 @@ enum SferaTrackEquipmentTypeDto({
   etcsL2ExtSpeedReversingImpossible(
     xmlValue: 'ETCS-L2-extSpeedReversingImpossible',
     trackEquipmentType: .etcsL2ExtSpeedReversingImpossible,
-  );
+  ),
 }

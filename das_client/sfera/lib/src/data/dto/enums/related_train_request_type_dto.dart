@@ -5,5 +5,5 @@ enum RelatedTrainRequestTypeDto({@override required final String xmlValue}) impl
   ownTrain(xmlValue: 'OwnTrain'),
   relatedTrains(xmlValue: 'RelatedTrains'),
   ownTrainAndRelatedTrains(xmlValue: 'OwnTrainAndRelatedTrains'),
-  ownTrainAndOrRelatedTrains(xmlValue: 'OwnTrainAndOrRelatedTrains');
+  ownTrainAndOrRelatedTrains(xmlValue: 'OwnTrainAndOrRelatedTrains'),
 }
