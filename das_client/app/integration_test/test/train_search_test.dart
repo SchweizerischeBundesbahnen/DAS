@@ -231,14 +231,14 @@ void main() {
 
       await tapElement(tester, primaryButton);
 
-      expect(find.text('1285, SBBP'), findsOneWidget);
-      expect(find.text('2263, BLSI'), findsOneWidget);
-      expect(find.text('3917, THURBO'), findsNothing);
+      expect(find.text('T10, SBBP'), findsOneWidget);
+      expect(find.text('T10, BLSI'), findsOneWidget);
+      expect(find.text('T10, THURBO'), findsNothing);
 
       primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
 
-      await tapElement(tester, find.text('1285, SBBP'));
+      await tapElement(tester, find.text('T10, SBBP'));
 
       primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);

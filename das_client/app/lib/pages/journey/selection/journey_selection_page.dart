@@ -261,7 +261,7 @@ class _ContentState extends State<_Content> {
             crossAxisAlignment: .start,
             children: [
               Text(
-                '${companyMatch.companyCode}, $companyName',
+                '${model.trainNumber}, $companyName',
                 style: SBBTextStyles.mediumLight,
               ),
               Text(
