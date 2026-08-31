@@ -13,6 +13,8 @@ public record Settings(
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
     List<Company> companies,
     @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
+    List<TourSystem> tourSystems,
+    @ArraySchema(arraySchema = @Schema(requiredMode = Schema.RequiredMode.REQUIRED))
     List<RuFeature> ruFeatures,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     Logging logging,

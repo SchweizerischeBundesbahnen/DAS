@@ -44,6 +44,7 @@ public class SettingsController {
     private final CompanyService companyService;
     private final ConfigService configService;
     private final AppVersionService appVersionService;
+    private final TourSystemService tourSystemService;
 
     @GetMapping(API_SETTINGS)
     @Operation(summary = "Fetch all configuration settings.")
@@ -53,11 +54,12 @@ public class SettingsController {
     public ResponseEntity<? extends Response> getSettings(@ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion) {
         List<Company> companies = companyService.getAllCompanies();
+        List<TourSystem> tourSystems = tourSystemService.getAll();
         List<RuFeature> allFeatures = ruFeatureService.getAll();
         Logging logging = configService.getLogging();
         Preload preload = configService.getPreload();
         CurrentAppVersion currentAppVersion = appVersionService.getCurrent(xAppVersion);
 
-        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(companies, allFeatures, logging, preload, currentAppVersion))), requestId);
+        return ResponseEntityFactory.createOkResponse(new SettingsResponse(List.of(new Settings(companies, tourSystems, allFeatures, logging, preload, currentAppVersion))), requestId);
     }
 }

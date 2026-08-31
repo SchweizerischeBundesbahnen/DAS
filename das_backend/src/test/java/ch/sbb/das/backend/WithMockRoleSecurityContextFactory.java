@@ -32,6 +32,7 @@ public class WithMockRoleSecurityContextFactory implements WithSecurityContextFa
             .header("alg", "none")
             .issuer("https://login.microsoftonline.com/" + tenantId + "/v2.0")
             .subject("test-user")
+            .claim("oid", "test-oid")
             .issuedAt(Instant.now())
             .expiresAt(Instant.now().plusSeconds(3600))
             .build();
