@@ -15,6 +15,7 @@ import static ch.sbb.das.backend.indications.internal.RuIndicationController.API
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
 import static ch.sbb.das.backend.indications.internal.SpecialHolidayController.API_SPECIAL_HOLIDAYS;
 import static ch.sbb.das.backend.locations.internal.TafTapLocationController.API_LOCATIONS;
+import static ch.sbb.das.backend.personalnotes.internal.PersonalNoteController.API_PERSONAL_NOTES;
 import static ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationController.API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES;
 import static ch.sbb.das.backend.userproperties.internal.UserPropertyController.API_USER_PROPERTIES;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -47,7 +48,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
                 .requestMatchers(API_SETTINGS, API_FORMATIONS, API_DEPARTURES + "/**", API_DRIVER_RU_INDICATION_MATCHES, API_DRIVER_EXTERNAL_LINKS, API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES,
-                    API_USER_PROPERTIES + "/**")
+                    API_USER_PROPERTIES + "/**", API_PERSONAL_NOTES + "/**")
                 .hasAnyRole(UserRole.OBSERVER, UserRole.DRIVER)
                 .requestMatchers(API_TRANSPORT_PAPERS + "/**")
                 .hasRole(UserRole.SBB_CARGO)
