@@ -20,6 +20,7 @@ import 'package:sfera/src/data/dto/train_run_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/xml_curve_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
+import 'package:sfera/src/data/dto/xml_new_line_speed_line_dto.dart';
 import 'package:sfera/src/data/dto/xml_new_line_speed_op_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
@@ -42,6 +43,8 @@ class NetworkSpecificParameterDto({super.type = elementType, super.attributes, s
     final attributeName = attributes?['name'];
     if (attributeName == XmlNewLineSpeedOPDto.elementName) {
       return XmlNewLineSpeedOPDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == XmlNewLineSpeedLineDto.elementName) {
+      return XmlNewLineSpeedLineDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == TrackEquipmentTypeWrapperDto.elementName) {
       return TrackEquipmentTypeWrapperDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == XmlCurveSpeedDto.elementName) {

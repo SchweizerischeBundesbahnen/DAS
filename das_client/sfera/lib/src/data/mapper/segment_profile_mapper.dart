@@ -97,10 +97,7 @@ class SegmentProfileMapper._() {
           continue;
         }
 
-        // TODO: both line speed needed?
-        final lineVelocities = newLineSpeed.xmlNewLineSpeedLine?.element.speeds?.velocities ?? [];
-        final opVelocities = newLineSpeed.xmlNewLineSpeedOP?.element.speeds?.velocities ?? [];
-        final velocities = [...lineVelocities, ...opVelocities];
+        final velocities = newLineSpeed.xmlNewLineSpeedLine?.element.speeds?.velocities ?? [];
         final speed = SpeedMapper.fromVelocities(velocities);
         if (speed != null) {
           result[calculateOrder(index, newLineSpeed.location)] = speed;

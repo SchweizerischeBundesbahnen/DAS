@@ -336,7 +336,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
 					&lt;/speeds&gt;
-				&lt;newLineSpeed&gt;
+				&lt;/newLineSpeed&gt;
 			"/>
         </NetworkSpecificPoint>
 
