@@ -2,17 +2,11 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class BracketMainStation {
-  const BracketMainStation({
-    required this.countryCode,
-    required this.primaryCode,
-    required this.abbreviation,
-  });
-
-  final String countryCode;
-  final int primaryCode;
-  final String abbreviation;
-
+class const BracketMainStation({
+  required final String countryCode,
+  required final int primaryCode,
+  required final String abbreviation,
+}) {
   @override
   String toString() {
     return 'BracketMainStation{countryCode: $countryCode, primaryCode: $primaryCode, abbreviation: $abbreviation}';

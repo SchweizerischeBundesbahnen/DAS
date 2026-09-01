@@ -1,12 +1,10 @@
 import 'package:warnapp/src/rechner/ring_buffer.dart';
 
-class Integrator {
-  Integrator(this.length) : assert(length > 0, 'length must be greater than zero') {
+class Integrator(final int length) {
+  this : assert(length > 0, 'length must be greater than zero') {
     _ringBuffer = RingBuffer(length, options: [.sum]);
     _initWithValue(0.0);
   }
-
-  final int length;
 
   double _value = 0.0;
   late RingBuffer _ringBuffer;

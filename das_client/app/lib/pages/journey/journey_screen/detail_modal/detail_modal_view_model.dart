@@ -8,8 +8,8 @@ import 'package:rxdart/rxdart.dart';
 
 enum DetailModalType { servicePointModal, additionalSpeedRestriction, brakeSlip }
 
-class DetailModalViewModel {
-  DetailModalViewModel() {
+class DetailModalViewModel() {
+  this {
     _init();
   }
 

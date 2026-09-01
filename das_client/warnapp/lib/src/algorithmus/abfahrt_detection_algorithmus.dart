@@ -21,62 +21,8 @@ import 'package:warnapp/src/rechner/vector.dart';
 
 /// This algorithm matches the 'algorithmus 16' from the original warnapp library that was written in objective-c.
 /// It is a direct port into dart. As such variables and method names are kept as close to the original as possible.
-class AbfahrtDetectionAlgorithmus {
-  final AbfahrtDetectionAlgorithmusProperties properties;
-
-  final FIRFilter3D slowFirFilter;
-  final FIRFilter3D fastFirFilter;
-  final Integrator integrator;
-  final Hysterese hystereseHandbewegung;
-  final Hysterese hystereseHandbewegung2;
-
-  final FIRFilter3D handbewegungFirFilter;
-  final PeakDetector3D peakDetector;
-  final DelayedTrigger delayedPeakDetector;
-  final DelayedTrigger delayedTouch;
-  final double berechnungsZeit;
-  final int lengthForInitialization;
-  int updatesCount = 0;
-  final Delta delta;
-
-  bool wasHalt = true;
-  bool wasHaltFlanke = true;
-
-  final AbfahrtDetector abfahrtDetektor;
-  final LocationFahrtHysterese fahrtHystereseSpeed;
-  final FahrtHysterese fahrtHystereseDelta;
-  final DelayedTrigger fahrtHystereseDeltaFlanke;
-  final HaltDetector haltDetektor;
-  final Hysterese ruheDetektionHystereseLang;
-  final Hysterese ruheDetektionHystereseKurz;
-  final RSFlipFlop flipFlop;
-
-  final Integrator slowIntegrator;
-  final AbfahrtDetector slowAbfahrtDetektor;
-
-  final Hysterese gravitationHystereseRotation;
-  final GravityFactor gravitationsFaktor;
-  final SignalKeeper3D keeper;
-  final Integrator gravitationsIntegrator;
-  final AbfahrtDetector gravitationsAbfahrtDetektor;
-  final HaltDetector gravitationsHaltDetektor;
-  final Delta gravitationsDelta;
-
-  String? abfahrtInfo;
-  String softSetInfos = '';
-  double lastLongitude = 0.0;
-  double lastLatitude = 0.0;
-
-  final LageAenderungDetector3D lageaenderungDetector;
-  final DelayedTrigger delayedTriggerLageaenderung;
-  final int lageaenderungOrNachAnd;
-
-  final SpeedNormalizer speedNormalizer;
-  final LocationAbfahrtDetector locationAbfahrtDetektor;
-  final LocationAbfahrtDetector slowLocationAbfahrtDetektor;
-  final LocationHaltDetector locationHaltDetektor;
-
-  AbfahrtDetectionAlgorithmus({required this.properties})
+class AbfahrtDetectionAlgorithmus({required final AbfahrtDetectionAlgorithmusProperties properties}) {
+  this
     : slowFirFilter = FIRFilter3D(properties.slowWindowLength, resetOnFirstUpdate: true),
       fastFirFilter = FIRFilter3D(properties.fastWindowLength, resetOnFirstUpdate: true),
       integrator = Integrator(properties.integratorWindowLength),
@@ -203,6 +149,58 @@ class AbfahrtDetectionAlgorithmus {
       ),
       delayedTriggerLageaenderung = DelayedTrigger(false, 0, properties.lageaenderungDelay),
       lageaenderungOrNachAnd = properties.lageaenderungOrNachAnd;
+
+  final FIRFilter3D slowFirFilter;
+  final FIRFilter3D fastFirFilter;
+  final Integrator integrator;
+  final Hysterese hystereseHandbewegung;
+  final Hysterese hystereseHandbewegung2;
+
+  final FIRFilter3D handbewegungFirFilter;
+  final PeakDetector3D peakDetector;
+  final DelayedTrigger delayedPeakDetector;
+  final DelayedTrigger delayedTouch;
+  final double berechnungsZeit;
+  final int lengthForInitialization;
+  int updatesCount = 0;
+  final Delta delta;
+
+  bool wasHalt = true;
+  bool wasHaltFlanke = true;
+
+  final AbfahrtDetector abfahrtDetektor;
+  final LocationFahrtHysterese fahrtHystereseSpeed;
+  final FahrtHysterese fahrtHystereseDelta;
+  final DelayedTrigger fahrtHystereseDeltaFlanke;
+  final HaltDetector haltDetektor;
+  final Hysterese ruheDetektionHystereseLang;
+  final Hysterese ruheDetektionHystereseKurz;
+  final RSFlipFlop flipFlop;
+
+  final Integrator slowIntegrator;
+  final AbfahrtDetector slowAbfahrtDetektor;
+
+  final Hysterese gravitationHystereseRotation;
+  final GravityFactor gravitationsFaktor;
+  final SignalKeeper3D keeper;
+  final Integrator gravitationsIntegrator;
+  final AbfahrtDetector gravitationsAbfahrtDetektor;
+  final HaltDetector gravitationsHaltDetektor;
+  final Delta gravitationsDelta;
+
+  String? abfahrtInfo;
+  String softSetInfos = '';
+  double lastLongitude = 0.0;
+  double lastLatitude = 0.0;
+
+  final LageAenderungDetector3D lageaenderungDetector;
+  final DelayedTrigger delayedTriggerLageaenderung;
+  final int lageaenderungOrNachAnd;
+
+  final SpeedNormalizer speedNormalizer;
+  final LocationAbfahrtDetector locationAbfahrtDetektor;
+  final LocationAbfahrtDetector slowLocationAbfahrtDetektor;
+  final LocationHaltDetector locationHaltDetektor;
 
   bool updateWithAcceleration(
     double accX,

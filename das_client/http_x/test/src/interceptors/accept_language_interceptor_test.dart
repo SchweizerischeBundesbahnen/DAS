@@ -35,4 +35,4 @@ void main() {
   });
 }
 
-class MockBaseResponse extends Mock implements http.BaseResponse {}
+class MockBaseResponse extends Mock implements http.BaseResponse;

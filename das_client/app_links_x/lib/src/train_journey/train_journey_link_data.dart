@@ -1,20 +1,11 @@
-class TrainJourneyLinkData {
-  TrainJourneyLinkData({
-    required this.operationalTrainNumber,
-    required this.company,
-    required this.startDate,
-    this.tafTapLocationReferenceEnd,
-    this.tafTapLocationReferenceStart,
-    this.returnUrl,
-  });
-
-  final String operationalTrainNumber;
-  final String? company;
-  final DateTime? startDate;
-  final String? tafTapLocationReferenceStart;
-  final String? tafTapLocationReferenceEnd;
-  final String? returnUrl;
-
+class TrainJourneyLinkData({
+  required final String operationalTrainNumber,
+  required final String? company,
+  required final DateTime? startDate,
+  final String? tafTapLocationReferenceEnd,
+  final String? tafTapLocationReferenceStart,
+  final String? returnUrl,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

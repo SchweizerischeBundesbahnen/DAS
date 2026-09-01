@@ -5,12 +5,11 @@ import 'package:settings/component.dart';
 
 final _log = Logger('SelectCompanyInputViewModel');
 
-class SelectCompanyInputViewModel {
-  SelectCompanyInputViewModel({required this._settingsRepository}) {
+class SelectCompanyInputViewModel({required final SettingsRepository _settingsRepository}) {
+  this {
     _init();
   }
 
-  final SettingsRepository _settingsRepository;
   final _rxCompanies = BehaviorSubject<List<Company>>.seeded([]);
 
   Stream<List<Company>> get companies => _rxCompanies.stream.distinct();

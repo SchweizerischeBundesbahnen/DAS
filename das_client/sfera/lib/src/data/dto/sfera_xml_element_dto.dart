@@ -4,19 +4,16 @@ import 'package:xml/xml.dart';
 
 final _log = Logger('SferaXmlElementDto');
 
-class SferaXmlElementDto {
-  final String type;
+class SferaXmlElementDto({
+  required final String type,
+  final String? value,
+  Map<String, String>? attributes,
+  List<SferaXmlElementDto>? children,
+}) {
+  this : attributes = attributes ?? {}, children = children ?? [];
+
   final Map<String, String> attributes;
   final List<SferaXmlElementDto> children;
-  final String? value;
-
-  SferaXmlElementDto({
-    required this.type,
-    Map<String, String>? attributes,
-    List<SferaXmlElementDto>? children,
-    this.value,
-  }) : attributes = attributes ?? {},
-       children = children ?? [];
 
   @mustCallSuper
   bool validate() {

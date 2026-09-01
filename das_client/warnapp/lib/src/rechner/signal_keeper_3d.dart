@@ -1,8 +1,8 @@
 import 'package:warnapp/src/rechner/signal_keeper.dart';
 import 'package:warnapp/src/rechner/vector.dart';
 
-class SignalKeeper3D implements Vector {
-  SignalKeeper3D() : _keeperX = SignalKeeper(), _keeperY = SignalKeeper(), _keeperZ = SignalKeeper();
+class SignalKeeper3D() implements Vector {
+  this : _keeperX = SignalKeeper(), _keeperY = SignalKeeper(), _keeperZ = SignalKeeper();
 
   final SignalKeeper _keeperX;
   final SignalKeeper _keeperY;

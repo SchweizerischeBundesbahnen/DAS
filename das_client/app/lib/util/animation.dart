@@ -3,9 +3,7 @@ import 'package:flutter/animation.dart';
 /// Defines animation properties to be used in DAS.
 ///
 /// Uses Material 3 Motion docs as guide-line: https://m3.material.io/styles/motion/overview/how-it-works
-class DASAnimation {
-  const DASAnimation._();
-
+class const DASAnimation._() {
   /// should be used for large expressive transitions.
   static const Duration longDuration = Duration(milliseconds: 500);
 

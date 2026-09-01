@@ -1,20 +1,10 @@
 import 'package:sfera/component.dart';
 
-class ResolvedTrainSeriesSpeed {
-  ResolvedTrainSeriesSpeed({
-    required this.speed,
-    required this.isPrevious,
-  });
-
-  factory ResolvedTrainSeriesSpeed.none() {
-    return ResolvedTrainSeriesSpeed(
-      speed: null,
-      isPrevious: false,
-    );
-  }
-
-  final TrainSeriesSpeed? speed;
-  final bool isPrevious;
+class ResolvedTrainSeriesSpeed({
+  required final TrainSeriesSpeed? speed,
+  required final bool isPrevious,
+}) {
+  factory none() => ResolvedTrainSeriesSpeed(speed: null, isPrevious: false);
 
   @override
   bool operator ==(Object other) =>

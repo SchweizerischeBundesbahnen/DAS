@@ -1,9 +1,4 @@
-class Delay {
-  const Delay({required this.value, required this.location});
-
-  final Duration value;
-  final String location;
-
+class const Delay({required final Duration value, required final String location}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

@@ -2,10 +2,9 @@ import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/g2b_error.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class G2bMessageResponseDto extends SferaXmlElementDto {
+class G2bMessageResponseDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'G2B_MessageResponse';
-
-  G2bMessageResponseDto({super.type = elementType, super.attributes, super.children, super.value});
 
   G2bMessageResponseResult get result => XmlEnum.valueOf(G2bMessageResponseResult.values, attributes['result'])!;
 
@@ -17,12 +16,7 @@ class G2bMessageResponseDto extends SferaXmlElementDto {
   }
 }
 
-enum G2bMessageResponseResult implements XmlEnum {
+enum G2bMessageResponseResult({@override required final String xmlValue}) implements XmlEnum {
   ok(xmlValue: 'OK'),
-  error(xmlValue: 'ERROR');
-
-  const G2bMessageResponseResult({required this.xmlValue});
-
-  @override
-  final String xmlValue;
+  error(xmlValue: 'ERROR'),
 }

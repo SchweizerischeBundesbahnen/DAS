@@ -5,15 +5,10 @@ enum DepartureAuthorizationType { sms, dispatcher }
 
 @sealed
 @immutable
-class DepartureAuthorization {
-  const DepartureAuthorization({
-    required this.types,
-    this._originalText,
-  });
-
-  final List<DepartureAuthorizationType> types;
-  final String? _originalText;
-
+class const DepartureAuthorization({
+  required final List<DepartureAuthorizationType> types,
+  final String? _originalText,
+}) {
   bool get hasDispatcherAuth => types.contains(DepartureAuthorizationType.dispatcher);
 
   bool get hasSmsAuth => types.contains(DepartureAuthorizationType.sms);

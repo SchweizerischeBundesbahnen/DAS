@@ -6,9 +6,7 @@ import 'package:sfera/src/data/dto/message_header_dto.dart';
 
 /// Handles connection and message exchange with SFERA broker
 /// Will fallback to local repo if connection fails
-abstract class SferaRepository {
-  const SferaRepository._();
-
+abstract class SferaRepository._() {
   Stream<SferaRemoteRepositoryState> get stateStream;
 
   Stream<Journey?> get journeyStream;

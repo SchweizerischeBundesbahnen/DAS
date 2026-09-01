@@ -4,16 +4,11 @@ import 'package:sfera/component.dart';
 
 @sealed
 @immutable
-class SupervisedLevelCrossingGroup extends LevelCrossingGroup {
-  const SupervisedLevelCrossingGroup({
-    required this.balise,
-    required super.levelCrossings,
-    required this.pointsBetween,
-  });
-
-  final Balise balise;
-  final List<JourneyPoint> pointsBetween;
-
+class const SupervisedLevelCrossingGroup({
+  required super.levelCrossings,
+  required final Balise balise,
+  required final List<JourneyPoint> pointsBetween,
+}) extends LevelCrossingGroup {
   bool canGroupWith(SupervisedLevelCrossingGroup other) {
     return balise.amountLevelCrossings == 1 &&
         levelCrossings.isNotEmpty &&

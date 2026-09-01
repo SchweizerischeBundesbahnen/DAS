@@ -1,9 +1,7 @@
 import 'package:sfera/src/data/dto/change_dto.dart';
 
-class TrainRunReroutingChangeDto extends ChangeDto {
+class TrainRunReroutingChangeDto({super.type, super.attributes, super.children, super.value}) extends ChangeDto {
   static const String _attributeSeparator = '-';
-
-  TrainRunReroutingChangeDto({super.type, super.attributes, super.children, super.value});
 
   List<String> get oldRouteLocationCodes => attributes['oldRoute']?.split(_attributeSeparator) ?? [];
 

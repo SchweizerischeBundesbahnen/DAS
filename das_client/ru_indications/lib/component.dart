@@ -6,9 +6,7 @@ import 'package:ru_indications/src/repository/ru_indications_repository_impl.dar
 export 'package:ru_indications/src/model/ru_indication.dart';
 export 'package:ru_indications/src/repository/ru_indications_repository.dart';
 
-class RuIndicationsComponent {
-  const RuIndicationsComponent._();
-
+class RuIndicationsComponent._() {
   static RuIndicationsRepository createRepository({
     required String baseUrl,
     required Client client,

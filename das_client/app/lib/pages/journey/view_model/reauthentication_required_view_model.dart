@@ -7,18 +7,15 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('ReauthenticationRequiredViewModel');
 
-class ReauthenticationRequiredViewModel {
-  ReauthenticationRequiredViewModel({
-    required this._authenticator,
-    required this._notificationViewModel,
-    required this._connectivityManager,
-  }) {
+class ReauthenticationRequiredViewModel({
+  required final Authenticator _authenticator,
+  required final NotificationPriorityQueueViewModel _notificationViewModel,
+  required final ConnectivityManager _connectivityManager,
+}) {
+  this {
     _init();
   }
 
-  final Authenticator _authenticator;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
-  final ConnectivityManager _connectivityManager;
   StreamSubscription? _authStreamSubscription;
   StreamSubscription? _connectivityStreamSubscription;
   bool? _lastConnectivityState;

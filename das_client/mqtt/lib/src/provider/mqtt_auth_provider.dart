@@ -1,6 +1,4 @@
-abstract interface class MqttAuthProvider {
-  const MqttAuthProvider._();
-
+abstract interface class MqttAuthProvider._() {
   Future<String> token();
 
   Future<String> userId();

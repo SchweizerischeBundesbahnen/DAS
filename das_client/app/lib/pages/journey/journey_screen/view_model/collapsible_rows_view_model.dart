@@ -17,16 +17,15 @@ enum CollapsedState {
       data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
 }
 
-class CollapsibleRowsViewModel extends JourneyAwareViewModel {
-  CollapsibleRowsViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required this._simTrainViewModel,
-    super.journeyViewModel,
-  }) {
+class CollapsibleRowsViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required final SimTrainViewModel _simTrainViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _init(journeyViewModel.journey, journeyPositionStream);
   }
 
-  final SimTrainViewModel _simTrainViewModel;
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;

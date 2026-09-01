@@ -11,9 +11,7 @@ export 'package:formation/src/model/transport_paper_link.dart';
 export 'package:formation/src/model/transport_paper_link_type.dart';
 export 'package:formation/src/repository/formation_repository.dart';
 
-class FormationComponent {
-  const FormationComponent._();
-
+class const FormationComponent._() {
   static FormationRepository createRepository({
     required String baseUrl,
     required Client client,

@@ -9,16 +9,14 @@ import 'package:sfera/component.dart';
 
 final _logger = Logger('DisturbanceViewModel');
 
-class DisturbanceViewModel {
-  DisturbanceViewModel({
-    required this._sferaRepo,
-    required this._notificationVM,
-  }) {
+class DisturbanceViewModel({
+  required final SferaRepository _sferaRepo,
+  required final NotificationPriorityQueueViewModel _notificationVM,
+}) {
+  this {
     _init();
   }
 
-  final SferaRepository _sferaRepo;
-  final NotificationPriorityQueueViewModel _notificationVM;
   final _sound = DI.get<DASSounds>().gridOverload;
 
   final _rxDisturbance = BehaviorSubject<DisturbanceEventType?>.seeded(null);

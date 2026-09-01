@@ -13,9 +13,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-401-unauthorized
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#401
-class UnauthorizedException extends HttpException {
-  const UnauthorizedException(super.request, super.response);
-
+class const UnauthorizedException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '401 Unauthorized';
 }

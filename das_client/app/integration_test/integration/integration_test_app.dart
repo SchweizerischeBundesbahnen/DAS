@@ -10,9 +10,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 import 'integration_test_di.dart';
 
-class IntegrationTestApp {
-  const IntegrationTestApp._();
-
+class const IntegrationTestApp._() {
   static Future<void> start(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
     // iOS workaround for enterText not working on some devices, if its the first element
     // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)

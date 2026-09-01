@@ -3,12 +3,11 @@ import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class SferaB2gRequestMessageDto extends SferaXmlElementDto {
+class SferaB2gRequestMessageDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SFERA_B2G_RequestMessage';
 
-  SferaB2gRequestMessageDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory SferaB2gRequestMessageDto.create(
+  factory create(
     MessageHeaderDto header, {
     HandshakeRequestDto? handshakeRequest,
     B2gRequestDto? b2gRequest,

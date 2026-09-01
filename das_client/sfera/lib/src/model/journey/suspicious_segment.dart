@@ -5,15 +5,11 @@ import 'package:sfera/src/model/journey/segment.dart';
 /// A segment is marked suspicious when problems occur, typically because of
 /// incomplete or wrong route table data (the RADN document).
 /// This segment stretches over the entire segment profile.
-class SuspiciousSegment extends Segment {
-  const SuspiciousSegment({
-    required this.spId,
-    super.startOrder,
-    super.endOrder,
-  });
-
-  final String spId;
-
+class const SuspiciousSegment({
+  required final String spId,
+  super.startOrder,
+  super.endOrder,
+}) extends Segment {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

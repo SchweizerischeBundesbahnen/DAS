@@ -1,17 +1,10 @@
-class AwsConfiguration {
-  AwsConfiguration({
-    required this.bucketUrl,
-    required this.accessKey,
-    required this.accessSecret,
-    this.region = 'eu-central-1',
-  });
-
+class AwsConfiguration({
+  required final String bucketUrl,
+  required final String accessKey,
+  required final String accessSecret,
+  final String region = 'eu-central-1',
+}) {
   AwsConfiguration.empty() : this(bucketUrl: '', accessKey: '', accessSecret: '');
-
-  final String bucketUrl;
-  final String accessKey;
-  final String accessSecret;
-  final String region;
 
   @override
   bool operator ==(Object other) =>

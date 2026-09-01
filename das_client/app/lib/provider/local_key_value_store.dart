@@ -3,8 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalKeyValueStore {
-  LocalKeyValueStore() {
+class LocalKeyValueStore() {
+  this {
     _init();
   }
 

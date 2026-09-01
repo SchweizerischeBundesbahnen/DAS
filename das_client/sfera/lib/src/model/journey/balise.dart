@@ -2,12 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class Balise extends JourneyPoint {
-  const Balise({required super.order, required super.kilometre, required this.amountLevelCrossings, this.identifier})
-    : super(dataType: .balise);
-
-  final int amountLevelCrossings;
-  final String? identifier;
+class const Balise({
+  required super.order,
+  required super.kilometre,
+  required final int amountLevelCrossings,
+  final String? identifier,
+}) extends JourneyPoint {
+  this : super(dataType: .balise);
 
   @override
   OrderPriority get orderPriority => .balise;

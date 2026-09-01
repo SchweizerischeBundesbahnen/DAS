@@ -8,15 +8,17 @@ enum AdvisedSpeedSegmentHint {
   additionalSpeedRestriction,
 }
 
-sealed class AdvisedSpeedSegment extends Segment {
-  const AdvisedSpeedSegment({
-    required int startOrder,
-    required int endOrder,
-    required this.endData,
-    this.isEndDataCalculated = false,
-    this.additionalHints = const <AdvisedSpeedSegmentHint>{},
-  }) : super(startOrder: startOrder, endOrder: endOrder);
+sealed class const AdvisedSpeedSegment({
+  required super.startOrder,
+  required super.endOrder,
+  required final BaseData endData,
 
+  /// If the end location was unknown and mapped to the closest [JourneyPoint], this will be true.
+  final bool isEndDataCalculated = false,
+
+  /// Additional hints depending on journey points within the advised speed segment.
+  final Set<AdvisedSpeedSegmentHint> additionalHints = const <AdvisedSpeedSegmentHint>{},
+}) extends Segment {
   SingleSpeed? get speed => switch (this) {
     final FollowTrainAdvisedSpeedSegment aS => aS.speed,
     final TrainFollowingAdvisedSpeedSegment aS => aS.speed,
@@ -28,14 +30,6 @@ sealed class AdvisedSpeedSegment extends Segment {
   ///
   /// Planned to be removed in Release 2 of DAS Client.
   bool get isDIST => speed != null && speed!.value == '0';
-
-  final BaseData endData;
-
-  /// If the end location was unknown and mapped to the closest [JourneyPoint], this will be true.
-  final bool isEndDataCalculated;
-
-  /// Additional hints depending on journey points within the advised speed segment.
-  final Set<AdvisedSpeedSegmentHint> additionalHints;
 
   @override
   bool operator ==(Object other) {

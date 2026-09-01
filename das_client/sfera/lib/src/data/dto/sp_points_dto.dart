@@ -11,11 +11,10 @@ import 'package:sfera/src/data/dto/track_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_dto.dart';
 import 'package:sfera/src/data/dto/whistle_network_specific_point_dto.dart';
 
-class SpPointsDto extends SferaXmlElementDto {
+class SpPointsDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SP_Points';
   static const String _protectionSectionNspName = 'protectionSection';
-
-  SpPointsDto({super.type = elementType, super.attributes, super.children, super.value});
 
   Iterable<TimingPointDto> get timingPoints => children.whereType<TimingPointDto>();
 

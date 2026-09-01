@@ -17,13 +17,13 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('AdvisedSpeedViewModel');
 
-class AdvisedSpeedViewModel {
-  AdvisedSpeedViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required this._notificationVM,
-    required this._lineSpeedViewModel,
-    required JourneyViewModel journeyViewModel,
-  }) {
+class AdvisedSpeedViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required final NotificationPriorityQueueViewModel _notificationVM,
+  required final LineSpeedViewModel _lineSpeedViewModel,
+  required JourneyViewModel journeyViewModel,
+}) {
+  this {
     _initJourneyStreamSubscription(journeyViewModel.journey, journeyPositionStream);
   }
 
@@ -40,9 +40,6 @@ class AdvisedSpeedViewModel {
   int _currentPositionOrder = 0;
 
   SingleSpeed? _activeLineSpeed;
-
-  final NotificationPriorityQueueViewModel _notificationVM;
-  final LineSpeedViewModel _lineSpeedViewModel;
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
 

@@ -13,6 +13,7 @@ We prefer to use the following coding style principles:
 * We create public widgets if they are used in multiple places across the application or if readability (ex. Widget to big) is improved over private methods.
 * We prefer using `_widget` as a naming convention instead of prefixing with build (e.g., `_buildWidget`).
 * Use the `logging` package instead of `print`.
+* We prefer using primary constructors except for Widgets and classes that have a lot of documentation on the class variables.
 
 ## Formatting
 

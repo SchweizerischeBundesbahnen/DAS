@@ -1,9 +1,7 @@
 import 'package:customer_oriented_departure/component.dart';
 import 'package:sfera/component.dart';
 
-sealed class ChecklistDepartureProcessModel {
-  const ChecklistDepartureProcessModel._();
-
+sealed class const ChecklistDepartureProcessModel._() {
   ServicePoint? get nextStop => switch (this) {
     ChecklistDepartureProcessDisabled() => null,
     NoCustomerOrientedDepartureChecklist(nextStop: final stop) => stop,
@@ -11,8 +9,8 @@ sealed class ChecklistDepartureProcessModel {
   };
 }
 
-class ChecklistDepartureProcessDisabled extends ChecklistDepartureProcessModel {
-  const ChecklistDepartureProcessDisabled() : super._();
+class const ChecklistDepartureProcessDisabled() extends ChecklistDepartureProcessModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) => other is ChecklistDepartureProcessDisabled;
@@ -21,11 +19,9 @@ class ChecklistDepartureProcessDisabled extends ChecklistDepartureProcessModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
-  const NoCustomerOrientedDepartureChecklist({required this.nextStop}) : super._();
-
-  @override
-  final ServicePoint? nextStop;
+class const NoCustomerOrientedDepartureChecklist({@override required final ServicePoint? nextStop})
+    extends ChecklistDepartureProcessModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>
@@ -35,13 +31,11 @@ class NoCustomerOrientedDepartureChecklist extends ChecklistDepartureProcessMode
   int get hashCode => nextStop.hashCode;
 }
 
-class CustomerOrientedDepartureChecklist extends ChecklistDepartureProcessModel {
-  const CustomerOrientedDepartureChecklist({required this.nextStop, required this.customerOrientedDepartureStatus})
-    : super._();
-
-  @override
-  final ServicePoint? nextStop;
-  final CustomerOrientedDepartureStatus customerOrientedDepartureStatus;
+class const CustomerOrientedDepartureChecklist({
+  @override required final ServicePoint? nextStop,
+  required final CustomerOrientedDepartureStatus customerOrientedDepartureStatus,
+}) extends ChecklistDepartureProcessModel {
+  this : super._();
 
   @override
   bool operator ==(Object other) =>

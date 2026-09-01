@@ -9,12 +9,8 @@ export 'package:logger/src/log_endpoint.dart';
 export 'package:logger/src/log_entry.dart';
 export 'package:logger/src/log_printer.dart';
 
-class LoggerComponent {
-  const LoggerComponent._();
-
-  static DASLogger createDASLogger({
-    required String deviceId,
-  }) {
+class LoggerComponent._() {
+  static DASLogger createDASLogger({required String deviceId}) {
     final apiService = LogApiService();
     final loggerRepo = LoggerRepoImpl(fileService: LogFileServiceImpl(), apiService: apiService);
     return DASLoggerImpl(loggerRepo: loggerRepo, deviceId: deviceId);

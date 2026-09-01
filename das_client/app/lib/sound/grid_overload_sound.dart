@@ -3,9 +3,7 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class GridOverloadSound extends Sound {
-  const GridOverloadSound();
-
+class const GridOverloadSound() extends Sound {
   static const _volume = 1.0;
 
   @override

@@ -3,7 +3,7 @@ import 'dart:io' show Platform;
 import 'package:customer_oriented_departure/component.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-enum FirebaseConfig {
+enum FirebaseConfig(final FirebaseOptions _android, final FirebaseOptions _iOS) {
   development(
     FirebaseOptions(
       apiKey: 'AIzaSyC96OX9RhKzTwMZDFQbfhcIJ02_G-88CLU',
@@ -58,11 +58,6 @@ enum FirebaseConfig {
       iosBundleId: 'ch.sbb.das',
     ),
   );
-
-  const FirebaseConfig(this._android, this._iOS);
-
-  final FirebaseOptions _android;
-  final FirebaseOptions _iOS;
 
   FirebaseOptions get options {
     if (Platform.isAndroid) {

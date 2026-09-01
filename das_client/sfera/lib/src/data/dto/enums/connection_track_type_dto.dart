@@ -1,6 +1,6 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
-enum ConnectionTrackTypeDto implements XmlEnum {
+enum ConnectionTrackTypeDto({@override required final String xmlValue}) implements XmlEnum {
   convergenceFromRight(xmlValue: 'ConvergenceFromRight'),
   convergingIntoRight(xmlValue: 'ConvergingIntoRight'),
   convergenceFromLeft(xmlValue: 'ConvergenceFromLeft'),
@@ -13,12 +13,5 @@ enum ConnectionTrackTypeDto implements XmlEnum {
   divergenceAtRight(xmlValue: 'DivergenceAtRight'),
   divergenceIntoLeft(xmlValue: 'DivergenceIntoLeft'),
   divergenceAtLeft(xmlValue: 'DivergenceAtLeft'),
-  unknown(xmlValue: 'Unknown');
-
-  const ConnectionTrackTypeDto({
-    required this.xmlValue,
-  });
-
-  @override
-  final String xmlValue;
+  unknown(xmlValue: 'Unknown'),
 }

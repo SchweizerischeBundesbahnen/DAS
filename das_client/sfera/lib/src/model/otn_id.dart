@@ -1,19 +1,13 @@
 import 'package:meta/meta.dart';
 
+/// Operational Train Number Identifier
 @sealed
 @immutable
-class OtnId {
-  /// Operational Train Number Identifier
-  const OtnId({
-    required this.company,
-    required this.operationalTrainNumber,
-    required this.startDate,
-  });
-
-  final String company;
-  final String operationalTrainNumber;
-  final DateTime startDate;
-
+class const OtnId({
+  required final String company,
+  required final String operationalTrainNumber,
+  required final DateTime startDate,
+}) {
   @override
   String toString() {
     return 'OtnId{company: $company, operationalTrainNumber: $operationalTrainNumber, startDate: $startDate}';

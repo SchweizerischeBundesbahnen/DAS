@@ -18,15 +18,10 @@ import 'package:train_identification/component.dart';
 final _log = Logger('AppLinkNavigator');
 
 /// Handles navigation from app links provided by [AppLinksManager.onAppLinkIntent]
-class AppLinkNavigator {
-  AppLinkNavigator({
-    required this._appLinksManager,
-    required this._router,
-  });
-
-  final AppLinksManager _appLinksManager;
-  final AppRouter _router;
-
+class AppLinkNavigator({
+  required final AppLinksManager _appLinksManager,
+  required final AppRouter _router,
+}) {
   StreamSubscription<AppLinkIntent>? _subscription;
 
   void observe() {

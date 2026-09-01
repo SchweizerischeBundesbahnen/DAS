@@ -5,9 +5,8 @@ import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
 
 final _log = Logger('RelatedTrainInformationEventHandler');
 
-class RelatedTrainInformationEventHandler extends SferaEventMessageHandler<RelatedTrainInformationDto> {
-  RelatedTrainInformationEventHandler(super.onMessageHandled);
-
+class RelatedTrainInformationEventHandler(super.onMessageHandled)
+    extends SferaEventMessageHandler<RelatedTrainInformationDto> {
   @override
   Future<bool> handleMessage(SferaG2bEventMessageDto eventMessage) async {
     if (eventMessage.payload == null || eventMessage.payload!.relatedTrainInformation == null) {

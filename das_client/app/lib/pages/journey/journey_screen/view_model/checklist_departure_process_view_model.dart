@@ -13,19 +13,15 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('ChecklistDepartureProcessViewModel');
 
-class ChecklistDepartureProcessViewModel extends JourneyAwareViewModel {
-  ChecklistDepartureProcessViewModel({
-    required this._journeyPositionViewModel,
-    required this._ruFeatureProvider,
-    required this._customerOrientedDepartureViewModel,
-    super.journeyViewModel,
-  }) {
+class ChecklistDepartureProcessViewModel({
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+  required final RuFeatureProvider _ruFeatureProvider,
+  required final CustomerOrientedDepartureViewModel _customerOrientedDepartureViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _initSubscription();
   }
-
-  final JourneyPositionViewModel _journeyPositionViewModel;
-  final RuFeatureProvider _ruFeatureProvider;
-  final CustomerOrientedDepartureViewModel _customerOrientedDepartureViewModel;
 
   final _rxModel = BehaviorSubject<ChecklistDepartureProcessModel>.seeded(const ChecklistDepartureProcessDisabled());
 

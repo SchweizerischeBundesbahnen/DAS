@@ -1,7 +1,10 @@
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/model/journey/departure_dispatch_notification_event.dart';
 
-enum DepartureDispatchNotificationTypeDto implements XmlEnum {
+enum DepartureDispatchNotificationTypeDto({
+  @override required final String xmlValue,
+  required final DepartureDispatchNotificationType type,
+}) implements XmlEnum {
   prepareForDepartureLong(
     xmlValue: 'PREPARE_FOR_DEPARTURE_LONG',
     type: .prepareForDepartureLong,
@@ -21,15 +24,5 @@ enum DepartureDispatchNotificationTypeDto implements XmlEnum {
   departureProvisionWithdrawn(
     xmlValue: 'DEPARTURE_PROVISION_WITHDRAWN',
     type: .departureProvisionWithdrawn,
-  );
-
-  const DepartureDispatchNotificationTypeDto({
-    required this.xmlValue,
-    required this.type,
-  });
-
-  @override
-  final String xmlValue;
-
-  final DepartureDispatchNotificationType type;
+  ),
 }

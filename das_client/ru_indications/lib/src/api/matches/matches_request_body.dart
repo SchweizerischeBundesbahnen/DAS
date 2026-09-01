@@ -6,23 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'matches_request_body.g.dart';
 
 @JsonSerializable()
-class MatchesRequestBody {
-  MatchesRequestBody({
-    required this.company,
-    required this.operationalTrainNumber,
-    required this.startDate,
-    required this.tafTapLocationReferences,
-  });
-
-  factory MatchesRequestBody.fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
-
-  final String company;
-  final int operationalTrainNumber;
-
-  @JsonKey(toJson: _formatDateOnly)
-  final DateTime startDate;
-
-  final List<String> tafTapLocationReferences;
+class MatchesRequestBody({
+  required final String company,
+  required final int operationalTrainNumber,
+  @JsonKey(toJson: _formatDateOnly) required final DateTime startDate,
+  required final List<String> tafTapLocationReferences,
+}) {
+  factory fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
 
   Map<String, dynamic> toJson() => _$MatchesRequestBodyToJson(this);
 

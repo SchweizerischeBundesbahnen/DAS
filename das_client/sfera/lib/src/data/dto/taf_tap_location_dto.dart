@@ -15,10 +15,9 @@ import 'package:sfera/src/data/dto/taf_tap_location_ident_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_route_table_data_nsp_dto.dart';
 
-class TafTapLocationDto extends SferaSegmentXmlElementDto {
+class TafTapLocationDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaSegmentXmlElementDto {
   static const String elementType = 'TAF_TAP_Location';
-
-  TafTapLocationDto({super.type = elementType, super.attributes, super.children, super.value});
 
   TafTapLocationIdentDto get locationIdent => children.whereType<TafTapLocationIdentDto>().first;
 

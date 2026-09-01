@@ -12,10 +12,10 @@ final _log = Logger('AppLinksManagerImpl');
 /// Processes all deep-links used to open DAS app by using the app_links package.
 ///
 /// see: [AppLinksManager]
-class AppLinksManagerImpl implements AppLinksManager {
+class AppLinksManagerImpl({AppLinks? appLinks}) implements AppLinksManager {
   static const _expectedHost = 'driveradvisorysystem.app.sbb.ch';
 
-  AppLinksManagerImpl({AppLinks? appLinks}) : _appLinks = appLinks ?? AppLinks() {
+  this : _appLinks = appLinks ?? AppLinks() {
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) => _handleUri(uri),
       onError: (err) => _log.severe('Error while listening to deep-links updates: $err'),

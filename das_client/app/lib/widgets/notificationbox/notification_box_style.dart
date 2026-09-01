@@ -1,6 +1,11 @@
 part of 'notification_box.dart';
 
-enum NotificationBoxStyle {
+enum NotificationBoxStyle(
+  final Color backgroundColor,
+  final Color iconColor,
+  final Color iconColorDark,
+  final IconData icon,
+) {
   alert(
     SBBColors.red,
     SBBColors.red,
@@ -24,17 +29,5 @@ enum NotificationBoxStyle {
     SBBColors.black,
     SBBColors.white,
     SBBIcons.circle_information_small,
-  );
-
-  const NotificationBoxStyle(
-    this.backgroundColor,
-    this.iconColor,
-    this.iconColorDark,
-    this.icon,
-  );
-
-  final Color backgroundColor;
-  final Color iconColor;
-  final Color iconColorDark;
-  final IconData icon;
+  ),
 }

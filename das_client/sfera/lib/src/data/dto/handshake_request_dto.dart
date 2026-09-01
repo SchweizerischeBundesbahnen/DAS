@@ -2,12 +2,11 @@ import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
 import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class HandshakeRequestDto extends SferaXmlElementDto {
+class HandshakeRequestDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'DAS_HandshakeRequest';
 
-  HandshakeRequestDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory HandshakeRequestDto.create(
+  factory create(
     Iterable<DasOperatingModesSupportedDto> supportedOperatingModes, {
     bool? statusReportsEnabled,
     String? additionalInfo,

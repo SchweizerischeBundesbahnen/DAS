@@ -2,10 +2,9 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/additional_info_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 
-class G2bErrorDto extends SferaXmlElementDto {
+class G2bErrorDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'G2B_Error';
-
-  G2bErrorDto({super.type = elementType, super.attributes, super.children, super.value});
 
   Iterable<AdditionalInfoDto> get additionalInfos => children.whereType<AdditionalInfoDto>();
 

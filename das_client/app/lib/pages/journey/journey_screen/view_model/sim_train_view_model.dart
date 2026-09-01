@@ -4,9 +4,7 @@ import 'package:sfera/component.dart';
 
 /// ViewModel that determines if the current journey is a SIM (Simplon Inter Modal) train.
 /// SIM trains have train numbers in the inclusive ranges 43400-43799 or 63400-63799.
-class SimTrainViewModel extends JourneyAwareViewModel {
-  SimTrainViewModel({super.journeyViewModel});
-
+class SimTrainViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
   Stream<bool> get isSimTrain => _rxIsSimTrain.stream;
 
   bool get isSimTrainValue => _rxIsSimTrain.value;

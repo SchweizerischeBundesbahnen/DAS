@@ -1,16 +1,10 @@
 import 'package:sfera/component.dart';
 
-class RadioChannelModel {
-  RadioChannelModel({
-    this.networkType,
-    this._radioContacts,
-    this.lastServicePoint,
-  });
-
-  final CommunicationNetworkType? networkType;
-  final ServicePoint? lastServicePoint;
-  final RadioContactList? _radioContacts;
-
+class RadioChannelModel({
+  final CommunicationNetworkType? networkType,
+  final RadioContactList? _radioContacts,
+  final ServicePoint? lastServicePoint,
+}) {
   String? get mainContactsIdentifier =>
       _mainContacts.isNotEmpty ? _mainContacts.map((c) => c.contactIdentifier).take(2).join(' ') : null;
 

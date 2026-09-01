@@ -1,14 +1,12 @@
 import 'package:collection/collection.dart';
 
-sealed class Speed {
+sealed class const Speed() {
   // Accepts \d+, {\d+}, [\d+], XX, {XX}, [XX]
   // and combinations with 0 or more '-' or 0 or one '/', such as 50/60-40
   static final RegExp _speedRegex = RegExp(
     r'^((\d+|XX|\[\d+\]|\{\d+\}|\[XX\]|\{XX\})(-(\d+|XX|\[\d+\]|\{\d+\}|\[XX\]|\{XX\}))*)'
     r'(\/((\d+|XX|\[\d+\]|\{\d+\}|\[XX\]|\{XX\})(-(\d+|XX|\[\d+\]|\{\d+\}|\[XX\]|\{XX\}))*)?)?$',
   );
-
-  const Speed();
 
   /// Constructs a new Speed instance based on [input].
   ///
@@ -34,9 +32,8 @@ sealed class Speed {
 
 /// A speed for summarized curves, it contains a [speeds] list with all the
 /// speeds of the summarized curves joined by '-'.
-class SummarizedCurvesSpeed extends Speed {
-  const SummarizedCurvesSpeed({required this.speeds})
-    : assert(speeds.length >= 2, 'SummarizedCurvesSpeed needs at least two speeds.');
+class SummarizedCurvesSpeed({required this.speeds}) extends Speed {
+  this : assert(speeds.length >= 2, 'SummarizedCurvesSpeed needs at least two speeds.');
 
   /// For one trainSeries/brakeSeries: the speeds of each curve in the segment.
   final List<SingleSpeed> speeds;
@@ -57,13 +54,8 @@ class SummarizedCurvesSpeed extends Speed {
 }
 
 /// A speed comprised of either [SingleSpeed] or [GraduatedSpeed] values, combined by a single '/'.
-class IncomingOutgoingSpeed extends Speed {
+class IncomingOutgoingSpeed({required final Speed incoming, required final Speed outgoing}) extends Speed {
   static bool _hasMatch(String formattedString) => formattedString.contains('/');
-
-  const IncomingOutgoingSpeed({required this.incoming, required this.outgoing});
-
-  final Speed incoming;
-  final Speed outgoing;
 
   static IncomingOutgoingSpeed _parse(String formattedString) {
     final speedParts = formattedString.split('/');
@@ -73,9 +65,7 @@ class IncomingOutgoingSpeed extends Speed {
   }
 
   @override
-  bool get isIllegal {
-    return incoming.isIllegal || outgoing.isIllegal;
-  }
+  bool get isIllegal => incoming.isIllegal || outgoing.isIllegal;
 
   @override
   String toString() {
@@ -92,12 +82,8 @@ class IncomingOutgoingSpeed extends Speed {
 }
 
 /// A speed comprised of multiple [SingleSpeed] values, combined by '-'.
-class GraduatedSpeed extends Speed {
+class GraduatedSpeed({required final List<SingleSpeed> speeds}) extends Speed {
   static bool _hasMatch(String formattedString) => formattedString.contains('-');
-
-  const GraduatedSpeed({required this.speeds});
-
-  final List<SingleSpeed> speeds;
 
   static GraduatedSpeed _parse(String formattedString) =>
       GraduatedSpeed(speeds: formattedString.split('-').map(SingleSpeed._parse).toList());
@@ -118,15 +104,13 @@ class GraduatedSpeed extends Speed {
       identical(this, other) || (other is GraduatedSpeed && ListEquality().equals(speeds, other.speeds));
 }
 
-class SingleSpeed extends Speed {
+class const SingleSpeed({
+  required this.value,
+  this.isSquared = false,
+  this.isCircled = false,
+}) extends Speed {
   // Accepts \d+, XX
   static final RegExp _speedValueRegex = RegExp(r'\d+|XX');
-
-  const SingleSpeed({
-    required this.value,
-    this.isSquared = false,
-    this.isCircled = false,
-  });
 
   /// Constructs a new Speed instance based on [formattedString].
   ///

@@ -10,9 +10,7 @@ export 'package:mqtt/src/mqtt_service.dart';
 export 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 export 'package:mqtt_client/mqtt_client.dart';
 
-class MqttComponent {
-  const MqttComponent._();
-
+class MqttComponent._() {
   static MqttService createMqttService({
     required String mqttUrl,
     required MqttClientConnector mqttClientConnector,

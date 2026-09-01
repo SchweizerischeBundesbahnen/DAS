@@ -10,16 +10,11 @@ import 'package:ru_indications/src/repository/ru_indications_repository.dart';
 
 final _log = Logger('RuIndicationsRepositoryImpl');
 
-class RuIndicationsRepositoryImpl implements RuIndicationsRepository {
+class RuIndicationsRepositoryImpl({
+  required final RuIndicationsApiService _apiService,
+  final int _retryDelaySeconds = _defaultRetryDelaySeconds,
+}) implements RuIndicationsRepository {
   static const _defaultRetryDelaySeconds = 30;
-
-  RuIndicationsRepositoryImpl({
-    required this._apiService,
-    this._retryDelaySeconds = _defaultRetryDelaySeconds,
-  });
-
-  final RuIndicationsApiService _apiService;
-  final int _retryDelaySeconds;
 
   @override
   Stream<List<RuIndication>> fetchRuIndications({

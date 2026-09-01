@@ -344,11 +344,7 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 }
 
-class _AuthProvider implements AuthProvider {
-  const _AuthProvider({required this.authenticator});
-
-  final Authenticator authenticator;
-
+class const _AuthProvider({required final Authenticator authenticator}) implements AuthProvider {
   @override
   Future<String> call({String? tokenId}) async {
     final oidcToken = await authenticator.token(tokenId: tokenId);
@@ -357,11 +353,7 @@ class _AuthProvider implements AuthProvider {
   }
 }
 
-class _SferaAuthProvider implements SferaAuthProvider {
-  const _SferaAuthProvider({required this.authenticator});
-
-  final Authenticator authenticator;
-
+class const _SferaAuthProvider({required final Authenticator authenticator}) implements SferaAuthProvider {
   @override
   Future<bool> isDriver() async {
     final user = await authenticator.user();
@@ -369,14 +361,10 @@ class _SferaAuthProvider implements SferaAuthProvider {
   }
 }
 
-class _MqttAuthProvider implements MqttAuthProvider {
-  const _MqttAuthProvider({required this.authenticator, required this.oauthProfile});
-
-  final Authenticator authenticator;
-
-  @override
-  final String oauthProfile;
-
+class const _MqttAuthProvider({
+  required final Authenticator authenticator,
+  @override required final String oauthProfile,
+}) implements MqttAuthProvider {
   @override
   Future<String> token() async {
     final token = await authenticator.token();

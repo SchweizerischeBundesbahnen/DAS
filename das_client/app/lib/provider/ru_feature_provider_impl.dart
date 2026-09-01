@@ -2,15 +2,10 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
-class RuFeatureProviderImpl implements RuFeatureProvider {
-  RuFeatureProviderImpl({
-    required this._sferaRepo,
-    required this._settingsRepository,
-  });
-
-  final SferaRepository _sferaRepo;
-  final SettingsRepository _settingsRepository;
-
+class RuFeatureProviderImpl({
+  required final SferaRepository _sferaRepo,
+  required final SettingsRepository _settingsRepository,
+}) implements RuFeatureProvider {
   @override
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey) async {
     final activeTrain = _sferaRepo.connectedTrain;

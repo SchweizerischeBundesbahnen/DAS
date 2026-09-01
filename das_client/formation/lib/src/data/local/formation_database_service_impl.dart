@@ -14,7 +14,7 @@ part 'formation_database_service_impl.g.dart';
     FormationTable,
   ],
 )
-class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implements FormationDatabaseService {
+class FormationDatabaseServiceImpl._() extends _$FormationDatabaseServiceImpl implements FormationDatabaseService {
   static FormationDatabaseService? _instance;
 
   static FormationDatabaseService get instance {
@@ -22,7 +22,7 @@ class FormationDatabaseServiceImpl extends _$FormationDatabaseServiceImpl implem
     return _instance!;
   }
 
-  FormationDatabaseServiceImpl._() : super(driftDatabase(name: 'formation_db'));
+  this : super(driftDatabase(name: 'formation_db'));
 
   @override
   int get schemaVersion => 2;

@@ -6,10 +6,9 @@ import 'package:sfera/src/data/dto/parallel_asr_constraint_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraint_reason_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_complex_dto.dart';
 
-class TemporaryConstraintsDto extends TemporaryConstraintsComplexDto {
+class TemporaryConstraintsDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends TemporaryConstraintsComplexDto {
   static const String elementType = 'TemporaryConstraints';
-
-  TemporaryConstraintsDto({super.type = elementType, super.attributes, super.children, super.value});
 
   TemporaryConstraintTypeDto get temporaryConstraintType =>
       XmlEnum.valueOf(TemporaryConstraintTypeDto.values, attributes['temporaryConstraintType']!)!;

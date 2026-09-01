@@ -7,19 +7,12 @@ import 'package:train_identification/src/repository/train_identification_reposit
 
 final _log = Logger('TrainIdentificationRepositoryImpl');
 
-class TrainIdentificationRepositoryImpl implements TrainIdentificationRepository {
-  TrainIdentificationRepositoryImpl({
-    required this.apiService,
-    required this.sferaLocalRepo,
-  });
-
-  final TrainIdentificationApiService apiService;
-  final SferaLocalRepo sferaLocalRepo;
-
+class TrainIdentificationRepositoryImpl({
+  required final TrainIdentificationApiService apiService,
+  required final SferaLocalRepo sferaLocalRepo,
+}) implements TrainIdentificationRepository {
   @override
-  Future<Set<CompanyMatch>> findTrainIdentifications({
-    required String operationalTrainNumber,
-  }) async {
+  Future<Set<CompanyMatch>> findTrainIdentifications({required String operationalTrainNumber}) async {
     final startDates = _generateStartDates();
 
     _log.fine('Fetching train identifications for $operationalTrainNumber on $startDates');

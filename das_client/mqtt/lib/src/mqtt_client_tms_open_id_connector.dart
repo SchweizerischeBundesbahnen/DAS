@@ -5,15 +5,10 @@ import 'package:mqtt_client/mqtt_client.dart';
 
 final _log = Logger('MqttClientTMSOauthConnector');
 
-class MqttClientTMSOpenIdConnector implements MqttClientConnector {
-  MqttClientTMSOpenIdConnector({
-    required this._mqttAuthProvider,
-    required this._openIdProfileMap,
-  });
-
-  final MqttAuthProvider _mqttAuthProvider;
-  final Map<String, String> _openIdProfileMap;
-
+class MqttClientTMSOpenIdConnector({
+  required final MqttAuthProvider _mqttAuthProvider,
+  required final Map<String, String> _openIdProfileMap,
+}) implements MqttClientConnector {
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
     final tid = await _mqttAuthProvider.tid();

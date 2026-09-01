@@ -9,9 +9,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-400-bad-request
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#400
-class BadRequestException extends HttpException {
-  const BadRequestException(super.request, super.response);
-
+class const BadRequestException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '400 Bad Request';
 }

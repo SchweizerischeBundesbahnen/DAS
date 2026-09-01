@@ -8,9 +8,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-503-service-unavailable
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#503
-class ServiceUnavailableException extends HttpException {
-  const ServiceUnavailableException(super.request, super.response);
-
+class const ServiceUnavailableException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '503 Service Unavailable';
 }

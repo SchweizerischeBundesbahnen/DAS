@@ -4,12 +4,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'external_links_response_dto.g.dart';
 
 @JsonSerializable()
-class ExternalLinksResponseDto {
-  ExternalLinksResponseDto({required this.data});
-
-  factory ExternalLinksResponseDto.fromJson(Map<String, dynamic> json) => _$ExternalLinksResponseDtoFromJson(json);
-
-  final List<ExternalLinkDto> data;
+class ExternalLinksResponseDto({required final List<ExternalLinkDto> data}) {
+  factory fromJson(Map<String, dynamic> json) => _$ExternalLinksResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExternalLinksResponseDtoToJson(this);
 }

@@ -6,9 +6,7 @@ import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class JourneySettingsViewModel extends JourneyAwareViewModel {
-  JourneySettingsViewModel({super.journeyViewModel});
-
+class JourneySettingsViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
   final _rxSettings = BehaviorSubject<JourneySettings>.seeded(JourneySettings());
 
   Stream<JourneySettings> get model => _rxSettings.stream;

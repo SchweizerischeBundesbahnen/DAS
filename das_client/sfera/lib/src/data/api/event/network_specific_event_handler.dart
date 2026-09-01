@@ -5,9 +5,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
 
 final _log = Logger('NetworkSpecificEventHandler');
 
-class NetworkSpecificEventHandler extends SferaEventMessageHandler<NetworkSpecificEventDto> {
-  NetworkSpecificEventHandler(super.onMessageHandled);
-
+class NetworkSpecificEventHandler(super.onMessageHandled) extends SferaEventMessageHandler<NetworkSpecificEventDto> {
   @override
   Future<bool> handleMessage(SferaG2bEventMessageDto eventMessage) async {
     if (eventMessage.payload == null || eventMessage.payload!.networkSpecificEvent == null) {

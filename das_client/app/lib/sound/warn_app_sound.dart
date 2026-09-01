@@ -3,9 +3,7 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class WarnAppSound extends Sound {
-  const WarnAppSound();
-
+class const WarnAppSound() extends Sound {
   static const _volume = 1.0;
 
   @override

@@ -10,19 +10,17 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('FirebaseMessagingService');
 
-class FirebaseMessagingService implements MessagingService {
-  FirebaseMessagingService({
-    this._localMessageStorage = const LocalMessageStorage(),
-    this._handleBackgroundMessages = true,
-    FirebaseMessaging? firebaseMessaging,
-  }) : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance {
+class FirebaseMessagingService({
+  final LocalMessageStorage _localMessageStorage = const LocalMessageStorage(),
+  final bool _handleBackgroundMessages = true,
+  FirebaseMessaging? firebaseMessaging,
+}) implements MessagingService {
+  this : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance {
     _init();
   }
 
-  final LocalMessageStorage _localMessageStorage;
   final FirebaseMessaging _firebaseMessaging;
 
-  final bool _handleBackgroundMessages;
   final _rxToken = BehaviorSubject<String?>();
   final _rxMessage = BehaviorSubject<BaseMessageDto>();
   final _subscriptions = <StreamSubscription>[];

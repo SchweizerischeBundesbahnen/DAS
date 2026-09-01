@@ -6,9 +6,7 @@ import 'package:train_identification/src/repository/train_identification_reposit
 
 export 'package:train_identification/src/repository/train_identification_repository.dart';
 
-class TrainIdentificationComponent {
-  const TrainIdentificationComponent._();
-
+class const TrainIdentificationComponent._() {
   static TrainIdentificationRepository createRepository({
     required String baseUrl,
     required Client client,

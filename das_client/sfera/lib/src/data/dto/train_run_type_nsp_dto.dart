@@ -2,10 +2,9 @@ import 'package:sfera/src/data/dto/enums/train_run_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 
-class TrainRunTypeNspDto extends NetworkSpecificParameterDto {
+class TrainRunTypeNspDto({super.type, super.attributes, super.children, super.value})
+    extends NetworkSpecificParameterDto {
   static const String elementName = 'trainRunType';
-
-  TrainRunTypeNspDto({super.type, super.attributes, super.children, super.value});
 
   TrainRunTypeDto get trainRunType => XmlEnum.valueOf<TrainRunTypeDto>(TrainRunTypeDto.values, nspValue)!;
 

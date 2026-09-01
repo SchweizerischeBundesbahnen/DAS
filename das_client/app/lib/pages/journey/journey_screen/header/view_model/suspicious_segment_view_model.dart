@@ -12,17 +12,14 @@ import 'package:sfera/component.dart';
 
 final _logger = Logger('SuspiciousSegmentViewModel');
 
-class SuspiciousSegmentViewModel extends JourneyAwareViewModel {
-  SuspiciousSegmentViewModel({
-    required super.journeyViewModel,
-    required this._journeyPositionViewModel,
-    required this._notificationVM,
-  }) {
+class SuspiciousSegmentViewModel({
+  required super.journeyViewModel,
+  required final JourneyPositionViewModel _journeyPositionViewModel,
+  required final NotificationPriorityQueueViewModel _notificationVM,
+}) extends JourneyAwareViewModel {
+  this {
     _initJourneyPositionSubscription();
   }
-
-  final JourneyPositionViewModel _journeyPositionViewModel;
-  final NotificationPriorityQueueViewModel _notificationVM;
 
   StreamSubscription<JourneyPositionModel>? _journeyPositionSubscription;
 

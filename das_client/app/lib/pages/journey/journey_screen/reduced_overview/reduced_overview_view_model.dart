@@ -4,17 +4,13 @@ import 'package:core_data/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ReducedOverviewViewModel {
-  ReducedOverviewViewModel({
-    required this.trainIdentification,
-    required this._sferaLocalService,
-  }) {
+class ReducedOverviewViewModel({
+  required final TrainIdentification trainIdentification,
+  required final SferaLocalRepo _sferaLocalService,
+}) {
+  this {
     _init();
   }
-
-  final SferaLocalRepo _sferaLocalService;
-
-  final TrainIdentification trainIdentification;
 
   final _rxJourney = BehaviorSubject<Journey>();
   final _rxJourneyData = BehaviorSubject<List<BaseData>>();

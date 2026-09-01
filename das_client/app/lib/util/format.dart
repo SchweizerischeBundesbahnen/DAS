@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:intl/intl.dart';
 
-class Format {
-  const Format._();
-
+class const Format._() {
   static String date(DateTime date) {
     final localDate = date.toLocal();
     final dateFormat = DateFormat('dd.MM.yyyy');

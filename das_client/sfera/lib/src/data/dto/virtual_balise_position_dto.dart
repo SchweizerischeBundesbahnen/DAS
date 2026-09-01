@@ -1,9 +1,8 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class VirtualBalisePositionDto extends SferaXmlElementDto {
+class VirtualBalisePositionDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'VirtualBalisePosition';
-
-  VirtualBalisePositionDto({super.type = elementType, super.attributes, super.children, super.value});
 
   String get latitude => attributes['latitude']!;
 

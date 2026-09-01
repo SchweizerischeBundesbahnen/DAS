@@ -3,12 +3,10 @@ import 'package:customer_oriented_departure/src/api/customer_oriented_departure_
 import 'package:customer_oriented_departure/src/api/subscribe/subscribe_request.dart';
 import 'package:http_x/component.dart';
 
-class CustomerOrientedDepartureApiServiceImpl implements CustomerOrientedDepartureApiService {
-  CustomerOrientedDepartureApiServiceImpl({required this.baseUrl, required this.httpClient});
-
-  final String baseUrl;
-  final Client httpClient;
-
+class CustomerOrientedDepartureApiServiceImpl({
+  required final String baseUrl,
+  required final Client httpClient,
+}) implements CustomerOrientedDepartureApiService {
   @override
   SubscribeRequest get subscribe =>
       SubscribeRequest(requestType: SubscribeRequestType.register, httpClient: httpClient, baseUrl: baseUrl);

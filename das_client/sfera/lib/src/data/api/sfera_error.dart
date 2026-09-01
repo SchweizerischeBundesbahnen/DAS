@@ -5,24 +5,20 @@ import 'package:core_data/component.dart';
 ///
 /// [code]: The SFERA protocol currently defines error codes between 2 - 55 (ex. 50 "Could not process data").
 /// For custom error codes use the range from 1000 upwards.
-sealed class SferaError {
-  const SferaError._({required this.code});
+sealed class const SferaError._({required final String code}) {
+  factory protocolError({Iterable<ProtocolError> errors}) = ProtocolErrors;
 
-  factory SferaError.protocolError({Iterable<ProtocolError> errors}) = ProtocolErrors;
+  factory connectionFailed() = ConnectionFailed;
 
-  factory SferaError.connectionFailed() = ConnectionFailed;
+  factory validationFailed() = ValidationFailed;
 
-  factory SferaError.validationFailed() = ValidationFailed;
+  factory handshakeRejected() = HandshakeRejected;
 
-  factory SferaError.handshakeRejected() = HandshakeRejected;
+  factory requestTimeout() = RequestTimeout;
 
-  factory SferaError.requestTimeout() = RequestTimeout;
+  factory jpUnavailable() = JpUnavailable;
 
-  factory SferaError.jpUnavailable() = JpUnavailable;
-
-  factory SferaError.invalid() = Invalid;
-
-  final String code;
+  factory invalid() = Invalid;
 
   @override
   String toString() {
@@ -37,10 +33,8 @@ sealed class SferaError {
   int get hashCode => code.hashCode;
 }
 
-final class ProtocolErrors extends SferaError {
-  const ProtocolErrors({this.errors = const []}) : super._(code: '0');
-
-  final Iterable<ProtocolError> errors;
+final class const ProtocolErrors({final Iterable<ProtocolError> errors = const []}) extends SferaError {
+  this : super._(code: '0');
 
   @override
   String toString() {
@@ -60,12 +54,10 @@ final class ProtocolErrors extends SferaError {
   int get hashCode => Object.hash(super.hashCode, errors);
 }
 
-final class ProtocolError {
-  const ProtocolError({required this.code, this.additionalInfo});
-
-  final String code;
-  final LocalizedString? additionalInfo;
-
+final class const ProtocolError({
+  required final String code,
+  final LocalizedString? additionalInfo,
+}) {
   @override
   String toString() {
     return 'ProtocolError{code: $code, additionalInfo: $additionalInfo}';
@@ -83,26 +75,26 @@ final class ProtocolError {
   int get hashCode => Object.hash(code, additionalInfo);
 }
 
-final class Invalid extends SferaError {
-  const Invalid() : super._(code: '1000');
+final class const Invalid() extends SferaError {
+  this : super._(code: '1000');
 }
 
-final class ConnectionFailed extends SferaError {
-  const ConnectionFailed() : super._(code: '1001');
+final class const ConnectionFailed() extends SferaError {
+  this : super._(code: '1001');
 }
 
-final class ValidationFailed extends SferaError {
-  const ValidationFailed() : super._(code: '1002');
+final class const ValidationFailed() extends SferaError {
+  this : super._(code: '1002');
 }
 
-final class HandshakeRejected extends SferaError {
-  const HandshakeRejected() : super._(code: '1003');
+final class const HandshakeRejected() extends SferaError {
+  this : super._(code: '1003');
 }
 
-final class RequestTimeout extends SferaError {
-  const RequestTimeout() : super._(code: '1004');
+final class const RequestTimeout() extends SferaError {
+  this : super._(code: '1004');
 }
 
-final class JpUnavailable extends SferaError {
-  const JpUnavailable() : super._(code: '1005');
+final class const JpUnavailable() extends SferaError {
+  this : super._(code: '1005');
 }

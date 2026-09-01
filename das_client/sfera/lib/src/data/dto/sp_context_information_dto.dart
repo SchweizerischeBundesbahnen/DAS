@@ -6,10 +6,9 @@ import 'package:sfera/src/data/dto/kilometre_reference_point_dto.dart';
 import 'package:sfera/src/data/dto/level_crossing_area_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class SpContextInformationDto extends SferaXmlElementDto {
+class SpContextInformationDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SP_ContextInformation';
-
-  SpContextInformationDto({super.type = elementType, super.attributes, super.children, super.value});
 
   Iterable<KilometreReferencePointDto> get kilometreReferencePoints => children.whereType<KilometreReferencePointDto>();
 

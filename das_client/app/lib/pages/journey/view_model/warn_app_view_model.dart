@@ -12,25 +12,18 @@ import 'package:warnapp/component.dart';
 
 final _log = Logger('WarnAppViewModel');
 
-class WarnAppViewModel {
-  WarnAppViewModel({
-    required this.flavor,
-    required this._sferaRepo,
-    required this._warnappRepo,
-    required this._ruFeatureProvider,
-    required this._notificationViewModel,
-  }) : _appCheck = AppCheck() {
+class WarnAppViewModel({
+  required final Flavor flavor,
+  required final SferaRepository _sferaRepo,
+  required final WarnappRepository _warnappRepo,
+  required final RuFeatureProvider _ruFeatureProvider,
+  required final NotificationPriorityQueueViewModel _notificationViewModel,
+}) {
+  this : _appCheck = AppCheck() {
     _init();
   }
 
   static const _warnappWindowMilliseconds = 1250;
-
-  final Flavor flavor;
-
-  final SferaRepository _sferaRepo;
-  final WarnappRepository _warnappRepo;
-  final RuFeatureProvider _ruFeatureProvider;
-  final NotificationPriorityQueueViewModel _notificationViewModel;
 
   final AppCheck _appCheck;
 

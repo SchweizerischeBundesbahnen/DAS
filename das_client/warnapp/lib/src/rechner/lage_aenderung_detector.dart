@@ -1,15 +1,16 @@
-class LageAenderungDetector {
-  LageAenderungDetector(this.length1, this.length2, this.schwelle)
+class LageAenderungDetector(
+  final int length1,
+  final int length2,
+  final double schwelle,
+) {
+  this
     : assert(length1 > 0 && length2 > 0, 'length1 and length2 must be greater than zero'),
       _length = length1 + length2,
       x = List<double>.filled(length1 + length2, 0.0) {
     initWithValue(0.0);
   }
 
-  final int length1;
-  final int length2;
   final int _length;
-  final double schwelle;
   List<double> x;
   int index = 0;
   int _updatesCount = 0;
@@ -60,16 +61,16 @@ class LageAenderungDetector {
   }
 }
 
-class LageAenderungDetector3D {
+class LageAenderungDetector3D(int length1, int length2, double schwelle) {
+  this
+    : lageAenderungDetectorX = LageAenderungDetector(length1, length2, schwelle),
+      lageAenderungDetectorY = LageAenderungDetector(length1, length2, schwelle),
+      lageAenderungDetectorZ = LageAenderungDetector(length1, length2, schwelle);
+
   LageAenderungDetector lageAenderungDetectorX;
   LageAenderungDetector lageAenderungDetectorY;
   LageAenderungDetector lageAenderungDetectorZ;
   bool state = false;
-
-  LageAenderungDetector3D(int length1, int length2, double schwelle)
-    : lageAenderungDetectorX = LageAenderungDetector(length1, length2, schwelle),
-      lageAenderungDetectorY = LageAenderungDetector(length1, length2, schwelle),
-      lageAenderungDetectorZ = LageAenderungDetector(length1, length2, schwelle);
 
   bool updateXYZ(double x, double y, double z) {
     int count = 0;

@@ -3,12 +3,7 @@ import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 
 @sealed
 @immutable
-abstract class Segment implements Comparable {
-  const Segment({
-    this.startOrder,
-    this.endOrder,
-  });
-
+abstract class const Segment({this.startOrder, this.endOrder}) implements Comparable {
   /// Start order of segment. Nullable as it can start in a journey segment that is not part of the train journey.
   final int? startOrder;
 

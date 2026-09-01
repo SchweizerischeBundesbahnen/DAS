@@ -1,5 +1,3 @@
-abstract interface class AuthProvider {
-  const AuthProvider._();
-
+abstract interface class const AuthProvider._() {
   Future<String> call({String? tokenId});
 }

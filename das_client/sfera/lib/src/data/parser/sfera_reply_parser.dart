@@ -104,9 +104,7 @@ import 'package:sfera/src/data/dto/virtual_balise_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_position_dto.dart';
 import 'package:xml/xml.dart';
 
-class SferaReplyParser {
-  SferaReplyParser._();
-
+class SferaReplyParser._() {
   static T parse<T extends SferaXmlElementDto>(String input) {
     final xmlDocument = XmlDocument.parse(input);
     final xml = _parseXml(xmlDocument.rootElement);

@@ -3,12 +3,11 @@ import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class DasOperatingModesSupportedDto extends SferaXmlElementDto {
+class DasOperatingModesSupportedDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'DAS_OperatingModesSupported';
 
-  DasOperatingModesSupportedDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory DasOperatingModesSupportedDto.create(
+  factory create(
     DasDrivingModeDto drivingMode,
     DasArchitectureDto architecture,
     DasConnectivityDto connectivity,

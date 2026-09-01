@@ -12,9 +12,7 @@ export 'package:customer_oriented_departure/src/model/customer_oriented_departur
 export 'package:customer_oriented_departure/src/model/customer_oriented_departure_status.dart';
 export 'package:customer_oriented_departure/src/repository/customer_oriented_departure_repository.dart';
 
-class CustomerOrientedDepartureComponent {
-  const CustomerOrientedDepartureComponent._();
-
+class const CustomerOrientedDepartureComponent._() {
   static CustomerOrientedDepartureRepository createRepository({
     required String baseUrl,
     required Client client,

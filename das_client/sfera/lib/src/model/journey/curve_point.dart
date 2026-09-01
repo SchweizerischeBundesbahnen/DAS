@@ -2,23 +2,18 @@ import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-class CurvePoint extends JourneyPoint {
-  const CurvePoint({
-    required super.order,
-    required super.kilometre,
-    super.localSpeeds,
-    this.curvePointType,
-    this.curveType,
-    this.text,
-    this.comment,
-    super.lastModificationDate,
-    super.lastModificationType,
-  }) : super(dataType: .curvePoint);
-
-  final CurvePointType? curvePointType;
-  final CurveType? curveType;
-  final String? text;
-  final String? comment;
+class const CurvePoint({
+  required super.order,
+  required super.kilometre,
+  super.localSpeeds,
+  final CurvePointType? curvePointType,
+  final CurveType? curveType,
+  final String? text,
+  final String? comment,
+  super.lastModificationDate,
+  super.lastModificationType,
+}) extends JourneyPoint {
+  this : super(dataType: .curvePoint);
 
   @override
   OrderPriority get orderPriority => .curve;
@@ -60,7 +55,7 @@ enum CurvePointType {
   summarized,
   unknown;
 
-  factory CurvePointType.from(String value) =>
+  factory from(String value) =>
       values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }
 
@@ -76,6 +71,6 @@ enum CurveType {
   curveAfterHalt,
   unknown;
 
-  factory CurveType.from(String value) =>
+  factory from(String value) =>
       values.firstWhere((e) => e.name.toLowerCase() == value.toLowerCase(), orElse: () => .unknown);
 }

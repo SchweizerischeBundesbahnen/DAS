@@ -15,20 +15,13 @@ import 'package:sfera/src/model/otn_id.dart';
 
 final _log = Logger('RequestJourneyProfileTask');
 
-class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
-  RequestJourneyProfileTask({
-    required this._mqttService,
-    required this._sferaRepo,
-    required this._sferaDatabaseRepository,
-    required this.otnId,
-    super.timeout,
-  });
-
-  final MqttService _mqttService;
-  final OtnId otnId;
-  final SferaLocalDatabaseService _sferaDatabaseRepository;
-  final SferaRepository _sferaRepo;
-
+class RequestJourneyProfileTask({
+  required final MqttService _mqttService,
+  required final SferaRepository _sferaRepo,
+  required final SferaLocalDatabaseService _sferaDatabaseRepository,
+  required final OtnId otnId,
+  super.timeout,
+}) extends SferaTask<List<dynamic>> {
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
 

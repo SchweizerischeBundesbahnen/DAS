@@ -5,19 +5,16 @@ import 'package:sfera/component.dart';
 ///
 /// Problems in a suspicious segment typically occur because of incomplete or
 /// wrong route table data (the RADN document). All regular [BaseData]
-/// items produced by that segment profile are replaced by a single
-/// [SuspiciousJourneyPoint].
-class SuspiciousJourneyPoint extends JourneyPoint {
-  const SuspiciousJourneyPoint({
-    required super.order,
-    required super.kilometre,
-    required this.spId,
-  }) : super(dataType: .suspiciousJourneyPoint);
-
-  final String spId;
+/// items produced by that segment profile are replaced by a single [SuspiciousJourneyPoint].
+class const SuspiciousJourneyPoint({
+  required super.order,
+  required super.kilometre,
+  required final String spId,
+}) extends JourneyPoint {
+  this : super(dataType: .suspiciousJourneyPoint);
 
   @override
-  OrderPriority get orderPriority => OrderPriority.baseData;
+  OrderPriority get orderPriority => .baseData;
 
   @override
   bool operator ==(Object other) => identical(this, other) || (other is SuspiciousJourneyPoint && other.order == order);

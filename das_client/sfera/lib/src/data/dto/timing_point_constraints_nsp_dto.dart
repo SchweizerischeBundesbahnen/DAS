@@ -2,12 +2,11 @@ import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/passing_point_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class TimingPointConstraintsNspDto extends NspDto {
+class TimingPointConstraintsNspDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends NspDto {
   static const String elementType = 'TimingPointConstraints_NSPs';
 
-  TimingPointConstraintsNspDto({super.type = elementType, super.attributes, super.children, super.value});
-
-  factory TimingPointConstraintsNspDto.from({
+  factory from({
     Map<String, String>? attributes,
     List<SferaXmlElementDto>? children,
     String? value,

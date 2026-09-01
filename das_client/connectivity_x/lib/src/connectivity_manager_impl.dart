@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('ConnectivityManagerImpl');
 
-class ConnectivityManagerImpl implements ConnectivityManager {
+class ConnectivityManagerImpl._() implements ConnectivityManager {
   static const connectivityCheckInterval = Duration(seconds: 15);
   static const lookupHost = 'google.com';
   static ConnectivityManagerImpl? _singleton;
@@ -18,7 +18,7 @@ class ConnectivityManagerImpl implements ConnectivityManager {
     return _singleton!;
   }
 
-  ConnectivityManagerImpl._() {
+  this {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen((data) {
       _log.fine('ConnectivityPlus status changed: $data');
       _latestConnectivityResults = data;

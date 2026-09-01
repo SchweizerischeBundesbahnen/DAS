@@ -7,8 +7,8 @@ import 'package:rxdart/rxdart.dart';
 
 enum ConnectivityDisplayStatus { connected, connectedWifi, disconnected }
 
-class ConnectivityViewModel {
-  ConnectivityViewModel({required this._connectivityManager}) {
+class ConnectivityViewModel({required final ConnectivityManager _connectivityManager}) {
+  this {
     _init();
   }
 
@@ -21,7 +21,6 @@ class ConnectivityViewModel {
 
   ConnectivityDisplayStatus get modelValue => _rxModel.value;
 
-  final ConnectivityManager _connectivityManager;
   StreamSubscription? _connectivitySubscription;
 
   Timer? _timer;

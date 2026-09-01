@@ -5,9 +5,7 @@ import 'package:app_links_x/src/train_journey/train_journey_data_dto.dart';
 import 'package:app_links_x/src/train_journey/train_journey_dto.dart';
 import 'package:app_links_x/src/train_journey/train_journey_link_data.dart';
 
-class TrainJourneyParser {
-  const TrainJourneyParser._();
-
+class const TrainJourneyParser._() {
   static const String page = 'train-journey';
 
   static List<TrainJourneyLinkData> parse(Uri uri, {required AppLinkVersion version}) {

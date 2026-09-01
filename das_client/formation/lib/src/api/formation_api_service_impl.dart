@@ -3,12 +3,10 @@ import 'package:formation/src/api/endpoint/transport_paper.dart';
 import 'package:formation/src/api/formation_api_service.dart';
 import 'package:http_x/component.dart';
 
-class FormationApiServiceImpl implements FormationApiService {
-  FormationApiServiceImpl({required this.baseUrl, required this.httpClient});
-
-  final String baseUrl;
-  final Client httpClient;
-
+class FormationApiServiceImpl({
+  required final String baseUrl,
+  required final Client httpClient,
+}) implements FormationApiService {
   @override
   FormationRequest formation(String operationalTrainNumber, String company, DateTime operationalDay, String? etag) =>
       FormationRequest(

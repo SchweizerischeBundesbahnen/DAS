@@ -5,10 +5,9 @@ import 'package:sfera/src/data/dto/handshake_reject_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
-class SferaG2bReplyMessageDto extends SferaXmlElementDto {
+class SferaG2bReplyMessageDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'SFERA_G2B_ReplyMessage';
-
-  SferaG2bReplyMessageDto({super.type = elementType, super.attributes, super.children, super.value});
 
   MessageHeaderDto get messageHeader => children.whereType<MessageHeaderDto>().first;
 

@@ -7,11 +7,11 @@ import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class RadioChannelViewModel {
-  RadioChannelViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required JourneyViewModel journeyViewModel,
-  }) {
+class RadioChannelViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required JourneyViewModel journeyViewModel,
+}) {
+  this {
     _initSubscriptions(journeyViewModel.journey, journeyPositionStream);
   }
 

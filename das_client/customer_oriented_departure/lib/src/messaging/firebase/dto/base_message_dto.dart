@@ -5,19 +5,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'base_message_dto.g.dart';
 
 @JsonSerializable()
-class BaseMessageDto {
-  BaseMessageDto({required this.messageId});
+class BaseMessageDto({required final String messageId}) {
+  factory fromJson(Map<String, dynamic> json) => _$BaseMessageDtoFromJson(json);
 
-  factory BaseMessageDto.fromJson(Map<String, dynamic> json) {
-    return _$BaseMessageDtoFromJson(json);
-  }
-
-  factory BaseMessageDto.fromJsonString(String jsonString) {
+  factory fromJsonString(String jsonString) {
     final json = jsonDecode(jsonString);
     return BaseMessageDto.fromJson(json);
   }
-
-  final String messageId;
 
   Map<String, dynamic> toJson() => _$BaseMessageDtoToJson(this);
 

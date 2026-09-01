@@ -5,9 +5,7 @@ import 'package:external_links/src/model/external_link.dart';
 part 'external_links_database.g.dart';
 
 @DriftDatabase(tables: [ExternalLinksTable])
-class ExternalLinksDatabase extends _$ExternalLinksDatabase {
-  ExternalLinksDatabase(super.e);
-
+class ExternalLinksDatabase(super.e) extends _$ExternalLinksDatabase {
   @override
   int get schemaVersion => 1;
 

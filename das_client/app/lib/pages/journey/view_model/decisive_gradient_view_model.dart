@@ -4,8 +4,8 @@ import 'package:app/di/di.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DecisiveGradientViewModel {
-  DecisiveGradientViewModel() : _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
+class DecisiveGradientViewModel() {
+  this : _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
 
   final int _resetToKmAfterSeconds;
 

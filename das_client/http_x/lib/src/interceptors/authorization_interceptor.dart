@@ -6,11 +6,7 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('AuthorizationInterceptor');
 
-class AuthorizationInterceptor implements HttpInterceptor {
-  const AuthorizationInterceptor(this.authProvider);
-
-  final AuthProvider? authProvider;
-
+class const AuthorizationInterceptor(final AuthProvider? authProvider) implements HttpInterceptor {
   @override
   FutureOr<bool> shouldInterceptRequest({required BaseRequest request}) async => authProvider != null;
 

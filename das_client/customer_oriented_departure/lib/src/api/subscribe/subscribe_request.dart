@@ -5,13 +5,11 @@ import 'package:http_x/component.dart';
 
 enum SubscribeRequestType { register, deregister }
 
-class SubscribeRequest {
-  const SubscribeRequest({required this.requestType, required this.httpClient, required this.baseUrl});
-
-  final Client httpClient;
-  final String baseUrl;
-  final SubscribeRequestType requestType;
-
+class const SubscribeRequest({
+  required final SubscribeRequestType requestType,
+  required final Client httpClient,
+  required final String baseUrl,
+}) {
   Future<SubscribeResponse> call({
     required String evu,
     required String trainNumber,
@@ -45,10 +43,8 @@ class SubscribeRequest {
   }
 }
 
-class SubscribeResponse {
-  const SubscribeResponse({required this.headers});
-
-  factory SubscribeResponse.fromHttpResponse(Response response) {
+class const SubscribeResponse({required final Map<String, String> headers}) {
+  factory fromHttpResponse(Response response) {
     final status = response.statusCode;
     final isSuccess = status >= 200 && status < 300;
     if (isSuccess) {
@@ -57,6 +53,4 @@ class SubscribeResponse {
     // Failure
     throw HttpException.fromResponse(response);
   }
-
-  final Map<String, String> headers;
 }

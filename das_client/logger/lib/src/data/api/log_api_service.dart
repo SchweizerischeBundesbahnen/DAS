@@ -3,8 +3,8 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
 
-class LogApiService {
-  LogApiService({Client? httpClient}) : _httpClient = httpClient ?? HttpXComponent.createHttpClient();
+class LogApiService({Client? httpClient}) {
+  this : _httpClient = httpClient ?? HttpXComponent.createHttpClient();
 
   final Client _httpClient;
 

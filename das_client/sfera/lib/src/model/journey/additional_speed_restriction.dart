@@ -5,27 +5,16 @@ import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 
 @sealed
 @immutable
-class AdditionalSpeedRestriction {
-  const AdditionalSpeedRestriction({
-    required this.kmFrom,
-    required this.kmTo,
-    required this.orderFrom,
-    required this.orderTo,
-    this.restrictionFrom,
-    this.restrictionUntil,
-    this.speed,
-    this.reason,
-  });
-
-  final double kmFrom;
-  final double kmTo;
-  final int orderFrom;
-  final int orderTo;
-  final DateTime? restrictionFrom;
-  final DateTime? restrictionUntil;
-  final int? speed;
-  final LocalizedString? reason;
-
+class const AdditionalSpeedRestriction({
+  required final double kmFrom,
+  required final double kmTo,
+  required final int orderFrom,
+  required final int orderTo,
+  final DateTime? restrictionFrom,
+  final DateTime? restrictionUntil,
+  final int? speed,
+  final LocalizedString? reason,
+}) {
   bool needsEndMarker(List<BaseData> journeyData) =>
       journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).isNotEmpty;
 

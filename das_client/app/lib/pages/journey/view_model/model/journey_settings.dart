@@ -2,21 +2,13 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_advanc
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
-class JourneySettings {
-  const JourneySettings({
-    this.initialBrakeSeries,
-    this.selectedBrakeSeries,
-    this.expandedGroups = const [],
-    this.journeyAdvancementModel = const Automatic(),
-  });
-
+class const JourneySettings({
   /// Initial BrakeSeries of journey. Use this instead of [Metadata.brakeSeries] as TC updates are ignored.
-  final BrakeSeries? initialBrakeSeries;
-
-  final BrakeSeries? selectedBrakeSeries;
-  final List<int> expandedGroups;
-  final JourneyAdvancementModel journeyAdvancementModel;
-
+  final BrakeSeries? initialBrakeSeries,
+  final BrakeSeries? selectedBrakeSeries,
+  final List<int> expandedGroups = const [],
+  final JourneyAdvancementModel journeyAdvancementModel = const Automatic(),
+}) {
   JourneySettings copyWith({
     BrakeSeries? initialBrakeSeries,
     BrakeSeries? selectedBrakeSeries,

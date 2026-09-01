@@ -13,9 +13,7 @@ import 'package:http_x/component.dart';
 ///
 /// - https://www.rfc-editor.org/rfc/rfc9110.html#name-403-forbidden
 /// - https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#403
-class ForbiddenException extends HttpException {
-  const ForbiddenException(super.request, super.response);
-
+class const ForbiddenException(super.request, super.response) extends HttpException {
   @override
   String get statusLabel => '403 Forbidden';
 }

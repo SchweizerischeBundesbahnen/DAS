@@ -7,10 +7,9 @@ import 'package:sfera/src/data/dto/stopping_point_information_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_reference_dto.dart';
 import 'package:sfera/src/data/mapper/datetime_x.dart';
 
-class TimingPointConstraintsDto extends SferaXmlElementDto {
+class TimingPointConstraintsDto({super.type = elementType, super.attributes, super.children, super.value})
+    extends SferaXmlElementDto {
   static const String elementType = 'TimingPointConstraints';
-
-  TimingPointConstraintsDto({super.type = elementType, super.attributes, super.children, super.value});
 
   TimingPointReferenceDto get timingPointReference => children.whereType<TimingPointReferenceDto>().first;
 

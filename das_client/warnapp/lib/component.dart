@@ -9,9 +9,7 @@ export 'package:warnapp/src/motion_data_listener.dart';
 export 'package:warnapp/src/motion_data_service.dart';
 export 'package:warnapp/src/warnapp_repository.dart';
 
-class WarnappComponent {
-  const WarnappComponent._();
-
+class WarnappComponent._() {
   static WarnappRepository createWarnappRepository({MotionDataService? motionDataService}) {
     return WarnappRepositoryImpl(motionDataService: motionDataService ?? createDeviceMotionDataService());
   }

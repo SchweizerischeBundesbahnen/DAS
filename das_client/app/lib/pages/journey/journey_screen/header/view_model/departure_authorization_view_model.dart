@@ -8,11 +8,11 @@ import 'package:core_data/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class DepartureAuthorizationViewModel {
-  DepartureAuthorizationViewModel({
-    required Stream<JourneyPositionModel> journeyPositionStream,
-    required JourneyViewModel journeyViewModel,
-  }) {
+class DepartureAuthorizationViewModel({
+  required Stream<JourneyPositionModel> journeyPositionStream,
+  required JourneyViewModel journeyViewModel,
+}) {
+  this {
     _initSubscriptions(journeyViewModel.journey, journeyPositionStream);
   }
 

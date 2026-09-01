@@ -7,12 +7,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
-class JourneyViewModel {
-  JourneyViewModel({
-    required this._settingsRepository,
-    required this._sferaJourneyViewModel,
-    required this._ruIndicationsRepository,
-  }) {
+class JourneyViewModel({
+  required final SettingsRepository _settingsRepository,
+  required final SferaJourneyViewModel _sferaJourneyViewModel,
+  required final RuIndicationsRepository _ruIndicationsRepository,
+}) {
+  this {
     _init();
   }
 
@@ -21,10 +21,6 @@ class JourneyViewModel {
   Stream<String?> get formattedTrainIdentifier => _rxFormattedTrainIdentifier.stream;
 
   Journey? get journeyValue => _rxJourney.value;
-
-  final SettingsRepository _settingsRepository;
-  final SferaJourneyViewModel _sferaJourneyViewModel;
-  final RuIndicationsRepository _ruIndicationsRepository;
 
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxFormattedTrainIdentifier = BehaviorSubject<String?>.seeded(null);

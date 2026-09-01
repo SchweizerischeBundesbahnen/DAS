@@ -1,18 +1,11 @@
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 
-class JourneyNavigationModel {
-  JourneyNavigationModel({
-    required this.trainIdentification,
-    required this.currentIndex,
-    required this.navigationStackLength,
-    required this.showNavigationButtons,
-  });
-
-  final ExtendedTrainIdentification trainIdentification;
-  final int currentIndex;
-  final int navigationStackLength;
-  final bool showNavigationButtons;
-
+class JourneyNavigationModel({
+  required final ExtendedTrainIdentification trainIdentification,
+  required final int currentIndex,
+  required final int navigationStackLength,
+  required final bool showNavigationButtons,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

@@ -2,19 +2,13 @@ import 'package:core_data/component.dart';
 import 'package:sfera/src/model/journey/segment.dart';
 
 /// Represents a segment with non standard track equipment. Standard is bidirectional ETCS L1LS.
-class NonStandardTrackEquipmentSegment extends Segment implements Comparable {
-  const NonStandardTrackEquipmentSegment({
-    required this.startKm,
-    required this.endKm,
-    required this.type,
-    super.startOrder,
-    super.endOrder,
-  });
-
-  final List<double> startKm;
-  final List<double> endKm;
-  final TrackEquipmentType type;
-
+class const NonStandardTrackEquipmentSegment({
+  required final List<double> startKm,
+  required final List<double> endKm,
+  required final TrackEquipmentType type,
+  super.startOrder,
+  super.endOrder,
+}) extends Segment implements Comparable {
   bool get isEtcsL2Segment => type.isEtcsL2;
 
   bool get isConventionalSpeed => type.isConventionalSpeed;

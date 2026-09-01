@@ -12,9 +12,7 @@ export 'package:app/di/scopes/scopes.dart';
 
 final _log = Logger('DI');
 
-class DI {
-  const DI._();
-
+class const DI._() {
   static Future<void> init(Flavor flavor) {
     _log.fine('Initialize dependency injection');
     GetIt.I.registerFlavor(flavor);

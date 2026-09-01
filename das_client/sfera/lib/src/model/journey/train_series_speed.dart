@@ -6,21 +6,13 @@ import 'package:sfera/src/model/journey/train_series.dart';
 /// Decorator class for [Speed] to enrich with TrainSeries and optional other information.
 @sealed
 @immutable
-class TrainSeriesSpeed {
-  const TrainSeriesSpeed({
-    required this.trainSeries,
-    required this.speed,
-    this.brakedWeightPercentage,
-    this.text,
-    this.reduced = false,
-  });
-
-  final TrainSeries trainSeries;
-  final Speed speed;
-  final int? brakedWeightPercentage;
-  final String? text;
-  final bool reduced;
-
+class const TrainSeriesSpeed({
+  required final TrainSeries trainSeries,
+  required final Speed speed,
+  final int? brakedWeightPercentage,
+  final String? text,
+  final bool reduced = false,
+}) {
   @override
   String toString() {
     return 'TrainSeriesSpeed{'

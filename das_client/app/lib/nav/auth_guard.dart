@@ -7,11 +7,7 @@ import 'package:logging/logging.dart';
 
 final _log = Logger('AuthGuard');
 
-class AuthGuard extends AutoRouteGuard {
-  AuthGuard({required this._authenticator});
-
-  final Authenticator _authenticator;
-
+class AuthGuard({required final Authenticator _authenticator}) extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     try {

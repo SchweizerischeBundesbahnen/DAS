@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class AppAssets {
-  const AppAssets._();
-
+class const AppAssets._() {
   static const String _dir = 'assets';
   static const String _iconsDir = '$_dir/icons';
   static const String _othersDir = '$_dir/others';

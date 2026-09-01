@@ -3,10 +3,6 @@ import 'package:sfera/component.dart';
 
 @sealed
 @immutable
-abstract class LevelCrossingGroup {
-  const LevelCrossingGroup({
-    required this.levelCrossings,
-  });
-
-  final List<LevelCrossing> levelCrossings;
-}
+abstract class const LevelCrossingGroup({
+  required final List<LevelCrossing> levelCrossings,
+});
