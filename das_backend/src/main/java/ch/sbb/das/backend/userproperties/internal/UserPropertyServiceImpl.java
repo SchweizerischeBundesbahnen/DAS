@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.userproperties.internal;
 
-import ch.sbb.das.backend.userproperties.UserProperty;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
