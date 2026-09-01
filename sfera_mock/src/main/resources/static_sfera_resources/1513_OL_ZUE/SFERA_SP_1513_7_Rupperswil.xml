@@ -53,9 +53,11 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
-                    &lt;entries&gt;
-						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
-                    &lt;/entries&gt;
+                    &lt;graduatedSpeedInfo&gt;
+                        &lt;entries&gt;
+                            &lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
+                        &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
@@ -71,8 +73,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;135&quot;/&gt;
@@ -88,7 +90,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;115&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

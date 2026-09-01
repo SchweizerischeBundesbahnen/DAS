@@ -70,8 +70,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;110&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;110&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;110&quot;/&gt;
@@ -87,7 +87,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;90&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

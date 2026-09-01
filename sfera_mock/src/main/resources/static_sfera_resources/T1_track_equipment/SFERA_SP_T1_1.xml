@@ -36,12 +36,12 @@
         <NetworkSpecificPoint location="1600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>newLineSpeed</NSP_GroupName>
-            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                &lt;lineSpeed&gt;
+            <NetworkSpecificParameter name="xmlNewLineSpeedLine" value="
+                &lt;newLineSpeed&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;55&quot;/&gt;
                 &lt;/speeds&gt;
-                &lt;/lineSpeed&gt;
+                &lt;newLineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
