@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.SQLGrammarException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -146,6 +147,11 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     ResponseEntity<Problem> handleConflictException(ConflictException exception) {
         return createProblemResponse(HttpStatus.CONFLICT, "Conflict", exception.getMessage(), exception);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ResponseEntity<Problem> handleDataIntegrityViolation(DataIntegrityViolationException exception) {
+        return createProblemResponse(HttpStatus.CONFLICT, "Conflict", "Resource was modified concurrently, please retry.", exception);
     }
 
     /**
