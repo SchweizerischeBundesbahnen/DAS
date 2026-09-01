@@ -41,7 +41,7 @@
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
                 &lt;/speeds&gt;
-                &lt;newLineSpeed&gt;
+                &lt;/newLineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
     </SP_Points>

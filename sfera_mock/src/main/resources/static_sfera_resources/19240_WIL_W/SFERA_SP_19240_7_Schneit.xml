@@ -76,7 +76,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;90&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;95&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;100&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

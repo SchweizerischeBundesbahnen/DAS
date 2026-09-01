@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
+import 'package:sfera/src/data/dto/graduated_speed_info_entries_dto.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_entry_dto.dart';
 import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
@@ -69,7 +70,11 @@ void main() {
       // ARRANGE
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(
         children: [
-          GraduatedSpeedInfoEntryDto(attributes: {'adSpeed': '50'}),
+          GraduatedSpeedInfoEntriesDto(
+            children: [
+              GraduatedSpeedInfoEntryDto(attributes: {'adSpeed': '50'}),
+            ],
+          ),
         ],
       );
 
@@ -89,7 +94,11 @@ void main() {
       // ARRANGE
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(
         children: [
-          GraduatedSpeedInfoEntryDto(attributes: {'adSpeed': '50', 'text': 'Some Text'}),
+          GraduatedSpeedInfoEntriesDto(
+            children: [
+              GraduatedSpeedInfoEntryDto(attributes: {'adSpeed': '50', 'text': 'Some Text'}),
+            ],
+          ),
         ],
       );
 
@@ -103,7 +112,13 @@ void main() {
 
     test('fromGraduatedSpeedInfo_whenEntityHasNoSpeed_thenReturnEmptyList', () {
       // ARRANGE
-      final graduatedSpeedInfo = GraduatedSpeedInfoDto(children: [GraduatedSpeedInfoEntryDto()]);
+      final graduatedSpeedInfo = GraduatedSpeedInfoDto(
+        children: [
+          GraduatedSpeedInfoEntriesDto(
+            children: [GraduatedSpeedInfoEntryDto()],
+          ),
+        ],
+      );
 
       // ACT & EXPECT
       expect(SpeedMapper.fromGraduatedSpeedInfo(graduatedSpeedInfo), isEmpty);

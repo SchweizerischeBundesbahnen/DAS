@@ -59,7 +59,7 @@
                 &lt;v trainSeries=&quot;R&quot; speed=&quot;45&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; speed=&quot;40&quot;/&gt;
                 &lt;/speeds&gt;
-                &lt;newLineSpeed&gt;
+                &lt;/newLineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
@@ -78,7 +78,7 @@
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
                     &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>

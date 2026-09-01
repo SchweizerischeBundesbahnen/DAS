@@ -52,7 +52,7 @@
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeedLine" value="
-                &lt;lineSpeed text=&quot;New Line Speed All&quot;&gt;
+                &lt;newLineSpeed text=&quot;New Line Speed All&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
@@ -71,7 +71,7 @@
                 &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
                 &lt;/speeds&gt;
-                &lt;newLineSpeed&gt;
+                &lt;/newLineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
@@ -79,7 +79,7 @@
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeedLine" value="
-                &lt;lineSpeed text=&quot;New Line Speed A Missing&quot;&gt;
+                &lt;newLineSpeed text=&quot;New Line Speed A Missing&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
@@ -88,7 +88,7 @@
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
                 &lt;/speeds&gt;
-                &lt;newLineSpeed&gt;
+                &lt;/newLineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
@@ -160,7 +160,7 @@
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -183,7 +183,7 @@
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -216,7 +216,7 @@
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>

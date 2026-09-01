@@ -266,7 +266,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
 					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;105&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -309,7 +309,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;150&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;150&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;70&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -352,7 +352,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;150&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;150&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;70&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -387,7 +387,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
 					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -413,7 +413,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
 					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -448,7 +448,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
 					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;105&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
@@ -490,7 +490,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
                 <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
 					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;90&quot;/&gt;
-					&lt;newLineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

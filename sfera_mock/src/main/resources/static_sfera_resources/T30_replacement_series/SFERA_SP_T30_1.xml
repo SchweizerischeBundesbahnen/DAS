@@ -114,7 +114,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
 
@@ -139,7 +139,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;-1000&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -172,7 +172,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -196,7 +196,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -220,7 +220,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -253,7 +253,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
                         &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
-                    &lt;newLineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
