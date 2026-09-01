@@ -88,6 +88,7 @@ class SettingsRepositoryImpl({
               bucketUrl: preload.bucketUrl,
               accessKey: preload.accessKey,
               accessSecret: preload.accessSecret,
+              region: preload.region,
             );
 
       _onAwsCredentialsChanged!(config);

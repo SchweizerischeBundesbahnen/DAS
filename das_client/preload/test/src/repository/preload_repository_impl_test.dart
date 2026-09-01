@@ -75,7 +75,9 @@ void main() {
   test('preloadDetails_whenAwsConfigurationUpdated_startsAndCompletesPreload', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    testee.updateConfiguration(
+      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+    );
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -109,7 +111,9 @@ void main() {
 
       // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
-      testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+      testee.updateConfiguration(
+        AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+      );
       fakeAsync.elapse(const Duration(seconds: 1));
 
       // VERIFY
@@ -150,7 +154,9 @@ void main() {
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    testee.updateConfiguration(
+      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+    );
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -167,7 +173,9 @@ void main() {
   test('preload_whenTriggered_callsCleanup', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    testee.updateConfiguration(
+      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+    );
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -208,7 +216,9 @@ void main() {
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    testee.updateConfiguration(
+      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+    );
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -270,7 +280,9 @@ void main() {
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: ''));
+    testee.updateConfiguration(
+      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
+    );
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY

@@ -7,6 +7,7 @@ class PreloadDto({
   required final String bucketUrl,
   required final String accessKey,
   required final String accessSecret,
+  required final String region,
 }) {
   factory fromJson(Map<String, dynamic> json) {
     return _$PreloadDtoFromJson(json);
@@ -19,8 +20,9 @@ class PreloadDto({
           runtimeType == other.runtimeType &&
           bucketUrl == other.bucketUrl &&
           accessKey == other.accessKey &&
-          accessSecret == other.accessSecret;
+          accessSecret == other.accessSecret &&
+          region == other.region;
 
   @override
-  int get hashCode => Object.hash(bucketUrl, accessKey, accessSecret);
+  int get hashCode => Object.hash(bucketUrl, accessKey, accessSecret, region);
 }

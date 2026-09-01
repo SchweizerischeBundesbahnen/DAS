@@ -54,7 +54,12 @@ void main() {
             logging: LoggingSettingDto(url: loggingUrl, token: loggingToken),
             ruFeatures: ruFeatures,
             companies: companies,
-            preload: PreloadDto(bucketUrl: bucketUrl, accessKey: accessKey, accessSecret: accessSecret),
+            preload: PreloadDto(
+              bucketUrl: bucketUrl,
+              accessKey: accessKey,
+              accessSecret: accessSecret,
+              region: 'eu-central-1',
+            ),
             currentAppVersion: AppVersionExpirationDto(expired: appVersionExpired, expiryDate: appVersionExpiryDate),
           ),
         ],
