@@ -1,10 +1,10 @@
 CREATE TABLE personal_note
 (
-    id               INTEGER   NOT NULL,
-    oid              TEXT      NOT NULL,
-    key              TEXT      NOT NULL,
-    value            TEXT      NOT NULL,
-    last_modified_at TIMESTAMP NOT NULL
+    id               INTEGER        NOT NULL,
+    oid              TEXT           NOT NULL,
+    key              TEXT           NOT NULL,
+    value            VARCHAR(16384) NOT NULL,
+    last_modified_at TIMESTAMP      NOT NULL
 );
 
 ALTER TABLE IF EXISTS personal_note

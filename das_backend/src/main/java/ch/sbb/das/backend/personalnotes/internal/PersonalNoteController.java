@@ -6,7 +6,6 @@ import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.personalnotes.PersonalNote;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -89,5 +89,18 @@ public class PersonalNoteController {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         PersonalNote saved = personalNoteService.save(oid, key, value);
         return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(saved)), requestId);
+    }
+
+    @DeleteMapping(API_PERSONAL_NOTES_KEY)
+    @Operation(summary = "Delete a personal note.", description = "Deletes a single note for the authenticated user by key. Idempotent: succeeds whether or not the key exists.")
+    @ApiResponse(responseCode = "204", description = "Personal note deleted.")
+    @ApiErrorResponses
+    public ResponseEntity<Void> deletePersonalNote(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
+        JwtAuthenticationToken authentication) {
+        String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
+        personalNoteService.delete(oid, key);
+        return ResponseEntityFactory.createNoContentResponse(requestId);
     }
 }

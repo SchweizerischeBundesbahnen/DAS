@@ -11,4 +11,6 @@ public interface PersonalNoteRepository extends ListCrudRepository<PersonalNoteE
     List<PersonalNoteEntity> findAllByOid(String oid);
 
     Optional<PersonalNoteEntity> findByOidAndKey(String oid, String key);
+
+    void deleteByOidAndKey(String oid, String key);
 }

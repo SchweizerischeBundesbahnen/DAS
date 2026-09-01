@@ -1,8 +1,10 @@
 package ch.sbb.das.backend.personalnotes.internal;
 
 import static ch.sbb.das.backend.personalnotes.internal.PersonalNoteController.API_PERSONAL_NOTES;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,6 +29,9 @@ class PersonalNoteControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private PersonalNoteRepository personalNoteRepository;
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
@@ -93,5 +98,53 @@ class PersonalNoteControllerTest {
     void getAllPersonalNotes_unauthorized() throws Exception {
         mockMvc.perform(get(API_PERSONAL_NOTES))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @DisplayName("savePersonalNote_payloadTooLarge_rejected|vT7gH8iJ9kL0mN1oP2qR|tests:2256")
+    void savePersonalNote_payloadTooLarge_rejected() throws Exception {
+        String oversizedValue = "\"" + "a".repeat(16384) + "\"";
+
+        mockMvc.perform(put(API_PERSONAL_NOTES + "/train-12345")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(oversizedValue))
+            .andExpect(status().isContentTooLarge());
+
+        mockMvc.perform(get(API_PERSONAL_NOTES + "/train-12345"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createPersonalNotes.sql")
+    @DisplayName("deletePersonalNote_ok_removesOwnNote|wU8hI9jK0lM1nO2pQ3rS|tests:2256")
+    void deletePersonalNote_ok_removesOwnNote() throws Exception {
+        mockMvc.perform(delete(API_PERSONAL_NOTES + "/train-12345"))
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_PERSONAL_NOTES + "/train-12345"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createPersonalNotes.sql")
+    @DisplayName("deletePersonalNote_idempotent_whenKeyDoesNotExist|xV9iJ0kL1mN2oP3qR4sT|tests:2256")
+    void deletePersonalNote_idempotent_whenKeyDoesNotExist() throws Exception {
+        mockMvc.perform(delete(API_PERSONAL_NOTES + "/nonexistent"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createPersonalNotes.sql")
+    @DisplayName("deletePersonalNote_doesNotDeleteOtherUsersNote|yW0jK1lM2nO3pP4qR5sU|tests:2256")
+    void deletePersonalNote_doesNotDeleteOtherUsersNote() throws Exception {
+        mockMvc.perform(delete(API_PERSONAL_NOTES + "/train-12345"))
+            .andExpect(status().isNoContent());
+
+        assertThat(personalNoteRepository.findByOidAndKey("test-oid", "train-12345")).isEmpty();
+        assertThat(personalNoteRepository.findByOidAndKey("other-oid", "train-12345")).isPresent();
     }
 }
