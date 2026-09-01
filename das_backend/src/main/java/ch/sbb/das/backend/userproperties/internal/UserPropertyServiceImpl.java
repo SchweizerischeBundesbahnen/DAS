@@ -48,6 +48,11 @@ class UserPropertyServiceImpl {
         return toUserProperty(userPropertyRepository.save(entity));
     }
 
+    @Transactional
+    void delete(String oid, String key) {
+        userPropertyRepository.deleteByOidAndKey(oid, key);
+    }
+
     private UserProperty toUserProperty(UserPropertyEntity entity) {
         return new UserProperty(entity.getKey(), jsonMapper.readTree(entity.getValue()), entity.getLastModifiedAt());
     }

@@ -1,8 +1,10 @@
 package ch.sbb.das.backend.userproperties.internal;
 
 import static ch.sbb.das.backend.userproperties.internal.UserPropertyController.API_USER_PROPERTIES;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,6 +29,9 @@ class UserPropertyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserPropertyRepository userPropertyRepository;
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
@@ -112,5 +117,38 @@ class UserPropertyControllerTest {
     void getAllUserProperties_unauthorized() throws Exception {
         mockMvc.perform(get(API_USER_PROPERTIES))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createUserProperties.sql")
+    @DisplayName("deleteUserProperty_ok_removesOwnProperty|hI8jK9lM0nO1pQ2rS3tU|tests:2258")
+    void deleteUserProperty_ok_removesOwnProperty() throws Exception {
+        mockMvc.perform(delete(API_USER_PROPERTIES + "/tourSystem"))
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_USER_PROPERTIES + "/tourSystem"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createUserProperties.sql")
+    @DisplayName("deleteUserProperty_idempotent_whenKeyDoesNotExist|iJ9kL0mN1oP2qR3sT4uV|tests:2258")
+    void deleteUserProperty_idempotent_whenKeyDoesNotExist() throws Exception {
+        mockMvc.perform(delete(API_USER_PROPERTIES + "/nonexistent"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createUserProperties.sql")
+    @DisplayName("deleteUserProperty_doesNotDeleteOtherUsersProperty|jK0lM1nO2pP3qR4sT5uW|tests:2258")
+    void deleteUserProperty_doesNotDeleteOtherUsersProperty() throws Exception {
+        mockMvc.perform(delete(API_USER_PROPERTIES + "/tourSystem"))
+            .andExpect(status().isNoContent());
+
+        assertThat(userPropertyRepository.findByOidAndKey("test-oid", "tourSystem")).isEmpty();
+        assertThat(userPropertyRepository.findByOidAndKey("other-oid", "tourSystem")).isPresent();
     }
 }

@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -88,5 +89,18 @@ public class UserPropertyController {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         UserProperty saved = userPropertyService.save(oid, key, value);
         return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(List.of(saved)), requestId);
+    }
+
+    @DeleteMapping(API_USER_PROPERTIES_KEY)
+    @Operation(summary = "Delete a user property.", description = "Deletes a single property for the authenticated user by key. Idempotent: succeeds whether or not the key exists.")
+    @ApiResponse(responseCode = "204", description = "User property deleted.")
+    @ApiErrorResponses
+    public ResponseEntity<Void> deleteUserProperty(
+        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
+        JwtAuthenticationToken authentication) {
+        String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
+        userPropertyService.delete(oid, key);
+        return ResponseEntityFactory.createNoContentResponse(requestId);
     }
 }

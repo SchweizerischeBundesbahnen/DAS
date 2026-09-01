@@ -11,4 +11,6 @@ public interface UserPropertyRepository extends ListCrudRepository<UserPropertyE
     List<UserPropertyEntity> findAllByOid(String oid);
 
     Optional<UserPropertyEntity> findByOidAndKey(String oid, String key);
+
+    void deleteByOidAndKey(String oid, String key);
 }
