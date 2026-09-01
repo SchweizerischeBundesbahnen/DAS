@@ -165,9 +165,9 @@ void main() {
         await tester.pumpAndSettle(Duration(milliseconds: 300));
 
         expect(find.text('T2'), findsOneWidget);
-        expect(find.text('5184, SBBI'), findsOneWidget);
-        expect(find.text('2263, BLSI'), findsOneWidget);
-        expect(find.text('3917, THURBO'), findsNothing);
+        expect(find.text('T2, SBBI'), findsOneWidget);
+        expect(find.text('T2, BLSI'), findsOneWidget);
+        expect(find.text('T2, THURBO'), findsNothing);
 
         await tester.pumpAndSettle(Duration(milliseconds: 300));
 

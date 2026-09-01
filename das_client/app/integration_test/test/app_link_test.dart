@@ -315,8 +315,8 @@ void main() {
       final journeys = [_trainJourneyLinkData('T9999')];
       _pushTrainJourneyAppLink(journeys);
 
-      await waitUntilExists(tester, find.text('5184, SBBI'));
-      expect(find.text('2263, BLSI'), findsOneWidget);
+      await waitUntilExists(tester, find.text('T9999, SBBI'));
+      expect(find.text('T9999, BLSI'), findsOneWidget);
 
       await disconnect(tester);
     });
@@ -351,8 +351,8 @@ void main() {
         // wait until SelectionPage is opened
         await waitUntilExists(tester, find.byType(JourneySelectionPage));
 
-        expect(find.text('5184, SBBI'), findsOneWidget);
-        expect(find.text('2263, BLSI'), findsOneWidget);
+        expect(find.text('T1, SBBI'), findsOneWidget);
+        expect(find.text('T1, BLSI'), findsOneWidget);
 
         await disconnect(tester);
       },
