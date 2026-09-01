@@ -6,7 +6,6 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/modification_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
@@ -94,11 +93,14 @@ class SegmentProfileMapper._() {
 
       final newLineSpeeds = segmentProfile.points?.newLineSpeedsNsp ?? [];
       for (final newLineSpeed in newLineSpeeds) {
-        if (newLineSpeed.lastModificationType == ModificationTypeDto.deleted) {
+        if (newLineSpeed.lastModificationType == .deleted) {
           continue;
         }
 
-        final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
+        // TODO: both line speed needed?
+        final lineVelocities = newLineSpeed.xmlNewLineSpeedLine?.element.speeds?.velocities ?? [];
+        final opVelocities = newLineSpeed.xmlNewLineSpeedOP?.element.speeds?.velocities ?? [];
+        final velocities = [...lineVelocities, ...opVelocities];
         final speed = SpeedMapper.fromVelocities(velocities);
         if (speed != null) {
           result[calculateOrder(index, newLineSpeed.location)] = speed;
@@ -126,24 +128,22 @@ class SegmentProfileMapper._() {
         countryCode: timingPoint.locationReference?.countryCodeISO,
         primaryCode: timingPoint.locationReference?.locationPrimaryCode,
       );
+      final routeTableData = tafTapLocation.routeTableDataNsp;
 
-      final kmNspRef = tafTapLocation.routeTableDataNsp?.km1 != null || tafTapLocation.routeTableDataNsp?.km2 != null
-          ? [?tafTapLocation.routeTableDataNsp?.km1, ?tafTapLocation.routeTableDataNsp?.km2]
+      final kmNspRef = routeTableData?.km1 != null || routeTableData?.km2 != null
+          ? [?routeTableData?.km1, ?routeTableData?.km2]
           : null;
 
       servicePoints.add(
         ServicePoint(
-          name:
-              tafTapLocation.routeTableDataNsp?.routeTableDataText ??
-              tafTapLocation.locationIdent.primaryLocationName?.value ??
-              '',
+          name: routeTableData?.routeTableDataText ?? tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
           abbreviation: tafTapLocation.abbreviation,
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == .stoppingPoint,
           isStation: tafTapLocation.locationType != .halt,
-          isAdditional: tafTapLocation.routeTableDataNsp?.routeTableDataRelevant?.isAdditional ?? false,
-          betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
+          isAdditional: routeTableData?.routeTableDataRelevant?.isAdditional ?? false,
+          betweenBrackets: routeTableData?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: kmNspRef ?? mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
@@ -154,9 +154,9 @@ class SegmentProfileMapper._() {
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint, segmentProfileReference, timingPoint.location),
-          stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
-          stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
-          trackGroup: tafTapLocation.routeTableDataNsp?.trackGroup,
+          stationSign1: routeTableData?.stationSign1,
+          stationSign2: routeTableData?.stationSign2,
+          trackGroup: routeTableData?.trackGroup,
           departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
           localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
@@ -418,7 +418,7 @@ class SegmentProfileMapper._() {
     final newLineSpeeds = mapperData.segmentProfile.points?.newLineSpeedsNsp ?? [];
     return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
       return SpeedChange(
-        text: newLineSpeed.xmlNewLineSpeed.element.text,
+        text: newLineSpeed.xmlNewLineSpeedLine?.element.text,
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
         lastModificationDate: newLineSpeed.lastModificationDate,
@@ -558,7 +558,7 @@ class SegmentProfileMapper._() {
 
     double? uphill, downhill;
     for (final gradientArea in decisiveGradientAreas) {
-      if (gradientArea.gradientDirectionType == .uphill) {
+      if (gradientArea.gradientDirection == .uphill) {
         uphill = gradientArea.gradientValue;
       } else {
         downhill = gradientArea.gradientValue;
@@ -649,7 +649,7 @@ class SegmentProfileMapper._() {
 
   static bool _isFixedPointRelevance(SegmentProfileReferenceDto segmentProfileReference, double location) {
     final vProNsp = segmentProfileReference.jpContextInformation?.vProData
-        .where((it) => it.constraint?.startLocation == location)
+        .where((it) => it.constraint.startLocation == location)
         .firstOrNull;
 
     return vProNsp?.fixedPointRelevance == true;

@@ -145,7 +145,7 @@ class SferaModelMapper._() {
     RelatedTrainInformationDto? relatedTrainInformation,
     List<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
-    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation?.positionSpeed;
 
     if (positionSpeed == null) return null;
 
@@ -229,8 +229,6 @@ class SferaModelMapper._() {
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
-      final kmReferencePoints = segmentProfileReference.jpContextInformation?.kilometreReferencePoint;
-
       for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstraints) {
         if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
@@ -242,24 +240,18 @@ class SferaModelMapper._() {
           case .starts:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
-            segmentData.startKmRef = kmReferencePoints
-                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
-                ?.kmRef;
+            segmentData.startKmRef = asrTemporaryConstrain.kmRefStart;
             break;
           case .startsEnds:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
-            segmentData.startKmRef = kmReferencePoints
-                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
-                ?.kmRef;
+            segmentData.startKmRef = asrTemporaryConstrain.kmRefStart;
             continue next;
           next:
           case .ends:
             segmentData.endLocation = asrTemporaryConstrain.endLocation;
             segmentData.endIndex = segmentIndex;
-            segmentData.endKmRef = kmReferencePoints
-                ?.firstWhereOrNull((it) => it.constraint?.endLocation == asrTemporaryConstrain.endLocation)
-                ?.kmRef;
+            segmentData.endKmRef = asrTemporaryConstrain.kmRefEnd;
             break;
           case .wholeSp:
             break;
@@ -482,7 +474,7 @@ class SferaModelMapper._() {
       if (indications == null) return <OperationalIndication>[];
 
       mapToModel(OperationalIndicationNspDto uncoded) {
-        final startLocation = uncoded.constraint?.startLocation;
+        final startLocation = uncoded.constraint.startLocation;
         if (startLocation == null) {
           _log.warning('Uncoded operational indication without location found: $uncoded');
           return null;
@@ -518,11 +510,6 @@ class SferaModelMapper._() {
         final segmentIndex = segmentProfiles.indexOf(segmentProfile);
 
         final constraint = nonStandardIndication!.constraint;
-        if (constraint == null) {
-          _log.warning('Found non standard indications $nonStandardIndication without constraint');
-          break;
-        }
-
         switch (constraint.startEndQualifier) {
           case .starts:
             segmentData.startLocation = constraint.startLocation;
@@ -663,8 +650,8 @@ class SferaModelMapper._() {
   }
 
   static Delay? _parseDelay(RelatedTrainInformationDto? relatedTrainInformation) {
-    final duration = relatedTrainInformation?.ownTrain.trainLocationInformation.delay?.delayAsDuration;
-    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+    final duration = relatedTrainInformation?.ownTrain.trainLocationInformation?.delay?.delayAsDuration;
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation?.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
     return duration != null ? Delay(value: duration, location: location) : null;
   }
@@ -682,8 +669,8 @@ class SferaModelMapper._() {
       final vProDataNsps = segmentProfileReference.jpContextInformation?.vProData ?? [];
       for (final vProDataNsp in vProDataNsps) {
         final speedData = SpeedMapper.fromVProDataNsp(vProDataNsp);
-        if (speedData != null && vProDataNsp.constraint?.startLocation != null) {
-          result[calculateOrder(index, vProDataNsp.constraint!.startLocation!)] = speedData;
+        if (speedData != null && vProDataNsp.constraint.startLocation != null) {
+          result[calculateOrder(index, vProDataNsp.constraint.startLocation!)] = speedData;
         }
       }
     });

@@ -4,7 +4,6 @@ import 'package:sfera/src/data/dto/departure_dispatch_notification_type_wrapper_
 import 'package:sfera/src/data/dto/disturbance_msg_nsp_dto.dart';
 import 'package:sfera/src/data/dto/fixed_point_relevance_nsp_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
-import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
 import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
@@ -21,7 +20,7 @@ import 'package:sfera/src/data/dto/train_run_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/xml_curve_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
-import 'package:sfera/src/data/dto/xml_new_line_speed_dto.dart';
+import 'package:sfera/src/data/dto/xml_new_line_speed_op_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
@@ -41,8 +40,8 @@ class NetworkSpecificParameterDto({super.type = elementType, super.attributes, s
     String? value,
   }) {
     final attributeName = attributes?['name'];
-    if (attributeName == XmlNewLineSpeedDto.elementName) {
-      return XmlNewLineSpeedDto(attributes: attributes, children: children, value: value);
+    if (attributeName == XmlNewLineSpeedOPDto.elementName) {
+      return XmlNewLineSpeedOPDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == TrackEquipmentTypeWrapperDto.elementName) {
       return TrackEquipmentTypeWrapperDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == XmlCurveSpeedDto.elementName) {
@@ -75,8 +74,6 @@ class NetworkSpecificParameterDto({super.type = elementType, super.attributes, s
       return LocalRegulationTitleNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName != null && LocalRegulationContentNspDto.matchesElementName(attributeName)) {
       return LocalRegulationContentNspDto(attributes: attributes, children: children, value: value);
-    } else if (attributeName == KmRefNspDto.elementName) {
-      return KmRefNspDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == RouteTableDataRelevantWrapperDto.elementName) {
       return RouteTableDataRelevantWrapperDto(attributes: attributes, children: children, value: value);
     } else if (attributeName == TrainRunTypeNspDto.elementName) {

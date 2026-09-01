@@ -5,6 +5,7 @@ import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/parallel_asr_constraint_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraint_reason_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_complex_dto.dart';
+import 'package:sfera/src/data/parser/parse_utils.dart';
 
 class TemporaryConstraintsDto({super.type = elementType, super.attributes, super.children, super.value})
     extends TemporaryConstraintsComplexDto {
@@ -22,6 +23,10 @@ class TemporaryConstraintsDto({super.type = elementType, super.attributes, super
   ParallelAsrConstraintDto? get parallelAsrConstraintDto => children.whereType<ParallelAsrConstraintDto>().firstOrNull;
 
   AdvisedSpeedDto? get advisedSpeed => children.whereType<AdvisedSpeedDto>().firstOrNull;
+
+  double? get kmRefStart => ParseUtils.tryParseDouble(attributes['kmRefStart']);
+
+  double? get kmRefEnd => ParseUtils.tryParseDouble(attributes['kmRefEnd']);
 
   @override
   bool validate() {
