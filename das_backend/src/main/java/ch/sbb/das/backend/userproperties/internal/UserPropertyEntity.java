@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.userproperties.internal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ public class UserPropertyEntity {
 
     private String key;
 
+    @Column(length = UserPropertyServiceImpl.MAX_VALUE_LENGTH)
     private String value;
 
     @LastModifiedDate

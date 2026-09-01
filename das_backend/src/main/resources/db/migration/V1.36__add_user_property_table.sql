@@ -1,10 +1,10 @@
 CREATE TABLE user_property
 (
-    id               INTEGER   NOT NULL,
-    oid              TEXT      NOT NULL,
-    key              TEXT      NOT NULL,
-    value            TEXT      NOT NULL,
-    last_modified_at TIMESTAMP NOT NULL
+    id               INTEGER       NOT NULL,
+    oid              TEXT          NOT NULL,
+    key              TEXT          NOT NULL,
+    value            VARCHAR(4096) NOT NULL,
+    last_modified_at TIMESTAMP     NOT NULL
 );
 
 ALTER TABLE IF EXISTS user_property

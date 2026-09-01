@@ -93,6 +93,21 @@ class UserPropertyControllerTest {
     }
 
     @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @DisplayName("saveUserProperty_payloadTooLarge_rejected|gH7iJ8kL9mN0oP1qR2sT|tests:2258")
+    void saveUserProperty_payloadTooLarge_rejected() throws Exception {
+        String oversizedValue = "\"" + "a".repeat(4096) + "\"";
+
+        mockMvc.perform(put(API_USER_PROPERTIES + "/tourSystem")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(oversizedValue))
+            .andExpect(status().isContentTooLarge());
+
+        mockMvc.perform(get(API_USER_PROPERTIES + "/tourSystem"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("getAllUserProperties_unauthorized|fG6hI7jK8lM9nO0pQ1rS|tests:2258")
     void getAllUserProperties_unauthorized() throws Exception {
         mockMvc.perform(get(API_USER_PROPERTIES))
