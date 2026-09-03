@@ -54,7 +54,7 @@ jobs:
         run: dart format -l 120 -o none --set-exit-if-changed .
 
       - name: Setup melos
-        uses: bluefireteam/melos-action@v3.8.0
+        uses: bluefireteam/melos-action@v3.10.0
         with:
           melos-version: '^7.4.0'
           run-bootstrap: 'false'
