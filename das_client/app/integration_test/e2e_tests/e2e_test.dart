@@ -25,7 +25,7 @@ void main() {
     await waitUntilExists(tester, find.byKey(PreloadStatusDisplay.downloadedSegmentKey));
 
     // Wait until all files preloaded so test fails not afterwards from Isolates and file operations ON EMULATOR
-    // TODO: maybe add possibility to interrupt preload gracefully - difficult with isolates though
+    // TODO: https://github.com/SchweizerischeBundesbahnen/DAS/issues/2752
     // await waitUntilNotExists(tester, find.byKey(PreloadStatusDisplay.initialSegmentKey), maxWaitSeconds: 480);
   });
 

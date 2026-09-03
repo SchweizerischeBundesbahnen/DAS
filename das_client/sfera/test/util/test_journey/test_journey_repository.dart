@@ -77,8 +77,7 @@ class TestJourneyRepository {
     final files = dir.listSync().whereType<File>();
 
     final List<File> jpFiles = files.where((f) => f.path.contains('SFERA_JP_')).toList();
-    // TODO: https://github.com/SchweizerischeBundesbahnen/DAS/issues/1390
-    // Take out the sorting and see what happens.
+    // Must be sorted because this is done in another place in production.
     final List<File> spFiles = files.where((f) => f.path.contains('SFERA_SP_')).sortedBy((f) => f.path);
     final List<File> tcFiles = files.where((f) => f.path.contains('SFERA_TC_')).toList();
     final eventFiles = files.where((f) => f.path.contains('SFERA_Event_')).toList();

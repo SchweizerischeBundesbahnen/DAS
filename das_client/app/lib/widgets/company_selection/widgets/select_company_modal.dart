@@ -69,8 +69,6 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
         final backgroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
           padding: .only(bottom: bottomInsets),
-          // TODO: SBBRadioGroup currently doesn't support Slivers so it needs to be wrapped around whole list.
-          // Also see: https://github.com/flutter/flutter/issues/174753
           child: SBBRadioGroup<String>(
             groupValue: widget.selectedCompanyCodes.firstOrNull,
             onChanged: (selectedCompany) {

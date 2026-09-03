@@ -79,7 +79,8 @@ class SferaRepoImpl({
   final _rxDepartureDispatchNotificationEvent = BehaviorSubject<DepartureDispatchNotificationEvent?>.seeded(null);
   final _rxDisturbanceEvent = BehaviorSubject<DisturbanceEvent?>.seeded(null);
 
-  // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
+  // TODO: https://github.com/SchweizerischeBundesbahnen/DAS/issues/2755
+  // refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
   // repository should not expose a state, should just expose data stream
   // once first listener tunes in, connect
   // once last listener cancels subscription, disconnect
