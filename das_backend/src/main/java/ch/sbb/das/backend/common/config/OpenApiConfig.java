@@ -17,14 +17,22 @@ import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.JsonNode;
 
 @Configuration
 public class OpenApiConfig {
 
     public static final String OAUTH_2 = "oauth2";
+
+    static {
+        SpringDocUtils.getConfig()
+            .replaceWithSchema(JsonNode.class,
+                new Schema<>().description("Any valid JSON value."));
+    }
 
     @Value("${info.app.version}") private String applicationVersion;
 

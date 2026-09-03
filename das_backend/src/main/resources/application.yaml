@@ -183,6 +183,24 @@ admin:
     cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 90
 
+tour-systems:
+  entries:
+    tip:
+      label: "TIP"
+      url: "tip3://tours"
+    caros:
+      label: "Caros"
+      url: "https://sbbc.ivu-cloud.com/mbweb/pub/ivu/desktop/login"
+    railOpt:
+      label: "RailOpt"
+      url: "https://railoptweb.sob.ch/personnel-reporting-calendar"
+    blsIvu:
+      label: "BLS IVU"
+      url: "https://ivu.pad.core"
+    railCube:
+      label: "RailCube"
+      url: "play.google.com/store/apps/details?id=com.softlogix.railcube.mobile&hl=en"
+
 ---
 # only in cluster environment
 spring:
