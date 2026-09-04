@@ -6,6 +6,11 @@
 
 .simpleXML {
   font-family: 'Courier New';
+  display: block;
+}
+
+.simpleXML-toolbar-btn:not(:last-of-type) {
+  margin-right: 8px;
 }
 
 .simpleXML-comment {
