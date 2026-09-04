@@ -60,7 +60,7 @@
     "karma-jasmine-html-reporter": "2.3.0",
     "prettier": "3.9.6",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.67.0"
+    "typescript-eslint": "8.69.0"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
