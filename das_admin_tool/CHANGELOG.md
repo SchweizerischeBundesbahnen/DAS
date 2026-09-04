@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.6.0...das-admin-tool-v0.7.0) (2026-09-04)
+
+
+### Features
+
+* translate admin tool ([#2719](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2719)) ([#2730](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2730)) ([994568b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/994568b8936bd962b20dd02f3cd8b0a8f468350b))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.5.1...das-admin-tool-v0.6.0) (2026-08-10)
 
 
