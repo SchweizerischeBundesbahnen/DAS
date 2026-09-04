@@ -34,6 +34,9 @@
   <button type="button" class="ml-3" sbb-button (click)="sendJPRequest()">Send JP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendSPRequest()">Send SP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendTCRequest()">Send TC request</button>
+  <button (click)="sendLocalRegulationRequest()" class="ml-3" sbb-button type="button">
+    Send LR request
+  </button>
   <button type="button" class="ml-3" sbb-button (click)="sendSessionTermination()">
     Send Session termination
   </button>
@@ -97,6 +100,24 @@
       <textarea sbbInput [formControl]="xmlStringControl" class="xmlString"></textarea>
     </sbb-form-field>
     <button type="button" sbb-button (click)="sendXml()">Send</button>
+  </sbb-expansion-panel>
+
+  <sbb-expansion-panel>
+    <sbb-expansion-panel-header>Request Local Regulations</sbb-expansion-panel-header>
+    <div class="lr-request">
+      <sbb-form-field class="sbb-form-field-long lr-request-field1">
+        <sbb-label>LR SP IDs (languageNeutralTree format, e.g. LR_846;LR_847)</sbb-label>
+        <input [formControl]="lrListControl" sbbInput type="text"/>
+      </sbb-form-field>
+      <sbb-form-field class="sbb-form-field-long lr-request-field2">
+        <sbb-label>Language (DE, FR, IT)</sbb-label>
+        <input [formControl]="lrLanguageControl" sbbInput type="text"/>
+      </sbb-form-field>
+    </div>
+    <button (click)="sendLocalRegulationRequestFromList(lrListControl.value, lrLanguageControl.value)" sbb-button
+            type="button">
+      Send
+    </button>
   </sbb-expansion-panel>
 
   <sbb-expansion-panel>
