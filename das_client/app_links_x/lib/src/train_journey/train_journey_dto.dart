@@ -5,7 +5,6 @@ part 'train_journey_dto.g.dart';
 
 @JsonSerializable()
 class TrainJourneyDto({
-  // TODO: Add validation for train number when no more alpha chars (i.e. not T9999M)
   required final String operationalTrainNumber,
   final String? company,
   final DateTime? startDate,

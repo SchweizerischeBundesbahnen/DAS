@@ -10,7 +10,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="DAS Client">
-        <!-- TODO: Find a solution for remove forced landscape mode on tablets-->
+        <!-- TODO: https://github.com/SchweizerischeBundesbahnen/DAS/issues/2326 -->
         <property
             android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
             android:value="true"/>
