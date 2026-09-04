@@ -1,5 +1,5 @@
 import 'package:sfera/src/data/dto/enums/direction_of_application_on_sp_dto.dart';
-import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/gradient_direction_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/sfera_segment_xml_element_dto.dart';
 
@@ -9,8 +9,8 @@ class DecisiveGradientAreaDto({super.type = elementType, super.attributes, super
 
   double get gradientValue => double.parse(attributes['gradientValue']!);
 
-  GradientDirectionTypeDto get gradientDirectionType =>
-      XmlEnum.valueOf(GradientDirectionTypeDto.values, attributes['gradientDirection'])!;
+  GradientDirectionDto get gradientDirection =>
+      XmlEnum.valueOf(GradientDirectionDto.values, attributes['gradientDirection'])!;
 
   DirectionOfApplicationOnSPDto get directionOfApplicationOnSP =>
       XmlEnum.valueOf(DirectionOfApplicationOnSPDto.values, attributes['directionOfApplicationOnSP'])!;
@@ -19,6 +19,6 @@ class DecisiveGradientAreaDto({super.type = elementType, super.attributes, super
   bool validate() =>
       super.validate() &&
       validateHasAttributeDouble('gradientValue') &&
-      validateHasAttributeInRange('gradientDirection', XmlEnum.values(GradientDirectionTypeDto.values)) &&
+      validateHasAttributeInRange('gradientDirection', XmlEnum.values(GradientDirectionDto.values)) &&
       validateHasAttributeInRange('directionOfApplicationOnSP', XmlEnum.values(DirectionOfApplicationOnSPDto.values));
 }

@@ -161,7 +161,7 @@
         </TimingPointConstraints>
 
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7700" endLocation="8000"
-                              startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
+                              startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z" kmRefStart="31.6" kmRefEnd="31.3">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -201,18 +201,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="16000" endLocation="16000"/>
             </JP_ContextInformation_NSPs>
 
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="31.6"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="7700" endLocation="7700"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="31.3"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000"/>
-            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
 
@@ -253,7 +241,7 @@
         </TimingPointConstraints>
 
         <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="2000" startTime="2025-01-15T12:00:00Z"
-                              endTime="2030-08-20T20:00:00Z">
+                              endTime="2030-08-20T20:00:00Z" kmRefStart="15.0">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -261,12 +249,6 @@
         </TemporaryConstraints>
 
         <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="15.0"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000"/>
-            </JP_ContextInformation_NSPs>
 
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
@@ -299,7 +281,7 @@
         </TimingPointConstraints>
 
         <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="550" startTime="2025-01-15T12:00:00Z"
-                              endTime="2030-08-20T20:00:00Z">
+                              endTime="2030-08-20T20:00:00Z" kmRefEnd="13.850">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -323,12 +305,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000"/>
             </JP_ContextInformation_NSPs>
 
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="13.850"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="550" endLocation="550"/>
-            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
     </SegmentProfileReference>

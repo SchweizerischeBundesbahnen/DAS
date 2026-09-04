@@ -25,7 +25,8 @@ import 'package:sfera/src/data/dto/g2b_reply_payload_dto.dart';
 import 'package:sfera/src/data/dto/general_jp_information_dto.dart';
 import 'package:sfera/src/data/dto/general_jp_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
-import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
+import 'package:sfera/src/data/dto/graduated_speed_info_entries_dto.dart';
+import 'package:sfera/src/data/dto/graduated_speed_info_entry_dto.dart';
 import 'package:sfera/src/data/dto/handshake_acknowledgement_dto.dart';
 import 'package:sfera/src/data/dto/handshake_reject_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
@@ -36,7 +37,6 @@ import 'package:sfera/src/data/dto/kilometre_reference_point_dto.dart';
 import 'package:sfera/src/data/dto/km_reference_dto.dart';
 import 'package:sfera/src/data/dto/level_crossing_area_dto.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_dto.dart';
-import 'package:sfera/src/data/dto/line_speed_dto.dart';
 import 'package:sfera/src/data/dto/location_ident_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
@@ -45,6 +45,7 @@ import 'package:sfera/src/data/dto/network_specific_constraint_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_point_dto.dart';
+import 'package:sfera/src/data/dto/new_line_speed_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/other_contact_type_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
@@ -255,8 +256,8 @@ class SferaReplyParser._() {
         return VelocityDto(type: type, attributes: attributes, children: children, value: value);
       case SpeedsDto.elementType:
         return SpeedsDto(type: type, attributes: attributes, children: children, value: value);
-      case LineSpeedDto.elementType:
-        return LineSpeedDto(type: type, attributes: attributes, children: children, value: value);
+      case NewLineSpeedDto.elementType:
+        return NewLineSpeedDto(type: type, attributes: attributes, children: children, value: value);
       case ConnectionTrackDto.elementType:
         return ConnectionTrackDto(type: type, attributes: attributes, children: children, value: value);
       case ConnectionTrackDescriptionDto.elementType:
@@ -287,10 +288,12 @@ class SferaReplyParser._() {
         return TrainLocationInformationDto(type: type, attributes: attributes, children: children, value: value);
       case DelayDto.elementType:
         return DelayDto(type: type, attributes: attributes, children: children, value: value);
-      case GraduatedSpeedInfoEntityDto.elementType:
-        return GraduatedSpeedInfoEntityDto(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfoEntryDto.elementType:
+        return GraduatedSpeedInfoEntryDto(type: type, attributes: attributes, children: children, value: value);
       case GraduatedSpeedInfoDto.elementType:
         return GraduatedSpeedInfoDto(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfoEntriesDto.elementType:
+        return GraduatedSpeedInfoEntriesDto(type: type, attributes: attributes, children: children, value: value);
       case BaliseDto.elementType:
         return BaliseDto(type: type, attributes: attributes, children: children, value: value);
       case LevelCrossingAreaDto.elementType:

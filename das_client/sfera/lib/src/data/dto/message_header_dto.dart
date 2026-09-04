@@ -32,7 +32,7 @@ class MessageHeaderDto({super.type = elementType, super.attributes, super.childr
 
   String get timestamp => attributes['timestamp']!;
 
-  String get sourceDevice => attributes['timestamp']!;
+  String get sourceDevice => attributes['sourceDevice']!;
 
   String get sender => childrenWithType('Sender').first.value!;
 

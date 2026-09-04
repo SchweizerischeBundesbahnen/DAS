@@ -8,12 +8,11 @@ class OwnTrainDto({super.type = elementType, super.attributes, super.children, s
 
   TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
 
-  TrainLocationInformationDto get trainLocationInformation => children.whereType<TrainLocationInformationDto>().first;
+  TrainLocationInformationDto? get trainLocationInformation =>
+      children.whereType<TrainLocationInformationDto>().firstOrNull;
 
   @override
   bool validate() {
-    return validateHasChildOfType<TrainIdentificationDto>() &&
-        validateHasChildOfType<TrainLocationInformationDto>() &&
-        super.validate();
+    return validateHasChildOfType<TrainIdentificationDto>() && super.validate();
   }
 }

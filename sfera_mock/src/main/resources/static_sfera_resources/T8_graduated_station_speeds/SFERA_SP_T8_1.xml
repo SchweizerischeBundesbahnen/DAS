@@ -109,11 +109,11 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
                     &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;50&quot; speed=&quot;80&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
@@ -128,10 +128,12 @@
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;graduatedSpeedInfo&gt;
                     &lt;entries&gt;
                     &lt;entry roSpeed=&quot;75-70-60&quot; sSpeed=&quot;70-60 / 50&quot; text=&quot;Zusatzinformation A&quot;/&gt;
                     &lt;entry nSpeed=&quot;70/60&quot; text=&quot;Zusatzinformation B&quot;/&gt;
                     &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -155,10 +157,10 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot; 80&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
@@ -176,10 +178,12 @@
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;graduatedSpeedInfo&gt;
                     &lt;entries&gt;
                     &lt;entry adSpeed=&quot;70&quot; text=&quot;Zusatzinformation B&quot;/&gt;
                     &lt;entry nSpeed=&quot;75-{XX}/[XX]&quot; text=&quot;Zusatzinformation C&quot;/&gt;
                     &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -194,10 +198,10 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
@@ -210,9 +214,11 @@
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;graduatedSpeedInfo&gt;
                     &lt;entries&gt;
                     &lt;entry nSpeed=&quot;80/70-60&quot; sSpeed=&quot;70-60/50&quot; text=&quot;Zusatzinformation A&quot;/&gt;
                     &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -227,11 +233,11 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;60&quot; speed=&quot;85&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
@@ -244,9 +250,11 @@
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;graduatedSpeedInfo&gt;
                     &lt;entries&gt;
                     &lt;entry roSpeed=&quot;75-70-65&quot; text=&quot;Zusatzinformation D&quot;/&gt;
                     &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -261,20 +269,22 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;60&quot; speed=&quot;85&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;graduatedSpeedInfo&gt;
                     &lt;entries&gt;
                     &lt;entry roSpeed=&quot;75-70-65&quot; text=&quot;Gleis 4: Ausfahrt Richtung Lenzburg&quot;/&gt;
                     &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -289,11 +299,11 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;85&quot;/&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;60&quot; speed=&quot;95&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>
@@ -318,10 +328,10 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>

@@ -15,7 +15,8 @@ class G2bReplyPayloadDto({super.type = elementType, super.attributes, super.chil
 
   Iterable<TrainCharacteristicsDto> get trainCharacteristics => children.whereType<TrainCharacteristicsDto>();
 
-  Iterable<RelatedTrainInformationDto> get relatedTrainInformation => children.whereType<RelatedTrainInformationDto>();
+  RelatedTrainInformationDto? get relatedTrainInformation =>
+      children.whereType<RelatedTrainInformationDto>().firstOrNull;
 
   G2bMessageResponseDto? get messageResponse => children.whereType<G2bMessageResponseDto>().firstOrNull;
 }
