@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.19.0...sfera_mock-v0.20.0) (2026-09-04)
+
+
+### Features
+
+* fixed point relevance indicator ([#1201](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1201)) ([#2617](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2617)) ([08c47b5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/08c47b5a9faedafae87fcb390e5aff69ebefad5a))
+* timed advancement works without sfera delay ([#2491](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2491)) ([#2614](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2614)) ([7aa43c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7aa43c7d06777a801bdd3f1b5d0cdd39e0aa31fc))
+
+
+### Documentation
+
+* create testdata for manual tests ([#2628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2628)) ([6c64a01](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6c64a01decf9c7243d54dc663280a133fc4bb705))
+* create testdata for manual tests MAN1 ([#2701](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2701)) ([3479b28](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3479b289b45c1ea09e58ae11ed135b91d9ec6881))
+* create testdata for manual tests MAN2 ([#2643](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2643)) ([a2d8dda](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a2d8dda6b9c85fa47dfbeef0a388f6207cafba1d))
+* create testdata for manual tests MAN3 ([#2663](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2663)) ([545f153](https://github.com/SchweizerischeBundesbahnen/DAS/commit/545f1531576823c03acb401b15b46ae108a366e4))
+
 ## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.18.2...sfera_mock-v0.19.0) (2026-08-10)
 
 
