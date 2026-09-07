@@ -60,6 +60,72 @@ void main() {
       await disconnect(tester);
     });
 
+    testWidgets('automaticAdvancement_whenTableIsTapped_thenIdleTimeIsNotReset|tests:1923', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      // Wait until all events are done
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+      // find first row
+      expect(findDASTableRowByText('Lenzburg'), findsAny);
+
+      await dragUntilTextInStickyHeader(tester, 'WANZ');
+      expect(findDASTableRowByText('Rothrist'), findsAny);
+      expect(findDASTableRowByText('Lenzburg'), findsNothing);
+
+      final idleTime = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
+
+      // Tap the table repeatedly for twice the idle time. A simple touch must not reset the idle time,
+      // so the repositioning happens while the table is still being tapped.
+      final tapPosition = tester.getCenter(scrollableFinder);
+      for (var i = 0; i < idleTime * 2; i++) {
+        await tester.tapAt(tapPosition);
+        await tester.pumpAndSettle(const Duration(milliseconds: 550));
+      }
+
+      await tester.pumpAndSettle();
+      // Check if the first row is visible as scrolling happened
+      expect(findDASTableRowByText('Lenzburg'), findsAny);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('automaticAdvancement_whenTableIsScrolled_thenIdleTimeIsReset|tests:1923,94', (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T7');
+
+      // Wait until all events are done
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // find first row
+      expect(findDASTableRowByText('Lenzburg'), findsAny);
+
+      await dragUntilTextInStickyHeader(tester, 'WANZ');
+      expect(findDASTableRowByText('Rothrist'), findsAny);
+      expect(findDASTableRowByText('Lenzburg'), findsNothing);
+
+      final idleTime = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
+
+      // Scroll the table back and forth for twice the idle time. Every drag resets the idle time,
+      // so no repositioning happens as long as the user keeps scrolling.
+      for (var i = 0; i < idleTime * 2; i++) {
+        await tester.drag(scrollableFinder, const Offset(0, -30));
+        await tester.pumpAndSettle(const Duration(milliseconds: 550));
+      }
+
+      await tester.pumpAndSettle();
+      expect(findDASTableRowByText('Rothrist'), findsAny);
+      expect(findDASTableRowByText('Lenzburg'), findsNothing);
+
+      await disconnect(tester);
+    });
+
     testWidgets('automaticAdvancement_whenReEnabled_thenScrollsToCurrentPosition|4Ia2ip74kN6FpYMEnx80|tests:94', (
       tester,
     ) async {
