@@ -2,7 +2,7 @@
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
 
 
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4"
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5"
                     xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
         <TrainIdentification>
             <OTN_ID>
@@ -12,7 +12,7 @@
             </OTN_ID>
         </TrainIdentification>
 
-        <SegmentProfileReference SP_ID="2266_1_Aarau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_1_Aarau" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -41,7 +41,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -64,7 +64,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -77,7 +77,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -90,7 +90,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -103,7 +103,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="2" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -188,7 +188,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -201,7 +201,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -223,7 +223,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -270,7 +270,7 @@
         </SegmentProfileReference>
 
 
-        <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>

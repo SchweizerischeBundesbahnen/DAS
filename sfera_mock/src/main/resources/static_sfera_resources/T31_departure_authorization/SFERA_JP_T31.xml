@@ -10,7 +10,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T31_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T31_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -87,7 +87,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T31_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T31_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -111,7 +111,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T31_5" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T31_5" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
