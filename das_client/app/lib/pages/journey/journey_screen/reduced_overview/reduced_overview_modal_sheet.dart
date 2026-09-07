@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
+import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -34,6 +35,11 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
           ),
           dispose: (context, vm) => vm.dispose(),
         ),
+        Provider<ArrivalDepartureTimeViewModel>(
+          create: (_) => ArrivalDepartureTimeViewModel(journeyViewModel: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+          lazy: false,
+        ),
       ],
       child: _ReducedOverviewModalSheet(),
     ),
@@ -45,16 +51,13 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const .symmetric(horizontal: SBBSpacing.medium),
-      child: Column(
-        mainAxisSize: .max,
-        spacing: SBBSpacing.xSmall,
-        children: [
-          _header(context),
-          Expanded(child: ReducedJourneyTable()),
-        ],
-      ),
+    return Column(
+      mainAxisSize: .max,
+      spacing: SBBSpacing.xSmall,
+      children: [
+        _header(context),
+        Expanded(child: ReducedJourneyTable()),
+      ],
     );
   }
 

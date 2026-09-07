@@ -1,8 +1,9 @@
-import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/cells/reduced_time_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -38,8 +39,15 @@ class ReducedServicePointRow extends ServicePointRow {
       );
     }
 
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     return DASTableCell(
-      child: ReducedTimeCellBody(times: times, showTimesInBrackets: !data.isStop, mandatoryStop: data.mandatoryStop),
+      child: TimeCellBody(
+        viewModel: viewModel,
+        times: times,
+        showTimesInBrackets: !data.isStop,
+        mandatoryStop: data.mandatoryStop,
+      ),
       alignment: .bottomLeft,
       decoration: DASTableCellDecoration(color: specialCellColor),
     );

@@ -410,17 +410,14 @@ class JourneyTable extends StatelessWidget {
           id: ColumnDefinition.time.index,
           child: StreamBuilder(
             stream: timeViewModel.showOperationalTime,
-            builder: (context, showCalcTimeSnap) => Text(
-              showCalcTimeSnap.data ?? false
+            builder: (context, showOperationalTimeSnap) => Text(
+              showOperationalTimeSnap.data ?? false
                   ? context.l10n.p_journey_table_time_label_new
                   : context.l10n.p_journey_table_time_label_planned,
             ),
           ),
           width: 111.0,
-          onTap: () {
-            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-            viewModel.toggleOperationalTime();
-          },
+          onTap: () => timeViewModel.toggleOperationalTime(),
         ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column

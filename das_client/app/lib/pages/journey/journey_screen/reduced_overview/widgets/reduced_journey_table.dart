@@ -2,6 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
+import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
@@ -105,11 +106,21 @@ class ReducedJourneyTable extends StatelessWidget {
   }
 
   List<DASTableColumn> _columns(BuildContext context) {
+    final arrivalDepartureTimeViewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     return [
       DASTableColumn(
         id: ColumnDefinition.time.index,
-        width: 110.0,
-        child: Text(context.l10n.p_journey_table_time_label_planned),
+        child: StreamBuilder(
+          stream: arrivalDepartureTimeViewModel.showOperationalTime,
+          builder: (context, showOperationalTimeSnap) => Text(
+            showOperationalTimeSnap.data ?? false
+                ? context.l10n.p_journey_table_time_label_new
+                : context.l10n.p_journey_table_time_label_planned,
+          ),
+        ),
+        width: 111.0,
+        onTap: () => arrivalDepartureTimeViewModel.toggleOperationalTime(),
       ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(width: 10.0), // spacer column so bracketStation does not overlap
