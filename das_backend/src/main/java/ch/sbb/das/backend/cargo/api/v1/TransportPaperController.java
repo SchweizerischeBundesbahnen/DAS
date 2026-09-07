@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,7 @@ public class TransportPaperController {
     @GetMapping(path = API_TRANSPORT_PAPERS + "/{trainPathId}/{operatingDay}")
     ResponseEntity<Void> resolveTransportPaperUrl(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+        @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @PathVariable String trainPathId,
         @PathVariable LocalDate operatingDay,
         @Parameter(description = "ISO country code", required = true)
@@ -62,7 +64,7 @@ public class TransportPaperController {
     ) {
         companyAuthorizer.requireCanAccessTenant(SBB_TENANT);
         try {
-            String downloadUrl = transportPaperClient.getDownloadUrl(trainPathId, operatingDay, countryCodeIso, locationPrimaryCode, passIndex);
+            String downloadUrl = transportPaperClient.getDownloadUrl(trainPathId, operatingDay, countryCodeIso, locationPrimaryCode, passIndex, acceptLanguage);
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(downloadUrl)).build();
         } catch (RestClientResponseException ex) {
             throw new ProxyClientException(ex.getStatusCode(), ex.getResponseBodyAsString());
