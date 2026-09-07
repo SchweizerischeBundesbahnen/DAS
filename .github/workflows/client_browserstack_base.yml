@@ -137,7 +137,7 @@ jobs:
         working-directory: das_client/app/android
 
       - name: Upload and Run on Browserstack
-        uses: Grodien/browserstack-flutter-action@v1.8
+        uses: Grodien/browserstack-flutter-action@v1.9
         with:
           browserstackUsername: ${{ steps.vault-secrets.outputs.BROWSERSTACK_USERNAME }}
           browserstackAccessKey: ${{ steps.vault-secrets.outputs.BROWSERSTACK_ACCESS_KEY }}
@@ -173,7 +173,7 @@ jobs:
 
       - name: Generate RunnerTests
         if: ${{ github.event_name == 'schedule' }}
-        run: node app/scripts/generate_runner_tests.js ${{ inputs.enable_e2e && 'e2e_test' || 'test' }}
+        run: node app/scripts/generate_runner_tests.mjs ${{ inputs.enable_e2e && 'e2e_test' || 'test' }}
 
       - uses: subosito/flutter-action@v2.23.0
         with:
@@ -248,8 +248,9 @@ jobs:
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
       - name: Upload and Run on Browserstack
-        uses: Grodien/browserstack-flutter-action@v1.8
+        uses: Grodien/browserstack-flutter-action@v1.9
         with:
+          uploadTestReportArtifact: ${{ github.event_name != 'schedule' }}
           browserstackUsername: ${{ steps.vault-secrets.outputs.BROWSERSTACK_USERNAME }}
           browserstackAccessKey: ${{ steps.vault-secrets.outputs.BROWSERSTACK_ACCESS_KEY }}
           project: das_client
@@ -257,6 +258,17 @@ jobs:
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
           devices: iPad 9th-18
+
+      - name: Restore readable test names in Browserstack report
+        if: ${{ !cancelled() && github.event_name == 'schedule' && env.test_report_path != '' }}
+        run: node app/scripts/rewrite_ios_test_report_names.mjs "$test_report_path"
+
+      - name: Upload Browserstack test report artifact
+        if: ${{ !cancelled() && github.event_name == 'schedule' && env.test_report_path != '' }}
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: browserstack-test-report-${{ env.build_id }}
+          path: ${{ env.test_report_path }}
 
       - name: Notify Microsoft Teams
         if: ${{ failure() && github.event_name == 'schedule' }}
