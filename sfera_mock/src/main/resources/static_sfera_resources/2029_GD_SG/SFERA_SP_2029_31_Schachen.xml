@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2029_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="3600" SP_Status="Valid">
+                SP_ID="2029_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="3600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -115,8 +115,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;60&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;65&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;70&quot;/&gt;
@@ -124,7 +124,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;75&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;80&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;80&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

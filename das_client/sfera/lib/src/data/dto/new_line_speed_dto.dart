@@ -2,9 +2,9 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/speeds_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 
-class LineSpeedDto({super.type = elementType, super.attributes, super.children, super.value})
+class NewLineSpeedDto({super.type = elementType, super.attributes, super.children, super.value})
     extends SferaXmlElementDto {
-  static const String elementType = 'lineSpeed';
+  static const String elementType = 'newLineSpeed';
 
   Iterable<VelocityDto> get velocities => children.whereType<VelocityDto>();
 

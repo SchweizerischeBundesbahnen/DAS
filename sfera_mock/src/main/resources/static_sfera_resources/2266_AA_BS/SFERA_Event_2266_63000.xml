@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3"
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4"
                     xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
         <TrainIdentification>
             <OTN_ID>
@@ -10,7 +10,7 @@
             </OTN_ID>
         </TrainIdentification>
 
-        <SegmentProfileReference SP_ID="2266_1_Aarau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_1_Aarau" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -39,7 +39,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -62,7 +62,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -75,7 +75,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -88,7 +88,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -101,7 +101,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="2" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -136,7 +136,7 @@
             </TimingPointConstraints>
 
             <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7700" endLocation="8000"
-                                  startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
+                                  kmRefStart="31.6" kmRefEnd="31.3" startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
                 <TemporaryConstraintReason text="Umbau" language="DE"/>
                 <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -181,24 +181,12 @@
                     <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="16000" endLocation="16000"/>
                 </JP_ContextInformation_NSPs>
 
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="31.6"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="7700" endLocation="7700"/>
-                </JP_ContextInformation_NSPs>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="31.3"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000"/>
-                </JP_ContextInformation_NSPs>
             </JP_ContextInformation>
 
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -211,7 +199,7 @@
             </TimingPointConstraints>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -224,24 +212,15 @@
             </TimingPointConstraints>
 
             <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="2000" startTime="2025-01-15T12:00:00Z"
-                                  endTime="2030-08-20T20:00:00Z">
+                                  endTime="2030-08-20T20:00:00Z" kmRefStart="15.0">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
                 <TemporaryConstraintReason text="Umbau" language="DE"/>
                 <TemporaryConstraintReason text="Renouvellement" language="FR"/>
                 <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
             </TemporaryConstraints>
-
-            <JP_ContextInformation>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="15.0"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000"/>
-                </JP_ContextInformation_NSPs>
-            </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -262,7 +241,7 @@
             </TimingPointConstraints>
 
             <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="550" startTime="2025-01-15T12:00:00Z"
-                                  endTime="2030-08-20T20:00:00Z">
+                                  endTime="2030-08-20T20:00:00Z" kmRefEnd="13.850">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
                 <TemporaryConstraintReason text="Umbau" language="DE"/>
                 <TemporaryConstraintReason text="Renouvellement" language="FR"/>
@@ -276,19 +255,12 @@
                     <NetworkSpecificParameter name="newSpeed" value="80"/>
                     <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000"/>
                 </JP_ContextInformation_NSPs>
-
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="13.850"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="550" endLocation="550"/>
-                </JP_ContextInformation_NSPs>
             </JP_ContextInformation>
 
         </SegmentProfileReference>
 
 
-        <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>

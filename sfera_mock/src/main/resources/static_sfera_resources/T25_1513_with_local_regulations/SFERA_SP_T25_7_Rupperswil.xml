@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T25_7_Rupperswil"
-                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="4700" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="4" SP_Length="4700" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -53,9 +53,11 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
-                    &lt;entries&gt;
-						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
-                    &lt;/entries&gt;
+                    &lt;graduatedSpeedInfo&gt;
+                        &lt;entries&gt;
+                            &lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
+                        &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
@@ -71,8 +73,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;135&quot;/&gt;
@@ -88,7 +90,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;115&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

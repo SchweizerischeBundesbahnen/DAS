@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T49_2" SP_VersionMajor="5"
-                SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+                SP_VersionMinor="1" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -53,10 +53,10 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                    &lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+                    &lt;newLineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
-                    &lt;/lineSpeed&gt;
+                    &lt;/newLineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP>

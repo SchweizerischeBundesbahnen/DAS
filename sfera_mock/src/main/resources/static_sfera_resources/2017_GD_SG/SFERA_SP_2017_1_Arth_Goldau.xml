@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="2017_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="1900" SP_Status="Valid">
+                SP_ID="2017_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="1900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -67,8 +67,8 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;65&quot;/&gt;
@@ -84,7 +84,7 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;60&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;50&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

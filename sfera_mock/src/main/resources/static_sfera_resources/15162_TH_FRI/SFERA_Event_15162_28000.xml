@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
 
-    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
         <TrainIdentification>
             <OTN_ID>
                 <teltsi_Company>1285</teltsi_Company>
@@ -10,7 +10,7 @@
             </OTN_ID>
         </TrainIdentification>
 
-        <SegmentProfileReference SP_ID="15162_1_Thun" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_1_Thun" SP_VersionMajor="1" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -39,7 +39,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_2_Uttigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_2_Uttigen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -52,7 +52,8 @@
                 <StoppingPointDepartureDetails departureTime="2025-05-17T14:47:00Z" plannedDepartureTime="2025-05-17T14:47:00Z"/>
             </TimingPointConstraints>
 
-            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
+            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450"
+                                  kmRefStart="130.8" kmRefEnd="130.65">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="140"/>
                 <TemporaryConstraintReason text="Umbau" language="DE"/>
             </TemporaryConstraints>
@@ -64,18 +65,6 @@
                     <NSP_GroupName>VProData</NSP_GroupName>
                     <NetworkSpecificParameter name="newSpeed" value="160"/>
                     <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
-                </JP_ContextInformation_NSPs>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="130.8"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="300" endLocation="300"/>
-                </JP_ContextInformation_NSPs>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="130.65"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="450" endLocation="450"/>
                 </JP_ContextInformation_NSPs>
             </JP_ContextInformation>
 
@@ -106,7 +95,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -131,7 +120,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_5_Muensingen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_5_Muensingen" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -156,7 +145,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -181,7 +170,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_7_Guemligen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_7_Guemligen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -194,7 +183,8 @@
                 <StoppingPointDepartureDetails departureTime="2025-05-17T15:03:00Z" plannedDepartureTime="2025-05-17T15:03:00Z"/>
             </TimingPointConstraints>
 
-            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200">
+            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200"
+                                  kmRefStart="111.8" kmRefEnd="111.8">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
                 <TemporaryConstraintReason text="Umbau" language="DE"/>
             </TemporaryConstraints>
@@ -207,17 +197,11 @@
                     <NetworkSpecificParameter name="newSpeed" value="135"/>
                     <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
                 </JP_ContextInformation_NSPs>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="111.8"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2200" endLocation="2200"/>
-                </JP_ContextInformation_NSPs>
             </JP_ContextInformation>
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_8_Ostermundigen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_8_Ostermundigen" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -229,7 +213,7 @@
                 </TimingPointReference>
             </TimingPointConstraints>
 
-            <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450">
+            <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450" kmRefEnd="110.35">
                 <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             </TemporaryConstraints>
 
@@ -241,17 +225,11 @@
                     <NetworkSpecificParameter name="newSpeed" value="105"/>
                     <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
                 </JP_ContextInformation_NSPs>
-                <JP_ContextInformation_NSPs>
-                    <teltsi_Company>0085</teltsi_Company>
-                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                    <NetworkSpecificParameter name="kmRef" value="110.35"/>
-                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="450" endLocation="450"/>
-                </JP_ContextInformation_NSPs>
             </JP_ContextInformation>
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_9_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_9_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -274,7 +252,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_10_Bern_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_10_Bern_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -299,7 +277,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_11_Bern_Wyler" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_11_Bern_Wyler" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -322,7 +300,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_12_Bern" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_12_Bern" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -347,7 +325,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_13_Bern_Whaus" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_13_Bern_Whaus" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -370,7 +348,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -395,7 +373,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_15_Buempliz_Sued" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_15_Buempliz_Sued" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -445,7 +423,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_17_Oberwangen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_17_Oberwangen" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -469,7 +447,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_18_Thoerishaus" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_18_Thoerishaus" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -492,7 +470,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -517,7 +495,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="4" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="5" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -542,7 +520,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -567,7 +545,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -592,7 +570,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_23_Duedingen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_23_Duedingen" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -617,7 +595,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="15162_24_Fribourg_Freiburg_Poya" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="15162_24_Fribourg_Freiburg_Poya" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>

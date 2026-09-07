@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
-                SP_ID="15154_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="3600" SP_Status="Valid">
+                SP_ID="15154_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="3600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -55,14 +55,14 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
+                <NetworkSpecificParameter name="xmlNewLineSpeedOP" value="
+					&lt;newLineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;135&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;120&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
-					&lt;/lineSpeed&gt;
+					&lt;/newLineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
