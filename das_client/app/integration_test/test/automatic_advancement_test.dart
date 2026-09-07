@@ -60,7 +60,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenTableIsTapped_thenIdleTimeIsNotReset|O2JzoXIvpJXPp5KP71Bt|tests:1923', (tester) async {
+    testWidgets('automaticAdvancement_whenTableIsTapped_thenIdleTimeIsNotReset|O2JzoXIvpJXPp5KP71Bt|tests:1923', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
@@ -93,7 +95,9 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('automaticAdvancement_whenTableIsScrolled_thenIdleTimeIsReset|Cwg37CLdZA4TygXWeEUs|tests:1923,94', (tester) async {
+    testWidgets('automaticAdvancement_whenTableIsScrolled_thenIdleTimeIsReset|Cwg37CLdZA4TygXWeEUs|tests:1923,94', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T7');
 
