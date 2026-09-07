@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.IntegrationTest;
+import java.util.Objects;
 import java.util.Optional;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.core.SimpleLock;
@@ -13,28 +14,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.context.jdbc.SqlMergeMode.MergeMode;
 
 @IntegrationTest
-@Sql("classpath:emptyUserActivity.sql")
+@Sql({"classpath:emptyUserActivity.sql", "classpath:emptyPersonalNotes.sql", "classpath:emptyUserProperties.sql"})
 @SqlMergeMode(MergeMode.MERGE)
-class UserActivityCleanUpSchedulerIntegrationTest {
+class UserDataCleanUpSchedulerIntegrationTest {
 
     private static final String INACTIVE_OID = "11111111-1111-1111-1111-111111111111";
     private static final String ACTIVE_OID = "22222222-2222-2222-2222-222222222222";
-    private static final String WITHIN_BUFFER_OID = "33333333-3333-3333-3333-333333333333";
 
     @MockitoBean
     private LockProvider lockProvider;
 
     @Autowired
-    private UserActivityCleanUpScheduler cleanUpScheduler;
+    private UserDataCleanUpScheduler userDataCleanUpScheduler;
 
     @Autowired
     private UserActivityRepository userActivityRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
@@ -42,33 +46,30 @@ class UserActivityCleanUpSchedulerIntegrationTest {
         when(lockProvider.lock(any())).thenReturn(Optional.of(dummyLock));
     }
 
-    @DisplayName("cleanUpUserActivity_removesInactiveRecords_keepsActive|rNAcBZnWglFBAYQGM9aL|tests:2133")
+    @DisplayName("cleanUp_deletesAllDataOfInactiveUser_keepsActiveUser|AnraXtxWuTGiJOaEv0lv|tests:2133")
     @Test
-    @Sql("classpath:createUserActivityInactiveAndActive.sql")
-    void cleanUpUserActivity_removesInactiveRecords_keepsActive() {
-        assertThat(userActivityRepository.count()).isEqualTo(2);
+    @Sql({"classpath:createUserActivityInactiveAndActive.sql", "classpath:createPersonalNotesInactiveAndActive.sql", "classpath:createUserPropertiesInactiveAndActive.sql"})
+    void cleanUp_deletesAllDataOfInactiveUser_keepsActiveUser() {
+        userDataCleanUpScheduler.cleanUpInactiveUserData();
 
-        cleanUpScheduler.cleanUpUserActivity();
-
+        assertThat(countPersonalNotesForOid(INACTIVE_OID)).isZero();
+        assertThat(countUserPropertiesForOid(INACTIVE_OID)).isZero();
         assertThat(userActivityRepository.findByOid(INACTIVE_OID)).isEmpty();
+
+        assertThat(countPersonalNotesForOid(ACTIVE_OID)).isEqualTo(1);
+        assertThat(countUserPropertiesForOid(ACTIVE_OID)).isEqualTo(1);
         assertThat(userActivityRepository.findByOid(ACTIVE_OID)).isPresent();
     }
 
-    @DisplayName("cleanUpUserActivity_doesNothing_whenNoInactiveUsers|0cajArCpmGu1X2uyKdOh|tests:2133")
-    @Test
-    @Sql("classpath:createUserActivityActiveOnly.sql")
-    void cleanUpUserActivity_doesNothing_whenNoInactiveUsers() {
-        cleanUpScheduler.cleanUpUserActivity();
-
-        assertThat(userActivityRepository.count()).isEqualTo(1);
+    private long countPersonalNotesForOid(String oid) {
+        return query("SELECT COUNT(*) FROM personal_note WHERE oid = ?", oid);
     }
 
-    @DisplayName("cleanUpUserActivity_keepsRecordWithinRetentionBuffer|W3Vqg5K6OjG36YS4Ah7w|tests:2133")
-    @Test
-    @Sql("classpath:createUserActivityWithinRetentionBuffer.sql")
-    void cleanUpUserActivity_keepsRecordWithinRetentionBuffer() {
-        cleanUpScheduler.cleanUpUserActivity();
+    private long countUserPropertiesForOid(String oid) {
+        return query("SELECT COUNT(*) FROM user_property WHERE oid = ?", oid);
+    }
 
-        assertThat(userActivityRepository.findByOid(WITHIN_BUFFER_OID)).isPresent();
+    private long query(String sql, Object... args) {
+        return Objects.requireNonNullElse(jdbcTemplate.queryForObject(sql, Long.class, args), 0L);
     }
 }

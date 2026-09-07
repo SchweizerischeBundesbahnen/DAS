@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
-import ch.sbb.das.backend.useractivity.internal.UserActivityRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import org.springframework.test.context.jdbc.SqlMergeMode.MergeMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
-@Sql({"classpath:emptyPersonalNotes.sql", "classpath:emptyUserActivity.sql"})
+@Sql("classpath:emptyPersonalNotes.sql")
 @SqlMergeMode(MergeMode.MERGE)
 class PersonalNoteControllerTest {
 
@@ -33,9 +32,6 @@ class PersonalNoteControllerTest {
 
     @Autowired
     private PersonalNoteRepository personalNoteRepository;
-
-    @Autowired
-    private UserActivityRepository userActivityRepository;
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
@@ -52,17 +48,6 @@ class PersonalNoteControllerTest {
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     @Sql("classpath:createPersonalNotes.sql")
-    @DisplayName("getAllPersonalNotes_recordsUserActivity|VTcve2uhoUzq4uOdZOEx|tests:2133")
-    void getAllPersonalNotes_recordsUserActivity() throws Exception {
-        mockMvc.perform(get(API_PERSONAL_NOTES))
-            .andExpect(status().isOk());
-
-        assertThat(userActivityRepository.findByOid("test-oid")).isPresent();
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.DRIVER)
-    @Sql("classpath:createPersonalNotes.sql")
     @DisplayName("getPersonalNoteByKey_ok|qO2bC3dE4fG5hI6jK7lM|tests:2256")
     void getPersonalNoteByKey_ok() throws Exception {
         mockMvc.perform(get(API_PERSONAL_NOTES + "/train-12345"))
@@ -70,17 +55,6 @@ class PersonalNoteControllerTest {
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].key", is("train-12345")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
-    }
-
-    @Test
-    @WithMockRole(roles = UserRole.DRIVER)
-    @Sql("classpath:createPersonalNotes.sql")
-    @DisplayName("getPersonalNoteByKey_recordsUserActivity|nmLMLJ2BOIu41Fsj8KiR|tests:2133")
-    void getPersonalNoteByKey_recordsUserActivity() throws Exception {
-        mockMvc.perform(get(API_PERSONAL_NOTES + "/train-12345"))
-            .andExpect(status().isOk());
-
-        assertThat(userActivityRepository.findByOid("test-oid")).isPresent();
     }
 
     @Test

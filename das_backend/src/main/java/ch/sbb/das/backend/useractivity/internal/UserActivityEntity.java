@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,5 +26,5 @@ public class UserActivityEntity {
     private String oid;
 
     @Column(nullable = false)
-    private OffsetDateTime lastAccessedAt;
+    private LocalDate lastAccessedOn;
 }

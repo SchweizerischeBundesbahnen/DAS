@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS user_activity
 (
-    id               INTEGER                  NOT NULL,
-    oid              TEXT                     NOT NULL,
-    last_accessed_at TIMESTAMP WITH TIME ZONE NOT NULL
+    id               INTEGER NOT NULL,
+    oid              TEXT    NOT NULL,
+    last_accessed_on DATE    NOT NULL
 );
 
 ALTER TABLE IF EXISTS user_activity
@@ -11,7 +11,7 @@ ALTER TABLE IF EXISTS user_activity
 ALTER TABLE IF EXISTS user_activity
     ADD CONSTRAINT user_activity_oid_unique UNIQUE (oid);
 
-CREATE INDEX IF NOT EXISTS user_activity_last_accessed_at_idx
-    ON user_activity (last_accessed_at);
+CREATE INDEX IF NOT EXISTS user_activity_last_accessed_on_idx
+    ON user_activity (last_accessed_on);
 
 CREATE SEQUENCE IF NOT EXISTS user_activity_id_seq START WITH 1 INCREMENT BY 1;

@@ -6,7 +6,6 @@ import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.useractivity.UserActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +42,6 @@ public class UserPropertyController {
     private static final String KEY_PATTERN = "[a-zA-Z][a-zA-Z0-9_-]*";
 
     private final UserPropertyServiceImpl userPropertyService;
-    private final UserActivityService userActivityService;
 
     @GetMapping(API_USER_PROPERTIES)
     @Operation(summary = "Get all user properties.", description = "Returns all key/value properties for the authenticated user.")
@@ -54,7 +52,6 @@ public class UserPropertyController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
-        userActivityService.recordAccess(oid);
         List<UserProperty> properties = userPropertyService.getAllByOid(oid);
         return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(properties), requestId);
     }
@@ -71,7 +68,6 @@ public class UserPropertyController {
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
-        userActivityService.recordAccess(oid);
         Optional<UserProperty> property = userPropertyService.getByOidAndKey(oid, key);
         if (property.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(List.of(property.get())), requestId);

@@ -15,12 +15,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestClientResponseException;
 
-@WebMvcTest(DepartureController.class)
+@WebMvcTest(controllers = DepartureController.class,
+    // exclude useractivity module's interceptor from this slice
+    excludeFilters = @Filter(type = FilterType.REGEX, pattern = "ch.sbb.das.backend.useractivity..*"))
 @AutoConfigureMockMvc(addFilters = false)
 class DepartureControllerTest {
 
