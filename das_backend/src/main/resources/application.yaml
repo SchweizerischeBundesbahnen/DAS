@@ -183,6 +183,11 @@ admin:
     cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 90
 
+user-activity:
+  clean-up:
+    cron: 0 0 3 * * ?  # every day at 3
+    older-than-days: 180
+
 tour-systems:
   entries:
     tip:

@@ -6,6 +6,7 @@ import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.useractivity.UserActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,6 +43,7 @@ public class PersonalNoteController {
     private static final String KEY_PATTERN = "[a-zA-Z][a-zA-Z0-9_-]*";
 
     private final PersonalNoteServiceImpl personalNoteService;
+    private final UserActivityService userActivityService;
 
     @GetMapping(API_PERSONAL_NOTES)
     @Operation(summary = "Get all personal notes.", description = "Returns all key/value notes for the authenticated user.")
@@ -52,6 +54,7 @@ public class PersonalNoteController {
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
+        userActivityService.recordAccess(oid);
         List<PersonalNote> notes = personalNoteService.getAllByOid(oid);
         return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(notes), requestId);
     }
@@ -68,6 +71,7 @@ public class PersonalNoteController {
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
+        userActivityService.recordAccess(oid);
         Optional<PersonalNote> note = personalNoteService.getByOidAndKey(oid, key);
         if (note.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note.get())), requestId);

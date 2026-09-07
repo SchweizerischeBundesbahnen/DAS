@@ -92,5 +92,9 @@ atlas:
   base-url: ''
   import-cron: '-'
 
+user-activity:
+  clean-up:
+    cron: '-'
+
 shedlock:
   lock-at-least-for: 0

@@ -53,6 +53,14 @@ class PersonalNoteServiceImpl {
         personalNoteRepository.deleteByOidAndKey(oid, key);
     }
 
+    @Transactional
+    int deleteAllByOids(List<String> oids) {
+        if (oids.isEmpty()) {
+            return 0;
+        }
+        return (int) personalNoteRepository.deleteByOidIn(oids);
+    }
+
     private PersonalNote toPersonalNote(PersonalNoteEntity entity) {
         return new PersonalNote(entity.getKey(), jsonMapper.readTree(entity.getValue()), entity.getLastModifiedAt());
     }

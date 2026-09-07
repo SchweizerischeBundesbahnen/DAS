@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
+import ch.sbb.das.backend.useractivity.internal.UserActivityRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.test.context.jdbc.SqlMergeMode.MergeMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
-@Sql("classpath:emptyUserProperties.sql")
+@Sql({"classpath:emptyUserProperties.sql", "classpath:emptyUserActivity.sql"})
 @SqlMergeMode(MergeMode.MERGE)
 class UserPropertyControllerTest {
 
@@ -32,6 +33,9 @@ class UserPropertyControllerTest {
 
     @Autowired
     private UserPropertyRepository userPropertyRepository;
+
+    @Autowired
+    private UserActivityRepository userActivityRepository;
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
@@ -48,6 +52,17 @@ class UserPropertyControllerTest {
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     @Sql("classpath:createUserProperties.sql")
+    @DisplayName("getAllUserProperties_recordsUserActivity|ZhZSBMPcYVjUqnkSWEBU|tests:2133")
+    void getAllUserProperties_recordsUserActivity() throws Exception {
+        mockMvc.perform(get(API_USER_PROPERTIES))
+            .andExpect(status().isOk());
+
+        assertThat(userActivityRepository.findByOid("test-oid")).isPresent();
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createUserProperties.sql")
     @DisplayName("getUserPropertyByKey_ok|bC2dE3fG4hI5jK6lM7nO|tests:2258")
     void getUserPropertyByKey_ok() throws Exception {
         mockMvc.perform(get(API_USER_PROPERTIES + "/tourSystem"))
@@ -56,6 +71,17 @@ class UserPropertyControllerTest {
             .andExpect(jsonPath("$.data[0].key", is("tourSystem")))
             .andExpect(jsonPath("$.data[0].value", is("tour1")))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.DRIVER)
+    @Sql("classpath:createUserProperties.sql")
+    @DisplayName("getUserPropertyByKey_recordsUserActivity|uD24ygHtKnkD2Zm8DD4o|tests:2133")
+    void getUserPropertyByKey_recordsUserActivity() throws Exception {
+        mockMvc.perform(get(API_USER_PROPERTIES + "/tourSystem"))
+            .andExpect(status().isOk());
+
+        assertThat(userActivityRepository.findByOid("test-oid")).isPresent();
     }
 
     @Test
