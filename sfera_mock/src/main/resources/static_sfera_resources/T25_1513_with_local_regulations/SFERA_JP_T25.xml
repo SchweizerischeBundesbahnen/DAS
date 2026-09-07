@@ -10,7 +10,7 @@
     </TrainIdentification>
 
     <!-- SegmentProfileList neu SegmentProfileReference mit JP_ContextInformation -->
-    <SegmentProfileReference SP_ID="T25_1_Olten" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_1_Olten" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -45,7 +45,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_2_Dulliken" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_2_Dulliken" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -68,7 +68,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_3_Daeniken" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_3_Daeniken" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -91,7 +91,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_4_Schoenenwerd" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_4_Schoenenwerd" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -113,7 +113,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_5_Woeschnau" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_5_Woeschnau" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -135,7 +135,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="5" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -171,7 +171,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -193,7 +193,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -215,7 +215,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_9_Gexi" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_9_Gexi" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -237,7 +237,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -259,7 +259,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -281,7 +281,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_12_Mellingen" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_12_Mellingen" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -302,7 +302,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -323,7 +323,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_14_Killwangen_Spreitenbach" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_14_Killwangen_Spreitenbach" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -345,7 +345,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -408,7 +408,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -430,7 +430,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T25_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T25_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
