@@ -37,27 +37,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700" endLocation="2100">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700" endLocation="2100"
+                              kmRefStart="64.2" kmRefEnd="26.1">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
 
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="64.2"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="26.1"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2100" endLocation="2100"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T18_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
@@ -99,7 +86,7 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="5600">
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="5600" kmRefStart="83.1">
             <NetworkSpecificConstraint>
                 <teltsi_Company>1085</teltsi_Company>
                 <NSP_GroupName>parallel_ASR</NSP_GroupName>
@@ -111,14 +98,6 @@
             <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
         </TemporaryConstraints>
 
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="83.1"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5600" endLocation="5600"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T18_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
@@ -170,13 +149,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="6800" endLocation="9100">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="6800" endLocation="9100"
+                              kmRefStart="47.2" kmRefEnd="12.0">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="10200">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="10200" kmRefEnd="6.6">
             <NetworkSpecificConstraint>
                 <teltsi_Company>1085</teltsi_Company>
                 <NSP_GroupName>parallel_ASR</NSP_GroupName>
@@ -187,27 +167,6 @@
             <TemporaryConstraintReason text="Protection du personell" language="FR"/>
             <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
         </TemporaryConstraints>
-
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="47.2"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6800" endLocation="6800"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="12.0"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="6.6"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10200" endLocation="10200"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
 
     </SegmentProfileReference>
 </JourneyProfile>

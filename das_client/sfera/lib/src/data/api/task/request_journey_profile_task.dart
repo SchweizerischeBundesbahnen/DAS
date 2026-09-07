@@ -96,7 +96,9 @@ class RequestJourneyProfileTask({
     result.addAll(payload.journeyProfiles);
     result.addAll(payload.segmentProfiles);
     result.addAll(payload.trainCharacteristics);
-    result.addAll(payload.relatedTrainInformation);
+    if (payload.relatedTrainInformation != null) {
+      result.add(payload.relatedTrainInformation);
+    }
 
     _taskCompletedCallback(this, result);
     return true;

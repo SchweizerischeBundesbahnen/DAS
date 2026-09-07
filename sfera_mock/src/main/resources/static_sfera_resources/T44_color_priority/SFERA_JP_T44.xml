@@ -34,7 +34,7 @@
         </TimingPointConstraints>
 
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="600"
-                              endLocation="2700">
+                              endLocation="2700" kmRefStart="58.840" kmRefEnd="29.523">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
         </TemporaryConstraints>
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500"
@@ -50,20 +50,6 @@
 
 
         <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="58.840"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="600"
-                                                       endLocation="600"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="29.523"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2700"
-                                                       endLocation="2700"/>
-            </JP_ContextInformation_NSPs>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProData</NSP_GroupName>
