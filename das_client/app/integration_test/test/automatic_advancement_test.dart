@@ -80,8 +80,6 @@ void main() {
 
       final idleTime = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
 
-      // Tap the table repeatedly for twice the idle time. A simple touch must not reset the idle time,
-      // so the repositioning happens while the table is still being tapped.
       final tapPosition = tester.getCenter(scrollableFinder);
       for (var i = 0; i < idleTime * 2; i++) {
         await tester.tapAt(tapPosition);
@@ -116,8 +114,6 @@ void main() {
 
       final idleTime = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
 
-      // Scroll the table back and forth for twice the idle time. Every drag resets the idle time,
-      // so no repositioning happens as long as the user keeps scrolling.
       for (var i = 0; i < idleTime * 2; i++) {
         await tester.drag(scrollableFinder, const Offset(0, -30));
         await tester.pumpAndSettle(const Duration(milliseconds: 550));
