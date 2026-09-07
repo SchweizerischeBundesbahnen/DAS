@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
@@ -57,6 +59,19 @@ extension BaseDataX on Iterable<BaseData> {
       return !signalFunctions.every(
         (it) => <SignalFunction>[.entry, .exit, .intermediate, .trackEndSignal].contains(it),
       );
+    });
+  }
+
+  /// removes all additional service points that are not at the route start/end and have no speed change and are not a stop.
+  Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {
+    final servicePoints = whereType<ServicePoint>().toList()..sort();
+    return whereNot((data) {
+      final isNotStartOrEndServicePoint = data != servicePoints.first && data != servicePoints.last;
+      return data is ServicePoint &&
+          data.isAdditional &&
+          isNotStartOrEndServicePoint &&
+          calculatedSpeeds[data.order] == null &&
+          !data.isStop;
     });
   }
 }
