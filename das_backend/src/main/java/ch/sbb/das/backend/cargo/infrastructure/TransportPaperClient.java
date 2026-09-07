@@ -56,7 +56,11 @@ public class TransportPaperClient {
                 .queryParam("bpZusatzId", passIndex)
                 .build(trainPathId, operationalDay)
             )
-            .header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage)
+            .headers(headers -> {
+                if (acceptLanguage != null && !acceptLanguage.isBlank()) {
+                    headers.add(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguage);
+                }
+            })
             .attributes(clientRegistrationId(OAUTH2_CLIENT_REGISTRATION_ID))
             .retrieve()
             .body(TransportPaperLinkResponse.class);

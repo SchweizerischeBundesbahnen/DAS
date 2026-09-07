@@ -53,6 +53,21 @@ class TransportPaperControllerTest {
 
     @Test
     @WithMockRole(roles = UserRole.SBB_CARGO)
+    @DisplayName("resolveTransportPaperUrl_missingAcceptLanguage_redirectsToDownstreamUrl|sssdEStd4V25C7MRCowK|tests:1619")
+    void resolveTransportPaperUrl_missingAcceptLanguage_redirectsToDownstreamUrl() throws Exception {
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, null))
+            .thenReturn("https://signed.example.com/file.pdf");
+
+        mvc.perform(get(SAMPLE_PATH)
+                .param("countryCodeIso", "CH")
+                .param("locationPrimaryCode", "22137")
+                .param("passIndex", "0"))
+            .andExpect(status().isFound())
+            .andExpect(header().string("Location", "https://signed.example.com/file.pdf"));
+    }
+
+    @Test
+    @WithMockRole(roles = UserRole.SBB_CARGO)
     @DisplayName("resolveTransportPaperUrl_downstreamError_returnsBadGateway|oVNcNGHdz5TMx41g7VnS|tests:1619")
     void resolveTransportPaperUrl_downstreamError_returnsBadGateway() throws Exception {
         when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE"))
