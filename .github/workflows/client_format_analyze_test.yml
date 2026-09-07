@@ -23,9 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-java@v6.0.0
+      - uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -33,7 +33,7 @@ jobs:
 
       - name: Vault Secrets 🤫
         id: vault-secrets
-        uses: hashicorp/vault-action@v4.0.0
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
         with:
           url: https://vault-nonprod.sbb.ch:443
           method: approle
@@ -42,7 +42,7 @@ jobs:
           secrets: |
             kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
 
-      - uses: subosito/flutter-action@v2.23.0
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: '3.47.x'
           cache: true
@@ -54,7 +54,7 @@ jobs:
         run: dart format -l 120 -o none --set-exit-if-changed .
 
       - name: Setup melos
-        uses: bluefireteam/melos-action@v3.8.0
+        uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
         with:
           melos-version: '^7.4.0'
           run-bootstrap: 'false'
@@ -66,7 +66,7 @@ jobs:
         run: melos coverage
 
       - name: Sonar scan
-        uses: SonarSource/sonarqube-scan-action@v8.2.1
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
         env:
           SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
         with:
@@ -87,9 +87,9 @@ jobs:
   test-title-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 'lts/krypton'
 

@@ -19,19 +19,19 @@ jobs:
     runs-on: macos-26
     steps:
 
-    - uses: maxim-lobanov/setup-xcode@v1.7.0
+    - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1.7.0
       with:
         xcode-version: ~26.6
 
-    - uses: actions/checkout@v7.0.1
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - uses: subosito/flutter-action@v2.23.0
+    - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
       with:
         flutter-version: '3.47.x'
         cache: true
 
     - name: Setup melos
-      uses: bluefireteam/melos-action@v3.8.0
+      uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
       with:
         melos-version: '^7.4.0'
         run-bootstrap: 'false'
@@ -44,7 +44,7 @@ jobs:
 
     - name: Vault Secrets 🤫
       id: vault-secrets
-      uses: hashicorp/vault-action@v4.0.0
+      uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
       with:
         url: https://vault-nonprod.sbb.ch:443
         method: approle
@@ -86,7 +86,7 @@ jobs:
         security list-keychain -d user -s $KEYCHAIN_PATH
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
       with:
         bundle-id: 'ch.sbb.das.dev'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -98,7 +98,7 @@ jobs:
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
       with:
         bundle-id: 'ch.sbb.das.inte'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -110,7 +110,7 @@ jobs:
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@v6.1.0
+      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
       with:
         bundle-id: 'ch.sbb.das'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}

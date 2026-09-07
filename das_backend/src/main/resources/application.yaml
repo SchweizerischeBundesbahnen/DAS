@@ -114,10 +114,6 @@ formation:
     blsc-app-link: ${TRANSPORT_PAPER_BLSC_APP_LINK}
     orca:
       base-url: ${TRANSPORT_PAPER_ORCA_BASE_URL}
-    # todo: delete as soon as orca is ready
-    mock:
-      enabled: ${TRANSPORT_PAPER_MOCK_ENABLED:true}
-      download-url: ${TRANSPORT_PAPER_MOCK_DOWNLOAD_URL:}
   kafka:
     bootstrap-server: ${FORMATION_KAFKA_BOOTSTRAP_SERVER}
     group-id: ${FORMATION_KAFKA_GROUP_ID}

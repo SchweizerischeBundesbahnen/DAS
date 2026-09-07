@@ -7,7 +7,7 @@
             <teltsi_StartDate>2024-12-11</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T1_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T1_1" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -85,7 +85,7 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T1_4" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T1_4" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
