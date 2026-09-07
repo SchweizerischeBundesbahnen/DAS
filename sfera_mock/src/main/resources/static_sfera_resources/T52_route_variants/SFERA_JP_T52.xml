@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T52</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2026-09-07</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="T52_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+
+        <!-- NBS / Bahn 2000: Rothrist - Mattstetten via Wanzwil -->
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="RTR"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z" plannedDepartureTime="9999-01-01T00:01:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="WANZ"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:02:00Z" plannedDepartureTime="9999-01-01T00:02:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="MATA"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:03:00Z" plannedDepartureTime="9999-01-01T00:03:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- Eppenbergtunnel: Däniken SO - Wöschnau SBB without BP3 -->
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="DK"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:04:00Z" plannedDepartureTime="9999-01-01T00:04:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="WOES"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:05:00Z" plannedDepartureTime="9999-01-01T00:05:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- Heitersberg: Rupperswil - Killwangen-Spreitenbach via Brugg AG -->
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="RU"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:06:00Z" plannedDepartureTime="9999-01-01T00:06:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="BG"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:07:00Z" plannedDepartureTime="9999-01-01T00:07:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="KLW"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:08:00Z" plannedDepartureTime="9999-01-01T00:08:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- Sargans: Sargans - Trübbach via Sargans Ost -->
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="SA"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:09:00Z" plannedDepartureTime="9999-01-01T00:09:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="SAOS"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:10:00Z" plannedDepartureTime="9999-01-01T00:10:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="TRUB"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:11:00Z" plannedDepartureTime="9999-01-01T00:11:00Z"/>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T52_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+</JourneyProfile>

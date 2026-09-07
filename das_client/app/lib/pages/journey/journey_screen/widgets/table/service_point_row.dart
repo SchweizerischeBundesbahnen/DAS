@@ -73,6 +73,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required BuildContext context,
     this.highlightNextStop = true,
     super.config,
+    double? height,
     super.key,
     Color? rowColor,
   }) : super(
@@ -81,7 +82,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
            chevronAnimationColor: _resolveChevronAnimationColor(context, journeyPosition, data),
          ),
          stickyLevel: .first,
-         height: calculateHeight(data, config.settings.currentBrakeSeries),
+         height: height ?? calculateHeight(data, config.settings.currentBrakeSeries),
          onStartToEndDragReached: () {
            context.read<JourneyPositionViewModel>().setManualPosition(data);
            context.read<JourneyTableAdvancementViewModel>().setAdvancementModeToManual();

@@ -11,6 +11,40 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
+    testWidgets('reducedJourney_whenRouteVariantsPresent_thenDisplaysExpectedViaTexts|243:626', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+
+      await loadJourney(tester, trainNumber: 'T52');
+
+      await openReducedJourneyMenu(tester);
+
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Rothrist'),
+          matching: find.text(l10n.w_route_variant_nbs_bahn_2000_via_nbs),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Däniken SO'),
+          matching: find.text(l10n.w_route_variant_eppenbergtunnel_via_eppenbergtunnel),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Rupperswil'),
+          matching: find.text(l10n.w_route_variant_heitersberg_via_brugg_baden),
+        ),
+        findsOneWidget,
+      );
+
+      await disconnect(tester);
+    });
+
     testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|BG8f0zcWS1hA8UmHb6XJ|tests:356', (
       tester,
     ) async {
@@ -96,7 +130,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenLoaded_thenDisplaysPlannedTimes|tk4DmRU7XmIasiG1Znwd|tests:84', (tester) async {
+    testWidgets('reducedJourney_whenLoaded_thenDisplaysOperationalTimes|tk4DmRU7XmIasiG1Znwd|tests:84', (tester) async {
       await IntegrationTestApp.start(tester);
 
       await loadJourney(tester, trainNumber: 'T16');
@@ -121,8 +155,8 @@ void main() {
 
       // MONTREUX should have both times
       final expectedTimeMontreuxPlanned =
-          '${Format.plannedTime(DateTime.parse('2025-05-12T16:35:12Z'))}\n'
-          '${Format.plannedTime(DateTime.parse('2025-05-12T16:36:12Z'))}';
+          '${Format.operationalTime(DateTime.parse('2025-05-12T16:35:12Z'))}\n'
+          '${Format.operationalTime(DateTime.parse('2025-05-12T16:36:12Z'))}';
       expect(
         find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeMontreuxPlanned)),
         findsOneWidget,
@@ -136,4 +170,12 @@ void main() {
 Finder _findTableOfReducedJourney() {
   final reducedJourneyTable = find.byKey(ReducedJourneyTable.reducedJourneyTableKey);
   return find.descendant(of: reducedJourneyTable, matching: find.byKey(DASTable.tableKey));
+}
+
+Finder _findDasTableRowOfReducedJourney(String text) {
+  final reducedJourneyTable = find.byKey(ReducedJourneyTable.reducedJourneyTableKey);
+  return find.descendant(
+    of: reducedJourneyTable,
+    matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)),
+  );
 }

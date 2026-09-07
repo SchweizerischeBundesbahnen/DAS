@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overvi
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
@@ -37,6 +38,11 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
         ),
         Provider<ArrivalDepartureTimeViewModel>(
           create: (_) => ArrivalDepartureTimeViewModel(journeyViewModel: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+          lazy: false,
+        ),
+        Provider<RouteVariantViewModel>(
+          create: (_) => RouteVariantViewModel(journeyViewModel: DI.get()),
           dispose: (_, vm) => vm.dispose(),
           lazy: false,
         ),

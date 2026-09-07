@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
@@ -5,11 +6,13 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/r
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
@@ -63,10 +66,15 @@ class ReducedJourneyTable extends StatelessWidget {
     Metadata metadata,
     List<BaseData> data,
   ) {
+    final settingsVM = DI.get<JourneySettingsViewModel>();
+    final routeVariantVM = context.read<RouteVariantViewModel>();
+
     final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
+
       final journeyConfig = JourneyConfig(
         bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: metadata),
+        settings: settingsVM.modelValue,
       );
 
       switch (rowData.dataType) {
@@ -78,6 +86,7 @@ class ReducedJourneyTable extends StatelessWidget {
             config: journeyConfig,
             context: context,
             rowIndex: index,
+            routeVariant: routeVariantVM.getRouteVariant(rowData),
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
