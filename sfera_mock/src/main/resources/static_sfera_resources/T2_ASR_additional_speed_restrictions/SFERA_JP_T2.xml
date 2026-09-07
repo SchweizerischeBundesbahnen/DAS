@@ -37,18 +37,9 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="700">
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="700" kmRefStart="64.2">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
-
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="64.2"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
 
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T2_2" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -144,17 +135,9 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="6800">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="6800" kmRefEnd="47.2">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
 
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="47.2"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6800" endLocation="6800"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>

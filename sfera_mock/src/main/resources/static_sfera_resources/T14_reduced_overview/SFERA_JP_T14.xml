@@ -38,7 +38,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="600" endLocation="700">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="600" endLocation="700"
+                              kmRefStart="31.5" kmRefEnd="32.4">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
 
@@ -46,19 +47,5 @@
             <TC_RU_ID>1185</TC_RU_ID>
         </TrainCharacteristicsRef>
 
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="31.5"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="600" endLocation="600"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="32.4"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>

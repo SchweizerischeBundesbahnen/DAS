@@ -1,4 +1,3 @@
-import 'package:sfera/src/data/dto/g2b_message_response.dart';
 import 'package:sfera/src/data/dto/g2b_reply_payload_dto.dart';
 import 'package:sfera/src/data/dto/handshake_acknowledgement_dto.dart';
 import 'package:sfera/src/data/dto/handshake_reject_dto.dart';
@@ -18,7 +17,7 @@ class SferaG2bReplyMessageDto({super.type = elementType, super.attributes, super
 
   HandshakeRejectDto? get handshakeReject => children.whereType<HandshakeRejectDto>().firstOrNull;
 
-  bool get hasErrors => payload?.messageResponse?.result == G2bMessageResponseResult.error;
+  bool get hasErrors => payload?.messageResponse?.result == .error;
 
   @override
   bool validate() {

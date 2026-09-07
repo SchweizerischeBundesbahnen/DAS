@@ -51,7 +51,8 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:47:00Z" plannedDepartureTime="2025-05-17T14:47:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450"
+                              kmRefStart="130.8" kmRefEnd="130.65">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="140"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
@@ -63,18 +64,6 @@
                 <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="160"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="130.8"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="300" endLocation="300"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="130.65"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="450" endLocation="450"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
@@ -193,7 +182,7 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:03:00Z" plannedDepartureTime="2025-05-17T15:03:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200" kmRefStart="111.8" kmRefEnd="111.8">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
@@ -205,12 +194,6 @@
                 <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="135"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="111.8"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2200" endLocation="2200"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
@@ -229,7 +212,7 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:06:00Z" plannedDepartureTime="2025-05-17T15:06:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450" kmRefEnd="110.35">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
         </TemporaryConstraints>
 
@@ -240,12 +223,6 @@
                 <NSP_GroupName>VProData</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="105"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="110.35"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="450" endLocation="450"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 

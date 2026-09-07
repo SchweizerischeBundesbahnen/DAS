@@ -1,5 +1,4 @@
 import 'package:sfera/src/data/dto/jp_context_information_nsp_constraints_dto.dart';
-import 'package:sfera/src/data/dto/kilometre_reference_point_nsp_dto.dart';
 import 'package:sfera/src/data/dto/non_standard_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
@@ -18,8 +17,6 @@ class JpContextInformationNspDto({super.type = elementType, super.attributes, su
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == OperationalIndicationNspDto.groupNameValue) {
       return OperationalIndicationNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == KilometreReferencePointNspDto.groupNameValue) {
-      return KilometreReferencePointNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == NonStandardIndicationNspDto.groupNameValue) {
       return NonStandardIndicationNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == VProDataNspDto.groupNameValue) {
@@ -28,8 +25,8 @@ class JpContextInformationNspDto({super.type = elementType, super.attributes, su
     return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
   }
 
-  JpContextInformationNspConstraintsDto? get constraint =>
-      children.whereType<JpContextInformationNspConstraintsDto>().firstOrNull;
+  JpContextInformationNspConstraintsDto get constraint =>
+      children.whereType<JpContextInformationNspConstraintsDto>().first;
 
   @override
   bool validate() => validateHasChildOfType<JpContextInformationNspConstraintsDto>() && super.validate();

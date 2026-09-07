@@ -30,9 +30,11 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
-                    &lt;entries&gt;
-						&lt;entry nSpeed=&quot;35&quot; roSpeed=&quot;35&quot; adSpeed=&quot;35&quot; text=&quot;Ein- und Ausfahrt von/nach Ost mit Fahrbegriff 2 oder &#10;Fahrbegriff 6 ab/bis Peter Merian-Brücke km 122.700 bzw. &#10;km 0.310&quot;/&gt;
-                    &lt;/entries&gt;
+                    &lt;graduatedSpeedInfo&gt;
+                        &lt;entries&gt;
+                            &lt;entry nSpeed=&quot;35&quot; roSpeed=&quot;35&quot; adSpeed=&quot;35&quot; text=&quot;Ein- und Ausfahrt von/nach Ost mit Fahrbegriff 2 oder &#10;Fahrbegriff 6 ab/bis Peter Merian-Brücke km 122.700 bzw. &#10;km 0.310&quot;/&gt;
+                        &lt;/entries&gt;
+                    &lt;/graduatedSpeedInfo&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;

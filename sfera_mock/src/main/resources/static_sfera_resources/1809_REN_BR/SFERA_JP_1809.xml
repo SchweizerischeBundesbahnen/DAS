@@ -420,19 +420,12 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="500">
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="500" kmRefStart="24.4">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
         <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="24.4"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="500" endLocation="500"/>
-            </JP_ContextInformation_NSPs>
-
             <!-- VPro for Vernex -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
@@ -456,18 +449,11 @@
             <StoppingPointDepartureDetails departureTime="2035-05-17T06:10:30Z" plannedDepartureTime="2035-05-17T06:10:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="50">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="50" kmRefEnd="24.55">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
         </TemporaryConstraints>
 
         <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="24.55"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="50" endLocation="50"/>
-            </JP_ContextInformation_NSPs>
-
             <!-- VPro for Montreux -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
@@ -1001,25 +987,13 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="3733" endLocation="3849">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="3733" endLocation="3849"
+                              kmRefStart="121.333" kmRefEnd="121.449">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="100"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
         <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="121.333"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3733" endLocation="3733"/>
-            </JP_ContextInformation_NSPs>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
-                <NetworkSpecificParameter name="kmRef" value="121.449"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3849" endLocation="3849"/>
-            </JP_ContextInformation_NSPs>
-
             <!-- VPro for Leuk -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
