@@ -14,7 +14,6 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
@@ -44,6 +43,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journe
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -542,10 +542,7 @@ class JourneyTable extends StatelessWidget {
       titleText: context.l10n.p_journey_brake_series,
       isScrollControlled: true,
       style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
-      body: BrakeSeriesSelection(
-        availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
-        selectedBrakeSeries: settings?.currentBrakeSeries,
-      ),
+      body: MultiBrakeSeriesSelection(),
     );
 
     if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);

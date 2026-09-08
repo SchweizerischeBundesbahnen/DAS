@@ -278,8 +278,9 @@ extension AuthenticatedScopeExtension on GetIt {
   }
 
   void registerJourneyValidationViewModel() {
-    registerSingleton<JourneyValidationViewModel>(
-      JourneyValidationViewModel(),
+    registerSingletonAsync(
+      () async => JourneyValidationViewModel(),
+      dependsOn: [JourneyViewModel],
       dispose: (vm) => vm.dispose(),
     );
   }

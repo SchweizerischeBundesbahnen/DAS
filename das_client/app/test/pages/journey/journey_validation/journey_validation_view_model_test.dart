@@ -31,6 +31,7 @@ void main() {
   late FakeAsync testAsync;
   final List<bool> validationModeRegister = [];
   final List<MultiBrakeSeriesSelectionModel> brakeSeriesRegister = [];
+  final List<MultiBrakeSeriesSelectionModel> editingBrakeSeriesRegister = [];
 
   setUp(() {
     testAsync = FakeAsync().run((testAsync) {
@@ -41,16 +42,19 @@ void main() {
       testee = JourneyValidationViewModel(journeyViewModel: mockJourneyViewModel);
       testee.validationMode.listen(validationModeRegister.add);
       testee.brakeSeriesModel.listen(brakeSeriesRegister.add);
+      testee.editingBrakeSeriesModel.listen(editingBrakeSeriesRegister.add);
       return testAsync;
     });
     testAsync.flushMicrotasks();
     brakeSeriesRegister.clear();
+    editingBrakeSeriesRegister.clear();
     validationModeRegister.clear();
   });
 
   tearDown(() {
     validationModeRegister.clear();
     brakeSeriesRegister.clear();
+    editingBrakeSeriesRegister.clear();
     journeySubject.close();
     testee.dispose();
   });
@@ -88,7 +92,9 @@ void main() {
 
     test('initialState_whenNoJourney_thenNoBrakeSeries', () {
       expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
+      expect(testee.editingBrakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
       expect(brakeSeriesRegister, isEmpty);
+      expect(editingBrakeSeriesRegister, isEmpty);
     });
   });
 
@@ -106,8 +112,10 @@ void main() {
 
     // EXPECT
     expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
+    expect(testee.editingBrakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
     // swallowed by distinct
     expect(brakeSeriesRegister, isEmpty);
+    expect(editingBrakeSeriesRegister, isEmpty);
   });
 
   test('initialState_whenBrakeSeriesASelected_thenOnlyAllowedAOrD', () {
@@ -125,17 +133,16 @@ void main() {
     );
     testAsync.flushMicrotasks();
 
-    expect(
-      brakeSeriesRegister.first,
-      equals(
-        MultiBrakeSeriesSelectionModel(
-          selectedBrakeSeries: [a100],
-          allowedBrakeSeries: {a200, a100, d200, d100},
-          availableBrakeSeries: availableBrakeSeries,
-        ),
-      ),
+    final expectedModel = MultiBrakeSeriesSelectionModel(
+      selectedBrakeSeries: [a100],
+      allowedBrakeSeries: {a200, a100, d200, d100},
+      availableBrakeSeries: availableBrakeSeries,
     );
+    expect(brakeSeriesRegister.first, equals(expectedModel));
     expect(brakeSeriesRegister, hasLength(1));
+    // onJourneyChanged resets both the saved and editing selection
+    expect(editingBrakeSeriesRegister.first, equals(expectedModel));
+    expect(editingBrakeSeriesRegister, hasLength(1));
   });
 
   group('journey has multiple brake series', () {
@@ -153,24 +160,23 @@ void main() {
       );
       testAsync.flushMicrotasks();
       brakeSeriesRegister.clear();
+      editingBrakeSeriesRegister.clear();
     });
 
     test('initialState_whenNoBrakeSeriesSelected_thenAllAllowed', () {
       // EXPECT
-      expect(
-        testee.brakeSeriesModelValue,
-        equals(
-          MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [],
-            allowedBrakeSeries: {a100, a200, n100, n90, d100, d200, r100, r50},
-            availableBrakeSeries: availableBrakeSeries,
-          ),
-        ),
+      final expectedModel = MultiBrakeSeriesSelectionModel(
+        selectedBrakeSeries: [],
+        allowedBrakeSeries: {a100, a200, n100, n90, d100, d200, r100, r50},
+        availableBrakeSeries: availableBrakeSeries,
       );
+      expect(testee.brakeSeriesModelValue, equals(expectedModel));
+      expect(testee.editingBrakeSeriesModelValue, equals(expectedModel));
       expect(brakeSeriesRegister, isEmpty);
+      expect(editingBrakeSeriesRegister, isEmpty);
     });
 
-    test('toggleSelectedBrakeSeries_whenDBrakeSeriesSelected_thenAOrDAllowed', () {
+    test('toggleBrakeSeriesSelection_whenToggled_thenOnlyEditingModelChangesWithCorrectTrainSeries', () {
       // ACT
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(d100);
@@ -179,7 +185,7 @@ void main() {
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        editingBrakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [d100],
@@ -188,10 +194,22 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(1));
+      expect(editingBrakeSeriesRegister, hasLength(1));
+      // the saved model is untouched until saveBrakeSeriesSelection is called
+      expect(
+        testee.brakeSeriesModelValue,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, isEmpty);
     });
 
-    test('toggleBrakeSeriesSelection_whenRBrakeSeriesSelected_thenOnlyRAllowed', () {
+    test('toggleBrakeSeriesSelection_whenRBrakeSeriesToggled_thenOnlyRAllowed', () {
       // ACT
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(r50);
@@ -200,7 +218,7 @@ void main() {
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        editingBrakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [r50],
@@ -209,7 +227,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(1));
+      expect(editingBrakeSeriesRegister, hasLength(1));
     });
 
     test('toggleBrakeSeriesSelection_whenSelectedThenDeselected_thenEmitsCorrectly', () {
@@ -222,7 +240,7 @@ void main() {
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        editingBrakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [],
@@ -231,7 +249,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(2));
+      expect(editingBrakeSeriesRegister, hasLength(2));
     });
 
     test('toggleBrakeSeriesSelection_whenMultipleSelected_thenEmitsInCorrectOrder', () {
@@ -245,7 +263,7 @@ void main() {
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        editingBrakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [a100, d200, d100],
@@ -254,7 +272,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(3));
+      expect(editingBrakeSeriesRegister, hasLength(3));
     });
 
     test('toggleBrakeSeriesSelection_whenNonAvailableBrakeSeries_thenRejectsSilently', () {
@@ -267,7 +285,7 @@ void main() {
 
       // EXPECT
       expect(
-        testee.brakeSeriesModelValue,
+        testee.editingBrakeSeriesModelValue,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [],
@@ -276,7 +294,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, isEmpty);
+      expect(editingBrakeSeriesRegister, isEmpty);
     });
 
     test('toggleBrakeSeriesSelection_whenInvalidCombination_thenRejectsSilently', () {
@@ -284,14 +302,14 @@ void main() {
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testAsync.flushMicrotasks();
-        brakeSeriesRegister.clear();
+        editingBrakeSeriesRegister.clear();
         testee.toggleBrakeSeriesSelection(r50);
       });
       testAsync.flushMicrotasks();
 
       // EXPECT
       expect(
-        testee.brakeSeriesModelValue,
+        testee.editingBrakeSeriesModelValue,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [a100],
@@ -300,7 +318,76 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, isEmpty);
+      expect(editingBrakeSeriesRegister, isEmpty);
+    });
+
+    test('startBrakeSeriesEditing_whenCalled_thenResetsEditingModelToSaved', () {
+      // ARRANGE
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(d100);
+      });
+      testAsync.flushMicrotasks();
+
+      // ACT
+      testAsync.run((_) {
+        testee.startBrakeSeriesEditing();
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        testee.editingBrakeSeriesModelValue,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+    });
+
+    test('saveBrakeSeriesSelection_whenCalled_thenSavedModelMatchesEditingModel', () {
+      // ARRANGE
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(d100);
+      });
+      testAsync.flushMicrotasks();
+
+      // ACT
+      testAsync.run((_) {
+        testee.saveBrakeSeriesSelection();
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      final expectedModel = MultiBrakeSeriesSelectionModel(
+        selectedBrakeSeries: [d100],
+        allowedBrakeSeries: {a100, a200, d100, d200},
+        availableBrakeSeries: availableBrakeSeries,
+      );
+      expect(testee.brakeSeriesModelValue, equals(expectedModel));
+      expect(brakeSeriesRegister.last, equals(expectedModel));
+      expect(brakeSeriesRegister, hasLength(1));
+    });
+
+    test('toggleBrakeSeriesSelection_whenNotSaved_thenDiscardedByStartBrakeSeriesEditing', () {
+      testAsync.run((_) {
+        testee.startBrakeSeriesEditing();
+        testee.toggleBrakeSeriesSelection(d100);
+      });
+      testAsync.flushMicrotasks();
+      expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, equals([d100]));
+      expect(testee.brakeSeriesModelValue.selectedBrakeSeries, isEmpty);
+
+      testAsync.run((_) {
+        testee.startBrakeSeriesEditing();
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, isEmpty);
+      expect(testee.brakeSeriesModelValue.selectedBrakeSeries, isEmpty);
     });
   });
 }
