@@ -1,57 +1,71 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/route_variant.dart';
+import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+final _log = Logger('ReducedOverviewViewModel');
+
 class ReducedOverviewViewModel({
-  required final TrainIdentification trainIdentification,
-  required final SferaLocalRepo _sferaLocalService,
+  required final JourneyViewModel _journeyViewModel,
+  required final RouteVariantViewModel _routeVariantViewModel,
+  required final CollapsibleRowsViewModel _collapsibleRowsViewModel,
 }) {
   this {
     _init();
   }
 
-  final _rxJourney = BehaviorSubject<Journey>();
-  final _rxJourneyData = BehaviorSubject<List<BaseData>>();
-  final _rxJourneyMetadata = BehaviorSubject<Metadata>();
-  final _subscriptions = <StreamSubscription>[];
+  final _rxModel = BehaviorSubject<ReducedJourneyTableModel>.seeded(ReducedTableLoading());
 
-  Stream<Journey> get journey => _rxJourney.stream;
+  Stream<ReducedJourneyTableModel> get model => _rxModel.stream;
 
-  Stream<List<BaseData>> get journeyData => _rxJourneyData.stream;
+  ReducedJourneyTableModel get modelValue => _rxModel.value;
 
-  Stream<Metadata> get journeyMetadata => _rxJourneyMetadata.stream;
+  StreamSubscription<(Journey?, Map<int, RouteVariant>, Map<int, CollapsedState>)>? _subscription;
 
   void _init() {
-    _initRxJourney();
-    _initRxJourneyData();
-    _initRxJourneyMetadata();
+    _subscription =
+        CombineLatestStream.combine3(
+          _journeyViewModel.journey,
+          _routeVariantViewModel.variantsByOrder,
+          _collapsibleRowsViewModel.collapsedRows,
+          (journey, variantsByOrder, collapsedRows) => (journey, variantsByOrder, collapsedRows),
+        ).listen(
+          (data) => _handleDataChanged(
+            journey: data.$1,
+            variantsByOrder: data.$2,
+            collapsedRows: data.$3,
+          ),
+          onError: _rxModel.addError,
+        );
   }
 
-  void _initRxJourney() {
-    final company = trainIdentification.companyCode;
-    final trainNumber = trainIdentification.trainNumber;
-    final date = trainIdentification.date;
-    final subscription = _sferaLocalService
-        .journeyStream(company: company, trainNumber: trainNumber, startDate: date)
-        .whereNotNull()
-        .listen(_rxJourney.add, onError: _rxJourney.addError);
-    _subscriptions.add(subscription);
-  }
+  void _handleDataChanged({
+    required Journey? journey,
+    required Map<int, RouteVariant> variantsByOrder,
+    required Map<int, CollapsedState> collapsedRows,
+  }) {
+    if (journey == null) {
+      _emitLoading();
+      return;
+    }
 
-  void _initRxJourneyMetadata() {
-    final subscription = _rxJourney.stream
-        .map((journey) => journey.metadata)
-        .listen(_rxJourneyMetadata.add, onError: _rxJourneyMetadata.addError);
-    _subscriptions.add(subscription);
-  }
-
-  void _initRxJourneyData() {
-    final subscription = _rxJourney.stream
-        .map((journey) => _relevantDataForReducedOverview(journey))
-        .listen(_rxJourneyData.add, onError: _rxJourneyData.addError);
-    _subscriptions.add(subscription);
+    final relevantData = _relevantDataForReducedOverview(journey);
+    _emitLoaded(
+      ReducedTableLoaded(
+        journey: journey,
+        journeyTableRowData: relevantData,
+        journeyMetadata: journey.metadata,
+        variantsByOrder: variantsByOrder,
+        collapsedRows: collapsedRows,
+      ),
+    );
   }
 
   List<BaseData> _relevantDataForReducedOverview(Journey journey) {
@@ -75,10 +89,14 @@ class ReducedOverviewViewModel({
 
   bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
     final isServicePointWithStop = data.dataType == .servicePoint && (data as ServicePoint).isStop;
-    final isNetworkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order) != null;
+    final isNetworkChange =
+        metadata.communicationNetworkChanges.changeAtOrder(data.order) != null &&
+        data.dataType == .communicationNetworkChannel;
+    final isIndication = data.dataType == .ruIndication || data.dataType == .operationalIndication;
 
     return isServicePointWithStop ||
         isNetworkChange ||
+        isIndication ||
         data.dataType == .additionalSpeedRestriction ||
         _hasModification(data);
   }
@@ -86,12 +104,18 @@ class ReducedOverviewViewModel({
   bool _hasModification(BaseData data) =>
       (data is JourneyPoint && (data.hasModificationUpdated || (data.isDeleted && !data.shouldHide)));
 
+  void _emitLoading() {
+    _log.fine('Emitting ReducedTableLoading.');
+    _rxModel.add(ReducedTableLoading());
+  }
+
+  void _emitLoaded(ReducedTableLoaded model) {
+    _log.fine('Emitting ReducedTableLoaded.');
+    _rxModel.add(model);
+  }
+
   void dispose() {
-    for (final subscription in _subscriptions) {
-      subscription.cancel();
-    }
-    _rxJourney.close();
-    _rxJourneyData.close();
-    _rxJourneyMetadata.close();
+    _subscription?.cancel();
+    _rxModel.close();
   }
 }

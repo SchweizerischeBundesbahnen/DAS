@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/journey_screen/view_model/model/route_variant.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:collection/collection.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class RouteVariantViewModel extends JourneyAwareViewModel {
@@ -8,9 +9,11 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
     _updateVariants(lastJourney);
   }
 
-  Map<int, RouteVariant> _variantsByOrder = const {};
+  final _rxVariantsByOrder = BehaviorSubject<Map<int, RouteVariant>>.seeded(const {});
 
-  RouteVariant? getRouteVariant(ServicePoint servicePoint) => _variantsByOrder[servicePoint.order];
+  Stream<Map<int, RouteVariant>> get variantsByOrder => _rxVariantsByOrder.stream;
+
+  Map<int, RouteVariant> get variantsByOrderValue => _rxVariantsByOrder.value;
 
   @override
   void onJourneyChanged(Journey? journey) => _updateVariants(journey);
@@ -20,10 +23,16 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
 
   void _updateVariants(Journey? journey) {
     final servicePoints = journey?.data.whereType<ServicePoint>() ?? const <ServicePoint>[];
-    _variantsByOrder = resolveVariants(servicePoints);
+    _rxVariantsByOrder.add(_resolveVariants(servicePoints));
   }
 
-  static Map<int, RouteVariant> resolveVariants(Iterable<ServicePoint> servicePoints) {
+  @override
+  void dispose() {
+    super.dispose();
+    _rxVariantsByOrder.close();
+  }
+
+  Map<int, RouteVariant> _resolveVariants(Iterable<ServicePoint> servicePoints) {
     final points = servicePoints.toList();
     if (points.isEmpty) return const {};
 
@@ -55,9 +64,9 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
     return variantsByOrder;
   }
 
-  static final Map<String, List<RouteVariant>> _variantsByBoundary = RouteVariant.values.groupListsBy(
+  final Map<String, List<RouteVariant>> _variantsByBoundary = RouteVariant.values.groupListsBy(
     (it) => '${it.bp1LocationCode}|${it.bp2LocationCode}',
   );
 
-  static String _locationCodeOf(ServicePoint point) => point.locationCode.toUpperCase();
+  String _locationCodeOf(ServicePoint point) => point.locationCode.toUpperCase();
 }

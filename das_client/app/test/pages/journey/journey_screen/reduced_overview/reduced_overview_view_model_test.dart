@@ -1,4 +1,10 @@
+import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -7,26 +13,27 @@ import 'package:sfera/component.dart';
 
 import 'reduced_overview_view_model_test.mocks.dart';
 
-final trainIdentification = TrainIdentification(
-  companyCode: '1285',
-  trainNumber: '1234',
-  date: DateTime.now(),
-);
-
 @GenerateNiceMocks([
-  MockSpec<SferaLocalRepo>(),
+  MockSpec<JourneyViewModel>(),
 ])
 void main() {
   test('test metadata is correctly emitted', () {
     final metadata = Metadata(timestamp: DateTime.now());
-    final sferaServiceMock = _setupSferaLocalRepoMock(metadata, <BaseData>[]);
+    final journeyViewModel = _setupJourneyViewModelMock(metadata, <BaseData>[]);
 
     final viewModel = ReducedOverviewViewModel(
-      trainIdentification: trainIdentification,
-      sferaLocalService: sferaServiceMock,
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
+      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
     );
 
-    expect(viewModel.journeyMetadata, emits(metadata));
+    expect(
+      viewModel.model,
+      emitsInOrder([
+        isA<ReducedTableLoading>(),
+        isA<ReducedTableLoaded>().having((it) => it.journeyMetadata, 'journeyMetadata', metadata),
+      ]),
+    );
   });
 
   test('test only service points with stop or communication network change are emitted', () {
@@ -49,24 +56,32 @@ void main() {
       kilometre: [],
       isStop: false,
     );
-    final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange];
+    final networkChange = CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400);
+    final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange, networkChange];
 
-    final communicationNetworkChanges = [
-      CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400),
-    ];
+    final communicationNetworkChanges = [networkChange];
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
-    final sferaServiceMock = _setupSferaLocalRepoMock(metadata, data);
+    final journeyViewModel = _setupJourneyViewModelMock(metadata, data);
     final viewModel = ReducedOverviewViewModel(
-      trainIdentification: trainIdentification,
-      sferaLocalService: sferaServiceMock,
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
+      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
     );
 
     // WHEN
-    final dataStream = viewModel.journeyData;
-
     // THEN
-    expect(dataStream, emits([stop1, stop2, withoutStopWithNetworkChange]));
+    expect(
+      viewModel.model,
+      emitsInOrder([
+        isA<ReducedTableLoading>(),
+        isA<ReducedTableLoaded>().having(
+          (it) => it.journeyTableRowData,
+          'journeyTableRowData',
+          [stop1, stop2, networkChange],
+        ),
+      ]),
+    );
   });
 
   test('test only service points and ASR are emitted', () {
@@ -112,17 +127,26 @@ void main() {
       cabSignaling,
       asrData,
     ];
-    final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
+    final journeyViewModel = _setupJourneyViewModelMock(Metadata(), data);
     final viewModel = ReducedOverviewViewModel(
-      trainIdentification: trainIdentification,
-      sferaLocalService: sferaServiceMock,
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
+      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
     );
 
     // WHEN
-    final dataStream = viewModel.journeyData;
-
     // THEN
-    expect(dataStream, emits([servicePoint, asrData]));
+    expect(
+      viewModel.model,
+      emitsInOrder([
+        isA<ReducedTableLoading>(),
+        isA<ReducedTableLoaded>().having(
+          (it) => it.journeyTableRowData,
+          'journeyTableRowData',
+          [servicePoint, asrData],
+        ),
+      ]),
+    );
   });
 
   test('test duplicated ASR are removed', () {
@@ -132,29 +156,41 @@ void main() {
     final asr2 = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 300, orderTo: 400);
     final asrData2 = AdditionalSpeedRestrictionData(restrictions: [asr2], order: 200, kilometre: []);
     final data = <BaseData>[asrData1, asrData1, asrData2];
-    final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
+    final journeyViewModel = _setupJourneyViewModelMock(Metadata(), data);
     final viewModel = ReducedOverviewViewModel(
-      trainIdentification: trainIdentification,
-      sferaLocalService: sferaServiceMock,
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
+      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
     );
 
     // WHEN
-    final dataStream = viewModel.journeyData;
-
     // THEN
-    expect(dataStream, emits([asrData1, asrData2]));
+    expect(
+      viewModel.model,
+      emitsInOrder([
+        isA<ReducedTableLoading>(),
+        isA<ReducedTableLoaded>().having(
+          (it) => it.journeyTableRowData,
+          'journeyTableRowData',
+          [asrData1, asrData2],
+        ),
+      ]),
+    );
   });
 }
 
-MockSferaLocalRepo _setupSferaLocalRepoMock(Metadata metadata, List<BaseData> data) {
-  final sferaRepoMock = MockSferaLocalRepo();
+MockJourneyViewModel _setupJourneyViewModelMock(Metadata metadata, List<BaseData> data) {
+  final journeyViewModel = MockJourneyViewModel();
   final journey = Journey(metadata: metadata, data: data);
-  when(
-    sferaRepoMock.journeyStream(
-      company: trainIdentification.companyCode,
-      trainNumber: trainIdentification.trainNumber,
-      startDate: trainIdentification.date,
-    ),
-  ).thenAnswer((_) => Stream.value(journey));
-  return sferaRepoMock;
+  when(journeyViewModel.journey).thenAnswer((_) => Stream.value(journey));
+  return journeyViewModel;
+}
+
+CollapsibleRowsViewModel _setupCollapsibleRowsViewModel(JourneyViewModel journeyViewModel) {
+  final simTrainViewModel = SimTrainViewModel(journeyViewModel: journeyViewModel);
+  return CollapsibleRowsViewModel(
+    journeyViewModel: journeyViewModel,
+    simTrainViewModel: simTrainViewModel,
+    journeyPositionStream: Stream.value(JourneyPositionModel()),
+  );
 }

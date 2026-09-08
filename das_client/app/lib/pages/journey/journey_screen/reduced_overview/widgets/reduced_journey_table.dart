@@ -1,31 +1,36 @@
 import 'package:app/di/di.dart';
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_signal_row.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
+import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
-import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('ReducedJourneyTable');
@@ -38,70 +43,80 @@ class ReducedJourneyTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<ReducedOverviewViewModel>();
-    return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([viewModel.journeyData, viewModel.journeyMetadata]),
+    return StreamBuilder<ReducedJourneyTableModel>(
+      stream: viewModel.model,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.data == null || snapshot.data is! ReducedTableLoaded) {
           return Center(child: CircularProgressIndicator());
         }
 
-        final data = snapshot.data![0] as List<BaseData>;
-        final metadata = snapshot.data![1] as Metadata;
-
-        return _body(context, metadata, data);
+        return _body(context, snapshot.data as ReducedTableLoaded);
       },
     );
   }
 
-  Widget _body(BuildContext context, Metadata metadata, List<BaseData> data) {
-    final rows = data.hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint().sorted(
-      (a1, a2) => a1.compareTo(a2),
-    );
+  Widget _body(
+    BuildContext context,
+    ReducedTableLoaded model,
+  ) {
+    final columns = _columns(context);
 
     return DASTable(
       key: reducedJourneyTableKey,
-      columns: _columns(context),
-      rows: _rows(context, metadata, rows).map((it) => it.build(context)).toList(),
+      columns: columns,
+      rows: _rows(
+        context,
+        model,
+        columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      ).map((it) => it.build(context)).toList(),
       hasStickyRows: false,
       addBottomSpacer: false,
     );
   }
 
   /// GlobalKey needs to be set for rows on reduced overview. Otherwise it would collide with default key generated in [DASTableRowBuilder].
-  List<CellRowBuilder> _rows(
+  List<DASTableRowBuilder> _rows(
     BuildContext context,
-    Metadata metadata,
-    List<BaseData> baseData,
+    ReducedTableLoaded model,
+    double leftOffsetToInformationCell,
   ) {
     final settingsVM = DI.get<JourneySettingsViewModel>();
-    final routeVariantVM = context.read<RouteVariantViewModel>();
+
+    final baseData = model.journeyTableRowData
+        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
+        .hideIndicationsForHiddenServicePoint()
+        .combineFootNoteAndIndications()
+        .sorted(
+          (a1, a2) => a1.compareTo(a2),
+        );
 
     final journeyPosition = JourneyPositionModel();
     final chevronPosition = ChevronPositionModel();
 
-    final List<CellRowBuilder?> builders = List.generate(baseData.length, (rowIndex) {
+    final List<DASTableRowBuilder?> builders = List.generate(baseData.length, (rowIndex) {
       final rowData = baseData[rowIndex];
 
       final journeyConfig = JourneyConfig(
-        bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: metadata),
+        bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: model.journeyMetadata),
         settings: settingsVM.modelValue,
       );
 
       switch (rowData.dataType) {
         case .servicePoint:
+          final servicePoint = rowData as ServicePoint;
           return ReducedServicePointRow(
             key: GlobalKey(),
-            metadata: metadata,
-            data: rowData as ServicePoint,
+            metadata: model.journeyMetadata,
+            data: servicePoint,
             config: journeyConfig,
             context: context,
             rowIndex: rowIndex,
-            routeVariant: routeVariantVM.getRouteVariant(rowData),
+            routeVariant: model.variantsByOrder[servicePoint.order],
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             key: GlobalKey(),
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as AdditionalSpeedRestrictionData,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
@@ -111,14 +126,14 @@ class ReducedJourneyTable extends StatelessWidget {
         case .communicationNetworkChannel:
           return ReducedCommunicationNetworkChangeRow(
             key: GlobalKey(),
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as CommunicationNetworkChange,
             rowIndex: rowIndex,
             context: context,
           );
         case .curvePoint:
           return CurvePointRow(
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as CurvePoint,
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
@@ -127,7 +142,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .protectionSection:
           return ProtectionSectionRow(
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as ProtectionSection,
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
@@ -136,7 +151,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .signal:
           return ReducedSignalRow(
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as Signal,
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
@@ -144,12 +159,38 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .speedChange:
           return SpeedChangeRow(
-            metadata: metadata,
+            metadata: model.journeyMetadata,
             data: rowData as SpeedChange,
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
             showModificationOnInformationCell: true,
+          );
+        case .operationalIndication:
+          return IndicationRow(
+            rowIndex: rowIndex,
+            metadata: model.journeyMetadata,
+            data: rowData as OperationalIndication,
+            collapsedState: model.collapsedRows.stateOf(rowData),
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
+          );
+        case .ruIndication:
+          return IndicationRow(
+            rowIndex: rowIndex,
+            metadata: model.journeyMetadata,
+            data: rowData as RuIndication,
+            config: journeyConfig,
+            collapsedState: model.collapsedRows.stateOf(rowData),
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
+          );
+        case .combinedFootNoteAndIndications:
+          return CombinedFootNoteAndIndicationsRow(
+            rowIndex: rowIndex,
+            metadata: model.journeyMetadata,
+            data: rowData as CombinedFootNoteAndIndications,
+            footNoteState: model.collapsedRows.stateOf(rowData.footNote),
+            indicationStates: model.collapsedRows.whereContains(rowData.indications),
+            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         default:
           _log.fine('Row type ${rowData.dataType} is not supported in reduced overview');

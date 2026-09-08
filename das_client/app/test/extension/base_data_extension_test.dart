@@ -4,6 +4,7 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 
 void main() {
@@ -516,6 +517,49 @@ void main() {
         'Middle',
         'End Depot',
       ]);
+    },
+  );
+
+  test(
+    'hideIndicationsForHiddenServicePoint_whenServicePointForIndicationExists_thenKeepsIndications',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'Bern', abbreviation: 'BRN', locationCode: 'BRN', order: 100, kilometre: [10.0]),
+        OperationalIndication(order: 100, texts: ['Gleiswechsel']),
+        RuIndication(order: 100, title: 'RU', text: 'Hinweis'),
+      ];
+
+      // WHEN
+      final result = baseData.hideIndicationsForHiddenServicePoint().toList();
+
+      // THEN
+      expect(result, hasLength(3));
+      expect(result.whereType<OperationalIndication>(), hasLength(1));
+      expect(result.whereType<RuIndication>(), hasLength(1));
+    },
+  );
+
+  test(
+    'hideIndicationsForHiddenServicePoint_whenServicePointForIndicationMissing_thenRemovesOperationalAndRuIndicationsOnly',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'Bern', abbreviation: 'BRN', locationCode: 'BRN', order: 100, kilometre: [10.0]),
+        OperationalIndication(order: 200, texts: ['Nur intern']),
+        RuIndication(order: 300, title: 'RU', text: 'Ausblenden'),
+        Signal(order: 300, kilometre: [30.0], functions: [SignalFunction.block]),
+      ];
+
+      // WHEN
+      final result = baseData.hideIndicationsForHiddenServicePoint().toList();
+
+      // THEN
+      expect(result, hasLength(2));
+      expect(result.whereType<ServicePoint>(), hasLength(1));
+      expect(result.whereType<Signal>(), hasLength(1));
+      expect(result.whereType<OperationalIndication>(), isEmpty);
+      expect(result.whereType<RuIndication>(), isEmpty);
     },
   );
 }
