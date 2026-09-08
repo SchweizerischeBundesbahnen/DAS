@@ -98,8 +98,16 @@ class ReducedOverviewViewModel({
         isNetworkChange ||
         isIndication ||
         data.dataType == .additionalSpeedRestriction ||
+        _isServicePointWithPassToStopOrStopToPassChange(data, metadata) ||
         _hasModification(data);
   }
+
+  bool _isServicePointWithPassToStopOrStopToPassChange(BaseData data, Metadata metadata) =>
+      data is ServicePoint &&
+      metadata.shortTermChanges
+          .appliesToOrder(data.order)
+          .where((it) => it is PassToStopChange || it is StopToPassChange)
+          .isNotEmpty;
 
   bool _hasModification(BaseData data) =>
       (data is JourneyPoint && (data.hasModificationUpdated || (data.isDeleted && !data.shouldHide)));
