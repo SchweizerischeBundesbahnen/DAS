@@ -142,24 +142,51 @@ void main() {
     expect(brakeSeriesRegister, hasLength(2));
   });
 
-  group('journey has multiple brake series', () {
-    const a200 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 200);
-    const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
-    const n100 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100);
-    const n90 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 90);
-    const d100 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 100);
-    const d200 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 200);
-    const r100 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 100);
-    const r50 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 50);
-    final availableBrakeSeries = {a100, a200, n100, n90, d100, d200, r100, r50};
+  const a200 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 200);
+  const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
+  const n100 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100);
+  const n90 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 90);
+  const d100 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 100);
+  const d200 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 200);
+  const r100 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 100);
+  const r50 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 50);
+  final availableBrakeSeries = {a100, a200, n100, n90, d100, d200, r100, r50};
 
+  test('initialState_whenBrakeSeriesASelected_thenOnlyAllowedAOrD', () {
+    testAsync.run(
+      (_) => journeySubject.add(
+        Journey(
+          metadata: Metadata(
+            trainIdentification: sbbP,
+            brakeSeries: a100,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+          data: [],
+        ),
+      ),
+    );
+    testAsync.flushMicrotasks();
+
+    expect(
+      brakeSeriesRegister.last,
+      equals(
+        MultiBrakeSeriesSelectionModel(
+          selectedBrakeSeries: [a100],
+          allowedBrakeSeries: {a200, a100, d200, d100},
+          availableBrakeSeries: availableBrakeSeries,
+        ),
+      ),
+    );
+    expect(brakeSeriesRegister, hasLength(2));
+  });
+
+  group('journey has multiple brake series', () {
     setUp(() {
       testAsync.run(
         (_) => journeySubject.add(
           Journey(
             metadata: Metadata(
               trainIdentification: sbbP,
-              brakeSeries: a100,
               availableBrakeSeries: availableBrakeSeries,
             ),
             data: [],
@@ -169,27 +196,7 @@ void main() {
       testAsync.flushMicrotasks();
     });
 
-    test('initialState_whenBrakeSeriesASelected_thenOnlyAllowedAOrD', () {
-      expect(
-        brakeSeriesRegister.last,
-        equals(
-          MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [a100],
-            allowedBrakeSeries: {a200, a100, d200, d100},
-            availableBrakeSeries: availableBrakeSeries,
-          ),
-        ),
-      );
-      expect(brakeSeriesRegister, hasLength(2));
-    });
-
-    test('updateSelectedBrakeSeries_whenNoBrakeSeriesSelected_thenAllAllowed', () {
-      // ACT
-      testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([]);
-      });
-      testAsync.flushMicrotasks();
-
+    test('initialState_whenNoBrakeSeriesSelected_thenAllAllowed', () {
       // EXPECT
       expect(
         brakeSeriesRegister.last,
@@ -201,13 +208,13 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(3));
+      expect(brakeSeriesRegister, hasLength(2));
     });
 
-    test('updateSelectedBrakeSeries_whenDBrakeSeriesSelected_thenAOrDAllowed', () {
+    test('toggleSelectedBrakeSeries_whenDBrakeSeriesSelected_thenAOrDAllowed', () {
       // ACT
       testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([d100]);
+        testee.toggleBrakeSeriesSelection(d100);
       });
       testAsync.flushMicrotasks();
 
@@ -225,10 +232,10 @@ void main() {
       expect(brakeSeriesRegister, hasLength(3));
     });
 
-    test('updateSelectedBrakeSeries_whenRBrakeSeriesSelected_thenOnlyRAllowed', () {
+    test('toggleBrakeSeriesSelection_whenRBrakeSeriesSelected_thenOnlyRAllowed', () {
       // ACT
       testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([r50]);
+        testee.toggleBrakeSeriesSelection(r50);
       });
       testAsync.flushMicrotasks();
 
@@ -246,6 +253,28 @@ void main() {
       expect(brakeSeriesRegister, hasLength(3));
     });
 
+    test('toggleBrakeSeriesSelection_whenSelectedThenDeselected_thenEmitsCorrectly', () {
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(r50);
+        testee.toggleBrakeSeriesSelection(r50);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        brakeSeriesRegister.last,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, hasLength(4));
+    });
+
     test('updateSelectedBrakeSeries_whenInvalidCombinationSelected_thenRejectsUpdateSilently', () {
       // ACT
       testAsync.run((_) {
@@ -258,8 +287,8 @@ void main() {
         brakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [a100],
-            allowedBrakeSeries: {a200, a100, d200, d100},
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
             availableBrakeSeries: availableBrakeSeries,
           ),
         ),
@@ -280,13 +309,101 @@ void main() {
         brakeSeriesRegister.last,
         equals(
           MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, hasLength(2));
+    });
+
+    test('toggleBrakeSeriesSelection_whenMultipleSelected_thenEmitsInCorrectOrder', () {
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(d100);
+        testee.toggleBrakeSeriesSelection(a100);
+        testee.toggleBrakeSeriesSelection(d200);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        brakeSeriesRegister.last,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [a100, d200, d100],
+            allowedBrakeSeries: {a100, a200, d100, d200},
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, hasLength(5));
+    });
+
+    test('updateSelectedBrakeSeries_whenMultipleSelected_thenEmitsInCorrectOrder', () {
+      // ACT
+      testAsync.run((_) {
+        testee.updateSelectedBrakeSeries([d100, a100, d200]);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        brakeSeriesRegister.last,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [a100, d200, d100],
+            allowedBrakeSeries: {a100, a200, d100, d200},
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, hasLength(3));
+    });
+
+    test('toggleBrakeSeriesSelection_whenNonAvailableBrakeSeries_thenRejectsSilently', () {
+      final r40 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 40);
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(r40);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        brakeSeriesRegister.last,
+        equals(
+          MultiBrakeSeriesSelectionModel(
+            selectedBrakeSeries: [],
+            allowedBrakeSeries: availableBrakeSeries,
+            availableBrakeSeries: availableBrakeSeries,
+          ),
+        ),
+      );
+      expect(brakeSeriesRegister, hasLength(2));
+    });
+
+    test('toggleBrakeSeriesSelection_whenInvalidCombination_thenRejectsSilently', () {
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(a100);
+        testee.toggleBrakeSeriesSelection(r50);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(
+        brakeSeriesRegister.last,
+        equals(
+          MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [a100],
             allowedBrakeSeries: {a200, a100, d200, d100},
             availableBrakeSeries: availableBrakeSeries,
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(2));
+      expect(brakeSeriesRegister, hasLength(3));
     });
   });
 }

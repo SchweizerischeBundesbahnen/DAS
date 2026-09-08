@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -26,6 +27,20 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     _rxValidationMode.add(!_rxValidationMode.value);
   }
 
+  void toggleBrakeSeriesSelection(BrakeSeries update) {
+    if (lastJourney == null) return;
+
+    final newlySelected = _currentBrakeSeriesWithToggled(update);
+
+    if (!_isValidSelection(newlySelected)) {
+      _log.warning('called updateSelectedBrakeSeries with invalid selection: $newlySelected');
+      return;
+    }
+
+    final availableBrakeSeries = Set<BrakeSeries>.from(lastJourney?.metadata.availableBrakeSeries ?? <BrakeSeries>{});
+    _emitBrakeSeriesModel(selectedBrakeSeries: newlySelected, availableBrakeSeries: availableBrakeSeries);
+  }
+
   void updateSelectedBrakeSeries(List<BrakeSeries> update) {
     if (lastJourney == null) return;
     if (!_isValidSelection(update)) {
@@ -50,7 +65,7 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     required Set<BrakeSeries> availableBrakeSeries,
   }) {
     final model = MultiBrakeSeriesSelectionModel(
-      selectedBrakeSeries: selectedBrakeSeries,
+      selectedBrakeSeries: selectedBrakeSeries.sortedForDisplay,
       allowedBrakeSeries: _applyMultiSelectFilter(selectedBrakeSeries, availableBrakeSeries),
       availableBrakeSeries: availableBrakeSeries,
     );
@@ -74,10 +89,27 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     final series = update.map((it) => it.trainSeries).toSet();
     return series.first.combinableWith.containsAll(series);
   }
+
+  List<BrakeSeries> _currentBrakeSeriesWithToggled(BrakeSeries update) {
+    final currentBreakSeries = List<BrakeSeries>.from(brakeSeriesModelValue.selectedBrakeSeries);
+    if (currentBreakSeries.contains(update)) {
+      return [...currentBreakSeries.whereNot((it) => it == update)];
+    } else {
+      return [...currentBreakSeries, update];
+    }
+  }
 }
 
 extension _TrainSeriesX on TrainSeries {
-  static const _combinable = {TrainSeries.A, TrainSeries.D};
+  static const _combinable = <TrainSeries>{.A, .D};
 
   Set<TrainSeries> get combinableWith => _combinable.contains(this) ? _combinable : {this};
+}
+
+extension _BrakeSeriesListX on List<BrakeSeries> {
+  List<BrakeSeries> get sortedForDisplay => sorted(
+    (a, b) => a.trainSeries == b.trainSeries
+        ? b.brakedWeightPercentage.compareTo(a.brakedWeightPercentage)
+        : a.trainSeries.index.compareTo(b.trainSeries.index),
+  );
 }
