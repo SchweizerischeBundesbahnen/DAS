@@ -1,5 +1,6 @@
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/short_term_change_exclamation_icon.dart';
 import 'package:app/widgets/u_turn_icon.dart';
 import 'package:flutter/widgets.dart';
@@ -16,6 +17,7 @@ class ServicePointInformationCellTitle extends StatelessWidget {
     required this.isModalOpenValue,
     required this.isModalOpenStream,
     super.key,
+    this.showModification = false,
   });
 
   final String name;
@@ -25,6 +27,7 @@ class ServicePointInformationCellTitle extends StatelessWidget {
   final ShortTermChange? shortTermChange;
   final bool isModalOpenValue;
   final Stream<bool> isModalOpenStream;
+  final bool showModification;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +36,15 @@ class ServicePointInformationCellTitle extends StatelessWidget {
       initialData: isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
-        Widget textTitle = Text(
-          name,
-          textAlign: TextAlign.start,
-          overflow: .ellipsis,
+        Widget textTitle = DASBadgeOverlay(
+          badgeVisible: showModification,
+          badgeOffset: Offset(0, -SBBSpacing.small),
+          badge: const ModificationIcon(),
+          child: Text(
+            name,
+            textAlign: TextAlign.start,
+            overflow: .ellipsis,
+          ),
         );
         if (shortTermChange != null) {
           textTitle = Row(

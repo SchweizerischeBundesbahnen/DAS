@@ -55,6 +55,7 @@ class ReducedServicePointRow extends ServicePointRow {
             isStation: data.isStation,
             trackGroup: data.trackGroup,
             shortTermChange: shortTermChange,
+            showModification: data.hasModificationUpdated,
           ),
           _routeVariantText(context),
         ],

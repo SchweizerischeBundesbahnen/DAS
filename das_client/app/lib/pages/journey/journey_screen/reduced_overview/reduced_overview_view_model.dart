@@ -76,8 +76,15 @@ class ReducedOverviewViewModel({
   bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
     final isServicePointWithStop = data.dataType == .servicePoint && (data as ServicePoint).isStop;
     final isNetworkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order) != null;
-    return isServicePointWithStop || isNetworkChange || data.dataType == .additionalSpeedRestriction;
+
+    return isServicePointWithStop ||
+        isNetworkChange ||
+        data.dataType == .additionalSpeedRestriction ||
+        _hasModification(data);
   }
+
+  bool _hasModification(BaseData data) =>
+      (data is JourneyPoint && (data.hasModificationUpdated || (data.isDeleted && !data.shouldHide)));
 
   void dispose() {
     for (final subscription in _subscriptions) {

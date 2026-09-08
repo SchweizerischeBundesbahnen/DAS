@@ -50,6 +50,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
     this.isGrouped = false,
+    this.showModificationOnInformationCell = false,
   });
 
   final Alignment defaultAlignment;
@@ -61,6 +62,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final VoidCallback? onStartToEndDragReached;
   final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
   final bool isGrouped;
+  final bool showModificationOnInformationCell;
 
   @override
   DASTableRow build(BuildContext context) {
