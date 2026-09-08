@@ -41,17 +41,6 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     _emitBrakeSeriesModel(selectedBrakeSeries: newlySelected, availableBrakeSeries: availableBrakeSeries);
   }
 
-  void updateSelectedBrakeSeries(List<BrakeSeries> update) {
-    if (lastJourney == null) return;
-    if (!_isValidSelection(update)) {
-      _log.warning('called updateSelectedBrakeSeries with invalid selection: $update');
-      return;
-    }
-
-    final availableBrakeSeries = Set<BrakeSeries>.from(lastJourney?.metadata.availableBrakeSeries ?? <BrakeSeries>{});
-    _emitBrakeSeriesModel(selectedBrakeSeries: update, availableBrakeSeries: availableBrakeSeries);
-  }
-
   @override
   void onJourneyChanged(Journey? journey) {
     _emitBrakeSeriesModel(

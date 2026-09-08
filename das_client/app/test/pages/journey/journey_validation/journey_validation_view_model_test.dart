@@ -275,49 +275,6 @@ void main() {
       expect(brakeSeriesRegister, hasLength(4));
     });
 
-    test('updateSelectedBrakeSeries_whenInvalidCombinationSelected_thenRejectsUpdateSilently', () {
-      // ACT
-      testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([r50, a100]);
-      });
-      testAsync.flushMicrotasks();
-
-      // EXPECT
-      expect(
-        brakeSeriesRegister.last,
-        equals(
-          MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [],
-            allowedBrakeSeries: availableBrakeSeries,
-            availableBrakeSeries: availableBrakeSeries,
-          ),
-        ),
-      );
-      expect(brakeSeriesRegister, hasLength(2));
-    });
-
-    test('updateSelectedBrakeSeries_whenNonAvailableBreakSeries_thenRejectsUpdateSilently', () {
-      final r40 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 40);
-      // ACT
-      testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([r40]);
-      });
-      testAsync.flushMicrotasks();
-
-      // EXPECT
-      expect(
-        brakeSeriesRegister.last,
-        equals(
-          MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [],
-            allowedBrakeSeries: availableBrakeSeries,
-            availableBrakeSeries: availableBrakeSeries,
-          ),
-        ),
-      );
-      expect(brakeSeriesRegister, hasLength(2));
-    });
-
     test('toggleBrakeSeriesSelection_whenMultipleSelected_thenEmitsInCorrectOrder', () {
       // ACT
       testAsync.run((_) {
@@ -339,27 +296,6 @@ void main() {
         ),
       );
       expect(brakeSeriesRegister, hasLength(5));
-    });
-
-    test('updateSelectedBrakeSeries_whenMultipleSelected_thenEmitsInCorrectOrder', () {
-      // ACT
-      testAsync.run((_) {
-        testee.updateSelectedBrakeSeries([d100, a100, d200]);
-      });
-      testAsync.flushMicrotasks();
-
-      // EXPECT
-      expect(
-        brakeSeriesRegister.last,
-        equals(
-          MultiBrakeSeriesSelectionModel(
-            selectedBrakeSeries: [a100, d200, d100],
-            allowedBrakeSeries: {a100, a200, d100, d200},
-            availableBrakeSeries: availableBrakeSeries,
-          ),
-        ),
-      );
-      expect(brakeSeriesRegister, hasLength(3));
     });
 
     test('toggleBrakeSeriesSelection_whenNonAvailableBrakeSeries_thenRejectsSilently', () {
