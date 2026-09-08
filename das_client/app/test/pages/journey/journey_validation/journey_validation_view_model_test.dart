@@ -1,5 +1,5 @@
+import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_model.dart';
-import 'package:app/pages/journey/journey_validation/validation_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';

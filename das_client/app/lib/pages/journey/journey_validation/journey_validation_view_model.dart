@@ -6,6 +6,8 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyValidationViewModel');
 
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// Hint: start by removing complete dir
 class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
   final BehaviorSubject<MultiBrakeSeriesSelectionModel> _rxBrakeSeriesModel = BehaviorSubject.seeded(
     MultiBrakeSeriesSelectionModel(),
