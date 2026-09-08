@@ -118,6 +118,7 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     Set<BrakeSeries> availableBrakeSeries,
   ) {
     if (selectedBrakeSeries.isEmpty) return availableBrakeSeries;
+    if (selectedBrakeSeries.length >= _maxSelectedBrakeSeries) return selectedBrakeSeries.toSet();
     final allowed = selectedBrakeSeries.expand((it) => it.trainSeries.combinableWith).toSet();
     return availableBrakeSeries.where((it) => allowed.contains(it.trainSeries)).toSet();
   }

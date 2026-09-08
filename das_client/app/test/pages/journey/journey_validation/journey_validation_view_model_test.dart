@@ -390,4 +390,64 @@ void main() {
       expect(testee.brakeSeriesModelValue.selectedBrakeSeries, isEmpty);
     });
   });
+
+  group('journey has more than six combinable brake series', () {
+    const a300 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 300);
+    const a400 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 400);
+    const d300 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 300);
+    final manyBrakeSeries = {a100, a200, a300, a400, d100, d200, d300};
+
+    setUp(() {
+      testAsync.run(
+        (_) => journeySubject.add(
+          Journey(
+            metadata: Metadata(
+              trainIdentification: sbbP,
+              availableBrakeSeries: manyBrakeSeries,
+            ),
+            data: [],
+          ),
+        ),
+      );
+      testAsync.flushMicrotasks();
+      brakeSeriesRegister.clear();
+      editingBrakeSeriesRegister.clear();
+    });
+
+    test('toggleBrakeSeriesSelection_whenSixSelected_thenAllSixAreSelected', () {
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(a100);
+        testee.toggleBrakeSeriesSelection(a200);
+        testee.toggleBrakeSeriesSelection(a300);
+        testee.toggleBrakeSeriesSelection(a400);
+        testee.toggleBrakeSeriesSelection(d100);
+        testee.toggleBrakeSeriesSelection(d200);
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, hasLength(6));
+      expect(editingBrakeSeriesRegister, hasLength(6));
+    });
+
+    test('toggleBrakeSeriesSelection_whenSixSelected_thenNoOtherAvailable', () {
+      // ACT
+      testAsync.run((_) {
+        testee.toggleBrakeSeriesSelection(a100);
+        testee.toggleBrakeSeriesSelection(a200);
+        testee.toggleBrakeSeriesSelection(a300);
+        testee.toggleBrakeSeriesSelection(a400);
+        testee.toggleBrakeSeriesSelection(d100);
+        testee.toggleBrakeSeriesSelection(d200);
+        testAsync.flushMicrotasks();
+        editingBrakeSeriesRegister.clear();
+      });
+      testAsync.flushMicrotasks();
+
+      // EXPECT
+      expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, isEmpty);
+      expect(editingBrakeSeriesRegister, isEmpty);
+    });
+  });
 }

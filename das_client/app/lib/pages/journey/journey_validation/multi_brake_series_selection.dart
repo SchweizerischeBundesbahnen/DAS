@@ -62,10 +62,12 @@ class _MultiBrakeSeriesSelectionState extends State<MultiBrakeSeriesSelection> {
       padding: const .symmetric(vertical: SBBSpacing.medium),
       child: SBBPrimaryButton(
         labelText: context.l10n.c_button_confirm,
-        onPressed: () {
-          _viewModel.saveBrakeSeriesSelection();
-          Navigator.of(context).pop(_viewModel.brakeSeriesModelValue.selectedBrakeSeries.firstOrNull);
-        },
+        onPressed: _viewModel.editingBrakeSeriesModelValue.selectedBrakeSeries.isNotEmpty
+            ? () {
+                _viewModel.saveBrakeSeriesSelection();
+                Navigator.of(context).pop(_viewModel.brakeSeriesModelValue.selectedBrakeSeries.firstOrNull);
+              }
+            : null,
       ),
     );
   }
