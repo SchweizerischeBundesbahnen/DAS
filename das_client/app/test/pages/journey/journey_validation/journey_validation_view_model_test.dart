@@ -15,6 +15,15 @@ import 'validation_view_model_test.mocks.dart';
 void main() {
   final sbbP = TrainIdentification(companyCode: '1285', trainNumber: 'T12', date: DateTime.now());
   final blsC = TrainIdentification(companyCode: '1385', trainNumber: 'T12', date: DateTime.now());
+  const a200 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 200);
+  const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
+  const n100 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100);
+  const n90 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 90);
+  const d100 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 100);
+  const d200 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 200);
+  const r100 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 100);
+  const r50 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 50);
+  final availableBrakeSeries = {a100, a200, n100, n90, d100, d200, r100, r50};
 
   late JourneyValidationViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
@@ -35,6 +44,8 @@ void main() {
       return testAsync;
     });
     testAsync.flushMicrotasks();
+    brakeSeriesRegister.clear();
+    validationModeRegister.clear();
   });
 
   tearDown(() {
@@ -47,7 +58,7 @@ void main() {
   group('Journey is null', () {
     test('initialState_whenValidationModeNeverToggled_thenIsFalse', () {
       expect(testee.validationModeValue, isFalse);
-      expect(validationModeRegister, hasLength(1));
+      expect(validationModeRegister, isEmpty);
     });
 
     test('toggleValidationMode_whenModeToggled_thenIsTrue', () {
@@ -59,7 +70,7 @@ void main() {
 
       // EXPECT
       expect(testee.validationModeValue, isTrue);
-      expect(validationModeRegister, hasLength(2));
+      expect(validationModeRegister, hasLength(1));
     });
 
     test('toggleValidationMode_whenModeToggledTwice_thenIsFalse', () {
@@ -72,13 +83,12 @@ void main() {
 
       // EXPECT
       expect(testee.validationModeValue, isFalse);
-      expect(validationModeRegister, hasLength(3));
+      expect(validationModeRegister, hasLength(2));
     });
 
     test('initialState_whenNoJourney_thenNoBrakeSeries', () {
       expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
-      expect(brakeSeriesRegister.first, equals(MultiBrakeSeriesSelectionModel()));
-      expect(brakeSeriesRegister, hasLength(1));
+      expect(brakeSeriesRegister, isEmpty);
     });
   });
 
@@ -96,61 +106,9 @@ void main() {
 
     // EXPECT
     expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
-    expect(brakeSeriesRegister.first, equals(MultiBrakeSeriesSelectionModel()));
     // swallowed by distinct
-    expect(brakeSeriesRegister, hasLength(1));
+    expect(brakeSeriesRegister, isEmpty);
   });
-
-  test('initialState_whenJourneyWithSingleBrakeSeriesData_thenHasCorrectBrakeSeriesData', () {
-    // ACT
-    const brakeSeriesA = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
-    testAsync.run(
-      (_) => journeySubject.add(
-        Journey(
-          metadata: Metadata(
-            trainIdentification: sbbP,
-            brakeSeries: brakeSeriesA,
-            availableBrakeSeries: {brakeSeriesA},
-          ),
-          data: [],
-        ),
-      ),
-    );
-    testAsync.flushMicrotasks();
-
-    // EXPECT
-    expect(
-      testee.brakeSeriesModelValue,
-      equals(
-        MultiBrakeSeriesSelectionModel(
-          selectedBrakeSeries: [brakeSeriesA],
-          allowedBrakeSeries: {brakeSeriesA},
-          availableBrakeSeries: {brakeSeriesA},
-        ),
-      ),
-    );
-    expect(
-      brakeSeriesRegister.last,
-      equals(
-        MultiBrakeSeriesSelectionModel(
-          selectedBrakeSeries: [brakeSeriesA],
-          allowedBrakeSeries: {brakeSeriesA},
-          availableBrakeSeries: {brakeSeriesA},
-        ),
-      ),
-    );
-    expect(brakeSeriesRegister, hasLength(2));
-  });
-
-  const a200 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 200);
-  const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
-  const n100 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100);
-  const n90 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 90);
-  const d100 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 100);
-  const d200 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 200);
-  const r100 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 100);
-  const r50 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 50);
-  final availableBrakeSeries = {a100, a200, n100, n90, d100, d200, r100, r50};
 
   test('initialState_whenBrakeSeriesASelected_thenOnlyAllowedAOrD', () {
     testAsync.run(
@@ -168,7 +126,7 @@ void main() {
     testAsync.flushMicrotasks();
 
     expect(
-      brakeSeriesRegister.last,
+      brakeSeriesRegister.first,
       equals(
         MultiBrakeSeriesSelectionModel(
           selectedBrakeSeries: [a100],
@@ -177,7 +135,7 @@ void main() {
         ),
       ),
     );
-    expect(brakeSeriesRegister, hasLength(2));
+    expect(brakeSeriesRegister, hasLength(1));
   });
 
   group('journey has multiple brake series', () {
@@ -194,12 +152,13 @@ void main() {
         ),
       );
       testAsync.flushMicrotasks();
+      brakeSeriesRegister.clear();
     });
 
     test('initialState_whenNoBrakeSeriesSelected_thenAllAllowed', () {
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        testee.brakeSeriesModelValue,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [],
@@ -208,7 +167,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(2));
+      expect(brakeSeriesRegister, isEmpty);
     });
 
     test('toggleSelectedBrakeSeries_whenDBrakeSeriesSelected_thenAOrDAllowed', () {
@@ -229,7 +188,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(3));
+      expect(brakeSeriesRegister, hasLength(1));
     });
 
     test('toggleBrakeSeriesSelection_whenRBrakeSeriesSelected_thenOnlyRAllowed', () {
@@ -250,7 +209,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(3));
+      expect(brakeSeriesRegister, hasLength(1));
     });
 
     test('toggleBrakeSeriesSelection_whenSelectedThenDeselected_thenEmitsCorrectly', () {
@@ -272,7 +231,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(4));
+      expect(brakeSeriesRegister, hasLength(2));
     });
 
     test('toggleBrakeSeriesSelection_whenMultipleSelected_thenEmitsInCorrectOrder', () {
@@ -295,7 +254,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(5));
+      expect(brakeSeriesRegister, hasLength(3));
     });
 
     test('toggleBrakeSeriesSelection_whenNonAvailableBrakeSeries_thenRejectsSilently', () {
@@ -308,7 +267,7 @@ void main() {
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        testee.brakeSeriesModelValue,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [],
@@ -317,20 +276,22 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(2));
+      expect(brakeSeriesRegister, isEmpty);
     });
 
     test('toggleBrakeSeriesSelection_whenInvalidCombination_thenRejectsSilently', () {
       // ACT
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
+        testAsync.flushMicrotasks();
+        brakeSeriesRegister.clear();
         testee.toggleBrakeSeriesSelection(r50);
       });
       testAsync.flushMicrotasks();
 
       // EXPECT
       expect(
-        brakeSeriesRegister.last,
+        testee.brakeSeriesModelValue,
         equals(
           MultiBrakeSeriesSelectionModel(
             selectedBrakeSeries: [a100],
@@ -339,7 +300,7 @@ void main() {
           ),
         ),
       );
-      expect(brakeSeriesRegister, hasLength(3));
+      expect(brakeSeriesRegister, isEmpty);
     });
   });
 }
