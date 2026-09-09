@@ -49,9 +49,7 @@ class MultiLineSpeedCellBody extends StatelessWidget {
         final showPrevious = state == .sticky || state == .firstVisibleRow;
 
         return _row(
-          resolvedSpeeds
-              .map((it) => showPrevious || !it.isPrevious ? it.speed?.speed : null)
-              .toList(growable: false),
+          resolvedSpeeds.map((it) => showPrevious || !it.isPrevious ? it.speed?.speed : null).toList(growable: false),
         );
       },
     );
