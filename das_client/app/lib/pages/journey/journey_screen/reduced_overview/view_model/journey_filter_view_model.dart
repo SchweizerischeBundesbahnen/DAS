@@ -108,8 +108,10 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
   List<BaseData> _extractShortTermChanges(Journey journey) {
     final affectedData = <BaseData>[];
     for (final data in journey.data) {
+      if (data is! ServicePoint) continue;
+
       final shortTermChangesAtOrder = journey.metadata.shortTermChanges.appliesToOrder(data.order);
-      if (shortTermChangesAtOrder.where((it) => it is StopToPassChange || it is PassToStopChange).isNotEmpty) {
+      if (shortTermChangesAtOrder.isNotEmpty) {
         affectedData.add(data);
       }
     }

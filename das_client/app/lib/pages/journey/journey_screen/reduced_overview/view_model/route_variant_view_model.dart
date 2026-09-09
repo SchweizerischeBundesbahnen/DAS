@@ -57,7 +57,7 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
           group.firstWhereOrNull((it) => it.bp3LocationCode == null);
       if (matchedVariant == null) continue;
 
-      final anchorPoint = section.firstWhereOrNull((it) => it.isStop) ?? section.first;
+      final anchorPoint = section.firstWhereOrNull((it) => it.isStop) ?? section.last;
       variantsByOrder[anchorPoint.order] = matchedVariant;
     }
 

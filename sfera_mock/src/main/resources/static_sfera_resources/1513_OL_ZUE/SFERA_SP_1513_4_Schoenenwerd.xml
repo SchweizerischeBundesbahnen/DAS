@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="1513_4_Schoenenwerd"
-                SP_VersionMajor="3" SP_VersionMinor="4" SP_Length="3200" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="5" SP_Length="3200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -10,7 +10,7 @@
         <TimingPoint TP_ID="Schoenenwerd" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>02112</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>19045</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -51,7 +51,7 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SCOE" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>02112</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>19045</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Schönenwerd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
