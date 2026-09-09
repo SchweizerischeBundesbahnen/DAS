@@ -42,18 +42,21 @@ class SettingsRepositoryImpl({
 
   @override
   Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode) async {
+    await _pendingLoadSettings;
     final ruFeature = await databaseService.findRuFeature(companyCode, featureKey);
     return ruFeature?.enabled ?? false;
   }
 
   @override
   Future<List<Company>> getCompanies() async {
+    await _pendingLoadSettings;
     final companies = await databaseService.findAllCompanies();
     return companies.map((company) => company.toDomain()).toList();
   }
 
   @override
   Future<Company?> getCompanyForCode(String companyCode) async {
+    await _pendingLoadSettings;
     final company = await databaseService.findCompany(companyCode);
     return company?.toDomain();
   }

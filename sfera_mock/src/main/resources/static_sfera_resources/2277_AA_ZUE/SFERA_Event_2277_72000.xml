@@ -10,7 +10,7 @@
             </OTN_ID>
         </TrainIdentification>
 
-        <SegmentProfileReference SP_ID="2277_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="5" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="6" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -51,7 +51,7 @@
 
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -73,7 +73,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -95,7 +95,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_9_Gexi" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_9_Gexi" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -117,7 +117,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -139,7 +139,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -162,7 +162,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_12_Mellingen" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_12_Mellingen" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -183,7 +183,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -204,7 +204,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_14_Killwangen_Spreitenbach" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_14_Killwangen_Spreitenbach" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -226,7 +226,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -289,7 +289,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -311,7 +311,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="2277_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="2277_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>

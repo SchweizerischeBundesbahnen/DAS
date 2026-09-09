@@ -14,7 +14,6 @@ import 'journey_validation_view_model_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
   final sbbP = TrainIdentification(companyCode: '1285', trainNumber: 'T12', date: DateTime.now());
-  final blsC = TrainIdentification(companyCode: '1385', trainNumber: 'T12', date: DateTime.now());
   const a200 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 200);
   const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
   const n100 = BrakeSeries(trainSeries: .N, brakedWeightPercentage: 100);

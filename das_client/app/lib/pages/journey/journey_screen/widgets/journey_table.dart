@@ -92,9 +92,11 @@ class JourneyTable extends StatelessWidget {
               TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
               TableLoaded() => KeyedSubtree(
                 key: loadedJourneyTableKey,
-                child: Listener(
-                  onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
-                  onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
+                child: NotificationListener<UserScrollNotification>(
+                  onNotification: (_) {
+                    advancementViewModel.resetIdleScrollTimer();
+                    return false;
+                  },
                   child: _table(context, model),
                 ),
               ),
@@ -615,10 +617,13 @@ class JourneyTable extends StatelessWidget {
   }
 
   Widget? _multiBrakeSeriesHeader(JourneyValidationViewModel validationVM) {
+    final selectedBrakeSeries = validationVM.brakeSeriesModelValue.selectedBrakeSeries;
+    if (selectedBrakeSeries.isEmpty) return Text('??', style: sbbTextStyle.lightStyle.small);
+
     return Row(
       mainAxisAlignment: .spaceEvenly,
       children: validationVM.brakeSeriesModelValue.selectedBrakeSeries
-          .map((it) => Text(it?.name ?? '??', style: sbbTextStyle.lightStyle.small))
+          .map((it) => Text(it.name, style: sbbTextStyle.lightStyle.small))
           .toList(growable: false),
     );
   }
