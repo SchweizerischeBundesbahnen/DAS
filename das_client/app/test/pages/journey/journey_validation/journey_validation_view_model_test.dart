@@ -357,11 +357,15 @@ void main() {
     });
   });
 
-  group('journey has more than six combinable brake series', () {
+  group('journey has more than ten combinable brake series', () {
     const a300 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 300);
     const a400 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 400);
+    const a500 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 500);
+    const a600 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 600);
+    const a700 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 700);
+    const a800 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 800);
     const d300 = BrakeSeries(trainSeries: .D, brakedWeightPercentage: 300);
-    final manyBrakeSeries = {a100, a200, a300, a400, d100, d200, d300};
+    final manyBrakeSeries = {a100, a200, a300, a400, a500, a600, a700, a800, d100, d200, d300};
 
     setUp(() {
       testAsync.run(
@@ -380,30 +384,38 @@ void main() {
       editingBrakeSeriesRegister.clear();
     });
 
-    test('toggleBrakeSeriesSelection_whenSixSelected_thenAllSixAreSelected', () {
+    test('toggleBrakeSeriesSelection_whenTenSelected_thenAllTenAreSelected', () {
       // ACT
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testee.toggleBrakeSeriesSelection(a200);
         testee.toggleBrakeSeriesSelection(a300);
         testee.toggleBrakeSeriesSelection(a400);
+        testee.toggleBrakeSeriesSelection(a500);
+        testee.toggleBrakeSeriesSelection(a600);
+        testee.toggleBrakeSeriesSelection(a700);
+        testee.toggleBrakeSeriesSelection(a800);
         testee.toggleBrakeSeriesSelection(d100);
         testee.toggleBrakeSeriesSelection(d200);
       });
       testAsync.flushMicrotasks();
 
       // EXPECT
-      expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, hasLength(6));
-      expect(editingBrakeSeriesRegister, hasLength(6));
+      expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, hasLength(10));
+      expect(editingBrakeSeriesRegister, hasLength(10));
     });
 
-    test('toggleBrakeSeriesSelection_whenSixSelected_thenNoOtherAvailable', () {
+    test('toggleBrakeSeriesSelection_whenTenSelected_thenNoOtherAvailable', () {
       // ACT
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testee.toggleBrakeSeriesSelection(a200);
         testee.toggleBrakeSeriesSelection(a300);
         testee.toggleBrakeSeriesSelection(a400);
+        testee.toggleBrakeSeriesSelection(a500);
+        testee.toggleBrakeSeriesSelection(a600);
+        testee.toggleBrakeSeriesSelection(a700);
+        testee.toggleBrakeSeriesSelection(a800);
         testee.toggleBrakeSeriesSelection(d100);
         testee.toggleBrakeSeriesSelection(d200);
         testAsync.flushMicrotasks();
@@ -412,7 +424,18 @@ void main() {
       testAsync.flushMicrotasks();
 
       // EXPECT
-      expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, {a100, a200, a300, a400, d100, d200});
+      expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, {
+        a100,
+        a200,
+        a300,
+        a400,
+        a500,
+        a600,
+        a700,
+        a800,
+        d100,
+        d200,
+      });
       expect(editingBrakeSeriesRegister, isEmpty);
     });
   });

@@ -7,7 +7,7 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyValidationViewModel');
 
-const _maxSelectedBrakeSeries = 6;
+const _maxSelectedBrakeSeries = 10;
 
 // TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
 // Hint: start by removing complete dir
