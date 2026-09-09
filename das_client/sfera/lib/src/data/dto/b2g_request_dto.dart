@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/jp_request_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
 import 'package:sfera/src/data/dto/tc_request_dto.dart';
@@ -22,6 +23,12 @@ class B2gRequestDto({super.type = elementType, super.attributes, super.children,
   factory createTCRequest(List<TcRequestDto> tcRequests) {
     final request = B2gRequestDto();
     request.children.addAll(tcRequests);
+    return request;
+  }
+
+  factory createRelatedTrainInformationRequest(RelatedTrainInformationRequestDto rtiRequest) {
+    final request = B2gRequestDto();
+    request.children.add(rtiRequest);
     return request;
   }
 }
