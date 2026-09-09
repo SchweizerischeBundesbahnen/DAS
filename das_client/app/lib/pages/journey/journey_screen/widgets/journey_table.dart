@@ -47,6 +47,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dar
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -383,7 +384,7 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
-    if (DI.get<JourneyValidationViewModel>().validationModeValue) return _validationJourneyTable(context);
+    if (DI.get<ValidationModeViewModel>().validationModeValue) return _validationJourneyTable(context);
 
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
