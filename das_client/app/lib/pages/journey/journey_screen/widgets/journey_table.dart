@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
@@ -14,6 +15,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
@@ -43,6 +45,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journe
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
@@ -74,23 +77,29 @@ class JourneyTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
+    final journeyValidationVM = DI.get<JourneyValidationViewModel>();
 
-    return StreamBuilder<JourneyTableModel>(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        final model = snapshot.requireData;
-        return switch (model) {
-          TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
-          TableLoaded() => KeyedSubtree(
-            key: loadedJourneyTableKey,
-            child: Listener(
-              onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
-              onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
-              child: _table(context, model),
-            ),
-          ),
-        };
+    return StreamBuilder(
+      stream: journeyValidationVM.brakeSeriesModel,
+      builder: (context, asyncSnapshot) {
+        return StreamBuilder<JourneyTableModel>(
+          stream: viewModel.model,
+          initialData: viewModel.modelValue,
+          builder: (context, snapshot) {
+            final model = snapshot.requireData;
+            return switch (model) {
+              TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
+              TableLoaded() => KeyedSubtree(
+                key: loadedJourneyTableKey,
+                child: Listener(
+                  onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
+                  onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
+                  child: _table(context, model),
+                ),
+              ),
+            };
+          },
+        );
       },
     );
   }
@@ -374,6 +383,8 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
+    if (DI.get<JourneyValidationViewModel>().validationModeValue) return _validationJourneyTable(context);
+
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
@@ -542,7 +553,10 @@ class JourneyTable extends StatelessWidget {
       titleText: context.l10n.p_journey_brake_series,
       isScrollControlled: true,
       style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
-      body: MultiBrakeSeriesSelection(),
+      body: BrakeSeriesSelection(
+        availableBrakeSeries: metadata?.availableBrakeSeries ?? {},
+        selectedBrakeSeries: settings?.currentBrakeSeries,
+      ),
     );
 
     if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
@@ -558,5 +572,53 @@ class JourneyTable extends StatelessWidget {
         ? rowBuilders.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
         : 0.0;
     return marginAdjustment;
+  }
+
+  List<DASTableColumn> _validationJourneyTable(BuildContext context) {
+    final validationVM = DI.get<JourneyValidationViewModel>();
+    return [
+      DASTableColumn(
+        id: ColumnDefinition.kilometre.index,
+        child: Text(context.l10n.p_journey_table_kilometre_label),
+        width: 66.0,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.informationCell.index,
+        child: Text(context.l10n.p_journey_table_journey_information_label),
+        expanded: true,
+        alignment: .centerLeft,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.brakedWeightSpeed.index,
+        child: _multiBrakeSeriesHeader(validationVM),
+        padding: EdgeInsets.zero,
+        width: 62.0 * max(validationVM.brakeSeriesModelValue.selectedBrakeSeries.length, 1),
+        onTap: () => _onMultiBrakeSeriesTap(context),
+        headerKey: brakeSeriesHeaderKey,
+      ),
+    ];
+  }
+
+  Future<void> _onMultiBrakeSeriesTap(BuildContext context) async {
+    final viewModel = context.read<JourneySettingsViewModel>();
+
+    final selectedBrakeSeries = await showSBBBottomSheet<BrakeSeries>(
+      context: context,
+      titleText: context.l10n.p_journey_brake_series,
+      isScrollControlled: true,
+      style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
+      body: MultiBrakeSeriesSelection(),
+    );
+
+    if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
+  }
+
+  Widget? _multiBrakeSeriesHeader(JourneyValidationViewModel validationVM) {
+    return Row(
+      mainAxisAlignment: .spaceEvenly,
+      children: validationVM.brakeSeriesModelValue.selectedBrakeSeries
+          .map((it) => Text(it?.name ?? '??', style: sbbTextStyle.lightStyle.small))
+          .toList(growable: false),
+    );
   }
 }
