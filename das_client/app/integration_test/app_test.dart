@@ -31,6 +31,7 @@ import 'test/journey_table_test.dart' as journey_table_tests;
 import 'test/journey_table_time_test.dart' as journey_table_time_tests;
 import 'test/journey_table_track_equipment_test.dart' as journey_table_track_equipment_tests;
 import 'test/journey_table_updates_test.dart' as journey_table_updates_tests;
+import 'test/journey_validation_test.dart' as journey_validation_tests;
 import 'test/login_test.dart' as login_tests;
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
@@ -85,6 +86,7 @@ void main() {
   journey_table_tests.main();
   journey_table_time_tests.main();
   journey_table_track_equipment_tests.main();
+  journey_validation_tests.main();
   login_tests.main();
   manual_advancement_tests.main();
   navigation_tests.main();
