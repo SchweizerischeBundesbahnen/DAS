@@ -16,7 +16,7 @@ import '../util/test_utils.dart';
 void main() {
   group('journey validation tests', () {
     testWidgets(
-      'journeyValidation_whenActivated_thenAllowsMultipleBrakeSeriesSelectionAndDisplays|tests:2734',
+      'journeyValidation_whenActivated_thenAllowsMultipleBrakeSeriesSelectionAndDisplays|X0mynzY28I2IJmP07sSb|tests:2734',
       (tester) async {
         await IntegrationTestApp.start(tester);
         expect(find.byType(JourneySelectionPage), findsOne);
