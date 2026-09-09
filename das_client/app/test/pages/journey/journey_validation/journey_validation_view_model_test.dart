@@ -29,7 +29,6 @@ void main() {
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late FakeAsync testAsync;
-  final List<bool> validationModeRegister = [];
   final List<MultiBrakeSeriesSelectionModel> brakeSeriesRegister = [];
   final List<MultiBrakeSeriesSelectionModel> editingBrakeSeriesRegister = [];
 
@@ -40,7 +39,6 @@ void main() {
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
 
       testee = JourneyValidationViewModel(journeyViewModel: mockJourneyViewModel);
-      testee.validationMode.listen(validationModeRegister.add);
       testee.brakeSeriesModel.listen(brakeSeriesRegister.add);
       testee.editingBrakeSeriesModel.listen(editingBrakeSeriesRegister.add);
       return testAsync;
@@ -48,11 +46,9 @@ void main() {
     testAsync.flushMicrotasks();
     brakeSeriesRegister.clear();
     editingBrakeSeriesRegister.clear();
-    validationModeRegister.clear();
   });
 
   tearDown(() {
-    validationModeRegister.clear();
     brakeSeriesRegister.clear();
     editingBrakeSeriesRegister.clear();
     journeySubject.close();
@@ -60,36 +56,6 @@ void main() {
   });
 
   group('Journey is null', () {
-    test('initialState_whenValidationModeNeverToggled_thenIsFalse', () {
-      expect(testee.validationModeValue, isFalse);
-      expect(validationModeRegister, isEmpty);
-    });
-
-    test('toggleValidationMode_whenModeToggled_thenIsTrue', () {
-      // ACT
-      testAsync.run((_) {
-        testee.toggleValidationMode();
-      });
-      testAsync.flushMicrotasks();
-
-      // EXPECT
-      expect(testee.validationModeValue, isTrue);
-      expect(validationModeRegister, hasLength(1));
-    });
-
-    test('toggleValidationMode_whenModeToggledTwice_thenIsFalse', () {
-      // ACT
-      testAsync.run((_) {
-        testee.toggleValidationMode();
-        testee.toggleValidationMode();
-      });
-      testAsync.flushMicrotasks();
-
-      // EXPECT
-      expect(testee.validationModeValue, isFalse);
-      expect(validationModeRegister, hasLength(2));
-    });
-
     test('initialState_whenNoJourney_thenNoBrakeSeries', () {
       expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
       expect(testee.editingBrakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));

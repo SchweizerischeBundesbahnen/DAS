@@ -18,11 +18,6 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
   final BehaviorSubject<MultiBrakeSeriesSelectionModel> _rxEditingBrakeSeriesModel = BehaviorSubject.seeded(
     MultiBrakeSeriesSelectionModel(),
   );
-  final BehaviorSubject<bool> _rxValidationMode = BehaviorSubject.seeded(false);
-
-  Stream<bool> get validationMode => _rxValidationMode.stream.distinct();
-
-  bool get validationModeValue => _rxValidationMode.value;
 
   /// The last saved brake series selection.
   Stream<MultiBrakeSeriesSelectionModel> get brakeSeriesModel => _rxBrakeSeriesModel.stream.distinct();
@@ -32,10 +27,6 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
   Stream<MultiBrakeSeriesSelectionModel> get editingBrakeSeriesModel => _rxEditingBrakeSeriesModel.stream.distinct();
 
   MultiBrakeSeriesSelectionModel get editingBrakeSeriesModelValue => _rxEditingBrakeSeriesModel.value;
-
-  void toggleValidationMode() {
-    _rxValidationMode.add(!_rxValidationMode.value);
-  }
 
   void startBrakeSeriesEditing() {
     _rxEditingBrakeSeriesModel.add(_rxBrakeSeriesModel.value);
@@ -75,7 +66,6 @@ class JourneyValidationViewModel({super.journeyViewModel}) extends JourneyAwareV
     super.dispose();
     _rxBrakeSeriesModel.close();
     _rxEditingBrakeSeriesModel.close();
-    _rxValidationMode.close();
   }
 
   void _emitBrakeSeriesModel({
