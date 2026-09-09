@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'validation_view_model_test.mocks.dart';
+import 'journey_validation_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
@@ -412,7 +412,7 @@ void main() {
       testAsync.flushMicrotasks();
 
       // EXPECT
-      expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, isEmpty);
+      expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, {a100, a200, a300, a400, d100, d200});
       expect(editingBrakeSeriesRegister, isEmpty);
     });
   });

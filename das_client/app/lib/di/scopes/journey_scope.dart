@@ -19,6 +19,8 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
+import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -57,6 +59,7 @@ class JourneyScope extends DIScope {
     getIt.registerShortTermChangeViewModel();
     getIt.registerSuspiciousSegmentViewModel();
     getIt.registerLineSpeedViewModel();
+    getIt.registerMultiLineSpeedViewModel();
     getIt.registerCalculatedSpeedViewModel();
     getIt.registerAdvisedSpeedViewModel();
     getIt.registerChronographViewModel();
@@ -204,6 +207,15 @@ extension JourneyScopeExtension on GetIt {
         journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerMultiLineSpeedViewModel() {
+    registerSingleton<MultiLineSpeedViewModel>(
+      MultiLineSpeedViewModel(
+        lineSpeedViewModel: DI.get(),
+        journeyValidationViewModel: DI.get(),
+      ),
     );
   }
 
