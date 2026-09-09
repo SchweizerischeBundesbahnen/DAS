@@ -1,5 +1,5 @@
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/route_variant.dart';
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 

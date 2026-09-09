@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/model/route_variant.dart';
-import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';

@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_screen/view_model/model/route_variant.dart';
-import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import '../../../../test_util.dart';
+import '../../../../../test_util.dart';
 import 'route_variant_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])

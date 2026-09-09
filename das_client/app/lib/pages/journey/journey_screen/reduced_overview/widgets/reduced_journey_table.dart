@@ -1,8 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/extension/base_data_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_signal_row.dart';

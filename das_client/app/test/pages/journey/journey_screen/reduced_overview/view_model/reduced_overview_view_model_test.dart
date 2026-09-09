@@ -1,8 +1,8 @@
-import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_journey_table_model.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
