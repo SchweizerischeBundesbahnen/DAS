@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/journey_filter_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -16,6 +18,7 @@ class ReducedOverviewViewModel({
   required final JourneyViewModel _journeyViewModel,
   required final RouteVariantViewModel _routeVariantViewModel,
   required final CollapsibleRowsViewModel _collapsibleRowsViewModel,
+  required final JourneyFilterViewModel _journeyFilterViewModel,
 }) {
   this {
     _init();
@@ -27,20 +30,26 @@ class ReducedOverviewViewModel({
 
   ReducedJourneyTableModel get modelValue => _rxModel.value;
 
-  StreamSubscription<(Journey?, Map<int, RouteVariant>, Map<int, CollapsedState>)>? _subscription;
+  Stream<JourneyFilterModel?> get filters => _journeyFilterViewModel.model;
+
+  JourneyFilterModel? get filtersValue => _journeyFilterViewModel.modelValue;
+
+  StreamSubscription? _subscription;
 
   void _init() {
     _subscription =
-        CombineLatestStream.combine3(
+        CombineLatestStream.combine4(
           _journeyViewModel.journey,
           _routeVariantViewModel.variantsByOrder,
           _collapsibleRowsViewModel.collapsedRows,
-          (journey, variantsByOrder, collapsedRows) => (journey, variantsByOrder, collapsedRows),
+          _journeyFilterViewModel.model,
+          (journey, variantsByOrder, collapsedRows, filters) => (journey, variantsByOrder, collapsedRows, filters),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,
             variantsByOrder: data.$2,
             collapsedRows: data.$3,
+            filter: data.$4,
           ),
           onError: _rxModel.addError,
         );
@@ -50,13 +59,22 @@ class ReducedOverviewViewModel({
     required Journey? journey,
     required Map<int, RouteVariant> variantsByOrder,
     required Map<int, CollapsedState> collapsedRows,
+    required JourneyFilterModel? filter,
   }) {
     if (journey == null) {
       _emitLoading();
       return;
     }
 
-    final relevantData = _relevantDataForReducedOverview(journey);
+    final relevantData = _mandatoryDataForReducedOverview(journey, variantsByOrder);
+
+    if (filter != null) {
+      _addFilterData(relevantData, filter);
+    }
+
+    relevantData.sort((a1, a2) => a1.compareTo(a2));
+    _removeDuplicatedASR(relevantData);
+
     _emitLoaded(
       ReducedTableLoaded(
         journey: journey,
@@ -64,14 +82,21 @@ class ReducedOverviewViewModel({
         journeyMetadata: journey.metadata,
         variantsByOrder: variantsByOrder,
         collapsedRows: collapsedRows,
+        filter: filter,
       ),
     );
   }
 
-  List<BaseData> _relevantDataForReducedOverview(Journey journey) {
-    final relevantData = journey.data.where((it) => _relevantForReducedOverview(it, journey.metadata)).toList();
-    _removeDuplicatedASR(relevantData);
-    return relevantData;
+  void _addFilterData(List<BaseData> baseData, JourneyFilterModel filter) {
+    final filterData = filter.getFilteredData();
+
+    for (final entry in filterData) {
+      if (!baseData.contains(entry)) baseData.add(entry);
+    }
+  }
+
+  List<BaseData> _mandatoryDataForReducedOverview(Journey journey, Map<int, RouteVariant> variantsByOrder) {
+    return journey.data.where((it) => _relevantForReducedOverview(it, journey.metadata, variantsByOrder)).toList();
   }
 
   void _removeDuplicatedASR(List<BaseData> data) {
@@ -87,30 +112,15 @@ class ReducedOverviewViewModel({
     }
   }
 
-  bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
+  bool _relevantForReducedOverview(BaseData data, Metadata metadata, Map<int, RouteVariant> variantsByOrder) {
     final isServicePointWithStop = data.dataType == .servicePoint && (data as ServicePoint).isStop;
     final isNetworkChange =
         metadata.communicationNetworkChanges.changeAtOrder(data.order) != null &&
         data.dataType == .communicationNetworkChannel;
-    final isIndication = data.dataType == .ruIndication || data.dataType == .operationalIndication;
+    final hasRouteVariantDisplay = data is ServicePoint && variantsByOrder.containsKey(data.order);
 
-    return isServicePointWithStop ||
-        isNetworkChange ||
-        isIndication ||
-        data.dataType == .additionalSpeedRestriction ||
-        _isServicePointWithPassToStopOrStopToPassChange(data, metadata) ||
-        _hasModification(data);
+    return isServicePointWithStop || isNetworkChange || hasRouteVariantDisplay;
   }
-
-  bool _isServicePointWithPassToStopOrStopToPassChange(BaseData data, Metadata metadata) =>
-      data is ServicePoint &&
-      metadata.shortTermChanges
-          .appliesToOrder(data.order)
-          .where((it) => it is PassToStopChange || it is StopToPassChange)
-          .isNotEmpty;
-
-  bool _hasModification(BaseData data) =>
-      (data is JourneyPoint && (data.hasModificationUpdated || (data.isDeleted && !data.shouldHide)));
 
   void _emitLoading() {
     _log.fine('Emitting ReducedTableLoading.');

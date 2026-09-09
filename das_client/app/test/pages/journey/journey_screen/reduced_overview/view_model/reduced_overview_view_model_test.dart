@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
@@ -25,6 +26,7 @@ void main() {
       journeyViewModel: journeyViewModel,
       routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
       collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
+      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
     );
 
     expect(
@@ -56,7 +58,10 @@ void main() {
       kilometre: [],
       isStop: false,
     );
-    final networkChange = CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400);
+    final networkChange = CommunicationNetworkChange(
+      communicationNetworkType: CommunicationNetworkType.gsmR,
+      order: 400,
+    );
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange, networkChange];
 
     final communicationNetworkChanges = [networkChange];
@@ -67,6 +72,7 @@ void main() {
       journeyViewModel: journeyViewModel,
       routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
       collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
+      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
     );
 
     // WHEN
@@ -84,7 +90,7 @@ void main() {
     );
   });
 
-  test('test only service points and ASR are emitted', () {
+  test('test only relevant reduced overview data are emitted', () {
     // GIVEN
     final servicePoint = ServicePoint(
       name: '',
@@ -132,6 +138,7 @@ void main() {
       journeyViewModel: journeyViewModel,
       routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
       collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
+      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
     );
 
     // WHEN
@@ -143,7 +150,7 @@ void main() {
         isA<ReducedTableLoaded>().having(
           (it) => it.journeyTableRowData,
           'journeyTableRowData',
-          [servicePoint, asrData],
+          [servicePoint, protectionSection, asrData],
         ),
       ]),
     );
@@ -161,6 +168,7 @@ void main() {
       journeyViewModel: journeyViewModel,
       routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
       collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
+      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
     );
 
     // WHEN
@@ -193,4 +201,8 @@ CollapsibleRowsViewModel _setupCollapsibleRowsViewModel(JourneyViewModel journey
     simTrainViewModel: simTrainViewModel,
     journeyPositionStream: Stream.value(JourneyPositionModel()),
   );
+}
+
+JourneyFilterViewModel _setupJourneyFilterViewModel(JourneyViewModel journeyViewModel) {
+  return JourneyFilterViewModel(journeyViewModel: journeyViewModel);
 }

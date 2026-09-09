@@ -387,5 +387,11 @@
   "w_route_variant_heitersberg_via_lenzburg_heitersberg": "via Lenzburg - Heitersberg",
   "w_route_variant_heitersberg_via_brugg_baden": "via Brugg - Baden",
   "w_route_variant_sargans_nord": "Sargans Nord",
-  "w_route_variant_sargans_sued": "Sargans Sud"
+  "w_route_variant_sargans_sued": "Sargans Sud",
+  "w_filter_bar_option_indications": "Hinweise",
+  "w_filter_bar_option_protection_sections": "Schutzstrecken",
+  "w_filter_bar_option_addition_speed_restrictions": "LaFa",
+  "w_filter_bar_option_short_term_changes": "Kurzfristige Änderungen",
+  "w_filter_bar_option_modifications": "Streckentabelle Änderungen",
+  "w_filter_bar_reset_button": "Filter zurücksetzen"
 }

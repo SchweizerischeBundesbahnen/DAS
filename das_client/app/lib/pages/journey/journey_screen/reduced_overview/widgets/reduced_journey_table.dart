@@ -3,6 +3,7 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/filter_bar.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_signal_row.dart';
@@ -31,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:ru_indications/component.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('ReducedJourneyTable');
@@ -61,16 +63,25 @@ class ReducedJourneyTable extends StatelessWidget {
   ) {
     final columns = _columns(context);
 
-    return DASTable(
-      key: reducedJourneyTableKey,
-      columns: columns,
-      rows: _rows(
-        context,
-        model,
-        columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
-      ).map((it) => it.build(context)).toList(),
-      hasStickyRows: false,
-      addBottomSpacer: false,
+    return Column(
+      mainAxisSize: .max,
+      spacing: SBBSpacing.xSmall,
+      children: [
+        if (model.filter != null && model.filter!.hasData) FilterBar(model: model.filter!),
+        Expanded(
+          child: DASTable(
+            key: reducedJourneyTableKey,
+            columns: columns,
+            rows: _rows(
+              context,
+              model,
+              columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+            ).map((it) => it.build(context)).toList(),
+            hasStickyRows: false,
+            addBottomSpacer: false,
+          ),
+        ),
+      ],
     );
   }
 
@@ -133,6 +144,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .curvePoint:
           return CurvePointRow(
+            key: GlobalKey(),
             metadata: model.journeyMetadata,
             data: rowData as CurvePoint,
             rowIndex: rowIndex,
@@ -142,6 +154,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .protectionSection:
           return ProtectionSectionRow(
+            key: GlobalKey(),
             metadata: model.journeyMetadata,
             data: rowData as ProtectionSection,
             rowIndex: rowIndex,
@@ -151,6 +164,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .signal:
           return ReducedSignalRow(
+            key: GlobalKey(),
             metadata: model.journeyMetadata,
             data: rowData as Signal,
             rowIndex: rowIndex,
@@ -159,6 +173,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .speedChange:
           return SpeedChangeRow(
+            key: GlobalKey(),
             metadata: model.journeyMetadata,
             data: rowData as SpeedChange,
             rowIndex: rowIndex,
@@ -168,6 +183,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .operationalIndication:
           return IndicationRow(
+            key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
             data: rowData as OperationalIndication,
@@ -176,6 +192,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .ruIndication:
           return IndicationRow(
+            key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
             data: rowData as RuIndication,
@@ -185,6 +202,7 @@ class ReducedJourneyTable extends StatelessWidget {
           );
         case .combinedFootNoteAndIndications:
           return CombinedFootNoteAndIndicationsRow(
+            key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
             data: rowData as CombinedFootNoteAndIndications,

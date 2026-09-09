@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_v
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
@@ -66,6 +67,7 @@ class JourneyScope extends DIScope {
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerJourneyFilterViewModel();
     getIt.registerServicePointModalViewModel();
 
     await getIt.allReady();
@@ -336,6 +338,15 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         localRegulationHtmlGenerator: DI.get(),
         settingsVM: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneyFilterViewModel() {
+    registerSingleton<JourneyFilterViewModel>(
+      JourneyFilterViewModel(
+        journeyViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

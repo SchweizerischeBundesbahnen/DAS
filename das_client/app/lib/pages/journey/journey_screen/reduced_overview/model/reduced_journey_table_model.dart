@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_screen/reduced_overview/model/journey_filter_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:core_data/component.dart';
@@ -22,6 +23,7 @@ class ReducedTableLoaded({
   required final Metadata journeyMetadata,
   required final Map<int, RouteVariant> variantsByOrder,
   required final Map<int, CollapsedState> collapsedRows,
+  required final JourneyFilterModel? filter,
 }) extends ReducedJourneyTableModel {
   this : super._();
 
@@ -32,6 +34,7 @@ class ReducedTableLoaded({
         ', journeyMetadata: $journeyMetadata'
         ', variantsByOrder: $variantsByOrder'
         ', collapsedRows: $collapsedRows'
+        ', filter: $filter'
         '}';
   }
 
@@ -44,7 +47,8 @@ class ReducedTableLoaded({
           journeyTableRowData == other.journeyTableRowData &&
           journeyMetadata == other.journeyMetadata &&
           variantsByOrder == other.variantsByOrder &&
-          collapsedRows == other.collapsedRows;
+          collapsedRows == other.collapsedRows &&
+          filter == other.filter;
 
   @override
   int get hashCode => Object.hash(
@@ -53,5 +57,6 @@ class ReducedTableLoaded({
     journeyMetadata,
     variantsByOrder,
     collapsedRows,
+    filter,
   );
 }
