@@ -212,8 +212,8 @@ extension JourneyScopeExtension on GetIt {
   void registerMultiLineSpeedViewModel() {
     registerSingleton<MultiLineSpeedViewModel>(
       MultiLineSpeedViewModel(
-        lineSpeedViewModel: DI.get(),
-        journeyValidationViewModel: DI.get(),
+        lineSpeedVM: DI.get(),
+        multiBrakeSeriesSelectionVM: DI.get(),
       ),
     );
   }

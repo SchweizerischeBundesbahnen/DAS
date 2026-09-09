@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
-import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,44 +12,52 @@ import 'multi_line_speed_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<LineSpeedViewModel>(),
-  MockSpec<JourneyValidationViewModel>(),
+  MockSpec<MultiBrakeSeriesSelectionViewModel>(),
 ])
 void main() {
   late MultiLineSpeedViewModel testee;
   late MockLineSpeedViewModel mockLineSpeedViewModel;
-  late MockJourneyValidationViewModel mockJourneyValidationViewModel;
+  late MockMultiBrakeSeriesSelectionViewModel mockMultiBrakeSeriesSelectionVM;
 
   const r120 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 120);
   const a100 = BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100);
 
   final r120Speed = ResolvedTrainSeriesSpeed(
-    speed: TrainSeriesSpeed(trainSeries: .R, brakedWeightPercentage: 120, speed: SingleSpeed(value: '105')),
+    speed: TrainSeriesSpeed(
+      trainSeries: .R,
+      brakedWeightPercentage: 120,
+      speed: SingleSpeed(value: '105'),
+    ),
     isPrevious: false,
   );
   final a100Speed = ResolvedTrainSeriesSpeed(
-    speed: TrainSeriesSpeed(trainSeries: .A, brakedWeightPercentage: 100, speed: SingleSpeed(value: '100')),
+    speed: TrainSeriesSpeed(
+      trainSeries: .A,
+      brakedWeightPercentage: 100,
+      speed: SingleSpeed(value: '100'),
+    ),
     isPrevious: true,
   );
 
   setUp(() {
     mockLineSpeedViewModel = MockLineSpeedViewModel();
-    mockJourneyValidationViewModel = MockJourneyValidationViewModel();
+    mockMultiBrakeSeriesSelectionVM = MockMultiBrakeSeriesSelectionViewModel();
 
     testee = MultiLineSpeedViewModel(
-      lineSpeedViewModel: mockLineSpeedViewModel,
-      journeyValidationViewModel: mockJourneyValidationViewModel,
+      lineSpeedVM: mockLineSpeedViewModel,
+      multiBrakeSeriesSelectionVM: mockMultiBrakeSeriesSelectionVM,
     );
   });
 
   test('test returns empty list when no brake series selected', () {
-    when(mockJourneyValidationViewModel.brakeSeriesModelValue).thenReturn(MultiBrakeSeriesSelectionModel());
+    when(mockMultiBrakeSeriesSelectionVM.brakeSeriesModelValue).thenReturn(MultiBrakeSeriesSelectionModel());
 
     expect(testee.getResolvedSpeedsForOrder(0), isEmpty);
     verifyNever(mockLineSpeedViewModel.getResolvedSpeedForOrder(any, brakeSeries: anyNamed('brakeSeries')));
   });
 
   test('test resolves speed for each selected brake series in order', () {
-    when(mockJourneyValidationViewModel.brakeSeriesModelValue).thenReturn(
+    when(mockMultiBrakeSeriesSelectionVM.brakeSeriesModelValue).thenReturn(
       MultiBrakeSeriesSelectionModel(selectedBrakeSeries: [r120, a100]),
     );
     when(mockLineSpeedViewModel.getResolvedSpeedForOrder(5, brakeSeries: r120)).thenReturn(r120Speed);

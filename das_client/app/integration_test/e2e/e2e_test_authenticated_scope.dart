@@ -39,7 +39,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     getIt.registerWarnAppViewModel();
-    getIt.registerJourneyValidationViewModel();
+    getIt.registerMultiBrakeSeriesSelectionViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
 
     await getIt.allReady();

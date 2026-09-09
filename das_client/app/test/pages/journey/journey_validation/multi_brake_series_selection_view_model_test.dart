@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-import 'journey_validation_view_model_test.mocks.dart';
+import 'multi_brake_series_selection_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>()])
 void main() {
@@ -24,7 +24,7 @@ void main() {
   const r50 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 50);
   final availableBrakeSeries = {a100, a200, n100, n90, d100, d200, r100, r50};
 
-  late JourneyValidationViewModel testee;
+  late MultiBrakeSeriesSelectionViewModel testee;
   late MockJourneyViewModel mockJourneyViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late FakeAsync testAsync;
@@ -37,7 +37,7 @@ void main() {
       journeySubject = BehaviorSubject<Journey?>();
       when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
 
-      testee = JourneyValidationViewModel(journeyViewModel: mockJourneyViewModel);
+      testee = MultiBrakeSeriesSelectionViewModel(journeyViewModel: mockJourneyViewModel);
       testee.brakeSeriesModel.listen(brakeSeriesRegister.add);
       testee.editingBrakeSeriesModel.listen(editingBrakeSeriesRegister.add);
       return testAsync;

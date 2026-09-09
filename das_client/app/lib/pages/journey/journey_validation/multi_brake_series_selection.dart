@@ -1,8 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection_button.dart';
-import 'package:app/pages/journey/journey_validation/journey_validation_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
 import 'package:app/util/animation.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class MultiBrakeSeriesSelection extends StatefulWidget {
 }
 
 class _MultiBrakeSeriesSelectionState extends State<MultiBrakeSeriesSelection> {
-  final _viewModel = DI.get<JourneyValidationViewModel>();
+  final _viewModel = DI.get<MultiBrakeSeriesSelectionViewModel>();
 
   @override
   void initState() {

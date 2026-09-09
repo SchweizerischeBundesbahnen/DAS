@@ -55,7 +55,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerNotificationPriorityViewModel();
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
-    getIt.registerJourneyValidationViewModel();
+    getIt.registerMultiBrakeSeriesSelectionViewModel();
     _registerMockWarnAppViewModel();
     _registerMockExternalLinksRepository();
     _registerMockSimTrainViewModel();
