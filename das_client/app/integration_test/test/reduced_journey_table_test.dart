@@ -11,40 +11,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('reducedJourney_whenRouteVariantsPresent_thenDisplaysExpectedViaTexts|243:626', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-
-      await loadJourney(tester, trainNumber: 'T52');
-
-      await openReducedJourneyMenu(tester);
-
-      expect(
-        find.descendant(
-          of: _findDasTableRowOfReducedJourney('Rothrist'),
-          matching: find.text(l10n.w_route_variant_nbs_bahn_2000_via_nbs),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: _findDasTableRowOfReducedJourney('Däniken SO'),
-          matching: find.text(l10n.w_route_variant_eppenbergtunnel_via_eppenbergtunnel),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: _findDasTableRowOfReducedJourney('Rupperswil'),
-          matching: find.text(l10n.w_route_variant_heitersberg_via_brugg_baden),
-        ),
-        findsOneWidget,
-      );
-
-      await disconnect(tester);
-    });
-
     testWidgets('reducedJourney_whenNetworkChangePresent_thenDisplaysWithKm|BG8f0zcWS1hA8UmHb6XJ|tests:356', (
       tester,
     ) async {
@@ -159,6 +125,40 @@ void main() {
           '${Format.operationalTime(DateTime.parse('2025-05-12T16:36:12Z'))}';
       expect(
         find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeMontreuxPlanned)),
+        findsOneWidget,
+      );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('reducedJourney_whenRouteVariantsPresent_thenDisplaysExpectedViaTexts|243:626', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+
+      await loadJourney(tester, trainNumber: 'T52');
+
+      await openReducedJourneyMenu(tester);
+
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Mattstetten (Abzw)'),
+          matching: find.text(l10n.w_route_variant_nbs_bahn_2000_via_nbs),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Wöschnau SBB'),
+          matching: find.text(l10n.w_route_variant_eppenbergtunnel_via_eppenbergtunnel),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: _findDasTableRowOfReducedJourney('Killwangen-Spreitenbach'),
+          matching: find.text(l10n.w_route_variant_heitersberg_via_brugg_baden),
+        ),
         findsOneWidget,
       );
 

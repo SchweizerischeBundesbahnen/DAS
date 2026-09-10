@@ -65,7 +65,7 @@ void main() {
       emitsInOrder([
         isEmpty,
         {
-          10: RouteVariant.eppenbergtunnelViaSchoenenwerd,
+          12: RouteVariant.eppenbergtunnelViaSchoenenwerd,
         },
         isEmpty,
       ]),
@@ -138,6 +138,107 @@ void main() {
         data: [
           _servicePoint(order: 10, locationCode: 'CH02111'),
           _servicePoint(order: 11, locationCode: 'CH02125', isStop: true),
+        ],
+      ),
+    );
+    await processStreams();
+    await streamExpectation;
+  });
+
+  test('variantsByOrder_whenLocationCodesAreLowercase_thenStillResolvesVariant', () async {
+    // GIVEN journey data with lowercase location codes
+    final streamExpectation = expectLater(
+      testee.variantsByOrder,
+      emitsInOrder([
+        isEmpty,
+        {
+          3: RouteVariant.loetschbergViaBasistunnel,
+        },
+      ]),
+    );
+
+    // WHEN the journey is emitted
+    journeySubject.add(
+      Journey(
+        metadata: Metadata(),
+        data: [
+          _servicePoint(order: 1, locationCode: 'ch07478'),
+          _servicePoint(order: 2, locationCode: 'ch15669'),
+          _servicePoint(order: 3, locationCode: 'ch01609', isStop: true),
+        ],
+      ),
+    );
+    await processStreams();
+    await streamExpectation;
+  });
+
+  test('variantsByOrder_whenJourneyContainsMultipleSections_thenResolvesAllVariants', () async {
+    // GIVEN a journey containing two independent variant sections
+    final streamExpectation = expectLater(
+      testee.variantsByOrder,
+      emitsInOrder([
+        isEmpty,
+        {
+          3: RouteVariant.loetschbergViaBasistunnel,
+          6: RouteVariant.eppenbergtunnelViaSchoenenwerd,
+        },
+      ]),
+    );
+
+    // WHEN the journey is emitted
+    journeySubject.add(
+      Journey(
+        metadata: Metadata(),
+        data: [
+          _servicePoint(order: 1, locationCode: 'CH07478'),
+          _servicePoint(order: 2, locationCode: 'CH15669'),
+          _servicePoint(order: 3, locationCode: 'CH01609', isStop: true),
+          _servicePoint(order: 4, locationCode: 'CH02111'),
+          _servicePoint(order: 5, locationCode: 'CH19045'),
+          _servicePoint(order: 6, locationCode: 'CH02125', isStop: true),
+        ],
+      ),
+    );
+    await processStreams();
+    await streamExpectation;
+  });
+
+  test('variantsByOrder_whenSectionHasMultipleStopsOrNoStop_thenUsesExpectedAnchorPoint', () async {
+    // GIVEN one section with multiple stops and one section without stops
+    final streamExpectation = expectLater(
+      testee.variantsByOrder,
+      emitsInOrder([
+        isEmpty,
+        {
+          12: RouteVariant.eppenbergtunnelViaSchoenenwerd,
+        },
+        {
+          20: RouteVariant.eppenbergtunnelViaSchoenenwerd,
+        },
+      ]),
+    );
+
+    // WHEN the journey contains multiple stops within the same section
+    journeySubject.add(
+      Journey(
+        metadata: Metadata(),
+        data: [
+          _servicePoint(order: 10, locationCode: 'CH02111'),
+          _servicePoint(order: 11, locationCode: 'CH19045', isStop: true),
+          _servicePoint(order: 12, locationCode: 'CH02125', isStop: true),
+        ],
+      ),
+    );
+    await processStreams();
+
+    // WHEN no stop exists in the section
+    journeySubject.add(
+      Journey(
+        metadata: Metadata(),
+        data: [
+          _servicePoint(order: 18, locationCode: 'CH02111'),
+          _servicePoint(order: 19, locationCode: 'CH19045'),
+          _servicePoint(order: 20, locationCode: 'CH02125'),
         ],
       ),
     );

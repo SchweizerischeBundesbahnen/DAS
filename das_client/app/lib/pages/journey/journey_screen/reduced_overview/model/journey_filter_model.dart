@@ -37,7 +37,7 @@ class JourneyFilterModel({
     modifications,
   ];
 
-  /// Returns all data that should should be displayed based on active filters
+  /// Returns all data that should be displayed based on active filters
   Set<BaseData> getFilteredData() {
     final data = <BaseData>{};
     for (final filter in allFilters) {

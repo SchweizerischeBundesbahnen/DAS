@@ -22,7 +22,7 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z" plannedDepartureTime="9999-01-01T00:01:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="WANZ"/>
             </TimingPointReference>
@@ -37,14 +37,14 @@
         </TimingPointConstraints>
 
         <!-- Eppenbergtunnel: Däniken SO - Wöschnau SBB without BP3 -->
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="DK"/>
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:04:00Z" plannedDepartureTime="9999-01-01T00:04:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="WOES"/>
             </TimingPointReference>

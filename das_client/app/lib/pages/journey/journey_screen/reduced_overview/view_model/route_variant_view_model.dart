@@ -51,13 +51,13 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
       final sectionCodes = section.map(_locationCodeOf).toSet();
 
       final matchedVariant =
-          group.firstWhereOrNull(
+          group.lastWhereOrNull(
             (it) => it.bp3LocationCode != null && sectionCodes.contains(it.bp3LocationCode!.toUpperCase()),
           ) ??
           group.firstWhereOrNull((it) => it.bp3LocationCode == null);
       if (matchedVariant == null) continue;
 
-      final anchorPoint = section.firstWhereOrNull((it) => it.isStop) ?? section.last;
+      final anchorPoint = section.lastWhereOrNull((it) => it.isStop) ?? section.last;
       variantsByOrder[anchorPoint.order] = matchedVariant;
     }
 

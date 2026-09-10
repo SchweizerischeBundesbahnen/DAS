@@ -10,15 +10,17 @@ import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import '../../../../../test_util.dart';
 import 'reduced_overview_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyViewModel>(),
 ])
 void main() {
-  test('test metadata is correctly emitted', () {
+  test('model_whenJourneyEmits_thenContainsJourneyMetadata', () {
     final metadata = Metadata(timestamp: DateTime.now());
     final journeyViewModel = _setupJourneyViewModelMock(metadata, <BaseData>[]);
 
@@ -38,7 +40,7 @@ void main() {
     );
   });
 
-  test('test only service points with stop or communication network change are emitted', () {
+  test('model_whenJourneyHasStopsAndNetworkChanges_thenEmitsOnlyMandatoryRows', () {
     // GIVEN
     final stop1 = ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: [], isStop: true);
     final withoutStop = ServicePoint(
@@ -90,7 +92,7 @@ void main() {
     );
   });
 
-  test('test only relevant reduced overview data are emitted', () {
+  test('model_whenFilterDataIsAvailable_thenAddsRelevantFilterRows', () {
     // GIVEN
     final servicePoint = ServicePoint(
       name: '',
@@ -145,18 +147,17 @@ void main() {
     // THEN
     expect(
       viewModel.model,
-      emitsInOrder([
-        isA<ReducedTableLoading>(),
+      emitsThrough(
         isA<ReducedTableLoaded>().having(
           (it) => it.journeyTableRowData,
           'journeyTableRowData',
           [servicePoint, protectionSection, asrData],
         ),
-      ]),
+      ),
     );
   });
 
-  test('test duplicated ASR are removed', () {
+  test('model_whenAdjacentAsrRowsAreDuplicated_thenRemovesDuplicates', () {
     // GIVEN
     final asr1 = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 100, orderTo: 200);
     final asrData1 = AdditionalSpeedRestrictionData(restrictions: [asr1], order: 100, kilometre: []);
@@ -175,15 +176,73 @@ void main() {
     // THEN
     expect(
       viewModel.model,
-      emitsInOrder([
-        isA<ReducedTableLoading>(),
+      emitsThrough(
         isA<ReducedTableLoaded>().having(
           (it) => it.journeyTableRowData,
           'journeyTableRowData',
           [asrData1, asrData2],
         ),
-      ]),
+      ),
     );
+  });
+
+  test('model_whenRouteVariantExistsWithoutStop_thenEmitsAnchorServicePoint', () {
+    // GIVEN
+    final bp1 = ServicePoint(name: 'A', abbreviation: 'A', locationCode: 'CH02111', order: 100, kilometre: []);
+    final bp3 = ServicePoint(name: 'B', abbreviation: 'B', locationCode: 'CH19045', order: 200, kilometre: []);
+    final bp2 = ServicePoint(name: 'C', abbreviation: 'C', locationCode: 'CH02125', order: 300, kilometre: []);
+    final journeyViewModel = _setupJourneyViewModelMock(Metadata(), <BaseData>[bp1, bp3, bp2]);
+    final viewModel = ReducedOverviewViewModel(
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
+      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
+      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
+    );
+
+    // WHEN
+    // THEN
+    expect(
+      viewModel.model,
+      emitsThrough(
+        isA<ReducedTableLoaded>().having((it) => it.journeyTableRowData, 'journeyTableRowData', [bp2]),
+      ),
+    );
+  });
+
+  test('model_whenIndicationFilterIsActive_thenHidesIndicationRows', () async {
+    // GIVEN
+    final journeyViewModel = MockJourneyViewModel();
+    final stop = ServicePoint(name: 'S', abbreviation: 'S', locationCode: 'S', order: 100, kilometre: [], isStop: true);
+    final indication = OperationalIndication(order: 200, texts: const ['OPS']);
+    final journeySubject = BehaviorSubject<Journey?>.seeded(Journey(metadata: Metadata(), data: [stop, indication]));
+    when(journeyViewModel.journey).thenAnswer((_) => journeySubject.stream);
+
+    final routeVariantViewModel = RouteVariantViewModel(journeyViewModel: journeyViewModel);
+    final collapsibleRowsViewModel = _setupCollapsibleRowsViewModel(journeyViewModel);
+    final journeyFilterViewModel = _setupJourneyFilterViewModel(journeyViewModel);
+    final viewModel = ReducedOverviewViewModel(
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: routeVariantViewModel,
+      collapsibleRowsViewModel: collapsibleRowsViewModel,
+      journeyFilterViewModel: journeyFilterViewModel,
+    );
+
+    await processStreams();
+
+    // WHEN the indication filter is activated
+    final initialFilters = journeyFilterViewModel.modelValue!;
+    journeyFilterViewModel.toggleFilter(initialFilters.indication);
+    await processStreams();
+
+    // THEN optional indication rows are hidden while mandatory rows remain
+    final loadedModel = viewModel.modelValue as ReducedTableLoaded;
+    expect(loadedModel.journeyTableRowData, [stop]);
+
+    await journeySubject.close();
+    viewModel.dispose();
+    collapsibleRowsViewModel.dispose();
+    routeVariantViewModel.dispose();
+    journeyFilterViewModel.dispose();
   });
 }
 
