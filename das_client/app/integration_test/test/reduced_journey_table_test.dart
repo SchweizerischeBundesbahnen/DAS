@@ -131,7 +131,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('reducedJourney_whenRouteVariantsPresent_thenDisplaysExpectedViaTexts|243:626', (
+    testWidgets('reducedJourney_whenRouteVariantsPresent_thenDisplaysExpectedViaTexts|243:626|pSBiHPNaiwU3EWwuI8Wo', (
       tester,
     ) async {
       await IntegrationTestApp.start(tester);
@@ -161,6 +161,62 @@ void main() {
         ),
         findsOneWidget,
       );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('reducedJourney_whenFiltersToggled_thenDisplaysExpectedFilteredData|8gtxUlilUnE990rFs6TQ|tests:243', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+
+      await loadJourney(tester, trainNumber: 'T53');
+      await openReducedJourneyMenu(tester);
+
+      final reducedJourneyTable = _findTableOfReducedJourney();
+
+      expect(find.text(l10n.w_filter_bar_option_indications), findsOneWidget);
+      expect(find.text(l10n.w_filter_bar_option_protection_sections), findsOneWidget);
+      expect(find.text(l10n.w_filter_bar_option_addition_speed_restrictions), findsOneWidget);
+      expect(find.text(l10n.w_filter_bar_option_short_term_changes), findsOneWidget);
+      expect(find.text(l10n.w_filter_bar_option_modifications), findsOneWidget);
+
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.textContaining('Hinweise aus Betrieb')),
+        findsOneWidget,
+      );
+
+      await tapElement(tester, find.text(l10n.w_filter_bar_option_indications));
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.textContaining('Hinweise aus Betrieb')),
+        findsNothing,
+      );
+
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.100 - km 4.900')), findsAny);
+      await tapElement(tester, find.text(l10n.w_filter_bar_option_addition_speed_restrictions));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.100 - km 4.900')), findsNothing);
+
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('Station 3')), findsOneWidget);
+      await tapElement(tester, find.text(l10n.w_filter_bar_option_short_term_changes));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('Station 3')), findsNothing);
+
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 4.5')), findsOneWidget);
+      await tapElement(tester, find.text(l10n.w_filter_bar_option_protection_sections));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 4.5')), findsNothing);
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.5')), findsOneWidget);
+
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('S2')), findsOneWidget);
+      await tapElement(tester, find.text(l10n.w_filter_bar_option_modifications));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('S2')), findsNothing);
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.5')), findsNothing);
+
+      await tapElement(tester, find.text(l10n.w_filter_bar_reset_button));
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.textContaining('Hinweise aus Betrieb')),
+        findsOneWidget,
+      );
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.100 - km 4.900')), findsAny);
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('Station 3')), findsOneWidget);
 
       await disconnect(tester);
     });

@@ -1,9 +1,12 @@
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/journey_filter_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:core_data/component.dart';
+import 'package:logging/logging.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneyFilterViewModel');
 
 class JourneyFilterViewModel extends JourneyAwareViewModel {
   JourneyFilterViewModel({super.journeyViewModel}) {
@@ -19,6 +22,7 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
   void toggleFilter(FilterOption filter) {
     final currentModel = _rxModel.value;
     if (currentModel == null) return;
+    _log.info('Toggling filter: $filter');
 
     final newModel = JourneyFilterModel(
       indication: _toggleFilter(currentModel.indication, filter),
@@ -33,6 +37,8 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
   void resetFilters() {
     final currentModel = _rxModel.value;
     if (currentModel == null) return;
+
+    _log.info('Resetting filters');
 
     final newModel = JourneyFilterModel(
       indication: FilterOption(active: false, affectedData: currentModel.indication.affectedData),

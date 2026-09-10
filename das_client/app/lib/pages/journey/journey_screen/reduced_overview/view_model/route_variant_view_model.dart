@@ -51,7 +51,7 @@ class RouteVariantViewModel extends JourneyAwareViewModel {
       final sectionCodes = section.map(_locationCodeOf).toSet();
 
       final matchedVariant =
-          group.lastWhereOrNull(
+          group.firstWhereOrNull(
             (it) => it.bp3LocationCode != null && sectionCodes.contains(it.bp3LocationCode!.toUpperCase()),
           ) ??
           group.firstWhereOrNull((it) => it.bp3LocationCode == null);
