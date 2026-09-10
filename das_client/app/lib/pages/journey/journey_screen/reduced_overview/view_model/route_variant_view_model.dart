@@ -38,8 +38,8 @@ class RouteVariantViewModel({super.journeyViewModel}) extends JourneyAwareViewMo
 
     final variantsByOrder = <int, RouteVariant>{};
     for (final group in _variantsByBoundary.values) {
-      final bp1Code = group.first.bp1LocationCode.toUpperCase();
-      final bp2Code = group.first.bp2LocationCode.toUpperCase();
+      final bp1Code = group.first.fromLocationCode.toUpperCase();
+      final bp2Code = group.first.toLocationCode.toUpperCase();
 
       final bp1Index = points.indexWhere((it) => _locationCodeOf(it) == bp1Code);
       final bp2Index = points.indexWhere((it) => _locationCodeOf(it) == bp2Code);
@@ -52,9 +52,9 @@ class RouteVariantViewModel({super.journeyViewModel}) extends JourneyAwareViewMo
 
       final matchedVariant =
           group.firstWhereOrNull(
-            (it) => it.bp3LocationCode != null && sectionCodes.contains(it.bp3LocationCode!.toUpperCase()),
+            (it) => it.viaLocationCode != null && sectionCodes.contains(it.viaLocationCode!.toUpperCase()),
           ) ??
-          group.firstWhereOrNull((it) => it.bp3LocationCode == null);
+          group.firstWhereOrNull((it) => it.viaLocationCode == null);
       if (matchedVariant == null) continue;
 
       final anchorPoint = section.lastWhereOrNull((it) => it.isStop) ?? section.last;
@@ -65,7 +65,7 @@ class RouteVariantViewModel({super.journeyViewModel}) extends JourneyAwareViewMo
   }
 
   final Map<String, List<RouteVariant>> _variantsByBoundary = RouteVariant.values.groupListsBy(
-    (it) => '${it.bp1LocationCode}|${it.bp2LocationCode}',
+    (it) => '${it.fromLocationCode}|${it.toLocationCode}',
   );
 
   String _locationCodeOf(ServicePoint point) => point.locationCode.toUpperCase();
