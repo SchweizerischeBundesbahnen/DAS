@@ -38,6 +38,7 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerServicePointModalViewModel();
+    getIt.registerJourneyFilterViewModel();
 
     await getIt.allReady();
   }

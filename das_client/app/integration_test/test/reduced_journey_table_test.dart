@@ -42,10 +42,10 @@ void main() {
       await loadJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T14 ${companySBBP.shortName}'), findsAny);
+      expect(find.textContaining('T14 ${companySBBP.shortName}'), findsAny);
 
       final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
-      expect(find.text(formattedDate), findsOneWidget);
+      expect(find.textContaining(formattedDate), findsOneWidget);
 
       await disconnect(tester);
     });
@@ -105,10 +105,10 @@ void main() {
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
-      final expectedPlannedHeaderLabel = l10n.p_journey_table_time_label_planned;
+      final expectedHeaderLabel = l10n.p_journey_table_time_label_new;
 
       // GEN AEROPORT
-      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+      expect(find.text(expectedHeaderLabel), findsOneWidget);
       final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
       expect(find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeGenAerPlanned)), findsOneWidget);
 
