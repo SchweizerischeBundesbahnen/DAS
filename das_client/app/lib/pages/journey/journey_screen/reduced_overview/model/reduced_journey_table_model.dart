@@ -4,9 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
-sealed class ReducedJourneyTableModel {
-  ReducedJourneyTableModel._();
-}
+sealed class ReducedJourneyTableModel._();
 
 class ReducedTableLoading() extends ReducedJourneyTableModel {
   this : super._();

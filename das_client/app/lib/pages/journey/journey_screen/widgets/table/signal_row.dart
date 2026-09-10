@@ -30,6 +30,7 @@ class SignalRow extends CellRowBuilder<Signal> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Row(
+        mainAxisSize: .min,
         children: [
           _signalFunctions(context),
           Spacer(),
@@ -58,7 +59,9 @@ class SignalRow extends CellRowBuilder<Signal> {
           badge: const ModificationIcon(),
           child: Text(
             signalFunctions
-                .map((function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context))
+                .map(
+                  (function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context),
+                )
                 .join('/'),
             overflow: .ellipsis,
           ),

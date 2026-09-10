@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/journey_filter_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_variant.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -66,7 +69,7 @@ class ReducedOverviewViewModel({
       return;
     }
 
-    final relevantData = _mandatoryDataForReducedOverview(journey, variantsByOrder);
+    var relevantData = _mandatoryDataForReducedOverview(journey, variantsByOrder);
 
     if (filter != null) {
       _addFilterData(relevantData, filter);
@@ -74,6 +77,14 @@ class ReducedOverviewViewModel({
 
     relevantData.sort((a1, a2) => a1.compareTo(a2));
     _removeDuplicatedASR(relevantData);
+
+    relevantData = relevantData
+        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
+        .hideIndicationsForHiddenServicePoint()
+        .combineFootNoteAndIndications()
+        .sorted(
+          (a1, a2) => a1.compareTo(a2),
+        );
 
     _emitLoaded(
       ReducedTableLoaded(

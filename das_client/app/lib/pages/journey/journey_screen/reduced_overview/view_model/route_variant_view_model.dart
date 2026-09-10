@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class RouteVariantViewModel extends JourneyAwareViewModel {
-  RouteVariantViewModel({super.journeyViewModel}) {
+class RouteVariantViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
+  this {
     _updateVariants(lastJourney);
   }
 

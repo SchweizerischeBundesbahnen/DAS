@@ -44,13 +44,6 @@
   "p_login_login_button_text": "Login",
   "p_brake_load_slip_page_title": "Bollettino di frenatura",
   "p_brake_load_slip_header_title": "Categoria di treno e di freno {trainSeries} {brakeSeries}%",
-  "@p_brake_load_slip_header_title": {
-    "type": "text",
-    "placeholders": {
-      "trainSeries": {},
-      "brakeSeries": {}
-    }
-  },
   "p_brake_load_slip_header_subtitle": "Creato il ",
   "p_brake_load_slip_header_dangerous_goods": "Treno con merci pericolose",
   "p_brake_load_slip_header_car_carrier": "Carri a due piani per il trasporto di automobili carichi",
@@ -100,14 +93,6 @@
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": " fino a {endLocation}",
-  "@w_advised_speed_drive_until": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {
-        "type": "String"
-      }
-    }
-  },
   "w_advised_speed_vopt": "ADL VOpt {speed}km/h",
   "w_advised_speed_vmax": "ADL Vmax",
   "w_advised_speed_dist": "ADL DIST",
@@ -132,12 +117,6 @@
   "w_replacement_series_notification_available_text": "Per una parte dell’orario di marcia è disponibile la categoria di treno e di freno {replacementSeries}.",
   "w_replacement_series_notification_original_title": "La categoria di treno {originalSeries} è di nuovo disponibile da {station}",
   "w_replacement_series_notification_none_title": "La categoria di treno e di freno non è consentita da {fromStation}",
-  "@w_replacement_series_notification_none_title": {
-    "type": "text",
-    "placeholders": {
-      "fromStation": {}
-    }
-  },
   "w_replacement_series_notification_none_text": "Una parte della tratta non può essere percorsa con la categoria di treno e di freno selezionata.",
   "w_departure_process_dialog_title": "Processo di partenza",
   "w_departure_process_next_stop": "Prossima fermata",

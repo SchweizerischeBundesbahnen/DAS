@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class const FilterBar({required final JourneyFilterModel model, super.key}) extends StatelessWidget {
+class FilterBar extends StatelessWidget {
+  const FilterBar({required this.model, super.key});
+
+  final JourneyFilterModel model;
+
   @override
   Widget build(BuildContext context) {
     return Row(

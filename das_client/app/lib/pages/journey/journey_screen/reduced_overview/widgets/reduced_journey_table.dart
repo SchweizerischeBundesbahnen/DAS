@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/reduced_journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
@@ -27,7 +26,6 @@ import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -92,14 +90,7 @@ class ReducedJourneyTable extends StatelessWidget {
     double leftOffsetToInformationCell,
   ) {
     final settingsVM = DI.get<JourneySettingsViewModel>();
-
-    final baseData = model.journeyTableRowData
-        .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
-        .hideIndicationsForHiddenServicePoint()
-        .combineFootNoteAndIndications()
-        .sorted(
-          (a1, a2) => a1.compareTo(a2),
-        );
+    final baseData = model.journeyTableRowData;
 
     final journeyPosition = JourneyPositionModel();
     final chevronPosition = ChevronPositionModel();

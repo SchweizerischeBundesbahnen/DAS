@@ -8,8 +8,8 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyFilterViewModel');
 
-class JourneyFilterViewModel extends JourneyAwareViewModel {
-  JourneyFilterViewModel({super.journeyViewModel}) {
+class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
+  this {
     _updateFilters(lastJourney);
   }
 
@@ -72,7 +72,7 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
     final protectionSections = _extractProtectionSections(journey);
     final speedRestrictions = _extractSpeedRestrictions(journey);
     final shortTermChanges = _extractShortTermChanges(journey);
-    final tableModifications = _extractTableModifications(journey);
+    final modifications = _extractModifications(journey);
 
     final currentModel = _rxModel.value;
 
@@ -93,7 +93,7 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
         ),
         modifications: FilterOption(
           active: currentModel?.modifications.active ?? false,
-          affectedData: tableModifications,
+          affectedData: modifications,
         ),
       ),
     );
@@ -124,7 +124,7 @@ class JourneyFilterViewModel extends JourneyAwareViewModel {
     return affectedData;
   }
 
-  List<BaseData> _extractTableModifications(Journey journey) {
+  List<BaseData> _extractModifications(Journey journey) {
     return journey.data
         .whereType<JourneyPoint>()
         .where((point) => point.hasModificationUpdated || (point.isDeleted && !point.shouldHide))

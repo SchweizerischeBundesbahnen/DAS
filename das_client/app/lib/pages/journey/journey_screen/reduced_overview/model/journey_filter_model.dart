@@ -1,15 +1,10 @@
 import 'package:core_data/component.dart';
 
 /// Represents a single filter option with its active state and affected data
-class FilterOption {
-  final bool active;
-  final List<BaseData> affectedData;
-
-  const FilterOption({
-    required this.active,
-    required this.affectedData,
-  });
-
+class FilterOption({
+  required final bool active,
+  required final List<BaseData> affectedData,
+}) {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -46,12 +41,7 @@ class JourneyFilterModel({
     return data;
   }
 
-  bool get hasData =>
-      indication.affectedData.isNotEmpty ||
-      protectionSections.affectedData.isNotEmpty ||
-      additionalSpeedRestrictions.affectedData.isNotEmpty ||
-      shortTermChanges.affectedData.isNotEmpty ||
-      modifications.affectedData.isNotEmpty;
+  bool get hasData => allFilters.any((filter) => filter.affectedData.isNotEmpty);
 
   @override
   String toString() =>

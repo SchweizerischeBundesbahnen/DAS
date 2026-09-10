@@ -60,10 +60,7 @@ void main() {
       kilometre: [],
       isStop: false,
     );
-    final networkChange = CommunicationNetworkChange(
-      communicationNetworkType: CommunicationNetworkType.gsmR,
-      order: 400,
-    );
+    final networkChange = CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400);
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange, networkChange];
 
     final communicationNetworkChanges = [networkChange];

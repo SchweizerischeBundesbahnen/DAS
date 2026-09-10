@@ -1,7 +1,11 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:flutter/widgets.dart';
 
-enum RouteVariant {
+enum RouteVariant({
+  required final String bp1LocationCode,
+  required final String bp2LocationCode,
+  required final String? bp3LocationCode,
+}) {
   loetschbergViaBergstrecke(
     bp1LocationCode: 'CH07478',
     bp2LocationCode: 'CH01609',
@@ -91,17 +95,7 @@ enum RouteVariant {
     bp1LocationCode: 'CH09411',
     bp2LocationCode: 'CH05362',
     bp3LocationCode: 'CH15469',
-  );
-
-  RouteVariant({
-    required this.bp1LocationCode,
-    required this.bp2LocationCode,
-    required this.bp3LocationCode,
-  });
-
-  final String bp1LocationCode;
-  final String bp2LocationCode;
-  final String? bp3LocationCode;
+  ),
 }
 
 extension RouteVariantX on RouteVariant {
