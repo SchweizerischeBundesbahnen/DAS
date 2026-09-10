@@ -45,7 +45,7 @@ void main() {
       expect(find.textContaining('T14 ${companySBBP.shortName}'), findsAny);
 
       final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
-      expect(find.textContaining(formattedDate), findsOneWidget);
+      expect(find.textContaining(formattedDate), findsNWidgets(2));
 
       await disconnect(tester);
     });
@@ -108,12 +108,12 @@ void main() {
       final expectedHeaderLabel = l10n.p_journey_table_time_label_new;
 
       // GEN AEROPORT
-      expect(find.text(expectedHeaderLabel), findsOneWidget);
-      final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+      expect(find.text(expectedHeaderLabel), findsNWidgets(2));
+      final expectedTimeGenAerPlanned = Format.operationalTime(DateTime.parse('2025-05-12T16:14:20Z'));
       expect(find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeGenAerPlanned)), findsOneWidget);
 
       // LAUSANNE
-      final expectedTimeLausannePlanned = '${Format.plannedTime(DateTime.parse('2025-05-12T16:07:20Z'))}\n';
+      final expectedTimeLausannePlanned = '${Format.operationalTime(DateTime.parse('2025-05-12T17:07:10Z'))}\n';
       expect(
         find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeLausannePlanned)),
         findsOneWidget,
@@ -121,8 +121,8 @@ void main() {
 
       // MONTREUX should have both times
       final expectedTimeMontreuxPlanned =
-          '${Format.operationalTime(DateTime.parse('2025-05-12T16:35:12Z'))}\n'
-          '${Format.operationalTime(DateTime.parse('2025-05-12T16:36:12Z'))}';
+          '${Format.operationalTime(DateTime.parse('2025-05-12T17:35:12Z'))}\n'
+          '${Format.operationalTime(DateTime.parse('2025-05-12T17:36:42Z'))}';
       expect(
         find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeMontreuxPlanned)),
         findsOneWidget,
@@ -217,6 +217,45 @@ void main() {
       );
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 2.100 - km 4.900')), findsAny);
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('Station 3')), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets(
+      'reducedJourney_whenFilterOptionHasNoElements_thenFilterOptionIsNotDisplayed|NcEa7zkv9QkRSKPNEBmV|tests:243',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+
+        await loadJourney(tester, trainNumber: 'T35');
+        await openReducedJourneyMenu(tester);
+
+        expect(find.text(l10n.w_filter_bar_option_indications), findsNothing);
+        expect(find.text(l10n.w_filter_bar_option_protection_sections), findsOne);
+        expect(find.text(l10n.w_filter_bar_option_addition_speed_restrictions), findsNothing);
+        expect(find.text(l10n.w_filter_bar_option_short_term_changes), findsNothing);
+        expect(find.text(l10n.w_filter_bar_option_modifications), findsOne);
+        expect(find.text(l10n.w_filter_bar_reset_button), findsOne);
+
+        await disconnect(tester);
+      },
+    );
+
+    testWidgets('reducedJourney_whenFilterHasNoData_thenFilterBarIsNotDisplayed|zp6yldzlCiYryWGLwxfy|tests:243', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+
+      await loadJourney(tester, trainNumber: 'T52');
+      await openReducedJourneyMenu(tester);
+
+      expect(find.text(l10n.w_filter_bar_option_indications), findsNothing);
+      expect(find.text(l10n.w_filter_bar_option_protection_sections), findsNothing);
+      expect(find.text(l10n.w_filter_bar_option_addition_speed_restrictions), findsNothing);
+      expect(find.text(l10n.w_filter_bar_option_short_term_changes), findsNothing);
+      expect(find.text(l10n.w_filter_bar_option_modifications), findsNothing);
+      expect(find.text(l10n.w_filter_bar_reset_button), findsNothing);
 
       await disconnect(tester);
     });
