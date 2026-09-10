@@ -84,9 +84,11 @@ class JourneyTable extends StatelessWidget {
           TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
           TableLoaded() => KeyedSubtree(
             key: loadedJourneyTableKey,
-            child: Listener(
-              onPointerDown: (_) => advancementViewModel.resetIdleScrollTimer(),
-              onPointerUp: (_) => advancementViewModel.resetIdleScrollTimer(),
+            child: NotificationListener<UserScrollNotification>(
+              onNotification: (_) {
+                advancementViewModel.resetIdleScrollTimer();
+                return false;
+              },
               child: _table(context, model),
             ),
           ),

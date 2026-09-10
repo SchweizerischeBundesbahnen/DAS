@@ -13,6 +13,21 @@
   margin-left: sbb.pxToRem(3);
 }
 
+.lr-request {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: sbb.pxToRem(12);
+}
+
+.lr-request-field1 {
+  flex: 2 1 320px;
+}
+
+.lr-request-field2 {
+  flex: 1 1 140px;
+}
+
 .triggers {
   margin-bottom: sbb.pxToRem(16);
 

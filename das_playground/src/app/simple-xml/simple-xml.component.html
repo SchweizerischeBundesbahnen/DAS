@@ -1,1 +1,19 @@
+<button
+  (click)="toggleAll()"
+  class="simpleXML-toolbar-btn"
+  sbb-secondary-button
+  type="button"
+>
+  {{ allExpanded ? 'Collapse all' : 'Expand all' }}
+  <sbb-icon [svgIcon]="allExpanded ? 'chevron-small-up-circle-small' : 'chevron-small-down-circle-small'"></sbb-icon>
+</button>
+<button
+  (click)="copyToClipboard()"
+  class="simpleXML-toolbar-btn"
+  sbb-secondary-button
+  type="button"
+>
+  {{ copied ? 'Copied' : 'Copy' }}
+  <sbb-icon [svgIcon]="copied ? 'clipboard-tick-small' : 'clipboard-empty-small'"></sbb-icon>
+</button>
 <span class="simpleXML"></span>

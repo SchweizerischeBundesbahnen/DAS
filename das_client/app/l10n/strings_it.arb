@@ -5,6 +5,9 @@
   "p_train_selection_date_description": "Data",
   "p_train_selection_choose_date": "Seleziona data",
   "p_train_selection_date_not_today_warning": "La data selezionata non corrisponde alla data attuale.",
+  "p_train_selection_no_match_title": "Nessuna occorrenza trovata",
+  "p_train_selection_no_match_subtitle": "Verifica i dati o considera risultati simili.",
+  "p_train_selection_company_matches_title": "Orari di marcia con dati simili",
   "p_journey_header_button_dark_theme": "Modalità notturna",
   "p_journey_header_button_light_theme": "Modalità diurna",
   "p_journey_header_button_pause": "Pausa",
@@ -72,6 +75,10 @@
   "p_brake_load_slip_other_data_title": "Altre date",
   "p_brake_load_slip_other_data_valid_from": "Valido da",
   "p_brake_load_slip_other_data_rru": "RRU",
+  "p_brake_load_slip_brake_details_title": "Percorrenza ammessa",
+  "p_brake_load_slip_brake_details_brake_ratio_front": "Pendenza in discesa massima per il rapporto di frenatura minimo di parte (testa del treno) [‰]",
+  "p_brake_load_slip_brake_details_brake_ratio_back": "Pendenza in salita massima per il rapporto di frenatura minimo di parte (coda del treno) [‰]",
+  "p_brake_load_slip_brake_details_min_holding_force": "Pendenza massima per la forza di ritenuta minima [‰]",
   "p_brake_load_slip_brake_details_holding_force": "Forza di ritenuta [kN]",
   "p_brake_load_slip_hauled_load_title": "Peso rimorchiato",
   "p_brake_load_slip_hauled_load_total_vehicles": "Carri in totale",
@@ -89,6 +96,7 @@
   "p_brake_load_slip_button_apply_train_series": "Applica la categoria di treno/freno",
   "p_brake_load_slip_button_transport_documents": "Documento di trasporto",
   "p_brake_load_slip_no_data_available": "Nessun dato disponibile.",
+  "p_links_no_content": "Nessun link disponibile.",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": " fino a {endLocation}",
@@ -101,14 +109,6 @@
     }
   },
   "w_advised_speed_vopt": "ADL VOpt {speed}km/h",
-  "@w_advised_speed_vopt": {
-    "type": "text",
-    "placeholders": {
-      "speed": {
-        "type": "String"
-      }
-    }
-  },
   "w_advised_speed_vmax": "ADL Vmax",
   "w_advised_speed_dist": "ADL DIST",
   "w_extended_menu_title": "Altre funzionalità",
@@ -129,28 +129,8 @@
   "w_reauthentication_required_notification_button": "Login",
   "w_no_customer_oriented_departure_checklist_button": "Mostra processo di partenza",
   "w_replacement_series_notification_available_title": "Categoria supplementare da {fromStation} a {toStation}",
-  "@w_replacement_series_notification_available_title": {
-    "type": "text",
-    "placeholders": {
-      "fromStation": {},
-      "toStation": {}
-    }
-  },
   "w_replacement_series_notification_available_text": "Per una parte dell’orario di marcia è disponibile la categoria di treno e di freno {replacementSeries}.",
-  "@w_replacement_series_notification_available_text": {
-    "type": "text",
-    "placeholders": {
-      "replacementSeries": {}
-    }
-  },
   "w_replacement_series_notification_original_title": "La categoria di treno {originalSeries} è di nuovo disponibile da {station}",
-  "@w_replacement_series_notification_original_title": {
-    "type": "text",
-    "placeholders": {
-      "station": {},
-      "originalSeries": {}
-    }
-  },
   "w_replacement_series_notification_none_title": "La categoria di treno e di freno non è consentita da {fromStation}",
   "@w_replacement_series_notification_none_title": {
     "type": "text",
@@ -177,29 +157,12 @@
   "w_service_point_modal_graduated_speed_brake_series_title": "Categoria di treno",
   "w_service_point_modal_graduated_speed_no_information": "Nessuna informazione",
   "w_service_point_modal_local_regulations_label": "Disposizioni locali",
+  "w_service_point_modal_portal_label": "Portale delle stazioni",
   "w_service_point_row_background_label": "Passa al punto d’esercizio",
   "w_short_term_change_headerbox_flap_multiple_changes": "Sono state segnalate diverse modifiche all’orario di marcia.",
   "w_short_term_change_headerbox_flap_end_destination_change": "Inversione di corsa anticipata a {servicePointName}",
-  "@w_short_term_change_headerbox_flap_end_destination_change": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_stop_to_pass": "Transito straordinario a {servicePointName}",
-  "@w_short_term_change_headerbox_stop_to_pass": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_pass_to_stop": "Fermata straordinaria a {servicePointName}",
-  "@w_short_term_change_headerbox_pass_to_stop": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_flap_train_run_rerouting": "Deviazione all’interno dell’orario di marcia. Fare attenzione alle modifiche.",
   "w_additional_speed_restriction_modal_title": "Tratto di rallentamento",
   "w_additional_speed_restriction_modal_subtitle_count": "Quantità",
@@ -218,26 +181,7 @@
   "w_app_expired_dialog_title": "La versione è scaduta",
   "w_app_expires_soon_dialog_title": "La versione sta per scadere",
   "w_app_expired_dialog_body_title": "La versione {appVersion} di DAS è scaduta.",
-  "@w_app_expired_dialog_body_title": {
-    "type": "text",
-    "placeholders": {
-      "appVersion": {
-        "type": "String"
-      }
-    }
-  },
   "w_app_expires_soon_dialog_body_title": "La versione {appVersion} di DAS scadrà il {appVersionExpirationDate}.",
-  "@w_app_expires_soon_dialog_body_title": {
-    "type": "text",
-    "placeholders": {
-      "appVersion": {
-        "type": "String"
-      },
-      "appVersionExpirationDate": {
-        "type": "String"
-      }
-    }
-  },
   "w_app_expired_dialog_body_subTitle": "Aggiorna l’applicazione per poter continuare a utilizzarla.",
   "w_app_expires_soon_dialog_body_subTitle": "Aggiorna l’applicazione al più presto per poter continuare a utilizzare DAS anche dopo la data di scadenza.",
   "c_yes": "Si",
@@ -301,22 +245,13 @@
   "p_settings_page_decisive_gradient_title": "Pendenza determinante",
   "p_settings_page_decisive_gradient_show_setting": "Mostra pendenza",
   "p_settings_page_signal_title": "Rappresentazione dei segnali principali",
+  "p_settings_page_signal_station_setting": "Visualizza segnali della stazione e segnali di fine del binario",
+  "p_settings_page_ects_conventional_speed_signal_setting": "Visualizza segnale di fermata ETCS e segnale di posizione ETCS nel settore di velocità convenzionale",
+  "p_settings_page_ects_extended_speed_signal_setting": "Visualizza segnale di fermata ETCS e segnale di posizione ETCS nel settore di velocità estesa",
   "w_global_error_widget_title": "Errore imprevisto",
   "w_global_error_widget_description": "Si è verificato un errore imprevisto. Il messaggio di errore verrà inviato agli sviluppatori. Prova a riavviare l’app.",
   "w_shunting_movement_start": "Corsa di manovra {trainNumber}",
-  "@w_shunting_movement_start": {
-    "type": "text",
-    "placeholders": {
-      "trainNumber": {}
-    }
-  },
   "w_shunting_movement_end": "Corsa treno {trainNumber}",
-  "@w_shunting_movement_end": {
-    "type": "text",
-    "placeholders": {
-      "trainNumber": {}
-    }
-  },
   "w_brake_load_slip_notification_text": "È disponibile una nuova versione del bollettino di frenatura.",
   "w_disturbance_notification_text": "Insufficiente alimentazione con corrente di trazione",
   "w_departure_dispatch_notification_long": "Partenza prevista fra >30 Min",
@@ -332,7 +267,7 @@
   "w_user_tour_system_selection_label": "Sistema dei turni",
   "w_user_tour_system_selection_title": "Seleziona il sistema del turno",
   "w_user_tour_system_selection_none": "Nessuno",
-  "p_preload_page_title": "Precarica",
+  "p_diagnostic_page_title": "Diagnostica",
   "w_preload_status_title": "Precarica",
   "w_preload_status_downloaded": "Scaricato",
   "w_preload_status_initial": "In sospeso",
@@ -346,6 +281,15 @@
   "w_preload_status_missing_configuration": "Offline",
   "w_preload_status_last_update": "Stato dei dati",
   "w_preload_status_start_preload": "Avvia",
+  "w_settings_status_title": "Impostazioni API",
+  "w_settings_status_last_request_successful": "Ultima richiesta riuscita:",
+  "w_settings_status_last_successful_timestamp": "Data e ora ultima richiesta riuscita:",
+  "w_ru_feature_status_title": "Funzioni ITF",
+  "w_ru_feature_status_ru_label": "ITF",
+  "w_ru_feature_status_warnapp": "Funzione di avvertimento di segnale chiuso",
+  "w_ru_feature_status_customer_oriented_departure": "processo di partenza orientato alle esigenze della clientela",
+  "w_ru_feature_status_departure_process": "Processo di partenza",
+  "w_ru_feature_status_planned_time_deviation": "Scostamento rispetto al tempo previsto",
   "w_train_driver_turnover_row_title": "Cambio del personale di locomotiva",
   "w_suspicious_journey_point_warning": "Utilizza soluzione di ripiego",
   "w_suspicious_segment_notification_text": "L’immagine di guida contiene informazioni incomplete."
