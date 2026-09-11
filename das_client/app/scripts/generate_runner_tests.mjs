@@ -506,6 +506,54 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
   return RunnerSuccessfulTests.allObjects ?: @[];
 }
 
++ (NSString *)resultsFilePath {
+  NSString *directory = NSTemporaryDirectory();
+  return [directory stringByAppendingPathComponent:@"RunnerTestsResults.json"];
+}
+
+- (BOOL)loadRecordedResultsFromFile {
+  NSString *filePath = [RunnerTests resultsFilePath];
+  NSData *data = [NSData dataWithContentsOfFile:filePath];
+  if (data == nil) {
+    return NO;
+  }
+
+  NSError *error = nil;
+  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+  if (error != nil || ![json isKindOfClass:[NSDictionary class]]) {
+    return NO;
+  }
+
+  NSArray<NSString *> *successes = json[@"successes"];
+  NSArray<NSString *> *failures = json[@"failures"];
+  if (![successes isKindOfClass:[NSArray class]] || ![failures isKindOfClass:[NSArray class]]) {
+    return NO;
+  }
+
+  RunnerSuccessfulTests = [NSMutableSet setWithArray:successes];
+  RunnerTestFailures = [NSMutableArray arrayWithArray:failures];
+  return YES;
+}
+
+- (void)persistRecordedResultsToFile {
+  NSDictionary *json = @{
+    @"successes": RunnerSuccessfulTests.allObjects ?: @[],
+    @"failures": RunnerTestFailures ?: @[],
+  };
+
+  NSError *error = nil;
+  NSData *data = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:&error];
+  if (error != nil || data == nil) {
+    NSLog(@"Failed to serialize RunnerTests results: %@", error);
+    return;
+  }
+
+  NSString *filePath = [RunnerTests resultsFilePath];
+  if (![data writeToFile:filePath atomically:YES]) {
+    NSLog(@"Failed to write RunnerTests results to %@", filePath);
+  }
+}
+
 - (void)ensureIntegrationTestsExecuted {
   @synchronized([RunnerTests class]) {
     if (RunnerIntegrationTestsDidRun) {
@@ -513,6 +561,13 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
     }
 
     RunnerIntegrationTestsDidRun = YES;
+
+    // If a results file from a previous run already exists, read the outcome
+    // from it instead of executing the Flutter integration test suite again.
+    if ([self loadRecordedResultsFromFile]) {
+      return;
+    }
+
     RunnerTestFailures = [[NSMutableArray alloc] init];
     RunnerSuccessfulTests = [[NSMutableSet alloc] init];
 
@@ -525,6 +580,10 @@ static BOOL RunnerIntegrationTestsDidRun = NO;
         [RunnerTestFailures addObject:[NSString stringWithFormat:@"%@: %@", name, failureMessage ?: @"(no message)"]];
       }
     }];
+
+    // Persist the results so subsequent runs can reuse them without re-running
+    // the whole integration test suite.
+    [self persistRecordedResultsToFile];
   }
 }
 
@@ -586,8 +645,12 @@ function buildFileHeader() {
 //
 // This file creates one XCTest case per Flutter integration test found under
 // app/integration_test/test. The Flutter test suite is executed lazily once and
-// stores successful test selector names in RunnerSuccessfulTests.
-// Each generated XCTest validates that its selector name appears in that list.
+// the successful/failed test selector names are written to a JSON results file
+// (see +resultsFilePath). Each generated XCTest validates that its selector name
+// appears in that recorded list.
+//
+// If the results file already exists, the outcome is read from it instead of
+// executing the Flutter integration test suite again.
 //
 // The original motivation is to avoid the Xcode 15+ construction watchdog while
 // still exposing individual XCTest results instead of a single aggregate test.`;
