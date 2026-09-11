@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 
 void main() {
@@ -373,6 +376,190 @@ void main() {
       // THEN
       expect(resultList, hasLength(1));
       expect((resultList.single as Signal).order, 3);
+    },
+  );
+
+  test(
+    'removeIrrelevantServicePoints_whenHasAdditionalServicePoints_thenRemovesOnlyNonRelevantAdditionalServicePoints',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(
+          name: 'Bern (Depot)',
+          abbreviation: 'BDP',
+          locationCode: 'BDP',
+          order: 1000,
+          kilometre: [10.0],
+          isAdditional: true,
+        ),
+        ServicePoint(
+          name: 'Bern Hidden Stop',
+          abbreviation: 'BHS',
+          locationCode: 'BHS',
+          order: 1200,
+          kilometre: [12.0],
+          isAdditional: true,
+          isStop: true,
+        ),
+        ServicePoint(name: 'Bern', abbreviation: 'BRN', locationCode: 'BRN', order: 1600, kilometre: [16.0]),
+        ServicePoint(
+          name: 'Olten Ost (Abzw)',
+          abbreviation: 'OOA',
+          locationCode: 'OOA',
+          order: 2000,
+          kilometre: [20.0],
+          isAdditional: true,
+        ),
+        ServicePoint(
+          name: 'Olten VL',
+          abbreviation: 'OVL',
+          locationCode: 'OVL',
+          order: 2300,
+          kilometre: [23.0],
+          isAdditional: true,
+        ),
+        ServicePoint(
+          name: 'Olten Nord (Abzw)',
+          abbreviation: 'ONA',
+          locationCode: 'ONA',
+          order: 2400,
+          kilometre: [24.0],
+          isAdditional: true,
+        ),
+        ServicePoint(
+          name: 'Olten Tunnel (Spw)',
+          abbreviation: 'OTS',
+          locationCode: 'OTS',
+          order: 2600,
+          kilometre: [26.0],
+          isAdditional: true,
+        ),
+        ServicePoint(
+          name: 'Olten Hidden Stop',
+          abbreviation: 'OHS',
+          locationCode: 'OHS',
+          order: 2800,
+          kilometre: [28.0],
+          isAdditional: true,
+          isStop: true,
+        ),
+        ServicePoint(name: 'Olten', abbreviation: 'OLT', locationCode: 'OLT', order: 3000, kilometre: [30.0]),
+        ServicePoint(
+          name: 'Dulliken (Depot)',
+          abbreviation: 'DDP',
+          locationCode: 'DDP',
+          order: 3100,
+          kilometre: [31.0],
+          isAdditional: true,
+        ),
+        ServicePoint(name: 'Dulliken', abbreviation: 'DLK', locationCode: 'DLK', order: 3200, kilometre: [32.0]),
+      ];
+
+      final calculatedSpeeds = SplayTreeMap<int, SingleSpeed?>.from({
+        1600: SingleSpeed(value: '120'),
+        2000: SingleSpeed(value: '95'),
+        2600: SingleSpeed(value: '90'),
+        3100: SingleSpeed(value: '80'),
+      });
+
+      // WHEN
+      final result = baseData.removeIrrelevantServicePoints(calculatedSpeeds).toList();
+      final additionalServicePointNames = result
+          .whereType<ServicePoint>()
+          .where((it) => it.isAdditional)
+          .map((it) => it.name)
+          .toList();
+
+      // THEN
+      expect(additionalServicePointNames, <String>[
+        'Bern (Depot)',
+        'Bern Hidden Stop',
+        'Olten Ost (Abzw)',
+        'Olten Tunnel (Spw)',
+        'Olten Hidden Stop',
+        'Dulliken (Depot)',
+      ]);
+      expect(additionalServicePointNames, isNot(contains('Olten VL')));
+      expect(additionalServicePointNames, isNot(contains('Olten Nord (Abzw)')));
+    },
+  );
+
+  test(
+    'removeIrrelevantServicePoints_whenAdditionalServicePointIsFirstOrLast_thenAlwaysKeep',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(
+          name: 'Start Depot',
+          abbreviation: 'SDP',
+          locationCode: 'SDP',
+          order: 100,
+          kilometre: [1.0],
+          isAdditional: true,
+        ),
+        ServicePoint(name: 'Middle', abbreviation: 'MID', locationCode: 'MID', order: 200, kilometre: [2.0]),
+        ServicePoint(
+          name: 'End Depot',
+          abbreviation: 'EDP',
+          locationCode: 'EDP',
+          order: 300,
+          kilometre: [3.0],
+          isAdditional: true,
+        ),
+      ];
+
+      // WHEN
+      final result = baseData.removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?>()).toList();
+
+      // THEN
+      expect(result.whereType<ServicePoint>().map((it) => it.name).toList(), <String>[
+        'Start Depot',
+        'Middle',
+        'End Depot',
+      ]);
+    },
+  );
+
+  test(
+    'hideIndicationsForHiddenServicePoint_whenServicePointForIndicationExists_thenKeepsIndications',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'Bern', abbreviation: 'BRN', locationCode: 'BRN', order: 100, kilometre: [10.0]),
+        OperationalIndication(order: 100, texts: ['Gleiswechsel']),
+        RuIndication(order: 100, title: 'RU', text: 'Hinweis'),
+      ];
+
+      // WHEN
+      final result = baseData.hideIndicationsForHiddenServicePoint().toList();
+
+      // THEN
+      expect(result, hasLength(3));
+      expect(result.whereType<OperationalIndication>(), hasLength(1));
+      expect(result.whereType<RuIndication>(), hasLength(1));
+    },
+  );
+
+  test(
+    'hideIndicationsForHiddenServicePoint_whenServicePointForIndicationMissing_thenRemovesOperationalAndRuIndicationsOnly',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'Bern', abbreviation: 'BRN', locationCode: 'BRN', order: 100, kilometre: [10.0]),
+        OperationalIndication(order: 200, texts: ['Nur intern']),
+        RuIndication(order: 300, title: 'RU', text: 'Ausblenden'),
+        Signal(order: 300, kilometre: [30.0], functions: [SignalFunction.block]),
+      ];
+
+      // WHEN
+      final result = baseData.hideIndicationsForHiddenServicePoint().toList();
+
+      // THEN
+      expect(result, hasLength(2));
+      expect(result.whereType<ServicePoint>(), hasLength(1));
+      expect(result.whereType<Signal>(), hasLength(1));
+      expect(result.whereType<OperationalIndication>(), isEmpty);
+      expect(result.whereType<RuIndication>(), isEmpty);
     },
   );
 }

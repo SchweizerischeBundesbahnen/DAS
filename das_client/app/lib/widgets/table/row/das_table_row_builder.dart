@@ -22,7 +22,6 @@ abstract class DASTableRowBuilder<T> {
     required this.rowIndex,
     this.decoration,
     this.stickyLevel = .none,
-    this.identifier,
     GlobalKey? key,
   }) : key = key ?? _getRowKey(data.hashCode ^ rowIndex ^ height.hashCode);
 
@@ -33,6 +32,5 @@ abstract class DASTableRowBuilder<T> {
   final T data;
   final int rowIndex;
   final DASTableRowDecoration? decoration;
-  final String? identifier;
   final GlobalKey key;
 }

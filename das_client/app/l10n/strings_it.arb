@@ -253,7 +253,7 @@
   "w_preload_status_error": "Errato",
   "w_preload_status_metric_jp": "Orari di marcia",
   "w_preload_status_metric_sp": "Segmenti:",
-  "w_preload_status_metric_tc":	"Informazioni sul treno:",
+  "w_preload_status_metric_tc": "Informazioni sul treno:",
   "w_preload_status_state_text": "Stato: ",
   "w_preload_status_idle": "Pronto",
   "w_preload_status_running": "Sincronizza...",
