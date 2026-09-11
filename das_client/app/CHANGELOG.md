@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.52.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.51.0...das_client-v0.52.0) (2026-09-11)
+
+
+### Features
+
+* automatic scroll timer only reset by scroll gesture from user ([#1923](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1923)) ([#2774](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2774)) ([0bbf5ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0bbf5ffcd85461e11520f6cf6fc50ea490eda8c8))
+* update reduced journey overview ([#243](https://github.com/SchweizerischeBundesbahnen/DAS/issues/243)) ([#2791](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2791)) ([14e02d6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/14e02d6f841e703cbebb0c5b6a66563b82aa1b50))
+
+
+### Bug Fixes
+
+* empty companies list after install ([#2775](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2775)) ([#2776](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2776)) ([ab4d5c5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ab4d5c536659bc127ee3f21630f953b8257fe4a9))
+
 ## [0.51.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.50.1...das_client-v0.51.0) (2026-09-07)
 
 
