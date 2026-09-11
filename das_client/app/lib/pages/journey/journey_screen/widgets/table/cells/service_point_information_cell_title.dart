@@ -1,9 +1,11 @@
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/das_badge_overlay.dart';
 import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/short_term_change_exclamation_icon.dart';
 import 'package:app/widgets/u_turn_icon.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -14,8 +16,6 @@ class ServicePointInformationCellTitle extends StatelessWidget {
     required this.isStation,
     required this.trackGroup,
     required this.shortTermChange,
-    required this.isModalOpenValue,
-    required this.isModalOpenStream,
     super.key,
     this.showModification = false,
   });
@@ -25,15 +25,15 @@ class ServicePointInformationCellTitle extends StatelessWidget {
   final bool isStation;
   final String? trackGroup;
   final ShortTermChange? shortTermChange;
-  final bool isModalOpenValue;
-  final Stream<bool> isModalOpenStream;
   final bool showModification;
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.read<ModalViewModel>();
+
     return StreamBuilder<bool>(
-      stream: isModalOpenStream,
-      initialData: isModalOpenValue,
+      stream: vm.isModalOpen,
+      initialData: vm.isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.requireData;
         Widget textTitle = DASBadgeOverlay(

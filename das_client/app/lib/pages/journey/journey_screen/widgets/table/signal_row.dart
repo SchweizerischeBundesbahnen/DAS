@@ -47,9 +47,11 @@ class SignalRow extends CellRowBuilder<Signal> {
       signalFunctions = signalFunctions.where((function) => function != .laneChange && function != .unknown);
     }
 
+    final vm = context.read<ModalViewModel>();
+
     return StreamBuilder(
-      stream: isModalOpenStream(context),
-      initialData: isModalOpenValue(context),
+      stream: vm.isModalOpen,
+      initialData: vm.isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.data ?? false;
 
@@ -69,10 +71,6 @@ class SignalRow extends CellRowBuilder<Signal> {
       },
     );
   }
-
-  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
-
-  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
 
   @override
   DASTableCell iconsCell1(BuildContext context) {

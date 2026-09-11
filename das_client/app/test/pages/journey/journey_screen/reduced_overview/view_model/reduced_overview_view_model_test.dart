@@ -42,24 +42,10 @@ void main() {
 
   test('model_whenJourneyHasStopsAndNetworkChanges_thenEmitsOnlyMandatoryRows', () {
     // GIVEN
-    final stop1 = ServicePoint(name: '', abbreviation: '', locationCode: '', order: 100, kilometre: [], isStop: true);
-    final withoutStop = ServicePoint(
-      name: '',
-      abbreviation: '',
-      locationCode: '',
-      order: 200,
-      kilometre: [],
-      isStop: false,
-    );
-    final stop2 = ServicePoint(name: '', abbreviation: '', locationCode: '', order: 300, kilometre: [], isStop: true);
-    final withoutStopWithNetworkChange = ServicePoint(
-      name: '',
-      abbreviation: '',
-      locationCode: '',
-      order: 400,
-      kilometre: [],
-      isStop: false,
-    );
+    final stop1 = _servicePoint(order: 100, isStop: true);
+    final withoutStop = _servicePoint(order: 200);
+    final stop2 = _servicePoint(order: 300, isStop: true);
+    final withoutStopWithNetworkChange = _servicePoint(order: 400);
     final networkChange = CommunicationNetworkChange(communicationNetworkType: .gsmR, order: 400);
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange, networkChange];
 
@@ -91,14 +77,7 @@ void main() {
 
   test('model_whenFilterDataIsAvailable_thenAddsRelevantFilterRows', () {
     // GIVEN
-    final servicePoint = ServicePoint(
-      name: '',
-      abbreviation: '',
-      locationCode: '',
-      order: 100,
-      kilometre: [],
-      isStop: true,
-    );
+    final servicePoint = _servicePoint(order: 100, isStop: true);
     final curve = CurvePoint(order: 200, kilometre: []);
     final signal = Signal(order: 300, kilometre: []);
     final protectionSection = ProtectionSection(isOptional: true, isLong: true, order: 400, kilometre: []);
@@ -185,9 +164,9 @@ void main() {
 
   test('model_whenRouteVariantExistsWithoutStop_thenEmitsAnchorServicePoint', () {
     // GIVEN
-    final bp1 = ServicePoint(name: 'A', abbreviation: 'A', locationCode: 'CH02111', order: 100, kilometre: []);
-    final bp3 = ServicePoint(name: 'B', abbreviation: 'B', locationCode: 'CH19045', order: 200, kilometre: []);
-    final bp2 = ServicePoint(name: 'C', abbreviation: 'C', locationCode: 'CH02125', order: 300, kilometre: []);
+    final bp1 = _servicePoint(name: 'A', abbreviation: 'A', locationCode: 'CH02111', order: 100);
+    final bp3 = _servicePoint(name: 'B', abbreviation: 'B', locationCode: 'CH19045', order: 200);
+    final bp2 = _servicePoint(name: 'C', abbreviation: 'C', locationCode: 'CH02125', order: 300);
     final journeyViewModel = _setupJourneyViewModelMock(Metadata(), <BaseData>[bp1, bp3, bp2]);
     final viewModel = ReducedOverviewViewModel(
       journeyViewModel: journeyViewModel,
@@ -209,7 +188,7 @@ void main() {
   test('model_whenIndicationFilterIsActive_thenHidesIndicationRows', () async {
     // GIVEN
     final journeyViewModel = MockJourneyViewModel();
-    final stop = ServicePoint(name: 'S', abbreviation: 'S', locationCode: 'S', order: 100, kilometre: [], isStop: true);
+    final stop = _servicePoint(name: 'S', abbreviation: 'S', locationCode: 'S', order: 100, isStop: true);
     final indication = OperationalIndication(order: 200, texts: const ['OPS']);
     final journeySubject = BehaviorSubject<Journey?>.seeded(Journey(metadata: Metadata(), data: [stop, indication]));
     when(journeyViewModel.journey).thenAnswer((_) => journeySubject.stream);
@@ -261,4 +240,22 @@ CollapsibleRowsViewModel _setupCollapsibleRowsViewModel(JourneyViewModel journey
 
 JourneyFilterViewModel _setupJourneyFilterViewModel(JourneyViewModel journeyViewModel) {
   return JourneyFilterViewModel(journeyViewModel: journeyViewModel);
+}
+
+ServicePoint _servicePoint({
+  String name = '',
+  String abbreviation = '',
+  String locationCode = '',
+  int order = 0,
+  List<double> kilometre = const [],
+  bool isStop = false,
+}) {
+  return ServicePoint(
+    name: name,
+    abbreviation: abbreviation,
+    locationCode: locationCode,
+    order: order,
+    kilometre: kilometre,
+    isStop: isStop,
+  );
 }

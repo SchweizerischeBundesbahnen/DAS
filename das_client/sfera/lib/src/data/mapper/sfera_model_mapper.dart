@@ -54,7 +54,7 @@ class SferaModelMapper._() {
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
-    var segmentJourneyData = segmentProfileReferences
+    final segmentJourneyData = segmentProfileReferences
         .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
         .flattened;
 

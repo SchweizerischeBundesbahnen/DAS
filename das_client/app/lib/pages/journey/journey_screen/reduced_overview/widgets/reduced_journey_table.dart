@@ -5,7 +5,6 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/red
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/filter_bar.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_service_point_row.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/rows/reduced_signal_row.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
@@ -19,6 +18,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_co
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -154,13 +154,14 @@ class ReducedJourneyTable extends StatelessWidget {
             showModificationOnInformationCell: true,
           );
         case .signal:
-          return ReducedSignalRow(
+          return SignalRow(
             key: GlobalKey(),
             metadata: model.journeyMetadata,
             data: rowData as Signal,
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
+            showModificationOnInformationCell: true,
           );
         case .speedChange:
           return SpeedChangeRow(

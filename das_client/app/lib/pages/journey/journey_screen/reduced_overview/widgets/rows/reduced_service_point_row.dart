@@ -48,8 +48,6 @@ class ReducedServicePointRow extends ServicePointRow {
         crossAxisAlignment: .start,
         children: [
           ServicePointInformationCellTitle(
-            isModalOpenValue: isModalOpenValue(context),
-            isModalOpenStream: isModalOpenStream(context),
             name: data.betweenBrackets ? '(${data.name})' : data.name,
             foregroundColor: null,
             isStation: data.isStation,
@@ -113,12 +111,6 @@ class ReducedServicePointRow extends ServicePointRow {
       ),
     );
   }
-
-  @override
-  Stream<bool> isModalOpenStream(BuildContext context) => Stream.value(false).asBroadcastStream();
-
-  @override
-  bool isModalOpenValue(BuildContext context) => false;
 
   Widget _routeVariantText(BuildContext context) {
     if (_routeVariant == null) return SizedBox.shrink();
