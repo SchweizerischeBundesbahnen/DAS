@@ -5,7 +5,7 @@ class RSFlipFlop {
       _updatesCountLetzteErkanntePositiveSchwelle = _kNoPositiveSchwelle;
 
   // Sentinel-Wert, entspricht NSUIntegerMax im Original.
-  static const int _kNoPositiveSchwelle = -1;
+  static final int _kNoPositiveSchwelle = double.maxFinite.toInt();
 
   List<bool> _lastSet;
   List<bool> _lastReset;
