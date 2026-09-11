@@ -4,7 +4,7 @@ class RSFlipFlop {
       _lastReset = List<bool>.filled(sizeReset, false),
       _updatesCountLetzteErkanntePositiveSchwelle = _kNoPositiveSchwelle;
 
-  // Sentinel-Wert, entspricht NSUIntegerMax im Original.
+  // Sentinel value, corresponds to NSUIntegerMax in the original.
   static final int _kNoPositiveSchwelle = double.maxFinite.toInt();
 
   List<bool> _lastSet;
@@ -48,10 +48,10 @@ class RSFlipFlop {
     }
     _lastReset = valuesReset;
 
-    // Schwellenerkennung
+    // Threshold detection
     positiveSchwelleErkannt = !oldState && state;
 
-    // Anzahl Samples zwischen zwei PositivenSchwellen prüfen
+    // Check number of samples between two positive thresholds
     bool doSoftset = false;
     if (positiveSchwelleErkannt) {
       if (_updatesCountLetzteErkanntePositiveSchwelle != _kNoPositiveSchwelle &&
@@ -63,7 +63,7 @@ class RSFlipFlop {
       }
     }
 
-    // Softset
+    // Soft set
     final softSetPositivIndex = _firstPositivIndex(valuesSoftSet);
     if (!state && softSetPositivIndex != null) {
       state = true;
@@ -76,12 +76,12 @@ class RSFlipFlop {
       softSetErkannt = false;
     }
 
-    // negative Schwellenerkennung
+    // Negative threshold detection
     negativeSchwelleErkannt = oldState && !state;
   }
 
-  /// Gibt den 1-basierten Index des ersten positiven Wertes zurück, sonst null.
-  /// Entspricht hasPositivValue:firstPositivIndex: im Original.
+  /// Returns the 1-based index of the first positive value, otherwise null.
+  /// Corresponds to hasPositivValue:firstPositivIndex: in the original.
   int? _firstPositivIndex(List<bool> newValues) {
     for (int i = 0; i < newValues.length; i++) {
       if (newValues[i]) {
@@ -91,8 +91,8 @@ class RSFlipFlop {
     return null;
   }
 
-  /// Gibt den 1-basierten Index der ersten steigenden Flanke zurück, sonst null.
-  /// Entspricht hasChanged:other:changedIndex: im Original.
+  /// Returns the 1-based index of the first rising edge, otherwise null.
+  /// Corresponds to hasChanged:other:changedIndex: in the original.
   int? _firstRisingEdgeIndex(List<bool> lastValues, List<bool> newValues) {
     for (int i = 0; i < newValues.length; i++) {
       if (!lastValues[i] && newValues[i]) {
