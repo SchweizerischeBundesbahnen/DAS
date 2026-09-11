@@ -21,8 +21,8 @@ test.describe('app versions test', () => {
     await page.goto('das-admin/app-versions');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Blockierte App Versionen');
 
-    const row = findRow(page, TEST_IS_MINIMAL);
-    const updatedRow = findRow(page, TEST_IS_MINIMAL_UPDATED);
+    const row = findRow(page, TEST_VERSION, TEST_IS_MINIMAL);
+    const updatedRow = findRow(page, TEST_VERSION, TEST_IS_MINIMAL_UPDATED);
 
     // clean up leftover from previous run if present
     await deleteEntryIfExists(page, row);
