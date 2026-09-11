@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.16.0...backend-v0.17.0) (2026-09-11)
+
+
+### Features
+
+* adapt transport paper api ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2757](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2757)) ([c2e4bec](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c2e4bec1385e4f39e3945fe3cf6ca20afa5064a6))
+* add AWS S3 region to settings endpoint preload object ([#2642](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2642)) ([#2722](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2722)) ([b383b70](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b383b7062a77c76be9b4932c3ed5325f5da3ee1d))
+* add personal notes api ([#2256](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2256)) ([#2728](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2728)) ([1be0047](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1be0047b703f51483c92800617eb1404db73376c))
+* add user properties api ([#2258](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2258)) ([#2727](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2727)) ([1c0eece](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1c0eececcd57d326faf3a198c2b9cba02d80fb5b))
+* clean up user properties and personal notes by user activity ([#2133](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2133)) ([#2766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2766)) ([ebf2844](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ebf2844630360690e47b2a95691cb8d5f5bcd206))
+* transport paper proxy api and mock client ([#1619](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1619)) ([#2587](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2587)) ([498cbb5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/498cbb53ac384b919bb7238e230ad6dfaa4bc73a))
+
+
+### Bug Fixes
+
+* formation upsert transaction ([#2609](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2609)) ([1d618aa](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1d618aa9b1987f2e0d7cbc3a9739a00202662c7c))
+
 ## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.15.0...backend-v0.16.0) (2026-08-11)
 
 
