@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 
-class NoOpDetailModalViewModel() extends ModalViewModel {
+class NoOpModalViewModel() extends ModalViewModel {
   @override
   void close() {}
 

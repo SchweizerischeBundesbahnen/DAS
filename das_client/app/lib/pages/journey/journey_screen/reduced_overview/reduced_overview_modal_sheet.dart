@@ -2,7 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
-import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/no_op_detail_modal_view_model.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/no_op_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
@@ -51,7 +51,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
           lazy: false,
         ),
         Provider<ModalViewModel>(
-          create: (_) => NoOpDetailModalViewModel(),
+          create: (_) => NoOpModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
           lazy: false,
         ),
