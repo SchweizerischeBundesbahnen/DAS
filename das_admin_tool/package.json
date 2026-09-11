@@ -40,7 +40,7 @@
     "@angular/localize": "22.1.5",
     "@eslint/css": "2.0.0",
     "@eslint/js": "10.0.1",
-    "@eslint/json": "2.0.1",
+    "@eslint/json": "2.1.0",
     "@playwright/test": "1.62.1",
     "@types/ineum": "216.0.4",
     "@types/node": "26.4.1",
