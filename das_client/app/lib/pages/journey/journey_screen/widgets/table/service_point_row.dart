@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
@@ -14,6 +15,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_poi
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
@@ -42,7 +44,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static double calculateHeight(ServicePoint data, BrakeSeries? currentBrakeSeries) {
     final properties = data.propertiesFor(currentBrakeSeries);
 
-    if (properties.isEmpty) return baseRowHeight;
+    if (properties.isEmpty || _hideStationProperties) return baseRowHeight;
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
@@ -326,6 +328,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   List<Widget> _stationProperties(BuildContext context) {
+    if (_hideStationProperties) return [];
+
     final currentBrakeSeries = config.settings.currentBrakeSeries;
     final properties = data.propertiesFor(currentBrakeSeries);
     if (properties.isEmpty) return [];
@@ -398,4 +402,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (_isNextStop) return null;
     return super.specialCellColor;
   }
+
+  static bool get _hideStationProperties => DI.get<ValidationModeViewModel>().validationModeValue;
 }

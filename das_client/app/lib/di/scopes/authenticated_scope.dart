@@ -3,6 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -71,6 +72,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     getIt.registerWarnAppViewModel();
+    getIt.registerMultiBrakeSeriesSelectionViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
 
     await getIt.allReady();
@@ -270,6 +272,14 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerNotificationPriorityViewModel() {
     registerSingletonAsync(
       () async => NotificationPriorityQueueViewModel(),
+      dependsOn: [JourneyViewModel],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerMultiBrakeSeriesSelectionViewModel() {
+    registerSingletonAsync(
+      () async => MultiBrakeSeriesSelectionViewModel(),
       dependsOn: [JourneyViewModel],
       dispose: (vm) => vm.dispose(),
     );

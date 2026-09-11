@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
@@ -44,6 +45,9 @@ import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journe
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
@@ -74,25 +78,31 @@ class JourneyTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
+    final multiBrakeSeriesVM = DI.get<MultiBrakeSeriesSelectionViewModel>();
 
-    return StreamBuilder<JourneyTableModel>(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        final model = snapshot.requireData;
-        return switch (model) {
-          TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
-          TableLoaded() => KeyedSubtree(
-            key: loadedJourneyTableKey,
-            child: NotificationListener<UserScrollNotification>(
-              onNotification: (_) {
-                advancementViewModel.resetIdleScrollTimer();
-                return false;
-              },
-              child: _table(context, model),
-            ),
-          ),
-        };
+    return StreamBuilder(
+      stream: multiBrakeSeriesVM.brakeSeriesModel,
+      builder: (context, asyncSnapshot) {
+        return StreamBuilder<JourneyTableModel>(
+          stream: viewModel.model,
+          initialData: viewModel.modelValue,
+          builder: (context, snapshot) {
+            final model = snapshot.requireData;
+            return switch (model) {
+              TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
+              TableLoaded() => KeyedSubtree(
+                key: loadedJourneyTableKey,
+                child: NotificationListener<UserScrollNotification>(
+                  onNotification: (_) {
+                    advancementViewModel.resetIdleScrollTimer();
+                    return false;
+                  },
+                  child: _table(context, model),
+                ),
+              ),
+            };
+          },
+        );
       },
     );
   }
@@ -376,6 +386,8 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
+    if (DI.get<ValidationModeViewModel>().validationModeValue) return _validationJourneyTable(context);
+
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
@@ -563,5 +575,56 @@ class JourneyTable extends StatelessWidget {
         ? rowBuilders.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
         : 0.0;
     return marginAdjustment;
+  }
+
+  List<DASTableColumn> _validationJourneyTable(BuildContext context) {
+    final multiBrakeSeriesVM = DI.get<MultiBrakeSeriesSelectionViewModel>();
+    return [
+      DASTableColumn(
+        id: ColumnDefinition.kilometre.index,
+        child: Text(context.l10n.p_journey_table_kilometre_label),
+        width: 66.0,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.informationCell.index,
+        child: Text(context.l10n.p_journey_table_journey_information_label),
+        expanded: true,
+        alignment: .centerLeft,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.brakedWeightSpeed.index,
+        child: _multiBrakeSeriesHeader(multiBrakeSeriesVM),
+        padding: EdgeInsets.zero,
+        width: 62.0 * max(multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries.length, 1),
+        onTap: () => _onMultiBrakeSeriesTap(context),
+        headerKey: brakeSeriesHeaderKey,
+      ),
+    ];
+  }
+
+  Future<void> _onMultiBrakeSeriesTap(BuildContext context) async {
+    final viewModel = context.read<JourneySettingsViewModel>();
+
+    final selectedBrakeSeries = await showSBBBottomSheet<BrakeSeries>(
+      context: context,
+      titleText: context.l10n.p_journey_brake_series,
+      isScrollControlled: true,
+      style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
+      body: MultiBrakeSeriesSelection(),
+    );
+
+    if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
+  }
+
+  Widget? _multiBrakeSeriesHeader(MultiBrakeSeriesSelectionViewModel multiBrakeSeriesVM) {
+    final selectedBrakeSeries = multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries;
+    if (selectedBrakeSeries.isEmpty) return Text('??', style: sbbTextStyle.lightStyle.small);
+
+    return Row(
+      mainAxisAlignment: .spaceEvenly,
+      children: multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries
+          .map((it) => Text(it.name, style: sbbTextStyle.lightStyle.small))
+          .toList(growable: false),
+    );
   }
 }
