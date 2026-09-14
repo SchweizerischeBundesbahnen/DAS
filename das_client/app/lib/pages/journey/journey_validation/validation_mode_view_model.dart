@@ -1,6 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
-// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2735
 // Hint: start by removing complete dir
 class ValidationModeViewModel {
   final BehaviorSubject<bool> _rxValidationMode = BehaviorSubject.seeded(false);

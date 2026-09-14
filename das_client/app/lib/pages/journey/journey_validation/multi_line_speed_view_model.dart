@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_mode
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.dart';
 
-// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2735
 // Hint: start by removing complete dir
 class MultiLineSpeedViewModel({
   required final LineSpeedViewModel _lineSpeedVM,

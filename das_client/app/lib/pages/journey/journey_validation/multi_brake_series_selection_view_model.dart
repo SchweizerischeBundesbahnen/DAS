@@ -9,7 +9,7 @@ final _log = Logger('JourneyValidationViewModel');
 
 const _maxSelectedBrakeSeries = 10;
 
-// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2735
 // Hint: start by removing complete dir
 class MultiBrakeSeriesSelectionViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
   final BehaviorSubject<MultiBrakeSeriesSelectionModel> _rxBrakeSeriesModel = BehaviorSubject.seeded(

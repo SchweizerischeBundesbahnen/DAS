@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
 
-// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2735
 // Hint: start by removing complete dir
 class MultiLineSpeedCellBody extends StatelessWidget {
   const MultiLineSpeedCellBody({

@@ -12,7 +12,7 @@ import '../auth/integration_test_authenticator.dart';
 import '../integration/integration_test_app.dart';
 import '../util/test_utils.dart';
 
-// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2734
+// TODO: remove this with https://github.com/SchweizerischeBundesbahnen/DAS/issues/2735
 void main() {
   group('journey validation tests', () {
     testWidgets(
