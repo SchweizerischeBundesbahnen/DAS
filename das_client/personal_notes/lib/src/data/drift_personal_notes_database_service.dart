@@ -31,6 +31,12 @@ class PersonalNotesDatabaseService._()
   }
 
   @override
+  Future<List<PersonalNote>> findAllNotes() async {
+    final notes = await _tableManager.get();
+    return notes.map((it) => it.toDomain()).toList(growable: false);
+  }
+
+  @override
   Future<void> saveNote(PersonalNote note) {
     return personalNotesTable.insertOnConflictUpdate(note.toCompanion());
   }

@@ -11,6 +11,8 @@ class PersonalNotesTable extends Table {
 
   BoolColumn get showAsFootnote => boolean()();
 
+  DateTimeColumn get lastModifiedAt => dateTime()();
+
   @override
   Set<Column<Object>> get primaryKey => {locationCode};
 }
@@ -21,12 +23,18 @@ extension PersonalNoteMapperX on PersonalNote {
       locationCode: locationCode,
       noteText: text,
       showAsFootnote: showAsFootnote,
+      lastModifiedAt: lastModifiedAt,
     );
   }
 }
 
 extension PersonalNotesTableDataX on PersonalNotesTableData {
   PersonalNote toDomain() {
-    return PersonalNote(locationCode: locationCode, text: noteText, showAsFootnote: showAsFootnote);
+    return PersonalNote(
+      locationCode: locationCode,
+      text: noteText,
+      showAsFootnote: showAsFootnote,
+      lastModifiedAt: lastModifiedAt,
+    );
   }
 }
