@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'sfera_mock/**'
-    branches: [ "main" ]
+    branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'sfera_mock/**'

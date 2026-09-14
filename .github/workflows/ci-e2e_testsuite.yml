@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'das_e2e_testsuite/**'
-    branches: [ "main" ]
+    branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_e2e_testsuite/**'
