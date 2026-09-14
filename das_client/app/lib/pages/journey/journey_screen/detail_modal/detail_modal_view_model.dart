@@ -8,12 +8,26 @@ import 'package:rxdart/rxdart.dart';
 
 enum DetailModalType { servicePointModal, additionalSpeedRestriction, brakeSlip }
 
-class DetailModalViewModel() {
+abstract class ModalViewModel {
+  DASModalSheetController? get controller;
+  bool get isModalOpenValue;
+  Stream<DetailModalType?> get openModalType;
+  DetailModalType? get openModalTypeValue;
+  Stream<bool> get isModalOpen;
+  Stream<DASModalSheetBuilder?> get contentBuilder;
+
+  void open(DASModalSheetBuilder builder, {bool maximize = false, Object? contentKey});
+  void setMaximized(bool maximized);
+  void close();
+  void dispose();
+}
+
+class DetailModalViewModel() extends ModalViewModel {
   this {
     _init();
   }
 
-  late DASModalSheetController controller;
+  late DASModalSheetController _controller;
 
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
   final _rxOpenModalType = BehaviorSubject<DetailModalType?>.seeded(null);
@@ -22,14 +36,22 @@ class DetailModalViewModel() {
   /// service point + tab, or the tapped ASR row). Re-opening with the same type and key closes the modal.
   Object? _openContentKey;
 
+  @override
+  DASModalSheetController get controller => _controller;
+
+  @override
   bool get isModalOpenValue => _rxOpenModalType.value != null;
 
+  @override
   Stream<DetailModalType?> get openModalType => _rxOpenModalType.distinct();
 
+  @override
   DetailModalType? get openModalTypeValue => _rxOpenModalType.value;
 
+  @override
   Stream<bool> get isModalOpen => _rxOpenModalType.map((type) => type != null);
 
+  @override
   Stream<DASModalSheetBuilder?> get contentBuilder => _rxContentBuilder.distinct();
 
   void _init() {
@@ -37,7 +59,7 @@ class DetailModalViewModel() {
   }
 
   void _initController() {
-    controller = DASModalSheetController(
+    _controller = DASModalSheetController(
       onClose: () {
         if (!_rxOpenModalType.isClosed) _rxOpenModalType.add(null);
       },
@@ -47,6 +69,7 @@ class DetailModalViewModel() {
   /// Opens [builder] in the modal sheet. If the same content (same type and [contentKey]) is already
   /// displayed, the modal is closed instead, so that tapping the element that opened it again toggles it
   /// closed. [contentKey] should identify the concrete content shown.
+  @override
   void open(DASModalSheetBuilder builder, {bool maximize = false, Object? contentKey}) {
     final type = _typeOf(builder);
 
@@ -55,22 +78,23 @@ class DetailModalViewModel() {
       return;
     }
 
-    controller.automaticCloseEnabled = builder.automaticCloseEnabled;
+    _controller.automaticCloseEnabled = builder.automaticCloseEnabled;
     _openContentKey = contentKey;
     _rxOpenModalType.add(type);
     _rxContentBuilder.add(builder);
     if (maximize) {
-      controller.maximize();
+      _controller.maximize();
     } else {
-      controller.expand();
+      _controller.expand();
     }
   }
 
+  @override
   void setMaximized(bool maximized) {
     if (maximized) {
-      controller.maximize();
+      _controller.maximize();
     } else {
-      controller.expand();
+      _controller.expand();
     }
   }
 
@@ -83,14 +107,16 @@ class DetailModalViewModel() {
     };
   }
 
+  @override
   void close() {
-    controller.close();
+    _controller.close();
     if (!_rxContentBuilder.isClosed) _rxContentBuilder.add(null);
     _openContentKey = null;
   }
 
+  @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     _rxOpenModalType.close();
     _rxContentBuilder.close();
   }

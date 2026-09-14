@@ -240,14 +240,8 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Bern');
       await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
-      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
-
-      // wait until waitTime reached
-      await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
-
       // check if modal sheet is closed
-      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+      await waitUntilExists(tester, find.byKey(DasModalSheet.modalSheetClosedKey));
 
       await disconnect(tester);
     });
@@ -268,14 +262,8 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
-
-      // wait until waitTime reached
-      await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
-
       // check if modal sheet is closed
-      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+      await waitUntilExists(tester, find.byKey(DasModalSheet.modalSheetClosedKey));
 
       await disconnect(tester);
     });

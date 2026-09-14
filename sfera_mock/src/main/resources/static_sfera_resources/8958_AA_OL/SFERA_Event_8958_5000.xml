@@ -60,7 +60,7 @@
             </JP_ContextInformation>
         </SegmentProfileReference>
 
-        <SegmentProfileReference SP_ID="8958_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SegmentProfileReference SP_ID="8958_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="5" SP_Direction="Nominal">
             <SP_Zone>
                 <IM_ID>1285</IM_ID>
             </SP_Zone>
@@ -147,7 +147,7 @@
                 <NSP_GroupName>trainRunRerouting</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlTrainRunRerouting" value="
                         &lt;trainRunRerouting&gt;
-                        &lt;change oldRoute=&quot;CH02125-CH02111&quot; newRoute=&quot;CH02125-CH02112-CH02111&quot;/&gt;
+                        &lt;change oldRoute=&quot;CH02125-CH02111&quot; newRoute=&quot;CH02125-CH19045-CH02111&quot;/&gt;
                         &lt;/trainRunRerouting&gt;
                     "/>
             </General_JP_Information_NSP>
@@ -158,7 +158,7 @@
                 <NSP_GroupName>stop2PassOrPass2Stop</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStop2PassOrPass2Stop" value="
                         &lt;stop2PassOrPass2Stop&gt;
-                            &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH02112&quot;/&gt;
+                            &lt;change changeType=&quot;pass2Stop&quot; modifiedOP=&quot;CH19045&quot;/&gt;
                         &lt;/stop2PassOrPass2Stop&gt;
                     "/>
             </General_JP_Information_NSP>

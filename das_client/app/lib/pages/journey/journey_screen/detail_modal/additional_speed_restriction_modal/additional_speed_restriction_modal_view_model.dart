@@ -14,11 +14,11 @@ class AdditionalSpeedRestrictionModalViewModel {
   void open(BuildContext context, AdditionalSpeedRestrictionData data) {
     _rxAdditionalSpeedRestrictionData.add(data);
 
-    final viewModel = context.read<DetailModalViewModel>();
+    final viewModel = context.read<ModalViewModel>();
     viewModel.open(AdditionalSpeedRestrictionModalBuilder(), maximize: false, contentKey: data);
   }
 
-  void close(BuildContext context) => context.read<DetailModalViewModel>().close();
+  void close(BuildContext context) => context.read<ModalViewModel>().close();
 
   void dispose() {
     _rxAdditionalSpeedRestrictionData.close();

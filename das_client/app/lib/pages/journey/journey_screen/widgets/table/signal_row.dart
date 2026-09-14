@@ -3,10 +3,13 @@ import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class SignalRow extends CellRowBuilder<Signal> {
@@ -20,14 +23,17 @@ class SignalRow extends CellRowBuilder<Signal> {
     required super.chevronPosition,
     super.config,
     super.key,
+    super.showModificationOnInformationCell,
   });
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Row(
+        mainAxisSize: .min,
         children: [
-          Expanded(child: _signalFunctions(context)),
+          _signalFunctions(context),
+          Spacer(),
           if (data.visualIdentifier != null) Text(data.visualIdentifier!),
         ],
       ),
@@ -40,19 +46,27 @@ class SignalRow extends CellRowBuilder<Signal> {
     if (signalFunctions.length > 1) {
       signalFunctions = signalFunctions.where((function) => function != .laneChange && function != .unknown);
     }
-    final detailModalViewModel = context.read<DetailModalViewModel>();
+
+    final vm = context.read<ModalViewModel>();
 
     return StreamBuilder(
-      stream: detailModalViewModel.isModalOpen,
-      initialData: detailModalViewModel.isModalOpenValue,
+      stream: vm.isModalOpen,
+      initialData: vm.isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.data ?? false;
 
-        return Text(
-          signalFunctions
-              .map((function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context))
-              .join('/'),
-          overflow: .ellipsis,
+        return DASBadgeOverlay(
+          badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell,
+          badgeOffset: Offset(0, -SBBSpacing.small),
+          badge: const ModificationIcon(),
+          child: Text(
+            signalFunctions
+                .map(
+                  (function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context),
+                )
+                .join('/'),
+            overflow: .ellipsis,
+          ),
         );
       },
     );

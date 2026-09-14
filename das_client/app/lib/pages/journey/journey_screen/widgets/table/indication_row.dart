@@ -15,8 +15,8 @@ class IndicationRow extends WidgetRowBuilder<JourneyAnnotation> {
     required super.data,
     required this.collapsedState,
     this.leftPadding = 0,
+    super.key,
     super.config,
-    super.identifier,
   }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication'),
        super(
          stickyLevel: .second,

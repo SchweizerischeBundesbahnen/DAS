@@ -5,6 +5,9 @@
   "p_train_selection_date_description": "Date",
   "p_train_selection_choose_date": "Sélectionner la date.",
   "p_train_selection_date_not_today_warning": "La date sélectionnée ne correspond pas à la date actuelle.",
+  "p_train_selection_no_match_title": "Aucun résultat",
+  "p_train_selection_no_match_subtitle": "Vérifie tes informations ou consulte des résultats similaires.",
+  "p_train_selection_company_matches_title": "Marches avec indications similaires",
   "p_journey_header_button_dark_theme": "Mode Nuit",
   "p_journey_header_button_light_theme": "Mode Jour",
   "p_journey_header_button_pause": "Pause",
@@ -41,13 +44,6 @@
   "p_login_login_button_text": "Connexion",
   "p_brake_load_slip_page_title": "bulletin de freinage",
   "p_brake_load_slip_header_title": "Catégorie de train et de freinage {trainSeries} {brakeSeries}%",
-  "@p_brake_load_slip_header_title": {
-    "type": "text",
-    "placeholders": {
-      "trainSeries": {},
-      "brakeSeries": {}
-    }
-  },
   "p_brake_load_slip_header_subtitle": "Créé le ",
   "p_brake_load_slip_header_dangerous_goods": "Train avec marchandises dangereuses",
   "p_brake_load_slip_header_car_carrier": "Wagons porte-autos à deux niveaux chargés",
@@ -72,6 +68,10 @@
   "p_brake_load_slip_other_data_title": "Autres données",
   "p_brake_load_slip_other_data_valid_from": "Valable à partir de",
   "p_brake_load_slip_other_data_rru": "RRU",
+  "p_brake_load_slip_brake_details_title": "Déclivité à franchir autorisée",
+  "p_brake_load_slip_brake_details_brake_ratio_front": "Pente max. issue du rapport de freinage partiel (tête) [‰]",
+  "p_brake_load_slip_brake_details_brake_ratio_back": "Rampe max. issue du rapport de freinage partiel (queue) [‰]",
+  "p_brake_load_slip_brake_details_min_holding_force": "Déclivité max. à partir de l’effort de retenue minimal [‰]",
   "p_brake_load_slip_brake_details_holding_force": "Effort de retenue [kN]",
   "p_brake_load_slip_hauled_load_title": "Charge remorquée",
   "p_brake_load_slip_hauled_load_total_vehicles": "Total wagons",
@@ -89,26 +89,11 @@
   "p_brake_load_slip_button_apply_train_series": "Reprendre catégorie de train et de freinage",
   "p_brake_load_slip_button_transport_documents": "Document de transport",
   "p_brake_load_slip_no_data_available": "Pas de données disponibles.",
+  "p_links_no_content": "Aucun lien disponible.",
   "w_advised_speed_cancel": "ADL Cancel",
   "w_advised_speed_end": "ADL END",
   "w_advised_speed_drive_until": " jusqu’à {endLocation}",
-  "@w_advised_speed_drive_until": {
-    "type": "text",
-    "placeholders": {
-      "endLocation": {
-        "type": "String"
-      }
-    }
-  },
   "w_advised_speed_vopt": "ADL VOpt {speed}km/h",
-  "@w_advised_speed_vopt": {
-    "type": "text",
-    "placeholders": {
-      "speed": {
-        "type": "String"
-      }
-    }
-  },
   "w_advised_speed_vmax": "ADL Vmax",
   "w_advised_speed_dist": "ADL DIST",
   "w_extended_menu_title": "Autres fonctionnalités",
@@ -129,35 +114,9 @@
   "w_reauthentication_required_notification_button": "Se connecter",
   "w_no_customer_oriented_departure_checklist_button": "Afficher le processus de départ",
   "w_replacement_series_notification_available_title": "Catégorie de remplacement de {fromStation} à {toStation}",
-  "@w_replacement_series_notification_available_title": {
-    "type": "text",
-    "placeholders": {
-      "fromStation": {},
-      "toStation": {}
-    }
-  },
   "w_replacement_series_notification_available_text": "La catégorie de train et de freinage {replacementSeries} est disponible pour une partie de la marche.",
-  "@w_replacement_series_notification_available_text": {
-    "type": "text",
-    "placeholders": {
-      "replacementSeries": {}
-    }
-  },
   "w_replacement_series_notification_original_title": "Catégorie de train {originalSeries} à nouveau disponible à partir de {station}",
-  "@w_replacement_series_notification_original_title": {
-    "type": "text",
-    "placeholders": {
-      "station": {},
-      "originalSeries": {}
-    }
-  },
   "w_replacement_series_notification_none_title": "Catégorie de train et de freinage non autorisée à partir de {fromStation}",
-  "@w_replacement_series_notification_none_title": {
-    "type": "text",
-    "placeholders": {
-      "fromStation": {}
-    }
-  },
   "w_replacement_series_notification_none_text": "La catégorie de train et de freinage sélectionnée n’est pas autorisée sur une partie de la ligne.",
   "w_departure_process_dialog_title": "Processus de départ",
   "w_departure_process_next_stop": "Prochain arrêt",
@@ -177,29 +136,12 @@
   "w_service_point_modal_graduated_speed_brake_series_title": "Catégorie de train",
   "w_service_point_modal_graduated_speed_no_information": "Aucune information",
   "w_service_point_modal_local_regulations_label": "Prescriptions locales",
+  "w_service_point_modal_portal_label": "Portail des gares",
   "w_service_point_row_background_label": "Passer au point d’exploitation",
   "w_short_term_change_headerbox_flap_multiple_changes": "Plusieurs modifications ont été annoncées pour la marche.",
   "w_short_term_change_headerbox_flap_end_destination_change": "Rebroussement anticipé à {servicePointName}",
-  "@w_short_term_change_headerbox_flap_end_destination_change": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_stop_to_pass": "Passage exceptionnel à {servicePointName}",
-  "@w_short_term_change_headerbox_stop_to_pass": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_pass_to_stop": "Arrêt exceptionnel à {servicePointName}",
-  "@w_short_term_change_headerbox_pass_to_stop": {
-    "type": "text",
-    "placeholders": {
-      "servicePointName": {}
-    }
-  },
   "w_short_term_change_headerbox_flap_train_run_rerouting": "Détournement durant la marche. Tenir compte des modifications.",
   "w_additional_speed_restriction_modal_title": "Tronçon de ralentissement",
   "w_additional_speed_restriction_modal_subtitle_count": "Nombre",
@@ -218,26 +160,7 @@
   "w_app_expired_dialog_title": "Version expirée",
   "w_app_expires_soon_dialog_title": "La version expirera prochainement",
   "w_app_expired_dialog_body_title": "La version {appVersion} de DAS a expiré.",
-  "@w_app_expired_dialog_body_title": {
-    "type": "text",
-    "placeholders": {
-      "appVersion": {
-        "type": "String"
-      }
-    }
-  },
   "w_app_expires_soon_dialog_body_title": "La version {appVersion} de DAS expirera le {appVersionExpirationDate}.",
-  "@w_app_expires_soon_dialog_body_title": {
-    "type": "text",
-    "placeholders": {
-      "appVersion": {
-        "type": "String"
-      },
-      "appVersionExpirationDate": {
-        "type": "String"
-      }
-    }
-  },
   "w_app_expired_dialog_body_subTitle": "Mets l’application à jour pour continuer à l’utiliser.",
   "w_app_expires_soon_dialog_body_subTitle": "Mets prochainement l’application à jour afin de pouvoir continuer à utiliser DAS après sa date d’expiration.",
   "c_yes": "Ja",
@@ -301,22 +224,13 @@
   "p_settings_page_decisive_gradient_title": "Déclivité déterminante",
   "p_settings_page_decisive_gradient_show_setting": "Afficher la déclivité",
   "p_settings_page_signal_title": "Affichage des signaux principaux",
+  "p_settings_page_signal_station_setting": "Afficher les signaux de la gare et le signal de fin de voie",
+  "p_settings_page_ects_conventional_speed_signal_setting": "Afficher le signal d’arrêt ETCS et le signal de position ETCS dans la zone de vitesse conventionnelle",
+  "p_settings_page_ects_extended_speed_signal_setting": "Afficher le signal d’arrêt ETCS et le signal de position ETCS dans la zone de vitesse étendue",
   "w_global_error_widget_title": "Erreur inattendue",
   "w_global_error_widget_description": "Il s’est produit une erreur inattendue, le message d’erreur est envoyé aux développeurs. Essaie de redémarrer l’appli.",
   "w_shunting_movement_start": "Course de manœuvre {trainNumber}",
-  "@w_shunting_movement_start": {
-    "type": "text",
-    "placeholders": {
-      "trainNumber": {}
-    }
-  },
   "w_shunting_movement_end": "Circulation de train {trainNumber}",
-  "@w_shunting_movement_end": {
-    "type": "text",
-    "placeholders": {
-      "trainNumber": {}
-    }
-  },
   "w_brake_load_slip_notification_text": "Il existe une nouvelle version du bulletin de freinage.",
   "w_disturbance_notification_text": "Alimentation critique en courant de traction.",
   "w_departure_dispatch_notification_long": "Départ prévu dans  > 30 Min",
@@ -332,7 +246,7 @@
   "w_user_tour_system_selection_label": "Système de tour",
   "w_user_tour_system_selection_title": "Sélectionner le système de tour",
   "w_user_tour_system_selection_none": "Aucun",
-  "p_preload_page_title": "Précharger",
+  "p_diagnostic_page_title": "Diagnostic",
   "w_preload_status_title": "Précharger",
   "w_preload_status_downloaded": "Téléchargé",
   "w_preload_status_initial": "En attente",
@@ -346,7 +260,16 @@
   "w_preload_status_missing_configuration": "Offline",
   "w_preload_status_last_update": "État des données",
   "w_preload_status_start_preload": "Démarrer",
+  "w_settings_status_title": "Configuration API",
+  "w_settings_status_last_request_successful": "Dernière demande réussie:",
+  "w_settings_status_last_successful_timestamp": "Date de la dernière demande réussie:",
+  "w_ru_feature_status_title": "Caractéristiques ETF",
+  "w_ru_feature_status_ru_label": "ETF",
+  "w_ru_feature_status_warnapp": "Fonction d’alerte «Signal fermé»",
+  "w_ru_feature_status_customer_oriented_departure": "processus de départ orienté clientèle",
+  "w_ru_feature_status_departure_process": "Processus de départ",
+  "w_ru_feature_status_planned_time_deviation": "Écart par rapport à l’heure prévue",
   "w_train_driver_turnover_row_title": "Changement de personnel des locs",
   "w_suspicious_journey_point_warning": "Utiliser la solution de repli",
-  "w_suspicious_segment_notification_text": "L’écran de circulation comporte des informations incomplètes."
+  "w_suspicious_segment_notification_text": "La marche comporte des informations incomplètes."
 }

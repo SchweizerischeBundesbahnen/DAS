@@ -11,9 +11,9 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
     required super.data,
     required super.rowIndex,
     required super.height,
+    super.key,
     super.stickyLevel,
     super.decoration,
-    super.identifier,
     this.config = const JourneyConfig(),
   });
 
@@ -28,7 +28,6 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
       height: height,
       stickyLevel: stickyLevel,
       rowIndex: rowIndex,
-      identifier: identifier,
     );
   }
 

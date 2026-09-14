@@ -51,10 +51,10 @@ class JourneyOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return _ProviderScope(
       builder: (context) {
-        final detailModalController = context.read<DetailModalViewModel>().controller;
+        final detailModalController = context.read<ModalViewModel>().controller;
         return Listener(
-          onPointerDown: (_) => detailModalController.resetAutomaticClose(),
-          onPointerUp: (_) => detailModalController.resetAutomaticClose(),
+          onPointerDown: (_) => detailModalController?.resetAutomaticClose(),
+          onPointerUp: (_) => detailModalController?.resetAutomaticClose(),
           child: Row(
             children: [
               Expanded(child: _content(context)),
@@ -142,7 +142,7 @@ class _ProviderScope extends StatelessWidget {
         Provider<DecisiveGradientViewModel>.value(
           value: DI.get(),
         ),
-        Provider<DetailModalViewModel>.value(
+        Provider<ModalViewModel>.value(
           value: DI.get<DetailModalViewModel>(),
         ),
         Provider<DisturbanceViewModel>.value(

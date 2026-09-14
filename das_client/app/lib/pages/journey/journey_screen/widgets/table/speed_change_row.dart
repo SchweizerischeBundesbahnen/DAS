@@ -2,6 +2,8 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_badge_overlay.dart';
+import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,13 +19,20 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
     required super.rowIndex,
     required super.journeyPosition,
     required super.chevronPosition,
+    super.key,
     super.config,
+    super.showModificationOnInformationCell,
   });
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.text ?? '', overflow: .ellipsis),
+      child: DASBadgeOverlay(
+        badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell,
+        badgeOffset: Offset(0, -SBBSpacing.small),
+        badge: const ModificationIcon(),
+        child: Text(data.text ?? '', overflow: .ellipsis),
+      ),
     );
   }
 

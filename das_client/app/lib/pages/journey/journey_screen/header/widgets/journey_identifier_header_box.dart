@@ -41,7 +41,7 @@ class JourneyIdentifierHeaderBox extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    final viewModel = context.read<DetailModalViewModel>();
+    final viewModel = context.read<ModalViewModel>();
     return StreamBuilder<bool>(
       stream: viewModel.isModalOpen,
       initialData: viewModel.isModalOpenValue,

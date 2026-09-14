@@ -111,6 +111,7 @@ class JourneyTableViewModel({
 
     final rowData = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
+        .removeIrrelevantServicePoints(journey.metadata.calculatedSpeeds)
         .hideJourneyPointsThatShouldNotBeDisplayed()
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()

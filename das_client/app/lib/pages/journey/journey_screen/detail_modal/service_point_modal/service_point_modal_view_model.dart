@@ -176,7 +176,7 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
   /// closes the modal - re-selecting the already active tab is a no-op, since the tab content reacts to
   /// [selectedTab] directly and the underlying stream dedupes via `distinct()`.
   void open(BuildContext context, {ServicePointModalTab? tab, ServicePoint? servicePoint}) {
-    final viewModel = context.read<DetailModalViewModel>();
+    final viewModel = context.read<ModalViewModel>();
 
     if (servicePoint == null) {
       if (tab != null) _rxSelectedTab.add(tab);
@@ -197,7 +197,7 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
     );
   }
 
-  void close(BuildContext context) => context.read<DetailModalViewModel>().close();
+  void close(BuildContext context) => context.read<ModalViewModel>().close();
 
   @override
   void onJourneyUpdated(Journey? journey) {

@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.personalnotes.internal;
 
+import ch.sbb.das.backend.common.UserDataService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import tools.jackson.databind.json.JsonMapper;
 
 @Service
 @RequiredArgsConstructor
-class PersonalNoteServiceImpl {
+class PersonalNoteServiceImpl implements UserDataService {
 
     static final int MAX_VALUE_LENGTH = 16384;
 
@@ -51,6 +52,15 @@ class PersonalNoteServiceImpl {
     @Transactional
     void delete(String oid, String key) {
         personalNoteRepository.deleteByOidAndKey(oid, key);
+    }
+
+    @Override
+    @Transactional
+    public int deleteAllByOids(List<String> oids) {
+        if (oids.isEmpty()) {
+            return 0;
+        }
+        return (int) personalNoteRepository.deleteByOidIn(oids);
     }
 
     private PersonalNote toPersonalNote(PersonalNoteEntity entity) {

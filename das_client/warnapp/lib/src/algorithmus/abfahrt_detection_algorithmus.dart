@@ -356,7 +356,8 @@ class AbfahrtDetectionAlgorithmus({required final AbfahrtDetectionAlgorithmusPro
 
   bool get isHalt => updatesCount >= lengthForInitialization && !flipFlop.state;
 
-  // TODO: unused, check with original code
+  // Unused because we reinitialize the algorithm on journey change.
+  // Keeping it because its a direct port from obj-c
   void reset() {
     updatesCount = 0;
   }

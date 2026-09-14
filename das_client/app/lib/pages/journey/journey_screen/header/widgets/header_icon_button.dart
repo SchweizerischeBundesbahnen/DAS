@@ -23,7 +23,7 @@ class HeaderIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<DetailModalViewModel>();
+    final viewModel = context.read<ModalViewModel>();
     return StreamBuilder(
       initialData: viewModel.isModalOpenValue,
       stream: viewModel.isModalOpen,

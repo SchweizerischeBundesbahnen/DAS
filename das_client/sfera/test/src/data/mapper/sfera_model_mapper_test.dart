@@ -1779,19 +1779,18 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
-    expect(servicePoints, hasLength(9));
+    expect(servicePoints, hasLength(11));
     final additionalServicePoints = servicePoints.where((point) => point.isAdditional).toList();
-    expect(additionalServicePoints, hasLength(6));
+    expect(additionalServicePoints, hasLength(8));
 
-    // Olten Nord (Abzw) should not be listed as it is not at start/end of route or speed relevant
-    // Olten VL should be ignored as ADL is not applied to additional service points
-    // Bern Hidden Stop and Olten Hidden Stop should be listed as they are stops
     expect(additionalServicePoints[0].name, 'Bern (Depot)');
     expect(additionalServicePoints[1].name, 'Bern Hidden Stop');
     expect(additionalServicePoints[2].name, 'Olten Ost (Abzw)');
-    expect(additionalServicePoints[3].name, 'Olten Tunnel (Spw)');
-    expect(additionalServicePoints[4].name, 'Olten Hidden Stop');
-    expect(additionalServicePoints[5].name, 'Dulliken (Depot)');
+    expect(additionalServicePoints[3].name, 'Olten VL');
+    expect(additionalServicePoints[4].name, 'Olten Nord (Abzw)');
+    expect(additionalServicePoints[5].name, 'Olten Tunnel (Spw)');
+    expect(additionalServicePoints[6].name, 'Olten Hidden Stop');
+    expect(additionalServicePoints[7].name, 'Dulliken (Depot)');
 
     // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
