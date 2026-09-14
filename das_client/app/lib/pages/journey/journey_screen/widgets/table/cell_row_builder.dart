@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
@@ -14,6 +15,8 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_cell_body.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_badge_overlay.dart';
@@ -187,14 +190,21 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     if (isInEtcsLevel2Segment && data.dataType != .cabSignaling) {
       return DASTableCell.empty();
     }
+    final isValidationMode = DI.get<ValidationModeViewModel>().validationModeValue;
     return DASTableCell(
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
-      child: LineSpeedCellBody(
-        order: data.order,
-        showSpeedBehavior: showSpeedBehavior,
-        isNextStop: _isNextStop,
-      ),
+      padding: .symmetric(vertical: 2.0, horizontal: isValidationMode ? 0 : SBBSpacing.xSmall),
+      child: DI.get<ValidationModeViewModel>().validationModeValue
+          ? MultiLineSpeedCellBody(
+              order: data.order,
+              showSpeedBehavior: showSpeedBehavior,
+              isNextStop: _isNextStop,
+            )
+          : LineSpeedCellBody(
+              order: data.order,
+              showSpeedBehavior: showSpeedBehavior,
+              isNextStop: _isNextStop,
+            ),
     );
   }
 

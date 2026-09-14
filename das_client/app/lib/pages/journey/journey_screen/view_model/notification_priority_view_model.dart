@@ -17,7 +17,7 @@ final _logger = Logger('NotificationPriorityQueueViewModel');
 /// Notifications can be added in two ways:
 ///
 /// 1. via [insert] or removed via [remove]
-/// 2. via a Stream<bool> that implicitly handles [insert] and [remove] operations
+/// 2. via a Stream&lt;bool&gt; that implicitly handles [insert] and [remove] operations
 class NotificationPriorityQueueViewModel extends JourneyAwareViewModel {
   final Map<NotificationType, VoidCallback?> _notificationTypeToCallback = {
     for (final val in NotificationType.values) val: null,

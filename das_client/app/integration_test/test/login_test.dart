@@ -75,9 +75,9 @@ void main() {
       // expect toggle to be set to true
       final tmsToggleListItem = find.ancestor(
         of: find.text(l10n.p_login_connect_to_tms),
-        matching: find.byType(SBBSwitchListItemBoxed),
+        matching: find.byType(SBBSwitchListItem),
       );
-      expect((tmsToggleListItem.evaluate().first.widget as SBBSwitchListItemBoxed).value, isTrue);
+      expect((tmsToggleListItem.evaluate().first.widget as SBBSwitchListItem).value, isTrue);
     });
 
     testWidgets('login_whenLogoutThenLogin_thenWillConnectToTmsVad|VeZt1c1nxqKljOKbjk7Q|tests:2399', (tester) async {

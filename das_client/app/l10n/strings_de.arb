@@ -37,6 +37,7 @@
   "w_navigation_drawer_diagnostic_title": "Diagnostik",
   "w_navigation_drawer_tour_system_title": "Zum Tourensystem",
   "p_login_connect_to_tms": "Mit TMS verbinden",
+  "p_login_validation_mode": "[Temporär] Streckenvalidierungsmodus",
   "p_login_bottom_sheet_title": "Herzlich Willkommen bei DAS",
   "p_login_bottom_sheet_subtitle": "Logge dich ein um zu beginnen.",
   "p_login_bottom_sheet_title_failed": "Hoppla da ist etwas schiefgelaufen",

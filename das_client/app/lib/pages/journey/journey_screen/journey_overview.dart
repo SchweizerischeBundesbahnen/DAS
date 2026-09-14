@@ -34,6 +34,7 @@ import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_mode
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
@@ -168,6 +169,9 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<LineSpeedViewModel>.value(
           value: DI.get<LineSpeedViewModel>(),
+        ),
+        Provider<MultiLineSpeedViewModel>.value(
+          value: DI.get<MultiLineSpeedViewModel>(),
         ),
         Provider<CalculatedSpeedViewModel>.value(
           value: DI.get<CalculatedSpeedViewModel>(),

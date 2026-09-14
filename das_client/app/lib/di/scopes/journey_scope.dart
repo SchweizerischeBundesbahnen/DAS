@@ -27,6 +27,7 @@ import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_v
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -58,6 +59,7 @@ class JourneyScope extends DIScope {
     getIt.registerShortTermChangeViewModel();
     getIt.registerSuspiciousSegmentViewModel();
     getIt.registerLineSpeedViewModel();
+    getIt.registerMultiLineSpeedViewModel();
     getIt.registerCalculatedSpeedViewModel();
     getIt.registerAdvisedSpeedViewModel();
     getIt.registerChronographViewModel();
@@ -206,6 +208,15 @@ extension JourneyScopeExtension on GetIt {
         journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerMultiLineSpeedViewModel() {
+    registerSingleton<MultiLineSpeedViewModel>(
+      MultiLineSpeedViewModel(
+        lineSpeedVM: DI.get(),
+        multiBrakeSeriesSelectionVM: DI.get(),
+      ),
     );
   }
 

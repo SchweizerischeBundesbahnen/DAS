@@ -48,6 +48,7 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
     _registerMockLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerAppLifecycleViewModel();
+    getIt.registerValidationModeViewModel();
 
     _registerMockPreloadRepository();
 

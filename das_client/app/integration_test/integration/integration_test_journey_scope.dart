@@ -27,6 +27,7 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.registerShortTermChangeViewModel();
     getIt.registerSuspiciousSegmentViewModel();
     getIt.registerLineSpeedViewModel();
+    getIt.registerMultiLineSpeedViewModel();
     getIt.registerCalculatedSpeedViewModel();
     getIt.registerAdvisedSpeedViewModel();
     getIt.registerChronographViewModel();
