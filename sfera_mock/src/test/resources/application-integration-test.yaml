@@ -1,4 +1,4 @@
-localregulations.path: sfera_mock/src/main/resources/localregulations.json
+localregulations.path:
 
 spring:
   cloud:
