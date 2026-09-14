@@ -1,8 +1,12 @@
 package ch.sbb.sferamock.messages.services;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0400.NetworkSpecificParameter;
+import ch.sbb.sferamock.messages.model.localregulations.Version;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 final class LocalRegulationNspFactory {
 
@@ -40,6 +44,42 @@ final class LocalRegulationNspFactory {
             } catch (Exception _) {
                 return null;
             }
+        }
+    }
+
+    static Optional<Version> selectInForceVersion(List<Version> versions) {
+        if (versions.isEmpty()) {
+            return Optional.empty();
+        }
+
+        OffsetDateTime now = OffsetDateTime.now();
+
+        return versions.stream()
+            .filter(v -> isInForce(v, now))
+            .max(Comparator.comparing(v -> parseDate(v.inForceFrom()).orElse(OffsetDateTime.MIN)))
+            .or(() -> versions.stream()
+                .max(Comparator.comparing(v -> parseDate(v.inForceFrom()).orElse(OffsetDateTime.MIN))))
+            .or(() -> Optional.of(versions.getFirst()));
+    }
+
+    private static boolean isInForce(Version version, OffsetDateTime now) {
+        boolean startedInPast = parseDate(version.inForceFrom())
+            .map(from -> !from.isAfter(now))
+            .orElse(false);
+        boolean notYetEnded = parseDate(version.inForceTo())
+            .map(to -> to.isAfter(now))
+            .orElse(true);
+        return startedInPast && notYetEnded;
+    }
+
+    private static Optional<OffsetDateTime> parseDate(String isoDateTimeString) {
+        if (isoDateTimeString == null || isoDateTimeString.isBlank()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(OffsetDateTime.parse(isoDateTimeString));
+        } catch (Exception _) {
+            return Optional.empty();
         }
     }
 }
