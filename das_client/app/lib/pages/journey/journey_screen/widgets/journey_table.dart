@@ -623,7 +623,12 @@ class JourneyTable extends StatelessWidget {
     return Row(
       mainAxisAlignment: .spaceEvenly,
       children: multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries
-          .map((it) => Text(it.name, style: sbbTextStyle.lightStyle.small))
+          .map(
+            (it) => ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 62.0),
+              child: Center(child: Text(it.name, style: sbbTextStyle.lightStyle.small)),
+            ),
+          )
           .toList(growable: false),
     );
   }

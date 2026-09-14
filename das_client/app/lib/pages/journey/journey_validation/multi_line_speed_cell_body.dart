@@ -57,8 +57,19 @@ class MultiLineSpeedCellBody extends StatelessWidget {
 
   Widget _row(List<Speed?> speeds) {
     return Row(
-      mainAxisAlignment: .spaceEvenly,
-      children: speeds.map((speed) => SpeedDisplay(speed: speed, isNextStop: isNextStop)).toList(growable: false),
+      mainAxisAlignment: .start,
+      children: speeds
+          .map((speed) {
+            if (speed == null) return SizedBox(width: 62.0, height: 1.0);
+
+            return ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 62.0),
+              child: Center(
+                child: SpeedDisplay(speed: speed, isNextStop: isNextStop),
+              ),
+            );
+          })
+          .toList(growable: false),
     );
   }
 }

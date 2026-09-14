@@ -188,9 +188,10 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     if (isInEtcsLevel2Segment && data.dataType != .cabSignaling) {
       return DASTableCell.empty();
     }
+    final isValidationMode = DI.get<ValidationModeViewModel>().validationModeValue;
     return DASTableCell(
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
+      padding: .symmetric(vertical: 2.0, horizontal: isValidationMode ? 0 : SBBSpacing.xSmall),
       child: DI.get<ValidationModeViewModel>().validationModeValue
           ? MultiLineSpeedCellBody(
               order: data.order,
