@@ -2,6 +2,7 @@ package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
+import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult.Unavailable;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
@@ -116,6 +117,12 @@ public class SferaService {
                 return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
             }
 
+            try {
+                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles));
+            } catch (SegmentProfileMissingException e) {
+                return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
+            }
+
             Set<TrainCharacteristicsIdentification> tcIds = jp.getSegmentProfileReferences().stream()
                 .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
                 .map(TrainCharacteristicsIdentification::from)
@@ -171,6 +178,17 @@ public class SferaService {
             throw new SegmentProfileMissingException("Not all Segment Profiles could be fetched after " + MAX_RETRIES + " attempts. Missing: " + missingSps);
         }
         return allSegmentProfiles;
+    }
+
+    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles)
+        throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
+
+        Set<SegmentProfileIdentification> localRegulationSpIds = new HashSet<>();
+        regularSegmentProfiles.forEach(sp -> localRegulationSpIds.addAll(LocalRegulations.extractSpIds(sp)));
+        if (localRegulationSpIds.isEmpty()) {
+            return List.of();
+        }
+        return requestSpsUntilComplete(trainId, localRegulationSpIds);
     }
 
     public void connect() {
