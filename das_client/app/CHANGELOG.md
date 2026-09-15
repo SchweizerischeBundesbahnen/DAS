@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.52.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.52.0...das_client-v0.52.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* prompt login when reauthentication is required while no journey is active ([#2803](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2803)) ([#2805](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2805)) ([45ae578](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45ae57814a21101c6c85e3c394e20af73e79c59b))
+
 ## [0.52.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.51.0...das_client-v0.52.0) (2026-09-14)
 
 
