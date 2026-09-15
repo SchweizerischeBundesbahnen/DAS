@@ -36,8 +36,10 @@ import 'package:logging/logging.dart';
 final _log = Logger('JourneyScope');
 
 class JourneyScope extends DIScope {
+  static final journeyScopeName = 'JourneyScope';
+
   @override
-  String get scopeName => 'JourneyScope';
+  String get scopeName => journeyScopeName;
 
   @override
   Future<void> push() async {
