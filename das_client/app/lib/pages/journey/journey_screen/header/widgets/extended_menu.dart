@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_modal_sheet.dart';
-import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,35 +15,42 @@ class ExtendedMenu extends StatelessWidget {
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
   static const Key openTourSystemItemKey = Key('openTourSystemItem');
 
+  static const double _maxWidth = 360;
+
   const ExtendedMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyViewModel>();
-    return AnchoredFullPageOverlay(
-      triggerBuilder: (_, showOverlay) => SBBTertiaryButton(
+    return SBBPopover(
+      offset: Offset(0, SBBSpacing.xSmall),
+      style: SBBPopoverStyle(
+        constraints: BoxConstraints(maxWidth: _maxWidth),
+      ),
+      targetBuilder: (_, showPopover) => SBBTertiaryButton(
         key: menuButtonKey,
         iconData: SBBIcons.context_menu_small,
-        onPressed: () => showOverlay(),
+        onPressed: () => showPopover(),
       ),
-      contentBuilder: (_, hideOverlay) {
+      titleText: context.l10n.w_extended_menu_title,
+      builder: (_, hidePopover) {
         return Provider(
           create: (_) => viewModel,
           child: Builder(
             builder: (context) => Column(
+              mainAxisSize: .min,
               mainAxisAlignment: .start,
               spacing: SBBSpacing.xSmall,
               children: [
-                _menuHeader(context, hideOverlay),
                 SBBContentBox(
                   child: Column(
                     crossAxisAlignment: .start,
                     children: SBBDivider.divideItems(
                       context: context,
                       items: [
-                        _journeyOverviewItem(context, hideOverlay),
-                        _maneuverItem(context, hideOverlay),
-                        _waraItem(context, hideOverlay),
+                        _journeyOverviewItem(context, hidePopover),
+                        _maneuverItem(context, hidePopover),
+                        _waraItem(context, hidePopover),
                       ],
                     ),
                   ),
@@ -67,25 +73,6 @@ class ExtendedMenu extends StatelessWidget {
       titleText: context.l10n.w_extended_menu_tour_action,
       trailingIconData: SBBIcons.link_external_medium,
       onTap: () => launcher.launchTourSystem(),
-    );
-  }
-
-  Widget _menuHeader(BuildContext context, VoidCallback hideOverlay) {
-    return Row(
-      crossAxisAlignment: .center,
-      children: [
-        Expanded(
-          child: Text(
-            context.l10n.w_extended_menu_title,
-            style: sbbTextStyle.lightStyle.large,
-          ),
-        ),
-        SBBTertiaryButtonSmall(
-          key: menuButtonCloseKey,
-          onPressed: () => hideOverlay(),
-          iconData: SBBIcons.cross_small,
-        ),
-      ],
     );
   }
 
