@@ -26,25 +26,48 @@ class PreloadStatusDisplay extends StatelessWidget {
     return StreamBuilder(
       stream: vm.preloadDetails,
       builder: (context, snapshot) {
-        return SBBContentBox(
-          padding: EdgeInsets.all(SBBSpacing.small),
-          child: Column(
-            crossAxisAlignment: .start,
-            mainAxisSize: .min,
-            spacing: SBBSpacing.xSmall,
-            children: [
-              _title(context),
-              _progressBarRow(snapshot.data),
-              _description(context, snapshot.data),
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          spacing: SBBSpacing.xSmall,
+          children: [
+            SBBListHeader(
+              context.l10n.w_preload_status_title,
+              style: SBBListHeaderStyle(padding: .only(left: SBBSpacing.medium)),
+            ),
+            SBBContentBox(
+              padding: EdgeInsets.all(SBBSpacing.medium),
+              child: Column(
+                crossAxisAlignment: .start,
+                mainAxisSize: .min,
+                spacing: SBBSpacing.xSmall,
+                children: [
+                  _progressBarRow(snapshot.data),
+                  _description(context, snapshot.data),
+                ],
+              ),
+            ),
+            SBBTertiaryButtonSmall(
+              onPressed: () {
+                showSBBPopup(
+                  style: SBBPopupStyle(
+                    constraints: BoxConstraints(maxWidth: 430.0),
+                    padding: EdgeInsets.all(SBBSpacing.medium).copyWith(bottom: SBBSpacing.xLarge),
+                  ),
+                  context: context,
+                  titleText: 'Information zum Vorladen',
+                  body: Text("""Mit dem Vorladen werden Fahrordnungen, welche aktuell oder in den nächsten Stunden abfahren, auf den DAS Client vorgeladen, damit sie auch offline genutzt werden können. 
+
+Diese Info braucht der Support, falls Fehler auftauchen."""),
+                );
+              },
+              labelText: 'Information zum Vorladen',
+              iconData: SBBIcons.circle_information_small,
+            ),
+          ],
         );
       },
     );
-  }
-
-  Widget _title(BuildContext context) {
-    return Text(context.l10n.w_preload_status_title, style: SBBTextStyles.mediumBold);
   }
 
   Widget _progressBarRow(PreloadDetails? preloadDetails) {

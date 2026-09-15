@@ -20,26 +20,36 @@ class SettingsStatusDisplay extends StatelessWidget {
         final isRequestSuccessful = localStore.lastSettingsRequestSuccessful;
         final lastSuccessTimestamp = localStore.lastSuccessfulSettingsTimestamp;
 
-        return SBBContentBox(
-          padding: const EdgeInsets.all(SBBSpacing.small),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: SBBSpacing.xSmall,
-            children: [
-              Text(context.l10n.w_settings_status_title, style: SBBTextStyles.mediumBold),
-              _labelValueItem(
-                context.l10n.w_settings_status_last_request_successful,
-                isRequestSuccessful
-                    ? const Icon(Icons.check_circle, color: SBBColors.green, size: _iconSize)
-                    : const Icon(Icons.cancel, color: SBBColors.red, size: _iconSize),
+        return Column(
+          crossAxisAlignment: .start,
+          mainAxisSize: .min,
+          spacing: SBBSpacing.xSmall,
+          children: [
+            SBBListHeader(
+              context.l10n.w_settings_status_title,
+              style: SBBListHeaderStyle(padding: .only(left: SBBSpacing.medium)),
+            ),
+            SBBContentBox(
+              padding: const .all(SBBSpacing.medium),
+              child: Column(
+                mainAxisSize: .min,
+                crossAxisAlignment: .start,
+                spacing: SBBSpacing.xSmall,
+                children: [
+                  _labelValueItem(
+                    context.l10n.w_settings_status_last_request_successful,
+                    isRequestSuccessful
+                        ? const Icon(Icons.check_circle, color: SBBColors.green, size: _iconSize)
+                        : const Icon(Icons.cancel, color: SBBColors.red, size: _iconSize),
+                  ),
+                  _labelValueItem(
+                    context.l10n.w_settings_status_last_successful_timestamp,
+                    Text(Format.datetime(lastSuccessTimestamp, '-'), style: SBBTextStyles.smallLight),
+                  ),
+                ],
               ),
-              _labelValueItem(
-                context.l10n.w_settings_status_last_successful_timestamp,
-                Text(Format.datetime(lastSuccessTimestamp, '-'), style: SBBTextStyles.smallLight),
-              ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
@@ -47,7 +57,7 @@ class SettingsStatusDisplay extends StatelessWidget {
 
   Widget _labelValueItem(String label, Widget valueWidget) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: .spaceBetween,
       children: [
         Text(label, style: SBBTextStyles.smallLight),
         valueWidget,

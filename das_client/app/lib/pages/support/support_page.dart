@@ -5,6 +5,8 @@ import 'package:app/pages/support/view_model/preload_view_model.dart';
 import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/pages/support/widgets/ru_feature_status_display.dart';
 import 'package:app/pages/support/widgets/settings_status_display.dart';
+import 'package:app/pages/support/widgets/support_url_display.dart';
+import 'package:app/widgets/user_header_box_preferred_size.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +35,7 @@ class SupportPage extends StatelessWidget implements AutoRouteWrapper {
     return SBBHeaderSmall(
       titleText: context.l10n.w_navigation_drawer_support_title,
       actions: const [], // removes SBB logo
+      bottom: UserHeaderBoxPreferredSize(textScaler: MediaQuery.textScalerOf(context)),
     );
   }
 
@@ -43,9 +46,17 @@ class SupportPage extends StatelessWidget implements AutoRouteWrapper {
         child: Column(
           spacing: SBBSpacing.medium,
           children: [
+            const SupportUrlDisplay(),
             const PreloadStatusDisplay(),
-            const SettingsStatusDisplay(),
-            const RuFeatureStatusDisplay(),
+            Row(
+              spacing: SBBSpacing.medium,
+              mainAxisSize: .min,
+              crossAxisAlignment: .start,
+              children: [
+                Flexible(child: const RuFeatureStatusDisplay()),
+                Flexible(child: const SettingsStatusDisplay()),
+              ],
+            ),
           ],
         ),
       ),
