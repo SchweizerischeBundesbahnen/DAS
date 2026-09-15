@@ -29,7 +29,7 @@ class DASNavigationDrawer extends StatelessWidget {
                 _navigationTile(
                   context,
                   icon: SBBIcons.route_circle_start_small,
-                  title: context.l10n.w_navigation_drawer_fahrtinfo_title,
+                  title: context.l10n.w_navigation_drawer_fahrordnung_title,
                   route: isJourneySelected ? JourneyRoute() : JourneySelectionRoute(),
                 ),
                 _navigationTile(

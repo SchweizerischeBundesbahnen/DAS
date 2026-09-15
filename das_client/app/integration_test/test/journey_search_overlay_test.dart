@@ -176,7 +176,7 @@ void main() {
         expect(find.byType(ProfilePage), findsOneWidget);
 
         await openDrawer(tester);
-        await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+        await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
         expect(find.byType(JourneySelectionPage), findsOneWidget);
 
         await disconnect(tester);

@@ -19,7 +19,7 @@ void main() {
       expect(tester.widget<Scaffold>(scaffold).drawer, isNotNull);
 
       // check that drawer is not shown
-      expect(find.text(l10n.w_navigation_drawer_fahrtinfo_title), findsNothing);
+      expect(find.text(l10n.w_navigation_drawer_fahrordnung_title), findsNothing);
       expect(find.text(l10n.w_navigation_drawer_links_title), findsNothing);
       expect(find.text(l10n.w_navigation_drawer_settings_title), findsNothing);
       expect(find.text(l10n.w_navigation_drawer_profile_title), findsNothing);
@@ -27,7 +27,7 @@ void main() {
       await openDrawer(tester);
 
       // check if navigation elements are present
-      expect(find.text(l10n.w_navigation_drawer_fahrtinfo_title), findsOneWidget);
+      expect(find.text(l10n.w_navigation_drawer_fahrordnung_title), findsOneWidget);
       expect(find.text(l10n.w_navigation_drawer_links_title), findsOneWidget);
       expect(find.text(l10n.w_navigation_drawer_settings_title), findsOneWidget);
       expect(find.text(l10n.w_navigation_drawer_profile_title), findsOneWidget);
@@ -110,9 +110,9 @@ void main() {
       await openDrawer(tester);
 
       // check if navigation elements are present
-      expect(find.text(l10n.w_navigation_drawer_fahrtinfo_title), findsOneWidget);
+      expect(find.text(l10n.w_navigation_drawer_fahrordnung_title), findsOneWidget);
 
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
 
       // Check on FahrtPage
       expect(find.byType(JourneySelectionPage), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
       expect(find.byType(ProfilePage), findsOneWidget);
 
       await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
 
       // check first train station is still visible
       expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
@@ -158,7 +158,7 @@ void main() {
       expect(find.byType(ProfilePage), findsOneWidget);
 
       await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
 
       // check the selected train series is still selected
       expect(find.text(selectedBrakeSeries), findsOneWidget);
