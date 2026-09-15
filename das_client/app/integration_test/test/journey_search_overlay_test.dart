@@ -28,20 +28,20 @@ void main() {
 
       // closed by default - should show journeySearch icon with key
       expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       // open
       await _openJourneySearchOverlayByTap(tester);
 
       // opened
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsAny);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
 
       // close
       await _closeJourneySearchOverlayByTap(tester);
 
       // closed
       expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       await disconnect(tester);
     });
