@@ -11,9 +11,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class DASNavigationDrawer extends StatelessWidget {
-  const DASNavigationDrawer({super.key});
-
+class const DASNavigationDrawer({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();

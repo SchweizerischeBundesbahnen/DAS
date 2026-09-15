@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancem
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
-import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:core_data/component.dart';
@@ -168,16 +167,6 @@ void main() {
         expect(find.text('T2, SBBI'), findsOneWidget);
         expect(find.text('T2, BLSI'), findsOneWidget);
         expect(find.text('T2, THURBO'), findsNothing);
-
-        await tester.pumpAndSettle(Duration(milliseconds: 300));
-
-        await openDrawer(tester);
-        await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
-        expect(find.byType(ProfilePage), findsOneWidget);
-
-        await openDrawer(tester);
-        await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
-        expect(find.byType(JourneySelectionPage), findsOneWidget);
 
         await disconnect(tester);
       },

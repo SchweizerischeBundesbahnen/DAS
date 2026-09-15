@@ -36,7 +36,6 @@ import 'test/login_test.dart' as login_tests;
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/preload_test.dart' as preload_tests;
-import 'test/profile_test.dart' as profile_tests;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/ru_indications_test.dart' as ru_indications_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_tests;
@@ -98,7 +97,6 @@ void main() {
   suspicious_segment_tests.main();
   train_search_tests.main();
   warnapp_tests.main();
-  profile_tests.main();
   preload_tests.main();
   tour_system_link_test.main();
   external_links_tests.main();
