@@ -30,7 +30,7 @@ class CompanySetting extends StatelessWidget {
                 selectedCompanyCodes: settings.companyCodes,
                 updateCompanies: viewModel.updateCompanies,
                 isModalVersion: true,
-                allowMultiSelect: true,
+                multiSelect: true,
               ),
             ),
           ],
