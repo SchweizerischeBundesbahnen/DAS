@@ -1,6 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
+import 'package:app/pages/settings/widgets/user_company_selection.dart';
+import 'package:app/pages/settings/widgets/user_tour_system_selection.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,8 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           crossAxisAlignment: .start,
           children: [
+            UserCompanySelection(),
+            UserTourSystemSelection(),
             _settingTitle(context.l10n.p_settings_page_decisive_gradient_title, isFirstElement: true),
             _decisiveGradientSettings(context),
             _settingTitle(context.l10n.p_settings_page_signal_title),

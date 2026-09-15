@@ -6,7 +6,6 @@ import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
-import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/splash/splash_page.dart';
 import 'package:app/pages/support/support_page.dart';
@@ -29,7 +28,6 @@ class AppRouter({
     _journeySelection,
     _links,
     _settings,
-    _profile,
     _brakeLoadSlip,
     _support,
   ];
@@ -66,12 +64,6 @@ class AppRouter({
   AutoRoute get _settings => AutoRoute(
     path: '/settings',
     page: SettingsRoute.page,
-    guards: [authGuard],
-  );
-
-  AutoRoute get _profile => AutoRoute(
-    path: '/profile',
-    page: ProfileRoute.page,
     guards: [authGuard],
   );
 
