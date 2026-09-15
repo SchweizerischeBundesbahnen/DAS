@@ -32,6 +32,15 @@ class DASNavigationDrawer extends StatelessWidget {
                   title: context.l10n.w_navigation_drawer_fahrordnung_title,
                   route: isJourneySelected ? JourneyRoute() : JourneySelectionRoute(),
                 ),
+                if (launcher.hasTourSystemConfigured())
+                  ListTile(
+                    leading: _inactiveIcon(SBBIcons.switzerland_route_small),
+                    title: Text(
+                      context.l10n.w_navigation_drawer_tour_system_title,
+                      style: sbbTextStyle.lightStyle.medium,
+                    ),
+                    onTap: () => launcher.launchTourSystem(),
+                  ),
                 _navigationTile(
                   context,
                   icon: SBBIcons.link_external_small,
@@ -56,15 +65,6 @@ class DASNavigationDrawer extends StatelessWidget {
                   title: context.l10n.w_navigation_drawer_support_title,
                   route: const SupportRoute(),
                 ),
-                if (launcher.hasTourSystemConfigured())
-                  ListTile(
-                    leading: _inactiveIcon(SBBIcons.link_external_small),
-                    title: Text(
-                      context.l10n.w_navigation_drawer_tour_system_title,
-                      style: sbbTextStyle.lightStyle.medium,
-                    ),
-                    onTap: () => launcher.launchTourSystem(),
-                  ),
               ],
             ),
           ),
