@@ -1,6 +1,5 @@
 import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/nav/auth_guard.dart';
-import 'package:app/pages/diagnostic/diagnostic_page.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
@@ -10,6 +9,7 @@ import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/splash/splash_page.dart';
+import 'package:app/pages/support/support_page.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +31,7 @@ class AppRouter({
     _settings,
     _profile,
     _brakeLoadSlip,
-    _diagnostic,
+    _support,
   ];
 
   AutoRoute get _splash => AutoRoute(
@@ -81,9 +81,9 @@ class AppRouter({
     guards: [authGuard],
   );
 
-  AutoRoute get _diagnostic => AutoRoute(
-    path: '/diagnostic',
-    page: DiagnosticRoute.page,
+  AutoRoute get _support => AutoRoute(
+    path: '/support',
+    page: SupportRoute.page,
     guards: [authGuard],
   );
 

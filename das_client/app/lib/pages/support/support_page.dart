@@ -1,18 +1,18 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
-import 'package:app/pages/diagnostic/view_model/preload_view_model.dart';
-import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
-import 'package:app/pages/diagnostic/widgets/ru_feature_status_display.dart';
-import 'package:app/pages/diagnostic/widgets/settings_status_display.dart';
+import 'package:app/pages/support/view_model/preload_view_model.dart';
+import 'package:app/pages/support/widgets/preload_status_display.dart';
+import 'package:app/pages/support/widgets/ru_feature_status_display.dart';
+import 'package:app/pages/support/widgets/settings_status_display.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
-class DiagnosticPage extends StatelessWidget implements AutoRouteWrapper {
-  const DiagnosticPage({super.key});
+class SupportPage extends StatelessWidget implements AutoRouteWrapper {
+  const SupportPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) => Provider<PreloadViewModel>(
@@ -31,7 +31,7 @@ class DiagnosticPage extends StatelessWidget implements AutoRouteWrapper {
 
   SBBHeaderSmall _appBar(BuildContext context) {
     return SBBHeaderSmall(
-      titleText: context.l10n.w_navigation_drawer_diagnostic_title,
+      titleText: context.l10n.w_navigation_drawer_support_title,
       actions: const [], // removes SBB logo
     );
   }

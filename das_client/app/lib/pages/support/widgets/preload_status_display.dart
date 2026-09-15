@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/diagnostic/view_model/preload_view_model.dart';
+import 'package:app/pages/support/view_model/preload_view_model.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:preload/component.dart';

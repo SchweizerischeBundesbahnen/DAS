@@ -1,5 +1,5 @@
-import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
+import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,9 +11,9 @@ void main() {
   testWidgets('preload_whenStartedAfterLogin_thenRetrievesFiles', (tester) async {
     await E2ETestApp.start(tester);
 
-    // Navigate to diagnostic page
+    // Navigate to support page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_support_title));
 
     final preloadStatusTitleFinder = find.text(l10n.w_preload_status_title);
     expect(preloadStatusTitleFinder, findsOneWidget);
