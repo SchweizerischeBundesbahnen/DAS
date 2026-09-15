@@ -53,7 +53,7 @@ class UserSettingsViewModel({
   void _emitModel() {
     _rxModel.add(
       UserSettingsModel(
-        companyCodes: _userSettings.companyCodes,
+        companyCodes: List.unmodifiable(_userSettings.companyCodes),
         tourSystem: _userSettings.tourSystem,
         showDecisiveGradient: _userSettings.showDecisiveGradient,
         showStationSignals: _userSettings.showStationSignals,
