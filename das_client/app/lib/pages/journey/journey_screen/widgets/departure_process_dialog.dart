@@ -14,7 +14,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 Future<void> showDepartureProcessDialog(BuildContext context) {
   final departureProcessChecklistVM = context.read<ChecklistDepartureProcessViewModel>();
   final customerOrientedDepartureVM = context.read<CustomerOrientedDepartureViewModel>();
-  
+
   return showDialog<void>(
     useRootNavigator: false,
     context: context,
