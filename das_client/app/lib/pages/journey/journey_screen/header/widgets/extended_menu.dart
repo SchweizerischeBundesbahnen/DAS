@@ -10,7 +10,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
-  static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
   static const Key maneuverModeMenuItemKey = Key('maneuverModeMenuItem');
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
   static const Key openTourSystemItemKey = Key('openTourSystemItem');

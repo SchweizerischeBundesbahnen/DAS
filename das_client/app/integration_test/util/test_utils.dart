@@ -145,7 +145,7 @@ Future<void> closeBrakeSlipPage(WidgetTester tester) async {
 }
 
 Future<void> dismissExtendedMenu(WidgetTester tester) async {
-  final closeButton = find.byKey(ExtendedMenu.menuButtonCloseKey);
+  final closeButton = find.byKey(SBBPopover.closeButtonKey);
   await tapElement(tester, closeButton.first);
   await Future.delayed(const Duration(milliseconds: 100));
 }

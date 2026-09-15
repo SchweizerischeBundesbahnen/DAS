@@ -12,14 +12,17 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 Future<void> showDepartureProcessDialog(BuildContext context) {
+  final departureProcessChecklistVM = context.read<ChecklistDepartureProcessViewModel>();
+  final customerOrientedDepartureVM = context.read<CustomerOrientedDepartureViewModel>();
+  
   return showDialog<void>(
     useRootNavigator: false,
     context: context,
     builder: (context) {
       return Provider.value(
-        value: context.read<ChecklistDepartureProcessViewModel>(),
+        value: departureProcessChecklistVM,
         child: Provider.value(
-          value: context.read<CustomerOrientedDepartureViewModel>(),
+          value: customerOrientedDepartureVM,
           child: DepartureProcessDialog(),
         ),
       );
