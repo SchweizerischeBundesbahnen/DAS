@@ -1,48 +1,39 @@
 package ch.sbb.sferamock.messages.services;
 
+import static ch.sbb.sferamock.messages.services.LocalRegulationNspFactory.LR_PREFIX;
+
 import ch.sbb.sferamock.adapters.sfera.model.v0400.NSPListComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0400.NetworkSpecificParameter;
-import ch.sbb.sferamock.messages.model.localregulations.DocumentNode;
-import ch.sbb.sferamock.messages.model.localregulations.DocumentRoot;
-import ch.sbb.sferamock.messages.model.localregulations.Version;
-import java.io.File;
-import java.io.FileInputStream;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.SegmentProfile;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-import tools.jackson.core.StreamReadConstraints;
-import tools.jackson.core.json.JsonFactoryBuilder;
-import tools.jackson.databind.json.JsonMapper;
 
 @Service
+@Slf4j
 // needs to be run before segement repository
 @Order(1)
 public class LocalRegulationRepository implements ApplicationRunner {
 
-    private final JsonMapper objectMapper;
-    private final Map<String, List<NSPListComplexType>> localRegulations = new HashMap<>();
+    private final LocalRegulationParser localRegulationParser;
+    private final LocalRegulationSegmentProfileBuilder localRegulationSegmentProfileBuilder;
+    private final Map<String, SegmentProfile> localRegulationSegmentProfiles = new HashMap<>();
+    private final Map<String, List<NSPListComplexType>> localRegulationNsps = new HashMap<>();
 
     @Value("${localregulations.path}")
     private String filePath;
 
-    @Value("${sfera.company-code}")
-    private String tmsCompanyCode;
-
-    public LocalRegulationRepository() {
-        this.objectMapper = new JsonMapper(
-            new JsonFactoryBuilder()
-                .streamReadConstraints(StreamReadConstraints.builder().maxStringLength(30_000_000).build())
-                .build());
+    public LocalRegulationRepository(LocalRegulationParser localRegulationParser, LocalRegulationSegmentProfileBuilder localRegulationSegmentProfileBuilder) {
+        this.localRegulationParser = localRegulationParser;
+        this.localRegulationSegmentProfileBuilder = localRegulationSegmentProfileBuilder;
     }
 
     @Override
@@ -50,68 +41,34 @@ public class LocalRegulationRepository implements ApplicationRunner {
         importLocalRegulations();
     }
 
-    private List<NSPListComplexType> createNsps(List<Version> versions) {
-        List<NSPListComplexType> nspList = new ArrayList<>();
-        for (int i = 0; i < versions.size(); i++) {
-            Version version = versions.get(i);
-            NSPListComplexType regulation = new NSPListComplexType();
-            regulation.setTeltsiCompany(tmsCompanyCode);
-            regulation.setNSPGroupName("localRegulation_" + String.format("%05d", i));
-            NetworkSpecificParameter titleDe = new NetworkSpecificParameter();
-            titleDe.setName("title_de");
-            titleDe.setValue(version.title().de());
-            NetworkSpecificParameter contentDe = new NetworkSpecificParameter();
-            contentDe.setName("contentDe");
-            contentDe.setValue(version.content().de());
-            NetworkSpecificParameter titleFr = new NetworkSpecificParameter();
-            titleFr.setName("title_fr");
-            titleFr.setValue(version.title().fr());
-            NetworkSpecificParameter contentFr = new NetworkSpecificParameter();
-            contentFr.setName("contentFr");
-            contentFr.setValue(version.content().fr());
-            NetworkSpecificParameter titleIt = new NetworkSpecificParameter();
-            titleIt.setName("title_it");
-            titleIt.setValue(version.title().it());
-            NetworkSpecificParameter contentIt = new NetworkSpecificParameter();
-            contentIt.setName("contentIt");
-            contentIt.setValue(version.content().it());
-            regulation.getNetworkSpecificParameter().addAll(List.of(titleDe, contentDe, titleFr, contentFr, titleIt, contentIt));
-            nspList.add(regulation);
-        }
-        return nspList;
+    public List<NSPListComplexType> getLocalRegulationNsps(String abbreviation) {
+        return Objects.requireNonNullElse(this.localRegulationNsps.get(abbreviation), Collections.emptyList());
     }
 
-    public List<NSPListComplexType> getLocalRegulations(String abbreviation) {
-        return Objects.requireNonNullElse(this.localRegulations.get(abbreviation), Collections.emptyList());
+    public SegmentProfile getLocalRegulationSegmentProfile(String spId) {
+        return localRegulationSegmentProfiles.get(spId);
+    }
+
+    public boolean isLocalRegulationSpId(String spId) {
+        return spId != null && spId.startsWith(LR_PREFIX);
     }
 
     private void importLocalRegulations() throws IOException {
-        File file = new File(filePath);
-        if (!file.exists()) {
+        if (filePath == null || filePath.isBlank()) {
+            log.warn("Local regulations file path is not configured, skipping.");
             return;
         }
-        try (InputStream in = new FileInputStream(file)) {
-            DocumentRoot documentRoot = objectMapper.readValue(in, DocumentRoot.class);
-            Map<Integer, List<Version>> result = new HashMap<>();
-            collectVersions(documentRoot.document(), result);
-            result.forEach((operatingPoint, versions) -> {
-                String abbreviation = documentRoot.operatingPoints().get(operatingPoint.toString()).shortTitle();
-                if (abbreviation == null || abbreviation.isBlank()) {
-                    return;
-                }
-                localRegulations.put(abbreviation, createNsps(versions));
-            });
-        }
-    }
-
-    private void collectVersions(DocumentNode document, Map<Integer, List<Version>> result) {
-        for (Version version : document.versions()) {
-            for (Integer operatingPoint : version.operatingPoints()) {
-                result.computeIfAbsent(operatingPoint, key -> new ArrayList<>()).add(version);
-            }
-        }
-        for (DocumentNode child : document.children()) {
-            collectVersions(child, result);
+        try {
+            var documentRoot = localRegulationParser.loadDocument(filePath);
+            var treeResult = localRegulationParser.processTree(documentRoot.document());
+            var segmentProfiles = localRegulationSegmentProfileBuilder.buildSegmentProfiles(documentRoot.document(), treeResult.nodeIds(), treeResult.nodeChildIds());
+            localRegulationSegmentProfiles.putAll(segmentProfiles);
+            var nsps = localRegulationSegmentProfileBuilder.buildOperatingPointNsps(documentRoot, treeResult.nodeIds());
+            localRegulationNsps.putAll(nsps);
+            log.info("Loaded {} local regulation segment profiles for {} operating points.", localRegulationSegmentProfiles.size(), localRegulationNsps.size());
+        } catch (Exception e) {
+            log.error("Failed to load local regulations from {}: {}", filePath, e.getMessage(), e);
+            throw new IOException("Failed to load local regulations", e);
         }
     }
 }

@@ -1,5 +1,6 @@
 package ch.sbb.sferamock.messages.sfera;
 
+import static ch.sbb.sferamock.messages.common.XmlHelper.MAX_MESSAGE_SIZE;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0400.HandshakeRejectReason;
@@ -12,6 +13,8 @@ import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -45,9 +48,32 @@ public class ReplyPublisher {
     }
 
     public void publishSegmentProfile(List<SegmentProfile> segmentProfiles, RequestContext requestContext) {
+        List<SegmentProfile> included = new ArrayList<>();
+        int currentSize = headerSize(requestContext);
+
+        for (SegmentProfile sp : segmentProfiles) {
+            int spSize = byteSize(sp);
+            if (currentSize + spSize > MAX_MESSAGE_SIZE) {
+                log.warn("Skipping SegmentProfile with id={} ({} bytes): it would exceed the maximum "
+                    + "message size ({} bytes)", sp.getSPID(), spSize, MAX_MESSAGE_SIZE);
+                continue;
+            }
+            included.add(sp);
+            currentSize += spSize;
+        }
+
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
-        var reply = sferaMessageCreator.createSegmentProfileReplyMessage(segmentProfiles, header);
+        var reply = sferaMessageCreator.createSegmentProfileReplyMessage(included, header);
         publishReplyMessage(reply, requestContext);
+    }
+
+    private int headerSize(RequestContext requestContext) {
+        var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
+        return byteSize(sferaMessageCreator.createSegmentProfileReplyMessage(List.of(), header));
+    }
+
+    private int byteSize(Object object) {
+        return xmlHelper.toString(object).getBytes(StandardCharsets.UTF_8).length;
     }
 
     public void publishTrainCharacteristics(List<TrainCharacteristics> trainCharacteristics, RequestContext requestContext) {
