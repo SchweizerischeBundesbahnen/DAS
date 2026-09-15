@@ -42,4 +42,7 @@ class E2ETestAuthenticator implements Authenticator {
 
   @override
   Stream<bool> get reauthenticationRequired => Stream.value(false).asBroadcastStream();
+
+  @override
+  bool get reauthenticationRequiredValue => false;
 }
