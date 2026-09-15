@@ -4,6 +4,7 @@ import 'package:app/nav/das_navigation_drawer.dart';
 import 'package:app/pages/settings/widgets/user_company_selection.dart';
 import 'package:app/pages/settings/widgets/user_tour_system_selection.dart';
 import 'package:app/provider/local_key_value_store.dart';
+import 'package:app/widgets/user_header_box_preferred_size.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -34,13 +35,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   SBBHeaderSmall _appBar(BuildContext context) => SBBHeaderSmall(
-    titleText: context.l10n.c_app_name,
+    titleText: context.l10n.p_settings_page_title,
     actions: const [], // removes SBB logo
-    bottom: SBBHeaderBoxPreferredSize(
-      titleText: context.l10n.w_navigation_drawer_settings_title,
-      subtitleText: context.l10n.p_settings_page_personalize,
-      textScaler: MediaQuery.textScalerOf(context),
-    ),
+    bottom: UserHeaderBoxPreferredSize(textScaler: MediaQuery.textScalerOf(context)),
   );
 
   Widget _body(BuildContext context) {
@@ -53,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             UserCompanySelection(),
             UserTourSystemSelection(),
-            _settingTitle(context.l10n.p_settings_page_decisive_gradient_title, isFirstElement: true),
+            _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
             _decisiveGradientSettings(context),
             _settingTitle(context.l10n.p_settings_page_signal_title),
             _signalSettings(context),
@@ -114,11 +111,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _settingTitle(String title, {bool isFirstElement = false}) {
+  Widget _settingTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: SBBSpacing.medium,
-      ).copyWith(bottom: SBBSpacing.xSmall, top: isFirstElement ? 0 : SBBSpacing.medium),
+      ).copyWith(bottom: SBBSpacing.xSmall, top: SBBSpacing.medium),
       child: Text(title, style: sbbTextStyle.lightStyle.small),
     );
   }
