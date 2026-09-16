@@ -518,7 +518,7 @@ void main() {
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(7));
   });
 
-  test('Test additional speed restriction is parsed correctly over multiple geneveAirportSegmentsIds', () async {
+  test('Test additional speed restriction is parsed correctly over multiple segments', () async {
     final journey = getJourney('T2');
     final speedRestrictions = journey.data
         .where((it) => it.dataType == .additionalSpeedRestriction)
@@ -2030,7 +2030,7 @@ void main() {
     );
   });
 
-  test('Test correct suspicious geneveAirportSegmentsIds parsed in T40', () {
+  test('Test correct suspicious segments parsed in T40', () {
     final journey = getJourney('T40');
     expect(journey.valid, isTrue);
 
@@ -2043,7 +2043,7 @@ void main() {
     expect(suspiciousSegments[1].endOrder, 302000);
   });
 
-  test('Test suspicious journey points replace all journey points in suspicious geneveAirportSegmentsIds for T40', () {
+  test('Test suspicious journey points replace all journey points in suspicious segments for T40', () {
     final journey = getJourney('T40');
     expect(journey.valid, isTrue);
 
@@ -2063,7 +2063,7 @@ void main() {
     expect(suspiciousPoints[1].kilometre, equals([]));
     expect(suspiciousPoints[1].spId, equals('T40_4'));
 
-    // No regular BaseData should exist within the suspicious geneveAirportSegmentsIds
+    // No regular BaseData should exist within the segment
     final suspiciousSegments = journey.metadata.suspiciousSegments;
     final dataInSuspiciousSegments = journey.data.where(
       (p) => p is! SuspiciousJourneyPoint && suspiciousSegments.any((s) => s.appliesToOrder(p.order)),
@@ -2130,7 +2130,7 @@ void main() {
     expect(signals[7].functions[0], SignalFunction.etcsStopSign);
     expect(signals[8].functions[0], SignalFunction.trackEndSignal);
 
-    // Ensure NSP track equipment geneveAirportSegmentsIds are classified per ETCS stop sign so UI filters can rely on them.
+    // Ensure NSP track equipment segments are classified per ETCS stop sign so UI filters can rely on them.
     final nonStandardSegments = journey.metadata.nonStandardTrackEquipmentSegments;
     final ess1 = signals[4];
     final ess2 = signals[5];

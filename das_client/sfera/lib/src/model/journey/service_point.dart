@@ -130,7 +130,7 @@ class const ServicePoint({
         'trackGroup: $trackGroup, '
         'departureAuthorization: $departureAuthorization, '
         'properties: $properties, '
-        'localRegulationSections: $localRegulationSegmentIds'
+        'localRegulationSegmentIds: $localRegulationSegmentIds'
         '}';
   }
 }
