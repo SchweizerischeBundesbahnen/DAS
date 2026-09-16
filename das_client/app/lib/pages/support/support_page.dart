@@ -6,6 +6,9 @@ import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/pages/support/widgets/ru_feature_status_display.dart';
 import 'package:app/pages/support/widgets/settings_status_display.dart';
 import 'package:app/pages/support/widgets/support_url_display.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/app_version_text.dart';
+import 'package:app/widgets/device_id_text.dart';
 import 'package:app/widgets/user_header_box_preferred_size.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +43,7 @@ class SupportPage extends StatelessWidget implements AutoRouteWrapper {
   }
 
   Widget _body(BuildContext context) {
+    final textColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(SBBSpacing.small),
@@ -54,7 +58,17 @@ class SupportPage extends StatelessWidget implements AutoRouteWrapper {
               crossAxisAlignment: .start,
               children: [
                 Flexible(child: const RuFeatureStatusDisplay()),
-                Flexible(child: const SettingsStatusDisplay()),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      const SettingsStatusDisplay(),
+                      SizedBox(height: SBBSpacing.xLarge),
+                      AppVersionText(color: textColor),
+                      DeviceIdText(color: textColor),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
