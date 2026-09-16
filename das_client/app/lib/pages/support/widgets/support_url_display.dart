@@ -1,5 +1,7 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/support/view_model/support_url_view_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SupportUrlDisplay extends StatelessWidget {
@@ -29,7 +31,7 @@ class SupportUrlDisplay extends StatelessWidget {
         SBBListItemBoxed(
           titleText: context.l10n.p_support_url_display_privacy_policy_launcher_title,
           leadingIconData: SBBIcons.paragraph_small,
-          onTap: () {},
+          onTap: () => context.read<SupportUrlViewModel>().openPrivacyPolicy(),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
 import 'package:app/pages/support/view_model/preload_view_model.dart';
+import 'package:app/pages/support/view_model/support_url_view_model.dart';
 import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/pages/support/widgets/ru_feature_status_display.dart';
 import 'package:app/pages/support/widgets/settings_status_display.dart';
@@ -20,8 +21,11 @@ class SupportPage extends StatelessWidget implements AutoRouteWrapper {
   const SupportPage({super.key});
 
   @override
-  Widget wrappedRoute(BuildContext context) => Provider<PreloadViewModel>(
-    create: (_) => PreloadViewModel(preloadRepository: DI.get()),
+  Widget wrappedRoute(BuildContext context) => MultiProvider(
+    providers: [
+      Provider<PreloadViewModel>(create: (_) => PreloadViewModel(preloadRepository: DI.get())),
+      Provider<SupportUrlViewModel>(create: (_) => SupportUrlViewModel(launcher: DI.get())),
+    ],
     child: this,
   );
 
