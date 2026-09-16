@@ -13,6 +13,7 @@ import 'test/app_link_test.dart' as app_link_tests;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/brake_load_slip_test.dart' as brake_load_slip_tests;
 import 'test/chronograph_test.dart' as chronograph_tests;
+import 'test/close_journey_test.dart' as close_journey_tests;
 import 'test/departure_process_test.dart' as departure_process_tests;
 import 'test/external_links_test.dart' as external_links_tests;
 import 'test/journey_customer_oriented_departure_test.dart' as journey_customer_oriented_departure_tests;
@@ -68,6 +69,7 @@ void main() {
   app_link_tests.main();
   brake_load_slip_tests.main();
   chronograph_tests.main();
+  close_journey_tests.main();
   departure_process_tests.main();
   journey_customer_oriented_departure_tests.main();
   journey_header_tests.main();
