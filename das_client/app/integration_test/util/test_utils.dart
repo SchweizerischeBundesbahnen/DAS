@@ -8,6 +8,8 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancem
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -43,26 +45,30 @@ Future<void> openDrawer(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(milliseconds: 250));
 }
 
-Future<void> tapElement(WidgetTester tester, FinderBase<Element> element, {bool warnIfMissed = true}) async {
+Future<void> tapElement(WidgetTester tester, FinderBase<Element> element,
+    {bool warnIfMissed = true}) async {
   await tester.tap(element, warnIfMissed: warnIfMissed);
   await tester.pumpAndSettle();
 }
 
-Future<void> enterText(WidgetTester tester, FinderBase<Element> element, String text) async {
+Future<void> enterText(WidgetTester tester, FinderBase<Element> element,
+    String text) async {
   await tester.enterText(element, text);
   await tester.pumpAndSettle();
 }
 
 Finder findTextInputByLabel(String label) {
   final sbbTextInput = find.byWidgetPredicate(
-    (widget) => widget is SBBTextInput && widget.decoration?.labelText == label,
+        (widget) =>
+    widget is SBBTextInput && widget.decoration?.labelText == label,
   );
   return find.descendant(of: sbbTextInput, matching: find.byType(EditableText));
 }
 
 Finder findTextInputByPlaceholder(String placeholder) {
   final sbbTextInput = find.byWidgetPredicate(
-    (widget) => widget is SBBTextInput && widget.decoration?.placeholderText == placeholder,
+        (widget) =>
+    widget is SBBTextInput && widget.decoration?.placeholderText == placeholder,
   );
   return find.descendant(of: sbbTextInput, matching: find.byType(EditableText));
 }
@@ -70,29 +76,37 @@ Finder findTextInputByPlaceholder(String placeholder) {
 Finder findDASTableRowByText(String text) {
   return find.descendant(
     of: find.byKey(DASTable.tableKey),
-    matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)),
+    matching: find.ancestor(
+        of: find.text(text), matching: find.byKey(DASTable.rowKey)),
   );
 }
 
 Finder findDASTableColumnByText(String text) {
-  return find.ancestor(of: find.text(text), matching: find.byKey(DASTable.columnHeaderKey));
+  return find.ancestor(
+      of: find.text(text), matching: find.byKey(DASTable.columnHeaderKey));
 }
 
-Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
+Finder findColoredRowCells(
+    {required FinderBase<Element> of, required Color color}) {
   return find.descendant(
     of: of,
     matching: find.byWidgetPredicate(
-      (it) =>
-          it is Container &&
-          ((it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color) || it.color == color),
+          (it) =>
+      it is Container &&
+          ((it.decoration is BoxDecoration &&
+              (it.decoration as BoxDecoration).color == color) ||
+              it.color == color),
     ),
   );
 }
 
 /// Verifies, that SBB or the given company is selected and loads train journey with [trainNumber]
-Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Company? company}) async {
+Future<void> loadJourney(WidgetTester tester,
+    {required String trainNumber, Company? company}) async {
   if (company != null) {
-    await tapElement(tester, find.text(l10n.p_train_selection_company_description), warnIfMissed: false);
+    await tapElement(
+        tester, find.text(l10n.p_train_selection_company_description),
+        warnIfMissed: false);
 
     final filterField = find.byKey(SelectCompanyModal.filterFieldKey);
     expect(filterField, findsOneWidget);
@@ -100,17 +114,21 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Comp
 
     await tapElement(
       tester,
-      find.byWidgetPredicate((widget) => widget is SBBRadioListItem && widget.value == company.code),
+      find.byWidgetPredicate((widget) =>
+      widget is SBBRadioListItem && widget.value == company.code),
     );
   }
 
-  final trainNumberText = findTextInputByLabel(l10n.p_train_selection_trainnumber_description);
+  final trainNumberText = findTextInputByLabel(
+      l10n.p_train_selection_trainnumber_description);
   expect(trainNumberText, findsOneWidget);
 
   await enterText(tester, trainNumberText, trainNumber);
 
   // load train journey
-  final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+  final primaryButton = find
+      .byWidgetPredicate((widget) => widget is SBBPrimaryButton)
+      .first;
   await tester.tap(primaryButton);
 
   // wait for train journey to load
@@ -121,6 +139,23 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Comp
 Future<void> disconnect(WidgetTester tester) async {
   DI.get<SferaRepository>().disconnect();
   await Future.delayed(const Duration(milliseconds: 50));
+}
+
+/// Closes the currently loaded journey over the train icon in the app bar.
+///
+/// Confirms the [CloseJourneyDialog] when it is shown.
+Future<void> closeJourney(WidgetTester tester) async {
+  await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+  await confirmCloseJourneyDialogIfShown(tester);
+}
+
+Future<void> confirmCloseJourneyDialogIfShown(WidgetTester tester) async {
+  final confirmButton = find.byKey(CloseJourneyDialog.confirmButtonKey);
+  if (confirmButton
+      .evaluate()
+      .isEmpty) return;
+
+  await tapElement(tester, confirmButton);
 }
 
 Future<void> openExtendedMenu(WidgetTester tester) async {
@@ -150,7 +185,8 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 100));
 }
 
-Future<void> selectBrakeSeries(WidgetTester tester, {required String brakeSeries}) async {
+Future<void> selectBrakeSeries(WidgetTester tester,
+    {required String brakeSeries}) async {
   // Open brake series bottom sheet
   await tapElement(tester, find.byKey(JourneyTable.brakeSeriesHeaderKey));
 
@@ -171,13 +207,16 @@ Future<void> startAutomaticAdvancement(WidgetTester tester) async {
   await tapElement(tester, startButton);
 }
 
-Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 15}) async {
+Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element,
+    {int maxWaitSeconds = 15}) async {
   int counter = 0;
   while (true) {
     await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
-    if (element.evaluate().isNotEmpty) {
+    if (element
+        .evaluate()
+        .isNotEmpty) {
       break;
     }
 
@@ -193,13 +232,16 @@ Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {
   await tester.pumpAndSettle();
 }
 
-Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 10}) async {
+Future<void> waitUntilNotExists(WidgetTester tester,
+    FinderBase<Element> element, {int maxWaitSeconds = 10}) async {
   int counter = 0;
   while (true) {
     await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
-    if (element.evaluate().isEmpty) {
+    if (element
+        .evaluate()
+        .isEmpty) {
       break;
     }
 
@@ -215,7 +257,8 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
   await tester.pumpAndSettle();
 }
 
-Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearch) async {
+Future<void> dragUntilTextInStickyHeader(WidgetTester tester,
+    String textToSearch) async {
   final scrollableFinder = find.byType(AnimatedList);
   final stickyHeader = find.byKey(StickyHeader.headerKey);
   await tester.dragUntilVisible(
@@ -228,5 +271,6 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
 }
 
 Finder findChevronPositionAtRowWithText(String text) {
-  return find.descendant(of: findDASTableRowByText(text), matching: find.byKey(RouteChevron.chevronKey));
+  return find.descendant(of: findDASTableRowByText(text),
+      matching: find.byKey(RouteChevron.chevronKey));
 }
