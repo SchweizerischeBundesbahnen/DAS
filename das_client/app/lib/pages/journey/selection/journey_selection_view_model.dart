@@ -17,11 +17,10 @@ import 'package:train_identification/component.dart';
 
 final _log = Logger('JourneySelectionViewModel');
 
-class JourneySelectionViewModel ({
+class JourneySelectionViewModel({
   required final SferaRepository _sferaRepo,
   required final SettingsRepository _settingsRepository,
-  required final Future<
-      void> Function(ExtendedTrainIdentification?) _onJourneySelected,
+  required final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected,
   required final TrainIdentificationRepository _trainIdentificationRepository,
   required final LocalKeyValueStore _userSettings,
 }) {
@@ -58,8 +57,7 @@ class JourneySelectionViewModel ({
     if (connectedTrain == null) return false;
 
     final state = _currentState;
-    if (state.operationalTrainNumber.trim().toUpperCase() !=
-        connectedTrain.trainNumber) return true;
+    if (state.operationalTrainNumber.trim().toUpperCase() != connectedTrain.trainNumber) return true;
     if (!DateUtils.isSameDay(state.startDate, connectedTrain.date)) return true;
 
     final companyCode = state.companyCode;
@@ -102,13 +100,11 @@ class JourneySelectionViewModel ({
       ),
     );
 
-    final companyMatches = await _trainIdentificationRepository
-        .findTrainIdentifications(
+    final companyMatches = await _trainIdentificationRepository.findTrainIdentifications(
       operationalTrainNumber: state.operationalTrainNumber,
     );
 
-    final exactDayMatches = companyMatches.where((it) =>
-        DateUtils.isSameDay(it.startDate, state.startDate)).toList();
+    final exactDayMatches = companyMatches.where((it) => DateUtils.isSameDay(it.startDate, state.startDate)).toList();
     if (exactDayMatches.length == 1) {
       final match = exactDayMatches.first;
       _log.info('Found exactly one company match: $match');
@@ -122,11 +118,9 @@ class JourneySelectionViewModel ({
     }
 
     final lastUsedCompanyCode = _userSettings.lastUsedCompanyCode;
-    final lastUsedCompanyMatch = exactDayMatches.firstWhereOrNull((it) =>
-    it.companyCode == lastUsedCompanyCode);
+    final lastUsedCompanyMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedCompanyCode);
     if (lastUsedCompanyMatch != null) {
-      _log.info(
-          'Found company match with last used company code: $lastUsedCompanyMatch');
+      _log.info('Found company match with last used company code: $lastUsedCompanyMatch');
       return _loadTrain(
         TrainIdentification(
           companyCode: lastUsedCompanyMatch.companyCode,
@@ -141,9 +135,7 @@ class JourneySelectionViewModel ({
         startDate: state.startDate,
         trainNumber: state.operationalTrainNumber,
         availableStartDates: state.availableStartDates,
-        companyMatches: exactDayMatches.isNotEmpty
-            ? exactDayMatches.toSet()
-            : companyMatches.toSet(),
+        companyMatches: exactDayMatches.isNotEmpty ? exactDayMatches.toSet() : companyMatches.toSet(),
         selectedCompanyMatch: null,
         isInputComplete: false,
       ),
@@ -152,8 +144,7 @@ class JourneySelectionViewModel ({
     if (_sferaRepo.connectedTrain != null) {
       // Disconnect with a delay (to give time for navigation) from the current train
       _delayTimer?.cancel();
-      _delayTimer =
-          Timer(AppExpirationGuard.timeout, () => _onJourneySelected(null));
+      _delayTimer = Timer(AppExpirationGuard.timeout, () => _onJourneySelected(null));
     }
 
     return false;
@@ -164,10 +155,8 @@ class JourneySelectionViewModel ({
     _onJourneySelected(
       ExtendedTrainIdentification(
         trainIdentification: trainId,
-        tafTapLocationReferenceStart: _pendingDeepLinkData
-            ?.tafTapLocationReferenceStart,
-        tafTapLocationReferenceEnd: _pendingDeepLinkData
-            ?.tafTapLocationReferenceEnd,
+        tafTapLocationReferenceStart: _pendingDeepLinkData?.tafTapLocationReferenceStart,
+        tafTapLocationReferenceEnd: _pendingDeepLinkData?.tafTapLocationReferenceEnd,
         returnUrl: _pendingDeepLinkData?.returnUrl,
       ),
     );
@@ -183,19 +172,17 @@ class JourneySelectionViewModel ({
   }
 
   void updateTrainNumber(String? trainNumber) {
-    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) =>
-        model.copyWith(operationalTrainNumber: trainNumber));
+    _ifInSelectingErrorOrLoadedEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
   }
 
   void updateCompanies(List<Company> companies) {
     _ifInSelectingErrorOrLoadedEmitSelectingWith(
-          (model) =>
-          Selecting(
-            startDate: model.startDate,
-            availableStartDates: model.availableStartDates,
-            companyCode: companies.firstOrNull?.code,
-            trainNumber: model.trainNumber,
-          ),
+      (model) => Selecting(
+        startDate: model.startDate,
+        availableStartDates: model.availableStartDates,
+        companyCode: companies.firstOrNull?.code,
+        trainNumber: model.trainNumber,
+      ),
     );
   }
 
@@ -204,8 +191,7 @@ class JourneySelectionViewModel ({
 
     final currentState = modelValue as SelectingCompanyMatch;
     _emit(
-      currentState.copyWith(selectedCompanyMatch: selectedCompanyMatch,
-          isInputComplete: selectedCompanyMatch != null),
+      currentState.copyWith(selectedCompanyMatch: selectedCompanyMatch, isInputComplete: selectedCompanyMatch != null),
     );
   }
 
@@ -221,8 +207,7 @@ class JourneySelectionViewModel ({
         if (!newAvailableDates.contains(updatedSelectedDate)) {
           updatedSelectedDate = _midnightToday();
         }
-        _emit(currentState.copyWith(startDate: updatedSelectedDate,
-            availableStartDates: newAvailableDates));
+        _emit(currentState.copyWith(startDate: updatedSelectedDate, availableStartDates: newAvailableDates));
       case final Error e:
         DateTime updatedSelectedDate = e.startDate;
         if (!newAvailableDates.contains(updatedSelectedDate)) {
@@ -266,10 +251,8 @@ class JourneySelectionViewModel ({
         case .offlineData:
         case .connected:
           final currentState = _currentState;
-          if (currentState is! Loading &&
-              currentState is! LoadingCompanyMatches) return;
-          _emit(JourneySelectionModel.loaded(
-              trainIdentification: _sferaRepo.connectedTrain!));
+          if (currentState is! Loading && currentState is! LoadingCompanyMatches) return;
+          _emit(JourneySelectionModel.loaded(trainIdentification: _sferaRepo.connectedTrain!));
         case .connecting:
           final trainId = _sferaRepo.connectedTrain;
           if (trainId == null) return;
@@ -278,22 +261,20 @@ class JourneySelectionViewModel ({
           if (_sferaRepo.lastError == null) return;
 
           return switch (_currentState) {
-            final Loading l =>
-                _emit(
-                  JourneySelectionModel.error(
-                    trainIdentification: l.trainIdentification,
-                    errorCode: .fromSfera(error: _sferaRepo.lastError!),
-                    availableStartDates: _availableStartDates(),
-                  ),
-                ),
-            final Selecting s =>
-                _emit(
-                  JourneySelectionModel.error(
-                    trainIdentification: _trainIdFrom(s),
-                    errorCode: .fromSfera(error: _sferaRepo.lastError!),
-                    availableStartDates: s.availableStartDates,
-                  ),
-                ),
+            final Loading l => _emit(
+              JourneySelectionModel.error(
+                trainIdentification: l.trainIdentification,
+                errorCode: .fromSfera(error: _sferaRepo.lastError!),
+                availableStartDates: _availableStartDates(),
+              ),
+            ),
+            final Selecting s => _emit(
+              JourneySelectionModel.error(
+                trainIdentification: _trainIdFrom(s),
+                errorCode: .fromSfera(error: _sferaRepo.lastError!),
+                availableStartDates: s.availableStartDates,
+              ),
+            ),
             _ => null,
           };
       }
@@ -315,8 +296,7 @@ class JourneySelectionViewModel ({
     _rxModel.add(newState);
   }
 
-  void _ifInSelectingErrorOrLoadedEmitSelectingWith(
-      Selecting Function(Selecting model) updateFunc) {
+  void _ifInSelectingErrorOrLoadedEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
     switch (modelValue) {
       case final Selecting s:
         final updatedModel = updateFunc(s);
@@ -331,8 +311,7 @@ class JourneySelectionViewModel ({
             availableStartDates: _availableStartDates(),
           ),
         );
-        _emit(updatedModel.copyWith(
-            isInputComplete: _validateInput(updatedModel)));
+        _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
       case final Error e:
         final updatedModel = updateFunc(
           Selecting(
@@ -342,8 +321,7 @@ class JourneySelectionViewModel ({
             availableStartDates: _availableStartDates(),
           ),
         );
-        _emit(updatedModel.copyWith(
-            isInputComplete: _validateInput(updatedModel)));
+        _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
       case final Loaded l:
         final updatedModel = updateFunc(
           Selecting(
@@ -353,22 +331,19 @@ class JourneySelectionViewModel ({
             availableStartDates: _availableStartDates(),
           ),
         );
-        _emit(updatedModel.copyWith(
-            isInputComplete: _validateInput(updatedModel)));
+        _emit(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
       default:
         break;
     }
   }
 
-  bool _validateInput(Selecting updatedModel) =>
-      updatedModel.trainNumber?.isNotEmpty == true;
+  bool _validateInput(Selecting updatedModel) => updatedModel.trainNumber?.isNotEmpty == true;
 
-  TrainIdentification _trainIdFrom(JourneySelectionModel selectingState) =>
-      TrainIdentification(
-        companyCode: selectingState.companyCode!,
-        trainNumber: selectingState.operationalTrainNumber.trim().toUpperCase(),
-        date: selectingState.startDate,
-      );
+  TrainIdentification _trainIdFrom(JourneySelectionModel selectingState) => TrainIdentification(
+    companyCode: selectingState.companyCode!,
+    trainNumber: selectingState.operationalTrainNumber.trim().toUpperCase(),
+    date: selectingState.startDate,
+  );
 
   List<DateTime> _availableStartDates() {
     final today = _midnightToday();

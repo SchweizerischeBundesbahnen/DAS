@@ -1,6 +1,6 @@
 import 'package:sfera/component.dart';
 
-class JourneyPositionModel ({
+class JourneyPositionModel({
   this.currentPosition,
   this.lastPosition,
   this.previousServicePoint,
@@ -42,28 +42,27 @@ class JourneyPositionModel ({
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is JourneyPositionModel &&
-              currentPosition == other.currentPosition &&
-              lastPosition == other.lastPosition &&
-              previousServicePoint == other.previousServicePoint &&
-              nextServicePoint == other.nextServicePoint &&
-              previousStop == other.previousStop &&
-              nextStop == other.nextStop &&
-              isManualPosition == other.isManualPosition &&
-              isTrainInMotion == other.isTrainInMotion);
+      (other is JourneyPositionModel &&
+          currentPosition == other.currentPosition &&
+          lastPosition == other.lastPosition &&
+          previousServicePoint == other.previousServicePoint &&
+          nextServicePoint == other.nextServicePoint &&
+          previousStop == other.previousStop &&
+          nextStop == other.nextStop &&
+          isManualPosition == other.isManualPosition &&
+          isTrainInMotion == other.isTrainInMotion);
 
   @override
-  int get hashCode =>
-      Object.hash(
-        currentPosition,
-        lastPosition,
-        previousServicePoint,
-        nextServicePoint,
-        previousStop,
-        nextStop,
-        isManualPosition,
-        isTrainInMotion,
-      );
+  int get hashCode => Object.hash(
+    currentPosition,
+    lastPosition,
+    previousServicePoint,
+    nextServicePoint,
+    previousStop,
+    nextStop,
+    isManualPosition,
+    isTrainInMotion,
+  );
 
   @override
   String toString() {
