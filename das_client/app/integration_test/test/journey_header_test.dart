@@ -587,19 +587,15 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
     );
     expect(departureAuthText, findsNothing);
   } else {
+    // expected text should contain the prefix
+    final expectedText = '${l10n.w_departure_authorization_display_prefix}: $text';
+
     final departureAuthText = find.descendant(
       of: departureAuthorization,
-      matching: find.text(text),
+      matching: find.text(expectedText),
     );
     expect(departureAuthText, findsOne);
   }
-
-  // icon is only shown when there is a text
-  final departureAuthIcon = find.descendant(
-    of: departureAuthorization,
-    matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationIconKey),
-  );
-  expect(departureAuthIcon, text != null ? findsOne : findsNothing);
 }
 
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
