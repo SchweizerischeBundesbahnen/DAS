@@ -46,10 +46,10 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
 
   @override
   void didUpdateWidget(covariant SelectCompanyModal oldWidget) {
-    if (widget.selectedCompanyCodes != oldWidget.selectedCompanyCodes) {
+    if (!const ListEquality().equals(widget.selectedCompanyCodes, oldWidget.selectedCompanyCodes)) {
       controller.selectedCompanyCodes = widget.selectedCompanyCodes;
     }
-    if (widget.availableCompanies != oldWidget.availableCompanies) {
+    if (!const ListEquality().equals(widget.availableCompanies, oldWidget.availableCompanies)) {
       controller.availableCompanies = widget.availableCompanies;
     }
     super.didUpdateWidget(oldWidget);
