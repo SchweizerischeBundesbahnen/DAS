@@ -111,7 +111,8 @@ export type RuFeatureKey =
   | 'WARNAPP'
   | 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS'
   | 'CHECKLIST_DEPARTURE_PROCESS'
-  | 'DISPLAY_PLANNED_TIME_DEVIATION';
+  | 'DISPLAY_PLANNED_TIME_DEVIATION'
+  | 'DISPLAY_BRAKE_LOAD_SLIP_BRAKE_DETAILS';
 
 export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[] => [
   {
@@ -129,6 +130,10 @@ export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[
   {
     value: 'DISPLAY_PLANNED_TIME_DEVIATION',
     label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Planzeitabweichung`,
+  },
+  {
+    value: 'DISPLAY_BRAKE_LOAD_SLIP_BRAKE_DETAILS',
+    label: $localize`:@@ru_feature_toggles_key_label_display_brake_load_slip_brake_details:Bremsdetails`,
   },
 ];
 
