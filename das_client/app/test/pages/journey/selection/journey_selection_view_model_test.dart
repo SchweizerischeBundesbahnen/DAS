@@ -444,4 +444,79 @@ void main() {
     expect(normalSelection.tafTapLocationReferenceEnd, isNull);
     expect(normalSelection.returnUrl, isNull);
   });
+
+  group('willReplaceLoadedJourney', () {
+    final connectedTrain = TrainIdentification(companyCode: '1285', trainNumber: 'T1', date: today);
+
+    void selectTrain({String? trainNumber = 'T1', String? companyCode = '1285', DateTime? date}) {
+      withClock(fixedClock, () {
+        testee.updateTrainNumber(trainNumber);
+        if (companyCode != null) testee.updateCompanies([Company(code: companyCode, shortName: 'SBBP')]);
+        if (date != null) testee.updateDate(date);
+      });
+    }
+
+    test('willReplaceLoadedJourney_whenNoTrainConnected_thenIsFalse', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(null);
+      selectTrain(trainNumber: 'T2');
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isFalse);
+    });
+
+    test('willReplaceLoadedJourney_whenSameTrainSelected_thenIsFalse', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain();
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isFalse);
+    });
+
+    test('willReplaceLoadedJourney_whenSameTrainInLowerCaseSelected_thenIsFalse', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain(trainNumber: ' t1 ');
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isFalse);
+    });
+
+    test('willReplaceLoadedJourney_whenCompanyStillUnknown_thenIsFalse', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain(companyCode: null);
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isFalse);
+    });
+
+    test('willReplaceLoadedJourney_whenOtherTrainNumberSelected_thenIsTrue', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain(trainNumber: 'T2');
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isTrue);
+    });
+
+    test('willReplaceLoadedJourney_whenOtherCompanySelected_thenIsTrue', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain(companyCode: '1163');
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isTrue);
+    });
+
+    test('willReplaceLoadedJourney_whenOtherDateSelected_thenIsTrue', () {
+      // ARRANGE
+      when(mockSferaRepo.connectedTrain).thenReturn(connectedTrain);
+      selectTrain(date: tomorrow);
+
+      // ACT & EXPECT
+      expect(testee.willReplaceLoadedJourney, isTrue);
+    });
+  });
 }
