@@ -102,6 +102,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until T2 opened
         await waitUntilExists(
@@ -158,6 +159,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until on JourneySelectionPage
         await waitUntilExists(tester, find.byType(JourneySelectionPage));

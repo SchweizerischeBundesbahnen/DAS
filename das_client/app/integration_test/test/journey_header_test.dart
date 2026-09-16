@@ -136,10 +136,9 @@ Future<void> main() async {
       await tapElement(tester, pauseButton);
 
       // close journey
-      final closeButton = find.byKey(JourneyPage.disconnectButtonKey);
-      expect(closeButton, findsOneWidget);
+      expect(find.byKey(JourneyPage.disconnectButtonKey), findsOneWidget);
 
-      await tapElement(tester, closeButton);
+      await closeJourney(tester);
 
       // Get that the always-on display is turned off, because the journey is closed
       final currentDisplayTurnedOff = await WakelockPlus.enabled;

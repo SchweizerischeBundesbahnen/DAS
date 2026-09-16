@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
@@ -147,7 +146,7 @@ void main() {
       company: Company(code: '1285', shortName: 'SBBP'),
     );
     await stopAutomaticAdvancement(tester);
-    await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+    await closeJourney(tester);
 
     // Force MQTT connection to fail so offline state gets forced;
     final mqttConnector = DI.get<MqttClientConnector>() as MqttClientUserConnector;
