@@ -528,7 +528,7 @@ void main() {
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
     await tester.pumpAndSettle(Duration(milliseconds: 200));
 
     await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');

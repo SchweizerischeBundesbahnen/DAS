@@ -18,7 +18,7 @@ class SelectCompanyInput extends StatelessWidget {
     required this.updateCompanies,
     super.key,
     this.isModalVersion = false,
-    this.allowMultiSelect = false,
+    this.multiSelect = false,
     this.addClearButton = false,
     this.borderType = .boxedOrListed,
   });
@@ -26,7 +26,7 @@ class SelectCompanyInput extends StatelessWidget {
   final List<String> selectedCompanyCodes;
   final void Function(List<Company>) updateCompanies;
   final bool isModalVersion;
-  final bool allowMultiSelect;
+  final bool multiSelect;
   final bool addClearButton;
   final SBBInputBorderType borderType;
 
@@ -90,8 +90,8 @@ class SelectCompanyInput extends StatelessWidget {
       builder: (_) => SelectCompanyModal(
         availableCompanies: availableCompanies,
         selectedCompanyCodes: selectedCompanyCodes,
-        allowMultiSelect: allowMultiSelect,
-        updateCompanies: updateCompanies,
+        multiSelect: multiSelect,
+        onCompaniesUpdated: updateCompanies,
       ),
     );
   }
