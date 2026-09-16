@@ -23,7 +23,7 @@ void main() {
       final drawerTitles = [
         l10n.w_navigation_drawer_links_title,
         l10n.w_navigation_drawer_settings_title,
-        l10n.w_navigation_drawer_fahrordnung_title,
+        l10n.w_navigation_drawer_journey_title,
         l10n.w_navigation_drawer_support_title,
       ];
 
@@ -117,9 +117,9 @@ void main() {
       await openDrawer(tester);
 
       // check if navigation elements are present
-      expect(find.text(l10n.w_navigation_drawer_fahrordnung_title), findsOneWidget);
+      expect(find.text(l10n.w_navigation_drawer_journey_title), findsOneWidget);
 
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
       // Check on JourneySelectionPage
       expect(find.byType(JourneySelectionPage), findsOneWidget);
@@ -141,7 +141,7 @@ void main() {
       expect(find.byType(SettingsPage), findsOneWidget);
 
       await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
       // check first train station is still visible
       expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
@@ -165,7 +165,7 @@ void main() {
       expect(find.byType(SettingsPage), findsOneWidget);
 
       await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
       // check the selected train series is still selected
       expect(find.text(selectedBrakeSeries), findsOneWidget);

@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// [SBBHeaderBoxPreferredSize] showing the currently logged in user.
+/// TODO: refactor with https://github.com/SchweizerischeBundesbahnen/design_system_flutter/issues/755
 class UserHeaderBoxPreferredSize extends StatelessWidget implements PreferredSizeWidget {
   UserHeaderBoxPreferredSize({required this.textScaler, super.key});
 
   static const _textPadding = 2.0;
 
   static final _sizingStyle = SBBHeaderBoxStyle.$default(
-    baseStyle: SBBBaseStyle.$default(brightness: Brightness.light, themeContext: SBBThemeContext.sbb),
+    baseStyle: SBBBaseStyle.$default(brightness: .light, themeContext: .sbb),
   );
 
   final TextScaler textScaler;

@@ -101,7 +101,7 @@ void main() {
 
     // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     // check km is shown, up and down gradients are hidden
     expect(find.text('km'), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
 
     // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -201,7 +201,7 @@ void main() {
 
     // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     // Check entry and exit signals no longer shown
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
@@ -224,7 +224,7 @@ void main() {
 
     // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     await loadJourney(tester, trainNumber: 'T9999');
 
@@ -385,7 +385,7 @@ Future<void> _toggleSignalSwitch(WidgetTester tester, Key switchKey) async {
   await tapElement(tester, switchFinder);
 
   await openDrawer(tester);
-  await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrordnung_title));
+  await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 }
 
 Future<void> _confirmSelection(WidgetTester tester) async {
