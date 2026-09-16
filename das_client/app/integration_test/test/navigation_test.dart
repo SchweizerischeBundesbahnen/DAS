@@ -105,12 +105,11 @@ void main() {
 
       // check if navigation elements are present
       expect(find.text(l10n.w_navigation_drawer_settings_title), findsOneWidget);
-
       await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
 
       // Check drawer is closed
       expect(find.text(l10n.w_navigation_drawer_links_title), findsNothing);
-      expect(find.text(l10n.w_navigation_drawer_settings_title), findsNothing);
+      expect(find.text(l10n.w_navigation_drawer_support_title), findsNothing);
 
       // Check on SettingsPage
       expect(find.byType(SettingsPage), findsOneWidget);
