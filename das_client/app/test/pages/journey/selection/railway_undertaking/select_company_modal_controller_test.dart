@@ -17,41 +17,45 @@ const _availableCompanies = [_blsC, _sbbP, _sbbCH, _sob, _sbbI, _sbbD, _sbbCInt]
 
 void main() {
   late SelectCompanyModalController testee;
-  final mockUpdateCompanies = MockUpdateCompanies();
-  final List<Company> emitRegister = [];
+  final mockOnCompaniesUpdated = MockOnCompaniesUpdated();
+  final List<List<Company>> emitRegister = [];
 
   setUp(() async {
     testee = SelectCompanyModalController(
       availableCompanies: _availableCompanies,
       initialCompanyCodes: [_sbbP.code],
-      updateCompanies: mockUpdateCompanies.call,
-      allowMultiSelect: false,
+      onCompaniesUpdated: mockOnCompaniesUpdated.call,
     );
-    testee.filteredCompanies.listen(emitRegister.addAll);
+    testee.filteredCompanies.listen(emitRegister.add);
     await processStreams();
     emitRegister.clear();
   });
 
   tearDown(() {
-    reset(mockUpdateCompanies);
+    reset(mockOnCompaniesUpdated);
     emitRegister.clear();
     testee.dispose();
   });
 
   group('SelectCompanyModalController Unit Test', () {
-    test('filterValue_whenInstantiatedWithDefault_isLocalizedString', () {
-      expect(testee.filterValue, equals(_sbbP.shortName));
+    test('filterValue_whenInstantiatedWithSelection_isEmpty', () {
+      expect(testee.filterValue, isEmpty);
+      expect(testee.textEditingController.text, isEmpty);
     });
 
-    test('filterValue_whenSelectedCompanyChanged_thenUpdatesTextController', () {
-      // ARRANGE
-      final newCompanyCode = '3356';
-
+    test('filteredCompanies_whenInstantiated_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
       // ACT
-      testee.selectedCompanyCodes = [newCompanyCode];
+      testee = SelectCompanyModalController(
+        availableCompanies: _availableCompanies,
+        initialCompanyCodes: [_sbbP.code],
+        onCompaniesUpdated: mockOnCompaniesUpdated.call,
+      );
+      testee.filteredCompanies.listen(emitRegister.add);
+      await processStreams();
 
       // EXPECT
-      expect(testee.filterValue, equals(_blsC.shortName));
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, orderedEquals(_sortedCompanyValues()));
     });
 
     test('filterValue_whenFilterChanged_thenIsNewFilter', () {
@@ -62,24 +66,8 @@ void main() {
       expect(testee.filterValue, equals('sob'));
     });
 
-    test('availableCompanies_whenInitialized_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
-      // ACT
-      testee = SelectCompanyModalController(
-        availableCompanies: _availableCompanies,
-        initialCompanyCodes: [_sbbP.code],
-        updateCompanies: mockUpdateCompanies.call,
-        allowMultiSelect: false,
-      );
-      testee.filteredCompanies.listen(emitRegister.addAll);
-      await processStreams();
-
-      // EXPECT
-      expect(emitRegister, orderedEquals(_sortedCompanyValues()));
-    });
-
-    test('availableCompanies_whenFilterChanged_thenIsEmittedWithCompaniesFilteredCorrectly', () async {
+    test('filteredCompanies_whenFilterChanged_thenIsEmittedWithCompaniesFilteredCorrectly', () async {
       // ARRANGE
-      // should be ordered 0th even though not lexicographically the 0th element
       testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
@@ -89,71 +77,146 @@ void main() {
       await processStreams();
 
       // EXPECT
-      expect(
-        emitRegister,
-        orderedEquals(<Company>[
-          _sbbCH,
-          _sbbCInt,
-          _sbbD,
-          _sbbI,
-          _sbbP,
-        ]),
-      );
+      // the selected company is ordered 0th even though not lexicographically the 0th element
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, orderedEquals(<Company>[_sbbCH, _sbbCInt, _sbbD, _sbbI, _sbbP]));
     });
 
-    test('availableCompanies_whenFilterIsEmpty_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
-      // ARRANGE
-      // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedCompanyCodes = [_sbbCH.code];
-      await processStreams();
-      emitRegister.clear();
-
-      // ACT
-      testee.textEditingController.text = '';
-      await processStreams();
-
-      // EXPECT
-      expect(
-        emitRegister,
-        orderedEquals(_sortedCompanyValues(selectedCompanyCode: _sbbCH.code)),
-      );
-    });
-
-    test('availableCompanies_whenFilterIsWeird_thenIsEmittedEmpty', () async {
-      // ARRANGE
-      // should be ordered 0th even though not lexicographically the 0th element
-      testee.selectedCompanyCodes = [_sbbCH.code];
-      await processStreams();
-      emitRegister.clear();
-
+    test('filteredCompanies_whenFilterIsWeird_thenIsEmittedEmpty', () async {
       // ACT
       testee.textEditingController.text = '#21';
       await processStreams();
 
       // EXPECT
-      expect(emitRegister, isEmpty);
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, isEmpty);
     });
 
-    test('updateIsSelectingCompany_whenFilterChanged_thenIsNotCalled', () {
+    test('filteredCompanies_whenSelectionChanged_thenIsEmittedOnceWithAllCompaniesSortedCorrectly', () async {
       // ARRANGE
-      reset(mockUpdateCompanies);
+      testee.textEditingController.text = 'sb';
+      await processStreams();
+      emitRegister.clear();
 
+      // ACT
+      testee.selectedCompanyCodes = [_sbbCH.code];
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, orderedEquals(_sortedCompanyValues(selectedCompanyCode: _sbbCH.code)));
+    });
+
+    test('filteredCompanies_whenFilterChangedAfterSelectionChanged_thenIsStillEmitted', () async {
+      // ARRANGE
+      testee.selectedCompanyCodes = [_sbbCH.code];
+      await processStreams();
+      emitRegister.clear();
+
+      // ACT
+      testee.textEditingController.text = 'sob';
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, orderedEquals(<Company>[_sob]));
+    });
+
+    test('filterValue_whenSelectionChanged_thenIsCleared', () {
+      // ARRANGE
+      testee.textEditingController.text = 'sb';
+
+      // ACT
+      testee.selectedCompanyCodes = [_sbbCH.code];
+
+      // EXPECT
+      expect(testee.filterValue, isEmpty);
+      expect(testee.textEditingController.text, isEmpty);
+    });
+
+    test('filterValue_whenCompanyToggled_thenIsCleared', () {
+      // ARRANGE
+      testee.textEditingController.text = 'sb';
+
+      // ACT
+      testee.toggleCompany(_sob.code, isSelected: true);
+
+      // EXPECT
+      expect(testee.filterValue, isEmpty);
+      expect(testee.textEditingController.text, isEmpty);
+    });
+
+    test('selectedCompanyCodes_whenCompanyToggled_thenContainsOnlyTheSelectedCompanies', () {
+      // ACT
+      testee.toggleCompany(_sob.code, isSelected: true);
+
+      // EXPECT
+      expect(testee.selectedCompanyCodes, orderedEquals([_sbbP.code, _sob.code]));
+
+      // ACT
+      testee.toggleCompany(_sbbP.code, isSelected: false);
+
+      // EXPECT
+      expect(testee.selectedCompanyCodes, orderedEquals([_sob.code]));
+    });
+
+    test('filteredCompanies_whenAvailableCompaniesChanged_thenIsEmittedWithNewCompanies', () async {
+      // ARRANGE
+      testee.textEditingController.text = 'sb';
+      await processStreams();
+      emitRegister.clear();
+
+      // ACT
+      testee.availableCompanies = [_sob, _blsC];
+      await processStreams();
+
+      // EXPECT
+      expect(emitRegister, hasLength(1));
+      expect(emitRegister.single, orderedEquals(<Company>[_blsC, _sob]));
+    });
+
+    test('onCompaniesUpdated_whenFilterChanged_thenIsNotCalled', () {
       // ACT
       testee.textEditingController.text = 'sob';
 
       // EXPECT
-      verifyNever(mockUpdateCompanies(any));
+      verifyNever(mockOnCompaniesUpdated(any));
     });
 
-    test('updateIsSelectingCompany_whenSetSelectedCompanyCodesCalled_thenIsCalled', () {
-      // ARRANGE
-      reset(mockUpdateCompanies);
-
+    test('onCompaniesUpdated_whenSelectionChanged_thenIsNotCalled', () {
       // ACT
       testee.selectedCompanyCodes = [_sob.code];
+      testee.toggleCompany(_blsC.code, isSelected: true);
 
       // EXPECT
-      verify(mockUpdateCompanies([_sob])).called(1);
+      verifyNever(mockOnCompaniesUpdated(any));
+    });
+
+    test('onCompaniesUpdated_whenSelectionConfirmed_thenIsCalledWithSelectedCompanies', () {
+      // ARRANGE
+      testee.selectedCompanyCodes = [_sob.code];
+
+      // ACT
+      testee.confirmSelection();
+
+      // EXPECT
+      verify(mockOnCompaniesUpdated([_sob])).called(1);
+    });
+
+    test('selectedCompanyCodes_whenInitialListIsModified_thenIsNotAffected', () {
+      // ARRANGE
+      final initialCompanyCodes = [_sbbP.code];
+      testee = SelectCompanyModalController(
+        availableCompanies: _availableCompanies,
+        initialCompanyCodes: initialCompanyCodes,
+        onCompaniesUpdated: mockOnCompaniesUpdated.call,
+      );
+
+      // ACT
+      initialCompanyCodes.add(_sob.code);
+
+      // EXPECT
+      expect(testee.selectedCompanyCodes, orderedEquals([_sbbP.code]));
     });
   });
 }
@@ -168,6 +231,6 @@ List<Company> _sortedCompanyValues({String selectedCompanyCode = '1285'}) {
       .toList();
 }
 
-class MockUpdateCompanies extends Mock {
+class MockOnCompaniesUpdated extends Mock {
   void call(List<Company>? update);
 }

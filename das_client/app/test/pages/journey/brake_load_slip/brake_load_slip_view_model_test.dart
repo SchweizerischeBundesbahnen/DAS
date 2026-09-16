@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
@@ -40,6 +41,7 @@ import 'brake_load_slip_view_model_test.mocks.dart';
   MockSpec<DASSounds>(),
   MockSpec<Sound>(),
   MockSpec<Launcher>(),
+  MockSpec<RuFeatureProvider>(),
 ])
 void main() {
   late BrakeLoadSlipViewModel testee;
@@ -62,6 +64,7 @@ void main() {
   late DASSounds mockDasSounds;
   late Sound mockSound;
   late MockLauncher mockLauncher;
+  late MockRuFeatureProvider mockRuFeatureProvider;
 
   final trainIdentification = TrainIdentification(
     companyCode: '2185',
@@ -163,6 +166,7 @@ void main() {
     journeySettingsViewModel: mockJourneySettingsViewModel,
     notificationViewModel: mockNotificationViewModel,
     launcher: mockLauncher,
+    ruFeatureProvider: mockRuFeatureProvider,
     detailModalViewModel: mockDetailModalViewModel,
     connectivityManager: mockConnectivityManager,
     checkForUpdates: checkForUpdates,
@@ -181,6 +185,7 @@ void main() {
     mockStackRouterScope = MockStackRouterScope();
     mockConnectivityManager = MockConnectivityManager();
     mockLauncher = MockLauncher();
+    mockRuFeatureProvider = MockRuFeatureProvider();
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
@@ -756,6 +761,40 @@ void main() {
     await processStreams();
 
     verify(mockFormationRepository.reloadFormation(any, any, any)).called(1);
+  });
+
+  test('isBrakeDetailsFeatureEnabled_whenRuFeatureIsEnabled_returnsTrue', () async {
+    when(
+      mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.brakeLoadSlipBrakeDetails),
+    ).thenAnswer((_) async => true);
+
+    expect(await testee.isBrakeDetailsFeatureEnabled, isTrue);
+  });
+
+  test('isBrakeDetailsFeatureEnabled_whenRuFeatureIsDisabled_returnsFalse', () async {
+    when(
+      mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.brakeLoadSlipBrakeDetails),
+    ).thenAnswer((_) async => false);
+
+    expect(await testee.isBrakeDetailsFeatureEnabled, isFalse);
+  });
+
+  test('isBrakeDetailsFeatureEnabled_whenReadRepeatedly_cachesUntilJourneyChanges', () async {
+    when(
+      mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.brakeLoadSlipBrakeDetails),
+    ).thenAnswer((_) async => true);
+
+    expect(await testee.isBrakeDetailsFeatureEnabled, isTrue);
+    expect(await testee.isBrakeDetailsFeatureEnabled, isTrue);
+
+    verify(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.brakeLoadSlipBrakeDetails)).called(1);
+
+    journeySubject.add(journey);
+    await processStreams();
+
+    expect(await testee.isBrakeDetailsFeatureEnabled, isTrue);
+
+    verify(mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.brakeLoadSlipBrakeDetails)).called(1);
   });
 }
 
