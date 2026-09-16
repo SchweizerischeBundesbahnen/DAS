@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:warnapp/component.dart';
 
 import '../app_test.dart';
@@ -91,7 +92,7 @@ void main() {
 
       // activate maneuver mode
       await openExtendedMenu(tester);
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
       await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
 
