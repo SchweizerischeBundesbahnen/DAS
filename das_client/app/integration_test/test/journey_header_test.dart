@@ -200,11 +200,11 @@ Future<void> main() async {
 
       await openExtendedMenu(tester);
 
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
 
       await dismissExtendedMenu(tester);
 
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       await disconnect(tester);
     });
@@ -277,7 +277,7 @@ Future<void> main() async {
 
       await dismissExtendedMenu(tester);
 
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       await disconnect(tester);
     });
@@ -604,7 +604,7 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
 
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
   await openExtendedMenu(tester);
-  expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+  expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
   await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
 }
 

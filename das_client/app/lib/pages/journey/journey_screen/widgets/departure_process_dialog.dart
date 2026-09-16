@@ -6,7 +6,6 @@ import 'package:app/pages/journey/journey_screen/view_model/model/checklist_depa
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -21,9 +20,9 @@ Future<void> showDepartureProcessDialog(BuildContext context) {
     context: context,
     builder: (context) {
       return Provider.value(
-        value: customerOrientedDepartureVM,
+        value: departureProcessChecklistVM,
         child: Provider.value(
-          value: departureProcessChecklistVM,
+          value: customerOrientedDepartureVM,
           child: DepartureProcessDialog(),
         ),
       );
@@ -48,40 +47,20 @@ class DepartureProcessDialog extends StatelessWidget {
         final data = snap.requireData;
         if (data is ChecklistDepartureProcessDisabled) return SizedBox.shrink();
 
-        return Dialog(
+        return SBBPopup(
           key: dialogKey,
-          backgroundColor: ThemeUtil.getBackgroundColor(context),
-          shape: RoundedRectangleBorder(borderRadius: .circular(SBBSpacing.medium)),
-          constraints: BoxConstraints(maxWidth: _maxWidth),
-          child: Container(
-            padding: const EdgeInsets.all(SBBSpacing.medium).copyWith(top: SBBSpacing.xSmall),
-            child: Column(
-              mainAxisSize: .min,
-              children: [
-                _titleRow(context),
-                if (data is CustomerOrientedDepartureChecklist) ..._customerOrientedDepartureNotification(),
-                _nextStop(context, data),
-                _staticDepartureProcessChecklist(context, data),
-              ],
-            ),
+          titleText: context.l10n.w_departure_process_dialog_title,
+          style: SBBPopupStyle(constraints: BoxConstraints(maxWidth: _maxWidth)),
+          body: Column(
+            mainAxisSize: .min,
+            children: [
+              if (data is CustomerOrientedDepartureChecklist) ..._customerOrientedDepartureNotification(),
+              _nextStop(context, data),
+              _staticDepartureProcessChecklist(context, data),
+            ],
           ),
         );
       },
-    );
-  }
-
-  Widget _titleRow(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: .infinity, minHeight: 64.0),
-      child: Align(
-        alignment: .centerLeft,
-        child: Row(
-          children: [
-            Expanded(child: Text(context.l10n.w_departure_process_dialog_title, style: SBBTextStyles.largeLight)),
-            SBBTertiaryButtonSmall(iconData: SBBIcons.cross_small, onPressed: context.router.pop),
-          ],
-        ),
-      ),
     );
   }
 
