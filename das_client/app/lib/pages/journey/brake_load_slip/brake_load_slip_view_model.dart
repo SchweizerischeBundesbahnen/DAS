@@ -11,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/view_model/notification_priorit
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/sound/sound.dart';
 import 'package:auto_route/auto_route.dart';
@@ -33,6 +34,7 @@ class BrakeLoadSlipViewModel({
   required final JourneySettingsViewModel _journeySettingsViewModel,
   required final NotificationPriorityQueueViewModel _notificationViewModel,
   required final Launcher _launcher,
+  required final RuFeatureProvider _ruFeatureProvider,
   final DetailModalViewModel? _detailModalViewModel,
   final ConnectivityManager? _connectivityManager,
   final bool _checkForUpdates = false,
@@ -54,6 +56,7 @@ class BrakeLoadSlipViewModel({
   bool _openFullscreen = true;
   bool _skipFirstUpdate = true;
   bool _isFirstPositionUpdate = true;
+  Future<bool>? _isBrakeDetailsFeatureEnabled;
 
   StreamSubscription? _journeyPositionSubscription;
   StreamSubscription? _formationSubscription;
@@ -77,6 +80,9 @@ class BrakeLoadSlipViewModel({
   FormationRunChange? get formationRunValue => _rxFormationRun.value;
 
   bool get formationChangedValue => _rxFormationChanged.value;
+
+  Future<bool> get isBrakeDetailsFeatureEnabled =>
+      _isBrakeDetailsFeatureEnabled ??= _ruFeatureProvider.isRuFeatureEnabled(.brakeLoadSlipBrakeDetails);
 
   void _init() {
     _journeyPositionSubscription = _journeyPositionViewModel.model.listen((position) {
@@ -115,6 +121,7 @@ class BrakeLoadSlipViewModel({
     _latestPosition = null;
     _openFullscreen = true;
     _isFirstPositionUpdate = true;
+    _isBrakeDetailsFeatureEnabled = null;
     _rxFormation.add(null);
     _rxFormationRun.add(null);
     _rxFormationChanged.add(false);

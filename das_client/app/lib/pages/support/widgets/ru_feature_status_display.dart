@@ -100,5 +100,6 @@ extension _RuFeatureKeysExtension on RuFeatureKeys {
     .customerOrientedDeparture => context.l10n.w_ru_feature_status_customer_oriented_departure,
     .departureProcess => context.l10n.w_ru_feature_status_departure_process,
     .plannedTimeDeviation => context.l10n.w_ru_feature_status_planned_time_deviation,
+    .brakeLoadSlipBrakeDetails => context.l10n.w_ru_feature_status_brake_load_slip_brake_details,
   };
 }

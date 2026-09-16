@@ -373,6 +373,7 @@
   "w_ru_feature_status_customer_oriented_departure": "Kundenorientierter Abfahrprozess",
   "w_ru_feature_status_departure_process": "Abfahrprozess",
   "w_ru_feature_status_planned_time_deviation": "Abweichung zur Planzeit",
+  "w_ru_feature_status_brake_load_slip_brake_details": "Bremsdetails im Bremszettel",
   "w_train_driver_turnover_row_title": "Lokpersonalwechsel",
   "w_suspicious_journey_point_warning": "Rückfallebene benutzen",
   "w_suspicious_segment_notification_text": "Das Fahrbild enthält unvollständige Informationen.",
