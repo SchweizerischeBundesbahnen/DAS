@@ -88,7 +88,7 @@ class RequestLocalRegulationsTask({
     final missingSp = await _findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
       _log.info('No missing local regulations found...');
-      _taskCompletedCallback(this, true);
+      _taskCompletedCallback(this, null);
       return;
     }
 
