@@ -362,6 +362,8 @@
   "w_preload_status_missing_configuration": "Offline",
   "w_preload_status_last_update": "Datenstand:",
   "w_preload_status_start_preload": "Starten",
+  "w_preload_status_further_information_title": "Information zum Vorladen",
+  "w_preload_status_further_information_body": "Beim Vorladen lädt der DAS Client alle Fahrordnungen herunter, die jetzt oder in den nächsten Stunden abfahren. So können sie auch ohne Internetverbindung genutzt werden.\n\nDie Informationen auf dieser Seite braucht der Support, wenn ein Fehler auftritt.",
   "w_settings_status_title": "Settings API",
   "w_settings_status_last_request_successful": "Letzte Anfrage erfolgreich:",
   "w_settings_status_last_successful_timestamp": "Zeitpunkt letzter erfolgreichen Anfrage:",

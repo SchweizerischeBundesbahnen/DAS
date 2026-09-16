@@ -55,13 +55,11 @@ class PreloadStatusDisplay extends StatelessWidget {
                     padding: EdgeInsets.all(SBBSpacing.medium).copyWith(bottom: SBBSpacing.xLarge),
                   ),
                   context: context,
-                  titleText: 'Information zum Vorladen',
-                  body: Text("""Mit dem Vorladen werden Fahrordnungen, welche aktuell oder in den nächsten Stunden abfahren, auf den DAS Client vorgeladen, damit sie auch offline genutzt werden können. 
-
-Diese Info braucht der Support, falls Fehler auftauchen."""),
+                  titleText: context.l10n.w_preload_status_further_information_title,
+                  body: Text(context.l10n.w_preload_status_further_information_body),
                 );
               },
-              labelText: 'Information zum Vorladen',
+              labelText: context.l10n.w_preload_status_further_information_title,
               iconData: SBBIcons.circle_information_small,
             ),
           ],
