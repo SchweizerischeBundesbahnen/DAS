@@ -5,6 +5,7 @@ import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
+import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,9 @@ class JourneySearchOverlay extends StatelessWidget {
             labelText: buttonLabel,
             onPressed: s.isInputComplete
                 ? () async {
+                    if (viewModel.willReplaceLoadedJourney && !await confirmCloseJourney(context)) return;
+                    if (!context.mounted) return;
+
                     final success = await viewModel.loadJourney();
                     if (!success && context.mounted) {
                       context.router.replace(JourneySelectionRoute());
