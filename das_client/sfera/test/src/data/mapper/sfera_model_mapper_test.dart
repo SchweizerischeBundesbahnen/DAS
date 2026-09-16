@@ -1722,8 +1722,6 @@ void main() {
     );
   });
 
-  // TODO: fix this test
-
   test('Test local regulations are parsed correctly', () {
     final journey = getJourney('T26');
     expect(journey.valid, true);
