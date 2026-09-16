@@ -127,6 +127,7 @@ class JourneyPositionViewModel({
             previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
             nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
             isManualPosition: _isManualPosition(updatedPosition),
+            isTrainInMotion: _isTrainInMotion(updatedPosition, journey.journeyPoints),
           );
 
           if (!_rxModel.isClosed) _rxModel.add(model);
@@ -323,6 +324,17 @@ class JourneyPositionViewModel({
         },
       );
     }
+  }
+
+  /// The train is considered to be on its way as soon as it has passed the first service point
+  /// and until it has reached the last one.
+  bool _isTrainInMotion(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
+    if (updatedPosition == null) return false;
+
+    final servicePoints = journeyPoints.whereType<ServicePoint>().toList();
+    if (servicePoints.isEmpty) return false;
+
+    return updatedPosition.order > servicePoints.first.order && updatedPosition.order < servicePoints.last.order;
   }
 
   bool _isManualPosition(JourneyPoint? updatedPosition) {
