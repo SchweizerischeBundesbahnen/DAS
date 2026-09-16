@@ -1,4 +1,3 @@
-import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:local_regulations/src/extensions/local_regulation_section_extension.dart';
 import 'package:sfera/component.dart';
@@ -7,8 +6,9 @@ void main() {
   test('toHtml_whenWithAbbreviation_thenRowTemplate', () {
     // ARRANGE
     final section = LocalRegulationSection(
-      title: LocalizedString(de: 'R Profil EBV O2'),
-      content: LocalizedString(de: '<div>This is a text</div>'),
+      id: '1',
+      title: 'R Profil EBV O2',
+      content: '<div>This is a text</div>',
     );
 
     // ACT & EXPECT
@@ -26,8 +26,9 @@ void main() {
   test('toHtml_whenWithAbbreviationNoContent_thenRowTemplateWithoutContent', () {
     // ARRANGE
     final section = LocalRegulationSection(
-      title: LocalizedString(de: 'R Profil EBV O2'),
-      content: LocalizedString(),
+      id: '1',
+      title: 'R Profil EBV O2',
+      content: null,
     );
 
     // ACT & EXPECT
@@ -44,8 +45,9 @@ void main() {
   test('toHtml_whenWithoutAbbreviation_thenStandardTemplate', () {
     // ARRANGE
     final section = LocalRegulationSection(
-      title: LocalizedString(de: 'ZUE Zürich'),
-      content: LocalizedString(de: '<div>This is a text</div>'),
+      id: '1',
+      title: 'ZUE Zürich',
+      content: '<div>This is a text</div>',
     );
 
     // ACT & EXPECT
@@ -58,8 +60,9 @@ void main() {
   test('toHtml_whenWithoutAbbreviationAndContent_thenStandardTemplateWithoutContent', () {
     // ARRANGE
     final section = LocalRegulationSection(
-      title: LocalizedString(de: 'ZUE Zürich'),
-      content: LocalizedString(),
+      id: '1',
+      title: 'ZUE Zürich',
+      content: null,
     );
 
     // ACT & EXPECT
@@ -71,8 +74,9 @@ void main() {
   test('toHtml_whenWithoutTitleAndContent_thenEmptyString', () {
     // ARRANGE
     final section = LocalRegulationSection(
-      title: LocalizedString(),
-      content: LocalizedString(),
+      id: '1',
+      title: null,
+      content: null,
     );
 
     // ACT & EXPECT

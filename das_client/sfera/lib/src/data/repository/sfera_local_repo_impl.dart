@@ -1,5 +1,6 @@
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
@@ -13,6 +14,7 @@ import 'package:sfera/src/data/mapper/datetime_x.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/local_regulation_section.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 final _log = Logger('SferaLocalRepoImpl');
@@ -137,6 +139,41 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
 
   @override
   Future<SferaDbMetrics> getMetrics() => _databaseService.getMetrics();
+
+  @override
+  Future<Map<String, LocalRegulationSection>> retrieveLocalRegulationSections(List<String> ids) async {
+    if (ids.isEmpty) return {};
+
+    final locale = AppLocale.resolvedLocale();
+    final localRegulationsSections = <String, LocalRegulationSection>{};
+
+    for (final id in ids) {
+      final segmentProfileData = await _databaseService.findSegmentProfile(
+        '${id}_$locale',
+        RequestLocalRegulationsTask.localRegulationVersionMajor,
+        RequestLocalRegulationsTask.localRegulationVersionMinor,
+      );
+
+      if (segmentProfileData == null) {
+        _log.warning('Could not resolve local regulation segment profile for id: $id');
+        continue;
+      }
+
+      final segmentProfile = segmentProfileData.toDomain();
+
+      final localRegulations = segmentProfile.points?.localRegulationsNsp ?? [];
+      for (final localRegulation in localRegulations) {
+        localRegulationsSections[id] = LocalRegulationSection(
+          id: id,
+          title: localRegulation.title,
+          content: localRegulation.content,
+          children: localRegulation.localRegulationChildren,
+        );
+      }
+    }
+
+    return localRegulationsSections;
+  }
 }
 
 extension _SferaElementIterableExtension on Iterable<SferaXmlElementDto> {

@@ -19,7 +19,9 @@ enum LocalRegulationRelevance({required final String abbreviation}) {
 
   /// Extracts the relevance from a string that starts with the abbreviation.
   /// Example: "GV Ortsfestes französisches Signal"
-  static LocalRegulationRelevance? from(String value) {
+  static LocalRegulationRelevance? from(String? value) {
+    if (value == null) return null;
+
     final trimmed = value.trim();
     if (trimmed.isEmpty) return null;
 

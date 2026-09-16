@@ -7,6 +7,12 @@ class SpZoneDto({super.type = elementType, super.attributes, super.children, sup
 
   String? get nidC => childrenWithType('NID_C').firstOrNull?.value;
 
+  factory createLocalRegulationZone() {
+    final request = SpZoneDto();
+    request.children.add(SferaXmlElementDto(type: 'IM_ID', value: '0085'));
+    return request;
+  }
+
   @override
   bool validate() {
     return (validateHasChild('IM_ID') || validateHasChild('NID_C')) && super.validate();

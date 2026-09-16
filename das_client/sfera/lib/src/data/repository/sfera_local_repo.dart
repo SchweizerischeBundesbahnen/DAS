@@ -18,4 +18,6 @@ abstract class SferaLocalRepo._() {
   Future<bool> saveData(Iterable<SferaXmlElementDto> elements);
 
   Future<SferaDbMetrics> getMetrics();
+
+  Future<Map<String, LocalRegulationSection>> retrieveLocalRegulationSections(List<String> ids);
 }

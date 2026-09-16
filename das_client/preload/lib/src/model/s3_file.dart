@@ -17,6 +17,21 @@ class const S3File({
       status: status ?? this.status,
     );
   }
+
+  @override
+  String toString() {
+    return 'S3File(name: $name, eTag: $eTag, size: $size, status: $status)';
+  }
+
+  @override
+  int get hashCode => Object.hash(name, eTag, size, status);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! S3File) return false;
+    return name == other.name && eTag == other.eTag && size == other.size && status == other.status;
+  }
 }
 
 enum S3FileSyncStatus {
