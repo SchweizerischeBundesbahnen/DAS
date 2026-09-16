@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/journey_screen/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
@@ -14,7 +13,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class JourneySearchOverlay extends StatelessWidget {
   static const Key journeySearchWidgetKey = Key('journeySearchWidget');
-  static const Key journeySearchCloseKey = Key('closeJourneySearchButton');
 
   const JourneySearchOverlay({required this.child, super.key});
 
@@ -23,29 +21,29 @@ class JourneySearchOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneySelectionViewModel>();
-    return AnchoredFullPageOverlay(
-      targetAnchor: .bottomLeft,
-      followerAnchor: .topLeft,
-      triggerBuilder: (_, showOverlay) => InkWell(
+    return SBBPopover(
+      placement: .bottomStart,
+      targetBuilder: (_, showPopover) => InkWell(
         key: journeySearchWidgetKey,
         borderRadius: BorderRadius.circular(SBBSpacing.xSmall),
         child: child,
         onTap: () {
           viewModel.dismissSelection();
-          showOverlay();
+          showPopover();
         },
       ),
-      contentBuilder: (_, hideOverlay) => Provider(
+      titleText: context.l10n.w_journey_search_overlay_title,
+      builder: (_, hidePopover) => Provider(
         create: (_) => DI.get<JourneySelectionViewModel>(),
         child: Builder(
           builder: (context) {
             return Column(
+              mainAxisSize: .min,
               mainAxisAlignment: .start,
               spacing: SBBSpacing.medium,
               children: [
-                _header(context, hideOverlay),
                 _inputFields(context),
-                _loadJourneyButton(context, hideOverlay),
+                _loadJourneyButton(context, hidePopover),
               ],
             );
           },
@@ -78,32 +76,6 @@ class JourneySearchOverlay extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _header(BuildContext context, VoidCallback hideOverlay) {
-    final viewModel = context.read<JourneySelectionViewModel>();
-    return Row(
-      crossAxisAlignment: .center,
-      children: [
-        Expanded(
-          child: Text(
-            context.l10n.w_journey_search_overlay_title,
-            style: sbbTextStyle.lightStyle.large,
-          ),
-        ),
-        StreamBuilder(
-          stream: viewModel.model,
-          builder: (context, snapshot) {
-            final isLoading = snapshot.data is Loading;
-            return SBBTertiaryButtonSmall(
-              key: JourneySearchOverlay.journeySearchCloseKey,
-              onPressed: isLoading ? null : () => hideOverlay(),
-              iconData: SBBIcons.cross_small,
-            );
-          },
-        ),
-      ],
     );
   }
 

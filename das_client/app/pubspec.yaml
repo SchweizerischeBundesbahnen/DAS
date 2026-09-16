@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.51.0+94
+version: 0.52.0+95
 
 environment:
   sdk: ^3.13.0
@@ -64,7 +64,7 @@ dependencies:
   rxdart: ^0.28.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.0.0
+  sbb_design_system_mobile: ^5.1.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.6.1
   # https://pub.dev/packages/wakelock_plus
