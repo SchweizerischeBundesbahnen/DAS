@@ -18,7 +18,7 @@ enum LocalRegulationRelevance({required final String abbreviation}) {
   trafficControllers(abbreviation: 'Fdl');
 
   /// Extracts the relevance from a string that starts with the abbreviation.
-  /// Example: "GV Ortsfestes französisches Signal"
+  /// Example: "GV Ortsfestes französisches Signal" -> crossBorderTraffic
   static LocalRegulationRelevance? from(String? value) {
     if (value == null) return null;
 

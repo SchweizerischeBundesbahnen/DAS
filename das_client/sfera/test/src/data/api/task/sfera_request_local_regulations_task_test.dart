@@ -208,6 +208,53 @@ void main() {
     expect(timeoutReached, true);
   });
 
+  test('cancel_whenTaskIsCancelled_thenStopsTimeoutAndIgnoresSubsequentReplies', () async {
+    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(sferaLocalService.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
+
+    var taskCompleted = false;
+    var taskFailed = false;
+
+    final localRegulationsTask = RequestLocalRegulationsTask(
+      mqttService: mqttService,
+      sferaRepo: mockSferaRepo,
+      sferaDatabaseRepository: sferaLocalService,
+      otnId: otnId,
+      servicePoints: [
+        buildServicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
+      ],
+      timeout: const Duration(seconds: 1),
+    );
+
+    await localRegulationsTask.execute(
+      (task, data) {
+        taskCompleted = true;
+      },
+      (task, error) {
+        taskFailed = true;
+      },
+    );
+
+    verify(mqttService.publishMessage(any, any, any)).called(1);
+
+    localRegulationsTask.cancel();
+
+    await Future.delayed(const Duration(milliseconds: 1200));
+
+    expect(localRegulationsTask.isCancelled, true);
+    expect(taskCompleted, false);
+    expect(taskFailed, false);
+
+    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
+      loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml'),
+    );
+
+    final result = await localRegulationsTask.handleMessage(reply);
+
+    expect(result, false);
+    verifyNever(sferaLocalService.saveSegmentProfile(any));
+  });
+
   test('handleMessage_whenReceivingProtocolError_thenFailsWithProtocolErrors', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
     when(sferaLocalService.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
