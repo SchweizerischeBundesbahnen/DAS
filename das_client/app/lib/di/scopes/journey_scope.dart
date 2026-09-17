@@ -352,6 +352,7 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         localRegulationHtmlGenerator: DI.get(),
         settingsVM: DI.get(),
+        sferaRepo: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

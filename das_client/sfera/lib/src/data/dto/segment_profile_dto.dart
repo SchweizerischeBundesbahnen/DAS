@@ -14,7 +14,7 @@ class SegmentProfileDto({super.type = elementType, super.attributes, super.child
 
   String get versionMajor => attributes['SP_VersionMajor']!;
 
-  String get versionMinor => attributes['SP_VersionMinor']!;
+  String get versionMinor => attributes['SP_VersionMinor'] ?? '';
 
   double get length => double.parse(attributes['SP_Length']!);
 
@@ -36,7 +36,6 @@ class SegmentProfileDto({super.type = elementType, super.attributes, super.child
   @override
   bool validate() {
     return validateHasAttribute('SP_VersionMajor') &&
-        validateHasAttribute('SP_VersionMinor') &&
         validateHasAttributeDouble('SP_Length') &&
         validateHasAttribute('SP_ID') &&
         super.validate();

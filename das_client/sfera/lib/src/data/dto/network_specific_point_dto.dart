@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/curve_point_network_specific_point_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_network_specific_point_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_network_specific_point_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
@@ -25,6 +26,8 @@ class NetworkSpecificPointDto({super.type = elementType, super.attributes, super
       return WhistleNetworkSpecificPointDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == TrackFootNotesNspDto.groupNameValue) {
       return TrackFootNotesNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == LocalRegulationNetworkSpecificPointNspDto.groupNameValue) {
+      return LocalRegulationNetworkSpecificPointNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificPointDto(attributes: attributes, children: children, value: value);
   }

@@ -1,3 +1,4 @@
+export 'package:core_data/src/app_locale.dart';
 export 'package:core_data/src/base_data.dart';
 export 'package:core_data/src/company.dart';
 export 'package:core_data/src/company_match.dart';

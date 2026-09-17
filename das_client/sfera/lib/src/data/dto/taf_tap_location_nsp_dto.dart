@@ -1,6 +1,6 @@
 import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
@@ -31,8 +31,8 @@ class TafTapLocationNspDto({super.type = elementType, super.attributes, super.ch
       return StationPropertyNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == TafTapRouteTableDataNspDto.groupNameValue) {
       return TafTapRouteTableDataNspDto(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value?.startsWith(LocalRegulationNspDto.groupNameValueStart) == true) {
-      return LocalRegulationNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value?.startsWith(LocalRegulationTafTapLocationNspDto.groupNameValueStart) == true) {
+      return LocalRegulationTafTapLocationNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == DepartureAuthNspDto.groupNameValue) {
       return DepartureAuthNspDto(attributes: attributes, children: children, value: value);
     }

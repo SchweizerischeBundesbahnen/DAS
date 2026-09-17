@@ -1,40 +1,44 @@
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
 import 'package:sfera/src/data/dto/g2b_error.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
+import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
-import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
 
-final _log = Logger('RequestSegmentProfilesTask');
+final _log = Logger('RequestLocalRegulationsTask');
 
-class RequestSegmentProfilesTask({
+class RequestLocalRegulationsTask({
   required final MqttService _mqttService,
   required final SferaRepository _sferaRepo,
   required final SferaLocalDatabaseService _sferaDatabaseRepository,
   required final OtnId otnId,
-  required final JourneyProfileDto journeyProfile,
+  required final List<ServicePoint> servicePoints,
   super.timeout,
-}) extends SferaTask<List<SegmentProfileDto>> {
-  late TaskCompleted<List<SegmentProfileDto>> _taskCompletedCallback;
+}) extends SferaTask<void> {
+  static const localRegulationVersionMajor = '0';
+  static const localRegulationVersionMinor = '';
+
+  late TaskCompleted<void> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
 
+  int _segementsToFetch = 0;
+
   @override
-  Future<void> execute(TaskCompleted<List<SegmentProfileDto>> onCompleted, TaskFailed onFailed) async {
+  Future<void> execute(TaskCompleted<void> onCompleted, TaskFailed onFailed) async {
     if (isCancelled) return;
+
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
-    await _requestSegmentProfiles();
+    await _requestLocalRegulations();
   }
 
   @override
@@ -54,8 +58,9 @@ class RequestSegmentProfilesTask({
     }
 
     stopTimeout();
+    final segmentProfileCount = replyMessage.payload!.segmentProfiles.length;
     _log.info(
-      'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
+      'Received G2bReplyPayload response with $segmentProfileCount local regulation SegmentProfiles...',
     );
 
     bool allValid = true;
@@ -68,31 +73,40 @@ class RequestSegmentProfilesTask({
       }
     }
 
-    if (allValid) {
-      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+    if (!allValid) {
+      _log.info('Received invalid local regulation SegmentProfiles, aborting...');
+      _taskCompletedCallback(this, null);
+      return true;
+    }
+
+    final finished = _segementsToFetch == segmentProfileCount;
+    if (finished) {
+      _taskCompletedCallback(this, null);
     } else {
-      _taskFailedCallback(this, .invalid());
+      execute(_taskCompletedCallback, _taskFailedCallback);
     }
 
     return true;
   }
 
-  Future<void> _requestSegmentProfiles() async {
+  Future<void> _requestLocalRegulations() async {
     final missingSp = await _findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
-      _log.info('No missing SegmentProfiles found...');
-      _taskCompletedCallback(this, []);
+      _log.info('No missing local regulations found...');
+      _taskCompletedCallback(this, null);
       return;
     }
+
+    _segementsToFetch = missingSp.length;
 
     final List<SpRequestDto> spRequests = [];
     for (final sp in missingSp) {
       spRequests.add(
         SpRequestDto.create(
-          id: sp.spId,
-          versionMajor: sp.versionMajor,
-          versionMinor: sp.versionMinor,
-          spZone: sp.spZone,
+          id: sp,
+          versionMajor: localRegulationVersionMajor,
+          versionMinor: localRegulationVersionMinor,
+          spZone: SpZoneDto.createLocalRegulationZone(),
         ),
       );
     }
@@ -101,26 +115,27 @@ class RequestSegmentProfilesTask({
       _sferaRepo.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),
     );
-    _log.info('Sending segment profiles request...');
+    _log.info('Sending local regulations segment profiles request...');
 
     startTimeout(_taskFailedCallback);
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
   }
 
-  Future<List<SegmentProfileReferenceDto>> _findMissingSegmentProfiles() async {
-    final missingSps = <SegmentProfileReferenceDto>[];
+  Future<List<String>> _findMissingSegmentProfiles() async {
+    final missingSps = <String>[];
 
-    for (final segment in journeyProfile.segmentProfileReferences) {
-      if (segment.spId == SegmentProfileMapper.invalidSpId) continue;
+    final locale = AppLocale.resolvedLocale();
+    for (final segmentId in servicePoints.expand((sp) => sp.localRegulationSegmentIds).toSet()) {
+      final languageSpecificSegmentId = '${segmentId}_$locale';
 
       final existingProfile = await _sferaDatabaseRepository.findSegmentProfile(
-        segment.spId,
-        segment.versionMajor,
-        segment.versionMinor,
+        languageSpecificSegmentId,
+        localRegulationVersionMajor,
+        localRegulationVersionMinor,
       );
       if (existingProfile == null) {
-        missingSps.add(segment);
+        missingSps.add(languageSpecificSegmentId);
       }
     }
 

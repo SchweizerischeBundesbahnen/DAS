@@ -11,12 +11,20 @@ final _log = Logger('SferaTask');
 
 abstract class SferaTask<T>({final Duration _timeout = const Duration(seconds: 15)}) {
   Timer? timeoutTimer;
+  bool _isCancelled = false;
+
+  bool get isCancelled => _isCancelled;
 
   /// executes given SFERA task. Use callback [TaskCompleted] and [TaskFailed] to handle result.
   Future<void> execute(TaskCompleted<T> onCompleted, TaskFailed onFailed);
 
   /// handles received reply and return [bool] whether message could be handled or not.
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage);
+
+  void cancel() {
+    _isCancelled = true;
+    stopTimeout();
+  }
 
   void startTimeout(TaskFailed onFailed) {
     timeoutTimer?.cancel();

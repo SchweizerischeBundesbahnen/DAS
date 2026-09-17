@@ -1731,33 +1731,20 @@ void main() {
 
     // Genève-Aéroport
     final geneveAirport = servicePoints[0];
-    final geneveAirportRegulations = geneveAirport.localRegulationSections;
-    expect(geneveAirportRegulations, hasLength(1));
-    final geneveAirportTitle = geneveAirportRegulations.first.title;
-    expect(geneveAirportTitle.de, 'GEAP Genf Flughafen');
-    expect(geneveAirportTitle.fr, 'GEAP Genève Aéroport');
-    expect(geneveAirportTitle.it, 'GEAP Aeroporto di Ginevra');
-    final geneveAirportContent = geneveAirportRegulations.first.content;
-    expect(geneveAirportContent.de, '<div>Inhalt</div>');
-    expect(geneveAirportContent.fr, '<div>Contenu</div>');
-    expect(geneveAirportContent.it, '<div>Contenuto</div>');
+    final geneveAirportSegmentsIds = geneveAirport.localRegulationSegmentIds;
+    expect(geneveAirportSegmentsIds, hasLength(1));
+    expect(geneveAirportSegmentsIds.first, 'RL_701');
 
     // Genève
     final geneve = servicePoints[1];
-    final geneveRegulations = geneve.localRegulationSections;
-    expect(geneveRegulations, hasLength(1));
-    final geneveTitle = geneveRegulations.first.title;
-    expect(geneveTitle.de, 'ZR Titel');
-    expect(geneveTitle.fr, isNull);
-    expect(geneveTitle.it, isNull);
-    final geneveContent = geneveRegulations.first.content;
-    expect(geneveContent.de, '<div>Test</div>');
-    expect(geneveContent.fr, isNull);
-    expect(geneveContent.it, isNull);
+    final geneveSegmentIds = geneve.localRegulationSegmentIds;
+    expect(geneveSegmentIds, hasLength(2));
+    expect(geneveSegmentIds[0], 'RL_702');
+    expect(geneveSegmentIds[1], 'RL_703');
 
     // Coppet
     final coppet = servicePoints[2];
-    expect(coppet.localRegulationSections, isEmpty);
+    expect(coppet.localRegulationSegmentIds, isEmpty);
   });
 
   test('Test between brackets is parsed correctly', () {
@@ -2076,7 +2063,7 @@ void main() {
     expect(suspiciousPoints[1].kilometre, equals([]));
     expect(suspiciousPoints[1].spId, equals('T40_4'));
 
-    // No regular BaseData should exist within the suspicious segments
+    // No regular BaseData should exist within the segment
     final suspiciousSegments = journey.metadata.suspiciousSegments;
     final dataInSuspiciousSegments = journey.data.where(
       (p) => p is! SuspiciousJourneyPoint && suspiciousSegments.any((s) => s.appliesToOrder(p.order)),
