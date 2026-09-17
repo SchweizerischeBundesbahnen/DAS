@@ -52,18 +52,6 @@ class JourneySelectionViewModel({
     loadJourney();
   }
 
-  bool get willReplaceLoadedJourney {
-    final connectedTrain = _sferaRepo.connectedTrain;
-    if (connectedTrain == null) return false;
-
-    final state = _currentState;
-    if (state.operationalTrainNumber.trim().toUpperCase() != connectedTrain.trainNumber) return true;
-    if (!DateUtils.isSameDay(state.startDate, connectedTrain.date)) return true;
-
-    final companyCode = state.companyCode;
-    return companyCode != null && companyCode != connectedTrain.companyCode;
-  }
-
   Future<bool> loadJourney() async {
     final currentState = _currentState;
     switch (currentState) {

@@ -94,7 +94,7 @@ class JourneySearchOverlay extends StatelessWidget {
             labelText: buttonLabel,
             onPressed: s.isInputComplete
                 ? () async {
-                    if (viewModel.willReplaceLoadedJourney && !await confirmCloseJourney(context)) return;
+                    if (!await confirmCloseJourney(context)) return;
                     if (!context.mounted) return;
 
                     final success = await viewModel.loadJourney();
