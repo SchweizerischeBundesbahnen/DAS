@@ -27,6 +27,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_advanc
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/line_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
@@ -122,81 +123,32 @@ class _ProviderScope extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Stateful VMs
-        Provider<DelayViewModel>.value(
-          value: DI.get<DelayViewModel>(),
-        ),
-        Provider<JourneyPositionViewModel>.value(
-          value: DI.get<JourneyPositionViewModel>(),
-        ),
-        Provider<DepartureProcessWarningViewModel>.value(
-          value: DI.get<DepartureProcessWarningViewModel>(),
-        ),
-        Provider<NotificationPriorityQueueViewModel>.value(
-          value: DI.get<NotificationPriorityQueueViewModel>(),
-        ),
-        Provider<CustomerOrientedDepartureViewModel>.value(
-          value: DI.get<CustomerOrientedDepartureViewModel>(),
-        ),
-        Provider<UxTestingViewModel>.value(
-          value: DI.get(),
-        ),
-        Provider<DecisiveGradientViewModel>.value(
-          value: DI.get(),
-        ),
-        Provider<ModalViewModel>.value(
-          value: DI.get<DetailModalViewModel>(),
-        ),
-        Provider<DisturbanceViewModel>.value(
-          value: DI.get<DisturbanceViewModel>(),
-        ),
-        Provider<ChecklistDepartureProcessViewModel>.value(
-          value: DI.get<ChecklistDepartureProcessViewModel>(),
-        ),
-        Provider<CollapsibleRowsViewModel>.value(
-          value: DI.get<CollapsibleRowsViewModel>(),
-        ),
-        Provider<ReplacementSeriesViewModel>.value(
-          value: DI.get<ReplacementSeriesViewModel>(),
-        ),
-        Provider<DepartureDispatchNotificationViewModel>.value(
-          value: DI.get<DepartureDispatchNotificationViewModel>(),
-        ),
-        Provider<ShortTermChangeViewModel>.value(
-          value: DI.get<ShortTermChangeViewModel>(),
-        ),
-        Provider<SuspiciousSegmentViewModel>.value(
-          value: DI.get<SuspiciousSegmentViewModel>(),
-        ),
-        Provider<LineSpeedViewModel>.value(
-          value: DI.get<LineSpeedViewModel>(),
-        ),
-        Provider<MultiLineSpeedViewModel>.value(
-          value: DI.get<MultiLineSpeedViewModel>(),
-        ),
-        Provider<CalculatedSpeedViewModel>.value(
-          value: DI.get<CalculatedSpeedViewModel>(),
-        ),
-        Provider<AdvisedSpeedViewModel>.value(
-          value: DI.get<AdvisedSpeedViewModel>(),
-        ),
-        Provider<ChronographViewModel>.value(
-          value: DI.get<ChronographViewModel>(),
-        ),
-        Provider<BrakeLoadSlipViewModel>.value(
-          value: DI.get<BrakeLoadSlipViewModel>(),
-        ),
-        Provider<JourneyTableViewModel>.value(
-          value: DI.get(),
-        ),
-        Provider<JourneyTableAdvancementViewModel>.value(
-          value: DI.get(),
-        ),
-        Provider<ServicePointModalViewModel>.value(
-          value: DI.get(),
-        ),
-        Provider<SimTrainViewModel>.value(
-          value: DI.get(),
-        ),
+        Provider<DelayViewModel>.value(value: DI.get()),
+        Provider<JourneyPositionViewModel>.value(value: DI.get()),
+        Provider<DepartureProcessWarningViewModel>.value(value: DI.get()),
+        Provider<NotificationPriorityQueueViewModel>.value(value: DI.get()),
+        Provider<CustomerOrientedDepartureViewModel>.value(value: DI.get()),
+        Provider<UxTestingViewModel>.value(value: DI.get()),
+        Provider<DecisiveGradientViewModel>.value(value: DI.get()),
+        Provider<ModalViewModel>.value(value: DI.get<DetailModalViewModel>()),
+        Provider<DisturbanceViewModel>.value(value: DI.get()),
+        Provider<ChecklistDepartureProcessViewModel>.value(value: DI.get()),
+        Provider<CollapsibleRowsViewModel>.value(value: DI.get()),
+        Provider<ReplacementSeriesViewModel>.value(value: DI.get()),
+        Provider<DepartureDispatchNotificationViewModel>.value(value: DI.get()),
+        Provider<ShortTermChangeViewModel>.value(value: DI.get()),
+        Provider<SuspiciousSegmentViewModel>.value(value: DI.get()),
+        Provider<LineSpeedViewModel>.value(value: DI.get()),
+        Provider<MultiLineSpeedViewModel>.value(value: DI.get()),
+        Provider<CalculatedSpeedViewModel>.value(value: DI.get()),
+        Provider<AdvisedSpeedViewModel>.value(value: DI.get()),
+        Provider<ChronographViewModel>.value(value: DI.get()),
+        Provider<BrakeLoadSlipViewModel>.value(value: DI.get()),
+        Provider<JourneyTableViewModel>.value(value: DI.get()),
+        Provider<JourneyTableAdvancementViewModel>.value(value: DI.get()),
+        Provider<ServicePointModalViewModel>.value(value: DI.get()),
+        Provider<SimTrainViewModel>.value(value: DI.get()),
+        Provider<PersonalNotesViewModel>.value(value: DI.get()),
 
         // Stateless VMs
         Provider<AdditionalSpeedRestrictionModalViewModel>(

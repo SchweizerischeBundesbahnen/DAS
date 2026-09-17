@@ -28,6 +28,7 @@ import 'package:local_regulations/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:personal_notes/component.dart';
 import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
@@ -63,6 +64,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerRuIndicationsRepository();
     getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
+    getIt.registerPersonalNotesRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
@@ -220,6 +222,13 @@ extension AuthenticatedScopeExtension on GetIt {
         client: DI.get(),
         sferaLocalRepo: DI.get(),
       ),
+    );
+  }
+
+  void registerPersonalNotesRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingleton<PersonalNotesRepository>(
+      PersonalNotesComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
     );
   }
 
