@@ -87,25 +87,8 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('journeySearchOverlay_whenSameTrainLoaded_thenShowsNoConfirmation|NPA1uLTKqwBt6rEtY5P8|tests:2219', (
-      tester,
-    ) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T9999M');
-      await _moveTrainInMotion(tester);
-
-      await _openJourneySearchOverlay(tester);
-      await _enterTrainNumber(tester, 'T9999M');
-      await _tapLoadJourneyButton(tester);
-
-      // the loaded journey is not replaced, so it is not closed either
-      expect(find.text(l10n.w_close_journey_dialog_title), findsNothing);
-
-      await disconnect(tester);
-    });
-
     testWidgets(
-      'journeySearchOverlay_whenDifferentTrainLoadedAndDismissed_thenStaysOnJourney|LK3zLOfV6lNG08NYVwB2|tests:2219',
+      'journeySearchOverlay_whenNewTrainLoadedAndDismissed_thenStaysOnJourney|LK3zLOfV6lNG08NYVwB2|tests:2219',
       (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T9999M');

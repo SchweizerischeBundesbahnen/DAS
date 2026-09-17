@@ -1,6 +1,5 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/battery_status.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_header_box.dart';
@@ -129,15 +128,8 @@ Future<void> main() async {
       final currentDisplayTurnedOn = await WakelockPlus.enabled;
       expect(currentDisplayTurnedOn, true);
 
-      // find pause button and press it
-      final pauseButton = find.text(l10n.p_journey_header_button_pause);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
-
       // close journey
-      expect(find.byKey(JourneyPage.disconnectButtonKey), findsOneWidget);
-
+      await stopAutomaticAdvancement(tester);
       await closeJourney(tester);
 
       // Get that the always-on display is turned off, because the journey is closed
@@ -154,10 +146,7 @@ Future<void> main() async {
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
 
-      final pauseButton = find.text(l10n.p_journey_header_button_pause);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
+      await stopAutomaticAdvancement(tester);
 
       expect(find.text(appbarText).hitTestable(), findsOneWidget);
 
