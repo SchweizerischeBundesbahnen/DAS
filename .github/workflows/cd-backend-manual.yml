@@ -1,0 +1,51 @@
+name: cd backend manual
+on:
+  workflow_dispatch:
+    inputs:
+      tag:      { description: 'Git tag to build', required: true }
+      version:  { description: 'Image tag',        required: true }
+      tag_latest: { description: 'Also push :latest', type: boolean, default: true }
+
+permissions: { contents: write, packages: write }
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: das_backend } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { ref: ${{ inputs.tag }} }
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with: { java-version: '25', distribution: 'temurin', cache: 'maven' }
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
+      - name: Create container image
+        env:
+          IMAGE_ID: ghcr.io/${{ github.repository }}/backend
+          VERSION: ${{ inputs.version }}
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
+        run: |
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
+          mvn spring-boot:build-image \
+            -Dtest=ch.sbb.das.backend.ApiExtractionTest \
+            -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          if [ "${{ inputs.tag_latest }}" = "true" ]; then
+            docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest && docker push $IMAGE_ID:latest
+          fi
+      - name: Upload Release Artifact
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: gh release upload ${{ inputs.tag }} ./src/main/resources/api/api-specification.yaml --clobber
