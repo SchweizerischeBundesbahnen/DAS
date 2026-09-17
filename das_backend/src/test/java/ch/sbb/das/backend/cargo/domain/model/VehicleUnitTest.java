@@ -15,7 +15,11 @@ class VehicleUnitTest {
     }
 
     static VehicleUnit createVehicleUnitWithDisabledBrake() {
-        return new VehicleUnit(null, new BrakeStatus(0), null, null, null, null);
+        return createVehicleUnitWithDisabledBrake(null);
+    }
+
+    static VehicleUnit createVehicleUnitWithDisabledBrake(BrakeDesign brakeDesign) {
+        return new VehicleUnit(brakeDesign, new BrakeStatus(0), null, null, null, null);
     }
 
     @Test
