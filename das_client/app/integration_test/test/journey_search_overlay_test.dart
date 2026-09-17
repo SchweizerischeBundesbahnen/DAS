@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
@@ -102,6 +101,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until T2 opened
         await waitUntilExists(
@@ -113,8 +113,7 @@ void main() {
         expect(find.byType(NavigationButtons), findsNothing);
 
         // pause auto advancement
-        final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
-        await tapElement(tester, pauseButton);
+        await stopAutomaticAdvancement(tester);
         await tester.pumpAndSettle(Duration(milliseconds: 300));
 
         // navigation buttons still not displayed
@@ -158,6 +157,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until on JourneySelectionPage
         await waitUntilExists(tester, find.byType(JourneySelectionPage));

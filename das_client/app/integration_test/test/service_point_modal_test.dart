@@ -8,7 +8,6 @@ import 'package:app/pages/journey/journey_screen/detail_modal/service_point_moda
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/header_icon_button.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/das_circle_badge.dart';
@@ -258,9 +257,7 @@ void main() {
       await _checkOpenModalSheet(tester, DetailTabCommunication.communicationTabKey, 'Bern');
 
       // pause automatic advancement
-      final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
-      expect(pauseButton, findsOneWidget);
-      await tapElement(tester, pauseButton);
+      await stopAutomaticAdvancement(tester);
 
       // check if modal sheet is closed
       await waitUntilExists(tester, find.byKey(DasModalSheet.modalSheetClosedKey));
