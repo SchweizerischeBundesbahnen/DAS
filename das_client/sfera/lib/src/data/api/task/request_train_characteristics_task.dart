@@ -29,6 +29,8 @@ class RequestTrainCharacteristicsTask({
 
   @override
   Future<void> execute(TaskCompleted<List<TrainCharacteristicsDto>> onCompleted, TaskFailed onFailed) async {
+    if (isCancelled) return;
+
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
@@ -88,6 +90,8 @@ class RequestTrainCharacteristicsTask({
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (isCancelled) return false;
+
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

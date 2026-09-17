@@ -24,6 +24,8 @@ class HandshakeTask({
 
   @override
   Future<void> execute(TaskCompleted onCompleted, TaskFailed onFailed) async {
+    if (isCancelled) return;
+
     startTimeout(onFailed);
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
@@ -61,6 +63,8 @@ class HandshakeTask({
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (isCancelled) return false;
+
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

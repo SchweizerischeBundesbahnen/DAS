@@ -23,8 +23,8 @@ class RequestLocalRegulationsTask({
   required final List<ServicePoint> servicePoints,
   super.timeout,
 }) extends SferaTask<void> {
-  static final localRegulationVersionMajor = '0';
-  static final localRegulationVersionMinor = '';
+  static const localRegulationVersionMajor = '0';
+  static const localRegulationVersionMinor = '';
 
   late TaskCompleted<void> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -33,6 +33,8 @@ class RequestLocalRegulationsTask({
 
   @override
   Future<void> execute(TaskCompleted<void> onCompleted, TaskFailed onFailed) async {
+    if (isCancelled) return;
+
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
@@ -41,6 +43,8 @@ class RequestLocalRegulationsTask({
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (isCancelled) return false;
+
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
@@ -62,7 +66,7 @@ class RequestLocalRegulationsTask({
     bool allValid = true;
 
     for (final element in replyMessage.payload!.segmentProfiles) {
-      if (element.status == .invalid) {
+      if (element.status == .valid) {
         await _sferaDatabaseRepository.saveSegmentProfile(element);
       } else {
         allValid = false;
@@ -72,9 +76,10 @@ class RequestLocalRegulationsTask({
     if (!allValid) {
       _log.info('Received invalid local regulation SegmentProfiles, aborting...');
       _taskCompletedCallback(this, null);
+      return true;
     }
 
-    final finished = _segementsToFetch == segmentProfileCount || segmentProfileCount != 0;
+    final finished = _segementsToFetch == segmentProfileCount;
     if (finished) {
       _taskCompletedCallback(this, null);
     } else {

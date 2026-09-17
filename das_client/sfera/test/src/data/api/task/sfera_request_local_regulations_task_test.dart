@@ -118,7 +118,7 @@ void main() {
     when(sferaLocalService.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
 
     final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      loadFile('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml'),
+      loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml'),
     );
 
     var completedCount = 0;
@@ -128,7 +128,7 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701']),
+        buildServicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
       ],
     );
 
@@ -144,7 +144,7 @@ void main() {
 
     expect(result, true);
     expect(completedCount, greaterThanOrEqualTo(1));
-    verify(sferaLocalService.saveSegmentProfile(any)).called(1);
+    verify(sferaLocalService.saveSegmentProfile(any)).called(3);
   });
 
   test('handleMessage_whenReceivingOtherReply_thenIgnoresIt', () async {

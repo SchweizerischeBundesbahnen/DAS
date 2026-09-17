@@ -443,6 +443,12 @@ class SferaRepoImpl({
   }
 
   void _startRequestLocalRegulationsTask() {
+    final runningTask = _tasks.whereType<RequestLocalRegulationsTask>().firstOrNull;
+    if (runningTask != null) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+
     final requestLocalRegulationsTask = RequestLocalRegulationsTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -454,7 +460,7 @@ class SferaRepoImpl({
     requestLocalRegulationsTask.execute(_onTaskCompleted, _onTaskFailed);
   }
 
-  bool _allMandatoryTasksCompleted() => _tasks.whereNot((it) => it is RequestLocalRegulationsTask).isEmpty;
+  bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
 
   Future<void> _refreshSegmentProfiles() async {
     if (_journeyProfile == null) return;
@@ -576,10 +582,15 @@ class SferaRepoImpl({
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
     lastError = error;
-    if (_rxState.value != .connected) {
+
+    if (_rxState.value != .connected && _isMandatoryTask(task)) {
       await _loadLocalJourney(_otnId!);
       _useOfflineDataOrDisconnect();
     }
+  }
+
+  bool _isMandatoryTask(SferaTask task) {
+    return task is! RequestLocalRegulationsTask;
   }
 
   @override
