@@ -257,7 +257,7 @@ jobs:
           customId: das_client_ios_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
-          devices: iPad 9th-18
+          devices: iPad Air 11 2026-26
 
       - name: Restore readable test names in Browserstack report
         if: ${{ !cancelled() && github.event_name == 'schedule' && env.test_report_path != '' }}
