@@ -506,6 +506,8 @@ Future<void> main() async {
     testWidgets(
       'journeyHeader_whenDepartureAuthorizationPresent_thenDisplaysCorrectly|1kg0KDpUjd6nDMn4q7C6|tests:226',
       (tester) async {
+        String prefixed(String input) => '${l10n.w_departure_authorization_display_prefix}: $input';
+
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T31');
 
@@ -514,10 +516,10 @@ Future<void> main() async {
         expect(header, findsOneWidget);
 
         // check departure authorization for Dietikon on start (nextStop: Schlieren)
-        await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: '(DT) *');
+        await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: prefixed('(DT) *'));
 
         // check departure authorization after first signal (nextStop: Schlieren)
-        final departureAuthTextSchlieren = '(SCHL) sms 3-6';
+        final departureAuthTextSchlieren = prefixed('(SCHL) sms 3-6');
         await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextSchlieren)));
         await _checkDepartureAuth(header, nextStopName: 'Schlieren', text: departureAuthTextSchlieren);
 
@@ -526,7 +528,7 @@ Future<void> main() async {
         await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextSchlieren);
 
         // check departure authorization on signal after Schlieren (nextStop: Zürich Altstetten)
-        final departureAuthTextAltstetten = '(ZAS) sms 2-4 6,7';
+        final departureAuthTextAltstetten = prefixed('(ZAS) sms 2-4 6,7');
         await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextAltstetten)));
         await _checkDepartureAuth(header, nextStopName: 'Zürich Altstetten', text: departureAuthTextAltstetten);
 
@@ -549,7 +551,7 @@ Future<void> main() async {
         await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: null);
 
         // check departure authorization on signal after Zürich Hardbrücke (nextStop: Zürich HB)
-        final departureAuthTextZuerich = '(ZUE) sms *962 -967';
+        final departureAuthTextZuerich = prefixed('(ZUE) sms *962 -967');
         await waitUntilExists(tester, find.descendant(of: header, matching: find.text(departureAuthTextZuerich)));
         await _checkDepartureAuth(header, nextStopName: 'Zürich HB', text: departureAuthTextZuerich);
 
@@ -575,19 +577,9 @@ Future<void> _checkDepartureAuth(Finder header, {required String nextStopName, S
     );
     expect(departureAuthText, findsNothing);
   } else {
-    final departureAuthText = find.descendant(
-      of: departureAuthorization,
-      matching: find.text(text),
-    );
+    final departureAuthText = find.descendant(of: departureAuthorization, matching: find.text(text));
     expect(departureAuthText, findsOne);
   }
-
-  // icon is only shown when there is a text
-  final departureAuthIcon = find.descendant(
-    of: departureAuthorization,
-    matching: find.byKey(DepartureAuthorizationDisplay.departureAuthorizationIconKey),
-  );
-  expect(departureAuthIcon, text != null ? findsOne : findsNothing);
 }
 
 Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {

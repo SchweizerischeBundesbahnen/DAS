@@ -77,7 +77,7 @@ class JourneyOverview extends StatelessWidget {
             children: [
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
-              Align(alignment: .bottomLeft, child: FloatingDepartureChecklistButton()),
+              Align(alignment: .bottomRight, child: FloatingDepartureChecklistButton()),
               Align(alignment: .bottomCenter, child: _tourSystemLink(context)),
             ],
           ),

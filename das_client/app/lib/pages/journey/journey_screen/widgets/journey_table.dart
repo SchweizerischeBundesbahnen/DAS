@@ -462,6 +462,11 @@ class JourneyTable extends StatelessWidget {
         width: 62.0,
         onTap: () => _onBrakeSeriesTap(context, metadata, settings),
         headerKey: brakeSeriesHeaderKey,
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
+        ),
       ),
       DASTableColumn(
         id: ColumnDefinition.advisedSpeed.index,
