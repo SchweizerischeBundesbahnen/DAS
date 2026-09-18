@@ -77,7 +77,7 @@ void main() {
     expect(capturedDto.key, note.locationCode);
     expect(capturedDto.value.text, note.text);
     expect(capturedDto.value.showAsFootnote, note.showAsFootnote);
-    expect(capturedDto.lastModifiedAt, note.lastModifiedAt);
+    expect(capturedDto.value.lastModifiedAt, note.lastModifiedAt);
   });
 
   test('deleteNote_whenCalled_thenDeletesFromDatabaseAndCallsApi', () async {
@@ -135,7 +135,7 @@ void main() {
     expect(capturedDto.key, localNote.locationCode);
     expect(capturedDto.value.text, localNote.text);
     expect(capturedDto.value.showAsFootnote, localNote.showAsFootnote);
-    expect(capturedDto.lastModifiedAt, localNote.lastModifiedAt);
+    expect(capturedDto.value.lastModifiedAt, localNote.lastModifiedAt);
   });
 
   test('synchronizeNotes_whenLocalNoteDoesNotExistRemotely_thenPushesLocalNoteToApi', () async {

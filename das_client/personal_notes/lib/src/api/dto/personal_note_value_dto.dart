@@ -8,6 +8,7 @@ part 'personal_note_value_dto.g.dart';
 class PersonalNoteValueDto({
   required final String text,
   required final bool showAsFootnote,
+  required final DateTime lastModifiedAt,
 }) {
   factory PersonalNoteValueDto.fromJson(Map<String, dynamic> json) => _$PersonalNoteValueDtoFromJson(json);
 

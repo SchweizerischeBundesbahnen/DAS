@@ -10,7 +10,6 @@ part 'personal_note_dto.g.dart';
 class PersonalNoteDto({
   required final String key,
   required final PersonalNoteValueDto value,
-  required final DateTime lastModifiedAt,
 }) {
   factory PersonalNoteDto.fromJson(Map<String, dynamic> json) => _$PersonalNoteDtoFromJson(json);
 
@@ -27,9 +26,9 @@ extension PersonalNoteDtoX on PersonalNoteDto {
   PersonalNote toDomain() {
     return PersonalNote(
       locationCode: key,
-      lastModifiedAt: lastModifiedAt,
       text: value.text,
       showAsFootnote: value.showAsFootnote,
+      lastModifiedAt: value.lastModifiedAt,
     );
   }
 }
@@ -38,10 +37,10 @@ extension PersonalNoteX on PersonalNote {
   PersonalNoteDto toDto() {
     return PersonalNoteDto(
       key: locationCode,
-      lastModifiedAt: lastModifiedAt,
       value: PersonalNoteValueDto(
         text: text,
         showAsFootnote: showAsFootnote,
+        lastModifiedAt: lastModifiedAt,
       ),
     );
   }

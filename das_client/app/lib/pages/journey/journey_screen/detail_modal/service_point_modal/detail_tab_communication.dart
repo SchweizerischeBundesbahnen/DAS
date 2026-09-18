@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/launcher/launcher.dart';
+import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/personal_note_dialog.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
@@ -172,6 +173,7 @@ class DetailTabCommunication extends StatelessWidget {
             _listHeader(text: context.l10n.w_service_point_modal_personal_note),
             if (personalNote != null)
               Container(
+                constraints: BoxConstraints(minHeight: 160, minWidth: double.infinity),
                 padding: const .symmetric(
                   horizontal: SBBSpacing.medium,
                   vertical: SBBSpacing.xSmall,
@@ -182,7 +184,9 @@ class DetailTabCommunication extends StatelessWidget {
                     color: ThemeUtil.getColor(context, SBBColors.silver, SBBColors.anthracite),
                   ),
                 ),
-                child: Text(personalNote.text),
+                child: SingleChildScrollView(
+                  child: Text(personalNote.text),
+                ),
               ),
             _personalNoteButton(context, personalNote),
           ],
@@ -197,7 +201,12 @@ class DetailTabCommunication extends StatelessWidget {
         ? context.l10n.w_service_point_modal_personal_note_create_button
         : context.l10n.w_service_point_modal_personal_note_edit_button;
     return SBBTertiaryButtonSmall(
-      onPressed: () => showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>()),
+      onPressed: () async {
+        final detailModalViewModel = context.read<ModalViewModel>();
+        detailModalViewModel.controller?.stopAutomaticClose();
+        await showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>());
+        detailModalViewModel.controller?.resetAutomaticClose();
+      },
       iconData: icon,
       labelText: label,
     );

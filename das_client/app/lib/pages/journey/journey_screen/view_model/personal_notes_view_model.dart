@@ -11,7 +11,6 @@ import 'package:sfera/component.dart';
 final _log = Logger('PersonalNotesViewModel');
 
 // TODO: Handle offline mode
-// TODO: Modal should stay open when dialog is shown
 // TODO: Handle delete in sync
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,

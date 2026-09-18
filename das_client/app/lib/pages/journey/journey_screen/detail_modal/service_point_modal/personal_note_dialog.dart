@@ -1,5 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
+import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:personal_notes/component.dart';
@@ -10,10 +11,12 @@ final _log = Logger('PersonalNoteDialog');
 class PersonalNoteDialog extends StatefulWidget {
   const PersonalNoteDialog({
     required this.viewModel,
+    this.modalSheetController,
     super.key,
   });
 
   final PersonalNotesViewModel viewModel;
+  final DASModalSheetController? modalSheetController;
 
   @override
   State<PersonalNoteDialog> createState() => _PersonalNoteDialogState();
@@ -32,6 +35,8 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   @override
   void initState() {
     super.initState();
+    widget.modalSheetController?.stopAutomaticClose();
+
     _showAsFootnote = _currentNote?.showAsFootnote ?? false;
     _singleUse = _currentNote?.trainIdentification != null;
     textController = TextEditingController(text: _currentNote?.text ?? '');
@@ -48,6 +53,8 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
 
   @override
   void dispose() {
+    widget.modalSheetController?.resetAutomaticClose();
+
     textController.dispose();
     super.dispose();
   }

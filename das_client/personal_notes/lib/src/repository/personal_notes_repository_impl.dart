@@ -33,19 +33,13 @@ class PersonalNotesRepositoryImpl({
       }
 
       if (localNote.lastModifiedAt.isAfter(remoteNote.lastModifiedAt)) {
-        await _apiService.savePersonalNote(
-          key: localNote.locationCode,
-          note: localNote.toDto(),
-        );
+        await _apiService.savePersonalNote(note: localNote.toDto());
       }
     }
 
     for (final localNote in localNotes) {
       if (!remoteByKey.containsKey(localNote.locationCode)) {
-        await _apiService.savePersonalNote(
-          key: localNote.locationCode,
-          note: localNote.toDto(),
-        );
+        await _apiService.savePersonalNote(note: localNote.toDto());
       }
     }
   }
@@ -79,7 +73,7 @@ class PersonalNotesRepositoryImpl({
 
   Future<void> _saveNoteToRemote(PersonalNote note) async {
     try {
-      await _apiService.savePersonalNote(key: note.locationCode, note: note.toDto());
+      await _apiService.savePersonalNote(note: note.toDto());
       _log.fine('Successfully saved $note on remote');
     } catch (e) {
       _log.severe('Failed to save note for $note to remote', e);
