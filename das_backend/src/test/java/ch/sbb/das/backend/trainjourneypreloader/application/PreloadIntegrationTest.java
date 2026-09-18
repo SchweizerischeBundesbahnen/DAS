@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
+import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -15,6 +16,7 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentP
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GRequestMessage;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfileIdentificationComplexType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,7 +68,7 @@ class PreloadIntegrationTest {
         verify(mqttClient, times(1)).disconnect();
     }
 
-    @DisplayName("preload_whenAllRepliesSucceed_returnsSuccess|WMdXFOxKQdnEt4vYCDHx|tests:914,1653,2271")
+    @DisplayName("preload_whenAllRepliesSucceed_returnsSuccess|WMdXFOxKQdnEt4vYCDHx|tests:914,1653,2271,1648")
     @Test
     void preload_whenAllRepliesSucceed_returnsSuccess() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
@@ -90,7 +92,8 @@ class PreloadIntegrationTest {
                     case 1 -> sferaReply("hs_ack_reply.xml", correlationId);
                     case 2 -> sferaReply("jp_reply.xml", correlationId);
                     case 3 -> sferaReply("sp_reply.xml", correlationId);
-                    case 4 -> sferaReply("tc_reply.xml", correlationId);
+                    case 4 -> sferaReply("lr_sp_reply.xml", correlationId);
+                    case 5 -> sferaReply("tc_reply.xml", correlationId);
                     default -> throw new IllegalStateException("Unexpected publish step: " + step);
                 };
 
@@ -115,8 +118,11 @@ class PreloadIntegrationTest {
         assertThat(success.sps()).isNotEmpty();
         assertThat(success.tcs()).isNotEmpty();
 
+        Set<String> spIds = success.sps().stream().map(SegmentProfileIdentificationComplexType::getSPID).collect(toSet());
+        assertThat(spIds).contains("SP_1", "LR_1_DE", "LR_1_FR", "LR_1_IT", "LR_2_DE", "LR_2_FR", "LR_2_IT");
+
         verify(mqttClient, times(1)).unsubscribe(anyString());
-        verify(mqttClient, times(4)).publish(anyString(), anyString());
+        verify(mqttClient, times(5)).publish(anyString(), anyString());
     }
 
     @DisplayName("preload_whenHandshakeErrors_throwsException|F9ehMsFKt5GgNMEYDiST|tests:914,1653,2271")

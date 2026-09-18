@@ -102,7 +102,7 @@ public class StorageService {
                 writeSegmentsToZip(fileId, batch);
 
                 for (SegmentProfile sp : batch) {
-                    toSave.add(PreloadedSegmentProfileEntity.builder().spIdVersion(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor())).lastSeen(now).fileId(fileId)
+                    toSave.add(PreloadedSegmentProfileEntity.builder().spIdVersion(spIdVersion(sp)).lastSeen(now).fileId(fileId)
                         .build());
                 }
 
@@ -148,9 +148,17 @@ public class StorageService {
 
     private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
-            String filename = String.format("SP_%s_%s_%s.xml", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor());
+            String filename = String.format("SP_%s.xml", spIdVersion(sp));
             writeXmlEntry(zos, DIR_SP + filename, sp);
         }
+    }
+
+    private String spIdVersion(SegmentProfile sp) {
+        String minor = sp.getSPVersionMinor();
+        if (minor == null || minor.isBlank()) {
+            return String.format("%s_%s", sp.getSPID(), sp.getSPVersionMajor());
+        }
+        return String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), minor);
     }
 
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
