@@ -9,6 +9,7 @@ resolution: workspace
 
 dependencies:
   # workspaces
+  core_data: 1.0.0
   http_x: 1.0.0
 
   # https://pub.dev/packages/drift
@@ -19,6 +20,8 @@ dependencies:
   json_annotation: ^4.12.0
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.6
+  # https://pub.dev/packages/logging
+  logging: ^1.3.0
 
 dev_dependencies:
   flutter_test:

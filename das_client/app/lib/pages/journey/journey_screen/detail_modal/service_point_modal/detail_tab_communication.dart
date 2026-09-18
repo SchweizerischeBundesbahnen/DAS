@@ -197,7 +197,7 @@ class DetailTabCommunication extends StatelessWidget {
         ? context.l10n.w_service_point_modal_personal_note_create_button
         : context.l10n.w_service_point_modal_personal_note_edit_button;
     return SBBTertiaryButtonSmall(
-      onPressed: () => showPersonalNoteDialog(context, personalNote),
+      onPressed: () => showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>()),
       iconData: icon,
       labelText: label,
     );
