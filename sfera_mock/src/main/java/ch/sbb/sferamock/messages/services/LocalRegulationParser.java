@@ -8,6 +8,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class LocalRegulationParser {
     }
 
     public DocumentRoot loadDocument(String filePath) throws IOException {
-        Resource resource = resourceLoader.getResource(filePath);
+        Resource resource = filePath.contains(":") ? resourceLoader.getResource(filePath) : new FileSystemResource(filePath);
         if (!resource.exists()) {
             throw new IllegalArgumentException("Local regulations file not found at: " + filePath);
         }
