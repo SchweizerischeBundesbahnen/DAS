@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.53.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.52.0...das_client-v0.53.0) (2026-09-18)
+
+
+### Features
+
+* add border between brakedWeightSpeed and advisedSpeed columns ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2813](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2813)) ([4b514ac](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b514ace634f385bd98fc16e2f47e3532fcd7d40))
+* add privacy policy url launch in support page ([#1686](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1686)) ([#2807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2807)) ([f97dace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f97dace2646bdc1e05cd17b9e795bae720251195))
+* change protection row background color to lemon ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2813](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2813)) ([4b514ac](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b514ace634f385bd98fc16e2f47e3532fcd7d40))
+* cleanup and rename diagnostic page to support page ([#2632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2632)) ([#2807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2807)) ([f97dace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f97dace2646bdc1e05cd17b9e795bae720251195))
+* closing journey displays popup when train is in motion ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2836](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2836)) ([9dcc587](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9dcc587d6247c79312144421cede29130121aaaa))
+* company selection filter flow is simplified ([#2632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2632)) ([#2807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2807)) ([f97dace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f97dace2646bdc1e05cd17b9e795bae720251195))
+* floating departure process dialog button is displayed bottom right ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2813](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2813)) ([4b514ac](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b514ace634f385bd98fc16e2f47e3532fcd7d40))
+* merge profile and settings page ([#2632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2632)) ([#2807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2807)) ([f97dace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f97dace2646bdc1e05cd17b9e795bae720251195))
+* remove departure auth icon in favor of prefix ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2813](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2813)) ([4b514ac](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b514ace634f385bd98fc16e2f47e3532fcd7d40))
+* show brake load slip details depending on feature toggle ([#2641](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2641)) ([#2811](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2811)) ([06e169e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/06e169e4088c20e2f447f5656f624a6c8e6e1cc7))
+* update drawer items ([#2632](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2632)) ([#2807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2807)) ([f97dace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f97dace2646bdc1e05cd17b9e795bae720251195))
+
+
+### Bug Fixes
+
+* adjust local regulations to new spec ([#1032](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1032)) ([#2814](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2814)) ([92fc3c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/92fc3c720157de84acb8cb889d275cc52d84d85b))
+* prompt login when reauthentication is required while no journey is active ([#2803](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2803)) ([#2805](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2805)) ([45ae578](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45ae57814a21101c6c85e3c394e20af73e79c59b))
+
 ## [0.52.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.51.0...das_client-v0.52.0) (2026-09-14)
 
 
