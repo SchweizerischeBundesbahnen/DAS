@@ -41,13 +41,14 @@ void main() {
     when(mockListRequest.call()).thenAnswer(
       (_) async => PersonalNotesListResponse(headers: const {}, body: const []),
     );
-    when(mockPutRequest.call(key: anyNamed('key'), note: anyNamed('note'))).thenAnswer(
+    when(mockPutRequest.call(note: anyNamed('note'))).thenAnswer(
       (_) async => PersonalNotePutResponse(headers: const {}),
     );
     when(mockDeleteRequest.call(key: anyNamed('key'))).thenAnswer(
       (_) async => PersonalNoteDeleteResponse(headers: const {}),
     );
 
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => const []);
     when(mockDatabaseService.findAllNotes()).thenAnswer((_) async => const []);
     when(mockDatabaseService.saveNote(any)).thenAnswer((_) async {});
     when(mockDatabaseService.deleteNote(any)).thenAnswer((_) async {});
@@ -68,9 +69,7 @@ void main() {
     // THEN
     verify(mockDatabaseService.saveNote(note)).called(1);
 
-    final verification = verify(
-      mockPutRequest.call(key: note.locationCode, note: captureAnyNamed('note')),
-    );
+    final verification = verify(mockPutRequest.call(note: captureAnyNamed('note')));
     verification.called(1);
 
     final capturedDto = verification.captured.single as PersonalNoteDto;
@@ -100,14 +99,14 @@ void main() {
     when(mockListRequest.call()).thenAnswer(
       (_) async => PersonalNotesListResponse(headers: const {}, body: [remoteNote.toDto()]),
     );
-    when(mockDatabaseService.findAllNotes()).thenAnswer((_) async => [localNote]);
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localNote]);
 
     // WHEN
     await testee.synchronizeNotes();
 
     // THEN
     verify(mockDatabaseService.saveNote(remoteNote)).called(1);
-    verifyNever(mockPutRequest.call(key: anyNamed('key'), note: anyNamed('note')));
+    verifyNever(mockPutRequest.call(note: anyNamed('note')));
   });
 
   test('synchronizeNotes_whenLocalNoteIsNewer_thenPushesLocalNoteToApi', () async {
@@ -118,7 +117,7 @@ void main() {
     when(mockListRequest.call()).thenAnswer(
       (_) async => PersonalNotesListResponse(headers: const {}, body: [remoteNote.toDto()]),
     );
-    when(mockDatabaseService.findAllNotes()).thenAnswer((_) async => [localNote]);
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localNote]);
 
     // WHEN
     await testee.synchronizeNotes();
@@ -126,9 +125,7 @@ void main() {
     // THEN
     verifyNever(mockDatabaseService.saveNote(any));
 
-    final verification = verify(
-      mockPutRequest.call(key: localNote.locationCode, note: captureAnyNamed('note')),
-    );
+    final verification = verify(mockPutRequest.call(note: captureAnyNamed('note')));
     verification.called(1);
 
     final capturedDto = verification.captured.single as PersonalNoteDto;
@@ -145,13 +142,13 @@ void main() {
     when(mockListRequest.call()).thenAnswer(
       (_) async => PersonalNotesListResponse(headers: const {}, body: const []),
     );
-    when(mockDatabaseService.findAllNotes()).thenAnswer((_) async => [localOnlyNote]);
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localOnlyNote]);
 
     // WHEN
     await testee.synchronizeNotes();
 
     // THEN
-    verify(mockPutRequest.call(key: localOnlyNote.locationCode, note: anyNamed('note'))).called(1);
+    verify(mockPutRequest.call(note: anyNamed('note'))).called(1);
     verifyNever(mockDatabaseService.saveNote(any));
   });
 
@@ -164,14 +161,85 @@ void main() {
     when(mockListRequest.call()).thenAnswer(
       (_) async => PersonalNotesListResponse(headers: const {}, body: [remoteNote.toDto()]),
     );
-    when(mockDatabaseService.findAllNotes()).thenAnswer((_) async => [localNote]);
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localNote]);
 
     // WHEN
     await testee.synchronizeNotes();
 
     // THEN
     verifyNever(mockDatabaseService.saveNote(any));
-    verifyNever(mockPutRequest.call(key: anyNamed('key'), note: anyNamed('note')));
+    verifyNever(mockPutRequest.call(note: anyNamed('note')));
+  });
+
+  test('synchronizeNotes_whenLocalNoteIsDeletedAndRemoteNoteIsOlder_thenDeletesRemoteNote', () async {
+    // GIVEN
+    final remoteNote = _note(locationCode: 'CH001', text: 'remote', modifiedAt: DateTime(2026, 5, 1));
+    final localDeletedNote = _note(
+      locationCode: 'CH001',
+      text: 'local',
+      modifiedAt: DateTime(2026, 6, 1),
+      deleted: true,
+    );
+
+    when(mockListRequest.call()).thenAnswer(
+      (_) async => PersonalNotesListResponse(headers: const {}, body: [remoteNote.toDto()]),
+    );
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localDeletedNote]);
+
+    // WHEN
+    await testee.synchronizeNotes();
+
+    // THEN
+    verify(mockDeleteRequest.call(key: remoteNote.locationCode)).called(1);
+    verifyNever(mockDatabaseService.saveNote(any));
+    verifyNever(mockPutRequest.call(note: anyNamed('note')));
+  });
+
+  test('synchronizeNotes_whenLocalNoteIsDeletedAndRemoteNoteIsNewer_thenRestoresRemoteNoteLocally', () async {
+    // GIVEN
+    final remoteNote = _note(locationCode: 'CH001', text: 'remote', modifiedAt: DateTime(2026, 7, 1));
+    final localDeletedNote = _note(
+      locationCode: 'CH001',
+      text: 'local',
+      modifiedAt: DateTime(2026, 6, 1),
+      deleted: true,
+    );
+
+    when(mockListRequest.call()).thenAnswer(
+      (_) async => PersonalNotesListResponse(headers: const {}, body: [remoteNote.toDto()]),
+    );
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localDeletedNote]);
+
+    // WHEN
+    await testee.synchronizeNotes();
+
+    // THEN
+    verify(mockDatabaseService.saveNote(remoteNote)).called(1);
+    verifyNever(mockDeleteRequest.call(key: anyNamed('key')));
+    verifyNever(mockPutRequest.call(note: anyNamed('note')));
+  });
+
+  test('synchronizeNotes_whenDeletedLocalNoteDoesNotExistRemotely_thenDoesNotRecreateItRemotely', () async {
+    // GIVEN
+    final localDeletedNote = _note(
+      locationCode: 'CH001',
+      text: 'local',
+      modifiedAt: DateTime(2026, 6, 1),
+      deleted: true,
+    );
+
+    when(mockListRequest.call()).thenAnswer(
+      (_) async => PersonalNotesListResponse(headers: const {}, body: const []),
+    );
+    when(mockDatabaseService.findAllNotes(includeDeleted: true)).thenAnswer((_) async => [localDeletedNote]);
+
+    // WHEN
+    await testee.synchronizeNotes();
+
+    // THEN
+    verifyNever(mockDatabaseService.saveNote(any));
+    verifyNever(mockDeleteRequest.call(key: anyNamed('key')));
+    verifyNever(mockPutRequest.call(note: anyNamed('note')));
   });
 }
 
@@ -180,11 +248,13 @@ PersonalNote _note({
   required String text,
   required DateTime modifiedAt,
   bool showAsFootnote = false,
+  bool deleted = false,
 }) {
   return PersonalNote(
     locationCode: locationCode,
     text: text,
     showAsFootnote: showAsFootnote,
+    deleted: deleted,
     lastModifiedAt: modifiedAt,
   );
 }

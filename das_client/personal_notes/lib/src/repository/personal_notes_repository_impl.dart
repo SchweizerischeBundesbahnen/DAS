@@ -19,7 +19,7 @@ class PersonalNotesRepositoryImpl({
   Future<void> synchronizeNotes() async {
     final response = await _apiService.personalNotes();
     final remoteNotes = response.body.map((it) => it.toDomain()).toList(growable: false);
-    final localNotes = await _databaseService.findAllNotes();
+    final localNotes = await _databaseService.findAllNotes(includeDeleted: true);
 
     final remoteByKey = <String, PersonalNote>{for (final note in remoteNotes) note.locationCode: note};
     final localByKey = <String, PersonalNote>{for (final note in localNotes) note.locationCode: note};
@@ -27,19 +27,34 @@ class PersonalNotesRepositoryImpl({
     for (final remoteNote in remoteNotes) {
       final localNote = localByKey[remoteNote.locationCode];
 
-      if (localNote == null || remoteNote.lastModifiedAt.isAfter(localNote.lastModifiedAt)) {
+      if (localNote == null) {
+        await _databaseService.saveNote(remoteNote);
+        continue;
+      }
+
+      if (localNote.deleted) {
+        if (remoteNote.lastModifiedAt.isAfter(localNote.lastModifiedAt)) {
+          await _databaseService.saveNote(remoteNote);
+          continue;
+        }
+
+        await _deleteNoteOnRemote(remoteNote.locationCode);
+        continue;
+      }
+
+      if (remoteNote.lastModifiedAt.isAfter(localNote.lastModifiedAt)) {
         await _databaseService.saveNote(remoteNote);
         continue;
       }
 
       if (localNote.lastModifiedAt.isAfter(remoteNote.lastModifiedAt)) {
-        await _apiService.savePersonalNote(note: localNote.toDto());
+        await _saveNoteToRemote(localNote);
       }
     }
 
     for (final localNote in localNotes) {
-      if (!remoteByKey.containsKey(localNote.locationCode)) {
-        await _apiService.savePersonalNote(note: localNote.toDto());
+      if (!remoteByKey.containsKey(localNote.locationCode) && !localNote.deleted) {
+        await _saveNoteToRemote(localNote);
       }
     }
   }

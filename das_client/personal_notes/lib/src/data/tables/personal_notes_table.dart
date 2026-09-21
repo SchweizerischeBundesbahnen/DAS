@@ -11,6 +11,8 @@ class PersonalNotesTable extends Table {
 
   BoolColumn get showAsFootnote => boolean()();
 
+  BoolColumn get deleted => boolean().withDefault(const Constant(false))();
+
   DateTimeColumn get lastModifiedAt => dateTime()();
 
   @override
@@ -23,6 +25,7 @@ extension PersonalNoteMapperX on PersonalNote {
       locationCode: locationCode,
       noteText: text,
       showAsFootnote: showAsFootnote,
+      deleted: Value(deleted),
       lastModifiedAt: lastModifiedAt,
     );
   }
@@ -34,6 +37,7 @@ extension PersonalNotesTableDataX on PersonalNotesTableData {
       locationCode: locationCode,
       text: noteText,
       showAsFootnote: showAsFootnote,
+      deleted: deleted,
       lastModifiedAt: lastModifiedAt,
     );
   }

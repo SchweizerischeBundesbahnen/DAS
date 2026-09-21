@@ -2,11 +2,14 @@
 
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:personal_notes/src/data/personal_notes_local_database_service.dart';
 import 'package:personal_notes/src/data/tables/personal_notes_table.dart';
 import 'package:personal_notes/src/model/personal_note.dart';
 
 part 'drift_personal_notes_database_service.g.dart';
+
+final _log = Logger('PersonalNotesDatabaseService');
 
 @DriftDatabase(tables: [PersonalNotesTable])
 class PersonalNotesDatabaseService._()
@@ -26,24 +29,35 @@ class PersonalNotesDatabaseService._()
 
   @override
   Future<PersonalNote?> findNote(String locationCode) async {
-    final personalNote = await _tableManager.filter((note) => note.locationCode(locationCode)).getSingleOrNull();
+    final personalNote = await _tableManager.filter((f) => f.locationCode.equals(locationCode)).getSingleOrNull();
     return personalNote?.toDomain();
   }
 
   @override
-  Future<List<PersonalNote>> findAllNotes() async {
-    final notes = await _tableManager.get();
+  Future<List<PersonalNote>> findAllNotes({bool includeDeleted = false}) async {
+    final notes = includeDeleted
+        ? await _tableManager.get()
+        : await _tableManager.filter((f) => f.deleted.equals(false)).get();
+
     return notes.map((it) => it.toDomain()).toList(growable: false);
   }
 
   @override
   Future<void> saveNote(PersonalNote note) {
-    return personalNotesTable.insertOnConflictUpdate(note.toCompanion());
+    return _tableManager.create((_) => note.toCompanion(), mode: InsertMode.insertOrReplace);
   }
 
   @override
-  Future<void> deleteNote(String locationCode) {
-    return _tableManager.filter((note) => note.locationCode(locationCode)).delete();
+  Future<void> deleteNote(String locationCode) async {
+    final existingNote = await findNote(locationCode);
+    if (existingNote == null) {
+      _log.warning('Tried to delete non-existing note for $locationCode');
+      return;
+    }
+
+    final tombstone = existingNote.copyWith(deleted: true, lastModifiedAt: DateTime.now());
+    await saveNote(tombstone);
+    _log.fine('Marked note for $locationCode as deleted');
   }
 
   $$PersonalNotesTableTableTableManager get _tableManager => managers.personalNotesTable;
