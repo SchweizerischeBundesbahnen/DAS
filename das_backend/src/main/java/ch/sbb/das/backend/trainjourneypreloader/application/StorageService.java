@@ -1,6 +1,8 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
+import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
@@ -103,6 +105,7 @@ public class StorageService {
 
                 for (SegmentProfile sp : batch) {
                     toSave.add(PreloadedSegmentProfileEntity.builder().spIdVersion(spIdVersion(sp)).lastSeen(now).fileId(fileId)
+                        .relatedLrSpIdVersions(relatedLrSpIdVersions(sp))
                         .build());
                 }
 
@@ -159,6 +162,13 @@ public class StorageService {
             return String.format("%s_%s", sp.getSPID(), sp.getSPVersionMajor());
         }
         return String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), minor);
+    }
+
+    private List<String> relatedLrSpIdVersions(SegmentProfile sp) {
+        return LocalRegulations.extractSpIds(sp).stream()
+            .map(SegmentProfileIdentification::toIdVersionString)
+            .sorted()
+            .toList();
     }
 
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {

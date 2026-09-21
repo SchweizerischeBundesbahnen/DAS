@@ -108,6 +108,7 @@ public class SferaService {
             }
 
             Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
+            refreshLastSeenOfReferencedLocalRegulationSps(spIds);
             spIds.removeIf(segmentProfilesMap::containsKey);
 
             List<SegmentProfile> segmentProfiles;
@@ -225,6 +226,18 @@ public class SferaService {
         preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), preloadedSpIdVersionSet);
 
         return spIds.stream().filter(spId -> !preloadedSpIdVersionSet.contains(spId.toIdVersionString())).collect(Collectors.toSet());
+    }
+
+    private void refreshLastSeenOfReferencedLocalRegulationSps(Set<SegmentProfileIdentification> spIds) {
+        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
+        Set<String> relatedLrSpIdVersions = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream()
+            .map(PreloadedSegmentProfileEntity::getRelatedLrSpIdVersions)
+            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .collect(Collectors.toSet());
+        if (!relatedLrSpIdVersions.isEmpty()) {
+            preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), relatedLrSpIdVersions);
+        }
     }
 
     private CompletableFuture<List<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<TrainCharacteristicsIdentification> tcIds) throws MqttException {

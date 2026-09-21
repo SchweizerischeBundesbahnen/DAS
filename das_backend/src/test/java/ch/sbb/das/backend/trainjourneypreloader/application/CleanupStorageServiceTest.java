@@ -154,6 +154,42 @@ class CleanupStorageServiceTest {
     }
 
     @Test
+    void cleanupSegments_evictsStaleLocalRegulationSps() throws Exception {
+        when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(1001);
+
+        List<PreloadedSegmentProfileEntity> stale = List.of(
+            PreloadedSegmentProfileEntity.builder().spIdVersion("SP_1_1").fileId(1).build(),
+            PreloadedSegmentProfileEntity.builder().spIdVersion("LR_1_DE_0").fileId(1).build()
+        );
+        when(preloadedSegmentProfileRepository.findAllByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(stale);
+
+        PreloadedSegmentProfileEntity fillerA = PreloadedSegmentProfileEntity.builder().spIdVersion("FRESH_A_1_0").fileId(2).build();
+        PreloadedSegmentProfileEntity fillerB = PreloadedSegmentProfileEntity.builder().spIdVersion("FRESH_B_1_0").fileId(2).build();
+        when(preloadedSegmentProfileRepository.findByLastSeenAfterOrderByFileIdDesc(any(OffsetDateTime.class), any()))
+            .thenReturn(List.of(fillerA, fillerB));
+
+        when(s3Service.downloadZip("Segments_1.zip")).thenReturn(Optional.of(
+            buildZipWith("sp/SP_SP_1_1.xml", "sp/SP_LR_1_DE_0.xml", "sp/SP_KEEP_1_0.xml")));
+        when(s3Service.downloadZip("Segments_2.zip")).thenReturn(Optional.of(
+            buildZipWith("sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml")));
+
+        underTest.cleanupSegments();
+
+        verify(preloadedSegmentProfileRepository).deleteAll(stale);
+
+        // File 1 is rewritten: the stale local-regulation SP (and stale regular SP) are removed, fillers added, kept SP stays.
+        ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<byte[]> dataCaptor = ArgumentCaptor.forClass(byte[].class);
+        verify(s3Service, atLeastOnce()).uploadZip(keyCaptor.capture(), dataCaptor.capture());
+
+        int idxFile1 = keyCaptor.getAllValues().indexOf("Segments_1.zip");
+        assertThat(idxFile1).isGreaterThanOrEqualTo(0);
+        assertThat(listZipEntries(dataCaptor.getAllValues().get(idxFile1)))
+            .doesNotContain("sp/SP_LR_1_DE_0.xml", "sp/SP_SP_1_1.xml")
+            .containsExactlyInAnyOrder("sp/SP_KEEP_1_0.xml", "sp/SP_FRESH_A_1_0.xml", "sp/SP_FRESH_B_1_0.xml");
+    }
+
+    @Test
     void cleanupSegments_compactsEightZipsIntoSeven() throws Exception {
         int totalStale = 1001;
         when(preloadedSegmentProfileRepository.countByLastSeenBefore(any(OffsetDateTime.class))).thenReturn(totalStale);

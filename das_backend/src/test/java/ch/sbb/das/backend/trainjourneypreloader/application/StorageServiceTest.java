@@ -14,8 +14,13 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagin
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlDateHelper;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.NSPListComplexType;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.NetworkSpecificParameter;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.OTNID;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SPAreas;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SPZone;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
+import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TAFTAPLocation;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainIdentification;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -92,6 +97,26 @@ class StorageServiceTest {
         sp.setSPID(id);
         sp.setSPVersionMajor("1");
         sp.setSPVersionMinor("0");
+        return sp;
+    }
+
+    private static SegmentProfile createSpWithLocalRegulations(String id, String imid, String languageNeutralTree) {
+        SegmentProfile sp = createSp(id);
+        SPZone zone = new SPZone();
+        zone.setIMID(imid);
+        sp.setSPZone(zone);
+
+        SPAreas areas = new SPAreas();
+        TAFTAPLocation location = new TAFTAPLocation();
+        NSPListComplexType nsp = new NSPListComplexType();
+        nsp.setNSPGroupName("localRegulations");
+        NetworkSpecificParameter param = new NetworkSpecificParameter();
+        param.setName("languageNeutralTree");
+        param.setValue(languageNeutralTree);
+        nsp.getNetworkSpecificParameters().add(param);
+        location.getTAFTAPLocationNSPs().add(nsp);
+        areas.getTAFTAPLocations().add(location);
+        sp.setSPAreas(areas);
         return sp;
     }
 
@@ -172,6 +197,25 @@ class StorageServiceTest {
                 assertThat(e.getSpIdVersion()).isEqualTo("SP-1_1_0");
                 assertThat(e.getFileId()).isEqualTo(1);
                 assertThat(e.getLastSeen()).isNotNull();
+                assertThat(e.getRelatedLrSpIdVersions()).isEmpty();
+            });
+    }
+
+    @Test
+    void save_persistsRelatedLocalRegulationSpIdVersionsForReferencingSp() {
+        when(preloadedSegmentProfileRepository.findMaxFileId()).thenReturn(Optional.empty());
+
+        underTest.save(Set.of(), List.of(createSpWithLocalRegulations("SP-1", "0085", "LR_1;LR_2")), Set.of());
+
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<List<PreloadedSegmentProfileEntity>> entityCaptor = ArgumentCaptor.forClass(List.class);
+        verify(preloadedSegmentProfileRepository, times(1)).saveAll(entityCaptor.capture());
+        assertThat(entityCaptor.getValue())
+            .singleElement()
+            .satisfies(e -> {
+                assertThat(e.getSpIdVersion()).isEqualTo("SP-1_1_0");
+                assertThat(e.getRelatedLrSpIdVersions())
+                    .containsExactly("LR_1_DE_0", "LR_1_FR_0", "LR_1_IT_0", "LR_2_DE_0", "LR_2_FR_0", "LR_2_IT_0");
             });
     }
 

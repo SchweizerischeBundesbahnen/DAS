@@ -4,15 +4,18 @@ import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GRequestMessage;
@@ -22,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -29,13 +33,16 @@ import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(classes = {SferaService.class, SferaMessageCreator.class, XmlHelper.class, SferaMessagingConfig.class})
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class PreloadIntegrationTest {
 
     @Autowired
@@ -123,6 +130,56 @@ class PreloadIntegrationTest {
 
         verify(mqttClient, times(1)).unsubscribe(anyString());
         verify(mqttClient, times(5)).publish(anyString(), anyString());
+    }
+
+    @DisplayName("preload_whenReferencedSpsAlreadyPreloaded_refreshesLastSeenForSpAndItsRelatedLrSps|regression|TuqreLlMNoUauWvKixs1|tests:1648")
+    @Test
+    void preload_whenReferencedSpsAlreadyPreloaded_refreshesLastSeenForSpAndItsRelatedLrSps() throws Exception {
+        List<String> relatedLr = List.of("LR_1_DE_0", "LR_1_FR_0", "LR_1_IT_0", "LR_2_DE_0", "LR_2_FR_0", "LR_2_IT_0");
+        PreloadedSegmentProfileEntity preloadedSp = PreloadedSegmentProfileEntity.builder()
+            .spIdVersion("SP_1_1").fileId(1).lastSeen(OffsetDateTime.now().minusDays(10)).relatedLrSpIdVersions(relatedLr)
+            .build();
+        when(preloadedSegmentProfileRepository.findAllBySpIdVersionIn(Set.of("SP_1_1"))).thenReturn(List.of(preloadedSp));
+
+        AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
+        AtomicInteger publishCount = new AtomicInteger(0);
+
+        doAnswer(invocation -> {
+            listenerRef.set(invocation.getArgument(1, IMqttMessageListener.class));
+            return null;
+        }).when(mqttClient).subscribe(anyString(), any(IMqttMessageListener.class));
+
+        doAnswer(invocation -> {
+            String publishedXml = invocation.getArgument(1, String.class);
+            Object parsed = xmlHelper.xmlToObject(publishedXml);
+            if (parsed instanceof SFERAB2GRequestMessage req) {
+                String correlationId = req.getMessageHeader().getMessageID();
+                int step = publishCount.incrementAndGet();
+                // No SP requests are expected because everything is already preloaded
+                String reply = switch (step) {
+                    case 1 -> sferaReply("hs_ack_reply.xml", correlationId);
+                    case 2 -> sferaReply("jp_reply.xml", correlationId);
+                    case 3 -> sferaReply("tc_reply.xml", correlationId);
+                    default -> throw new IllegalStateException("Unexpected publish step (no SP/LR fetch expected): " + step);
+                };
+                listenerRef.get().messageArrived("ignored", new MqttMessage(reply.getBytes()));
+            }
+            return null;
+        }).when(mqttClient).publish(anyString(), anyString());
+
+        TrainIdentification trainId = new TrainIdentification(0, "12345", OffsetDateTime.now(), Set.of(new CompanyCode("1285")));
+
+        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        assertThat(result).isInstanceOf(PreloadResult.Success.class);
+
+        verify(mqttClient, times(3)).publish(anyString(), anyString());
+
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<Set<String>> idsCaptor = ArgumentCaptor.forClass(Set.class);
+        verify(preloadedSegmentProfileRepository, atLeastOnce()).updateLastSeenBySpIdVersion(any(OffsetDateTime.class), idsCaptor.capture());
+        Set<String> allRefreshedIds = idsCaptor.getAllValues().stream().flatMap(Set::stream).collect(toSet());
+        assertThat(allRefreshedIds).containsExactlyInAnyOrder(
+            "SP_1_1", "LR_1_DE_0", "LR_1_FR_0", "LR_1_IT_0", "LR_2_DE_0", "LR_2_FR_0", "LR_2_IT_0");
     }
 
     @DisplayName("preload_whenHandshakeErrors_throwsException|F9ehMsFKt5GgNMEYDiST|tests:914,1653,2271")
