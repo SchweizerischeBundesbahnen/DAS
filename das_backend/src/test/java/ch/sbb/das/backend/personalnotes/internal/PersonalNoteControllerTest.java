@@ -54,7 +54,7 @@ class PersonalNoteControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].key", is("train-12345")))
-            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").doesNotExist());
     }
 
     @Test
@@ -75,7 +75,7 @@ class PersonalNoteControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].key", is("train-99999")))
-            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").doesNotExist());
     }
 
     @Test
