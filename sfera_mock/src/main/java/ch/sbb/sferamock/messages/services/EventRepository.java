@@ -1,9 +1,7 @@
 package ch.sbb.sferamock.messages.services;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0400.G2BEventPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformation;
 import ch.sbb.sferamock.messages.common.XmlHelper;
-import ch.sbb.sferamock.messages.model.TrainIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.boot.ApplicationArguments;
@@ -55,14 +51,6 @@ public class EventRepository implements ApplicationRunner {
             return Integer.parseInt(matcher.group(1));
         }
         throw new RuntimeException("Offset extraction in Event repository failed for file: " + filename);
-    }
-
-    public Optional<RelatedTrainInformation> getRelatedTrainInformation(TrainIdentification trainIdentification) {
-        return Optional.ofNullable(events.get(trainIdentification.operationalNumber()))
-            .flatMap(trainEvents -> trainEvents.stream()
-                .map(event -> event.payload.getRelatedTrainInformation())
-                .filter(Objects::nonNull)
-                .findFirst());
     }
 
     @Override
