@@ -46,8 +46,14 @@ public class Vehicle {
             .anyMatch(Vehicle::hasDangerousGoods);
     }
 
+    /**
+     * Vehicles with a disabled brake do not brake at all and are therefore not counted for any brake design.
+     */
     static Integer countBrakeDesigns(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
-        return (int) filterHauledLoad(vehicles).stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
+        return (int) filterHauledLoad(vehicles).stream()
+            .filter(vehicle -> !vehicle.hasDisabledBrake())
+            .filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns))
+            .count();
     }
 
     static Integer countDisabledBrakes(List<Vehicle> vehicles) {

@@ -30,18 +30,28 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return SBBContentBox(
-      padding: const .all(SBBSpacing.small),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: SBBSpacing.xSmall,
-        children: [
-          Text(context.l10n.w_ru_feature_status_title, style: SBBTextStyles.mediumBold),
-          _companiesDropdown(context),
-          ...RuFeatureKeys.values.map((key) => _featureRow(context, key)),
-        ],
-      ),
+    return Column(
+      mainAxisSize: .min,
+      spacing: SBBSpacing.xSmall,
+      crossAxisAlignment: .start,
+      children: [
+        SBBListHeader(
+          context.l10n.w_ru_feature_status_title,
+          style: SBBListHeaderStyle(padding: .only(left: SBBSpacing.medium)),
+        ),
+        SBBContentBox(
+          padding: const .all(SBBSpacing.medium),
+          child: Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
+            spacing: SBBSpacing.xSmall,
+            children: [
+              _companiesDropdown(context),
+              ...RuFeatureKeys.values.map((key) => _featureRow(context, key)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -90,5 +100,6 @@ extension _RuFeatureKeysExtension on RuFeatureKeys {
     .customerOrientedDeparture => context.l10n.w_ru_feature_status_customer_oriented_departure,
     .departureProcess => context.l10n.w_ru_feature_status_departure_process,
     .plannedTimeDeviation => context.l10n.w_ru_feature_status_planned_time_deviation,
+    .brakeLoadSlipBrakeDetails => context.l10n.w_ru_feature_status_brake_load_slip_brake_details,
   };
 }

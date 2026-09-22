@@ -8,6 +8,8 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancem
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -121,6 +123,21 @@ Future<void> loadJourney(WidgetTester tester, {required String trainNumber, Comp
 Future<void> disconnect(WidgetTester tester) async {
   DI.get<SferaRepository>().disconnect();
   await Future.delayed(const Duration(milliseconds: 50));
+}
+
+/// Closes the currently loaded journey over the train icon in the app bar.
+///
+/// Confirms the [CloseJourneyDialog] when it is shown.
+Future<void> closeJourney(WidgetTester tester) async {
+  await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+  await confirmCloseJourneyDialogIfShown(tester);
+}
+
+Future<void> confirmCloseJourneyDialogIfShown(WidgetTester tester) async {
+  final confirmButton = find.byKey(CloseJourneyDialog.confirmButtonKey);
+  if (confirmButton.evaluate().isEmpty) return;
+
+  await tapElement(tester, confirmButton);
 }
 
 Future<void> openExtendedMenu(WidgetTester tester) async {

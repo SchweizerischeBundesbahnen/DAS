@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/src/data/dto/balise_dto.dart';
 import 'package:sfera/src/data/dto/balise_group_dto.dart';
 import 'package:sfera/src/data/dto/curve_point_network_specific_point_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_network_specific_point_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_point_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_network_specific_point_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
@@ -38,4 +39,7 @@ class SpPointsDto({super.type = elementType, super.attributes, super.children, s
   Iterable<WhistleNetworkSpecificPointDto> get whistleNsp => children.whereType<WhistleNetworkSpecificPointDto>();
 
   Iterable<TrackFootNotesNspDto> get trackFootNotesNsp => children.whereType<TrackFootNotesNspDto>();
+
+  Iterable<LocalRegulationNetworkSpecificPointNspDto> get localRegulationsNsp =>
+      children.whereType<LocalRegulationNetworkSpecificPointNspDto>();
 }

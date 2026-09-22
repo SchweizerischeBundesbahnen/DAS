@@ -174,6 +174,24 @@ class VehicleTest {
     }
 
     @Test
+    void countBrakeDesigns_withDisabledBrake() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.L_KUNSTSTOFF_LEISE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithDisabledBrake(BrakeDesign.L_KUNSTSTOFF_LEISE)), null));
+
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.L_KUNSTSTOFF_LEISE)).isEqualTo(1);
+    }
+
+    @Test
+    void countBrakeDesigns_withDisabledBrakeOnOneVehicleUnitOnly() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, null,
+                List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.SCHEIBENBREMSEN), createVehicleUnitWithDisabledBrake(BrakeDesign.SCHEIBENBREMSEN)), null));
+
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.SCHEIBENBREMSEN)).isZero();
+    }
+
+    @Test
     void countBrakeDesigns_hasNone() {
         List<Vehicle> vehicles = List.of(
             new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.SCHEIBENBREMSEN)), null),

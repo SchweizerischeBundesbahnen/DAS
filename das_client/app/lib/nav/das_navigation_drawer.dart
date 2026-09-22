@@ -11,9 +11,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class DASNavigationDrawer extends StatelessWidget {
-  const DASNavigationDrawer({super.key});
-
+class const DASNavigationDrawer({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
@@ -29,9 +27,18 @@ class DASNavigationDrawer extends StatelessWidget {
                 _navigationTile(
                   context,
                   icon: SBBIcons.route_circle_start_small,
-                  title: context.l10n.w_navigation_drawer_fahrtinfo_title,
+                  title: context.l10n.w_navigation_drawer_journey_title,
                   route: isJourneySelected ? JourneyRoute() : JourneySelectionRoute(),
                 ),
+                if (launcher.hasTourSystemConfigured())
+                  ListTile(
+                    leading: _inactiveIcon(SBBIcons.switzerland_route_small),
+                    title: Text(
+                      context.l10n.w_navigation_drawer_tour_system_title,
+                      style: sbbTextStyle.lightStyle.medium,
+                    ),
+                    onTap: () => launcher.launchTourSystem(),
+                  ),
                 _navigationTile(
                   context,
                   icon: SBBIcons.link_external_small,
@@ -46,25 +53,10 @@ class DASNavigationDrawer extends StatelessWidget {
                 ),
                 _navigationTile(
                   context,
-                  icon: SBBIcons.user_small,
-                  title: context.l10n.w_navigation_drawer_profile_title,
-                  route: const ProfileRoute(),
+                  icon: SBBIcons.user_headset_small,
+                  title: context.l10n.w_navigation_drawer_support_title,
+                  route: const SupportRoute(),
                 ),
-                _navigationTile(
-                  context,
-                  icon: SBBIcons.computer_chip_small,
-                  title: context.l10n.w_navigation_drawer_diagnostic_title,
-                  route: const DiagnosticRoute(),
-                ),
-                if (launcher.hasTourSystemConfigured())
-                  ListTile(
-                    leading: _inactiveIcon(SBBIcons.link_external_small),
-                    title: Text(
-                      context.l10n.w_navigation_drawer_tour_system_title,
-                      style: sbbTextStyle.lightStyle.medium,
-                    ),
-                    onTap: () => launcher.launchTourSystem(),
-                  ),
               ],
             ),
           ),

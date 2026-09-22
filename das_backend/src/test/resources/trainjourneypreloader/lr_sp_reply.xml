@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../main/resources/SFERA_4.00.xsd">
+    <MessageHeader SFERA_version="4.00" message_ID="f552c19f-d8f6-434c-95b5-996b99b71f21" sourceDevice="TEST" timestamp="2025-10-20T13:19:29Z"
+                   correlation_ID="${correlationId}">
+        <Sender>1111</Sender>
+        <Recipient>0033</Recipient>
+    </MessageHeader>
+
+    <G2B_ReplyPayload>
+        <SegmentProfile SP_ID="LR_1_DE" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Wurzel DE"/>
+                    <NetworkSpecificParameter name="children" value="LR_2"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="LR_1_FR" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Racine FR"/>
+                    <NetworkSpecificParameter name="children" value="LR_2"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="LR_1_IT" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Radice IT"/>
+                    <NetworkSpecificParameter name="children" value="LR_2"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="LR_2_DE" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Kind DE"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="LR_2_FR" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Enfant FR"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="LR_2_IT" SP_VersionMajor="0" SP_Length="0">
+            <SP_Zone>
+                <IM_ID>0011</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <NetworkSpecificPoint location="0">
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>localRegulations</NSP_GroupName>
+                    <NetworkSpecificParameter name="title" value="Figlio IT"/>
+                </NetworkSpecificPoint>
+            </SP_Points>
+        </SegmentProfile>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>

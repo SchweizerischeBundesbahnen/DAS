@@ -1910,6 +1910,7 @@ void main() {
               previousServicePoint: point2,
               nextServicePoint: point3,
               lastPosition: point1,
+              isTrainInMotion: true,
             ),
           ]),
         );
@@ -1998,6 +1999,87 @@ void main() {
         );
         expect(testee.modelValue.isManualPosition, isFalse);
         expect(emitRegister, hasLength(2));
+      });
+    });
+
+    group('isTrainInMotion calculation', () {
+      final firstServicePoint = ServicePoint(name: 'a', abbreviation: 'a', locationCode: 'a', order: 5, kilometre: []);
+      final middleServicePoint = ServicePoint(
+        name: 'b',
+        abbreviation: 'b',
+        locationCode: 'b',
+        order: 15,
+        kilometre: [],
+      );
+      final lastServicePoint = ServicePoint(name: 'c', abbreviation: 'c', locationCode: 'c', order: 25, kilometre: []);
+      final journeyData = [firstServicePoint, tenSignal, middleServicePoint, twentySignal, lastServicePoint];
+
+      void addJourney({int? signaledOrder, List<JourneyPoint>? data}) {
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(
+                signaledPosition: signaledOrder != null ? SignaledPosition(order: signaledOrder) : null,
+              ),
+              data: data ?? journeyData,
+            ),
+          );
+        });
+        testAsync.flushMicrotasks();
+      }
+
+      test('isTrainInMotion_whenNoPositionReported_thenIsFalse', () {
+        // ARRANGE & ACT
+        addJourney();
+
+        // EXPECT - position defaults to the first journey point, the train has not departed yet
+        expect(testee.modelValue.currentPosition, equals(firstServicePoint));
+        expect(testee.modelValue.isTrainInMotion, isFalse);
+      });
+
+      test('isTrainInMotion_whenOnFirstServicePoint_thenIsFalse', () {
+        // ARRANGE & ACT
+        addJourney(signaledOrder: 5);
+
+        // EXPECT
+        expect(testee.modelValue.currentPosition, equals(firstServicePoint));
+        expect(testee.modelValue.isTrainInMotion, isFalse);
+      });
+
+      test('isTrainInMotion_whenBetweenFirstAndLastServicePoint_thenIsTrue', () {
+        // ARRANGE & ACT
+        addJourney(signaledOrder: 10);
+
+        // EXPECT
+        expect(testee.modelValue.currentPosition, equals(tenSignal));
+        expect(testee.modelValue.isTrainInMotion, isTrue);
+      });
+
+      test('isTrainInMotion_whenOnIntermediateServicePoint_thenIsTrue', () {
+        // ARRANGE & ACT
+        addJourney(signaledOrder: 15);
+
+        // EXPECT
+        expect(testee.modelValue.currentPosition, equals(middleServicePoint));
+        expect(testee.modelValue.isTrainInMotion, isTrue);
+      });
+
+      test('isTrainInMotion_whenOnLastServicePoint_thenIsFalse', () {
+        // ARRANGE & ACT
+        addJourney(signaledOrder: 25);
+
+        // EXPECT
+        expect(testee.modelValue.currentPosition, equals(lastServicePoint));
+        expect(testee.modelValue.isTrainInMotion, isFalse);
+      });
+
+      test('isTrainInMotion_whenJourneyHasNoServicePoints_thenIsFalse', () {
+        // ARRANGE & ACT
+        addJourney(signaledOrder: 10, data: [zeroSignal, tenSignal, twentySignal]);
+
+        // EXPECT
+        expect(testee.modelValue.currentPosition, equals(tenSignal));
+        expect(testee.modelValue.isTrainInMotion, isFalse);
       });
     });
   });

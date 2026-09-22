@@ -12,17 +12,15 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class ServicePointModalViewModel extends JourneyAwareViewModel {
-  ServicePointModalViewModel({
-    required this._localRegulationHtmlGenerator,
-    required this._settingsVM,
-    required super.journeyViewModel,
-  }) {
+class ServicePointModalViewModel({
+  required final LocalRegulationHtmlGenerator _localRegulationHtmlGenerator,
+  required final JourneySettingsViewModel _settingsVM,
+  required final SferaLocalRepo _sferaRepo,
+  required super.journeyViewModel,
+}) extends JourneyAwareViewModel {
+  this {
     _init();
   }
-
-  final LocalRegulationHtmlGenerator _localRegulationHtmlGenerator;
-  final JourneySettingsViewModel _settingsVM;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
@@ -33,7 +31,7 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
   final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
   final _rxSettings = BehaviorSubject<JourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeed>[]);
-  final _rxLocalRegulationSections = BehaviorSubject.seeded(<LocalRegulationSection>[]);
+  final _rxLocalRegulationSections = BehaviorSubject.seeded(<String, LocalRegulationSection>{});
   final _rxLocalRegulationHtml = BehaviorSubject<String>();
   final _rxBrakeSeries = BehaviorSubject<BrakeSeries?>();
   final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
@@ -152,14 +150,22 @@ class ServicePointModalViewModel extends JourneyAwareViewModel {
 
   void _initLocalRegulationSection() {
     final subscription = _rxServicePoint
-        .map((servicePoint) => servicePoint.localRegulationSections)
+        .asyncMap(
+          (servicePoint) async =>
+              await _sferaRepo.retrieveLocalRegulationSections(servicePoint.localRegulationSegmentIds),
+        )
         .listen(_rxLocalRegulationSections.add, onError: _rxLocalRegulationSections.addError);
     _subscriptions.add(subscription);
   }
 
   void _initLocalRegulationHtml() {
     final subscription = _rxLocalRegulationSections
-        .asyncMap((sections) => _localRegulationHtmlGenerator.generate(sections: sections))
+        .asyncMap(
+          (sections) => _localRegulationHtmlGenerator.generate(
+            sectionMap: sections,
+            rootId: _rxServicePoint.valueOrNull?.localRegulationSegmentIds.firstOrNull,
+          ),
+        )
         .listen(_rxLocalRegulationHtml.add, onError: _rxLocalRegulationHtml.addError);
     _subscriptions.add(subscription);
   }

@@ -1,12 +1,11 @@
+import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/departure_authorization_view_model.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DepartureAuthorizationDisplay extends StatelessWidget {
-  static const departureAuthorizationIconKey = Key('departureAuthorizationDisplayIcon');
   static const departureAuthorizationTextKey = Key('departureAuthorizationDisplayText');
 
   const DepartureAuthorizationDisplay({super.key});
@@ -20,22 +19,19 @@ class DepartureAuthorizationDisplay extends StatelessWidget {
       builder: (context, snapshot) {
         final departureAuthText = snapshot.data?.departureAuthText;
         if (departureAuthText == null) return SizedBox.shrink();
+        final style = sbbTextStyle.romanStyle.large;
 
-        final parsed = TextUtil.parseHtmlTextWithMarkdownLinks(departureAuthText, sbbTextStyle.romanStyle.large);
+        final parsedDepartureAuthText = TextUtil.parseHtmlTextWithMarkdownLinks(departureAuthText, style);
 
-        return Row(
-          spacing: SBBSpacing.xSmall,
-          children: [
-            Icon(
-              key: departureAuthorizationIconKey,
-              SBBIcons.hand_clock_small,
-              color: ThemeUtil.getIconColor(context),
-            ),
-            Text.rich(
-              key: departureAuthorizationTextKey,
-              _replaceAsteriskWithStyle(parsed, sbbTextStyle.boldStyle.xxLarge),
-            ),
-          ],
+        final parsedAuthTextWithPrefix = TextSpan(
+          text: '${context.l10n.w_departure_authorization_display_prefix}: ',
+          style: style,
+          children: [parsedDepartureAuthText],
+        );
+
+        return Text.rich(
+          key: departureAuthorizationTextKey,
+          _replaceAsteriskWithStyle(parsedAuthTextWithPrefix, sbbTextStyle.boldStyle.xxLarge),
         );
       },
     );

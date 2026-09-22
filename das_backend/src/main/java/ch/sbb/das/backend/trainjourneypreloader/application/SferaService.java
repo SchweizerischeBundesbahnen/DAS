@@ -2,6 +2,7 @@ package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
+import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult.Unavailable;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
@@ -107,11 +108,18 @@ public class SferaService {
             }
 
             Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
+            refreshLastSeenOfReferencedLocalRegulationSps(spIds);
             spIds.removeIf(segmentProfilesMap::containsKey);
 
             List<SegmentProfile> segmentProfiles;
             try {
                 segmentProfiles = requestSpsUntilComplete(trainId, spIds);
+            } catch (SegmentProfileMissingException e) {
+                return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
+            }
+
+            try {
+                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles, segmentProfilesMap));
             } catch (SegmentProfileMissingException e) {
                 return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
             }
@@ -173,6 +181,19 @@ public class SferaService {
         return allSegmentProfiles;
     }
 
+    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles,
+        Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap)
+        throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
+
+        Set<SegmentProfileIdentification> localRegulationSpIds = new HashSet<>();
+        regularSegmentProfiles.forEach(sp -> localRegulationSpIds.addAll(LocalRegulations.extractSpIds(sp)));
+        localRegulationSpIds.removeIf(segmentProfilesMap::containsKey);
+        if (localRegulationSpIds.isEmpty()) {
+            return List.of();
+        }
+        return requestSpsUntilComplete(trainId, localRegulationSpIds);
+    }
+
     public void connect() {
         mqttClient.connect(CLIENT_ID);
     }
@@ -207,6 +228,18 @@ public class SferaService {
         preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), preloadedSpIdVersionSet);
 
         return spIds.stream().filter(spId -> !preloadedSpIdVersionSet.contains(spId.toIdVersionString())).collect(Collectors.toSet());
+    }
+
+    private void refreshLastSeenOfReferencedLocalRegulationSps(Set<SegmentProfileIdentification> spIds) {
+        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
+        Set<String> relatedLrSpIdVersions = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream()
+            .map(PreloadedSegmentProfileEntity::getRelatedLrSpIdVersions)
+            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .collect(Collectors.toSet());
+        if (!relatedLrSpIdVersions.isEmpty()) {
+            preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), relatedLrSpIdVersions);
+        }
     }
 
     private CompletableFuture<List<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<TrainCharacteristicsIdentification> tcIds) throws MqttException {

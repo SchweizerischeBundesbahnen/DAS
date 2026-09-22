@@ -277,6 +277,7 @@ extension JourneyScopeExtension on GetIt {
         journeySettingsViewModel: DI.get(),
         notificationViewModel: DI.get(),
         launcher: DI.get(),
+        ruFeatureProvider: DI.get(),
         detailModalViewModel: DI.get(),
         connectivityManager: DI.get(),
         checkForUpdates: true,
@@ -354,6 +355,7 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         localRegulationHtmlGenerator: DI.get(),
         settingsVM: DI.get(),
+        sferaRepo: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
