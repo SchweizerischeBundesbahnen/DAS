@@ -119,7 +119,7 @@ public class SferaService {
             }
 
             try {
-                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles));
+                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles, segmentProfilesMap));
             } catch (SegmentProfileMissingException e) {
                 return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
             }
@@ -181,11 +181,13 @@ public class SferaService {
         return allSegmentProfiles;
     }
 
-    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles)
+    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles,
+        Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap)
         throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
 
         Set<SegmentProfileIdentification> localRegulationSpIds = new HashSet<>();
         regularSegmentProfiles.forEach(sp -> localRegulationSpIds.addAll(LocalRegulations.extractSpIds(sp)));
+        localRegulationSpIds.removeIf(segmentProfilesMap::containsKey);
         if (localRegulationSpIds.isEmpty()) {
             return List.of();
         }
