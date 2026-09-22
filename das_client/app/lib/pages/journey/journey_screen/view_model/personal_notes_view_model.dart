@@ -66,7 +66,7 @@ class PersonalNotesViewModel({
       trainIdentification: trainIdentification,
     );
 
-    final reloadNeeded = _rxPersonalNote.value?.showAsFootnote ?? false;
+    final reloadNeeded = (_rxPersonalNote.value?.showAsFootnote ?? false) || personalNote.showAsFootnote;
     try {
       await _personalNotesRepository.saveNote(personalNote);
       _rxPersonalNote.add(personalNote);
@@ -162,7 +162,7 @@ extension _ServicePointListX on List<ServicePoint> {
     if (length != updatedList.length) return true;
 
     final sortedOriginal = sortedBy((sP) => sP.order);
-    final sortedUpdated = sortedBy((sP) => sP.order);
+    final sortedUpdated = updatedList.sortedBy((sP) => sP.order);
     return Iterable.generate(length).any((i) {
       final original = sortedOriginal[i];
       final updated = sortedUpdated[i];
