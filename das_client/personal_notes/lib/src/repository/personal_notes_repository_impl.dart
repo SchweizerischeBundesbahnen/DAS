@@ -1,9 +1,8 @@
 import 'package:logging/logging.dart';
+import 'package:personal_notes/component.dart';
 import 'package:personal_notes/src/api/dto/personal_note_dto.dart';
 import 'package:personal_notes/src/api/personal_notes_api_service.dart';
 import 'package:personal_notes/src/data/personal_notes_local_database_service.dart';
-import 'package:personal_notes/src/model/personal_note.dart';
-import 'package:personal_notes/src/repository/personal_notes_repository.dart';
 
 final _log = Logger('PersonalNotesRepositoryImpl');
 

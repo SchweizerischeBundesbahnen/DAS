@@ -5,6 +5,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
@@ -15,10 +16,10 @@ import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class IndicationAccordion extends StatelessWidget {
-  static const Key showMoreTextKey = Key('operationalIndicationShowMoreText');
-  static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
-  static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
+class BasicTextAccordion extends StatelessWidget {
+  static const Key showMoreTextKey = Key('basicTextAccordionShowMoreText');
+  static const Key expandedContentKey = Key('basicTextAccordionExpandedContent');
+  static const Key collapsedContentKey = Key('basicTextAccordionCollapsedContent');
 
   static const double _verticalMargin = SBBSpacing.xSmall;
 
@@ -30,13 +31,13 @@ class IndicationAccordion extends StatelessWidget {
     fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
-  const IndicationAccordion({
+  const BasicTextAccordion({
     required this.collapsedState,
     required this.data,
     this.leftPadding = 0,
     this.isLastElement = true,
     super.key,
-  }) : assert(data is RuIndication || data is OperationalIndication, 'Unsupported data type for indication');
+  });
 
   final JourneyAnnotation data;
   final CollapsedState collapsedState;
@@ -51,21 +52,19 @@ class IndicationAccordion extends StatelessWidget {
     final borderRadius = Radius.circular(isExpanded ? SBBSpacing.medium : SBBSpacing.xSmall);
     return Accordion(
       key: ObjectKey(data.hashCode),
-      title: data.title ?? context.l10n.c_indication,
+      title: data.title(context),
       body: _body(context),
       isExpanded: isExpanded,
       toggleCallback: () =>
           context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
-      icon: SBBIcons.list_small,
+      icon: data.icon,
       margin: isLastElement ? .only(bottom: _verticalMargin) : .zero,
       additionalPadding: .only(left: leftPadding),
       backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.midnight),
       border: !isLastElement
           ? Border(bottom: BorderSide(color: ThemeUtil.getColor(context, SBBColors.platinum, SBBColors.iron)))
           : null,
-      borderRadius: isLastElement
-          ? BorderRadius.only(bottomLeft: borderRadius, bottomRight: borderRadius)
-          : BorderRadius.all(Radius.zero),
+      borderRadius: isLastElement ? .only(bottomLeft: borderRadius, bottomRight: borderRadius) : .all(Radius.zero),
     );
   }
 
@@ -107,7 +106,7 @@ class IndicationAccordion extends StatelessWidget {
         onLinkTap: (url) => _openLink(context, url),
       ),
       maxLines: maxLines,
-      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      overflow: maxLines != null ? .ellipsis : null,
     );
   }
 
@@ -141,20 +140,22 @@ class IndicationAccordion extends StatelessWidget {
 }
 
 extension JourneyAnnotationIndicationX on JourneyAnnotation {
-  String? get title {
-    if (this is RuIndication) {
-      return (this as RuIndication).title;
-    }
-    return null;
-  }
+  String title(BuildContext context) => switch (this) {
+    final RuIndication indication => indication.title,
+    PersonalNoteAnnotation() => context.l10n.w_personal_note_annotation_title,
+    OperationalIndication() => context.l10n.c_indication,
+    _ => context.l10n.c_unknown,
+  };
 
-  String get text {
-    if (this is RuIndication) {
-      return (this as RuIndication).text;
-    } else if (this is OperationalIndication) {
-      return (this as OperationalIndication).combinedText;
-    } else {
-      return '';
-    }
-  }
+  String get text => switch (this) {
+    final RuIndication indication => indication.text,
+    final OperationalIndication indication => indication.combinedText,
+    final PersonalNoteAnnotation note => note.text,
+    _ => '',
+  };
+
+  IconData get icon => switch (this) {
+    PersonalNoteAnnotation() => SBBIcons.paper_clip_small,
+    _ => SBBIcons.list_small,
+  };
 }

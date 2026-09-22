@@ -80,46 +80,56 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
           SBBNotificationBox.alert(contentText: _errorMessage!),
           SizedBox(height: SBBSpacing.small),
         ],
-        SBBTextInputBoxed(
-          decoration: SBBInputDecoration(
-            labelText: context.l10n.w_personal_note_dialog_textfield_label,
-            errorText: _validationError,
-          ),
-          controller: textController,
-          minLines: 5,
-          maxLines: null,
-        ),
+        _textArea(),
         SizedBox(height: SBBSpacing.xSmall),
-        SBBSwitchListItem(
-          titleText: context.l10n.w_personal_note_dialog_footnote_checkbox_label,
-          value: _showAsFootnote,
-          onChanged: (value) => setState(() => _showAsFootnote = value),
-        ),
-        SBBSwitchListItem(
-          titleText: context.l10n.w_personal_note_dialog_single_use_checkbox_label,
-          value: _singleUse,
-          onChanged: (value) => setState(() => _singleUse = value),
-        ),
+        _showAsFootNoteCheckbox(),
+        if (!_editMode) _singleUseCheckbox(),
         SizedBox(height: SBBSpacing.small),
         if (_editMode) ...[
-          SBBSecondaryButton(
-            label: SizedBox(
-              width: double.maxFinite,
-              child: Center(
-                child: Text(context.l10n.w_personal_note_dialog_button_delete),
-              ),
-            ),
-            onPressed: () => _onDelete(),
-          ),
+          _deleteButton(),
           SizedBox(height: SBBSpacing.xSmall),
         ],
-        SBBPrimaryButton(
-          labelText: context.l10n.w_personal_note_dialog_button_save,
-          onPressed: _inputIsValid ? () => _onSave() : null,
-        ),
+        _saveButton(),
       ],
     );
   }
+
+  Widget _saveButton() => SBBPrimaryButton(
+    labelText: context.l10n.w_personal_note_dialog_button_save,
+    onPressed: _inputIsValid ? () => _onSave() : null,
+  );
+
+  Widget _deleteButton() => SBBSecondaryButton(
+    label: SizedBox(
+      width: double.maxFinite,
+      child: Center(
+        child: Text(context.l10n.w_personal_note_dialog_button_delete),
+      ),
+    ),
+    onPressed: () => _onDelete(),
+  );
+
+  Widget _singleUseCheckbox() => SBBSwitchListItem(
+    titleText: context.l10n.w_personal_note_dialog_single_use_checkbox_label,
+    value: _singleUse,
+    onChanged: (value) => setState(() => _singleUse = value),
+  );
+
+  Widget _showAsFootNoteCheckbox() => SBBSwitchListItem(
+    titleText: context.l10n.w_personal_note_dialog_footnote_checkbox_label,
+    value: _showAsFootnote,
+    onChanged: (value) => setState(() => _showAsFootnote = value),
+  );
+
+  Widget _textArea() => SBBTextInputBoxed(
+    decoration: SBBInputDecoration(
+      labelText: context.l10n.w_personal_note_dialog_textfield_label,
+      errorText: _validationError,
+    ),
+    controller: textController,
+    minLines: 5,
+    maxLines: null,
+  );
 
   bool get _inputIsValid => textController.text.trim().isNotEmpty && _validationError == null;
 
@@ -141,7 +151,6 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   Future<void> _onDelete() async {
     try {
       await widget.viewModel.deleteNote();
-
       _closeDialog();
     } catch (e) {
       _log.severe('Error deleting personal note', e);
@@ -157,9 +166,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
 
   void _showErrorMessage() {
     if (mounted) {
-      setState(() {
-        _errorMessage = context.l10n.w_personal_note_dialog_error_message;
-      });
+      setState(() => _errorMessage = context.l10n.w_personal_note_dialog_error_message);
     }
   }
 

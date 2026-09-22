@@ -263,6 +263,7 @@
   "w_personal_note_dialog_single_use_checkbox_label": "Einmal anzeigen, dann entfernen",
   "w_personal_note_dialog_button_save": "Speichern",
   "w_personal_note_dialog_button_delete": "Löschen",
+  "w_personal_note_annotation_title": "Persönliche Notiz",
   "c_yes": "Ja",
   "c_no": "Nein",
   "c_unknown": "Unbekannt",

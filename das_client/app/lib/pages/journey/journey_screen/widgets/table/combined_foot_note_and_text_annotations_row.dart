@@ -1,18 +1,18 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAndIndications> {
+class CombinedNotesAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAndTextAnnotations> {
   static const Key rowKey = Key('combinedFootNoteAndIndicationsRow');
 
-  CombinedFootNoteAndIndicationsRow({
+  CombinedNotesAndIndicationsRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
@@ -24,13 +24,13 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
   }) : super(
          stickyLevel: .second,
          height:
-             data.indications
+             data.textAnnotations
                  .map(
-                   (indication) => IndicationAccordion.calculateHeight(
+                   (indication) => BasicTextAccordion.calculateHeight(
                      indication,
                      collapsedState: indicationStates.stateOf(indication),
                      leftPadding: leftPadding,
-                     isLastElement: data.indications.last == indication && data.footNote == null,
+                     isLastElement: data.textAnnotations.last == indication && data.footNote == null,
                    ),
                  )
                  .sum +
@@ -57,12 +57,12 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Column(
         children: [
-          ...data.indications.map(
-            (indication) => IndicationAccordion(
+          ...data.textAnnotations.map(
+            (indication) => BasicTextAccordion(
               collapsedState: indicationStates.stateOf(indication),
               data: indication,
               leftPadding: leftPadding,
-              isLastElement: data.indications.last == indication && data.footNote == null,
+              isLastElement: data.textAnnotations.last == indication && data.footNote == null,
             ),
           ),
           if (data.footNote != null)

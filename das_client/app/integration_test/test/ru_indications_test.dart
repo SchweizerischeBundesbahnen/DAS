@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ru_indications/component.dart';
@@ -30,7 +30,7 @@ void main() {
 
     final expandedContent = find.descendant(
       of: firstAccordion,
-      matching: find.byKey(IndicationAccordion.expandedContentKey),
+      matching: find.byKey(BasicTextAccordion.expandedContentKey),
     );
     expect(expandedContent, findsOneWidget);
 
@@ -56,13 +56,13 @@ void main() {
     final accordion = longTextAccordion.first;
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(IndicationAccordion.collapsedContentKey),
+      matching: find.byKey(BasicTextAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
 
     final showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -82,7 +82,7 @@ void main() {
     // expand the long text accordion to see full text
     final showMoreButton = find.descendant(
       of: _findIndicationAccordionByText('This is a long mock RU indication description containing a').first,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     await tapElement(tester, showMoreButton);
 
@@ -110,7 +110,7 @@ void main() {
     // expand long text
     final showMoreButton = find.descendant(
       of: _findIndicationAccordionByText('This is a long mock RU indication description containing a').first,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     await tapElement(tester, showMoreButton);
 
@@ -120,14 +120,14 @@ void main() {
 
     final expandedContent = find.descendant(
       of: expandedAccordion.first,
-      matching: find.byKey(IndicationAccordion.expandedContentKey),
+      matching: find.byKey(BasicTextAccordion.expandedContentKey),
     );
     expect(expandedContent, findsOneWidget);
 
     // No "show more" button should remain after expanding
     final showMoreAfterExpand = find.descendant(
       of: expandedAccordion.first,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     expect(showMoreAfterExpand, findsNothing);
 
@@ -140,7 +140,7 @@ Finder _findIndicationAccordionByText(String text) {
     of: find.byKey(DASTable.tableKey),
     matching: find.ancestor(
       of: find.textContaining(text, findRichText: true),
-      matching: find.byType(IndicationAccordion),
+      matching: find.byType(BasicTextAccordion),
     ),
   );
 }

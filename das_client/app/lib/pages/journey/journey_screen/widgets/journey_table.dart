@@ -20,11 +20,12 @@ import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapp
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
@@ -33,7 +34,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equi
 import 'package:app/pages/journey/journey_screen/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
@@ -63,7 +63,6 @@ import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -321,31 +320,22 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .ruIndication:
-          return IndicationRow(
+        case .ruIndication || .operationalIndication || .personalNote:
+          return BasicTextAccordionRow(
             metadata: metadata,
-            data: rowData as RuIndication,
+            data: rowData as JourneyAnnotation,
             config: journeyConfig,
             collapsedState: collapsedRows.stateOf(rowData),
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .operationalIndication:
-          return IndicationRow(
-            metadata: metadata,
-            data: rowData as OperationalIndication,
-            config: journeyConfig,
-            collapsedState: collapsedRows.stateOf(rowData),
-            rowIndex: index,
-            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
-          );
-        case .combinedFootNoteAndIndications:
-          return CombinedFootNoteAndIndicationsRow(
+        case .combinedFootNoteAndTextAnnotations:
+          return CombinedNotesAndIndicationsRow(
             rowIndex: index,
             metadata: metadata,
-            data: rowData as CombinedFootNoteAndIndications,
+            data: rowData as CombinedFootNoteAndTextAnnotations,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
-            indicationStates: collapsedRows.whereContains(rowData.indications),
+            indicationStates: collapsedRows.whereContains(rowData.textAnnotations),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .communicationNetworkChannel:

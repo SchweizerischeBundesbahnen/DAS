@@ -70,11 +70,11 @@ class JourneyScope extends DIScope {
     getIt.registerBrakeLoadSlipViewModel();
     getIt.registerSimTrainViewModel();
     getIt.registerCollapsibleRowsViewModel();
+    getIt.registerServicePointModalViewModel();
+    getIt.registerPersonalNotesViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerJourneyFilterViewModel();
-    getIt.registerServicePointModalViewModel();
-    getIt.registerPersonalNotesViewModel();
 
     await getIt.allReady();
   }
@@ -325,6 +325,7 @@ extension JourneyScopeExtension on GetIt {
         decisiveGradientVM: DI.get(),
         navigationVM: DI.get(),
         userSettings: DI.get(),
+        personalNotesVM: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

@@ -10,13 +10,13 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
@@ -174,7 +174,7 @@ class ReducedJourneyTable extends StatelessWidget {
             showModificationOnInformationCell: true,
           );
         case .operationalIndication:
-          return IndicationRow(
+          return BasicTextAccordionRow(
             key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
@@ -183,7 +183,7 @@ class ReducedJourneyTable extends StatelessWidget {
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .ruIndication:
-          return IndicationRow(
+          return BasicTextAccordionRow(
             key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
@@ -192,14 +192,14 @@ class ReducedJourneyTable extends StatelessWidget {
             collapsedState: model.collapsedRows.stateOf(rowData),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .combinedFootNoteAndIndications:
-          return CombinedFootNoteAndIndicationsRow(
+        case .combinedFootNoteAndTextAnnotations:
+          return CombinedNotesAndIndicationsRow(
             key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
-            data: rowData as CombinedFootNoteAndIndications,
+            data: rowData as CombinedFootNoteAndTextAnnotations,
             footNoteState: model.collapsedRows.stateOf(rowData.footNote),
-            indicationStates: model.collapsedRows.whereContains(rowData.indications),
+            indicationStates: model.collapsedRows.whereContains(rowData.textAnnotations),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         default:

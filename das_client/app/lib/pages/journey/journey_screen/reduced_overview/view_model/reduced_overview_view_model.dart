@@ -7,7 +7,7 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/model/route_va
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/route_variant_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
@@ -81,7 +81,7 @@ class ReducedOverviewViewModel({
     relevantData = relevantData
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideIndicationsForHiddenServicePoint()
-        .combineFootNoteAndIndications()
+        .combineFootNoteAndTextAnnotations()
         .sorted(
           (a1, a2) => a1.compareTo(a2),
         );
