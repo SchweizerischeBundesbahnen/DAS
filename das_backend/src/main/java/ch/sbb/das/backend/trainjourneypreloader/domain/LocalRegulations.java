@@ -55,7 +55,7 @@ public final class LocalRegulations {
     private static String nspGroupName(Object nspGroupName) {
         return switch (nspGroupName) {
             case String s -> s;
-            case Element e -> e.getTextContent();
+            case Element e -> e.getTextContent() != null ? e.getTextContent().trim() : null;
             case null, default -> null;
         };
     }

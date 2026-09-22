@@ -97,15 +97,14 @@ class StorageServiceTest {
         sp.setSPID(id);
         sp.setSPVersionMajor("1");
         sp.setSPVersionMinor("0");
+        SPZone zone = new SPZone();
+        zone.setIMID("0085");
+        sp.setSPZone(zone);
         return sp;
     }
 
-    private static SegmentProfile createSpWithLocalRegulations(String id, String imid, String languageNeutralTree) {
+    private static SegmentProfile createSpWithLocalRegulations(String id, String languageNeutralTree) {
         SegmentProfile sp = createSp(id);
-        SPZone zone = new SPZone();
-        zone.setIMID(imid);
-        sp.setSPZone(zone);
-
         SPAreas areas = new SPAreas();
         TAFTAPLocation location = new TAFTAPLocation();
         NSPListComplexType nsp = new NSPListComplexType();
@@ -205,7 +204,7 @@ class StorageServiceTest {
     void save_persistsRelatedLocalRegulationSpIdVersionsForReferencingSp() {
         when(preloadedSegmentProfileRepository.findMaxFileId()).thenReturn(Optional.empty());
 
-        underTest.save(Set.of(), List.of(createSpWithLocalRegulations("SP-1", "0085", "LR_1;LR_2")), Set.of());
+        underTest.save(Set.of(), List.of(createSpWithLocalRegulations("SP-1", "LR_1;LR_2")), Set.of());
 
         @SuppressWarnings("unchecked")
         ArgumentCaptor<List<PreloadedSegmentProfileEntity>> entityCaptor = ArgumentCaptor.forClass(List.class);
