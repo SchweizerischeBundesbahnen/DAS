@@ -6,6 +6,7 @@ import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.locations.internal.ServicePoint.Content;
 import ch.sbb.das.backend.locations.internal.ServicePoint.ServicePointNumber;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ServicePointTest {
@@ -16,7 +17,7 @@ class ServicePointTest {
     private static ServicePoint servicePoint(String designation, String abbreviation,
         ServicePointNumber number,
         LocalDate validFrom, LocalDate validTo) {
-        return new ServicePoint(designation, abbreviation, validFrom, validTo, number);
+        return new ServicePoint(designation, abbreviation, validFrom, validTo, number, null, List.of("TRAIN"));
     }
 
     @Test
@@ -105,6 +106,74 @@ class ServicePointTest {
         original.withValidTo(LocalDate.of(2025, 12, 31));
 
         assertThat(original.validTo()).isEqualTo(LocalDate.of(2025, 6, 30));
+    }
+
+    private static ServicePoint relevantServicePoint(String abbreviation, String technicalTimetableType, List<String> meansOfTransport) {
+        return new ServicePoint("Bern", abbreviation, DateTimeUtil.today(), DateTimeUtil.today(), NUMBER, technicalTimetableType, meansOfTransport);
+    }
+
+    @Test
+    void shouldBeRelevantWhenAbbreviationPresentTypeNullAndMeansOfTransportEmpty() {
+        ServicePoint sp = relevantServicePoint("BN", null, List.of());
+
+        assertThat(sp.isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantWhenMeansOfTransportIsNull() {
+        ServicePoint sp = relevantServicePoint("BN", "SERVICE_STATION", null);
+
+        assertThat(sp.isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantWhenMeansOfTransportContainsOnlyTrain() {
+        ServicePoint sp = relevantServicePoint("BN", "BRANCH", List.of("TRAIN", "TRAIN"));
+
+        assertThat(sp.isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantForEachAllowedTechnicalTimetableType() {
+        assertThat(relevantServicePoint("BN", "COUNTRY_BORDER", null).isRelevant()).isTrue();
+        assertThat(relevantServicePoint("BN", "BRANCH", null).isRelevant()).isTrue();
+        assertThat(relevantServicePoint("BN", "SERVICE_STATION", null).isRelevant()).isTrue();
+        assertThat(relevantServicePoint("BN", "EX_STOP_POINT", null).isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenAbbreviationIsNull() {
+        ServicePoint sp = relevantServicePoint(null, null, List.of("TRAIN"));
+
+        assertThat(sp.isRelevant()).isFalse();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenAbbreviationIsBlank() {
+        ServicePoint sp = relevantServicePoint("  ", null, List.of("TRAIN"));
+
+        assertThat(sp.isRelevant()).isFalse();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenTechnicalTimetableTypeIsNotAllowed() {
+        ServicePoint sp = relevantServicePoint("BN", "LANE_CHANGE", List.of("TRAIN"));
+
+        assertThat(sp.isRelevant()).isFalse();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenTechnicalTimetableTypeIsUnknown() {
+        ServicePoint sp = relevantServicePoint("BN", "UNKNOWN", List.of("TRAIN"));
+
+        assertThat(sp.isRelevant()).isFalse();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenMeansOfTransportContainsNonTrain() {
+        ServicePoint sp = relevantServicePoint("BN", "BRANCH", List.of("TRAIN", "BUS"));
+
+        assertThat(sp.isRelevant()).isFalse();
     }
 }
 

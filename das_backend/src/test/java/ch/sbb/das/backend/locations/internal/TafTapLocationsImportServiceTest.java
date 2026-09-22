@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.locations.internal.ServicePoint.ServicePointNumber;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class TafTapLocationsImportServiceTest {
     private static ServicePoint servicePoint(String designation, String abbreviation,
         ServicePointNumber number,
         LocalDate validFrom, LocalDate validTo) {
-        return new ServicePoint(designation, abbreviation, validFrom, validTo, number);
+        return new ServicePoint(designation, abbreviation, validFrom, validTo, number, null, Collections.emptyList());
     }
 
     @Test

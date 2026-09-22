@@ -52,7 +52,9 @@ class ServicePointApiClientTest {
                 "Name" + i,
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
-                new ServicePoint.ServicePointNumber(85, i, 0)
+                new ServicePoint.ServicePointNumber(85, i, 0),
+                null,
+                List.of("TRAIN")
             ));
         }
         ServicePointResponse response = new ServicePointResponse(servicePoints, total);
@@ -62,7 +64,7 @@ class ServicePointApiClientTest {
     private String uri(int page, int size) {
         LocalDate today = LocalDate.now();
         return String.format(
-            "/service-point-directory/v1/service-points?meansOfTransport=TRAIN&statusRestrictions=VALIDATED&countries=SWITZERLAND&countries=ITALY&countries=FRANCE&countries=GERMANY&validToFromDate=%s&page=%s&size=%s",
+            "/service-point-directory/v1/service-points?statusRestrictions=VALIDATED&countries=SWITZERLAND&countries=ITALY&countries=FRANCE&countries=GERMANY&countries=AUSTRIA&validToFromDate=%s&page=%s&size=%s",
             today, page, size);
     }
 }

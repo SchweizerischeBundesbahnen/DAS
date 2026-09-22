@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import java.time.LocalDate;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class TafTapLocationMapperTest {
@@ -17,7 +18,9 @@ class TafTapLocationMapperTest {
             "BN",
             LocalDate.of(2026, 1, 1),
             LocalDate.of(2027, 1, 1),
-            new ServicePoint.ServicePointNumber(85, 7000, 0)
+            new ServicePoint.ServicePointNumber(85, 7000, 0),
+            null,
+            Collections.emptyList()
         );
 
         TafTapLocationEntity entity = mapper.toEntityFromServicePoint(sp);
