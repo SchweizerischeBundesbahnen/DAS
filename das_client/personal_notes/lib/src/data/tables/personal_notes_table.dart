@@ -5,16 +5,20 @@ import 'package:drift/drift.dart';
 import 'package:personal_notes/component.dart';
 import 'package:personal_notes/src/data/drift_personal_notes_database_service.dart';
 
+final sentinelDate = DateTime.fromMillisecondsSinceEpoch(0);
+
+/// Note: NULL values are not considered equal in SQLite.
+/// For this reason, all columns relevant for the primary key have default values.
 class PersonalNotesTable extends Table {
   TextColumn get locationCode => text()();
 
-  TextColumn get trainCompanyCode => text().nullable()();
+  TextColumn get trainCompanyCode => text().withDefault(const Constant(''))();
 
-  TextColumn get trainNumber => text().nullable()();
+  TextColumn get trainNumber => text().withDefault(const Constant(''))();
 
-  DateTimeColumn get trainDate => dateTime().nullable()();
+  DateTimeColumn get trainDate => dateTime().withDefault(Constant(sentinelDate))();
 
-  DateTimeColumn get trainOperatingDay => dateTime().nullable()();
+  DateTimeColumn get trainOperatingDay => dateTime().withDefault(Constant(sentinelDate))();
 
   TextColumn get noteText => text()();
 
@@ -32,10 +36,10 @@ extension PersonalNoteMapperX on PersonalNote {
   PersonalNotesTableCompanion toCompanion() {
     return PersonalNotesTableCompanion.insert(
       locationCode: locationCode,
-      trainCompanyCode: Value(trainIdentification?.companyCode),
-      trainNumber: Value(trainIdentification?.trainNumber),
-      trainDate: Value(trainIdentification?.date),
-      trainOperatingDay: Value(trainIdentification?.operatingDay),
+      trainCompanyCode: Value(trainIdentification?.companyCode ?? ''),
+      trainNumber: Value(trainIdentification?.trainNumber ?? ''),
+      trainDate: Value(trainIdentification?.date ?? sentinelDate),
+      trainOperatingDay: Value(trainIdentification?.operatingDay ?? sentinelDate),
       noteText: text,
       showAsFootnote: showAsFootnote,
       deleted: Value(deleted),
@@ -57,13 +61,13 @@ extension PersonalNotesTableDataX on PersonalNotesTableData {
   }
 
   TrainIdentification? _toTrainIdentification() {
-    if (trainNumber == null || trainNumber == null || trainDate == null) return null;
+    if (trainNumber.isEmpty || trainNumber.isEmpty || trainDate == sentinelDate) return null;
 
     return TrainIdentification(
-      companyCode: trainCompanyCode!,
-      trainNumber: trainNumber!,
-      date: trainDate!,
-      operatingDay: trainOperatingDay,
+      companyCode: trainCompanyCode,
+      trainNumber: trainNumber,
+      date: trainDate,
+      operatingDay: trainOperatingDay == sentinelDate ? null : trainOperatingDay,
     );
   }
 }

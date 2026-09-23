@@ -173,7 +173,7 @@ class DetailTabCommunication extends StatelessWidget {
             _listHeader(text: context.l10n.w_service_point_modal_personal_note),
             if (personalNote != null)
               Container(
-                constraints: BoxConstraints(minHeight: 160, minWidth: double.infinity),
+                constraints: BoxConstraints(maxHeight: 160, minWidth: double.infinity),
                 padding: const .symmetric(
                   horizontal: SBBSpacing.medium,
                   vertical: SBBSpacing.xSmall,

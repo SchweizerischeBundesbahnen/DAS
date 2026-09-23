@@ -78,9 +78,7 @@ class PersonalNotesViewModel({
       await _personalNotesRepository.saveNote(personalNote);
       _log.fine('Personal note saved for location $locationCode');
 
-      final updatedList = [..._rxServicePointNotes.value, personalNote];
-      _rxServicePointNotes.add(updatedList);
-
+      _loadNotesOfServicePoint();
       if (reloadNeeded) {
         _loadPersonalNoteAnnotations();
       }
@@ -95,14 +93,12 @@ class PersonalNotesViewModel({
       await _personalNotesRepository.deleteNote(note);
       _log.fine('Personal note deleted for location $locationCode');
 
-      final updatedList = _rxServicePointNotes.value..remove(note);
-      _rxServicePointNotes.add(updatedList);
-
+      _loadNotesOfServicePoint();
       if (note.showAsFootnote) {
         _loadPersonalNoteAnnotations();
       }
-    } catch (e) {
-      _log.severe('Error deleting personal note', e);
+    } catch (e, st) {
+      _log.severe('Error deleting personal note', e, st);
       rethrow;
     }
   }
@@ -119,10 +115,9 @@ class PersonalNotesViewModel({
   }
 
   void _init() {
-    final modalSubscription = _servicePointModalViewModel.servicePoint.listen((servicePoint) async {
+    final modalSubscription = _servicePointModalViewModel.servicePoint.listen((servicePoint) {
       _currentServicePoint = servicePoint;
-      final notes = await _personalNotesRepository.findNotes(servicePoint.locationCode);
-      _rxServicePointNotes.add(notes);
+      _loadNotesOfServicePoint();
     });
     _subscriptions.add(modalSubscription);
 
@@ -135,6 +130,12 @@ class PersonalNotesViewModel({
       _rxPrioritizedNote.add(prioritizedNote);
     });
     _subscriptions.add(notesSubscription);
+  }
+
+  Future<void> _loadNotesOfServicePoint() async {
+    if (_currentServicePoint == null) return;
+    final notes = await _personalNotesRepository.findNotes(_currentServicePoint!.locationCode);
+    _rxServicePointNotes.add(notes);
   }
 
   void _handleJourneyUpdate(Journey? journey) {

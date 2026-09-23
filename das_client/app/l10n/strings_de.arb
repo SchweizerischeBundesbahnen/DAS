@@ -262,7 +262,14 @@
   "w_personal_note_dialog_edit_title": "Notiz zum Betriebspunkt bearbeiten",
   "w_personal_note_dialog_textfield_label": "Notiz",
   "w_personal_note_dialog_error_message": "Etwas ist schiefgelaufen",
-  "w_personal_note_dialog_text_too_long": "Die Notiz darf nicht länger als 1000 Zeichen sein.",
+  "w_personal_note_dialog_text_too_long": "Die Notiz darf nicht länger als {charCount} Zeichen sein.",
+  "@w_personal_note_dialog_text_too_long": {
+    "placeholders": {
+      "charCount": {
+        "type": "int"
+      }
+    }
+  },
   "w_personal_note_dialog_footnote_checkbox_label": "Notiz als Fussnote anzeigen",
   "w_personal_note_dialog_single_use_checkbox_label": "Einmal anzeigen, dann entfernen",
   "w_personal_note_dialog_button_save": "Speichern",

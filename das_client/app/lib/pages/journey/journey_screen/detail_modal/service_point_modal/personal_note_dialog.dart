@@ -26,7 +26,7 @@ class PersonalNoteDialog extends StatefulWidget {
 
 class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   static const double _maxWidth = 430;
-  static const double _maxInputLength = 1000;
+  static const int _maxInputLength = 1000;
 
   late final TextEditingController textController;
   late bool _showAsFootnote;
@@ -45,7 +45,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
     textController.addListener(() {
       setState(() {
         if (textController.text.trim().length > _maxInputLength) {
-          _validationError = context.l10n.w_personal_note_dialog_text_too_long;
+          _validationError = context.l10n.w_personal_note_dialog_text_too_long(_maxInputLength);
         } else {
           _validationError = null;
         }
@@ -85,7 +85,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
         _textArea(),
         SizedBox(height: SBBSpacing.xSmall),
         _showAsFootNoteCheckbox(),
-        if (!_editMode) _singleUseCheckbox(),
+        _singleUseCheckbox(),
         SizedBox(height: SBBSpacing.small),
         if (_editMode) ...[
           _deleteButton(),
@@ -114,7 +114,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   Widget _singleUseCheckbox() => SBBSwitchListItem(
     titleText: context.l10n.w_personal_note_dialog_single_use_checkbox_label,
     value: _singleUse,
-    onChanged: (value) => setState(() => _singleUse = value),
+    onChanged: _editMode ? null : (value) => setState(() => _singleUse = value),
   );
 
   Widget _showAsFootNoteCheckbox() => SBBSwitchListItem(
