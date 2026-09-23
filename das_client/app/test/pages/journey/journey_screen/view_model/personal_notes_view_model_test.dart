@@ -31,6 +31,8 @@ void main() {
   late BehaviorSubject<ServicePoint> rxServicePoint;
   late List<List<PersonalNoteAnnotation>> annotationRegister;
   late StreamSubscription<List<PersonalNoteAnnotation>> annotationSubscription;
+  late List<List<PersonalNote>> servicePointNotesRegister;
+  late StreamSubscription<List<PersonalNote>> servicePointNotesSubscription;
 
   final trainIdentification = TrainIdentification(
     companyCode: '1285',
@@ -65,6 +67,7 @@ void main() {
     rxJourney = BehaviorSubject<Journey?>.seeded(null);
     rxServicePoint = BehaviorSubject<ServicePoint>();
     annotationRegister = [];
+    servicePointNotesRegister = [];
 
     when(mockJourneyViewModel.journey).thenAnswer((_) => rxJourney.stream);
     when(mockServicePointModalViewModel.servicePoint).thenAnswer((_) => rxServicePoint.stream);
@@ -75,10 +78,12 @@ void main() {
       servicePointModalViewModel: mockServicePointModalViewModel,
     );
     annotationSubscription = testee.personalNoteAnnotations.listen(annotationRegister.add);
+    servicePointNotesSubscription = testee.servicePointNotes.listen(servicePointNotesRegister.add);
   });
 
   tearDown(() async {
     await annotationSubscription.cancel();
+    await servicePointNotesSubscription.cancel();
     testee.dispose();
     await rxJourney.close();
     await rxServicePoint.close();
@@ -99,6 +104,8 @@ void main() {
     expect(testee.locationCode, servicePointA.locationCode);
     expect(testee.prioritizedNoteValue, note);
     expect(prioritizedNoteRegister, orderedEquals([null, note]));
+    expect(servicePointNotesRegister.last, orderedEquals([note]));
+    expect(testee.servicePointHasMultipleNotes, isFalse);
 
     await subscription.cancel();
   });
@@ -123,6 +130,8 @@ void main() {
     expect(savedNote.showAsFootnote, isFalse);
     expect(savedNote.trainIdentification, trainIdentification);
     expect(testee.prioritizedNoteValue, savedNote);
+    expect(servicePointNotesRegister.last, orderedEquals([savedNote]));
+    expect(testee.servicePointHasMultipleNotes, isFalse);
   });
 
   test('saveNote_whenSavedNoteShouldBeShownAsFootnote_thenReloadsAnnotations', () async {
@@ -311,6 +320,145 @@ void main() {
       expect(annotationRegister.last, isEmpty);
     },
   );
+
+  test('saveNote_whenMultipleNotesAtServicePoint_thenAppendsNoteToList', () async {
+    // GIVEN
+    final note1 = _personalNote(locationCode: servicePointA.locationCode, text: 'Note 1', showAsFootnote: false);
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note1]);
+    await emitServicePoint(servicePointA);
+    clearInteractions(mockPersonalNotesRepository);
+
+    // WHEN
+    await testee.saveNote(text: 'Note 2', showAsFootnote: false, singleUse: false);
+    await processStreams();
+
+    // THEN
+    expect(servicePointNotesRegister.last.length, 2);
+    expect(servicePointNotesRegister.last.first, note1);
+    expect(servicePointNotesRegister.last.last.text, 'Note 2');
+    expect(testee.servicePointHasMultipleNotes, isTrue);
+  });
+
+  test('servicePointHasMultipleNotes_whenSingleNote_thenReturnsFalse', () async {
+    // GIVEN
+    final note = _personalNote(locationCode: servicePointA.locationCode, text: 'Single note', showAsFootnote: false);
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note]);
+
+    // WHEN
+    await emitServicePoint(servicePointA);
+
+    // THEN
+    expect(testee.servicePointHasMultipleNotes, isFalse);
+  });
+
+  test('servicePointHasMultipleNotes_whenMultipleNotes_thenReturnsTrue', () async {
+    // GIVEN
+    final note1 = _personalNote(locationCode: servicePointA.locationCode, text: 'Note 1', showAsFootnote: false);
+    final note2 = _personalNote(locationCode: servicePointA.locationCode, text: 'Note 2', showAsFootnote: false);
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note1, note2]);
+
+    // WHEN
+    await emitServicePoint(servicePointA);
+
+    // THEN
+    expect(testee.servicePointHasMultipleNotes, isTrue);
+  });
+
+  test('prioritizedNote_whenMultipleNotesExist_thenPrioritizesSingleUseNote', () async {
+    // GIVEN
+    final generalNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'General note',
+      showAsFootnote: false,
+      trainIdentification: null,
+    );
+    final singleUseNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Single use note',
+      showAsFootnote: false,
+      trainIdentification: trainIdentification,
+    );
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode))
+        .thenAnswer((_) async => [generalNote, singleUseNote]);
+
+    // WHEN
+    await emitServicePoint(servicePointA);
+
+    // THEN
+    expect(testee.prioritizedNoteValue, singleUseNote);
+  });
+
+  test('prioritizedNote_whenOnlyGeneralNotes_thenUsesFirstNote', () async {
+    // GIVEN
+    final note1 = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'First general note',
+      showAsFootnote: false,
+      trainIdentification: null,
+    );
+    final note2 = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Second general note',
+      showAsFootnote: false,
+      trainIdentification: null,
+    );
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note1, note2]);
+
+    // WHEN
+    await emitServicePoint(servicePointA);
+
+    // THEN
+    expect(testee.prioritizedNoteValue, note1);
+  });
+
+  test('deleteNote_whenMultipleNotesExist_thenRemovesNoteAndSelectsNewPrioritized', () async {
+    // GIVEN
+    final note1 = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Note 1',
+      showAsFootnote: false,
+      trainIdentification: null,
+    );
+    final note2 = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Note 2',
+      showAsFootnote: false,
+      trainIdentification: trainIdentification,
+    );
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note1, note2]);
+    await emitServicePoint(servicePointA);
+    expect(testee.prioritizedNoteValue, note2);
+
+    // WHEN
+    await testee.deleteNote(note2);
+    await processStreams();
+
+    // THEN
+    verify(mockPersonalNotesRepository.deleteNote(note2)).called(1);
+    expect(servicePointNotesRegister.last, orderedEquals([note1]));
+    expect(testee.prioritizedNoteValue, note1);
+    expect(testee.servicePointHasMultipleNotes, isFalse);
+  });
+
+  test('deleteNote_whenDeletedIsLastNote_thenClearsValue', () async {
+    // GIVEN
+    final note = _personalNote(locationCode: servicePointA.locationCode, text: 'Only note', showAsFootnote: false);
+    when(mockPersonalNotesRepository.findNotes(servicePointA.locationCode)).thenAnswer((_) async => [note]);
+    await emitServicePoint(servicePointA);
+    final prioritizedNoteRegister = <PersonalNote?>[];
+    final subscription = testee.prioritizedNote.listen(prioritizedNoteRegister.add);
+
+    // WHEN
+    await testee.deleteNote(note);
+    await processStreams();
+
+    // THEN
+    verify(mockPersonalNotesRepository.deleteNote(note)).called(1);
+    expect(servicePointNotesRegister.last, isEmpty);
+    expect(testee.prioritizedNoteValue, isNull);
+
+    await subscription.cancel();
+  });
 }
 
 Journey _journey({required List<BaseData> data, TrainIdentification? currentTrainIdentification}) {

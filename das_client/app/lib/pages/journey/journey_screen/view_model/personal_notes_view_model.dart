@@ -12,7 +12,6 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PersonalNotesViewModel');
 
-// TODO: Handle removed modifiedAt from backend
 // TODO: Handle offline mode
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,
@@ -27,6 +26,9 @@ class PersonalNotesViewModel({
   bool get servicePointHasMultipleNotes => _rxServicePointNotes.value.length > 1;
 
   PersonalNote? get prioritizedNoteValue => _rxPrioritizedNote.value;
+
+  /// Personal notes for the current service point.
+  Stream<List<PersonalNote>> get servicePointNotes => _rxServicePointNotes.stream;
 
   /// Prioritized note to be used in UI which is the single use note if multiple exist.
   Stream<PersonalNote?> get prioritizedNote => _rxPrioritizedNote.stream;
