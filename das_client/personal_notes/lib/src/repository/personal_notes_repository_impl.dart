@@ -10,18 +10,36 @@ class PersonalNotesRepositoryImpl({
   required final PersonalNotesApiService _apiService,
   required final PersonalNotesLocalDatabaseService _databaseService,
 }) implements PersonalNotesRepository {
+  static const _singleUseNotesRetention = Duration(days: 5);
+
   this {
-    synchronizeNotes();
+    _init();
   }
 
-  @override
+  void _init() async {
+    await cleanUpSingleUseNotes();
+    await synchronizeNotes();
+  }
+
+  Future<void> cleanUpSingleUseNotes() async {
+    final cutoffDate = DateTime.now().subtract(_singleUseNotesRetention);
+    final notesToDelete = (await _databaseService.findAllNotes(includeDeleted: true)).where(
+      (note) => note.trainIdentification != null && note.trainIdentification!.date.isBefore(cutoffDate),
+    );
+
+    for (final note in notesToDelete) {
+      await _databaseService.deleteNote(note);
+    }
+  }
+
   Future<void> synchronizeNotes() async {
     final response = await _apiService.personalNotes();
     final remoteNotes = response.body.map((it) => it.toDomain()).toList(growable: false);
-    final localNotes = await _databaseService.findAllNotes(includeDeleted: true);
+    final localNotesForSync = (await _databaseService.findAllNotes(includeDeleted: true))
+        .where((note) => note.shouldBeSynchronized);
 
     final remoteByKey = <String, PersonalNote>{for (final note in remoteNotes) note.locationCode: note};
-    final localByKey = <String, PersonalNote>{for (final note in localNotes) note.locationCode: note};
+    final localByKey = <String, PersonalNote>{for (final note in localNotesForSync) note.locationCode: note};
 
     for (final remoteNote in remoteNotes) {
       final localNote = localByKey[remoteNote.locationCode];
@@ -51,7 +69,7 @@ class PersonalNotesRepositoryImpl({
       }
     }
 
-    for (final localNote in localNotes) {
+    for (final localNote in localNotesForSync) {
       if (!remoteByKey.containsKey(localNote.locationCode) && !localNote.deleted) {
         await _saveNoteToRemote(localNote);
       }
@@ -59,7 +77,7 @@ class PersonalNotesRepositoryImpl({
   }
 
   @override
-  Future<PersonalNote?> findNote(String locationCode) => _databaseService.findNote(locationCode);
+  Future<List<PersonalNote>> findNotes(String locationCode) => _databaseService.findNotes(locationCode);
 
   @override
   Future<List<PersonalNote>> findAllNotes() => _databaseService.findAllNotes();
@@ -67,13 +85,17 @@ class PersonalNotesRepositoryImpl({
   @override
   Future<void> saveNote(PersonalNote note) async {
     await _databaseService.saveNote(note);
-    _saveNoteToRemote(note);
+    if (note.shouldBeSynchronized) {
+      _saveNoteToRemote(note);
+    }
   }
 
   @override
-  Future<void> deleteNote(String locationCode) async {
-    await _databaseService.deleteNote(locationCode);
-    _deleteNoteOnRemote(locationCode);
+  Future<void> deleteNote(PersonalNote note) async {
+    await _databaseService.deleteNote(note);
+    if (note.shouldBeSynchronized) {
+      _deleteNoteOnRemote(note.locationCode);
+    }
   }
 
   Future<void> _deleteNoteOnRemote(String locationCode) async {

@@ -12,6 +12,11 @@ class PersonalNote({
 
   final DateTime lastModifiedAt;
 
+  /// Whether the note should be synchronized with the backend.
+  ///
+  /// Note: Single use notes are not synchronized as there is not need for a backup.
+  bool get shouldBeSynchronized => trainIdentification == null;
+
   PersonalNote copyWith({
     String? locationCode,
     String? text,

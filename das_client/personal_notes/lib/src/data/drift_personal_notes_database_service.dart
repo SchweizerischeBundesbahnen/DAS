@@ -28,9 +28,11 @@ class PersonalNotesDatabaseService._()
   int get schemaVersion => 1;
 
   @override
-  Future<PersonalNote?> findNote(String locationCode) async {
-    final personalNote = await _tableManager.filter((f) => f.locationCode.equals(locationCode)).getSingleOrNull();
-    return personalNote?.toDomain();
+  Future<List<PersonalNote>> findNotes(String locationCode) async {
+    final personalNotes = await _tableManager
+        .filter((f) => f.locationCode.equals(locationCode) & f.deleted.equals(false))
+        .get();
+    return personalNotes.map((it) => it.toDomain()).toList(growable: false);
   }
 
   @override
@@ -44,20 +46,32 @@ class PersonalNotesDatabaseService._()
 
   @override
   Future<void> saveNote(PersonalNote note) {
-    return _tableManager.create((_) => note.toCompanion(), mode: InsertMode.insertOrReplace);
+    return _tableManager.create((_) => note.toCompanion(), mode: .insertOrReplace);
   }
 
   @override
-  Future<void> deleteNote(String locationCode) async {
-    final existingNote = await findNote(locationCode);
+  Future<void> deleteNote(PersonalNote note) async {
+    final trainId = note.trainIdentification;
+    final existingNote = await _tableManager
+        .filter(
+          (f) =>
+              f.locationCode.equals(note.locationCode) &
+              f.deleted.equals(false) &
+              f.trainNumber.equals(trainId?.trainNumber) &
+              f.trainDate.equals(trainId?.date) &
+              f.trainCompanyCode.equals(trainId?.companyCode) &
+              f.trainOperatingDay.equals(trainId?.operatingDay),
+        )
+        .getSingleOrNull();
+
     if (existingNote == null) {
-      _log.warning('Tried to delete non-existing note for $locationCode');
+      _log.warning('Tried to delete non-existing note for ${note.locationCode} and ${note.trainIdentification}');
       return;
     }
 
-    final tombstone = existingNote.copyWith(deleted: true, lastModifiedAt: DateTime.now());
+    final tombstone = existingNote.toDomain().copyWith(deleted: true, lastModifiedAt: DateTime.now());
     await saveNote(tombstone);
-    _log.fine('Marked note for $locationCode as deleted');
+    _log.fine('Marked note for ${note.locationCode} and ${note.trainIdentification}');
   }
 
   $$PersonalNotesTableTableTableManager get _tableManager => managers.personalNotesTable;

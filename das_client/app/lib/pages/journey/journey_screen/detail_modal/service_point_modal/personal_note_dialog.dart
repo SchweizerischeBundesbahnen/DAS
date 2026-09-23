@@ -12,11 +12,13 @@ class PersonalNoteDialog extends StatefulWidget {
   const PersonalNoteDialog({
     required this.viewModel,
     this.modalSheetController,
+    this.note,
     super.key,
   });
 
   final PersonalNotesViewModel viewModel;
   final DASModalSheetController? modalSheetController;
+  final PersonalNote? note;
 
   @override
   State<PersonalNoteDialog> createState() => _PersonalNoteDialogState();
@@ -37,9 +39,9 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
     super.initState();
     widget.modalSheetController?.stopAutomaticClose();
 
-    _showAsFootnote = _currentNote?.showAsFootnote ?? false;
-    _singleUse = _currentNote?.trainIdentification != null;
-    textController = TextEditingController(text: _currentNote?.text ?? '');
+    _showAsFootnote = widget.note?.showAsFootnote ?? false;
+    _singleUse = widget.note?.trainIdentification != null;
+    textController = TextEditingController(text: widget.note?.text ?? '');
     textController.addListener(() {
       setState(() {
         if (textController.text.trim().length > _maxInputLength) {
@@ -149,8 +151,9 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   }
 
   Future<void> _onDelete() async {
+    if (widget.note == null) return;
     try {
-      await widget.viewModel.deleteNote();
+      await widget.viewModel.deleteNote(widget.note!);
       _closeDialog();
     } catch (e) {
       _log.severe('Error deleting personal note', e);
@@ -170,12 +173,14 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
     }
   }
 
-  bool get _editMode => _currentNote != null;
-
-  PersonalNote? get _currentNote => widget.viewModel.personalNoteValue;
+  bool get _editMode => widget.note != null;
 }
 
-Future<PersonalNote?> showPersonalNoteDialog(BuildContext context, PersonalNotesViewModel viewModel) => showDialog(
+Future<PersonalNote?> showPersonalNoteDialog(
+  BuildContext context,
+  PersonalNotesViewModel viewModel,
+  PersonalNote? note,
+) => showDialog(
   context: context,
-  builder: (_) => PersonalNoteDialog(viewModel: viewModel),
+  builder: (_) => PersonalNoteDialog(viewModel: viewModel, note: note),
 );

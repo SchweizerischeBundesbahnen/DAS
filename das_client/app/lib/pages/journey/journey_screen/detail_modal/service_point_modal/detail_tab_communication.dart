@@ -162,7 +162,7 @@ class DetailTabCommunication extends StatelessWidget {
   Widget _personalNote(BuildContext context) {
     final viewModel = context.read<PersonalNotesViewModel>();
     return StreamBuilder(
-      stream: viewModel.personalNote,
+      stream: viewModel.prioritizedNote,
       builder: (context, snapshot) {
         final personalNote = snapshot.data;
 
@@ -204,7 +204,7 @@ class DetailTabCommunication extends StatelessWidget {
       onPressed: () async {
         final detailModalViewModel = context.read<ModalViewModel>();
         detailModalViewModel.controller?.stopAutomaticClose();
-        await showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>());
+        await showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>(), personalNote);
         detailModalViewModel.controller?.resetAutomaticClose();
       },
       iconData: icon,

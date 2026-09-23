@@ -12,7 +12,7 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PersonalNotesViewModel');
 
-// TODO: Handle multiple notes in UI with temporary notes
+// TODO: Handle removed modifiedAt from backend
 // TODO: Handle offline mode
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,
@@ -24,14 +24,19 @@ class PersonalNotesViewModel({
 
   String? get locationCode => _currentServicePoint?.locationCode;
 
-  PersonalNote? get personalNoteValue => _rxPersonalNote.value;
+  bool get servicePointHasMultipleNotes => _rxServicePointNotes.value.length > 1;
 
-  Stream<PersonalNote?> get personalNote => _rxPersonalNote.distinct();
+  PersonalNote? get prioritizedNoteValue => _rxPrioritizedNote.value;
 
+  /// Prioritized note to be used in UI which is the single use note if multiple exist.
+  Stream<PersonalNote?> get prioritizedNote => _rxPrioritizedNote.stream;
+
+  /// Personal notes that are shown as foot note in journey.
   Stream<List<PersonalNoteAnnotation>> get personalNoteAnnotations => _rxPersonalNotesAnnotation.stream;
 
   final _rxPersonalNotesAnnotation = BehaviorSubject<List<PersonalNoteAnnotation>>.seeded(const []);
-  final _rxPersonalNote = BehaviorSubject<PersonalNote?>.seeded(null);
+  final _rxServicePointNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
+  final _rxPrioritizedNote = BehaviorSubject<PersonalNote?>.seeded(null);
   final _subscriptions = <StreamSubscription>[];
 
   ServicePoint? _currentServicePoint;
@@ -66,11 +71,13 @@ class PersonalNotesViewModel({
       trainIdentification: trainIdentification,
     );
 
-    final reloadNeeded = (_rxPersonalNote.value?.showAsFootnote ?? false) || personalNote.showAsFootnote;
+    final reloadNeeded = _rxServicePointNotes.value.any((note) => note.showAsFootnote) || personalNote.showAsFootnote;
     try {
       await _personalNotesRepository.saveNote(personalNote);
-      _rxPersonalNote.add(personalNote);
       _log.fine('Personal note saved for location $locationCode');
+
+      final updatedList = [..._rxServicePointNotes.value, personalNote];
+      _rxServicePointNotes.add(updatedList);
 
       if (reloadNeeded) {
         _loadPersonalNoteAnnotations();
@@ -81,16 +88,15 @@ class PersonalNotesViewModel({
     }
   }
 
-  Future<void> deleteNote() async {
-    final noteToDelete = _rxPersonalNote.value;
-    if (noteToDelete == null) return;
-
+  Future<void> deleteNote(PersonalNote note) async {
     try {
-      await _personalNotesRepository.deleteNote(noteToDelete.locationCode);
-      _rxPersonalNote.add(null);
+      await _personalNotesRepository.deleteNote(note);
       _log.fine('Personal note deleted for location $locationCode');
 
-      if (noteToDelete.showAsFootnote) {
+      final updatedList = _rxServicePointNotes.value..remove(note);
+      _rxServicePointNotes.add(updatedList);
+
+      if (note.showAsFootnote) {
         _loadPersonalNoteAnnotations();
       }
     } catch (e) {
@@ -105,18 +111,28 @@ class PersonalNotesViewModel({
       subscription.cancel();
     }
 
-    _rxPersonalNote.close();
+    _rxServicePointNotes.close();
     _rxPersonalNotesAnnotation.close();
     super.dispose();
   }
 
   void _init() {
-    final subscription = _servicePointModalViewModel.servicePoint.listen((servicePoint) async {
+    final modalSubscription = _servicePointModalViewModel.servicePoint.listen((servicePoint) async {
       _currentServicePoint = servicePoint;
-      final personalNote = await _personalNotesRepository.findNote(servicePoint.locationCode);
-      _rxPersonalNote.add(personalNote);
+      final notes = await _personalNotesRepository.findNotes(servicePoint.locationCode);
+      _rxServicePointNotes.add(notes);
     });
-    _subscriptions.add(subscription);
+    _subscriptions.add(modalSubscription);
+
+    final notesSubscription = _rxServicePointNotes.listen((notes) {
+      if (notes.isEmpty) {
+        _rxPrioritizedNote.add(null);
+        return;
+      }
+      final prioritizedNote = notes.firstWhereOrNull((note) => note.trainIdentification != null) ?? notes.first;
+      _rxPrioritizedNote.add(prioritizedNote);
+    });
+    _subscriptions.add(notesSubscription);
   }
 
   void _handleJourneyUpdate(Journey? journey) {
