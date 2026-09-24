@@ -54,7 +54,8 @@ class ServicePointApiClientTest {
                 LocalDate.now().plusDays(1),
                 new ServicePoint.ServicePointNumber(85, i, 0),
                 null,
-                List.of("TRAIN")
+                List.of("TRAIN"),
+                List.of()
             ));
         }
         ServicePointResponse response = new ServicePointResponse(servicePoints, total);

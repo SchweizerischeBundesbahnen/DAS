@@ -17,7 +17,7 @@ class ServicePointTest {
     private static ServicePoint servicePoint(String designation, String abbreviation,
         ServicePointNumber number,
         LocalDate validFrom, LocalDate validTo) {
-        return new ServicePoint(designation, abbreviation, validFrom, validTo, number, null, List.of("TRAIN"));
+        return new ServicePoint(designation, abbreviation, validFrom, validTo, number, null, List.of("TRAIN"), List.of());
     }
 
     @Test
@@ -109,7 +109,11 @@ class ServicePointTest {
     }
 
     private static ServicePoint relevantServicePoint(String abbreviation, String technicalTimetableType, List<String> meansOfTransport) {
-        return new ServicePoint("Bern", abbreviation, DateTimeUtil.today(), DateTimeUtil.today(), NUMBER, technicalTimetableType, meansOfTransport);
+        return new ServicePoint("Bern", abbreviation, DateTimeUtil.today(), DateTimeUtil.today(), NUMBER, technicalTimetableType, meansOfTransport, List.of());
+    }
+
+    private static ServicePoint servicePointWithCategories(List<String> categories) {
+        return new ServicePoint("Bern", "BN", DateTimeUtil.today(), DateTimeUtil.today(), NUMBER, null, List.of("TRAIN"), categories);
     }
 
     @Test
@@ -170,10 +174,46 @@ class ServicePointTest {
     }
 
     @Test
-    void shouldNotBeRelevantWhenMeansOfTransportContainsNonTrain() {
+    void shouldBeRelevantWhenMeansOfTransportContainsTrainAmongOthers() {
         ServicePoint sp = relevantServicePoint("BN", "BRANCH", List.of("TRAIN", "BUS"));
 
+        assertThat(sp.isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenMeansOfTransportHasNoTrain() {
+        ServicePoint sp = relevantServicePoint("BN", "BRANCH", List.of("BUS", "TRAM"));
+
         assertThat(sp.isRelevant()).isFalse();
+    }
+
+    @Test
+    void shouldBeRelevantWhenCategoriesIsNull() {
+        assertThat(servicePointWithCategories(null).isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantWhenCategoriesIsEmpty() {
+        assertThat(servicePointWithCategories(List.of()).isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantForEachAllowedCategory() {
+        assertThat(servicePointWithCategories(List.of("PARK_AND_RAIL")).isRelevant()).isTrue();
+        assertThat(servicePointWithCategories(List.of("BORDER_POINT")).isRelevant()).isTrue();
+        assertThat(servicePointWithCategories(List.of("BILLETING_MACHINE")).isRelevant()).isTrue();
+        assertThat(servicePointWithCategories(List.of("POINT_OF_SALE")).isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldBeRelevantWhenAtLeastOneCategoryIsAllowed() {
+        assertThat(servicePointWithCategories(List.of("GSMR", "PARK_AND_RAIL")).isRelevant()).isTrue();
+    }
+
+    @Test
+    void shouldNotBeRelevantWhenAllCategoriesAreExcluded() {
+        assertThat(servicePointWithCategories(List.of("GSMR")).isRelevant()).isFalse();
+        assertThat(servicePointWithCategories(List.of("GSMR", "SIGNAL_BOX", "GALLERY")).isRelevant()).isFalse();
     }
 }
 

@@ -3,6 +3,7 @@ package ch.sbb.das.backend.locations.internal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import org.springframework.util.CollectionUtils;
 
 public record ServicePoint(
     String designationOfficial,
@@ -11,7 +12,8 @@ public record ServicePoint(
     LocalDate validTo,
     ServicePointNumber number,
     String operatingPointTechnicalTimetableType,
-    List<String> meansOfTransport
+    List<String> meansOfTransport,
+    List<String> categories
 ) {
 
     private static final Set<String> RELEVANT_TECHNICAL_TIMETABLE_TYPES = Set.of(
@@ -19,6 +21,13 @@ public record ServicePoint(
         "BRANCH",
         "SERVICE_STATION",
         "EX_STOP_POINT"
+    );
+
+    private static final Set<String> RELEVANT_CATEGORIES = Set.of(
+        "PARK_AND_RAIL",
+        "BORDER_POINT",
+        "BILLETING_MACHINE",
+        "POINT_OF_SALE"
     );
 
     private static final String TRAIN = "TRAIN";
@@ -34,13 +43,14 @@ public record ServicePoint(
     }
 
     public ServicePoint withValidTo(LocalDate newValidTo) {
-        return new ServicePoint(designationOfficial, abbreviation, validFrom, newValidTo, number, operatingPointTechnicalTimetableType, meansOfTransport);
+        return new ServicePoint(designationOfficial, abbreviation, validFrom, newValidTo, number, operatingPointTechnicalTimetableType, meansOfTransport, categories);
     }
 
     public boolean isRelevant() {
         return hasAbbreviation()
             && hasRelevantTechnicalTimetableType()
-            && hasOnlyTrainMeansOfTransport();
+            && hasTrainMeansOfTransport()
+            && hasRelevantCategory();
     }
 
     private boolean hasAbbreviation() {
@@ -52,9 +62,14 @@ public record ServicePoint(
             || RELEVANT_TECHNICAL_TIMETABLE_TYPES.contains(operatingPointTechnicalTimetableType);
     }
 
-    private boolean hasOnlyTrainMeansOfTransport() {
-        return meansOfTransport == null
-            || meansOfTransport.stream().allMatch(TRAIN::equals);
+    private boolean hasTrainMeansOfTransport() {
+        return CollectionUtils.isEmpty(meansOfTransport)
+            || meansOfTransport.stream().anyMatch(TRAIN::equals);
+    }
+
+    private boolean hasRelevantCategory() {
+        return CollectionUtils.isEmpty(categories)
+            || categories.stream().anyMatch(RELEVANT_CATEGORIES::contains);
     }
 
     public record ServicePointNumber(Integer uicCountryCode, Integer numberShort, Integer checkDigit) {
