@@ -19,7 +19,7 @@ class TafTapLocationsImportServiceTest {
     private static ServicePoint servicePoint(String designation, String abbreviation,
         ServicePointNumber number,
         LocalDate validFrom, LocalDate validTo) {
-        return new ServicePoint(designation, abbreviation, validFrom, validTo, number);
+        return new ServicePoint(designation, abbreviation, validFrom, validTo, number, null, List.of(), List.of());
     }
 
     @Test

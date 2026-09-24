@@ -41,10 +41,11 @@ class TafTapLocationImportIntegrationTest {
     void importLocations_whenExecuted_importsAndUpdates() throws Exception {
         LocalDate validTo = LocalDate.parse("9999-12-31");
         LocalDate sp3ValidFrom = DateTimeUtil.today().plusMonths(10);
-        ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), validTo, new ServicePoint.ServicePointNumber(98, 12345, 0));
-        ServicePoint sp2 = new ServicePoint("Service Point 2", "SP2", DateTimeUtil.today().minusYears(2), validTo, new ServicePoint.ServicePointNumber(76, 56789, 0));
-        ServicePoint sp3 = new ServicePoint("Future Service Point 3", "SP3", sp3ValidFrom, validTo, new ServicePoint.ServicePointNumber(54, 555, 0));
-        ServicePoint sp4 = new ServicePoint("More Future Service Point 4", "SP4", DateTimeUtil.today().plusYears(2), validTo, new ServicePoint.ServicePointNumber(32, 11111, 0));
+        ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), validTo, new ServicePoint.ServicePointNumber(98, 12345, 0), null, List.of(), List.of());
+        ServicePoint sp2 = new ServicePoint("Service Point 2", "SP2", DateTimeUtil.today().minusYears(2), validTo, new ServicePoint.ServicePointNumber(76, 56789, 0), null, List.of(), List.of());
+        ServicePoint sp3 = new ServicePoint("Future Service Point 3", "SP3", sp3ValidFrom, validTo, new ServicePoint.ServicePointNumber(54, 555, 0), null, List.of(), List.of());
+        ServicePoint sp4 = new ServicePoint("More Future Service Point 4", "SP4", DateTimeUtil.today().plusYears(2), validTo, new ServicePoint.ServicePointNumber(32, 11111, 0), null,
+            List.of(), List.of());
         when(servicePointApiClient.getAll()).thenReturn(List.of(sp1, sp2, sp3, sp4));
         tafTapLocationsImportService.importLocations();
         mockMvc.perform(get(API_LOCATIONS))
@@ -57,8 +58,9 @@ class TafTapLocationImportIntegrationTest {
 
         // second import
         LocalDate sp2v2ValidFrom = DateTimeUtil.today().plusDays(10);
-        ServicePoint sp2v1 = new ServicePoint("Service Point 2", "SP2", DateTimeUtil.today().minusYears(2), DateTimeUtil.today().plusDays(10), new ServicePoint.ServicePointNumber(76, 56789, 0));
-        ServicePoint sp2v2 = new ServicePoint("Service Point 2", "SP2", sp2v2ValidFrom, validTo, new ServicePoint.ServicePointNumber(76, 56789, 0));
+        ServicePoint sp2v1 = new ServicePoint("Service Point 2", "SP2", DateTimeUtil.today().minusYears(2), DateTimeUtil.today().plusDays(10), new ServicePoint.ServicePointNumber(76, 56789, 0), null,
+            List.of(), List.of());
+        ServicePoint sp2v2 = new ServicePoint("Service Point 2", "SP2", sp2v2ValidFrom, validTo, new ServicePoint.ServicePointNumber(76, 56789, 0), null, List.of(), List.of());
         when(servicePointApiClient.getAll()).thenReturn(List.of(sp1, sp2v1, sp2v2, sp3));
         tafTapLocationsImportService.importLocations();
         mockMvc.perform(get(API_LOCATIONS))
@@ -75,8 +77,9 @@ class TafTapLocationImportIntegrationTest {
     @WithMockUser(authorities = "ROLE_admin")
     void importLocations_whenDuplicateVersions_importsLatestOnly() throws Exception {
         LocalDate dateOfChange = DateTimeUtil.today().plusDays(100);
-        ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), dateOfChange, new ServicePoint.ServicePointNumber(98, 12345, 0));
-        ServicePoint sp2 = new ServicePoint("Service Point 1", "SP1", dateOfChange.plusDays(1), LocalDate.parse("9999-12-31"), new ServicePoint.ServicePointNumber(98, 12345, 0));
+        ServicePoint sp1 = new ServicePoint("Service Point 1", "SP1", DateTimeUtil.today(), dateOfChange, new ServicePoint.ServicePointNumber(98, 12345, 0), null, List.of(), List.of());
+        ServicePoint sp2 = new ServicePoint("Service Point 1", "SP1", dateOfChange.plusDays(1), LocalDate.parse("9999-12-31"), new ServicePoint.ServicePointNumber(98, 12345, 0), null,
+            List.of(), List.of());
 
         when(servicePointApiClient.getAll()).thenReturn(List.of(sp1, sp2));
         tafTapLocationsImportService.importLocations();
