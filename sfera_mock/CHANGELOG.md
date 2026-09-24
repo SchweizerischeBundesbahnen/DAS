@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.20.0...sfera_mock-v0.21.0) (2026-09-24)
+
+
+### Features
+
+* build local regulation SPs and NSPs ([#1648](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1648)) ([#2798](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2798)) ([908c112](https://github.com/SchweizerischeBundesbahnen/DAS/commit/908c112ab5f19d70dd8f16729d13bed454e9b64e))
+* mock static related train information ([#2793](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2793)) ([#2848](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2848)) ([7183432](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7183432b66cff9f2d8d59f3976c6773f08e318cb))
+
+
+### Bug Fixes
+
+* load local regulation from file system ([#2847](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2847)) ([8ec2370](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8ec23709e02b75365cb97143a89701dc9cd95bd6))
+
 ## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.19.0...sfera_mock-v0.20.0) (2026-09-15)
 
 
