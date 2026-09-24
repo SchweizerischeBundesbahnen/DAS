@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.9.1...webapp-v0.10.0) (2026-09-24)
+
+
+### Features
+
+* build local regulation SPs and NSPs ([#1648](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1648)) ([#2798](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2798)) ([908c112](https://github.com/SchweizerischeBundesbahnen/DAS/commit/908c112ab5f19d70dd8f16729d13bed454e9b64e))
+* mock static related train information ([#2793](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2793)) ([#2848](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2848)) ([7183432](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7183432b66cff9f2d8d59f3976c6773f08e318cb))
+
 ## [0.9.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.9.0...webapp-v0.9.1) (2026-05-04)
 
 ### Bug Fixes
