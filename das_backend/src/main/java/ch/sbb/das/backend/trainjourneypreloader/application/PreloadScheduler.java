@@ -10,6 +10,7 @@ import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacteristics;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,8 @@ public class PreloadScheduler {
     /**
      * Due to infrastructure realtime handling of operating trains, real train runs get clear just a few hours earlier.
      */
-    private static final int PRELOAD_HOURS_BEFORE_DEPARTURE = 4;
+    @Value("${trainjourneypreloader.hours-before-departure}")
+    private int hoursBeforeDeparture;
 
     /**
      * Maximum time budget for a single preload run. Also used as the ShedLock lockAtLeastFor duration. Must be shorter than the fetch-cron interval to prevent overlapping runs.
@@ -62,8 +64,9 @@ public class PreloadScheduler {
         Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
         Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
         Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
-        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(DateTimeUtil.now().minusHours(PRELOAD_HOURS_BEFORE_DEPARTURE),
-            DateTimeUtil.now().plusHours(PRELOAD_HOURS_BEFORE_DEPARTURE));
+        OffsetDateTime earliestStartDateTime = DateTimeUtil.now().minusHours(hoursBeforeDeparture);
+        OffsetDateTime latestStartDateTime = DateTimeUtil.now().plusHours(hoursBeforeDeparture);
+        List<TrainIdentification> trainIdentifications = trainIdentificationsService.getNewTrainIdentificationsBetween(earliestStartDateTime, latestStartDateTime);
         sferaService.connect();
         int processedCount = 0;
         int timeoutCount = 0;
