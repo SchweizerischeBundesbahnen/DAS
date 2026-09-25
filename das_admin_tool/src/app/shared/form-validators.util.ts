@@ -1,106 +1,158 @@
-import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import {
+  LogicFn,
+  PathKind,
+  SchemaPath,
+  SchemaPathRules,
+  validate,
+  validateTree,
+} from '@angular/forms/signals';
+
+interface BaseConfig<TValue, TPathKind extends PathKind = PathKind.Root> {
+  message?: string;
+  when?: NoInfer<LogicFn<TValue, boolean, TPathKind>>;
+}
 
 function hasValue(value: unknown): boolean {
   return typeof value === 'string' ? value.trim().length > 0 : !!value;
 }
 
-function isFormGroup(control: AbstractControl): control is FormGroup {
-  return control instanceof FormGroup;
-}
-
-function addError(control: AbstractControl, key: string) {
-  const errors = control.errors ?? {};
-  errors[key] = true;
-  control.setErrors(errors);
-}
-
-function removeError(control: AbstractControl, key: string) {
-  const errors = control.errors ?? {};
-  delete errors[key];
-  control.setErrors(Object.keys(errors).length > 0 ? errors : null);
+function isObject(field: unknown): field is object {
+  return field instanceof Object && !Array.isArray(field);
 }
 
 /**
  * @description
- * Validator that requires all controls of a group to have a value if one of them has a value.
+ * Validator that requires the field to have a non empty array.
  *
- * Adds an error map with the `languageRequired` property set to `true`
- * to the child controls.
- *
- * @returns `null`.
- *
- */
-export function languageRequired(control: AbstractControl): ValidationErrors | null {
-  const controls = Object.values((control as FormGroup).controls);
-  const hasAnyValue = controls.some((childControl) => hasValue(childControl.value));
-
-  for (const childControl of controls) {
-    if (hasAnyValue && !hasValue(childControl.value)) {
-      addError(childControl, 'languageRequired');
-      continue;
-    }
-    removeError(childControl, 'languageRequired');
-  }
-  return null;
-}
-
-/**
- * @description
- * Validator that requires one control of a language group to have a value.
- *
- * @returns An error map with the `oneLanguageRequired` property set to `true`
+ * @returns An error map with the `kind` property set to `arrayRequired`
  * if the validation check fails, otherwise `null`.
  *
  */
-export function oneLanguageRequired(control: AbstractControl): ValidationErrors | null {
-  const languageGroups = Object.values((control as FormGroup).controls).filter(isFormGroup);
-  const hasAnyLanguageValue = languageGroups.some((languageGroup) =>
-    Object.values(languageGroup.controls).some((childControl) => hasValue(childControl.value)),
-  );
-
-  return hasAnyLanguageValue ? null : { oneLanguageRequired: true };
+export function arrayRequired<TValue extends unknown[], TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: BaseConfig<TValue>,
+): void {
+  validate(path, ({ value }) => {
+    return value().length === 0 ? { kind: 'arrayRequired', message: config?.message } : null;
+  });
 }
 
 /**
  * @description
- * Validator that requires 'title' control to have a value
- * if one of the other defined controls have a value.
+ * Validator that requires all fields of a language tree to have a value if one of them has a value.
  *
- * Adds an error map with the `titleRequired` property set to `true`
- * to the child controls.
+ * Adds an error map with the `kind` property set to 'languageRequired'
+ * to the child fields.
  *
  * @returns `null`.
  *
  */
-export function titleRequired(control: AbstractControl): ValidationErrors | null {
-  const formGroup = control as FormGroup;
-  const titleControl = formGroup.get('title');
-  const hasOtherValue = Object.entries(formGroup.controls).some(
-    ([key, childControl]) => key !== 'title' && hasValue(childControl.value),
-  );
-  const isMissingTitle = !!titleControl && hasOtherValue && !hasValue(titleControl.value);
+export function languageRequired<
+  TValue extends { title: string },
+  TPathKind extends PathKind = PathKind.Root,
+>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: BaseConfig<TValue>,
+): void {
+  validateTree(path, ({ value, fieldTreeOf }) => {
+    const hasAnyValue = Object.values(value()).some((field) => hasValue(field));
 
-  if (titleControl) {
+    const errors = [];
+    for (const [key, field] of Object.entries(value())) {
+      if (hasAnyValue && !hasValue(field)) {
+        errors.push({
+          kind: 'languageRequired',
+          message: config?.message,
+          // @ts-expect-error types are not compatible, but it does work
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          fieldTree: fieldTreeOf(path[key]),
+        });
+      }
+    }
+    return errors.length > 0 ? errors : null;
+  });
+}
+
+/**
+ * @description
+ * Validator that requires one field of a language tree to have a value.
+ *
+ * @returns An error map with the `kind` property set to 'oneLanguageRequired'
+ * if the validation check fails, otherwise `null`.
+ *
+ */
+export function oneLanguageRequired<
+  TValue extends object,
+  TPathKind extends PathKind = PathKind.Root,
+>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: BaseConfig<TValue>,
+): void {
+  validate(path, ({ value }) => {
+    const tree = value() as {
+      de: Record<string, unknown>;
+      fr: Record<string, unknown>;
+      it: Record<string, unknown>;
+      [key: string]: unknown;
+    };
+    const languageTrees = Object.values(tree).filter(isObject);
+    const hasAnyLanguageValue = languageTrees.some((languageTree) =>
+      Object.values(languageTree).some((field) => hasValue(field)),
+    );
+
+    return hasAnyLanguageValue ? null : { kind: 'oneLanguageRequired', message: config?.message };
+  });
+}
+
+/**
+ * @description
+ * Validator that requires 'title' field to have a value
+ * if one of the other defined fields have a value.
+ *
+ * Adds an error map with the `kind` property set to `titleRequired`
+ * to the child fields.
+ *
+ * @returns `null`.
+ *
+ */
+export function titleRequired<TValue extends object, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: BaseConfig<TValue>,
+): void {
+  validateTree(path, ({ value, fieldTreeOf }) => {
+    const tree = value() as { title: string; [key: string]: unknown };
+    const titleField = tree.title;
+    const hasOtherValue = Object.entries(tree).some(
+      ([key, otherField]) => key !== 'title' && hasValue(otherField),
+    );
+    const isMissingTitle = hasOtherValue && !hasValue(titleField);
+
     if (isMissingTitle) {
-      addError(titleControl, 'titleRequired');
-    } else {
-      removeError(titleControl, 'titleRequired');
+      return {
+        kind: 'titleRequired',
+        message: config?.message,
+        // @ts-expect-error types are not compatible, but it does work
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        fieldTree: fieldTreeOf(path.title),
+      };
     }
-  }
-
-  return null;
+    return null;
+  });
 }
 
 /**
  * @description
- * Validator that requires the control to be a URL.
+ * Validator that requires the field to be a URL.
  *
- * @returns An error map with the `url` property set to `true`
+ * @returns An error map with the `kind` property set to `url`
  * if the validation check fails, otherwise `null`.
  *
  */
-export function url(control: AbstractControl): ValidationErrors | null {
-  return !control.value || URL.canParse((control as FormControl<string>).value)
-    ? null
-    : { url: true };
+export function url<TValue extends string, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: BaseConfig<TValue>,
+): void {
+  validate(path, ({ value }) => {
+    return !value() || URL.canParse(value()) ? null : { kind: 'url', message: config?.message };
+  });
 }

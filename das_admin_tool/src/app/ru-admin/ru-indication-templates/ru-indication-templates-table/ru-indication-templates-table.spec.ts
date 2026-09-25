@@ -52,17 +52,17 @@ describe('RuIndicationTemplatesTable', () => {
 
   describe('currentLanguage', () => {
     it('should return language-specific value for "title" column', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['currentLanguage'](templates[0])?.title).toBe('Titel DE');
     });
 
     it('should return language-specific value for "text" column', () => {
-      component['form'].patchValue({ language: 'fr' });
+      component['filterForm'].language().value.set('fr');
       expect(component['currentLanguage'](templates[0])?.text).toBe('Texte FR');
     });
 
     it('should return undefined for missing language content', () => {
-      component['form'].patchValue({ language: 'it' });
+      component['filterForm'].language().value.set('it');
       expect(component['currentLanguage'](templates[1])?.title).toBeUndefined();
     });
   });
@@ -70,42 +70,42 @@ describe('RuIndicationTemplatesTable', () => {
   describe('searchFilter', () => {
     // eslint-disable-next-line sonarjs/parameterized-tests
     it('should match on DE title', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: 'titel de', language: 'de' }, templates[0])).toBe(
         true,
       );
     });
 
     it('should match on DE text', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: 'text de', language: 'de' }, templates[0])).toBe(
         true,
       );
     });
 
     it('should match on category', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: 'safety', language: 'de' }, templates[1])).toBe(
         true,
       );
     });
 
     it('should match on lastModifiedBy', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: 'user2', language: 'de' }, templates[1])).toBe(
         true,
       );
     });
 
     it('should be case-insensitive', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: 'GENERAL', language: 'de' }, templates[0])).toBe(
         true,
       );
     });
 
     it('should return false when search does not match anything', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(
         component['searchFilter'](
           {
@@ -118,7 +118,7 @@ describe('RuIndicationTemplatesTable', () => {
     });
 
     it('should return true when search is empty', () => {
-      component['form'].patchValue({ language: 'de' });
+      component['filterForm'].language().value.set('de');
       expect(component['searchFilter']({ search: '', language: 'de' }, templates[0])).toBe(true);
     });
   });

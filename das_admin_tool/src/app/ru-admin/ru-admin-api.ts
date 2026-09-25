@@ -85,7 +85,7 @@ export const SCHEDULE_TYPE_LABELS = (): { value: ScheduleType; label: string }[]
 export interface SpecialHoliday extends Auditable {
   id?: number;
   name: string;
-  date: Date;
+  date: string;
   scheduleType: ScheduleType;
   companies: string[];
 }

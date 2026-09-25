@@ -1,76 +1,82 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FieldTree, FormField } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbError, SbbFormField } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTab, SbbTabGroup, SbbTabLabel } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTooltipDirective } from '@sbb-esta/lyne-angular/tooltip';
-import { languageRequired, oneLanguageRequired, titleRequired } from '~shared/form-validators.util';
+import { RuIndicationContent, RuIndicationLanguageContent } from '~ru-admin/ru-admin-api';
 import { LanguageCode, LanguageProvider } from '~shared/language-provider';
-import { RuIndicationContent, RuIndicationLanguageContent } from '../ru-admin-api';
 
-export interface LanguageContentForm {
-  de: FormGroup<ContentForm>;
-  fr: FormGroup<ContentForm>;
-  it: FormGroup<ContentForm>;
+export interface RuIndicationLanguageContentData {
+  title: string;
+  text: string;
 }
 
-interface ContentForm {
-  title: FormControl<string>;
-  text: FormControl<string>;
+export interface RuIndicationContentData {
+  de: RuIndicationLanguageContentData;
+  fr: RuIndicationLanguageContentData;
+  it: RuIndicationLanguageContentData;
 }
 
-interface ContentFormOptions {
-  textRequired?: boolean;
+interface Category {
+  category: string;
 }
 
-export function createContentFormGroup(
-  options: ContentFormOptions = {},
-): FormGroup<LanguageContentForm> {
-  const { textRequired = true } = options;
-  return new FormGroup<LanguageContentForm>(
-    {
-      de: createLanguageGroup(textRequired),
-      fr: createLanguageGroup(textRequired),
-      it: createLanguageGroup(textRequired),
-    },
-    { validators: oneLanguageRequired },
-  );
+export type RuIndicationContentWithCategoryData = RuIndicationContentData & Category;
+
+export function createContentFormTree(withCategory?: true): RuIndicationContentWithCategoryData;
+export function createContentFormTree(withCategory?: false): RuIndicationContentData;
+export function createContentFormTree(
+  withCategory = true,
+): RuIndicationContentWithCategoryData | RuIndicationContentData {
+  const content: RuIndicationContentData & Partial<Category> = {
+    de: { title: '', text: '' },
+    fr: { title: '', text: '' },
+    it: { title: '', text: '' },
+  };
+  if (withCategory) {
+    content.category = '';
+  }
+  return content;
 }
 
 export function contentFormValue(
-  form: FormGroup<LanguageContentForm>,
-): Partial<RuIndicationContent> {
+  content: RuIndicationContentWithCategoryData,
+  withCategory?: true,
+): RuIndicationContentWithCategoryData;
+export function contentFormValue(
+  content: RuIndicationContentData,
+  withCategory?: false,
+): RuIndicationContentData;
+export function contentFormValue(
+  content: RuIndicationContentWithCategoryData | RuIndicationContentData,
+  withCategory = true,
+): RuIndicationContent {
   const mapLanguage = (language: LanguageCode): RuIndicationLanguageContent | undefined => {
-    const title = form.get(`${language}.title`)!.value.trim() ?? '';
-    const text = form.get(`${language}.text`)!.value.trim() ?? '';
+    const title = content[language].title.trim();
+    const text = content[language].text.trim();
     if (!title && !text) {
       return undefined;
     }
     return { title, text: text || undefined };
   };
 
-  return {
+  const mappedContent: RuIndicationContent = {
     de: mapLanguage('de'),
     fr: mapLanguage('fr'),
     it: mapLanguage('it'),
   };
-}
-
-function createLanguageGroup(textRequired: boolean): FormGroup<ContentForm> {
-  return new FormGroup(
-    {
-      title: new FormControl('', { nonNullable: true }),
-      text: new FormControl('', { nonNullable: true }),
-    },
-    { validators: textRequired ? languageRequired : titleRequired },
-  );
+  if (withCategory) {
+    mappedContent.category = (content as RuIndicationContentWithCategoryData).category;
+  }
+  return mappedContent;
 }
 
 @Component({
   selector: 'app-ru-indication-content-form',
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SbbError,
     SbbFormField,
     SbbMiniButton,
@@ -86,30 +92,30 @@ function createLanguageGroup(textRequired: boolean): FormGroup<ContentForm> {
 export class RuIndicationContentForm {
   protected readonly languageProvider = inject(LanguageProvider);
 
-  readonly form = input.required<FormGroup<LanguageContentForm>>();
+  readonly form =
+    input.required<FieldTree<RuIndicationContentWithCategoryData | RuIndicationContentData>>();
 
   protected isLanguageEmpty(language: LanguageCode): boolean {
-    const titleValue = this.form().get(`${language}.title`)!.value ?? '';
-    return !titleValue.trim();
+    return !this.form()[language].title().value().trim();
   }
 
   protected insertLink(language: LanguageCode, textarea: HTMLTextAreaElement): void {
-    const textControl = this.form().get(`${language}.text`);
-    if (!textControl) {
+    const textField = this.form()[language].text();
+    if (!textField) {
       return;
     }
 
     const markdownLink = '[](url)';
-    const currentValue = textControl.value ?? '';
+    const currentValue = textField.value() ?? '';
     const selectionStart = textarea.selectionStart ?? currentValue.length;
     const selectionEnd = textarea.selectionEnd ?? currentValue.length;
 
     const nextValue =
       currentValue.slice(0, selectionStart) + markdownLink + currentValue.slice(selectionEnd);
 
-    textControl.setValue(nextValue);
-    textControl.markAsDirty();
-    textControl.markAsTouched();
+    textField.value.set(nextValue);
+    textField.markAsTouched();
+    textField.markAsDirty();
 
     // keep focus and preselect link
     globalThis.queueMicrotask(() => {

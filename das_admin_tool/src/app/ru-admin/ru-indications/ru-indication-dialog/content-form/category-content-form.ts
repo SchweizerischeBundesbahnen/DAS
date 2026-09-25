@@ -1,21 +1,19 @@
 import { Component, computed, effect, input, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FieldTree, form, FormField } from '@angular/forms/signals';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbOptionModule } from '@sbb-esta/lyne-angular/option';
 import { RuIndicationContent } from '~ru-admin/ru-admin-api';
 import {
-  contentFormValue,
-  LanguageContentForm,
   RuIndicationContentForm,
+  RuIndicationContentWithCategoryData,
 } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
 import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
 
 @Component({
   selector: 'app-category-content-form',
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SbbAutocompleteModule,
     SbbFormFieldModule,
     SbbOptionModule,
@@ -25,20 +23,15 @@ import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.s
   styleUrl: './category-content-form.css',
 })
 export class CategoryContentForm {
-  readonly form = input.required<FormGroup<LanguageContentForm>>();
+  readonly form = input.required<FieldTree<RuIndicationContentWithCategoryData>>();
   readonly dialogData = input.required<RuIndicationDialogData>();
 
-  protected templateControl = new FormControl<RuIndicationContent | null>(null);
+  protected templateField = form(signal<RuIndicationContent | null>(null));
+
   protected readonly searchTerm = signal<string>('');
-  private readonly templateValue = toSignal(this.templateControl.valueChanges, {
-    initialValue: null,
-  });
+
   protected readonly filteredTemplates = computed(() => {
     const searchTerm = this.searchTerm();
-    const selected = this.templateValue();
-    if (selected) {
-      this.form().patchValue(selected);
-    }
     if (typeof searchTerm === 'string') {
       return this.dialogData().templates.filter((val) =>
         val.category.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -51,16 +44,30 @@ export class CategoryContentForm {
     effect(() => {
       const category = this.dialogData().ruIndication?.content?.category;
       if (category) {
-        this.templateControl.patchValue({ category });
+        this.templateField().value.update((current) => ({ ...current, category }));
       }
     });
-  }
-
-  get formValue(): RuIndicationContent {
-    return {
-      category: this.templateControl.value?.category,
-      ...contentFormValue(this.form()),
-    };
+    effect(() => {
+      const selected = this.templateField().value();
+      if (selected) {
+        this.form()().value.update((current) => ({
+          ...current,
+          ...selected,
+          de: {
+            ...current.de,
+            ...selected.de,
+          },
+          fr: {
+            ...current.fr,
+            ...selected.fr,
+          },
+          it: {
+            ...current.it,
+            ...selected.it,
+          },
+        }));
+      }
+    });
   }
 
   protected displayWith: (value: RuIndicationContent | undefined) => string = (value) =>

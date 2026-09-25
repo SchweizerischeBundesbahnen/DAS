@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { SbbDividerModule } from '@sbb-esta/lyne-angular/divider';
 import { SbbHeaderModule } from '@sbb-esta/lyne-angular/header';
 import { SbbMenuModule } from '@sbb-esta/lyne-angular/menu';
-import packageJson from '~package.json';
 import { AuthService } from '~shared/auth-service';
 import { Language, LanguageProvider } from '~shared/language-provider';
+import packageJson from '~src/../package.json';
 import { environment } from '~src/environments/environment';
 
 @Component({

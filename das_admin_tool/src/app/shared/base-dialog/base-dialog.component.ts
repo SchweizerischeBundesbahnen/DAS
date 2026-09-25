@@ -1,6 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input, signal, viewChild, viewChildren } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
@@ -16,7 +15,6 @@ import { Auditable } from '../audit/auditable';
     NgTemplateOutlet,
     SbbStepperModule,
     SbbTitleModule,
-    ReactiveFormsModule,
     SbbButtonModule,
     SbbDialogModule,
     SbbActionGroup,
