@@ -8,9 +8,34 @@ class UserPropertiesApiServiceImpl({
   required final String appVersion,
 }) implements UserPropertiesApiService {
   @override
-  UserPropertiesRequest get userProperties => UserPropertiesRequest(
+  UserPropertiesRequest userProperties() => UserPropertiesRequest(
     httpClient: httpClient,
     baseUrl: baseUrl,
+    headers: {UserPropertiesRequest.appVersionHeader: appVersion},
+  );
+
+  @override
+  UserPropertyRequest userProperty(String key) => UserPropertyRequest(
+    httpClient: httpClient,
+    baseUrl: baseUrl,
+    key: key,
+    headers: {UserPropertiesRequest.appVersionHeader: appVersion},
+  );
+
+  @override
+  SaveUserPropertyRequest saveUserProperty(String key, Object? value) => SaveUserPropertyRequest(
+    httpClient: httpClient,
+    baseUrl: baseUrl,
+    key: key,
+    value: value,
+    headers: {UserPropertiesRequest.appVersionHeader: appVersion},
+  );
+
+  @override
+  DeleteUserPropertyRequest deleteUserProperty(String key) => DeleteUserPropertyRequest(
+    httpClient: httpClient,
+    baseUrl: baseUrl,
+    key: key,
     headers: {UserPropertiesRequest.appVersionHeader: appVersion},
   );
 }

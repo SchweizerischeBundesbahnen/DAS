@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:app/model/tour_system.dart';
+import 'package:core_data/component.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:user_properties/src/api/model/user_property_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:collection/collection.dart';
+import 'package:user_properties/src/api/model/user_property_model.dart';
 
 //erweitern dass es auch ein lastUpdate hat. jedesmal beim set. beim get beides zurück im user property repo integrieren mit set und get
 //sync methode geht alle keys durch (getAllKeys machen im store mit key name value und date) und backend getten und ein diff builden
@@ -41,28 +41,23 @@ class LocalKeyValueStore() {
     final rawString = _prefs.getString(key.name);
 
     if (rawString == null) {
-      return UserPropertyModel(lastUpdated: null, value: defaultValue.toString());
+      return UserPropertyModel(key: key.name, lastUpdated: null, value: defaultValue);
     }
 
-    final json = jsonDecode(rawString);
+    final json = Map<String, dynamic>.from(jsonDecode(rawString) as Map);
+    json.putIfAbsent('key', () => key.name);
 
     return UserPropertyModel.fromJson(json);
   }
 
-  bool convertToBool(String? currentValue) {
-    if (currentValue == 'true' || currentValue == null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  bool convertToBool(Object? currentValue) => currentValue is bool ? currentValue : currentValue != 'false';
 
-  TourSystem? convertToTourSystem(String? currentValue) {
+  TourSystem? convertToTourSystem(Object? currentValue) {
     if (currentValue == null) return null;
-    return TourSystem.values.firstWhereOrNull((it) => it.name == currentValue);
+    return TourSystem.values.firstWhereOrNull((it) => it.name == currentValue.toString());
   }
 
-  T convertedValue<T>(LocalKeyValueStoreKeys key, String? currentValue) {
+  T convertedValue<T>(LocalKeyValueStoreKeys key, Object? currentValue) {
     if (currentValue == null) return null as T;
 
     switch (key) {
@@ -77,22 +72,28 @@ class LocalKeyValueStore() {
       case LocalKeyValueStoreKeys.lastSettingsRequestSuccessful:
         return convertToBool(currentValue) as T;
       case LocalKeyValueStoreKeys.companyCodes:
-        return (jsonDecode(currentValue) as List).cast<String>() as T;
+        return switch (currentValue) {
+          final List<dynamic> values => values.cast<String>() as T,
+          final String values => (jsonDecode(values) as List).cast<String>() as T,
+          _ => throw StateError('Unexpected companyCodes value: $currentValue'),
+        };
       case LocalKeyValueStoreKeys.tourSystem:
         return convertToTourSystem(currentValue) as T;
       case LocalKeyValueStoreKeys.lastUsedCompanyCode:
-        return currentValue as T;
+        return currentValue.toString() as T;
       case LocalKeyValueStoreKeys.lastSuccessfulSettingsTimestamp:
-        return currentValue as T;
+        return currentValue.toString() as T;
     }
   }
 
   Future<void> set<T>(LocalKeyValueStoreKeys key, T value) async {
     if (value == null) {
       await _prefs.remove(key.name);
+      _rxModel.add(key);
+      return;
     }
 
-    final valueProperty = UserPropertyModel(lastUpdated: DateTime.now(), value: value.toString());
+    final valueProperty = UserPropertyModel(key: key.name, lastUpdated: DateTime.now(), value: value);
     final thomas = jsonEncode(valueProperty.toJson());
 
     _prefs.setString(key.name, thomas);

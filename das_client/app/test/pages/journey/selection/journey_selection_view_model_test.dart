@@ -14,9 +14,6 @@ import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
 import 'package:user_properties/component.dart';
 
-import '../../../../integration_test/mocks/mock_local_key_value_store.dart';
-import '../../../../integration_test/mocks/mock_settings_repository.dart';
-import '../../../../integration_test/mocks/mock_train_identification_repository.dart';
 import 'journey_selection_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([

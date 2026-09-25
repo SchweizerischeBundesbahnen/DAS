@@ -13,10 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:user_properties/component.dart';
 
-import '../../../../integration_test/mocks/mock_local_key_value_store.dart';
 import '../../../test_util.dart';
-import '../../login/login_view_model_test.mocks.dart';
-import '../journey_screen/view_model/departure_dispatch_notification_view_model_test.mocks.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>(), MockSpec<LocalKeyValueStore>()])

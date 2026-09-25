@@ -1,4 +1,4 @@
-import 'package:user_properties/component.dart';
+import 'package:user_properties/src/api/model/user_property_model.dart';
 
 abstract class UserPropertiesRepository._() {
   /*Future<bool> loadSettings();
@@ -11,11 +11,11 @@ abstract class UserPropertiesRepository._() {
 
   AppVersionExpiration? get appVersionExpiration;*/
 
-  Future<List<UserPropertyModel>> get getAllUserProperties;
+  Future<List<UserPropertyModel>> getAllUserProperties();
 
-  Future<UserPropertyModel> get getUserProperty;
+  Future<UserPropertyModel?> getUserProperty(String key);
 
-  Future<void> saveUserProperty();
+  Future<UserPropertyModel> saveUserProperty(String key, Object? value);
 
-  Future<void> deleteUserProperty();
+  Future<void> deleteUserProperty(String key);
 }

@@ -13,13 +13,15 @@ class MockLocalKeyValueStore extends LocalKeyValueStore {
   UserPropertyModel get<T>(LocalKeyValueStoreKeys key, T defaultValue) {
     if (_settingsMap.containsKey(key.name)) {
       return UserPropertyModel(
+        key: key.name,
         lastUpdated: null,
-        value: _settingsMap[key.name].toString(),
+        value: _settingsMap[key.name],
       );
     } else {
       return UserPropertyModel(
+        key: key.name,
         lastUpdated: null,
-        value: defaultValue.toString(),
+        value: defaultValue,
       );
     }
   }

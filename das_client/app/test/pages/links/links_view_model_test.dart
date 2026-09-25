@@ -9,9 +9,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:user_properties/component.dart';
 
-import '../../../integration_test/mocks/mock_external_links_repository.dart';
-import '../../../integration_test/mocks/mock_launcher.dart';
-import '../../../integration_test/mocks/mock_local_key_value_store.dart';
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
 
@@ -37,7 +34,7 @@ void main() {
   setUp(() async {
     mockExternalLinksRepository = MockExternalLinksRepository();
     mockLocalKeyValueStore = MockLocalKeyValueStore();
-    mockLauncher = MockLauncher(userSettings: null, flavor: null);
+    mockLauncher = MockLauncher();
     linksController = StreamController<List<ExternalLink>>.broadcast();
 
     when(mockLocalKeyValueStore.companyCodes).thenReturn(const []);

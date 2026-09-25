@@ -1,7 +1,8 @@
 import 'package:app/i18n/src/build_context_x.dart';
+import 'package:core_data/model/tour_system.dart';
 import 'package:flutter/material.dart';
 
-enum TourSystem { tip, caros, railOpt, blsIvu, railCube }
+export 'package:core_data/model/tour_system.dart';
 
 extension TourSystemX on TourSystem {
   String localizedName(BuildContext context) => switch (this) {

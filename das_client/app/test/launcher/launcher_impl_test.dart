@@ -12,7 +12,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 import 'package:user_properties/component.dart';
 
-import '../../integration_test/mocks/mock_local_key_value_store.dart';
+import 'launcher_impl_test.mocks.dart';
 
 const _urlLauncherChannel = MethodChannel('plugins.flutter.io/url_launcher');
 

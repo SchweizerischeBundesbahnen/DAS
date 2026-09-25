@@ -1,8 +1,19 @@
-export 'package:user_properties/src/api/model/user_property_model.dart';
-export 'package:user_properties/src/repository/local_key_value_store.dart';
+import 'package:http_x/component.dart';
+import 'package:user_properties/component.dart';
+import 'package:user_properties/src/api/user_properties_api_service_impl.dart';
+import 'package:user_properties/src/repository/user_properties_repository_impl.dart';
 
-/*
-class UserSettingsComponent._() {
-  static UserSettingsComponent createRepository() {}
+export 'package:user_properties/src/repository/local_key_value_store.dart';
+export 'package:user_properties/src/repository/user_properties_repository.dart';
+export 'package:user_properties/src/api/model/user_property_model.dart';
+
+class UserPropertiesComponent._() {
+  static UserPropertiesRepository createRepository({
+    required String baseUrl,
+    required Client client,
+  }) {
+    return UserPropertiesRepositoryImpl(
+      apiService: UserPropertiesApiServiceImpl(baseUrl: baseUrl, httpClient: client, appVersion: '1.0.0'),
+    );
+  }
 }
-*/
