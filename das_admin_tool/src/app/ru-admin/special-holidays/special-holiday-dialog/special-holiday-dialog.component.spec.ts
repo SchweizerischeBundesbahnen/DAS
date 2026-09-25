@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SpecialHoliday } from '~ru-admin/ru-admin-api';
 import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { expectError } from '~src/testing/utils';
 import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 
 function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): SpecialHolidayDialog {
@@ -19,7 +20,7 @@ function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): Sp
 const existingHoliday: SpecialHoliday = {
   id: 1,
   name: 'Auffahrt',
-  date: new Date('2026-05-14'),
+  date: '2026-05-14',
   scheduleType: 'SUNDAY_SCHEDULE',
   companies: ['1085', '1087'],
 };
@@ -31,15 +32,15 @@ describe('SpecialHolidayDialog', () => {
     const dialog = createDialog();
 
     expect(dialog['dialogData']?.id).toBeFalsy();
-    expect(dialog['specialHolidayForm'].value.name).toBe('');
-    expect(dialog['specialHolidayForm'].value.scheduleType).toBe('SUNDAY_SCHEDULE');
+    expect(dialog['specialHolidayForm'].name().value()).toBe('');
+    expect(dialog['specialHolidayForm'].scheduleType().value()).toBe('SUNDAY_SCHEDULE');
   });
 
   it('should initialize in edit mode and patch existing values', () => {
     const dialog = createDialog(existingHoliday, ['9999']);
 
     expect(dialog['dialogData']?.id).toBeDefined();
-    expect(dialog['specialHolidayForm'].value).toEqual({
+    expect(dialog['specialHolidayForm']().value()).toEqual({
       name: 'Auffahrt',
       date: new Date('2026-05-14'),
       scheduleType: 'SUNDAY_SCHEDULE',
@@ -50,8 +51,8 @@ describe('SpecialHolidayDialog', () => {
   it('companies should be invalid when empty', () => {
     const dialog = createDialog();
 
-    dialog['specialHolidayForm'].get('companies')!.setValue([]);
+    dialog['specialHolidayForm'].companies().value.set([]);
 
-    expect(dialog['specialHolidayForm'].get('companies')!.errors).toEqual({ required: true });
+    expect(expectError(dialog['specialHolidayForm'].companies(), 'arrayRequired')).toBe(true);
   });
 });

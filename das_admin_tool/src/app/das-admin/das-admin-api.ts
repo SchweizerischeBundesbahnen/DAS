@@ -9,7 +9,7 @@ export interface AppVersion extends Auditable {
   id?: number;
   version: string;
   minimalVersion: boolean;
-  expiryDate?: Date;
+  expiryDate?: string;
 }
 
 export type AppVersionApiResponse = ApiResponse<AppVersion>;

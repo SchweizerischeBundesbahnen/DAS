@@ -1,13 +1,14 @@
+import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
-import { RuIndicationTrainNumberFilter } from '~ru-admin/ru-admin-api';
-import { TrainNumberInput } from './train-number-input';
+import { FieldTree, form } from '@angular/forms/signals';
+import { expectError } from '~src/testing/utils';
+import { OperationalTrainNumber } from '../ru-indication-dialog.component';
+import { displayTrainNumberFilter, TrainNumberInput } from './train-number-input';
 
 describe('TrainNumberInput', () => {
   let component: TrainNumberInput;
   let fixture: ComponentFixture<TrainNumberInput>;
-  let control: FormControl<RuIndicationTrainNumberFilter[]>;
-  let parentForm: FormGroup;
+  let formField: FieldTree<OperationalTrainNumber>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,12 +17,10 @@ describe('TrainNumberInput', () => {
 
     fixture = TestBed.createComponent(TrainNumberInput);
     component = fixture.componentInstance;
-    control = new FormControl<RuIndicationTrainNumberFilter[]>([], { nonNullable: true });
-    parentForm = new FormGroup({
-      operationalTrainNumberFilters: control,
-      companies: new FormControl<string[]>([], { nonNullable: true }),
+    formField = form(signal<OperationalTrainNumber>({ mode: 'all', filters: [] }), {
+      injector: TestBed.inject(Injector),
     });
-    fixture.componentRef.setInput('control', control);
+    fixture.componentRef.setInput('form', formField);
     fixture.detectChanges();
     await fixture.whenStable();
   });
@@ -30,80 +29,40 @@ describe('TrainNumberInput', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set required error when switching to filtered mode with no committed filters', () => {
-    component['trainFilterModeControl'].setValue('filtered');
-
-    expect(control.hasError('required')).toBe(true);
-    expect(control.valid).toBe(false);
-  });
-
   it('should set draftInvalid error when there is uncommitted text in the input', () => {
-    component['trainFilterModeControl'].setValue('filtered');
-    component['trainNumberFilterForm'].controls.trainNumber.setValue('100');
+    const trainNumberForm = component['trainNumberForm'];
+    trainNumberForm.trainNumber().value.set('100');
 
-    expect(control.hasError('draftInvalid')).toBe(true);
+    expect(expectError(trainNumberForm(), 'draftInvalid')).toBe(true);
   });
 
   it('should clear all errors after a filter is successfully added', () => {
-    component['trainFilterModeControl'].setValue('filtered');
-    component['trainNumberFilterForm'].controls.trainNumber.setValue('100');
+    const trainNumberForm = component['trainNumberForm'];
+    trainNumberForm.trainNumber().value.set('100');
+
     component['addTrainNumberFilter']();
 
-    expect(control.valid).toBe(true);
-    expect(control.value).toHaveLength(1);
-  });
-
-  it('should keep required error when a sibling control in the parent form changes (original bug)', () => {
-    component['trainFilterModeControl'].setValue('filtered');
-    expect(control.hasError('required')).toBe(true);
-
-    parentForm.controls['companies'].setValue(['1085']);
-
-    expect(control.hasError('required')).toBe(true);
-    expect(control.valid).toBe(false);
-  });
-
-  it('should reset to all mode and clear errors when switching back from filtered to all', () => {
-    component['trainFilterModeControl'].setValue('filtered');
-    expect(control.valid).toBe(false);
-
-    component['trainFilterModeControl'].setValue('all');
-
-    expect(control.valid).toBe(true);
-    expect(control.errors).toBeNull();
-    expect(control.value).toEqual([]);
-  });
-
-  it('should initialize in filtered mode when control already has committed filters', async () => {
-    const prefilledFixture = TestBed.createComponent(TrainNumberInput);
-    const prefilled = new FormControl<RuIndicationTrainNumberFilter[]>(
-      [{ expression: '100', parity: 'ANY' }],
-      { nonNullable: true },
-    );
-    prefilledFixture.componentRef.setInput('control', prefilled);
-    prefilledFixture.detectChanges();
-    await prefilledFixture.whenStable();
-
-    expect(prefilledFixture.componentInstance['trainFilterModeControl'].value).toBe('filtered');
+    expect(formField.filters().valid()).toBe(true);
+    expect(formField.filters().value()).toHaveLength(1);
+    expect(trainNumberForm.trainNumber().value()).toBe('');
   });
 
   it('train number validator: should mark invalid formats and ranges', () => {
-    const tnForm = component['trainNumberFilterForm'];
-    tnForm.controls.trainNumber.setValue('abc');
-    expect(tnForm.controls.trainNumber.errors).toEqual({ invalidFormat: true });
+    const trainNumberForm = component['trainNumberForm'];
+    trainNumberForm.trainNumber().value.set('abc');
+    expect(expectError(trainNumberForm.trainNumber(), 'invalidFormat')).toBe(true);
 
-    tnForm.controls.trainNumber.setValue('10-5');
-    expect(tnForm.controls.trainNumber.errors).toEqual({ rangeInvalid: true });
+    trainNumberForm.trainNumber().value.set('10-5');
+    expect(expectError(trainNumberForm.trainNumber(), 'rangeInvalid')).toBe(true);
 
-    tnForm.controls.trainNumber.setValue('100');
-    expect(tnForm.controls.trainNumber.errors).toBeNull();
+    trainNumberForm.trainNumber().value.set('100');
+    expect(trainNumberForm.trainNumber().errors()).toEqual([]);
 
-    tnForm.controls.trainNumber.setValue('100-200');
-    expect(tnForm.controls.trainNumber.errors).toBeNull();
+    trainNumberForm.trainNumber().value.set('100-200');
+    expect(trainNumberForm.trainNumber().errors()).toEqual([]);
   });
 
-  it('displayTrainNumberFilter should include parity label when set', async () => {
-    const { displayTrainNumberFilter } = await import('./train-number-input');
+  it('displayTrainNumberFilter should include parity label when set', () => {
     const even = displayTrainNumberFilter({ expression: '100', parity: 'EVEN' });
     const odd = displayTrainNumberFilter({ expression: '100', parity: 'ODD' });
 

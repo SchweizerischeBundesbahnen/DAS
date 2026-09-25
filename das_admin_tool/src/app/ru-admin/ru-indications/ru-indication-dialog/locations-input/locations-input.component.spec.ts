@@ -1,5 +1,6 @@
+import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
+import { form } from '@angular/forms/signals';
 import { Location, LocationService } from './location.service';
 import { LocationsInput } from './locations-input.component';
 
@@ -35,8 +36,8 @@ describe('LocationsInput', () => {
 
     fixture = TestBed.createComponent(LocationsInput);
     component = fixture.componentInstance;
-    const control = new FormControl<string[]>([], { nonNullable: true });
-    fixture.componentRef.setInput('control', control);
+    const field = form(signal<string[]>([]), { injector: TestBed.inject(Injector) });
+    fixture.componentRef.setInput('field', field);
     await fixture.whenStable();
   });
 
@@ -45,15 +46,15 @@ describe('LocationsInput', () => {
   });
 
   it('should show suggestions when query has at least 2 chars', () => {
-    component.inputControl.setValue('be');
+    component['inputField']().value.set('be');
     const refs = component.filteredLocations().map((l) => l.locationReference);
     expect(refs).toEqual(['LOC1']);
   });
 
   it('should not include excluded locations in suggestions', () => {
-    const control = new FormControl<string[]>(['LOC1'], { nonNullable: true });
-    fixture.componentRef.setInput('control', control);
-    component.inputControl.setValue('be');
+    const field = form(signal(['LOC1']), { injector: TestBed.inject(Injector) });
+    fixture.componentRef.setInput('field', field);
+    component['inputField']().value.set('be');
     const refs = component.filteredLocations().map((l) => l.locationReference);
     expect(refs).toEqual([]);
   });
