@@ -3,17 +3,10 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_an
 import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 
-/// Data class to hold all the information to visualize the train journey.
-class JourneyConfig {
-  const JourneyConfig({
-    this.trackEquipmentRenderData,
-    this.bracketStationRenderData,
-    this.chevronAnimationData,
-    this.settings = const JourneySettings(),
-  });
-
-  final JourneySettings settings;
-  final TrackEquipmentRenderData? trackEquipmentRenderData;
-  final BracketStationRenderData? bracketStationRenderData;
-  final ChevronAnimationData? chevronAnimationData;
-}
+class const JourneyConfig({
+  final TrackEquipmentRenderData? trackEquipmentRenderData,
+  final BracketStationRenderData? bracketStationRenderData,
+  final ChevronAnimationData? chevronAnimationData,
+  final JourneySettings settings = const JourneySettings(),
+  final bool showModification = true,
+});

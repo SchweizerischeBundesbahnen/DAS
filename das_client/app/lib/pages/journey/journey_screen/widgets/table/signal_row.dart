@@ -24,6 +24,7 @@ class SignalRow extends CellRowBuilder<Signal> {
     super.config,
     super.key,
     super.showModificationOnInformationCell,
+    super.onDoubleTap,
   });
 
   @override
@@ -56,7 +57,7 @@ class SignalRow extends CellRowBuilder<Signal> {
         final isModalOpen = asyncSnapshot.data ?? false;
 
         return DASBadgeOverlay(
-          badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell,
+          badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell && config.showModification,
           badgeOffset: Offset(0, -SBBSpacing.small),
           badge: const ModificationIcon(),
           child: Text(

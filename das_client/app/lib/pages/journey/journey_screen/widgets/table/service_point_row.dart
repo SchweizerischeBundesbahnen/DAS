@@ -76,6 +76,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.config,
     double? height,
     super.key,
+    super.onDoubleTap,
     Color? rowColor,
   }) : super(
          decoration: DASTableRowDecoration(

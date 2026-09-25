@@ -22,13 +22,14 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
     super.key,
     super.config,
     super.showModificationOnInformationCell,
+    super.onDoubleTap,
   });
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: DASBadgeOverlay(
-        badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell,
+        badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell && config.showModification,
         badgeOffset: Offset(0, -SBBSpacing.small),
         badge: const ModificationIcon(),
         child: Text(data.text ?? '', overflow: .ellipsis),

@@ -50,6 +50,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.config = const JourneyConfig(),
     this.defaultAlignment = .bottomCenter,
     this.onTap,
+    this.onDoubleTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
     this.isGrouped = false,
@@ -62,6 +63,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final ChevronPositionModel chevronPosition;
   final JourneyConfig config;
   final VoidCallback? onTap;
+  final VoidCallback? onDoubleTap;
   final VoidCallback? onStartToEndDragReached;
   final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
   final bool isGrouped;
@@ -74,6 +76,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       height: height,
       decoration: _decorationWithOptionalShortTermChangeBorders(context),
       onTap: onTap,
+      onDoubleTap: onDoubleTap,
       onStartToEndDragReached: onStartToEndDragReached,
       draggableBackgroundBuilder: draggableBackgroundBuilder,
       stickyLevel: stickyLevel,
@@ -116,7 +119,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
       child: DASBadgeOverlay(
-        badgeVisible: data.hasModificationUpdated,
+        badgeVisible: data.hasModificationUpdated && config.showModification,
         badgeOffset: Offset(0, -SBBSpacing.small),
         badge: const ModificationIcon(),
         child: Column(

@@ -4,23 +4,23 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
-import 'package:sfera/src/data/repository/modification_repository_impl.dart';
+import 'package:sfera/src/data/repository/acknowledged_modification_repository_impl.dart';
 
-import 'modification_repository_impl_test.mocks.dart';
+import 'acknowledged_modification_repository_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late ModificationRepository testee;
+  late AcknowledgedModificationRepository testee;
   late MockSferaLocalDatabaseService localService;
-  late BehaviorSubject<List<Modification>> modificationsSubject;
+  late BehaviorSubject<Set<Modification>> modificationsSubject;
 
   setUp(() {
     localService = MockSferaLocalDatabaseService();
-    modificationsSubject = BehaviorSubject.seeded(const []);
+    modificationsSubject = BehaviorSubject.seeded(const <Modification>{});
     when(localService.observeModifications()).thenAnswer((_) => modificationsSubject.stream);
-    testee = ModificationRepoImpl(databaseService: localService);
+    testee = AcknowledgedModificationRepositoryImpl(databaseService: localService);
   });
 
   tearDown(() async {
@@ -34,8 +34,8 @@ void main() {
       type: ModificationType.updated,
     );
 
-    final expectation = expectLater(testee.modificationsStream.skip(1), emits([modification]));
-    modificationsSubject.add([modification]);
+    final expectation = expectLater(testee.acknowledgedModifications.skip(1), emits({modification}));
+    modificationsSubject.add({modification});
     await expectation;
   });
 

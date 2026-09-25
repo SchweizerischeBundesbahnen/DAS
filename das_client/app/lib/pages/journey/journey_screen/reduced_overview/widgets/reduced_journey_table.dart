@@ -101,6 +101,7 @@ class ReducedJourneyTable extends StatelessWidget {
       final journeyConfig = JourneyConfig(
         bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: model.journeyMetadata),
         settings: settingsVM.modelValue,
+        showModification: true,
       );
 
       switch (rowData.dataType) {

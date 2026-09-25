@@ -2,8 +2,8 @@ import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
-import 'package:sfera/src/data/repository/modification_repository.dart';
-import 'package:sfera/src/data/repository/modification_repository_impl.dart';
+import 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
+import 'package:sfera/src/data/repository/acknowledged_modification_repository_impl.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -13,7 +13,7 @@ import 'package:sfera/src/provider/sfera_auth_provider.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
-export 'package:sfera/src/data/repository/modification_repository.dart';
+export 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
 export 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -106,8 +106,8 @@ class SferaComponent._() {
     return SferaLocalRepoImpl(databaseService: localDatabaseService);
   }
 
-  static ModificationRepository createModificationRepository() {
+  static AcknowledgedModificationRepository createAcknowledgedModificationRepository() {
     final localDatabaseService = DriftSferaLocalDatabaseService.instance;
-    return ModificationRepoImpl(databaseService: localDatabaseService);
+    return AcknowledgedModificationRepositoryImpl(databaseService: localDatabaseService);
   }
 }

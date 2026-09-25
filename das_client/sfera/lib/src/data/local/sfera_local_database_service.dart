@@ -42,7 +42,7 @@ abstract class SferaLocalDatabaseService {
     DateTime startDate,
   );
 
-  Stream<List<Modification>> observeModifications();
+  Stream<Set<Modification>> observeModifications();
 
   Future<void> saveModification(Modification modification);
 

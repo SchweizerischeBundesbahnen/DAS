@@ -26,6 +26,7 @@ class TableLoaded({
   required final Map<int, CollapsedState> collapsedRows,
   required final JourneyPositionModel journeyPosition,
   required final ChevronPositionModel chevronPosition,
+  required final Set<Modification> acknowledgedModifications,
   final DetailModalType? detailModalType,
   final bool? showDecisiveGradient,
 }) extends JourneyTableModel {
@@ -39,6 +40,7 @@ class TableLoaded({
         ', collapsedRows: $collapsedRows'
         ', journeyPosition: $journeyPosition'
         ', chevronPosition: $chevronPosition'
+        ', acknowledgedModifications: $acknowledgedModifications'
         ', detailModalType: $detailModalType'
         ', showDecisiveGradient: $showDecisiveGradient'
         '}';
@@ -55,6 +57,7 @@ class TableLoaded({
           collapsedRows == other.collapsedRows &&
           journeyPosition == other.journeyPosition &&
           chevronPosition == other.chevronPosition &&
+          acknowledgedModifications == other.acknowledgedModifications &&
           detailModalType == other.detailModalType &&
           showDecisiveGradient == other.showDecisiveGradient;
 
@@ -66,6 +69,7 @@ class TableLoaded({
     collapsedRows,
     journeyPosition,
     chevronPosition,
+    acknowledgedModifications,
     detailModalType,
     showDecisiveGradient,
   );

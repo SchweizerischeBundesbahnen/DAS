@@ -12,8 +12,8 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/local/tables/acknowledged_modification_table.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
-import 'package:sfera/src/data/local/tables/modification_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/model/journey/modification_type.dart';
@@ -27,7 +27,7 @@ final _log = Logger('DriftSferaLocalDatabaseService');
 @DriftDatabase(
   tables: [
     JourneyProfileTable,
-    ModificationTable,
+    AcknowledgedModificationTable,
     SegmentProfileTable,
     TrainCharacteristicsTable,
   ],
@@ -79,7 +79,7 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       }
 
       if (from < 4) {
-        await m.create(modificationTable);
+        await m.create(acknowledgedModificationTable);
       }
     },
   );
@@ -129,8 +129,8 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       .watchSingleOrNull();
 
   @override
-  Stream<List<Modification>> observeModifications() =>
-      _modManager.watch().map((rows) => rows.map((row) => row.toDomain()).toList(growable: false));
+  Stream<Set<Modification>> observeModifications() =>
+      _acknowledgedModificationManager.watch().map((rows) => rows.map((row) => row.toDomain()).toSet());
 
   @override
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile) async {
@@ -172,11 +172,11 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
 
   @override
   Future<void> saveModification(Modification modification) =>
-      _modManager.create((f) => modification.toCompanion(), mode: InsertMode.insertOrReplace);
+      _acknowledgedModificationManager.create((f) => modification.toCompanion(), mode: InsertMode.insertOrReplace);
 
   @override
   Future<void> deleteModification(Modification modification) async {
-    await _modManager
+    await _acknowledgedModificationManager
         .filter(
           (f) =>
               f.identifier.equals(modification.identifier) &
@@ -192,7 +192,8 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
 
   $$SegmentProfileTableTableTableManager get _spManager => managers.segmentProfileTable;
 
-  $$ModificationTableTableTableManager get _modManager => managers.modificationTable;
+  $$AcknowledgedModificationTableTableTableManager get _acknowledgedModificationManager =>
+      managers.acknowledgedModificationTable;
 
   @override
   Future<SferaDbMetrics> getMetrics() async {

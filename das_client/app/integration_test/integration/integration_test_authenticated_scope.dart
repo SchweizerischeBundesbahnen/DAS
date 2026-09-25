@@ -47,6 +47,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     _registerMockTrainIdentificationRepository();
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
+    getIt.registerAcknowledgedModificationRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();

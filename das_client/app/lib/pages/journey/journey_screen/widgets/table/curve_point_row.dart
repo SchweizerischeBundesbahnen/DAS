@@ -22,6 +22,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     super.key,
     super.config,
     super.showModificationOnInformationCell,
+    super.onDoubleTap,
   });
 
   @override
@@ -38,7 +39,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
         alignment: Alignment.centerLeft,
         clipBehavior: Clip.none,
         child: DASBadgeOverlay(
-          badgeVisible: data.hasModificationUpdated,
+          badgeVisible: data.hasModificationUpdated && config.showModification,
           badgeOffset: Offset(0, -SBBSpacing.small),
           badge: const ModificationIcon(),
           child: Text(data.kilometre[0].toStringAsFixed(1)),
@@ -57,7 +58,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
     return DASTableCell(
       child: DASBadgeOverlay(
-        badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell,
+        badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell && config.showModification,
         badgeOffset: Offset(0, -SBBSpacing.small),
         badge: const ModificationIcon(),
         child: Text(

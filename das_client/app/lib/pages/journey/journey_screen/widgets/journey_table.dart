@@ -119,6 +119,7 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
       chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      acknowledgedModifications: model.acknowledgedModifications,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
     journeyTableScrollController.updateRenderedRows(rowBuilders);
@@ -147,6 +148,7 @@ class JourneyTable extends StatelessWidget {
     required JourneyPositionModel journeyPosition,
     required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
+    required Set<Modification> acknowledgedModifications,
   }) {
     final groupedRows = journeyTableRowData
         .whereType<BaliseLevelCrossingGroup>()
@@ -158,6 +160,7 @@ class JourneyTable extends StatelessWidget {
 
     return List.generate(journeyTableRowData.length, (index) {
       final rowData = journeyTableRowData[index];
+      final modification = rowData is JourneyPoint ? rowData.modification : null;
 
       final journeyConfig = JourneyConfig(
         settings: settings,
@@ -177,6 +180,7 @@ class JourneyTable extends StatelessWidget {
           expandedGroups: settings.expandedGroups,
           journeyEnd: journeyTableVM.journeyEnd,
         ),
+        showModification: settings.showAcknowledgedModifications || !acknowledgedModifications.contains(modification),
       );
 
       var attachAnnotationToPrevious = false;
@@ -185,6 +189,12 @@ class JourneyTable extends StatelessWidget {
         attachAnnotationToPrevious =
             previous is JourneyAnnotation || (previous is ServicePoint && previous.order == rowData.order);
       }
+
+      final acknowledgeModificationCallback = modification != null
+          ? () {
+              journeyTableVM.acknowledgeModification(modification);
+            }
+          : null;
 
       switch (rowData.dataType) {
         case .servicePoint:
@@ -196,6 +206,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             context: context,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .protectionSection:
           return ProtectionSectionRow(
@@ -205,6 +216,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .curvePoint:
           return CurvePointRow(
@@ -214,6 +226,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .signal:
           return SignalRow(
@@ -223,6 +236,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
@@ -251,6 +265,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .cabSignaling:
           return CABSignalingRow(

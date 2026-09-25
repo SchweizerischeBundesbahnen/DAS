@@ -5,7 +5,10 @@ import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/model/journey/modification_type.dart';
 import 'package:sfera/src/model/modification.dart';
 
-class ModificationTable extends Table {
+class AcknowledgedModificationTable extends Table {
+  @override
+  String get tableName => 'acknowledged_modification_table';
+
   TextColumn get identifier => text()();
 
   DateTimeColumn get date => dateTime()();
@@ -17,8 +20,8 @@ class ModificationTable extends Table {
 }
 
 extension ModificationMapperX on Modification {
-  ModificationTableCompanion toCompanion() {
-    return ModificationTableCompanion.insert(
+  AcknowledgedModificationTableCompanion toCompanion() {
+    return AcknowledgedModificationTableCompanion.insert(
       identifier: identifier,
       date: date,
       type: type,
@@ -26,7 +29,7 @@ extension ModificationMapperX on Modification {
   }
 }
 
-extension ModificationTableDataX on ModificationTableData {
+extension AcknowledgedModificationTableDataX on AcknowledgedModificationTableData {
   Modification toDomain() {
     return Modification(identifier: identifier, date: date, type: type);
   }
