@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
@@ -12,8 +13,11 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
+import 'package:sfera/src/data/local/tables/modification_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
+import 'package:sfera/src/model/journey/modification_type.dart';
+import 'package:sfera/src/model/modification.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 part 'drift_sfera_local_database_service.g.dart';
@@ -23,6 +27,7 @@ final _log = Logger('DriftSferaLocalDatabaseService');
 @DriftDatabase(
   tables: [
     JourneyProfileTable,
+    ModificationTable,
     SegmentProfileTable,
     TrainCharacteristicsTable,
   ],
@@ -38,6 +43,9 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
 
   DriftSferaLocalDatabaseService._() : super(_openConnection());
 
+  @visibleForTesting
+  DriftSferaLocalDatabaseService.test(super.executor);
+
   static QueryExecutor _openConnection() => LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'sfera_db.sqlite'));
@@ -52,7 +60,7 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
   });
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -68,6 +76,10 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       if (from < 3) {
         await m.drop(journeyProfileTable);
         await m.create(journeyProfileTable);
+      }
+
+      if (from < 4) {
+        await m.create(modificationTable);
       }
     },
   );
@@ -117,6 +129,10 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       .watchSingleOrNull();
 
   @override
+  Stream<List<Modification>> observeModifications() =>
+      _modManager.watch().map((rows) => rows.map((row) => row.toDomain()).toList(growable: false));
+
+  @override
   Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile) async {
     final otnId = journeyProfile.trainIdentification.otnId;
     _log.fine(
@@ -135,7 +151,7 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       return jp.toCompanion();
     }
 
-    _jpManager.bulkCreate((_) => journeyProfiles.map(mapToCompanion), mode: .insertOrReplace);
+    _jpManager.bulkCreate((_) => journeyProfiles.map(mapToCompanion), mode: InsertMode.insertOrReplace);
   }
 
   @override
@@ -144,21 +160,39 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
 
   @override
   Future<void> saveBulkSegmentProfiles(Iterable<SegmentProfileDto> segmentProfiles) =>
-      _spManager.bulkCreate((_) => segmentProfiles.map((sp) => sp.toCompanion()), mode: .insertOrReplace);
+      _spManager.bulkCreate((_) => segmentProfiles.map((sp) => sp.toCompanion()), mode: InsertMode.insertOrReplace);
 
   @override
   Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics) =>
       trainCharacteristicsTable.insertOnConflictUpdate(trainCharacteristics.toCompanion());
 
   @override
-  Future<void> saveBulkTrainCharacteristics(Iterable<TrainCharacteristicsDto> trainCharacteristics) =>
-      _tcManager.bulkCreate((_) => trainCharacteristics.map((tc) => tc.toCompanion()), mode: .insertOrReplace);
+  Future<void> saveBulkTrainCharacteristics(Iterable<TrainCharacteristicsDto> trainCharacteristics) => _tcManager
+      .bulkCreate((_) => trainCharacteristics.map((tc) => tc.toCompanion()), mode: InsertMode.insertOrReplace);
+
+  @override
+  Future<void> saveModification(Modification modification) =>
+      _modManager.create((f) => modification.toCompanion(), mode: InsertMode.insertOrReplace);
+
+  @override
+  Future<void> deleteModification(Modification modification) async {
+    await _modManager
+        .filter(
+          (f) =>
+              f.identifier.equals(modification.identifier) &
+              f.date.equals(modification.date) &
+              f.type.equals(modification.type),
+        )
+        .delete();
+  }
 
   $$TrainCharacteristicsTableTableTableManager get _tcManager => managers.trainCharacteristicsTable;
 
   $$JourneyProfileTableTableTableManager get _jpManager => managers.journeyProfileTable;
 
   $$SegmentProfileTableTableTableManager get _spManager => managers.segmentProfileTable;
+
+  $$ModificationTableTableTableManager get _modManager => managers.modificationTable;
 
   @override
   Future<SferaDbMetrics> getMetrics() async {

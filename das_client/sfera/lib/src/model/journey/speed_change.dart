@@ -5,8 +5,7 @@ class const SpeedChange({
   required super.order,
   required super.kilometre,
   final String? text,
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .speedChange);
 

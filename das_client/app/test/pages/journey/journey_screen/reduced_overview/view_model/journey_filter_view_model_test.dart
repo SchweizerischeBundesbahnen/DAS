@@ -45,8 +45,11 @@ void main() {
       isLong: false,
       order: 301,
       kilometre: const [],
-      lastModificationType: ModificationType.deleted,
-      lastModificationDate: DateTime.now().add(const Duration(days: -31)),
+      modification: Modification(
+        identifier: '301',
+        type: ModificationType.deleted,
+        date: DateTime.now().add(const Duration(days: -31)),
+      ),
     );
     final asr = AdditionalSpeedRestriction(kmFrom: 0, kmTo: 0, orderFrom: 400, orderTo: 401);
     final visibleAsrData = AdditionalSpeedRestrictionData(restrictions: [asr], order: 400, kilometre: const []);
@@ -55,8 +58,7 @@ void main() {
     final modifiedSignal = Signal(
       order: 700,
       kilometre: const [],
-      lastModificationType: ModificationType.updated,
-      lastModificationDate: DateTime.now(),
+      modification: Modification(identifier: '700', type: ModificationType.updated, date: DateTime.now()),
     );
 
     final journey = Journey(

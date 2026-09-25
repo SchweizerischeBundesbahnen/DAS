@@ -505,8 +505,7 @@ void main() {
       CurvePoint(
         order: 100,
         kilometre: [1.0],
-        lastModificationDate: DateTime.now(),
-        lastModificationType: ModificationType.updated,
+        modification: Modification(identifier: '100', date: DateTime.now(), type: ModificationType.updated),
       ),
       ServicePoint(
         name: 'abc',
@@ -514,22 +513,27 @@ void main() {
         locationCode: '',
         order: 200,
         kilometre: [2.0],
-        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
-        lastModificationType: ModificationType.updated,
+        modification: Modification(
+          identifier: '200',
+          date: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+          type: ModificationType.updated,
+        ),
       ),
       ProtectionSection(
         order: 300,
         kilometre: [3.0],
         isOptional: false,
         isLong: false,
-        lastModificationDate: DateTime.now(),
-        lastModificationType: ModificationType.deleted,
+        modification: Modification(identifier: '300', date: DateTime.now(), type: ModificationType.deleted),
       ),
       SpeedChange(
         order: 400,
         kilometre: [4.0],
-        lastModificationDate: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
-        lastModificationType: ModificationType.deleted,
+        modification: Modification(
+          identifier: '400',
+          date: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
+          type: ModificationType.deleted,
+        ),
       ),
     ];
 

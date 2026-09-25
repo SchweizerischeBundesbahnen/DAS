@@ -2,6 +2,7 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
+import 'package:sfera/src/model/modification.dart';
 import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 abstract class SferaLocalDatabaseService {
@@ -40,6 +41,12 @@ abstract class SferaLocalDatabaseService {
     String operationalTrainNumber,
     DateTime startDate,
   );
+
+  Stream<List<Modification>> observeModifications();
+
+  Future<void> saveModification(Modification modification);
+
+  Future<void> deleteModification(Modification modification);
 
   Future<SferaDbMetrics> getMetrics();
 

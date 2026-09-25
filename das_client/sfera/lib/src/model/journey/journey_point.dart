@@ -9,10 +9,13 @@ abstract class const JourneyPoint({
   required super.order,
   required final List<double> kilometre,
   final List<TrainSeriesSpeed>? localSpeeds,
-  final DateTime? lastModificationDate,
-  final ModificationType? lastModificationType,
+  final Modification? modification,
 }) extends BaseData {
   static const showModificationDays = 30;
+
+  DateTime? get lastModificationDate => modification?.date;
+
+  ModificationType? get lastModificationType => modification?.type;
 
   bool get hasModificationUpdated =>
       lastModificationType == .updated &&

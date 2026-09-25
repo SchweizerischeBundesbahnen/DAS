@@ -6,8 +6,7 @@ class const ProtectionSection({
   required final bool isLong,
   required super.order,
   required super.kilometre,
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .protectionSection);
 
