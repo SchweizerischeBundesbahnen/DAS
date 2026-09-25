@@ -163,6 +163,7 @@ trainjourneypreloader:
   fetch-cron: ${PRELOAD_FETCH_CRON}
   # must be shorter than fetch-cron interval to prevent overlapping runs
   max-preload-duration: ${PRELOAD_MAX_DURATION:PT4M}
+  hours-before-departure: 4
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
 
