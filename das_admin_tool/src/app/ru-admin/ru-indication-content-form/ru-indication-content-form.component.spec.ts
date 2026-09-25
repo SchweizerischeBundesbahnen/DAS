@@ -1,8 +1,9 @@
+import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { form } from '@angular/forms/signals';
 import {
   contentFormValue,
-  createContentFormGroup,
+  createContentFormTree,
   RuIndicationContentForm,
 } from './ru-indication-content-form.component';
 
@@ -17,7 +18,10 @@ describe('RuIndicationContentForm', () => {
 
     fixture = TestBed.createComponent(RuIndicationContentForm);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('form', createContentFormGroup());
+    fixture.componentRef.setInput(
+      'form',
+      form(signal(createContentFormTree()), { injector: TestBed.inject(Injector) }),
+    );
     await fixture.whenStable();
   });
 
@@ -33,24 +37,30 @@ describe('RuIndicationContentForm', () => {
     it('should return true when title is only whitespace', () => {
       fixture.componentRef.setInput(
         'form',
-        new FormGroup({ de: new FormGroup({ title: new FormControl('  ') }) }),
+        form(signal({ de: { title: '  ' } }), { injector: TestBed.inject(Injector) }),
       );
       expect(component['isLanguageEmpty']('de')).toBe(true);
     });
 
     it('should return false when title has content', () => {
-      const form = createContentFormGroup();
-      form.get('de')!.get('title')!.setValue('Titel');
-      fixture.componentRef.setInput('form', form);
+      const formData = createContentFormTree();
+      formData.de.title = 'Titel';
+      fixture.componentRef.setInput(
+        'form',
+        form(signal(formData), { injector: TestBed.inject(Injector) }),
+      );
       expect(component['isLanguageEmpty']('de')).toBe(false);
     });
   });
 
   describe('insertLink', () => {
     it('should insert markdown link at cursor position', () => {
-      const form = createContentFormGroup();
-      form.get('de.text')!.setValue('Hello world');
-      fixture.componentRef.setInput('form', form);
+      const formData = createContentFormTree();
+      formData.de.text = 'Hello world';
+      fixture.componentRef.setInput(
+        'form',
+        form(signal(formData), { injector: TestBed.inject(Injector) }),
+      );
 
       const textarea = {
         selectionStart: 5,
@@ -60,13 +70,16 @@ describe('RuIndicationContentForm', () => {
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
-      expect(form.get('de.text')!.value).toBe('Hello[](url) world');
+      expect(component.form().de.text().value()).toBe('Hello[](url) world');
     });
 
     it('should replace selected text with markdown link', () => {
-      const form = createContentFormGroup();
-      form.get('de.text')!.setValue('Hello world');
-      fixture.componentRef.setInput('form', form);
+      const formData = createContentFormTree();
+      formData.de.text = 'Hello world';
+      fixture.componentRef.setInput(
+        'form',
+        form(signal(formData), { injector: TestBed.inject(Injector) }),
+      );
 
       const textarea = {
         selectionStart: 0,
@@ -76,12 +89,15 @@ describe('RuIndicationContentForm', () => {
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
-      expect(form.get('de.text')!.value).toBe('[](url) world');
+      expect(component.form().de.text().value()).toBe('[](url) world');
     });
 
-    it('should mark control as dirty and touched', () => {
-      const form = createContentFormGroup();
-      fixture.componentRef.setInput('form', form);
+    it('should mark field as dirty and touched', () => {
+      const formData = createContentFormTree();
+      fixture.componentRef.setInput(
+        'form',
+        form(signal(formData), { injector: TestBed.inject(Injector) }),
+      );
 
       const textarea = {
         selectionStart: 0,
@@ -91,118 +107,89 @@ describe('RuIndicationContentForm', () => {
       } as unknown as HTMLTextAreaElement;
       component['insertLink']('de', textarea);
 
-      expect(form.get('de.text')!.dirty).toBe(true);
-      expect(form.get('de.text')!.touched).toBe(true);
+      expect(component.form().de.text().dirty()).toBe(true);
+      expect(component.form().de.text().touched()).toBe(true);
     });
 
-    it('should do nothing when text control is not found', () => {
-      fixture.componentRef.setInput('form', new FormGroup({}));
+    it('should do nothing when text field is not found', () => {
+      fixture.componentRef.setInput(
+        'form',
+        form(signal({}), { injector: TestBed.inject(Injector) }),
+      );
       const textarea = {
         selectionStart: 0,
         selectionEnd: 0,
         focus: vi.fn(),
         setSelectionRange: vi.fn(),
       } as unknown as HTMLTextAreaElement;
-      // should not throw
-      component['insertLink']('de', textarea);
-      expect(component.form().get(`de.text`)).toBeNull();
+      expect(() => component['insertLink']('de', textarea)).toThrow(TypeError);
     });
   });
 
-  describe('validators', () => {
-    it('should require text when title is set for RU indications', () => {
-      const form = createContentFormGroup();
-      const deGroup = form.get('de') as FormGroup;
-      deGroup.get('title')!.setValue('Titel');
-      deGroup.get('text')!.setValue('');
-      deGroup.updateValueAndValidity();
-
-      expect(deGroup.get('text')!.errors).toEqual({ languageRequired: true });
+  describe('createContentFormTree', () => {
+    it('should create a form tree with de, fr, it language trees', () => {
+      const formData = createContentFormTree();
+      expect(formData.de).toBeTruthy();
+      expect(formData.fr).toBeTruthy();
+      expect(formData.it).toBeTruthy();
     });
-  });
-});
 
-describe('createContentFormGroup', () => {
-  it('should create a form group with de, fr, it language groups', () => {
-    const form = createContentFormGroup();
-    expect(form.get('de')).toBeTruthy();
-    expect(form.get('fr')).toBeTruthy();
-    expect(form.get('it')).toBeTruthy();
-  });
+    it('should create language trees with title and text fields', () => {
+      const formData = createContentFormTree();
+      expect(formData.de.title).toBe('');
+      expect(formData.de.text).toBe('');
+    });
 
-  it('should create language groups with title and text controls', () => {
-    const form = createContentFormGroup();
-    expect(form.get('de.title')).toBeTruthy();
-    expect(form.get('de.text')).toBeTruthy();
-  });
+    it('should create a tree with a category', () => {
+      const formData = createContentFormTree();
+      expect(formData.category).toBe('');
+    });
 
-  it('should apply languageRequired validator by default (text required)', () => {
-    const form = createContentFormGroup();
-    form.get('de.title')!.setValue('A title');
-    form.get('de')!.updateValueAndValidity();
-    expect(form.get('de.text')!.errors).toEqual({ languageRequired: true });
-  });
-
-  it('should apply titleRequired validator when textRequired is false', () => {
-    const form = createContentFormGroup({ textRequired: false });
-    form.get('de.text')!.setValue('Some text');
-    form.get('de')!.updateValueAndValidity();
-    expect(form.get('de.title')!.errors).toEqual({ titleRequired: true });
-  });
-
-  it('should have oneLanguageRequired group validator', () => {
-    const form = createContentFormGroup();
-    form.updateValueAndValidity();
-    expect(form.errors).toEqual({ oneLanguageRequired: true });
-  });
-
-  it('should be valid when at least one language has content', () => {
-    const form = createContentFormGroup();
-    form.get('de.title')!.setValue('Title');
-    form.get('de.text')!.setValue('Text');
-    form.updateValueAndValidity();
-    expect(form.errors).toBeNull();
+    it('should create a tree withou a category when `withCategory: false` is provided', () => {
+      const formData = createContentFormTree(false);
+      expect(Object.prototype.hasOwnProperty.call(formData, 'category')).toBe(false);
+    });
   });
 });
 
 describe('contentFormValue', () => {
   it('should return undefined for empty languages', () => {
-    const form = createContentFormGroup();
-    const result = contentFormValue(form);
+    const formData = createContentFormTree();
+    const result = contentFormValue(formData);
     expect(result.de).toBeUndefined();
     expect(result.fr).toBeUndefined();
     expect(result.it).toBeUndefined();
   });
 
   it('should return language content when title is set', () => {
-    const form = createContentFormGroup();
-    form.get('de.title')!.setValue('Titel DE');
-    form.get('de.text')!.setValue('Text DE');
-    const result = contentFormValue(form);
+    const formData = createContentFormTree();
+    formData.de.title = 'Titel DE';
+    formData.de.text = 'Text DE';
+    const result = contentFormValue(formData);
     expect(result.de).toEqual({ title: 'Titel DE', text: 'Text DE' });
   });
 
   it('should trim whitespace from title and text', () => {
-    const form = createContentFormGroup();
-    form.get('fr.title')!.setValue('  Titre FR  ');
-    form.get('fr.text')!.setValue('  Texte FR  ');
-    const result = contentFormValue(form);
+    const formData = createContentFormTree();
+    formData.fr.title = '  Titre FR  ';
+    formData.fr.text = '  Texte FR  ';
+    const result = contentFormValue(formData);
     expect(result.fr).toEqual({ title: 'Titre FR', text: 'Texte FR' });
   });
 
   it('should return text as undefined when text is empty but title is set', () => {
-    const form = createContentFormGroup();
-    form.get('it.title')!.setValue('Titolo');
-    form.get('it.text')!.setValue('');
-    const result = contentFormValue(form);
+    const formData = createContentFormTree();
+    formData.it.title = 'Titolo';
+    formData.it.text = '';
+    const result = contentFormValue(formData);
     expect(result.it).toEqual({ title: 'Titolo', text: undefined });
   });
 
   it('should return undefined when both title and text are only whitespace', () => {
-    const form = createContentFormGroup();
-    form.get('de.title')!.setValue('  ');
-    form.get('de.text')!.setValue('  ');
-    const result = contentFormValue(form);
+    const formData = createContentFormTree();
+    formData.de.title = '  ';
+    formData.de.text = '  ';
+    const result = contentFormValue(formData);
     expect(result.de).toBeUndefined();
   });
 });

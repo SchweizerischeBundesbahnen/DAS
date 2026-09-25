@@ -2,50 +2,48 @@
   i18n-stepLabel="@@external_links_dialog_step_label"
   stepLabel="Externer Absprung"
   [data]="dialogData"
-  [dialogClose]="externalLinkForm.value"
+  [dialogClose]="externalLinkModel()"
   [dialogTitle]="dialogTitle"
-  [saveDisabled]="externalLinkForm.invalid"
+  [saveDisabled]="externalLinkForm().invalid()"
 >
-  <form [formGroup]="externalLinkForm">
+  <form>
     <app-companies-input
       i18n-label="@@external_links_form_companies_label"
       label="Betroffene EVU"
-      [control]="externalLinkForm.controls.companies"
+      multiselect
+      [field]="externalLinkForm.companies"
     />
     <sbb-tab-group>
       @for (language of languageProvider.allLanguages; track language.localeId) {
         <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
           language.path | uppercase
         }}</sbb-tab-label>
-        <sbb-tab [formGroupName]="language.path">
+        <sbb-tab>
           <sbb-form-field class="full-width" errorSpace="reserve">
             <label for="title" i18n="@@external_links_form_title_label">Titel</label>
-            <input formControlName="title" />
-            @let titleField = externalLinkForm.get(`${language.path}.title`);
-            @if (externalLinkForm.touched && titleField?.hasError('languageRequired')) {
-              <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+            <input [formField]="externalLinkForm[language.path].title" />
+            @if (externalLinkForm[language.path].title().touched()) {
+              @for (error of externalLinkForm[language.path].title().errors(); track error.kind) {
+                <sbb-error>{{ error.message }}</sbb-error>
+              }
             }
           </sbb-form-field>
           <sbb-form-field class="full-width" errorSpace="reserve">
             <label for="link" i18n="@@external_links_form_link_label">Webadresse (URL)</label>
-            <input formControlName="link" />
-            @let linkField = externalLinkForm.get(`${language.path}.link`);
-            @if (externalLinkForm.touched && linkField?.hasError('languageRequired')) {
-              <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
-            }
-            @if (externalLinkForm.touched && linkField?.hasError('url')) {
-              <sbb-error i18n="@@external_links_form_field_error_url"
-                >Webadresse muss eine gültige URL sein</sbb-error
-              >
+            <input [formField]="externalLinkForm[language.path].link" />
+            @if (externalLinkForm[language.path].link().touched()) {
+              @for (error of externalLinkForm[language.path].link().errors(); track error.kind) {
+                <sbb-error>{{ error.message }}</sbb-error>
+              }
             }
           </sbb-form-field>
         </sbb-tab>
       }
     </sbb-tab-group>
   </form>
-  @if (externalLinkForm.touched && externalLinkForm.hasError('oneLanguageRequired')) {
-    <sbb-error i18n="@@external_links_form_error_one_language_required"
-      >Eine Sprache muss ausgefüllt sein</sbb-error
-    >
+  @if (externalLinkForm().touched()) {
+    @for (error of externalLinkForm().errors(); track error.kind) {
+      <sbb-error>{{ error.message }}</sbb-error>
+    }
   }
 </app-base-dialog>

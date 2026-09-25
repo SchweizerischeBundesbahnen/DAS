@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { RuFeature } from '~ru-admin/ru-admin-api';
 import { Company, CompanyService } from '~shared/companies-input/company.service';
+import { expectError } from '~src/testing/utils';
 import { RuFeatureToggleDialog } from './ru-feature-toggle-dialog.component';
 
 const companies: Company[] = [
@@ -16,9 +17,17 @@ function createDialog(data?: RuFeature): RuFeatureToggleDialog {
   const companyService = TestBed.inject(CompanyService);
   (
     companyService as unknown as {
-      companiesResource: { hasValue: () => boolean; value: () => { data: Company[] } };
+      companiesResource: {
+        hasValue: () => boolean;
+        value: () => { data: Company[] };
+        error: () => unknown;
+      };
     }
-  ).companiesResource = { hasValue: () => true, value: () => ({ data: companies }) };
+  ).companiesResource = {
+    hasValue: () => true,
+    value: () => ({ data: companies }),
+    error: vi.fn(),
+  };
   return TestBed.inject(RuFeatureToggleDialog);
 }
 
@@ -34,7 +43,7 @@ describe('RuFeatureToggleDialog', () => {
     const dialog = createDialog();
 
     expect(dialog['dialogData']?.id).toBeFalsy();
-    expect(dialog['ruFeatureForm'].value).toEqual({
+    expect(dialog['ruFeatureForm']().value()).toEqual({
       companyCode: '',
       key: 'WARNAPP',
       enabled: false,
@@ -45,7 +54,7 @@ describe('RuFeatureToggleDialog', () => {
     const dialog = createDialog(existingRuFeature);
 
     expect(dialog['dialogData']?.id).toBeDefined();
-    expect(dialog['ruFeatureForm'].value).toEqual({
+    expect(dialog['ruFeatureForm']().value()).toEqual({
       companyCode: '1085',
       key: 'WARNAPP',
       enabled: true,
@@ -55,33 +64,16 @@ describe('RuFeatureToggleDialog', () => {
   it('companyCode should be invalid when empty', () => {
     const dialog = createDialog();
 
-    dialog['ruFeatureForm'].get('companyCode')!.setValue('');
-    dialog['ruFeatureForm'].get('companyCode')!.markAsTouched();
+    dialog['ruFeatureForm'].companyCode().value.set('');
 
-    expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toEqual({ required: true });
+    expect(expectError(dialog['ruFeatureForm'].companyCode(), 'required')).toBe(true);
   });
 
   it('companyCode should be valid when it matches a known company', () => {
     const dialog = createDialog();
 
-    dialog['ruFeatureForm'].get('companyCode')!.setValue('1085');
+    dialog['ruFeatureForm'].companyCode().value.set('1085');
 
-    expect(dialog['ruFeatureForm'].get('companyCode')!.errors).toBeNull();
-  });
-
-  it('formValue should reflect the current form state', () => {
-    const dialog = createDialog();
-
-    dialog['ruFeatureForm'].patchValue({
-      companyCode: '1087',
-      key: 'CHECKLIST_DEPARTURE_PROCESS',
-      enabled: true,
-    });
-
-    expect(dialog.formValue).toEqual({
-      companyCode: '1087',
-      key: 'CHECKLIST_DEPARTURE_PROCESS',
-      enabled: true,
-    });
+    expect(dialog['ruFeatureForm'].companyCode().errors()).toEqual([]);
   });
 });

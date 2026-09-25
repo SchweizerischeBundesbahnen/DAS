@@ -1,8 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
@@ -12,7 +11,6 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { startWith } from 'rxjs';
 import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin-api';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { LanguageCode, LanguageProvider } from '~shared/language-provider';
@@ -39,7 +37,7 @@ export interface RuIndicationFilter extends SbbTableFilter {
     SbbTableModule,
     SbbMiniButton,
     SbbFormFieldModule,
-    ReactiveFormsModule,
+    FormField,
     DatePipe,
     SbbCheckbox,
     TableBottomBar,
@@ -85,15 +83,18 @@ export class RuIndicationsTable {
   ];
   protected readonly selection = new SelectionModel<RuIndication>(true, []);
   protected isDeleting = false;
-  protected form = new FormGroup({
-    search: new FormControl('', { nonNullable: true }),
-    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
-    category: new FormControl('', { nonNullable: true }),
-    companies: new FormControl('', { nonNullable: true }),
-    trainNumbers: new FormControl('', { nonNullable: true }),
-    locations: new FormControl('', { nonNullable: true }),
-    periods: new FormControl('', { nonNullable: true }),
+
+  protected readonly filterModel = signal({
+    search: '',
+    language: this.languageProvider.currentLanguage.path,
+    category: '',
+    companies: '',
+    trainNumbers: '',
+    locations: '',
+    periods: '',
   });
+  protected readonly filterForm = form(this.filterModel);
+
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
@@ -102,26 +103,26 @@ export class RuIndicationsTable {
       if (this.ruIndicationService.ruIndicationsResource.hasValue()) {
         this.dataSource.data = this.ruIndicationService.ruIndicationsResource.value().data;
       }
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: RuIndication, filter: RuIndicationFilter) =>
       this.searchFilter(filter, data);
     this.dataSource.sortingDataAccessor = (data, col) => this.getSortValue(data, col);
-    this.form.valueChanges
-      .pipe(startWith(this.form.value), takeUntilDestroyed())
-      .subscribe((form) => {
-        this.dataSource.filter = form as RuIndicationFilter;
-      });
+    effect(() => {
+      this.dataSource.filter = this.filterModel();
+    });
   }
 
   protected titleValue(row: RuIndication): string {
-    const language = this.form.controls.language.value ?? 'de';
+    const language = this.filterModel().language ?? 'de';
     return row.content?.[language]?.title ?? '';
   }
 
   protected textValue(row: RuIndication): string {
-    const language = this.form.controls.language.value ?? 'de';
+    const language = this.filterModel().language ?? 'de';
     return row.content?.[language]?.text ?? '';
   }
 

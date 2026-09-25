@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
+import { afterNextRender, Component, effect, inject, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
 import { InternalCompany } from '~app/das-admin/das-admin-api';
@@ -37,7 +37,8 @@ export class CompaniesTable {
       if (companiesResource.hasValue()) {
         this.dataSource.data = companiesResource.value().data;
       }
-
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });

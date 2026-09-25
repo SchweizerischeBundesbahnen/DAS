@@ -1,36 +1,37 @@
-<sbb-tab-group [formGroup]="form()">
+<sbb-tab-group>
   @for (language of languageProvider.allLanguages; track language.localeId) {
     <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
       language.path | uppercase
     }}</sbb-tab-label>
-    <sbb-tab [formGroupName]="language.path">
+    <sbb-tab>
       <sbb-form-field errorSpace="reserve" class="full-width">
         <label for="title" i18n="@@ru_indications_form_title_label">Titel</label>
-        <input formControlName="title" />
-        @let titleField = form().get(`${language.path}.title`);
-        @if (
-          form().touched
-          && (titleField?.hasError('languageRequired') || titleField?.hasError('titleRequired'))
-        ) {
-          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        @let titleField = form()[language.path].title;
+        <input [formField]="titleField" />
+        @if (titleField().touched()) {
+          @for (error of titleField().errors(); track error.kind) {
+            <sbb-error>{{ error.message }}</sbb-error>
+          }
         }
       </sbb-form-field>
       <sbb-form-field errorSpace="reserve" class="full-width">
         <label for="text" i18n="@@ru_indications_form_text_label">Text</label>
-        <textarea #text formControlName="text"></textarea>
+        @let textField = form()[language.path].text;
+        <textarea #text [formField]="textField"></textarea>
         <sbb-mini-button
           iconName="link-small"
           sbb-tooltip="Link"
           (click)="insertLink(language.path, text)"
         />
-        @let textField = form().get(`${language.path}.text`);
-        @if (form().touched && textField?.hasError('languageRequired')) {
-          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        @if (textField().touched()) {
+          @for (error of textField().errors(); track error.kind) {
+            <sbb-error>{{ error.message }}</sbb-error>
+          }
         }
-        @if (form().hasError('oneLanguageRequired') && form().touched) {
-          <sbb-error i18n="@@ru_indications_form_one_language_error"
-            >Mindestens eine Sprache muss erfasst werden</sbb-error
-          >
+        @if (form()().touched()) {
+          @for (error of form()().errors(); track error.kind) {
+            <sbb-error>{{ error.message }}</sbb-error>
+          }
         }
       </sbb-form-field>
     </sbb-tab>

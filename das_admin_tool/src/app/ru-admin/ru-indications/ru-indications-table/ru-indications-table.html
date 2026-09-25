@@ -1,7 +1,7 @@
-<form [formGroup]="form">
+<form>
   <app-table-search-header
-    [languageControl]="form.controls.language"
-    [searchControl]="form.controls.search"
+    [languageField]="filterForm.language"
+    [searchField]="filterForm.search"
   />
 
   <sbb-table-wrapper>
@@ -157,7 +157,7 @@
       <ng-container sbbColumnDef="filter-category">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="category" />
+            <input [formField]="filterForm.category" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -165,7 +165,7 @@
       <ng-container sbbColumnDef="filter-companies">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="companies" />
+            <input [formField]="filterForm.companies" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -173,7 +173,7 @@
       <ng-container sbbColumnDef="filter-train-numbers">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="trainNumbers" />
+            <input [formField]="filterForm.trainNumbers" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -181,7 +181,7 @@
       <ng-container sbbColumnDef="filter-locations">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="locations" />
+            <input [formField]="filterForm.locations" />
           </sbb-form-field>
         </th>
       </ng-container>
@@ -189,7 +189,7 @@
       <ng-container sbbColumnDef="filter-periods">
         <th *sbbHeaderCellDef class="sbb-table-filter" sbb-header-cell>
           <sbb-form-field width="collapse">
-            <input formControlName="periods" />
+            <input [formField]="filterForm.periods" />
           </sbb-form-field>
         </th>
       </ng-container>

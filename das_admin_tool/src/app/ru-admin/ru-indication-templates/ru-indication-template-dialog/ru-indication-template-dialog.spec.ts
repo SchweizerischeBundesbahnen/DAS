@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { expectError } from '~src/testing/utils';
 import { RuIndicationTemplateDialog } from './ru-indication-template-dialog';
 
 function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
@@ -13,117 +14,81 @@ function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
 describe('RuIndicationTemplateDialog', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  describe('required field validation', () => {
+  describe('field validation', () => {
     it('should be invalid when form is empty', () => {
-      const dialog = createDialog();
-      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
+      const form = createDialog()['ruIndicationTemplateForm'];
+
+      expect(form().invalid()).toBe(true);
+      expect(expectError(form.category(), 'required')).toBe(true);
     });
 
-    it('should require category field', () => {
-      const dialog = createDialog();
-      expect(dialog['ruIndicationTemplateForm'].get('category')!.hasError('required')).toBe(true);
+    it('should have oneLanguageRequired error when no language content is provided', () => {
+      const form = createDialog()['ruIndicationTemplateForm'];
+      form.category().value.set('Test Category');
+
+      expect(expectError(form.content(), 'oneLanguageRequired')).toBe(true);
     });
 
-    it('should still be invalid when only category is filled but no language content', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('category')!.setValue('Test Category');
-      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
-      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
-    });
+    it('should require category when only title is filled', () => {
+      const form = createDialog()['ruIndicationTemplateForm'];
+      form.content.de.title().value.set('Titel');
 
-    it('should still be invalid when only title is filled but category is empty', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
-      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
-      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(true);
+      expect(expectError(form.category(), 'required')).toBe(true);
+      expect(form.content().errors()).toEqual([]);
     });
 
     it('should be valid when category and at least one title are filled', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('category')!.setValue('Test Category');
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
-      dialog['ruIndicationTemplateForm'].updateValueAndValidity();
-      expect(dialog['ruIndicationTemplateForm'].invalid).toBe(false);
-    });
-  });
+      const form = createDialog()['ruIndicationTemplateForm'];
+      form.category().value.set('Test Category');
+      form.content.de.title().value.set('Titel');
 
-  describe('oneLanguageRequired validator', () => {
-    it('should be invalid when all language titles and texts are empty', () => {
-      const dialog = createDialog();
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toEqual({
-        oneLanguageRequired: true,
-      });
-    });
-
-    // eslint-disable-next-line sonarjs/parameterized-tests
-    it('should be valid when de title is filled', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('Titel');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
+      expect(form().errors()).toEqual([]);
     });
 
     it('should be valid when fr title is filled', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('content.fr.title')!.setValue('Titre');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
+      const form = createDialog()['ruIndicationTemplateForm'];
+      form.content.fr.title().value.set('Titre');
+
+      expect(form.content().errors()).toEqual([]);
     });
 
     it('should be valid when it title is filled', () => {
-      const dialog = createDialog();
-      dialog['ruIndicationTemplateForm'].get('content.it.title')!.setValue('Titolo');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
+      const form = createDialog()['ruIndicationTemplateForm'];
+      form.content.it.title().value.set('Titolo');
+
+      expect(form.content().errors()).toEqual([]);
     });
 
-    it('should be invalid when a title contains only whitespace', () => {
-      const dialog = createDialog();
-      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      dialog['ruIndicationTemplateForm'].get('content.de.title')!.setValue('  ');
-      dialog['ruIndicationTemplateForm'].get('content.de.text')!.setValue('Text');
-      expect(dialog['ruIndicationTemplateForm'].get('content')!.errors).toBeNull();
-      expect(deGroup.get('title')!.errors).toEqual({ titleRequired: true });
-    });
-  });
+    it('should be invalid when a title contains only whitespace and text is set', () => {
+      const form = createDialog()['ruIndicationTemplateForm'];
+      const deTree = form.content.de;
+      deTree.title().value.set('  ');
+      deTree.text().value.set('Text');
 
-  describe('titleRequired validator', () => {
-    it('should be invalid for a language group when text is set but title is empty', () => {
-      const dialog = createDialog();
-      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      deGroup.get('text')!.setValue('Some text');
-      deGroup.get('title')!.setValue('');
-      deGroup.updateValueAndValidity();
-
-      expect(deGroup.get('title')!.errors).toEqual({ titleRequired: true });
+      expect(form.content().errors()).toEqual([]);
+      expect(expectError(deTree.title(), 'titleRequired')).toBe(true);
     });
 
-    // eslint-disable-next-line sonarjs/parameterized-tests
-    it('should be valid for a language group when title is set but text is empty', () => {
-      const dialog = createDialog();
-      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      deGroup.get('title')!.setValue('Titel');
-      deGroup.get('text')!.setValue('');
-      deGroup.updateValueAndValidity();
+    it('should be invalid title is empty and text is set', () => {
+      const form = createDialog()['ruIndicationTemplateForm'];
+      const deTree = form.content.de;
+      deTree.title().value.set('');
+      deTree.text().value.set('Some text');
 
-      expect(deGroup.errors).toBeNull();
+      expect(expectError(deTree.title(), 'titleRequired')).toBe(true);
     });
 
-    it('should be valid when both title and text are set', () => {
-      const dialog = createDialog();
-      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      deGroup.get('title')!.setValue('Titel');
-      deGroup.get('text')!.setValue('Text');
-      deGroup.updateValueAndValidity();
+    it.each([
+      ['Titel', '', 'title is set but text is empty'],
+      ['Titel', 'Text', 'both title and text are set'],
+      ['', '', 'both title and text are empty'],
+    ])('should be valid when $2', (title, text) => {
+      const form = createDialog()['ruIndicationTemplateForm'];
+      const deTree = form.content.de;
+      deTree.title().value.set(title);
+      deTree.text().value.set(text);
 
-      expect(deGroup.errors).toBeNull();
-    });
-
-    it('should be valid when both title and text are empty', () => {
-      const dialog = createDialog();
-      const deGroup = dialog['ruIndicationTemplateForm'].get('content.de')!;
-      deGroup.get('title')!.setValue('');
-      deGroup.get('text')!.setValue('');
-      deGroup.updateValueAndValidity();
-
-      expect(deGroup.errors).toBeNull();
+      expect(deTree().errors()).toEqual([]);
     });
   });
 });

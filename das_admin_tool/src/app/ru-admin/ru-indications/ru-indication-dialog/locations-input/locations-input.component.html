@@ -3,10 +3,10 @@
   <sbb-chip-group
     name="locations"
     [displayWith]="locationToName"
-    [formControl]="control()"
+    [formField]="field()"
     [separatorKeys]="[]"
   >
-    <input [formControl]="inputControl" [sbbAutocomplete]="auto" />
+    <input [formField]="inputField" [sbbAutocomplete]="auto" />
   </sbb-chip-group>
   <sbb-autocomplete #auto="sbbAutocomplete">
     @for (loc of filteredLocations(); track loc.locationReference) {
@@ -25,7 +25,9 @@
       </sbb-option>
     }
   </sbb-autocomplete>
-  @if (control().hasError('required') && control().touched) {
-    <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+  @if (field()().touched()) {
+    @for (error of field()().errors(); track error.kind) {
+      <sbb-error>{{ error.message }}</sbb-error>
+    }
   }
 </sbb-form-field>

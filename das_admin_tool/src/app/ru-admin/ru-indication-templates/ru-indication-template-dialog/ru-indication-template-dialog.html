@@ -3,10 +3,10 @@
   stepLabel="Titel und Text"
   [data]="dialogData"
   [dialogClose]="formValue"
-  [dialogTitle]="title"
-  [saveDisabled]="ruIndicationTemplateForm.invalid"
+  [dialogTitle]="dialogTitle"
+  [saveDisabled]="ruIndicationTemplateForm().invalid()"
 >
-  <form [formGroup]="ruIndicationTemplateForm">
+  <form>
     <div class="category">
       <sbb-title i18n="@@ru_indication_templates_form_category_title" visualLevel="5"
         >Kategorie erstellen</sbb-title
@@ -15,15 +15,14 @@
         <label for="category" i18n="@@ru_indication_templates_form_category_label"
           >Name der Kategorie eingeben</label
         >
-        <input formControlName="category" required />
-        @if (
-          ruIndicationTemplateForm.touched
-          && ruIndicationTemplateForm.get('category')?.hasError('required')
-        ) {
-          <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
+        <input [formField]="ruIndicationTemplateForm.category" />
+        @if (ruIndicationTemplateForm.category().touched()) {
+          @for (error of ruIndicationTemplateForm.category().errors(); track error.kind) {
+            <sbb-error>{{ error.message }}</sbb-error>
+          }
         }
       </sbb-form-field>
     </div>
-    <app-ru-indication-content-form [form]="ruIndicationTemplateForm.controls.content" />
+    <app-ru-indication-content-form [form]="ruIndicationTemplateForm.content" />
   </form>
 </app-base-dialog>

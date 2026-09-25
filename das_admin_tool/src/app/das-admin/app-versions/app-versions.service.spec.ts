@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { of, throwError } from 'rxjs';
-import { toUtcDateOnly } from '~shared/date-util';
 import { RecentCompaniesStore } from '~shared/recent-companies.store';
 import { ToastService } from '~shared/toast-service';
 import { AppVersion, AppVersionApiResponse, DasAdminApi } from '../das-admin-api';
@@ -67,7 +66,7 @@ describe('AppVersionsService', () => {
     mockDialogResult({
       ...appVersion,
       version: '0.2.2',
-      expiryDate: toUtcDateOnly(new Date('2026-03-20')),
+      expiryDate: '2026-03-20',
     });
 
     await service.edit(appVersion);
@@ -77,7 +76,7 @@ describe('AppVersionsService', () => {
       id: 1,
       version: '0.2.2',
       minimalVersion: false,
-      expiryDate: new Date('2026-03-20'),
+      expiryDate: '2026-03-20',
     });
   });
 

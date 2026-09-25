@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { expectError } from '~src/testing/utils';
 import { RuIndicationDialogData } from '../ru-indication.service';
 import { RuIndicationDialog } from './ru-indication-dialog.component';
 
@@ -36,15 +37,17 @@ describe('RuIndicationDialog', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('content form required field validation', () => {
-    it('should have content form invalid when all fields are empty', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      expect(contentForm.invalid).toBe(true);
+  describe('field validation - content', () => {
+    it('should be invalid when form is empty', () => {
+      const form = component['ruIndicationForm'];
+
+      expect(form().invalid()).toBe(true);
     });
 
     it('should have oneLanguageRequired error when no language content is provided', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      expect(contentForm.errors).toEqual({ oneLanguageRequired: true });
+      const form = component['ruIndicationForm'];
+
+      expect(expectError(form.content(), 'oneLanguageRequired')).toBe(true);
     });
 
     it('should disable the next button when content form is empty', () => {
@@ -52,49 +55,64 @@ describe('RuIndicationDialog', () => {
     });
 
     it('should require text when title is set (languageRequired)', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      contentForm.get('de.title')!.setValue('Titel');
-      contentForm.get('de.text')!.setValue('');
-      contentForm.get('de')!.updateValueAndValidity();
+      const form = component['ruIndicationForm'];
+      form.content.de.title().value.set('Titel');
 
-      expect(contentForm.get('de.text')!.errors).toEqual({ languageRequired: true });
+      expect(expectError(form.content.de.text(), 'languageRequired')).toBe(true);
     });
 
     it('should require title when text is set (languageRequired)', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      contentForm.get('de.title')!.setValue('');
-      contentForm.get('de.text')!.setValue('Some text');
-      contentForm.get('de')!.updateValueAndValidity();
+      const form = component['ruIndicationForm'];
+      form.content.de.text().value.set('Some text');
 
-      expect(contentForm.get('de.title')!.errors).toEqual({ languageRequired: true });
+      expect(expectError(form.content.de.title(), 'languageRequired')).toBe(true);
     });
 
     it('should be valid when both title and text are provided in one language', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      contentForm.get('de.title')!.setValue('Titel');
-      contentForm.get('de.text')!.setValue('Text');
-      contentForm.updateValueAndValidity();
+      const form = component['ruIndicationForm'];
+      form.content.de.title().value.set('Titel');
+      form.content.de.text().value.set('Text');
 
-      expect(contentForm.invalid).toBe(false);
+      expect(form.content().errors()).toEqual([]);
+      expect(form.content.de().errors()).toEqual([]);
     });
 
     it('should enable the next button when content form is valid', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      contentForm.get('de.title')!.setValue('Titel');
-      contentForm.get('de.text')!.setValue('Text');
-      contentForm.updateValueAndValidity();
+      const form = component['ruIndicationForm'];
+      form.content.de.title().value.set('Titel');
+      form.content.de.text().value.set('Text');
       fixture.detectChanges();
 
       expect(component['isStepDisabled']()).toBe(false);
     });
 
     it('should remain invalid when title contains only whitespace', () => {
-      const contentForm = component['ruIndicationForm'].controls.content;
-      contentForm.get('de.title')!.setValue('  ');
-      contentForm.get('de.text')!.setValue('  ');
-      contentForm.updateValueAndValidity();
+      const form = component['ruIndicationForm'];
+      form.content.de.title().value.set('  ');
+      form.content.de.text().value.set('  ');
 
-      expect(contentForm.invalid).toBe(true);
+      expect(form().invalid()).toBe(true);
+    });
+  });
+
+  describe('field validation - operationalTrainNumber', () => {
+    it('should be valid when mode is set to filtered and then back to all', () => {
+      const form = component['ruIndicationForm'];
+      form.scope.operationalTrainNumber.mode().value.set('filtered');
+
+      expect(expectError(form.scope.operationalTrainNumber.filters(), 'arrayRequired')).toBe(true);
+
+      form.scope.operationalTrainNumber.mode().value.set('all');
+
+      expect(form.scope.operationalTrainNumber.filters().errors()).toEqual([]);
+    });
+
+    it('should be valid when mode is set to filtered and filters are not empty', () => {
+      const form = component['ruIndicationForm'];
+      form.scope.operationalTrainNumber.mode().value.set('filtered');
+      form.scope.operationalTrainNumber.filters().value.set([{ expression: '1', parity: 'ANY' }]);
+
+      expect(form.scope.operationalTrainNumber.filters().errors()).toEqual([]);
     });
   });
 });
