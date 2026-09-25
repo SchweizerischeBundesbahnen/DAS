@@ -1,7 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/launcher/launcher.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -10,6 +9,7 @@ import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:user_properties/component.dart';
 import 'package:warnapp/component.dart';
 
 import '../mocks/integration_test_audio_player.dart';

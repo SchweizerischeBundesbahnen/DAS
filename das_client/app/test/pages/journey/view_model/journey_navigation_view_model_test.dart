@@ -4,7 +4,6 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -12,8 +11,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
+import '../../../../integration_test/mocks/mock_local_key_value_store.dart';
 import '../../../test_util.dart';
+import '../../login/login_view_model_test.mocks.dart';
+import '../journey_screen/view_model/departure_dispatch_notification_view_model_test.mocks.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>(), MockSpec<LocalKeyValueStore>()])

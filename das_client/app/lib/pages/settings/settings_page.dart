@@ -1,10 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:user_properties/component.dart';
 
 @RoutePage()
 class SettingsPage extends StatefulWidget {
@@ -75,6 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _decisiveGradientSettings(BuildContext context) {
+    //TODO add the request to the backend OR idk how but the cached stuff and make it to the dto
+    //UserPropertyModel
     return SBBSwitchListItemBoxed(
       key: SettingsPage.decisiveGradientSwitchKey,
       titleText: context.l10n.p_settings_page_decisive_gradient_show_setting,

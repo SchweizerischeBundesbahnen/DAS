@@ -3,10 +3,10 @@ import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/service_point_portal.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('LauncherImpl');
 

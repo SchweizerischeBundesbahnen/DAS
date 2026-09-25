@@ -5,11 +5,11 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('JourneyNavigationViewModel');
 

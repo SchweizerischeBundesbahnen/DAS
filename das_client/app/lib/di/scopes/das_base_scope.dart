@@ -6,7 +6,6 @@ import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/login/login_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/time_constants.dart';
@@ -21,6 +20,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 import 'package:warnapp/component.dart';
 
 final _log = Logger('DASBaseScope');

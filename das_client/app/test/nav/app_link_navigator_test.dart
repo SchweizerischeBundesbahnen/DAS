@@ -6,7 +6,6 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:core_data/component.dart';
@@ -15,7 +14,12 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
+import '../../integration_test/mocks/mock_app_links_manager.dart';
+import '../../integration_test/mocks/mock_local_key_value_store.dart';
+import '../../integration_test/mocks/mock_train_identification_repository.dart';
+import '../pages/journey/view_model/journey_view_model_test.mocks.dart';
 import 'app_link_navigator_test.mocks.dart';
 
 @GenerateNiceMocks([

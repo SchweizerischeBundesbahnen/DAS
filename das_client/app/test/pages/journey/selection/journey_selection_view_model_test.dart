@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:core_data/component.dart';
@@ -13,7 +12,11 @@ import 'package:mockito/mockito.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
+import '../../../../integration_test/mocks/mock_local_key_value_store.dart';
+import '../../../../integration_test/mocks/mock_settings_repository.dart';
+import '../../../../integration_test/mocks/mock_train_identification_repository.dart';
 import 'journey_selection_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([

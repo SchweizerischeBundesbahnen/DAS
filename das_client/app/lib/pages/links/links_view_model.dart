@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:external_links/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('LinksViewModel');
 

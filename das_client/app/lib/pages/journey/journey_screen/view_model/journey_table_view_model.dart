@@ -14,12 +14,12 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('JourneyTableViewModel');
 

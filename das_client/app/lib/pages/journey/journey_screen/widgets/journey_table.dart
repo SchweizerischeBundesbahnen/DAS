@@ -47,7 +47,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart'
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/assets.dart';
@@ -62,6 +61,7 @@ import 'package:provider/provider.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 class JourneyTable extends StatelessWidget {
   const JourneyTable({super.key});

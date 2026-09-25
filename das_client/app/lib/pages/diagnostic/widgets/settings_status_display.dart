@@ -1,9 +1,9 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:user_properties/component.dart';
 
 class SettingsStatusDisplay extends StatelessWidget {
   static const _iconSize = 20.0;

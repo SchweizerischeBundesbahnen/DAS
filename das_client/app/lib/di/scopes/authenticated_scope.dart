@@ -11,7 +11,6 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/timed_route_provider.dart';
@@ -32,6 +31,7 @@ import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 

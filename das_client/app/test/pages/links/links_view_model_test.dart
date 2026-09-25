@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/links/links_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:user_properties/component.dart';
 
+import '../../../integration_test/mocks/mock_external_links_repository.dart';
+import '../../../integration_test/mocks/mock_launcher.dart';
+import '../../../integration_test/mocks/mock_local_key_value_store.dart';
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
 
@@ -34,7 +37,7 @@ void main() {
   setUp(() async {
     mockExternalLinksRepository = MockExternalLinksRepository();
     mockLocalKeyValueStore = MockLocalKeyValueStore();
-    mockLauncher = MockLauncher();
+    mockLauncher = MockLauncher(userSettings: null, flavor: null);
     linksController = StreamController<List<ExternalLink>>.broadcast();
 
     when(mockLocalKeyValueStore.companyCodes).thenReturn(const []);
