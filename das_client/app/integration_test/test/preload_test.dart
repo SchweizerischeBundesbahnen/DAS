@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/diagnostic/widgets/preload_status_display.dart';
-import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:core_data/component.dart';
@@ -67,9 +66,9 @@ void main() {
 
     final preloadRepository = DI.get<PreloadRepository>() as MockPreloadRepository;
 
-    // Navigate to diagnostic page
+    // Navigate to support page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_diagnostic_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_support_title));
 
     final preloadStatusTitleFinder = find.text(l10n.w_preload_status_title);
     expect(preloadStatusTitleFinder, findsOneWidget);
@@ -147,7 +146,7 @@ void main() {
       company: Company(code: '1285', shortName: 'SBBP'),
     );
     await stopAutomaticAdvancement(tester);
-    await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+    await closeJourney(tester);
 
     // Force MQTT connection to fail so offline state gets forced;
     final mqttConnector = DI.get<MqttClientConnector>() as MqttClientUserConnector;

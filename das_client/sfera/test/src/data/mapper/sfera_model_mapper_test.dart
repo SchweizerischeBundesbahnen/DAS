@@ -1731,33 +1731,20 @@ void main() {
 
     // Genève-Aéroport
     final geneveAirport = servicePoints[0];
-    final geneveAirportRegulations = geneveAirport.localRegulationSections;
-    expect(geneveAirportRegulations, hasLength(1));
-    final geneveAirportTitle = geneveAirportRegulations.first.title;
-    expect(geneveAirportTitle.de, 'GEAP Genf Flughafen');
-    expect(geneveAirportTitle.fr, 'GEAP Genève Aéroport');
-    expect(geneveAirportTitle.it, 'GEAP Aeroporto di Ginevra');
-    final geneveAirportContent = geneveAirportRegulations.first.content;
-    expect(geneveAirportContent.de, '<div>Inhalt</div>');
-    expect(geneveAirportContent.fr, '<div>Contenu</div>');
-    expect(geneveAirportContent.it, '<div>Contenuto</div>');
+    final geneveAirportSegmentsIds = geneveAirport.localRegulationSegmentIds;
+    expect(geneveAirportSegmentsIds, hasLength(1));
+    expect(geneveAirportSegmentsIds.first, 'RL_701');
 
     // Genève
     final geneve = servicePoints[1];
-    final geneveRegulations = geneve.localRegulationSections;
-    expect(geneveRegulations, hasLength(1));
-    final geneveTitle = geneveRegulations.first.title;
-    expect(geneveTitle.de, 'ZR Titel');
-    expect(geneveTitle.fr, isNull);
-    expect(geneveTitle.it, isNull);
-    final geneveContent = geneveRegulations.first.content;
-    expect(geneveContent.de, '<div>Test</div>');
-    expect(geneveContent.fr, isNull);
-    expect(geneveContent.it, isNull);
+    final geneveSegmentIds = geneve.localRegulationSegmentIds;
+    expect(geneveSegmentIds, hasLength(2));
+    expect(geneveSegmentIds[0], 'RL_702');
+    expect(geneveSegmentIds[1], 'RL_703');
 
     // Coppet
     final coppet = servicePoints[2];
-    expect(coppet.localRegulationSections, isEmpty);
+    expect(coppet.localRegulationSegmentIds, isEmpty);
   });
 
   test('Test between brackets is parsed correctly', () {
@@ -1779,19 +1766,18 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
-    expect(servicePoints, hasLength(9));
+    expect(servicePoints, hasLength(11));
     final additionalServicePoints = servicePoints.where((point) => point.isAdditional).toList();
-    expect(additionalServicePoints, hasLength(6));
+    expect(additionalServicePoints, hasLength(8));
 
-    // Olten Nord (Abzw) should not be listed as it is not at start/end of route or speed relevant
-    // Olten VL should be ignored as ADL is not applied to additional service points
-    // Bern Hidden Stop and Olten Hidden Stop should be listed as they are stops
     expect(additionalServicePoints[0].name, 'Bern (Depot)');
     expect(additionalServicePoints[1].name, 'Bern Hidden Stop');
     expect(additionalServicePoints[2].name, 'Olten Ost (Abzw)');
-    expect(additionalServicePoints[3].name, 'Olten Tunnel (Spw)');
-    expect(additionalServicePoints[4].name, 'Olten Hidden Stop');
-    expect(additionalServicePoints[5].name, 'Dulliken (Depot)');
+    expect(additionalServicePoints[3].name, 'Olten VL');
+    expect(additionalServicePoints[4].name, 'Olten Nord (Abzw)');
+    expect(additionalServicePoints[5].name, 'Olten Tunnel (Spw)');
+    expect(additionalServicePoints[6].name, 'Olten Hidden Stop');
+    expect(additionalServicePoints[7].name, 'Dulliken (Depot)');
 
     // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
@@ -2077,7 +2063,7 @@ void main() {
     expect(suspiciousPoints[1].kilometre, equals([]));
     expect(suspiciousPoints[1].spId, equals('T40_4'));
 
-    // No regular BaseData should exist within the suspicious segments
+    // No regular BaseData should exist within the segment
     final suspiciousSegments = journey.metadata.suspiciousSegments;
     final dataInSuspiciousSegments = journey.data.where(
       (p) => p is! SuspiciousJourneyPoint && suspiciousSegments.any((s) => s.appliesToOrder(p.order)),

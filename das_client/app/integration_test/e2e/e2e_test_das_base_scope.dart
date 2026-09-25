@@ -35,6 +35,7 @@ class E2ETestDASBaseScope extends DASBaseScope {
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
     getIt.registerAppLifecycleViewModel();
+    getIt.registerValidationModeViewModel();
 
     await getIt.allReady();
   }

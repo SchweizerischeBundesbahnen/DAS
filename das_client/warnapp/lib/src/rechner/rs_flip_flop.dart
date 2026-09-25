@@ -2,7 +2,10 @@ class RSFlipFlop {
   RSFlipFlop(int sizeSet, int sizeReset, [this.minimaleAnzahlZwischenZweiSets = 0])
     : _lastSet = List<bool>.filled(sizeSet, false),
       _lastReset = List<bool>.filled(sizeReset, false),
-      _updatesCountLetzteErkanntePositiveSchwelle = double.maxFinite.toInt();
+      _updatesCountLetzteErkanntePositiveSchwelle = _kNoPositiveSchwelle;
+
+  // Sentinel value, corresponds to NSUIntegerMax in the original.
+  static final int _kNoPositiveSchwelle = double.maxFinite.toInt();
 
   List<bool> _lastSet;
   List<bool> _lastReset;
@@ -27,8 +30,9 @@ class RSFlipFlop {
     if (_lastSet.length != valuesSet.length) {
       throw Exception('Länge von SET ist ${valuesSet.length} erwartet wird ${_lastSet.length}');
     }
-    final changedSetIndex = 0;
-    if (_hasChanged(_lastSet, valuesSet, changedSetIndex)) {
+    final setChangeIndex = _firstRisingEdgeIndex(_lastSet, valuesSet);
+    if (setChangeIndex != null) {
+      changedSetIndex = setChangeIndex;
       state = true;
     }
     _lastSet = valuesSet;
@@ -37,19 +41,20 @@ class RSFlipFlop {
     if (_lastReset.length != valuesReset.length) {
       throw Exception('Länge von RESET ist ${valuesReset.length} erwartet wird ${_lastReset.length}');
     }
-    final changedResetIndex = 0;
-    if (_hasChanged(_lastReset, valuesReset, changedResetIndex)) {
+    final resetChangeIndex = _firstRisingEdgeIndex(_lastReset, valuesReset);
+    if (resetChangeIndex != null) {
+      changedResetIndex = resetChangeIndex;
       state = false;
     }
     _lastReset = valuesReset;
 
-    // Schwellenerkennung
+    // Threshold detection
     positiveSchwelleErkannt = !oldState && state;
 
-    // Anzahl Samples zwischen zwei PositivenSchwellen prüfen
+    // Check number of samples between two positive thresholds
     bool doSoftset = false;
     if (positiveSchwelleErkannt) {
-      if (_updatesCountLetzteErkanntePositiveSchwelle != double.maxFinite.toInt() &&
+      if (_updatesCountLetzteErkanntePositiveSchwelle != _kNoPositiveSchwelle &&
           _updatesCount - _updatesCountLetzteErkanntePositiveSchwelle < minimaleAnzahlZwischenZweiSets) {
         doSoftset = true;
         positiveSchwelleErkannt = false;
@@ -58,42 +63,42 @@ class RSFlipFlop {
       }
     }
 
-    // Softset
-    final changedSoftSetIndex = 0;
-    if (!state && _hasPositivValue(valuesSoftSet, changedSoftSetIndex)) {
+    // Soft set
+    final softSetPositivIndex = _firstPositivIndex(valuesSoftSet);
+    if (!state && softSetPositivIndex != null) {
       state = true;
       softSetErkannt = true;
-      this.changedSoftSetIndex = changedSoftSetIndex;
+      changedSoftSetIndex = softSetPositivIndex;
     } else if (doSoftset) {
       softSetErkannt = true;
-      this.changedSoftSetIndex = valuesSoftSet.length + 1;
+      changedSoftSetIndex = valuesSoftSet.length + 1;
     } else {
       softSetErkannt = false;
     }
 
-    // negative Schwellenerkennung
+    // Negative threshold detection
     negativeSchwelleErkannt = oldState && !state;
   }
 
-  // TODO: firstPositivIndex does nothing, could be port error as changedSoftSetIndex is also class variable. Check with original source
-  bool _hasPositivValue(List<bool> newValues, int firstPositivIndex) {
+  /// Returns the 1-based index of the first positive value, otherwise null.
+  /// Corresponds to hasPositivValue:firstPositivIndex: in the original.
+  int? _firstPositivIndex(List<bool> newValues) {
     for (int i = 0; i < newValues.length; i++) {
       if (newValues[i]) {
-        firstPositivIndex = i + 1;
-        return true;
+        return i + 1;
       }
     }
-    return false;
+    return null;
   }
 
-  // TODO: changedIndex does nothing, could be port error as changedSetIndex is a class variable. Check with original source
-  bool _hasChanged(List<bool> lastValues, List<bool> newValues, int changedIndex) {
+  /// Returns the 1-based index of the first rising edge, otherwise null.
+  /// Corresponds to hasChanged:other:changedIndex: in the original.
+  int? _firstRisingEdgeIndex(List<bool> lastValues, List<bool> newValues) {
     for (int i = 0; i < newValues.length; i++) {
       if (!lastValues[i] && newValues[i]) {
-        changedIndex = i + 1;
-        return true;
+        return i + 1;
       }
     }
-    return false;
+    return null;
   }
 }

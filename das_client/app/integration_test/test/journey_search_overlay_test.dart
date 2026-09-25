@@ -1,10 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
-import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
-import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:core_data/component.dart';
@@ -28,20 +26,20 @@ void main() {
 
       // closed by default - should show journeySearch icon with key
       expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       // open
       await _openJourneySearchOverlayByTap(tester);
 
       // opened
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsAny);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
 
       // close
       await _closeJourneySearchOverlayByTap(tester);
 
       // closed
       expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
-      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+      expect(find.byKey(SBBPopover.closeButtonKey), findsNothing);
 
       await disconnect(tester);
     });
@@ -103,6 +101,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until T2 opened
         await waitUntilExists(
@@ -114,8 +113,7 @@ void main() {
         expect(find.byType(NavigationButtons), findsNothing);
 
         // pause auto advancement
-        final pauseButton = find.byKey(JourneyAdvancementButton.pauseKey);
-        await tapElement(tester, pauseButton);
+        await stopAutomaticAdvancement(tester);
         await tester.pumpAndSettle(Duration(milliseconds: 300));
 
         // navigation buttons still not displayed
@@ -159,6 +157,7 @@ void main() {
           matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
         );
         await tapElement(tester, primaryButton);
+        await confirmCloseJourneyDialogIfShown(tester);
 
         // wait until on JourneySelectionPage
         await waitUntilExists(tester, find.byType(JourneySelectionPage));
@@ -168,16 +167,6 @@ void main() {
         expect(find.text('T2, SBBI'), findsOneWidget);
         expect(find.text('T2, BLSI'), findsOneWidget);
         expect(find.text('T2, THURBO'), findsNothing);
-
-        await tester.pumpAndSettle(Duration(milliseconds: 300));
-
-        await openDrawer(tester);
-        await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
-        expect(find.byType(ProfilePage), findsOneWidget);
-
-        await openDrawer(tester);
-        await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
-        expect(find.byType(JourneySelectionPage), findsOneWidget);
 
         await disconnect(tester);
       },

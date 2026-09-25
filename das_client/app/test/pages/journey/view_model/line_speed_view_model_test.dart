@@ -184,6 +184,34 @@ void main() {
       ResolvedTrainSeriesSpeed.none(),
     );
   });
+
+  test('test explicit brakeSeries parameter takes precedence over settings', () async {
+    expect(
+      testee.getResolvedSpeedForOrder(0, brakeSeries: BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100)),
+      ResolvedTrainSeriesSpeed(
+        speed: TrainSeriesSpeed(
+          trainSeries: .A,
+          speed: SingleSpeed(value: '100'),
+          brakedWeightPercentage: 100,
+        ),
+        isPrevious: false,
+      ),
+    );
+  });
+
+  test('test explicit brakeSeries parameter resolves previous speed independently per series', () async {
+    expect(
+      testee.getResolvedSpeedForOrder(18, brakeSeries: BrakeSeries(trainSeries: .A, brakedWeightPercentage: 100)),
+      ResolvedTrainSeriesSpeed(
+        speed: TrainSeriesSpeed(
+          trainSeries: .A,
+          speed: SingleSpeed(value: '100'),
+          brakedWeightPercentage: 100,
+        ),
+        isPrevious: true,
+      ),
+    );
+  });
 }
 
 Future<void> processStreams() async => await Future.delayed(Duration.zero);

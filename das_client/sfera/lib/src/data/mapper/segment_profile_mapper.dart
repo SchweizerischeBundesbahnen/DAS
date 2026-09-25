@@ -8,9 +8,7 @@ import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -156,7 +154,7 @@ class SegmentProfileMapper._() {
           trackGroup: routeTableData?.trackGroup,
           departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
-          localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
+          localRegulationSegmentIds: _parseLocalRegulationTree(tafTapLocation.localRegulations),
           locationCode: tafTapLocation.locationIdent.locationCode,
           lastModificationDate: tafTapLocation.lastModificationDate,
           lastModificationType: tafTapLocation.lastModificationType?.modificationType,
@@ -599,13 +597,8 @@ class SegmentProfileMapper._() {
     }).toList();
   }
 
-  static List<LocalRegulationSection> _parseLocalRegulationSegments(Iterable<LocalRegulationNspDto> localRegulations) {
-    return localRegulations.map((dto) {
-      return LocalRegulationSection(
-        title: dto.titles.toLocalizedString,
-        content: dto.contents.toLocalizedString,
-      );
-    }).toList();
+  static List<String> _parseLocalRegulationTree(Iterable<LocalRegulationTafTapLocationNspDto> localRegulations) {
+    return localRegulations.map((dto) => dto.languageNeutralTree).nonNulls.expand((it) => it.split(';')).toList();
   }
 
   static DepartureAuthorization? _parseDepartureAuthorization(DepartureAuthNspDto? departureAuthNsp) {

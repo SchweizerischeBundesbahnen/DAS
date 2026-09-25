@@ -26,6 +26,7 @@ class BrakeSeriesSelectionButton extends StatelessWidget {
         : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
       child: Stack(
         clipBehavior: .none,
         children: [

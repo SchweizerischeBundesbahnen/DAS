@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.userproperties.internal;
 
+import ch.sbb.das.backend.common.UserDataService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import tools.jackson.databind.json.JsonMapper;
 
 @Service
 @RequiredArgsConstructor
-class UserPropertyServiceImpl {
+class UserPropertyServiceImpl implements UserDataService {
 
     static final int MAX_VALUE_LENGTH = 4096;
 
@@ -53,7 +54,16 @@ class UserPropertyServiceImpl {
         userPropertyRepository.deleteByOidAndKey(oid, key);
     }
 
+    @Override
+    @Transactional
+    public int deleteAllByOids(List<String> oids) {
+        if (oids.isEmpty()) {
+            return 0;
+        }
+        return (int) userPropertyRepository.deleteByOidIn(oids);
+    }
+
     private UserProperty toUserProperty(UserPropertyEntity entity) {
-        return new UserProperty(entity.getKey(), jsonMapper.readTree(entity.getValue()), entity.getLastModifiedAt());
+        return new UserProperty(entity.getKey(), jsonMapper.readTree(entity.getValue()));
     }
 }

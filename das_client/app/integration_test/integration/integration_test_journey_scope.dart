@@ -27,6 +27,7 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.registerShortTermChangeViewModel();
     getIt.registerSuspiciousSegmentViewModel();
     getIt.registerLineSpeedViewModel();
+    getIt.registerMultiLineSpeedViewModel();
     getIt.registerCalculatedSpeedViewModel();
     getIt.registerAdvisedSpeedViewModel();
     getIt.registerChronographViewModel();
@@ -38,6 +39,7 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerServicePointModalViewModel();
+    getIt.registerJourneyFilterViewModel();
 
     await getIt.allReady();
   }

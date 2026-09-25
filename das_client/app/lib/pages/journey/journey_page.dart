@@ -15,6 +15,7 @@ import 'package:app/pages/journey/view_model/model/extended_train_identification
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
+import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
@@ -142,6 +143,8 @@ class _DismissJourneyButton extends StatelessWidget {
     key: JourneyPage.disconnectButtonKey,
     icon: const Icon(SBBIcons.train_small),
     onPressed: () async {
+      if (!await confirmCloseJourney(context) || !context.mounted) return;
+
       DASTableRowBuilder.clearRowKeys();
 
       DI.get<JourneySelectionViewModel>().dismissSelection();

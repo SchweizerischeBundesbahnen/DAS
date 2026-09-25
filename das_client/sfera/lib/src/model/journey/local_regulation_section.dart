@@ -1,14 +1,14 @@
-import 'package:core_data/component.dart';
 import 'package:meta/meta.dart';
 
-@sealed
 @immutable
 class const LocalRegulationSection({
-  required final LocalizedString title,
-  required final LocalizedString content,
+  required final String id,
+  required final String? title,
+  required final String? content,
+  final String? children,
 }) {
   @override
   String toString() {
-    return 'LocalRegulationSection{title: $title, content: $content}';
+    return 'LocalRegulationSection{id: $id, title: $title, content: $content, children: $children}';
   }
 }

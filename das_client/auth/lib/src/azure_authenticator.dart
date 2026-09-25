@@ -222,6 +222,9 @@ class AzureAuthenticator({
 
   @override
   Stream<bool> get reauthenticationRequired => _reauthenticationRequiredSubject.distinct();
+
+  @override
+  bool get reauthenticationRequiredValue => _reauthenticationRequiredSubject.value;
 }
 
 extension _OidcTokenExtension on OidcToken {

@@ -19,6 +19,7 @@ class JourneyViewModel({
   Stream<Journey?> get journey => _rxJourney.stream;
 
   Stream<String?> get formattedTrainIdentifier => _rxFormattedTrainIdentifier.stream;
+  String? get formattedTrainIdentifierValue => _rxFormattedTrainIdentifier.value;
 
   Journey? get journeyValue => _rxJourney.value;
 

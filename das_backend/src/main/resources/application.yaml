@@ -122,7 +122,7 @@ formation:
     topic: ${FORMATION_KAFKA_TOPIC}
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3
-    older-than-days: 100
+    older-than-days: 30
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
@@ -178,6 +178,11 @@ admin:
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 90
+
+user-activity:
+  clean-up:
+    cron: 0 0 3 * * ?  # every day at 3
+    older-than-days: 180
 
 tour-systems:
   entries:

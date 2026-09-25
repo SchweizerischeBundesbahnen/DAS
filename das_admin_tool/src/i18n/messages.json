@@ -86,6 +86,7 @@
     "ru_feature_toggles_key_label_customer_oriented_departure_process": "Kundenorientierter Abfahrprozess (KoA)",
     "ru_feature_toggles_key_label_checklist_departure_process": "Checkliste Abfahrprozess",
     "ru_feature_toggles_key_label_display_planned_time_deviation": "Planzeitabweichung",
+    "ru_feature_toggles_key_label_display_brake_load_slip_brake_details": "Bremsdetails in Bremszettel",
     "ru_admin_title": "EVU Admin DAS",
     "ru_admin_tab_ru_indications": "Hinweise",
     "ru_admin_tab_ru_indication_templates": "Titel und Texte",

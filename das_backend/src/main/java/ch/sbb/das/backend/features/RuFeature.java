@@ -9,7 +9,7 @@ public record RuFeature(
     CompanyCode companyCode,
 
     @Schema(description = "The identifier of the feature.",
-        examples = {"WARNAPP", "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", "CHECKLIST_DEPARTURE_PROCESS"})
+        examples = {"WARNAPP", "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", "CHECKLIST_DEPARTURE_PROCESS", "DISPLAY_PLANNED_TIME_DEVIATION", "DISPLAY_BRAKE_LOAD_SLIP_BRAKE_DETAILS"})
     String key,
 
     @Schema(description = "Toggle indicating whether the feature is enabled.",

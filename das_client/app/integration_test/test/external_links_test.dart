@@ -1,9 +1,7 @@
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
@@ -12,7 +10,9 @@ import '../util/test_utils.dart';
 
 void main() {
   group('links page tests', () {
-    testWidgets('externalLinks_whenNoRuSelected_thenShowsEmptyState|yWizuavbVmWzQn5OoqIE|tests:147', (tester) async {
+    testWidgets('externalLinks_whenNoCompanySelected_thenShowsEmptyState|yWizuavbVmWzQn5OoqIE|tests:147', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
       await openDrawer(tester);
@@ -30,46 +30,48 @@ void main() {
       expect(find.text('ESQ'), findsNothing);
     });
 
-    testWidgets('externalLinks_whenRuSelectedInProfile_thenShowsLinks|vNfgpqG3Ma8VUpXenmkY|tests:147', (tester) async {
-      await IntegrationTestApp.start(tester);
-
-      // Navigate to Profile and select SBB CH
-      await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
-
-      await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
-
-      // Search for SBB CH in the filter field and select it
-      await enterText(tester, find.byKey(SelectCompanyModal.filterFieldKey), companySBBCH.shortName);
-      await tapElement(tester, find.text(companySBBCH.shortName).last);
-
-      // Close the modal
-      await tapElement(
+    testWidgets(
+      'externalLinks_whenCompanySelectedInSettingsPage_thenShowsCorrectLinks|vNfgpqG3Ma8VUpXenmkY|tests:147',
+      (
         tester,
-        find.byWidgetPredicate(
-          (it) => it is IconButton && it.icon is Icon && (it.icon as Icon).icon == SBBIcons.cross_small,
-        ),
-      );
-      await tester.pumpAndSettle(Duration(seconds: 1));
+      ) async {
+        await IntegrationTestApp.start(tester);
 
-      // Navigate to Links page
-      await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_links_title));
+        // Navigate to settings and select SBB CH
+        await openDrawer(tester);
+        await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
 
-      // Verify links are displayed
-      expect(find.byType(LinksPage), findsOneWidget);
-      expect(find.text(l10n.p_links_no_content), findsNothing);
-      expect(find.text('Bahnhofportal'), findsOneWidget);
-      expect(find.text('V-APP'), findsOneWidget);
-      expect(find.text('ESQ'), findsOneWidget);
-    });
+        await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
 
-    testWidgets('externalLinks_whenRuSelectionChanges_thenUpdatesLinks|MzF1gipYtU39GeQHCZcA|tests:147', (tester) async {
+        // Search for SBB CH in the filter field and select it
+        await enterText(tester, find.byKey(SelectCompanyModal.filterFieldKey), companySBBCH.shortName);
+        await tapElement(tester, find.text(companySBBCH.shortName).last);
+
+        // Confirm the selection
+        await tapElement(tester, find.byKey(SelectCompanyModal.confirmButtonKey));
+        await tester.pumpAndSettle(Duration(seconds: 1));
+
+        // Navigate to Links page
+        await openDrawer(tester);
+        await tapElement(tester, find.text(l10n.w_navigation_drawer_links_title));
+
+        // Verify links are displayed
+        expect(find.byType(LinksPage), findsOneWidget);
+        expect(find.text(l10n.p_links_no_content), findsNothing);
+        expect(find.text('Bahnhofportal'), findsOneWidget);
+        expect(find.text('V-APP'), findsOneWidget);
+        expect(find.text('ESQ'), findsOneWidget);
+      },
+    );
+
+    testWidgets('externalLinks_whenCompanySelectionChanges_thenUpdatesLinks|MzF1gipYtU39GeQHCZcA|tests:147', (
+      tester,
+    ) async {
       await IntegrationTestApp.start(tester);
 
-      // Navigate to Profile and select DB
+      // Navigate to settings and select DB
       await openDrawer(tester);
-      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
 
       await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
 
@@ -77,13 +79,8 @@ void main() {
       await enterText(tester, find.byKey(SelectCompanyModal.filterFieldKey), companyDB.shortName);
       await tapElement(tester, find.text(companyDB.shortName).last);
 
-      // Close the modal
-      await tapElement(
-        tester,
-        find.byWidgetPredicate(
-          (it) => it is IconButton && it.icon is Icon && (it.icon as Icon).icon == SBBIcons.cross_small,
-        ),
-      );
+      // Confirm the selection
+      await tapElement(tester, find.byKey(SelectCompanyModal.confirmButtonKey));
       await tester.pumpAndSettle(Duration(seconds: 1));
 
       // Navigate to Links page

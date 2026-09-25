@@ -13,7 +13,7 @@ class SegmentProfileReferenceDto({super.type = elementType, super.attributes, su
 
   String get versionMajor => attributes['SP_VersionMajor']!;
 
-  String get versionMinor => attributes['SP_VersionMinor']!;
+  String get versionMinor => attributes['SP_VersionMinor'] ?? '';
 
   SpZoneDto get spZone => children.whereType<SpZoneDto>().first;
 

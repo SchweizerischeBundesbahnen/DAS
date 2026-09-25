@@ -95,10 +95,10 @@ public record FormationRun(
     @Schema(description = "Total number of vehicles (without traction unit(s)) in the formation.", requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesCount,
 
-    @Schema(description = "Number of vehicles in the formation whose brake block design is L, LL or K.", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "Number of vehicles in the formation whose brake block design is L, LL or K. Vehicles with disabled brakes are not counted.", requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignLAndLlAndKCount,
 
-    @Schema(description = "Number of vehicles in the formation whose brake design is D.", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "Number of vehicles in the formation whose brake design is D. Vehicles with disabled brakes are not counted.", requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignDCount,
 
     @Schema(description = "Number of vehicles in the formation whose brakes are disabled.", requiredMode = RequiredMode.REQUIRED)

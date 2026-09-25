@@ -47,6 +47,21 @@ void main() {
     return File(path).readAsStringSync();
   }
 
+  String wrapReplyMessage(String payloadXml) {
+    final normalizedPayload = payloadXml.replaceFirst(RegExp(r'<\?xml[^>]*\?>\s*'), '');
+    return '''<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA.xsd">
+    <MessageHeader SFERA_version="4.00" message_ID="test-message-id" timestamp="2026-01-01T10:52:46Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_ReplyPayload>
+$normalizedPayload
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>
+''';
+  }
+
   setUp(() {
     mockMqttService = MockMqttService();
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
@@ -74,7 +89,7 @@ void main() {
     );
   });
 
-  test('should start connecting when connect is called', () async {
+  test('connect_whenCalled_thenStartsConnecting', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
@@ -106,7 +121,7 @@ void main() {
     ).called(1);
   });
 
-  test('should publish disconnected when mqtt connection fails', () async {
+  test('connect_whenMqttConnectionFails_thenPublishesDisconnected', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => false);
 
@@ -128,7 +143,7 @@ void main() {
     expect(testee.lastError, isA<ConnectionFailed>());
   });
 
-  test('should disconnect and set state to disconnected', () async {
+  test('disconnect_whenCalled_thenSetsStateToDisconnected', () async {
     // WHEN
     await testee.disconnect();
 
@@ -137,7 +152,7 @@ void main() {
     expect(testee.stateStream, emits(SferaRemoteRepositoryState.disconnected));
   });
 
-  test('should start loading journey profile after handshake', () async {
+  test('connect_whenHandshakeSucceeds_thenStartsLoadingJourneyProfile', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
@@ -180,7 +195,7 @@ void main() {
     ).called(1);
   });
 
-  test('should disconnect on handshake reject', () async {
+  test('connect_whenHandshakeIsRejected_thenDisconnects', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
@@ -217,55 +232,58 @@ void main() {
     ).called(1);
   });
 
-  test('should start loading segment profile and train characteristics after jp response', () async {
-    // GIVEN
-    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
-    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+  test(
+    'connect_whenJourneyProfileResponseIsReceived_thenStartsLoadingSegmentProfilesAndTrainCharacteristics',
+    () async {
+      // GIVEN
+      when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+      when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+      when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
-    // LATER THEN
-    expectLater(
-      testee.stateStream,
-      emitsInOrder(<SferaRemoteRepositoryState>[
-        .disconnected, // seeded state
-        .connecting,
-      ]),
-    );
+      // LATER THEN
+      expectLater(
+        testee.stateStream,
+        emitsInOrder(<SferaRemoteRepositoryState>[
+          .disconnected, // seeded state
+          .connecting,
+        ]),
+      );
 
-    // WHEN
-    await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+      // WHEN
+      await testee.connect(trainId);
+      // Wait till async tasks are finished
+      await Future.delayed(Duration(milliseconds: 1));
 
-    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+      final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+      mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-    mqttSubject.add(jpResponse);
+      final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+      mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    // THEN
-    verify(mockMqttService.connect(any, any)).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<SP_Request')),
-      ),
-    ).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<TC_Request')),
-      ),
-    ).called(1);
-  });
+      // THEN
+      verify(mockMqttService.connect(any, any)).called(1);
+      verify(
+        mockMqttService.publishMessage(
+          any,
+          any,
+          argThat(contains('<SP_Request')),
+        ),
+      ).called(1);
+      verify(
+        mockMqttService.publishMessage(
+          any,
+          any,
+          argThat(contains('<TC_Request')),
+        ),
+      ).called(1);
+    },
+  );
 
-  test('should be loaded after finishing SP und TC Tasks', () async {
+  test('connect_whenSegmentProfileAndTrainCharacteristicsTasksFinish_thenLoadsJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -340,7 +358,7 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
   });
 
-  test('should refresh journey after event', () async {
+  test('handleEventMessage_whenJourneyUpdateEventIsReceived_thenRefreshesJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -420,87 +438,90 @@ void main() {
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
   });
 
-  test('should reload SP and TC after new JP', () async {
-    // GIVEN
-    final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
-    final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
-    final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
-    final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
+  test(
+    'handleEventMessage_whenNewJourneyProfileIsReceived_thenReloadsSegmentProfilesAndTrainCharacteristics',
+    () async {
+      // GIVEN
+      final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
+      final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
+      final tcResponse = loadFile('test_resources/SFERA_G2B_Reply_TC_request_9315.xml');
+      final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
 
-    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
-    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
-    when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
-      (_) => Future.value(
-        SegmentProfileTableData(
-          spId: '842-2',
-          majorVersion: '1',
-          minorVersion: '0',
-          xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+      when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+      when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+      when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+      when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
+        (_) => Future.value(
+          SegmentProfileTableData(
+            spId: '842-2',
+            majorVersion: '1',
+            minorVersion: '0',
+            xmlData: parsedSPResponse.payload!.segmentProfiles.first.toString(),
+          ),
         ),
-      ),
-    );
-    when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
-      (_) => Future.value(
-        TrainCharacteristicsTableData(
-          tcId: 'T9135',
-          majorVersion: '1',
-          minorVersion: '0',
-          xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+      );
+      when(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).thenAnswer(
+        (_) => Future.value(
+          TrainCharacteristicsTableData(
+            tcId: 'T9135',
+            majorVersion: '1',
+            minorVersion: '0',
+            xmlData: parsedTCResponse.payload!.trainCharacteristics.first.toString(),
+          ),
         ),
-      ),
-    );
+      );
 
-    // LATER THEN
-    expectLater(
-      testee.stateStream,
-      emitsInOrder(<SferaRemoteRepositoryState>[
-        .disconnected, // seeded state
-        .connecting,
-        .connected,
-      ]),
-    );
-    expectLater(
-      testee.journeyStream,
-      emitsInOrder([
-        isNull, // seeded state
-        isNotNull,
-        isNotNull,
-      ]),
-    );
+      // LATER THEN
+      expectLater(
+        testee.stateStream,
+        emitsInOrder(<SferaRemoteRepositoryState>[
+          .disconnected, // seeded state
+          .connecting,
+          .connected,
+        ]),
+      );
+      expectLater(
+        testee.journeyStream,
+        emitsInOrder([
+          isNull, // seeded state
+          isNotNull,
+          isNotNull,
+        ]),
+      );
 
-    // WHEN
-    await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+      // WHEN
+      await testee.connect(trainId);
+      // Wait till async tasks are finished
+      await Future.delayed(Duration(milliseconds: 1));
 
-    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+      final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+      mqttSubject.add(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-    mqttSubject.add(jpResponse);
+      final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
+      mqttSubject.add(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
+      mqttSubject.add(spResponse);
+      mqttSubject.add(tcResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    final jpEvent = loadFile('test_resources/SFERA_G2B_Event_JP_9315.xml');
-    mqttSubject.add(jpEvent);
+      final jpEvent = loadFile('test_resources/SFERA_G2B_Event_JP_9315.xml');
+      mqttSubject.add(jpEvent);
 
-    await Future.delayed(Duration(milliseconds: 1));
+      await Future.delayed(Duration(milliseconds: 1));
 
-    // THEN
-    verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(6);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(7);
-  });
+      // THEN
+      verify(mockMqttService.connect(any, any)).called(1);
+      verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(6);
+      verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(7);
+    },
+  );
 
-  test('should send session termination on disconnect', () async {
+  test('disconnect_whenConnected_thenSendsSessionTermination', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -585,7 +606,7 @@ void main() {
     ).called(1);
   });
 
-  test('should connect offline when mqtt connection fails', () async {
+  test('connect_whenMqttConnectionFails_thenLoadsOfflineJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -658,7 +679,7 @@ void main() {
     testee.dispose();
   });
 
-  test('should connect offline when task fails', () async {
+  test('connect_whenTaskFails_thenLoadsOfflineJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -739,7 +760,7 @@ void main() {
     testee.dispose();
   });
 
-  test('should reconnect when mqtt connection is available again', () async {
+  test('connect_whenConnectivityIsAvailableAgain_thenReconnects', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -839,7 +860,7 @@ void main() {
     testee.dispose();
   });
 
-  test('connect_whenOnlyPartialSegmentProfilesReplied_thenRetryMaximumNumberOfTimesBeforeAborting', () async {
+  test('connect_whenOnlyPartialSegmentProfilesAreReplied_thenRetriesMaximumNumberOfTimesBeforeAborting', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
@@ -887,7 +908,7 @@ void main() {
     expectLater(testee.lastError, equals(SferaError.invalid()));
   });
 
-  test('connect_whenOnlySecondReplyOtherSPs_thenResetsRetryCounter', () async {
+  test('connect_whenSubsequentReplyContainsOtherSegmentProfiles_thenResetsRetryCounter', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
@@ -980,7 +1001,7 @@ void main() {
     expect(testee.lastError, equals(SferaError.invalid()));
   });
 
-  test('should reconnect when offline and reauthentication required changes to false', () async {
+  test('connect_whenOfflineAndReauthenticationRequiredChangesToFalse_thenReconnects', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -1056,5 +1077,94 @@ void main() {
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
     testee.dispose();
+  });
+
+  test('connect_whenJourneyIsLoaded_thenRequestsLocalRegulations', () async {
+    // GIVEN
+    final t26TrainId = TrainIdentification(
+      companyCode: '1285',
+      trainNumber: 'T26',
+      date: DateTime(2025, 6, 17),
+    );
+    final t26JpResponse = wrapReplyMessage(loadFile('test_resources/T26_local_regulations/SFERA_JP_T26.xml'));
+    final spXml = loadFile('test_resources/T26_local_regulations/SFERA_SP_T26_1.xml');
+    final spResponse = wrapReplyMessage(spXml);
+    final tcXml = loadFile('test_resources/T26_local_regulations/SFERA_TC_T26_1.xml');
+    final tcResponse = wrapReplyMessage(tcXml);
+
+    when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+    when(mockLocalDatabaseRepository.findSegmentProfile('T26_1', '1', '0')).thenAnswer(
+      (_) async => SegmentProfileTableData(
+        spId: 'T26_1',
+        majorVersion: '1',
+        minorVersion: '0',
+        xmlData: spXml,
+      ),
+    );
+    when(mockLocalDatabaseRepository.findSegmentProfile(argThat(startsWith('RL_')), '0', ''))
+        .thenAnswer((_) async => null);
+    when(mockLocalDatabaseRepository.findTrainCharacteristics('T26_1', '1', '0')).thenAnswer(
+      (_) async => TrainCharacteristicsTableData(
+        tcId: 'T26_1',
+        majorVersion: '1',
+        minorVersion: '0',
+        xmlData: tcXml,
+      ),
+    );
+
+    // LATER THEN
+    expectLater(
+      testee.stateStream,
+      emitsInOrder(<SferaRemoteRepositoryState>[
+        .disconnected, // seeded state
+        .connecting,
+        .connected,
+      ]),
+    );
+    expectLater(
+      testee.journeyStream,
+      emitsInOrder([
+        isNull, // seeded state
+        isNotNull,
+      ]),
+    );
+
+    // WHEN
+    await testee.connect(t26TrainId);
+    // Wait till async tasks are finished
+    await Future.delayed(Duration(milliseconds: 1));
+
+    final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    mqttSubject.add(handshakeResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(t26JpResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+
+    mqttSubject.add(spResponse);
+    mqttSubject.add(tcResponse);
+
+    await Future.delayed(Duration(milliseconds: 1));
+    await Future.delayed(Duration(milliseconds: 1));
+
+    // THEN
+    verify(mockMqttService.connect(any, any)).called(1);
+
+    final publishedMessages = verify(mockMqttService.publishMessage(any, any, captureAny)).captured.cast<String>();
+    final localRegulationRequest = publishedMessages.firstWhere(
+      (message) =>
+          message.contains('SP_ID="RL_701_DE"') &&
+          message.contains('SP_ID="RL_702_DE"') &&
+          message.contains('SP_ID="RL_703_DE"'),
+    );
+    expect(localRegulationRequest, contains('<SP_Request'));
+    expect(localRegulationRequest, contains('SP_ID="RL_701_DE"'));
+    expect(localRegulationRequest, contains('SP_ID="RL_702_DE"'));
+    expect(localRegulationRequest, contains('SP_ID="RL_703_DE"'));
+    expect(localRegulationRequest, contains('SP_VersionMajor="0"'));
   });
 }

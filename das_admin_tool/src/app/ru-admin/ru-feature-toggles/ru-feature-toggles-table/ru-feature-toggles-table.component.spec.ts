@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RuFeature } from '~ru-admin/ru-admin-api';
+import { RU_FEATURE_KEY_LABELS, RuFeature } from '~ru-admin/ru-admin-api';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { RuFeatureService } from '../ru-feature.service';
 import { RuFeatureTogglesTable } from './ru-feature-toggles-table.component';
@@ -63,6 +63,13 @@ describe('RuFeatureTogglesTable', () => {
     it('should return a label for a known key', () => {
       const comp = createComponent();
       expect(comp['featureKeyLabel']('WARNAPP')).toBeTruthy();
+    });
+
+    it('should return a label for every known key', () => {
+      const comp = createComponent();
+      for (const { value, label } of RU_FEATURE_KEY_LABELS()) {
+        expect(comp['featureKeyLabel'](value)).toBe(label);
+      }
     });
   });
 

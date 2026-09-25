@@ -4,6 +4,7 @@ import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/src/build_context_x.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/pages/login/widgets/login_button.dart';
@@ -28,6 +29,7 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
 
   final flavor = DI.get<Flavor>();
   final _appInfo = DI.get<AppInfo>();
+  final _validationModeViewModel = DI.get<ValidationModeViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -82,17 +84,38 @@ class _LoginDraggableBottomSheetState extends State<LoginDraggableBottomSheet> {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        StreamBuilder(
-          stream: vm.model,
-          initialData: vm.modelValue,
-          builder: (context, asyncSnapshot) {
-            final model = asyncSnapshot.requireData;
-            return SBBSwitchListItemBoxed(
-              titleText: context.l10n.p_login_connect_to_tms,
-              value: model.connectToTmsVad,
-              onChanged: vm.setConnectToTmsVad,
-            );
-          },
+        SBBContentBox(
+          child: Column(
+            crossAxisAlignment: .start,
+            children: SBBDivider.divideItems(
+              context: context,
+              items: [
+                StreamBuilder(
+                  stream: vm.model,
+                  initialData: vm.modelValue,
+                  builder: (context, asyncSnapshot) {
+                    final model = asyncSnapshot.requireData;
+                    return SBBSwitchListItem(
+                      titleText: context.l10n.p_login_connect_to_tms,
+                      value: model.connectToTmsVad,
+                      onChanged: vm.setConnectToTmsVad,
+                    );
+                  },
+                ),
+                StreamBuilder(
+                  stream: _validationModeViewModel.validationMode,
+                  initialData: _validationModeViewModel.validationModeValue,
+                  builder: (context, asyncSnapshot) {
+                    return SBBSwitchListItem(
+                      titleText: context.l10n.p_login_validation_mode,
+                      value: asyncSnapshot.requireData,
+                      onChanged: (_) => _validationModeViewModel.toggleValidationMode(),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
         SizedBox(height: SBBSpacing.xLarge),
         RichText(

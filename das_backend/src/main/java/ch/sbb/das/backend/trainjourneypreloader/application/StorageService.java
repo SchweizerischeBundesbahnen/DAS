@@ -1,6 +1,8 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
+import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
@@ -102,7 +104,11 @@ public class StorageService {
                 writeSegmentsToZip(fileId, batch);
 
                 for (SegmentProfile sp : batch) {
-                    toSave.add(PreloadedSegmentProfileEntity.builder().spIdVersion(String.format("%s_%s_%s", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor())).lastSeen(now).fileId(fileId)
+                    toSave.add(PreloadedSegmentProfileEntity.builder()
+                        .spIdVersion(SegmentProfileIdentification.from(sp).toIdVersionString())
+                        .lastSeen(now)
+                        .fileId(fileId)
+                        .relatedLrSpIdVersions(relatedLrSpIdVersions(sp))
                         .build());
                 }
 
@@ -148,9 +154,16 @@ public class StorageService {
 
     private void writeSps(Collection<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
-            String filename = String.format("SP_%s_%s_%s.xml", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor());
+            String filename = String.format("SP_%s.xml", SegmentProfileIdentification.from(sp).toIdVersionString());
             writeXmlEntry(zos, DIR_SP + filename, sp);
         }
+    }
+
+    private List<String> relatedLrSpIdVersions(SegmentProfile sp) {
+        return LocalRegulations.extractSpIds(sp).stream()
+            .map(SegmentProfileIdentification::toIdVersionString)
+            .sorted()
+            .toList();
     }
 
     private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {

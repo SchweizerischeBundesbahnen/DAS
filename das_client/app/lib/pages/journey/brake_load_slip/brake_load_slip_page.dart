@@ -42,6 +42,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             notificationViewModel: DI.get(),
             formationRepository: DI.get(),
             launcher: DI.get(),
+            ruFeatureProvider: DI.get(),
             journeySettingsViewModel: settingsVM,
             updateOnPositionUpdate: false,
           );
@@ -124,7 +125,7 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
             ],
           ),
         ),
-        Expanded(child: _loadDetailsColumn(formationRunChange)),
+        Expanded(child: _loadDetailsColumn(context, formationRunChange)),
       ],
     );
   }
@@ -138,14 +139,21 @@ class BrakeLoadSlipPage extends StatelessWidget implements AutoRouteWrapper {
     );
   }
 
-  Widget _loadDetailsColumn(FormationRunChange formationRun) {
-    return Column(
-      spacing: SBBSpacing.medium,
-      children: [
-        BrakeLoadSlipBrakeDetails(formationRunChange: formationRun),
-        BrakeLoadSlipSpecialRestrictions(formationRunChange: formationRun),
-        BrakeLoadSlipHauledLoadDetails(formationRunChange: formationRun),
-      ],
+  Widget _loadDetailsColumn(BuildContext context, FormationRunChange formationRun) {
+    final viewModel = context.read<BrakeLoadSlipViewModel>();
+
+    return FutureBuilder(
+      future: viewModel.isBrakeDetailsFeatureEnabled,
+      builder: (context, snapshot) {
+        return Column(
+          spacing: SBBSpacing.medium,
+          children: [
+            if (snapshot.data == true) BrakeLoadSlipBrakeDetails(formationRunChange: formationRun),
+            BrakeLoadSlipSpecialRestrictions(formationRunChange: formationRun),
+            BrakeLoadSlipHauledLoadDetails(formationRunChange: formationRun),
+          ],
+        );
+      },
     );
   }
 }

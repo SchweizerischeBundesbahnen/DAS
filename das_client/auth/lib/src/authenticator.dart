@@ -15,4 +15,6 @@ abstract class const Authenticator._() {
   Future<void> endSession();
 
   Stream<bool> get reauthenticationRequired;
+
+  bool get reauthenticationRequiredValue;
 }

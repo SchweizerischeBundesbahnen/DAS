@@ -32,11 +32,11 @@ public class SferaApplicationService {
     private final JourneyProfileRepository journeyProfileRepository;
     private final SegmentProfileRepository segmentProfileRepository;
     private final TrainCharacteristicsRepository trainCharacteristicsRepository;
-    private final EventRepository eventRepository;
+    private final RelatedTrainInformationRepository relatedTrainInformationRepository;
 
     public SferaApplicationService(ReplyPublisher replyPublisher, RequestContextRepository requestContextRepository, OperationModeSelector operationModeSelector,
         RegistrationService registrationService, JourneyProfileRepository journeyProfileRepository, SegmentProfileRepository segmentProfileRepository,
-        TrainCharacteristicsRepository trainCharacteristicsRepository, EventRepository eventRepository) {
+        TrainCharacteristicsRepository trainCharacteristicsRepository, RelatedTrainInformationRepository relatedTrainInformationRepository) {
         this.replyPublisher = replyPublisher;
         this.requestContextRepository = requestContextRepository;
         this.operationModeSelector = operationModeSelector;
@@ -44,7 +44,7 @@ public class SferaApplicationService {
         this.journeyProfileRepository = journeyProfileRepository;
         this.segmentProfileRepository = segmentProfileRepository;
         this.trainCharacteristicsRepository = trainCharacteristicsRepository;
-        this.eventRepository = eventRepository;
+        this.relatedTrainInformationRepository = relatedTrainInformationRepository;
     }
 
     private static JourneyProfile unavailableJourneyProfile() {
@@ -142,9 +142,8 @@ public class SferaApplicationService {
         var correlationId = UUID.randomUUID();
         requestContextRepository.storeRequestContext(correlationId, requestContext);
 
-        List<RelatedTrainInformation> relatedTrainInformations = trainIdentifications.stream().map(trainIdentification ->
-                eventRepository.getRelatedTrainInformation(trainIdentification).orElse(null))
-            .filter(Objects::nonNull)
+        List<RelatedTrainInformation> relatedTrainInformations = trainIdentifications.stream()
+            .map(relatedTrainInformationRepository::getRelatedTrainInformation)
             .toList();
 
         publishRelatedTrainInformations(relatedTrainInformations, correlationId, requestContext);
@@ -193,11 +192,7 @@ public class SferaApplicationService {
     }
 
     private void publishRelatedTrainInformationsResponse(List<RelatedTrainInformation> relatedTrainInformations, RequestContext requestContext) {
-        if (!relatedTrainInformations.isEmpty()) {
-            replyPublisher.publishRelatedTrainInformations(relatedTrainInformations, requestContext);
-        } else {
-            replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
-        }
+        replyPublisher.publishRelatedTrainInformations(relatedTrainInformations, requestContext);
     }
 
     private void publishOk(RequestContext requestContext) {

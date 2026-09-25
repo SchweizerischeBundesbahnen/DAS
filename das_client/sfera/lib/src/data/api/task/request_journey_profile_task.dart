@@ -27,6 +27,8 @@ class RequestJourneyProfileTask({
 
   @override
   Future<void> execute(TaskCompleted<List<dynamic>> onCompleted, TaskFailed onFailed) async {
+    if (isCancelled) return;
+
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
@@ -53,6 +55,8 @@ class RequestJourneyProfileTask({
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (isCancelled) return false;
+
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

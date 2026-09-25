@@ -1,7 +1,7 @@
+import 'package:app/di/di.dart';
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/journey_screen/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_position_view_model.dart';
@@ -14,6 +14,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_poi
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
@@ -42,7 +43,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static double calculateHeight(ServicePoint data, BrakeSeries? currentBrakeSeries) {
     final properties = data.propertiesFor(currentBrakeSeries);
 
-    if (properties.isEmpty) return baseRowHeight;
+    if (properties.isEmpty || _hideStationProperties) return baseRowHeight;
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
@@ -73,6 +74,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required BuildContext context,
     this.highlightNextStop = true,
     super.config,
+    double? height,
     super.key,
     Color? rowColor,
   }) : super(
@@ -81,7 +83,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
            chevronAnimationColor: _resolveChevronAnimationColor(context, journeyPosition, data),
          ),
          stickyLevel: .first,
-         height: calculateHeight(data, config.settings.currentBrakeSeries),
+         height: height ?? calculateHeight(data, config.settings.currentBrakeSeries),
          onStartToEndDragReached: () {
            context.read<JourneyPositionViewModel>().setManualPosition(data);
            context.read<JourneyTableAdvancementViewModel>().setAdvancementModeToManual();
@@ -121,10 +123,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(super.kilometreCell(context));
   }
 
-  Stream<bool> isModalOpenStream(BuildContext context) => context.read<DetailModalViewModel>().isModalOpen;
-
-  bool isModalOpenValue(BuildContext context) => context.read<DetailModalViewModel>().isModalOpenValue;
-
   @override
   DASTableCell informationCell(BuildContext context) {
     ShortTermChange? shortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).getHighestPriority;
@@ -145,8 +143,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         crossAxisAlignment: .start,
         children: [
           ServicePointInformationCellTitle(
-            isModalOpenValue: isModalOpenValue(context),
-            isModalOpenStream: isModalOpenStream(context),
             name: data.betweenBrackets ? '(${data.name})' : data.name,
             foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
             isStation: data.isStation,
@@ -326,6 +322,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   List<Widget> _stationProperties(BuildContext context) {
+    if (_hideStationProperties) return [];
+
     final currentBrakeSeries = config.settings.currentBrakeSeries;
     final properties = data.propertiesFor(currentBrakeSeries);
     if (properties.isEmpty) return [];
@@ -398,4 +396,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (_isNextStop) return null;
     return super.specialCellColor;
   }
+
+  static bool get _hideStationProperties => DI.get<ValidationModeViewModel>().validationModeValue;
 }

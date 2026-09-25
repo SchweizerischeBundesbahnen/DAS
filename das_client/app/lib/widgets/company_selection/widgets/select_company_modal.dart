@@ -10,52 +10,55 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class SelectCompanyModal extends StatefulWidget {
   static const modalKey = Key('SelectCompanyModal');
   static const filterFieldKey = Key('SelectCompanyModalFilterField');
+  static const confirmButtonKey = Key('SelectCompanyModalConfirmButton');
   static const shapeBorder = RoundedRectangleBorder(borderRadius: .vertical(top: .circular(SBBSpacing.medium)));
 
   const SelectCompanyModal({
     required this.availableCompanies,
     required this.selectedCompanyCodes,
-    required this.updateCompanies,
+    required this.onCompaniesUpdated,
     super.key,
-    this.allowMultiSelect = false,
+    this.multiSelect = false,
   });
 
   final List<Company> availableCompanies;
   final List<String> selectedCompanyCodes;
-  final void Function(List<Company>) updateCompanies;
-  final bool allowMultiSelect;
+  final void Function(List<Company>) onCompaniesUpdated;
+  final bool multiSelect;
 
   @override
   State<SelectCompanyModal> createState() => _SelectCompanyModalState();
 }
 
 class _SelectCompanyModalState extends State<SelectCompanyModal> {
-  SelectCompanyModalController? controller;
+  late final SelectCompanyModalController controller;
   final ScrollController scrollController = ScrollController();
 
   @override
+  void initState() {
+    controller = SelectCompanyModalController(
+      availableCompanies: widget.availableCompanies,
+      onCompaniesUpdated: widget.onCompaniesUpdated,
+      initialCompanyCodes: widget.selectedCompanyCodes,
+    );
+    super.initState();
+  }
+
+  @override
   void didUpdateWidget(covariant SelectCompanyModal oldWidget) {
-    if (widget.selectedCompanyCodes != oldWidget.selectedCompanyCodes) {
-      controller?.selectedCompanyCodes = widget.selectedCompanyCodes;
+    if (!const ListEquality().equals(widget.selectedCompanyCodes, oldWidget.selectedCompanyCodes)) {
+      controller.selectedCompanyCodes = widget.selectedCompanyCodes;
+    }
+    if (!const ListEquality().equals(widget.availableCompanies, oldWidget.availableCompanies)) {
+      controller.availableCompanies = widget.availableCompanies;
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  void didChangeDependencies() {
-    controller ??= SelectCompanyModalController(
-      availableCompanies: widget.availableCompanies,
-      updateCompanies: widget.updateCompanies,
-      initialCompanyCodes: widget.selectedCompanyCodes,
-      allowMultiSelect: widget.allowMultiSelect,
-    );
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     scrollController.dispose();
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -63,39 +66,44 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
   Widget build(BuildContext context) {
     final bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return StreamBuilder(
-      stream: controller?.filteredCompanies,
+      stream: controller.filteredCompanies,
       builder: (context, snap) {
         final filteredCompanies = snap.data ?? [];
         final backgroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
           padding: .only(bottom: bottomInsets),
           child: SBBRadioGroup<String>(
-            groupValue: widget.selectedCompanyCodes.firstOrNull,
+            groupValue: controller.selectedCompanyCodes.firstOrNull,
             onChanged: (selectedCompany) {
-              if (selectedCompany != null) controller?.selectedCompanyCodes = [selectedCompany];
+              if (selectedCompany != null) controller.selectedCompanyCodes = [selectedCompany];
+              controller.confirmSelection();
               context.router.pop(selectedCompany);
             },
-            child: CustomScrollView(
-              key: SelectCompanyModal.modalKey,
-              controller: scrollController,
-              physics: ClampingScrollPhysics(),
-              slivers: [
-                _sliverHeader(backgroundColor),
-                SliverPadding(
-                  padding: const .symmetric(vertical: SBBSpacing.medium),
-                  sliver: SliverList.list(
-                    children: SBBDivider.divideItems(
-                      context: context,
-                      items: filteredCompanies
-                          .map(
-                            (company) => widget.allowMultiSelect
-                                ? _checkboxListItem(company, backgroundColor)
-                                : _radioListItem(company, backgroundColor),
-                          )
-                          .toList(),
-                    ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: CustomScrollView(
+                    key: SelectCompanyModal.modalKey,
+                    controller: scrollController,
+                    physics: ClampingScrollPhysics(),
+                    slivers: [
+                      _sliverHeader(backgroundColor),
+                      SliverList.list(
+                        children: SBBDivider.divideItems(
+                          context: context,
+                          items: filteredCompanies
+                              .map(
+                                (company) => widget.multiSelect
+                                    ? _checkboxListItem(company, backgroundColor)
+                                    : _radioListItem(company, backgroundColor),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                if (widget.multiSelect) _confirmButton(context),
               ],
             ),
           ),
@@ -116,9 +124,9 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
             children: [
               Expanded(
                 child: SBBTextInput(
-                  decoration: SBBInputDecoration(labelText: context.l10n.p_train_selection_company_description),
+                  decoration: SBBInputDecoration(leadingIconData: SBBIcons.filter_small),
                   key: SelectCompanyModal.filterFieldKey,
-                  controller: controller?.textEditingController,
+                  controller: controller.textEditingController,
                   keyboardType: .text,
                   autofocus: true,
                 ),
@@ -130,6 +138,20 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _confirmButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall).copyWith(bottom: SBBSpacing.medium),
+      child: SBBPrimaryButton(
+        key: SelectCompanyModal.confirmButtonKey,
+        labelText: context.l10n.c_button_confirm,
+        onPressed: () {
+          controller.confirmSelection();
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
@@ -146,15 +168,10 @@ class _SelectCompanyModalState extends State<SelectCompanyModal> {
   Widget _checkboxListItem(Company element, Color backgroundColor) {
     return SBBCheckboxListItem(
       key: ValueKey(element),
-      value: widget.selectedCompanyCodes.contains(element.code),
+      value: controller.selectedCompanyCodes.contains(element.code),
       titleText: element.shortName,
       onChanged: (isSelected) {
-        if (isSelected != null && isSelected) {
-          widget.selectedCompanyCodes.add(element.code);
-        } else {
-          widget.selectedCompanyCodes.remove(element.code);
-        }
-        controller?.selectedCompanyCodes = widget.selectedCompanyCodes;
+        controller.toggleCompany(element.code, isSelected: isSelected ?? false);
         setState(() {});
       },
       listItemStyle: SBBListItemStyle(backgroundColor: WidgetStatePropertyAll(backgroundColor)),
