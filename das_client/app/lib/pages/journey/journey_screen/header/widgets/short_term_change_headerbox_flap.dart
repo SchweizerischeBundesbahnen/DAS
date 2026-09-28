@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/model/short_t
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/main_header_box.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,17 +48,21 @@ class ShortTermChangeHeaderBoxFlap extends StatelessWidget {
 
         return Padding(
           key: hasShortTermChangeKey,
-          padding: const EdgeInsets.only(left: SBBSpacing.medium, bottom: SBBSpacing.xSmall),
+          padding: const EdgeInsets.only(left: SBBSpacing.medium, bottom: SBBSpacing.xSmall, right: SBBSpacing.xSmall),
           child: Row(
             mainAxisSize: .min,
             spacing: SBBSpacing.xSmall,
             children: [
               _warnIcon(),
-              Text(
+              Text.rich(
                 key: model is SingleShortTermChange ? singleShortTermChangeKey : multipleShortTermChangeKey,
-                model.toLocalizedDisplayString(context),
-                style: sbbTextStyle.small.boldStyle.copyWith(color: SBBColors.white),
+                TextUtil.parseHtmlTextWithMarkdownLinks(
+                  model.toLocalizedDisplayString(context),
+                  sbbTextStyle.small.copyWith(color: SBBColors.white),
+                ),
               ),
+              Spacer(),
+              ?model.trailingIcon(),
             ],
           ),
         );
@@ -92,5 +97,19 @@ extension _ShortTermChangeModelX on ShortTermChangeModel {
         },
       MultipleShortTermChanges() => context.l10n.w_short_term_change_headerbox_flap_multiple_changes,
     };
+  }
+
+  Widget? trailingIcon() {
+    if (this is SingleShortTermChange) {
+      final shortTermChangeType = (this as SingleShortTermChange).shortTermChangeType;
+      if (shortTermChangeType == ShortTermChangeType.endDestination) {
+        return SvgPicture.asset(
+          AppAssets.iconUturnTurquoise,
+          colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
+        );
+      }
+    }
+
+    return null;
   }
 }
