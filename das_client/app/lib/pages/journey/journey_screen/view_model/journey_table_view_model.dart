@@ -211,10 +211,12 @@ class JourneyTableViewModel({
   }
 
   void acknowledgeModification(Modification modification) {
+    _log.info('Acknowledging modification: $modification');
     _acknowledgedModificationRepository.insert(modification);
   }
 
   void undoModificationAcknowledgement(Modification modification) {
+    _log.info('Undoing acknowledgement of modification: $modification');
     _acknowledgedModificationRepository.delete(modification);
   }
 }
