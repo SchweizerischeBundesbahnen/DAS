@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ru_indications/component.dart';
@@ -560,6 +561,172 @@ void main() {
       expect(result.whereType<Signal>(), hasLength(1));
       expect(result.whereType<OperationalIndication>(), isEmpty);
       expect(result.whereType<RuIndication>(), isEmpty);
+    },
+  );
+
+  test(
+    'hideAcknowledgedDeletedRows_whenShowAcknowledgedModificationsIsTrue_thenKeepsAllRows',
+    () {
+      // GIVEN
+      final modDeleted = Modification(
+        identifier: 'mod1',
+        date: DateTime(2025, 1, 1),
+        type: ModificationType.deleted,
+      );
+      final baseData = <BaseData>[
+        ServicePoint(
+          name: 'Bern',
+          abbreviation: 'BRN',
+          locationCode: 'BRN',
+          order: 100,
+          kilometre: [10.0],
+          modification: modDeleted,
+        ),
+        Signal(order: 200, kilometre: [20.0], modification: modDeleted),
+        OperationalIndication(order: 100, texts: ['Hinweis']),
+      ];
+      final settings = JourneySettings(showAcknowledgedModifications: true);
+
+      // WHEN
+      final result = baseData.hideAcknowledgedDeletedRows({modDeleted}, settings).toList();
+
+      // THEN
+      expect(result, hasLength(3));
+      expect(result, equals(baseData));
+    },
+  );
+
+  test(
+    'hideAcknowledgedDeletedRows_whenAcknowledgedModificationsIsEmpty_thenKeepsAllRows',
+    () {
+      // GIVEN
+      final modDeleted = Modification(
+        identifier: 'mod1',
+        date: DateTime(2025, 1, 1),
+        type: ModificationType.deleted,
+      );
+      final baseData = <BaseData>[
+        ServicePoint(
+          name: 'Bern',
+          abbreviation: 'BRN',
+          locationCode: 'BRN',
+          order: 100,
+          kilometre: [10.0],
+          modification: modDeleted,
+        ),
+        Signal(order: 200, kilometre: [20.0]),
+      ];
+      final settings = JourneySettings(showAcknowledgedModifications: false);
+
+      // WHEN
+      final result = baseData.hideAcknowledgedDeletedRows({}, settings).toList();
+
+      // THEN
+      expect(result, hasLength(2));
+      expect(result, equals(baseData));
+    },
+  );
+
+  test(
+    'hideAcknowledgedDeletedRows_whenJourneyPointIsDeletedAndAcknowledged_thenHidesOnlyAcknowledgedDeletedRows',
+    () {
+      // GIVEN
+      final modDeletedAcknowledged = Modification(
+        identifier: 'mod1',
+        date: DateTime(2025, 1, 1),
+        type: ModificationType.deleted,
+      );
+      final modDeletedNotAcknowledged = Modification(
+        identifier: 'mod2',
+        date: DateTime(2025, 1, 2),
+        type: ModificationType.deleted,
+      );
+      final acknowledgedServicePoint = ServicePoint(
+        name: 'Bern',
+        abbreviation: 'BRN',
+        locationCode: 'BRN',
+        order: 100,
+        kilometre: [10.0],
+        modification: modDeletedAcknowledged,
+      );
+      final unacknowledgedServicePoint = ServicePoint(
+        name: 'Olten',
+        abbreviation: 'OLT',
+        locationCode: 'OLT',
+        order: 200,
+        kilometre: [20.0],
+        modification: modDeletedNotAcknowledged,
+      );
+      final normalSignal = Signal(order: 300, kilometre: [30.0]);
+      final operationalIndication = OperationalIndication(order: 100, texts: ['Hinweis']);
+
+      final baseData = <BaseData>[
+        acknowledgedServicePoint,
+        unacknowledgedServicePoint,
+        normalSignal,
+        operationalIndication,
+      ];
+      final settings = JourneySettings(showAcknowledgedModifications: false);
+
+      // WHEN
+      final result = baseData.hideAcknowledgedDeletedRows({modDeletedAcknowledged}, settings).toList();
+
+      // THEN
+      expect(result, hasLength(3));
+      expect(result, containsAllInOrder([unacknowledgedServicePoint, normalSignal, operationalIndication]));
+      expect(result, isNot(contains(acknowledgedServicePoint)));
+    },
+  );
+
+  test(
+    'hideAcknowledgedDeletedRows_whenJourneyPointModificationIsNotDeleted_thenKeepsRows',
+    () {
+      // GIVEN
+      final modUpdated = Modification(
+        identifier: 'mod1',
+        date: DateTime(2025, 1, 1),
+        type: ModificationType.updated,
+      );
+      final servicePoint = ServicePoint(
+        name: 'Bern',
+        abbreviation: 'BRN',
+        locationCode: 'BRN',
+        order: 100,
+        kilometre: [10.0],
+        modification: modUpdated,
+      );
+      final baseData = <BaseData>[servicePoint];
+      final settings = JourneySettings(showAcknowledgedModifications: false);
+
+      // WHEN
+      final result = baseData.hideAcknowledgedDeletedRows({modUpdated}, settings).toList();
+
+      // THEN
+      expect(result, hasLength(1));
+      expect(result.first, servicePoint);
+    },
+  );
+
+  test(
+    'hideAcknowledgedDeletedRows_whenDataIsNotJourneyPoint_thenKeepsRows',
+    () {
+      // GIVEN
+      final operationalIndication = OperationalIndication(order: 100, texts: ['Hinweis']);
+      final ruIndication = RuIndication(order: 200, title: 'RU', text: 'Text');
+      final baseData = <BaseData>[operationalIndication, ruIndication];
+      final settings = JourneySettings(showAcknowledgedModifications: false);
+      final mod = Modification(
+        identifier: 'mod1',
+        date: DateTime(2025, 1, 1),
+        type: ModificationType.deleted,
+      );
+
+      // WHEN
+      final result = baseData.hideAcknowledgedDeletedRows({mod}, settings).toList();
+
+      // THEN
+      expect(result, hasLength(2));
+      expect(result, equals(baseData));
     },
   );
 }

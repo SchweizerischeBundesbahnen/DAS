@@ -363,6 +363,8 @@ extension JourneyScopeExtension on GetIt {
     registerSingleton<JourneyFilterViewModel>(
       JourneyFilterViewModel(
         journeyViewModel: DI.get(),
+        acknowledgedModificationRepository: DI.get(),
+        journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

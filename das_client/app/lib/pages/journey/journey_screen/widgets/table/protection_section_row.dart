@@ -22,7 +22,6 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
     required super.chevronPosition,
     super.key,
     super.config,
-    super.showModificationOnInformationCell,
     super.onDoubleTap,
   }) : super(decoration: DASTableRowDecoration(color: DASColors.protectionSectionBackground));
 
@@ -42,7 +41,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
 
   Widget _kilometreText(BuildContext context) {
     return DASBadgeOverlay(
-      badgeVisible: data.hasModificationUpdated && showModificationOnInformationCell && config.showModification,
+      badgeVisible: data.hasModificationUpdated && config.showModification,
       badgeOffset: Offset(0, -SBBSpacing.small),
       badge: const ModificationIcon(),
       child: Text(

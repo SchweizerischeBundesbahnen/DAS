@@ -149,6 +149,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             isStation: data.isStation,
             trackGroup: data.trackGroup,
             shortTermChange: shortTermChange,
+            showModification: data.hasModificationUpdated && config.showModification,
           ),
           ..._stationProperties(context),
         ],

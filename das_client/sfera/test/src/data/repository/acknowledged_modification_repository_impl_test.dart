@@ -34,7 +34,7 @@ void main() {
       type: ModificationType.updated,
     );
 
-    final expectation = expectLater(testee.acknowledgedModifications.skip(1), emits({modification}));
+    final expectation = expectLater(testee.model.skip(1), emits({modification}));
     modificationsSubject.add({modification});
     await expectation;
   });

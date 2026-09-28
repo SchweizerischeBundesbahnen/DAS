@@ -174,6 +174,7 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerAcknowledgedModificationRepository() {
     registerSingleton<AcknowledgedModificationRepository>(
       SferaComponent.createAcknowledgedModificationRepository(),
+      dispose: (repo) => repo.dispose(),
     );
   }
 

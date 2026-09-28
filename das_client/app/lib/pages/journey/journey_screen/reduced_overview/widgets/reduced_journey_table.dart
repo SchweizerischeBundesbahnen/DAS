@@ -90,18 +90,22 @@ class ReducedJourneyTable extends StatelessWidget {
     double leftOffsetToInformationCell,
   ) {
     final settingsVM = DI.get<JourneySettingsViewModel>();
+    final settings = settingsVM.modelValue;
+
     final baseData = model.journeyTableRowData;
+    final acknowledgedModifications = model.acknowledgedModifications;
 
     final journeyPosition = JourneyPositionModel();
     final chevronPosition = ChevronPositionModel();
 
     final List<DASTableRowBuilder?> builders = List.generate(baseData.length, (rowIndex) {
       final rowData = baseData[rowIndex];
+      final modification = rowData is JourneyPoint ? rowData.modification : null;
 
       final journeyConfig = JourneyConfig(
         bracketStationRenderData: BracketStationRenderData.from(data: rowData, metadata: model.journeyMetadata),
-        settings: settingsVM.modelValue,
-        showModification: true,
+        settings: settings,
+        showModification: settings.showAcknowledgedModifications || !acknowledgedModifications.contains(modification),
       );
 
       switch (rowData.dataType) {
@@ -142,7 +146,7 @@ class ReducedJourneyTable extends StatelessWidget {
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
-            showModificationOnInformationCell: true,
+            config: journeyConfig,
           );
         case .protectionSection:
           return ProtectionSectionRow(
@@ -152,7 +156,7 @@ class ReducedJourneyTable extends StatelessWidget {
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
-            showModificationOnInformationCell: true,
+            config: journeyConfig,
           );
         case .signal:
           return SignalRow(
@@ -162,7 +166,7 @@ class ReducedJourneyTable extends StatelessWidget {
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
-            showModificationOnInformationCell: true,
+            config: journeyConfig,
           );
         case .speedChange:
           return SpeedChangeRow(
@@ -172,7 +176,7 @@ class ReducedJourneyTable extends StatelessWidget {
             rowIndex: rowIndex,
             journeyPosition: journeyPosition,
             chevronPosition: chevronPosition,
-            showModificationOnInformationCell: true,
+            config: journeyConfig,
           );
         case .operationalIndication:
           return IndicationRow(

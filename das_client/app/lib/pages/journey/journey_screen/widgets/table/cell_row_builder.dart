@@ -19,8 +19,6 @@ import 'package:app/pages/journey/journey_validation/multi_line_speed_cell_body.
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_badge_overlay.dart';
-import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -54,7 +52,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
     this.isGrouped = false,
-    this.showModificationOnInformationCell = false,
   });
 
   final Alignment defaultAlignment;
@@ -67,7 +64,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final VoidCallback? onStartToEndDragReached;
   final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
   final bool isGrouped;
-  final bool showModificationOnInformationCell;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -118,19 +114,14 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
-      child: DASBadgeOverlay(
-        badgeVisible: data.hasModificationUpdated && config.showModification,
-        badgeOffset: Offset(0, -SBBSpacing.small),
-        badge: const ModificationIcon(),
-        child: Column(
-          mainAxisAlignment: .end,
-          crossAxisAlignment: .start,
-          mainAxisSize: .min,
-          children: [
-            Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
-            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: .end,
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
+        ],
       ),
       alignment: .bottomLeft,
     );
