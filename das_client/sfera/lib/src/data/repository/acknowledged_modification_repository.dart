@@ -1,8 +1,6 @@
 import 'package:sfera/src/model/modification.dart';
 
-abstract class AcknowledgedModificationRepository {
-  const AcknowledgedModificationRepository._();
-
+abstract class const AcknowledgedModificationRepository._() {
   Stream<Set<Modification>> get model;
 
   Set<Modification> get modelValue;

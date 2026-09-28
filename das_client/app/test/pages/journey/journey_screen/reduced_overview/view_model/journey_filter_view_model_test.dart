@@ -76,7 +76,7 @@ void main() {
       kilometre: const [],
       modification: Modification(
         identifier: '301',
-        type: ModificationType.deleted,
+        type: .deleted,
         date: DateTime.now().add(const Duration(days: -31)),
       ),
     );
@@ -87,7 +87,7 @@ void main() {
     final modifiedSignal = Signal(
       order: 700,
       kilometre: const [],
-      modification: Modification(identifier: '700', type: ModificationType.updated, date: DateTime.now()),
+      modification: Modification(identifier: '700', type: .updated, date: DateTime.now()),
     );
 
     final journey = Journey(
@@ -308,7 +308,7 @@ void main() {
 
   test('model_whenDeletedProtectionSectionIsAcknowledged_thenExcludesFromProtectionSections', () async {
     // GIVEN a deleted protection section (deleted within 30 days so !shouldHide is true)
-    final modification = Modification(identifier: 'ps-1', type: ModificationType.deleted, date: DateTime.now());
+    final modification = Modification(identifier: 'ps-1', type: .deleted, date: DateTime.now());
     final protectionSection = ProtectionSection(
       isOptional: false,
       isLong: false,

@@ -1922,7 +1922,7 @@ void main() {
     expect(signals[2].isDeleted, true);
     expect(
       signals[2].modification,
-      Modification(identifier: 'D1', date: DateTime(2050, 1, 1), type: ModificationType.deleted),
+      Modification(identifier: 'D1', date: DateTime(2050, 1, 1), type: .deleted),
     );
     expect(signals[3].lastModificationDate, DateTime(2024, 1, 1));
     expect(signals[3].lastModificationType, ModificationType.updated);
@@ -1976,7 +1976,7 @@ void main() {
       Modification(
         identifier: 'T35_1_Normal_station_970.0',
         date: DateTime(2024, 1, 1),
-        type: ModificationType.deleted,
+        type: .deleted,
       ),
     );
 

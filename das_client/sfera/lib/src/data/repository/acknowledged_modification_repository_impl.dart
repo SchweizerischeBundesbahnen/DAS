@@ -8,17 +8,12 @@ import 'package:sfera/src/model/journey/journey_point.dart';
 import 'package:sfera/src/model/modification.dart';
 
 class AcknowledgedModificationRepositoryImpl({
-  required this._databaseService,
+  required final SferaLocalDatabaseService _databaseService,
 }) implements AcknowledgedModificationRepository {
   this {
-    _streamSubscription = _databaseService.observeModifications().listen(
-      (data) {
-        _rxModel.add(data);
-      },
-    );
+    _streamSubscription = _databaseService.observeModifications().listen(_rxModel.add);
   }
 
-  final SferaLocalDatabaseService _databaseService;
   final BehaviorSubject<Set<Modification>> _rxModel = BehaviorSubject.seeded({});
   StreamSubscription? _streamSubscription;
   DateTime? _lastCleanupDate;
@@ -49,6 +44,7 @@ class AcknowledgedModificationRepositoryImpl({
 
   @override
   void dispose() {
+    _rxModel.close();
     _streamSubscription?.cancel();
     _streamSubscription = null;
   }

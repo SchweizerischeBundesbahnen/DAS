@@ -102,10 +102,10 @@ extension _ShortTermChangeModelX on ShortTermChangeModel {
   Widget? trailingIcon() {
     if (this is SingleShortTermChange) {
       final shortTermChangeType = (this as SingleShortTermChange).shortTermChangeType;
-      if (shortTermChangeType == ShortTermChangeType.endDestination) {
+      if (shortTermChangeType == .endDestination) {
         return SvgPicture.asset(
           AppAssets.iconUturnTurquoise,
-          colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(SBBColors.white, .srcIn),
         );
       }
     }

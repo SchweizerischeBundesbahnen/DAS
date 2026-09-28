@@ -77,20 +77,21 @@ class JourneyFilterViewModel({
   @override
   void onJourneyUpdated(Journey? journey) => _updateFilters(journey);
 
+  bool get _showModifications => _journeySettingsViewModel.modelValue.showAcknowledgedModifications;
+
   void _updateFilters(Journey? journey) {
     if (journey == null) {
       _reset();
       return;
     }
 
-    final showModifications = _journeySettingsViewModel.modelValue.showAcknowledgedModifications;
     final acknowledgedModifications = _acknowledgedModificationRepository.modelValue;
 
     final hints = _extractHints(journey);
-    final protectionSections = _extractProtectionSections(journey, showModifications, acknowledgedModifications);
-    final speedRestrictions = _extractSpeedRestrictions(journey, showModifications, acknowledgedModifications);
+    final protectionSections = _extractProtectionSections(journey, acknowledgedModifications);
+    final speedRestrictions = _extractSpeedRestrictions(journey, acknowledgedModifications);
     final shortTermChanges = _extractShortTermChanges(journey);
-    final modifications = _extractModifications(journey, showModifications, acknowledgedModifications);
+    final modifications = _extractModifications(journey, acknowledgedModifications);
 
     final currentModel = _rxModel.value;
 
@@ -123,23 +124,21 @@ class JourneyFilterViewModel({
 
   List<BaseData> _extractProtectionSections(
     Journey journey,
-    bool showModifications,
     Set<Modification> acknowledgedModifications,
   ) {
     return journey.data
         .whereType<ProtectionSection>()
-        .where((it) => !it.shouldHide)
         .where(
           (it) =>
-              showModifications ||
-              (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated),
+              !it.shouldHide &&
+              (_showModifications ||
+                  (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated)),
         )
         .toList();
   }
 
   List<BaseData> _extractSpeedRestrictions(
     Journey journey,
-    bool showModifications,
     Set<Modification> acknowledgedModifications,
   ) {
     return journey.data
@@ -147,8 +146,9 @@ class JourneyFilterViewModel({
         .where((it) => !it.shouldHide)
         .where(
           (it) =>
-              showModifications ||
-              (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated),
+              !it.shouldHide &&
+              (_showModifications ||
+                  (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated)),
         )
         .toList();
   }
@@ -168,14 +168,13 @@ class JourneyFilterViewModel({
 
   List<BaseData> _extractModifications(
     Journey journey,
-    bool showAcknowledgedModifications,
     Set<Modification> acknowledgedModifications,
   ) {
     return journey.data
         .whereType<JourneyPoint>()
         .where(
           (point) =>
-              (showAcknowledgedModifications || !acknowledgedModifications.contains(point.modification)) &&
+              (_showModifications || !acknowledgedModifications.contains(point.modification)) &&
               (point.hasModificationUpdated || (point.isDeleted && !point.shouldHide)),
         )
         .toList();

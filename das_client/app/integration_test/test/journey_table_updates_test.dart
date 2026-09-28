@@ -143,6 +143,13 @@ void main() {
 
       _checkReducedRowModification(ModificationIcon.iconKey, 'Property Updated', true);
       _checkReducedRowModification(ModificationIcon.iconKey, 'C1', true);
+
+      final scrollableFinderReduced = find.descendant(
+        of: find.byKey(ReducedJourneyTable.reducedJourneyTableKey),
+        matching: find.byType(AnimatedList),
+      );
+      await tester.dragUntilVisible(find.text('D1'), scrollableFinderReduced, Offset(0, -50));
+
       expect(_findRowInReducedJourney('D1'), findsOneWidget);
 
       await disconnect(tester);

@@ -524,7 +524,7 @@ void main() {
         kilometre: [3.0],
         isOptional: false,
         isLong: false,
-        modification: Modification(identifier: '300', date: DateTime.now(), type: ModificationType.deleted),
+        modification: Modification(identifier: '300', date: DateTime.now(), type: .deleted),
       ),
       SpeedChange(
         order: 400,
@@ -532,7 +532,7 @@ void main() {
         modification: Modification(
           identifier: '400',
           date: DateTime.now().add(Duration(days: -(JourneyPoint.showModificationDays + 1))),
-          type: ModificationType.deleted,
+          type: .deleted,
         ),
       ),
     ];
