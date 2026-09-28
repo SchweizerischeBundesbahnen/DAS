@@ -571,7 +571,7 @@ void main() {
       final modDeleted = Modification(
         identifier: 'mod1',
         date: DateTime(2025, 1, 1),
-        type: ModificationType.deleted,
+        type: .deleted,
       );
       final baseData = <BaseData>[
         ServicePoint(
@@ -603,7 +603,7 @@ void main() {
       final modDeleted = Modification(
         identifier: 'mod1',
         date: DateTime(2025, 1, 1),
-        type: ModificationType.deleted,
+        type: .deleted,
       );
       final baseData = <BaseData>[
         ServicePoint(
@@ -631,16 +631,8 @@ void main() {
     'hideAcknowledgedDeletedRows_whenJourneyPointIsDeletedAndAcknowledged_thenHidesOnlyAcknowledgedDeletedRows',
     () {
       // GIVEN
-      final modDeletedAcknowledged = Modification(
-        identifier: 'mod1',
-        date: DateTime(2025, 1, 1),
-        type: ModificationType.deleted,
-      );
-      final modDeletedNotAcknowledged = Modification(
-        identifier: 'mod2',
-        date: DateTime(2025, 1, 2),
-        type: ModificationType.deleted,
-      );
+      final modDeletedAcknowledged = Modification(identifier: 'mod1', date: DateTime(2025, 1, 1), type: .deleted);
+      final modDeletedNotAcknowledged = Modification(identifier: 'mod2', date: DateTime(2025, 1, 2), type: .deleted);
       final acknowledgedServicePoint = ServicePoint(
         name: 'Bern',
         abbreviation: 'BRN',
@@ -718,7 +710,7 @@ void main() {
       final mod = Modification(
         identifier: 'mod1',
         date: DateTime(2025, 1, 1),
-        type: ModificationType.deleted,
+        type: .deleted,
       );
 
       // WHEN
