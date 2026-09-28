@@ -2,7 +2,7 @@ import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FieldTree, form } from '@angular/forms/signals';
 import { RuIndicationPeriod } from '~ru-admin/ru-admin-api';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { PeriodsInput } from './periods-input';
 
 describe('PeriodsInput', () => {
@@ -31,7 +31,7 @@ describe('PeriodsInput', () => {
     const periodForm = component['periodForm'];
     periodForm.validFrom().value.set(new Date('2026-01-10'));
 
-    expect(expectError(periodForm(), 'draftInvalid')).toBe(true);
+    expect(hasError(periodForm(), 'draftInvalid')).toBe(true);
   });
 
   it('should require validTo when isRange is true', () => {
@@ -40,7 +40,7 @@ describe('PeriodsInput', () => {
     periodForm.validFrom().value.set(new Date('2026-01-10'));
     periodForm.validTo().value.set(null);
 
-    expect(expectError(periodForm(), 'validToRequired')).toBe(true);
+    expect(hasError(periodForm(), 'validToRequired')).toBe(true);
   });
 
   it('should report dateRangeInvalid when validFrom >= validTo', () => {
@@ -49,7 +49,7 @@ describe('PeriodsInput', () => {
     periodForm.validFrom().value.set(new Date('2026-01-10'));
     periodForm.validTo().value.set(new Date('2026-01-09'));
 
-    expect(expectError(periodForm(), 'dateRangeInvalid')).toBe(true);
+    expect(hasError(periodForm(), 'dateRangeInvalid')).toBe(true);
   });
 
   it('should clear errors after adding a valid single day period', () => {

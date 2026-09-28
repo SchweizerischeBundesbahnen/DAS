@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { RuFeature } from '~ru-admin/ru-admin-api';
 import { Company, CompanyService } from '~shared/companies-input/company.service';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { RuFeatureToggleDialog } from './ru-feature-toggle-dialog.component';
 
 const companies: Company[] = [
@@ -66,7 +66,7 @@ describe('RuFeatureToggleDialog', () => {
 
     dialog['ruFeatureForm'].companyCode().value.set('');
 
-    expect(expectError(dialog['ruFeatureForm'].companyCode(), 'required')).toBe(true);
+    expect(hasError(dialog['ruFeatureForm'].companyCode(), 'required')).toBe(true);
   });
 
   it('companyCode should be valid when it matches a known company', () => {

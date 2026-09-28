@@ -1,7 +1,7 @@
 import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FieldTree, form } from '@angular/forms/signals';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { OperationalTrainNumber } from '../ru-indication-dialog.component';
 import { displayTrainNumberFilter, TrainNumberInput } from './train-number-input';
 
@@ -33,7 +33,7 @@ describe('TrainNumberInput', () => {
     const trainNumberForm = component['trainNumberForm'];
     trainNumberForm.trainNumber().value.set('100');
 
-    expect(expectError(trainNumberForm(), 'draftInvalid')).toBe(true);
+    expect(hasError(trainNumberForm(), 'draftInvalid')).toBe(true);
   });
 
   it('should clear all errors after a filter is successfully added', () => {
@@ -50,10 +50,10 @@ describe('TrainNumberInput', () => {
   it('train number validator: should mark invalid formats and ranges', () => {
     const trainNumberForm = component['trainNumberForm'];
     trainNumberForm.trainNumber().value.set('abc');
-    expect(expectError(trainNumberForm.trainNumber(), 'invalidFormat')).toBe(true);
+    expect(hasError(trainNumberForm.trainNumber(), 'invalidFormat')).toBe(true);
 
     trainNumberForm.trainNumber().value.set('10-5');
-    expect(expectError(trainNumberForm.trainNumber(), 'rangeInvalid')).toBe(true);
+    expect(hasError(trainNumberForm.trainNumber(), 'rangeInvalid')).toBe(true);
 
     trainNumberForm.trainNumber().value.set('100');
     expect(trainNumberForm.trainNumber().errors()).toEqual([]);

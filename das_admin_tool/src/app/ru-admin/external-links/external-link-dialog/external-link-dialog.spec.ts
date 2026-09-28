@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { ExternalLink } from '~ru-admin/ru-admin-api';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { ExternalLinkDialog } from './external-link-dialog';
 
 function createDialog(data?: ExternalLink): ExternalLinkDialog {
@@ -24,7 +24,7 @@ describe('ExternalLinkDialog', () => {
     it('should be invalid when all language fields are empty', () => {
       const dialog = createDialog();
 
-      expect(expectError(dialog['externalLinkForm'](), 'oneLanguageRequired')).toBe(true);
+      expect(hasError(dialog['externalLinkForm'](), 'oneLanguageRequired')).toBe(true);
     });
 
     it('should be valid when de title and link are filled', () => {
@@ -57,7 +57,7 @@ describe('ExternalLinkDialog', () => {
       dialog['externalLinkForm'].de.link().value.set('https://sbb.ch');
 
       expect(dialog['externalLinkForm']().errors()).toEqual([]);
-      expect(expectError(dialog['externalLinkForm'].de.title(), 'languageRequired')).toBe(true);
+      expect(hasError(dialog['externalLinkForm'].de.title(), 'languageRequired')).toBe(true);
     });
   });
 
@@ -67,7 +67,7 @@ describe('ExternalLinkDialog', () => {
       const deTree = dialog['externalLinkForm'].de;
       deTree.link().value.set('https://sbb.ch');
 
-      expect(expectError(deTree.title(), 'languageRequired')).toBe(true);
+      expect(hasError(deTree.title(), 'languageRequired')).toBe(true);
     });
 
     it('should be invalid for a language tree when title is set but link is empty', () => {
@@ -75,7 +75,7 @@ describe('ExternalLinkDialog', () => {
       const deTree = dialog['externalLinkForm'].de;
       deTree.title().value.set('Titel');
 
-      expect(expectError(deTree.link(), 'languageRequired')).toBe(true);
+      expect(hasError(deTree.link(), 'languageRequired')).toBe(true);
     });
 
     it('should be valid when both title and link are set', () => {
@@ -101,14 +101,14 @@ describe('ExternalLinkDialog', () => {
       const deLink = dialog['externalLinkForm'].de.link;
       deLink().value.set('sbb.ch');
 
-      expect(expectError(deLink(), 'url')).toBe(true);
+      expect(hasError(deLink(), 'url')).toBe(true);
     });
 
     it('should be valid when link is empty', () => {
       const dialog = createDialog();
       const deLink = dialog['externalLinkForm'].de.link;
 
-      expect(expectError(deLink(), 'url')).toBe(false);
+      expect(hasError(deLink(), 'url')).toBe(false);
     });
 
     it('should be valid when link does match url validator', () => {
@@ -116,7 +116,7 @@ describe('ExternalLinkDialog', () => {
       const deLink = dialog['externalLinkForm'].de.link;
       deLink().value.set('https://sbb.ch');
 
-      expect(expectError(deLink(), 'url')).toBe(false);
+      expect(hasError(deLink(), 'url')).toBe(false);
     });
   });
 

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SpecialHoliday } from '~ru-admin/ru-admin-api';
 import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { SpecialHolidayDialog } from './special-holiday-dialog.component';
 
 function createDialog(data?: SpecialHoliday, recentCompanies: string[] = []): SpecialHolidayDialog {
@@ -53,6 +53,6 @@ describe('SpecialHolidayDialog', () => {
 
     dialog['specialHolidayForm'].companies().value.set([]);
 
-    expect(expectError(dialog['specialHolidayForm'].companies(), 'arrayRequired')).toBe(true);
+    expect(hasError(dialog['specialHolidayForm'].companies(), 'arrayRequired')).toBe(true);
   });
 });

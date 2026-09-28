@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { RuIndicationDialogData } from '../ru-indication.service';
 import { RuIndicationDialog } from './ru-indication-dialog.component';
 
@@ -47,7 +47,7 @@ describe('RuIndicationDialog', () => {
     it('should have oneLanguageRequired error when no language content is provided', () => {
       const form = component['ruIndicationForm'];
 
-      expect(expectError(form.content(), 'oneLanguageRequired')).toBe(true);
+      expect(hasError(form.content(), 'oneLanguageRequired')).toBe(true);
     });
 
     it('should disable the next button when content form is empty', () => {
@@ -58,14 +58,14 @@ describe('RuIndicationDialog', () => {
       const form = component['ruIndicationForm'];
       form.content.de.title().value.set('Titel');
 
-      expect(expectError(form.content.de.text(), 'languageRequired')).toBe(true);
+      expect(hasError(form.content.de.text(), 'languageRequired')).toBe(true);
     });
 
     it('should require title when text is set (languageRequired)', () => {
       const form = component['ruIndicationForm'];
       form.content.de.text().value.set('Some text');
 
-      expect(expectError(form.content.de.title(), 'languageRequired')).toBe(true);
+      expect(hasError(form.content.de.title(), 'languageRequired')).toBe(true);
     });
 
     it('should be valid when both title and text are provided in one language', () => {
@@ -100,7 +100,7 @@ describe('RuIndicationDialog', () => {
       const form = component['ruIndicationForm'];
       form.scope.operationalTrainNumber.mode().value.set('filtered');
 
-      expect(expectError(form.scope.operationalTrainNumber.filters(), 'arrayRequired')).toBe(true);
+      expect(hasError(form.scope.operationalTrainNumber.filters(), 'arrayRequired')).toBe(true);
 
       form.scope.operationalTrainNumber.mode().value.set('all');
 

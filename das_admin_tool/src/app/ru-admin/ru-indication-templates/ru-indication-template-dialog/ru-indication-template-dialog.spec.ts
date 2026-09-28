@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
-import { expectError } from '~src/testing/utils';
+import { hasError } from '~src/testing/utils';
 import { RuIndicationTemplateDialog } from './ru-indication-template-dialog';
 
 function createDialog(data?: RuIndicationTemplate): RuIndicationTemplateDialog {
@@ -19,21 +19,21 @@ describe('RuIndicationTemplateDialog', () => {
       const form = createDialog()['ruIndicationTemplateForm'];
 
       expect(form().invalid()).toBe(true);
-      expect(expectError(form.category(), 'required')).toBe(true);
+      expect(hasError(form.category(), 'required')).toBe(true);
     });
 
     it('should have oneLanguageRequired error when no language content is provided', () => {
       const form = createDialog()['ruIndicationTemplateForm'];
       form.category().value.set('Test Category');
 
-      expect(expectError(form.content(), 'oneLanguageRequired')).toBe(true);
+      expect(hasError(form.content(), 'oneLanguageRequired')).toBe(true);
     });
 
     it('should require category when only title is filled', () => {
       const form = createDialog()['ruIndicationTemplateForm'];
       form.content.de.title().value.set('Titel');
 
-      expect(expectError(form.category(), 'required')).toBe(true);
+      expect(hasError(form.category(), 'required')).toBe(true);
       expect(form.content().errors()).toEqual([]);
     });
 
@@ -66,7 +66,7 @@ describe('RuIndicationTemplateDialog', () => {
       deTree.text().value.set('Text');
 
       expect(form.content().errors()).toEqual([]);
-      expect(expectError(deTree.title(), 'titleRequired')).toBe(true);
+      expect(hasError(deTree.title(), 'titleRequired')).toBe(true);
     });
 
     it('should be invalid title is empty and text is set', () => {
@@ -75,7 +75,7 @@ describe('RuIndicationTemplateDialog', () => {
       deTree.title().value.set('');
       deTree.text().value.set('Some text');
 
-      expect(expectError(deTree.title(), 'titleRequired')).toBe(true);
+      expect(hasError(deTree.title(), 'titleRequired')).toBe(true);
     });
 
     it.each([
