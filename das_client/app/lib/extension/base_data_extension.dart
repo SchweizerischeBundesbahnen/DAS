@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
+import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:ru_indications/component.dart';
@@ -90,5 +91,21 @@ extension BaseDataX on Iterable<BaseData> {
     }
 
     return resultList;
+  }
+
+  Iterable<BaseData> hideAcknowledgedDeletedRows(
+    Set<Modification> acknowledgedModifications,
+    JourneySettings settings,
+  ) {
+    if (settings.showAcknowledgedModifications) return this;
+
+    return where((data) {
+      if (data is! JourneyPoint) return true;
+
+      final modification = data.modification;
+      if (modification == null || modification.type != .deleted) return true;
+
+      return !acknowledgedModifications.contains(modification);
+    });
   }
 }

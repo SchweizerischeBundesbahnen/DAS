@@ -19,11 +19,7 @@ import 'package:sfera/src/model/sfera_db_metrics.dart';
 
 final _log = Logger('SferaLocalRepoImpl');
 
-class SferaLocalRepoImpl implements SferaLocalRepo {
-  const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseService = localService;
-
-  final SferaLocalDatabaseService _databaseService;
-
+class const SferaLocalRepoImpl({required final SferaLocalDatabaseService _databaseService}) implements SferaLocalRepo {
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
     return _databaseService

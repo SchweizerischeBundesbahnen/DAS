@@ -66,7 +66,7 @@ $normalizedPayload
     mockMqttService = MockMqttService();
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
-    sferaLocalRepo = SferaLocalRepoImpl(localService: mockLocalDatabaseRepository);
+    sferaLocalRepo = SferaLocalRepoImpl(databaseService: mockLocalDatabaseRepository);
     mockConnectivityManager = MockConnectivityManager();
     mockAuthenticator = MockAuthenticator();
     reauthenticationRequiredSubject = BehaviorSubject.seeded(false);

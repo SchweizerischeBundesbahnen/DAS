@@ -25,6 +25,11 @@ class JourneySettingsViewModel({super.journeyViewModel}) extends JourneyAwareVie
     _rxSettings.add(_rxSettings.value.copyWith(journeyAdvancementModel: journeyAdvancementModel));
   }
 
+  void toggleShowAcknowledgedModifications() {
+    final currentValue = _rxSettings.value;
+    _rxSettings.add(currentValue.copyWith(showAcknowledgedModifications: !currentValue.showAcknowledgedModifications));
+  }
+
   @override
   void onJourneyChanged(Journey? journey) {
     _rxSettings.add(

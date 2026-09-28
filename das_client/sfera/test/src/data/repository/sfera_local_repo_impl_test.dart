@@ -26,11 +26,11 @@ void main() {
   setUp(() {
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     testee = SferaLocalRepoImpl(
-      localService: mockLocalDatabaseRepository,
+      databaseService: mockLocalDatabaseRepository,
     );
   });
 
-  test('test local database is being observed', () async {
+  test('journeyStream_whenJourneyProfileIsObserved_thenEmitsJourney', () async {
     final company = '1085';
     final trainNumber = '719';
     final startDate = DateTime.now();
@@ -69,7 +69,7 @@ void main() {
     subscription.cancel();
   });
 
-  test('test segment profiles are being resolved', () async {
+  test('journeyStream_whenSegmentProfileReferenceExists_thenResolvesSegmentProfile', () async {
     final company = '1085';
     final trainNumber = '719';
     final startDate = DateTime.now();
@@ -132,7 +132,7 @@ void main() {
     subscription.cancel();
   });
 
-  test('test train characteristics are being resolved', () async {
+  test('journeyStream_whenTrainCharacteristicsReferenceExists_thenResolvesTrainCharacteristics', () async {
     final company = '1085';
     final trainNumber = '719';
     final startDate = DateTime.now();
@@ -220,19 +220,19 @@ void main() {
     subscription.cancel();
   });
 
-  test('saveData_whenInvalidDataIsPassed_returnFalse', () async {
+  test('saveData_whenInvalidDataIsPassed_thenReturnsFalse', () async {
     final invalidElement = SferaReplyParser.parse('<KM_Reference kmRef="abc"/>');
     expect(invalidElement.validate(), isFalse);
     expect(await testee.saveData([invalidElement]), isFalse);
   });
 
-  test('saveData_whenUnsupportedDataIsPassed_returnFalse', () async {
+  test('saveData_whenUnsupportedDataIsPassed_thenReturnsFalse', () async {
     final validButUnsupportedElement = SferaReplyParser.parse('<KM_Reference kmRef="60"/>');
     expect(validButUnsupportedElement.validate(), isTrue);
     expect(await testee.saveData([validButUnsupportedElement]), isFalse);
   });
 
-  test('saveData_whenJpDataIsPassed_returnTrue', () async {
+  test('saveData_whenJourneyProfileDataIsPassed_thenReturnsTrue', () async {
     final jpElement = SferaReplyParser.parse(
       '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
       '<OTN_ID>'
@@ -247,7 +247,7 @@ void main() {
     verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
   });
 
-  test('saveData_whenSpDataIsPassed_returnTrue', () async {
+  test('saveData_whenSegmentProfileDataIsPassed_thenReturnsTrue', () async {
     final spElement = SferaReplyParser.parse(
       '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
       '</SegmentProfile>',
@@ -256,7 +256,7 @@ void main() {
     verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
   });
 
-  test('saveData_whenTcDataIsPassed_returnTrue', () async {
+  test('saveData_whenTrainCharacteristicsDataIsPassed_thenReturnsTrue', () async {
     final tcElement = SferaReplyParser.parse(
       '<TrainCharacteristics TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1">'
       '<TC_RU_ID>1085</TC_RU_ID>'
@@ -268,7 +268,7 @@ void main() {
     verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
   });
 
-  test('saveData_whenTcJpAndSpDataIsPassed_returnTrue', () async {
+  test('saveData_whenTrainCharacteristicsJourneyProfileAndSegmentProfileDataArePassed_thenReturnsTrue', () async {
     final jpElement = SferaReplyParser.parse(
       '<JourneyProfile JP_Version="1" JP_Status="Valid"><TrainIdentification>'
       '<OTN_ID>'

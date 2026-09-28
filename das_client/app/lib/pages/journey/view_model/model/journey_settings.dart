@@ -8,18 +8,21 @@ class const JourneySettings({
   final BrakeSeries? selectedBrakeSeries,
   final List<int> expandedGroups = const [],
   final JourneyAdvancementModel journeyAdvancementModel = const Automatic(),
+  final bool showAcknowledgedModifications = false,
 }) {
   JourneySettings copyWith({
     BrakeSeries? initialBrakeSeries,
     BrakeSeries? selectedBrakeSeries,
     List<int>? expandedGroups,
     JourneyAdvancementModel? journeyAdvancementModel,
+    bool? showAcknowledgedModifications,
   }) {
     return JourneySettings(
       initialBrakeSeries: initialBrakeSeries ?? this.initialBrakeSeries,
       selectedBrakeSeries: selectedBrakeSeries ?? this.selectedBrakeSeries,
       expandedGroups: expandedGroups ?? this.expandedGroups,
       journeyAdvancementModel: journeyAdvancementModel ?? this.journeyAdvancementModel,
+      showAcknowledgedModifications: showAcknowledgedModifications ?? this.showAcknowledgedModifications,
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/rou
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,18 +19,14 @@ import 'reduced_overview_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<JourneyViewModel>(),
+  MockSpec<AcknowledgedModificationRepository>(),
 ])
 void main() {
   test('model_whenJourneyEmits_thenContainsJourneyMetadata', () {
     final metadata = Metadata(timestamp: DateTime.now());
     final journeyViewModel = _setupJourneyViewModelMock(metadata, <BaseData>[]);
 
-    final viewModel = ReducedOverviewViewModel(
-      journeyViewModel: journeyViewModel,
-      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
-      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
-      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
-    );
+    final viewModel = _setupReducedOverviewViewModel(journeyViewModel: journeyViewModel);
 
     expect(
       viewModel.model,
@@ -53,12 +50,7 @@ void main() {
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
     final journeyViewModel = _setupJourneyViewModelMock(metadata, data);
-    final viewModel = ReducedOverviewViewModel(
-      journeyViewModel: journeyViewModel,
-      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
-      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
-      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
-    );
+    final viewModel = _setupReducedOverviewViewModel(journeyViewModel: journeyViewModel);
 
     // WHEN
     // THEN
@@ -112,12 +104,7 @@ void main() {
       asrData,
     ];
     final journeyViewModel = _setupJourneyViewModelMock(Metadata(), data);
-    final viewModel = ReducedOverviewViewModel(
-      journeyViewModel: journeyViewModel,
-      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
-      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
-      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
-    );
+    final viewModel = _setupReducedOverviewViewModel(journeyViewModel: journeyViewModel);
 
     // WHEN
     // THEN
@@ -141,12 +128,7 @@ void main() {
     final asrData2 = AdditionalSpeedRestrictionData(restrictions: [asr2], order: 200, kilometre: []);
     final data = <BaseData>[asrData1, asrData1, asrData2];
     final journeyViewModel = _setupJourneyViewModelMock(Metadata(), data);
-    final viewModel = ReducedOverviewViewModel(
-      journeyViewModel: journeyViewModel,
-      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
-      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
-      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
-    );
+    final viewModel = _setupReducedOverviewViewModel(journeyViewModel: journeyViewModel);
 
     // WHEN
     // THEN
@@ -168,12 +150,7 @@ void main() {
     final bp3 = _servicePoint(name: 'B', abbreviation: 'B', locationCode: 'CH19045', order: 200);
     final bp2 = _servicePoint(name: 'C', abbreviation: 'C', locationCode: 'CH02125', order: 300);
     final journeyViewModel = _setupJourneyViewModelMock(Metadata(), <BaseData>[bp1, bp3, bp2]);
-    final viewModel = ReducedOverviewViewModel(
-      journeyViewModel: journeyViewModel,
-      routeVariantViewModel: RouteVariantViewModel(journeyViewModel: journeyViewModel),
-      collapsibleRowsViewModel: _setupCollapsibleRowsViewModel(journeyViewModel),
-      journeyFilterViewModel: _setupJourneyFilterViewModel(journeyViewModel),
-    );
+    final viewModel = _setupReducedOverviewViewModel(journeyViewModel: journeyViewModel);
 
     // WHEN
     // THEN
@@ -195,12 +172,17 @@ void main() {
 
     final routeVariantViewModel = RouteVariantViewModel(journeyViewModel: journeyViewModel);
     final collapsibleRowsViewModel = _setupCollapsibleRowsViewModel(journeyViewModel);
-    final journeyFilterViewModel = _setupJourneyFilterViewModel(journeyViewModel);
+    final acknowledgedModificationRepository = _setupAcknowledgedModificationRepositoryMock();
+    final journeyFilterViewModel = _setupJourneyFilterViewModel(
+      journeyViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
+    );
     final viewModel = ReducedOverviewViewModel(
       journeyViewModel: journeyViewModel,
       routeVariantViewModel: routeVariantViewModel,
       collapsibleRowsViewModel: collapsibleRowsViewModel,
       journeyFilterViewModel: journeyFilterViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
     );
 
     await processStreams();
@@ -211,6 +193,105 @@ void main() {
     await processStreams();
 
     // THEN optional indication rows are hidden while mandatory rows remain
+    final loadedModel = viewModel.modelValue as ReducedTableLoaded;
+    expect(loadedModel.journeyTableRowData, [stop]);
+
+    await journeySubject.close();
+    viewModel.dispose();
+    collapsibleRowsViewModel.dispose();
+    routeVariantViewModel.dispose();
+    journeyFilterViewModel.dispose();
+  });
+
+  test('model_whenModificationIsAcknowledged_thenRemovesOptionalModifiedRow', () async {
+    // GIVEN
+    final journeyViewModel = MockJourneyViewModel();
+    final stop = _servicePoint(name: 'S', abbreviation: 'S', locationCode: 'S', order: 100, isStop: true);
+    final modification = Modification(identifier: 'sig-1', type: ModificationType.updated, date: DateTime.now());
+    final modifiedSignal = Signal(order: 200, kilometre: const [], modification: modification);
+    final journeySubject = BehaviorSubject<Journey?>.seeded(
+      Journey(metadata: Metadata(), data: [stop, modifiedSignal]),
+    );
+    final ackSubject = BehaviorSubject<Set<Modification>>.seeded({});
+
+    when(journeyViewModel.journey).thenAnswer((_) => journeySubject.stream);
+
+    final acknowledgedModificationRepository = _setupAcknowledgedModificationRepositoryMock(const {}, ackSubject);
+    final journeySettingsViewModel = JourneySettingsViewModel(journeyViewModel: journeyViewModel);
+
+    final routeVariantViewModel = RouteVariantViewModel(journeyViewModel: journeyViewModel);
+    final collapsibleRowsViewModel = _setupCollapsibleRowsViewModel(journeyViewModel);
+    final journeyFilterViewModel = JourneyFilterViewModel(
+      journeyViewModel: journeyViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
+      journeySettingsViewModel: journeySettingsViewModel,
+    );
+    final viewModel = ReducedOverviewViewModel(
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: routeVariantViewModel,
+      collapsibleRowsViewModel: collapsibleRowsViewModel,
+      journeyFilterViewModel: journeyFilterViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
+    );
+
+    await processStreams();
+
+    // Initial state: modified signal is visible in table
+    var loadedModel = viewModel.modelValue as ReducedTableLoaded;
+    expect(loadedModel.journeyTableRowData, [stop, modifiedSignal]);
+    expect(loadedModel.acknowledgedModifications, isEmpty);
+
+    // WHEN the modification is acknowledged
+    ackSubject.add({modification});
+    await processStreams();
+
+    // THEN the optional modified signal is removed from table rows and acknowledgedModifications is updated
+    loadedModel = viewModel.modelValue as ReducedTableLoaded;
+    expect(loadedModel.journeyTableRowData, [stop]);
+    expect(loadedModel.acknowledgedModifications, {modification});
+
+    await journeySubject.close();
+    await ackSubject.close();
+    viewModel.dispose();
+    collapsibleRowsViewModel.dispose();
+    routeVariantViewModel.dispose();
+    journeyFilterViewModel.dispose();
+  });
+
+  test('model_whenModificationsFilterIsActive_thenHidesModificationRows', () async {
+    // GIVEN
+    final journeyViewModel = MockJourneyViewModel();
+    final stop = _servicePoint(name: 'S', abbreviation: 'S', locationCode: 'S', order: 100, isStop: true);
+    final modification = Modification(identifier: 'sig-1', type: ModificationType.updated, date: DateTime.now());
+    final modifiedSignal = Signal(order: 200, kilometre: const [], modification: modification);
+    final journeySubject = BehaviorSubject<Journey?>.seeded(
+      Journey(metadata: Metadata(), data: [stop, modifiedSignal]),
+    );
+    when(journeyViewModel.journey).thenAnswer((_) => journeySubject.stream);
+
+    final routeVariantViewModel = RouteVariantViewModel(journeyViewModel: journeyViewModel);
+    final collapsibleRowsViewModel = _setupCollapsibleRowsViewModel(journeyViewModel);
+    final acknowledgedModificationRepository = _setupAcknowledgedModificationRepositoryMock();
+    final journeyFilterViewModel = _setupJourneyFilterViewModel(
+      journeyViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
+    );
+    final viewModel = ReducedOverviewViewModel(
+      journeyViewModel: journeyViewModel,
+      routeVariantViewModel: routeVariantViewModel,
+      collapsibleRowsViewModel: collapsibleRowsViewModel,
+      journeyFilterViewModel: journeyFilterViewModel,
+      acknowledgedModificationRepository: acknowledgedModificationRepository,
+    );
+
+    await processStreams();
+
+    // WHEN modifications filter is activated
+    final initialFilters = journeyFilterViewModel.modelValue!;
+    journeyFilterViewModel.toggleFilter(initialFilters.modifications);
+    await processStreams();
+
+    // THEN modified row is hidden while mandatory rows remain
     final loadedModel = viewModel.modelValue as ReducedTableLoaded;
     expect(loadedModel.journeyTableRowData, [stop]);
 
@@ -238,8 +319,47 @@ CollapsibleRowsViewModel _setupCollapsibleRowsViewModel(JourneyViewModel journey
   );
 }
 
-JourneyFilterViewModel _setupJourneyFilterViewModel(JourneyViewModel journeyViewModel) {
-  return JourneyFilterViewModel(journeyViewModel: journeyViewModel);
+AcknowledgedModificationRepository _setupAcknowledgedModificationRepositoryMock([
+  Set<Modification> modifications = const {},
+  BehaviorSubject<Set<Modification>>? subject,
+]) {
+  final repo = MockAcknowledgedModificationRepository();
+  final stream = (subject ?? BehaviorSubject.seeded(modifications)).stream;
+  when(repo.model).thenAnswer((_) => stream);
+  when(repo.modelValue).thenAnswer((_) => subject?.value ?? modifications);
+  return repo;
+}
+
+JourneyFilterViewModel _setupJourneyFilterViewModel(
+  JourneyViewModel journeyViewModel, {
+  AcknowledgedModificationRepository? acknowledgedModificationRepository,
+  JourneySettingsViewModel? journeySettingsViewModel,
+}) {
+  return JourneyFilterViewModel(
+    journeyViewModel: journeyViewModel,
+    acknowledgedModificationRepository:
+        acknowledgedModificationRepository ?? _setupAcknowledgedModificationRepositoryMock(),
+    journeySettingsViewModel: journeySettingsViewModel ?? JourneySettingsViewModel(journeyViewModel: journeyViewModel),
+  );
+}
+
+ReducedOverviewViewModel _setupReducedOverviewViewModel({
+  required JourneyViewModel journeyViewModel,
+  RouteVariantViewModel? routeVariantViewModel,
+  CollapsibleRowsViewModel? collapsibleRowsViewModel,
+  JourneyFilterViewModel? journeyFilterViewModel,
+  AcknowledgedModificationRepository? acknowledgedModificationRepository,
+}) {
+  final repo = acknowledgedModificationRepository ?? _setupAcknowledgedModificationRepositoryMock();
+  return ReducedOverviewViewModel(
+    journeyViewModel: journeyViewModel,
+    routeVariantViewModel: routeVariantViewModel ?? RouteVariantViewModel(journeyViewModel: journeyViewModel),
+    collapsibleRowsViewModel: collapsibleRowsViewModel ?? _setupCollapsibleRowsViewModel(journeyViewModel),
+    journeyFilterViewModel:
+        journeyFilterViewModel ??
+        _setupJourneyFilterViewModel(journeyViewModel, acknowledgedModificationRepository: repo),
+    acknowledgedModificationRepository: repo,
+  );
 }
 
 ServicePoint _servicePoint({

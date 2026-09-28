@@ -10,6 +10,8 @@ class NetworkSpecificPointDto({super.type = elementType, super.attributes, super
     extends NspDto {
   static const String elementType = 'NetworkSpecificPoint';
 
+  String? get identifier => attributes['identifier'];
+
   double get location => double.parse(attributes['location']!);
 
   factory from({

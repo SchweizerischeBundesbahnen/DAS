@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:app/pages/journey/journey_screen/reduced_overview/model/journey_filter_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:ru_indications/component.dart';
@@ -8,12 +11,24 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('JourneyFilterViewModel');
 
-class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewModel {
+class JourneyFilterViewModel({
+  required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
+  required final JourneySettingsViewModel _journeySettingsViewModel,
+  super.journeyViewModel,
+}) extends JourneyAwareViewModel {
   this {
-    _updateFilters(lastJourney);
+    _streamSubscription =
+        CombineLatestStream.combine2(
+          _acknowledgedModificationRepository.model,
+          _journeySettingsViewModel.model,
+          (a, b) => (a, b),
+        ).listen((data) {
+          _updateFilters(lastJourney);
+        });
   }
 
   final _rxModel = BehaviorSubject<JourneyFilterModel?>.seeded(null);
+  StreamSubscription? _streamSubscription;
 
   Stream<JourneyFilterModel?> get model => _rxModel.stream;
 
@@ -62,17 +77,21 @@ class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewM
   @override
   void onJourneyUpdated(Journey? journey) => _updateFilters(journey);
 
+  bool get _showModifications => _journeySettingsViewModel.modelValue.showAcknowledgedModifications;
+
   void _updateFilters(Journey? journey) {
     if (journey == null) {
       _reset();
       return;
     }
 
+    final acknowledgedModifications = _acknowledgedModificationRepository.modelValue;
+
     final hints = _extractHints(journey);
-    final protectionSections = _extractProtectionSections(journey);
-    final speedRestrictions = _extractSpeedRestrictions(journey);
+    final protectionSections = _extractProtectionSections(journey, acknowledgedModifications);
+    final speedRestrictions = _extractSpeedRestrictions(journey, acknowledgedModifications);
     final shortTermChanges = _extractShortTermChanges(journey);
-    final modifications = _extractModifications(journey);
+    final modifications = _extractModifications(journey, acknowledgedModifications);
 
     final currentModel = _rxModel.value;
 
@@ -103,12 +122,35 @@ class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewM
     return journey.data.where((data) => data is RuIndication || data is OperationalIndication).toList();
   }
 
-  List<BaseData> _extractProtectionSections(Journey journey) {
-    return journey.data.whereType<ProtectionSection>().where((it) => !it.shouldHide).toList();
+  List<BaseData> _extractProtectionSections(
+    Journey journey,
+    Set<Modification> acknowledgedModifications,
+  ) {
+    return journey.data
+        .whereType<ProtectionSection>()
+        .where(
+          (it) =>
+              !it.shouldHide &&
+              (_showModifications ||
+                  (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated)),
+        )
+        .toList();
   }
 
-  List<BaseData> _extractSpeedRestrictions(Journey journey) {
-    return journey.data.whereType<AdditionalSpeedRestrictionData>().where((it) => !it.shouldHide).toList();
+  List<BaseData> _extractSpeedRestrictions(
+    Journey journey,
+    Set<Modification> acknowledgedModifications,
+  ) {
+    return journey.data
+        .whereType<AdditionalSpeedRestrictionData>()
+        .where((it) => !it.shouldHide)
+        .where(
+          (it) =>
+              !it.shouldHide &&
+              (_showModifications ||
+                  (!acknowledgedModifications.contains(it.modification) || it.modification?.type == .updated)),
+        )
+        .toList();
   }
 
   List<BaseData> _extractShortTermChanges(Journey journey) {
@@ -124,10 +166,17 @@ class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewM
     return affectedData;
   }
 
-  List<BaseData> _extractModifications(Journey journey) {
+  List<BaseData> _extractModifications(
+    Journey journey,
+    Set<Modification> acknowledgedModifications,
+  ) {
     return journey.data
         .whereType<JourneyPoint>()
-        .where((point) => point.hasModificationUpdated || (point.isDeleted && !point.shouldHide))
+        .where(
+          (point) =>
+              (_showModifications || !acknowledgedModifications.contains(point.modification)) &&
+              (point.hasModificationUpdated || (point.isDeleted && !point.shouldHide)),
+        )
         .toList();
   }
 
@@ -143,5 +192,7 @@ class JourneyFilterViewModel({super.journeyViewModel}) extends JourneyAwareViewM
   void dispose() {
     super.dispose();
     _rxModel.close();
+    _streamSubscription?.cancel();
+    _streamSubscription = null;
   }
 }
