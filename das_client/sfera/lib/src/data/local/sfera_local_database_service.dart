@@ -48,6 +48,8 @@ abstract class SferaLocalDatabaseService {
 
   Future<void> deleteModification(Modification modification);
 
+  Future<void> deleteExpiredModification(DateTime cutoffDate);
+
   Future<SferaDbMetrics> getMetrics();
 
   Future<int> cleanup();
