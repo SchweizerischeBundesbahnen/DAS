@@ -148,7 +148,14 @@ void main() {
         of: find.byKey(ReducedJourneyTable.reducedJourneyTableKey),
         matching: find.byType(AnimatedList),
       );
-      await tester.dragUntilVisible(find.text('D1'), scrollableFinderReduced, Offset(0, -50));
+      await tester.dragUntilVisible(
+        find.descendant(
+          of: find.byKey(ReducedJourneyTable.reducedJourneyTableKey),
+          matching: find.text('D1'),
+        ),
+        scrollableFinderReduced,
+        Offset(0, -50),
+      );
 
       expect(_findRowInReducedJourney('D1'), findsOneWidget);
 
