@@ -115,7 +115,10 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
   }
 
   void _registerPersonalNotesRepository() {
-    getIt.registerSingleton<PersonalNotesRepository>(MockPersonalNotesRepository());
+    getIt.registerSingletonAsync<PersonalNotesRepository>(
+      () async => MockPersonalNotesRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 
   void _registerMockSimTrainViewModel() {

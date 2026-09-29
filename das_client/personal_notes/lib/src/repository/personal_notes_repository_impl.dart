@@ -17,16 +17,12 @@ class PersonalNotesRepositoryImpl({
   static const syncRetryDelay = Duration(minutes: 5);
   static const _singleUseNotesRetention = Duration(days: 5);
 
-  Timer? _retryTimer;
-
   this {
     _init();
   }
 
-  void _init() async {
-    await cleanUpSingleUseNotes();
-    await synchronizeNotes();
-  }
+  Timer? _retryTimer;
+  DateTime? _lastSyncDate;
 
   @override
   Future<List<PersonalNote>> findNotes(String locationCode) async {
@@ -59,7 +55,18 @@ class PersonalNotesRepositoryImpl({
   }
 
   @override
+  void dispose() {
+    _retryTimer?.cancel();
+    _retryTimer = null;
+  }
+
+  @override
   Future<void> synchronizeNotes() async {
+    if (_lastSyncDate != null && _lastSyncDate!.isSameDay(DateTime.now())) {
+      _log.fine('Sync already run today. Skipped...');
+      return;
+    }
+
     final response = await _fetchRemoteNotes();
     if (response == null) return;
 
@@ -168,4 +175,12 @@ class PersonalNotesRepositoryImpl({
       return false;
     }
   }
+
+  void _init() async {
+    await cleanUpSingleUseNotes();
+  }
+}
+
+extension _DateTimeX on DateTime {
+  bool isSameDay(DateTime other) => year == other.year && month == other.month && day == other.day;
 }

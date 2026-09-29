@@ -22,4 +22,9 @@ class MockPersonalNotesRepository implements PersonalNotesRepository {
   Future<void> synchronizeNotes() async {
     // unused
   }
+
+  @override
+  void dispose() {
+    // unused
+  }
 }

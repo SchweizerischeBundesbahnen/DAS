@@ -10,4 +10,6 @@ abstract class PersonalNotesRepository {
   Future<void> deleteNote(PersonalNote note);
 
   Future<void> synchronizeNotes();
+
+  void dispose();
 }

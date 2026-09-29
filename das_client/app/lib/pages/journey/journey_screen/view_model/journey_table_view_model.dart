@@ -77,9 +77,9 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
-          _userSettings.model,
           _personalNotesVM.personalNoteAnnotations,
           _acknowledgedModificationRepository.model,
+          _userSettings.model,
         ]).listen(
           (data) => _handleDataChanged(
             journey: data[0] as Journey?,
@@ -89,8 +89,8 @@ class JourneyTableViewModel({
             detailModalType: data[4] as DetailModalType?,
             showDecisiveGradient: data[5] as bool,
             navigationModel: data[6] as JourneyNavigationModel?,
+            personalNoteAnnotations: data[7] as List<PersonalNoteAnnotation>,
             acknowledgedModifications: data[8] as Set<Modification>,
-            personalNoteAnnotations: data[9] as List<PersonalNoteAnnotation>,
           ),
         );
   }
