@@ -69,7 +69,7 @@ class JourneyTableViewModel({
   void _initRxModel() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine9(
+        CombineLatestStream.list([
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
@@ -80,18 +80,17 @@ class JourneyTableViewModel({
           _userSettings.model,
           _personalNotesVM.personalNoteAnnotations,
           _acknowledgedModificationRepository.model,
-          (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
-        ).listen(
+        ]).listen(
           (data) => _handleDataChanged(
-            journey: data.$1,
-            settings: data.$2,
-            collapsibleRows: data.$3,
-            position: data.$4,
-            detailModalType: data.$5,
-            showDecisiveGradient: data.$6,
-            navigationModel: data.$7,
-            acknowledgedModifications: data.$9,
-            personalNoteAnnotations: data.$9,
+            journey: data[0] as Journey?,
+            settings: data[1] as JourneySettings,
+            collapsibleRows: data[2] as Map<int, CollapsedState>,
+            position: data[3] as JourneyPositionModel,
+            detailModalType: data[4] as DetailModalType?,
+            showDecisiveGradient: data[5] as bool,
+            navigationModel: data[6] as JourneyNavigationModel?,
+            acknowledgedModifications: data[8] as Set<Modification>,
+            personalNoteAnnotations: data[9] as List<PersonalNoteAnnotation>,
           ),
         );
   }
