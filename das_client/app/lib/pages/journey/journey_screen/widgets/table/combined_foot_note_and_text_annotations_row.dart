@@ -9,15 +9,15 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class CombinedNotesAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAndTextAnnotations> {
+class CombinedFootNoteAndTextAnnotationsRow extends WidgetRowBuilder<CombinedFootNoteAndTextAnnotations> {
   static const Key rowKey = Key('combinedFootNoteAndIndicationsRow');
 
-  CombinedNotesAndIndicationsRow({
+  CombinedFootNoteAndTextAnnotationsRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
     required this.footNoteState,
-    required this.indicationStates,
+    required this.textAnnotationStates,
     super.key,
     super.config,
     this.leftPadding = 0,
@@ -26,11 +26,11 @@ class CombinedNotesAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAn
          height:
              data.textAnnotations
                  .map(
-                   (indication) => BasicTextAccordion.calculateHeight(
-                     indication,
-                     collapsedState: indicationStates.stateOf(indication),
+                   (annotation) => BasicTextAccordion.calculateHeight(
+                     annotation,
+                     collapsedState: textAnnotationStates.stateOf(annotation),
                      leftPadding: leftPadding,
-                     isLastElement: data.textAnnotations.last == indication && data.footNote == null,
+                     isLastElement: data.textAnnotations.last == annotation && data.footNote == null,
                    ),
                  )
                  .sum +
@@ -45,7 +45,7 @@ class CombinedNotesAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAn
        );
 
   final CollapsedState footNoteState;
-  final Map<int, CollapsedState> indicationStates;
+  final Map<int, CollapsedState> textAnnotationStates;
 
   /// used to align content with information cell
   final double leftPadding;
@@ -58,11 +58,11 @@ class CombinedNotesAndIndicationsRow extends WidgetRowBuilder<CombinedFootNoteAn
       child: Column(
         children: [
           ...data.textAnnotations.map(
-            (indication) => BasicTextAccordion(
-              collapsedState: indicationStates.stateOf(indication),
-              data: indication,
+            (annotation) => BasicTextAccordion(
+              collapsedState: textAnnotationStates.stateOf(annotation),
+              data: annotation,
               leftPadding: leftPadding,
-              isLastElement: data.textAnnotations.last == indication && data.footNote == null,
+              isLastElement: data.textAnnotations.last == annotation && data.footNote == null,
             ),
           ),
           if (data.footNote != null)

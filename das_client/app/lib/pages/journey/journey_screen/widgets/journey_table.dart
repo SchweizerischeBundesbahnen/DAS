@@ -330,12 +330,12 @@ class JourneyTable extends StatelessWidget {
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .combinedFootNoteAndTextAnnotations:
-          return CombinedNotesAndIndicationsRow(
+          return CombinedFootNoteAndTextAnnotationsRow(
             rowIndex: index,
             metadata: metadata,
             data: rowData as CombinedFootNoteAndTextAnnotations,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
-            indicationStates: collapsedRows.whereContains(rowData.textAnnotations),
+            textAnnotationStates: collapsedRows.whereContains(rowData.textAnnotations),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .communicationNetworkChannel:

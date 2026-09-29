@@ -193,13 +193,13 @@ class ReducedJourneyTable extends StatelessWidget {
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .combinedFootNoteAndTextAnnotations:
-          return CombinedNotesAndIndicationsRow(
+          return CombinedFootNoteAndTextAnnotationsRow(
             key: GlobalKey(),
             rowIndex: rowIndex,
             metadata: model.journeyMetadata,
             data: rowData as CombinedFootNoteAndTextAnnotations,
             footNoteState: model.collapsedRows.stateOf(rowData.footNote),
-            indicationStates: model.collapsedRows.whereContains(rowData.textAnnotations),
+            textAnnotationStates: model.collapsedRows.whereContains(rowData.textAnnotations),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         default:

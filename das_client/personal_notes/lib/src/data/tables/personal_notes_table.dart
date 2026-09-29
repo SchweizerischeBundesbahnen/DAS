@@ -10,6 +10,8 @@ final sentinelDate = DateTime.fromMillisecondsSinceEpoch(0);
 /// Note: NULL values are not considered equal in SQLite.
 /// For this reason, all columns relevant for the primary key have default values.
 class PersonalNotesTable extends Table {
+  TextColumn get userId => text()();
+
   TextColumn get locationCode => text()();
 
   TextColumn get trainCompanyCode => text().withDefault(const Constant(''))();
@@ -29,12 +31,20 @@ class PersonalNotesTable extends Table {
   DateTimeColumn get lastModifiedAt => dateTime()();
 
   @override
-  Set<Column<Object>> get primaryKey => {locationCode, trainCompanyCode, trainNumber, trainDate, trainOperatingDay};
+  Set<Column<Object>> get primaryKey => {
+    userId,
+    locationCode,
+    trainCompanyCode,
+    trainNumber,
+    trainDate,
+    trainOperatingDay,
+  };
 }
 
 extension PersonalNoteMapperX on PersonalNote {
-  PersonalNotesTableCompanion toCompanion() {
+  PersonalNotesTableCompanion toCompanion({required String userId}) {
     return PersonalNotesTableCompanion.insert(
+      userId: userId,
       locationCode: locationCode,
       trainCompanyCode: Value(trainIdentification?.companyCode ?? ''),
       trainNumber: Value(trainIdentification?.trainNumber ?? ''),

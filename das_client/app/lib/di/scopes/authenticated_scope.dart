@@ -228,7 +228,11 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerPersonalNotesRepository() {
     final flavor = DI.get<Flavor>();
     registerSingleton<PersonalNotesRepository>(
-      PersonalNotesComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get()),
+      PersonalNotesComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        userIdProvider: _PersonalNoteUserIdProvider(authenticator: DI.get()),
+      ),
     );
   }
 
@@ -377,6 +381,14 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
   Future<bool> isDriver() async {
     final user = await authenticator.user();
     return user.roles.contains(Role.driver);
+  }
+}
+
+class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> call({String? tokenId}) async {
+    final user = await authenticator.user();
+    return user.userId;
   }
 }
 
