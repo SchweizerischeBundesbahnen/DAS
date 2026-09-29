@@ -138,12 +138,12 @@ void main() {
 
       final scrollableFinder = find.byType(AnimatedList);
       await tester.dragUntilVisible(
-        find.byKey(CombinedNotesAndIndicationsRow.rowKey),
+        find.byKey(CombinedFootNoteAndTextAnnotationsRow.rowKey),
         scrollableFinder,
         const Offset(0, -100),
       );
 
-      final combinedRow = find.byKey(CombinedNotesAndIndicationsRow.rowKey);
+      final combinedRow = find.byKey(CombinedFootNoteAndTextAnnotationsRow.rowKey);
       expect(combinedRow, findsOneWidget);
 
       final operationalIndicationRow = find.descendant(

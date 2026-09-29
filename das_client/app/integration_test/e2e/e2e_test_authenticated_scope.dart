@@ -30,6 +30,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerRuIndicationsRepository();
     getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
+    getIt.registerPersonalNotesRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();

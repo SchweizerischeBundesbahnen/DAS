@@ -12,7 +12,7 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PersonalNotesViewModel');
 
-// TODO: Handle offline mode
+// TODO: On Resumed Sync, clean-up modifications
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,
   required final ServicePointModalViewModel _servicePointModalViewModel,
@@ -135,7 +135,8 @@ class PersonalNotesViewModel({
   Future<void> _loadNotesOfServicePoint() async {
     if (_currentServicePoint == null) return;
     final notes = await _personalNotesRepository.findNotes(_currentServicePoint!.locationCode);
-    _rxServicePointNotes.add(notes);
+    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(lastJourney)).toList();
+    _rxServicePointNotes.add(journeyRelevantNotes);
   }
 
   void _handleJourneyUpdate(Journey? journey) {
@@ -157,8 +158,7 @@ class PersonalNotesViewModel({
       final notes = await _personalNotesRepository.findAllNotes();
       final notesByLocationCode = <String, PersonalNote>{
         for (final note in notes)
-          if (note.trainIdentification == null || note.trainIdentification == lastJourney?.metadata.trainIdentification)
-            note.locationCode: note,
+          if (note.isRelevantFor(lastJourney)) note.locationCode: note,
       };
 
       final annotations = <PersonalNoteAnnotation>[];
@@ -188,4 +188,9 @@ extension _ServicePointListX on List<ServicePoint> {
       return original.locationCode != updated.locationCode || original.order != updated.order;
     });
   }
+}
+
+extension _PersonalNoteX on PersonalNote {
+  bool isRelevantFor(Journey? journey) =>
+      trainIdentification == null || trainIdentification == journey?.metadata.trainIdentification;
 }

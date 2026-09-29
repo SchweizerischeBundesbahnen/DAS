@@ -9,6 +9,13 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 final _log = Logger('PersonalNoteDialog');
 
 class PersonalNoteDialog extends StatefulWidget {
+  static const dialogKey = Key('personalNoteDialog');
+  static const textAreaKey = Key('personalNoteDialogTextArea');
+  static const saveButtonKey = Key('personalNoteDialogSaveButton');
+  static const showAsFootNoteSwitchKey = Key('personalNoteDialogShowAsFootNoteSwitch');
+  static const singleUseSwitchKey = Key('personalNoteDialogSingleUseSwitch');
+  static const deleteButtonKey = Key('personalNoteDialogDeleteButton');
+
   const PersonalNoteDialog({
     required this.viewModel,
     this.modalSheetController,
@@ -64,6 +71,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   @override
   Widget build(BuildContext context) {
     return SBBPopup(
+      key: PersonalNoteDialog.dialogKey,
       style: SBBPopupStyle(
         constraints: BoxConstraints(maxWidth: _maxWidth),
       ),
@@ -97,11 +105,13 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   }
 
   Widget _saveButton() => SBBPrimaryButton(
+    key: PersonalNoteDialog.saveButtonKey,
     labelText: context.l10n.w_personal_note_dialog_button_save,
     onPressed: _inputIsValid ? () => _onSave() : null,
   );
 
   Widget _deleteButton() => SBBSecondaryButton(
+    key: PersonalNoteDialog.deleteButtonKey,
     label: SizedBox(
       width: double.maxFinite,
       child: Center(
@@ -112,18 +122,21 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
   );
 
   Widget _singleUseCheckbox() => SBBSwitchListItem(
+    key: PersonalNoteDialog.singleUseSwitchKey,
     titleText: context.l10n.w_personal_note_dialog_single_use_checkbox_label,
     value: _singleUse,
     onChanged: _editMode ? null : (value) => setState(() => _singleUse = value),
   );
 
   Widget _showAsFootNoteCheckbox() => SBBSwitchListItem(
+    key: PersonalNoteDialog.showAsFootNoteSwitchKey,
     titleText: context.l10n.w_personal_note_dialog_footnote_checkbox_label,
     value: _showAsFootnote,
     onChanged: (value) => setState(() => _showAsFootnote = value),
   );
 
   Widget _textArea() => SBBTextInputBoxed(
+    key: PersonalNoteDialog.textAreaKey,
     decoration: SBBInputDecoration(
       labelText: context.l10n.w_personal_note_dialog_textfield_label,
       errorText: _validationError,

@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -131,6 +131,7 @@ Future<void> disconnect(WidgetTester tester) async {
 Future<void> closeJourney(WidgetTester tester) async {
   await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
   await confirmCloseJourneyDialogIfShown(tester);
+  await tester.pumpAndSettle();
 }
 
 Future<void> confirmCloseJourneyDialogIfShown(WidgetTester tester) async {

@@ -18,6 +18,9 @@ class DetailTabCommunication extends StatelessWidget {
   static const communicationTabKey = Key('communicationTab');
   static const radioChannelListKey = Key('communicationTabRadioChannelList');
   static const departureAuthorizationKey = Key('communicationTabDepartureAuthorization');
+  static const personalNoteContainerKey = Key('communicationTabPersonalNoteContainer');
+  static const createPersonalNoteButtonKey = Key('communicationTabCreatePersonalNoteButton');
+  static const editPersonalNoteButtonKey = Key('communicationTabEditPersonalNoteButton');
 
   const DetailTabCommunication({super.key = communicationTabKey});
 
@@ -173,6 +176,7 @@ class DetailTabCommunication extends StatelessWidget {
             _listHeader(text: context.l10n.w_service_point_modal_personal_note),
             if (personalNote != null)
               Container(
+                key: personalNoteContainerKey,
                 constraints: BoxConstraints(maxHeight: 160, minWidth: double.infinity),
                 padding: const .symmetric(
                   horizontal: SBBSpacing.medium,
@@ -196,18 +200,19 @@ class DetailTabCommunication extends StatelessWidget {
   }
 
   Widget _personalNoteButton(BuildContext context, PersonalNote? personalNote) {
-    final icon = personalNote == null ? SBBIcons.plus_small : SBBIcons.pen_small;
-    final label = personalNote == null
+    final isCreateButton = personalNote == null;
+    final label = isCreateButton
         ? context.l10n.w_service_point_modal_personal_note_create_button
         : context.l10n.w_service_point_modal_personal_note_edit_button;
     return SBBTertiaryButtonSmall(
+      key: isCreateButton ? createPersonalNoteButtonKey : editPersonalNoteButtonKey,
       onPressed: () async {
         final detailModalViewModel = context.read<ModalViewModel>();
         detailModalViewModel.controller?.stopAutomaticClose();
         await showPersonalNoteDialog(context, context.read<PersonalNotesViewModel>(), personalNote);
         detailModalViewModel.controller?.resetAutomaticClose();
       },
-      iconData: icon,
+      iconData: isCreateButton ? SBBIcons.plus_small : SBBIcons.pen_small,
       labelText: label,
     );
   }

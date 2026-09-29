@@ -10,6 +10,7 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:external_links/component.dart';
 import 'package:formation/component.dart';
 import 'package:logging/logging.dart';
+import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
@@ -17,6 +18,7 @@ import 'package:train_identification/component.dart';
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_external_links_repository.dart';
 import '../mocks/mock_formation_repository.dart';
+import '../mocks/mock_personal_notes_repository.dart';
 import '../mocks/mock_ru_feature_provider.dart';
 import '../mocks/mock_ru_indications_repository.dart';
 import '../mocks/mock_sim_train_view_model.dart';
@@ -47,6 +49,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     _registerMockTrainIdentificationRepository();
     _registerMockCustomerOrientedDepartureRepository();
     getIt.registerTimedRouteProvider();
+    _registerPersonalNotesRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
@@ -108,6 +111,10 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
       () async => MockCustomerOrientedDepartureRepository(),
       dispose: (repo) => repo.dispose(),
     );
+  }
+
+  void _registerPersonalNotesRepository() {
+    getIt.registerSingleton<PersonalNotesRepository>(MockPersonalNotesRepository());
   }
 
   void _registerMockSimTrainViewModel() {
