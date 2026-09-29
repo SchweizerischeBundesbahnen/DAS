@@ -17,6 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +37,16 @@ public class TrainIdentificationController {
     private final TrainIdentificationService trainIdentificationService;
 
     @GetMapping(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
-    @Operation(summary = "Resolve companies by train identification.", description = "Returns companies associated with a train identification for given operational start dates and train number.")
+    @Operation(summary = "Resolve companies by train identification.",
+        description = "Returns companies for the given operational start dates and train number. Only train identifications departing "
+            + "within the candidate window (a few hours before departure, configured server-side) are considered.")
     @ApiResponse(responseCode = "200", description = "Companies found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyMatchResponse.class)))
-    @ApiResponse(responseCode = "404", description = "No train identification found for the given parameters.")
+    @ApiResponse(responseCode = "404", description = "No matching train identification within the candidate window.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> matchCompanies(
         @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-        @Parameter(description = "The start date of the train journey. Can be specified multiple times. Must be within today +/- 1 day.", required = true, example = "2026-07-10") @RequestParam @NotEmpty List<LocalDate> startDate,
+        @Parameter(description = "The start date of the train journey. Can be specified multiple times. Must be within today +/- 1 day.", required = true, example = "2026-07-10") @RequestParam @NotEmpty Set<LocalDate> startDate,
         @Parameter(description = "The operational train number.", required = true) @RequestParam @NotBlank String operationalTrainNumber) {
 
         List<CompanyMatch> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);
