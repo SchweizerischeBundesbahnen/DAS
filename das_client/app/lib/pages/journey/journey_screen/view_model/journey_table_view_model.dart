@@ -35,6 +35,7 @@ class JourneyTableViewModel({
   required final JourneyNavigationViewModel _navigationVM,
   required final PersonalNotesViewModel _personalNotesVM,
   required final LocalKeyValueStore _userSettings,
+  required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
 }) extends JourneyAwareViewModel {
   this {
     _init();
@@ -78,6 +79,7 @@ class JourneyTableViewModel({
           _navigationVM.model,
           _userSettings.model,
           _personalNotesVM.personalNoteAnnotations,
+          _acknowledgedModificationRepository.model,
           (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
         ).listen(
           (data) => _handleDataChanged(
@@ -88,6 +90,7 @@ class JourneyTableViewModel({
             detailModalType: data.$5,
             showDecisiveGradient: data.$6,
             navigationModel: data.$7,
+            acknowledgedModifications: data.$9,
             personalNoteAnnotations: data.$9,
           ),
         );
@@ -105,6 +108,7 @@ class JourneyTableViewModel({
     required Map<int, CollapsedState> collapsibleRows,
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
+    required Set<Modification> acknowledgedModifications,
     required List<PersonalNoteAnnotation> personalNoteAnnotations,
     JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
@@ -121,6 +125,7 @@ class JourneyTableViewModel({
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .removeIrrelevantServicePoints(journey.metadata.calculatedSpeeds)
         .hideJourneyPointsThatShouldNotBeDisplayed()
+        .hideAcknowledgedDeletedRows(acknowledgedModifications, settings)
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(position.currentPosition)
@@ -150,6 +155,7 @@ class JourneyTableViewModel({
         chevronPosition: chevronPosition,
         showDecisiveGradient: showDecisiveGradient,
         detailModalType: detailModalType,
+        acknowledgedModifications: acknowledgedModifications,
       ),
     );
   }
@@ -206,5 +212,15 @@ class JourneyTableViewModel({
   void _emitLoaded(TableLoaded loadedModel) {
     _log.fine('Emitting TableLoaded.');
     _rxModel.add(loadedModel);
+  }
+
+  void acknowledgeModification(Modification modification) {
+    _log.info('Acknowledging modification: $modification');
+    _acknowledgedModificationRepository.insert(modification);
+  }
+
+  void undoModificationAcknowledgement(Modification modification) {
+    _log.info('Undoing acknowledgement of modification: $modification');
+    _acknowledgedModificationRepository.delete(modification);
   }
 }

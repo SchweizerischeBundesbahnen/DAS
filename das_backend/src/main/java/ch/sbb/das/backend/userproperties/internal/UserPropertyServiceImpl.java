@@ -64,6 +64,6 @@ class UserPropertyServiceImpl implements UserDataService {
     }
 
     private UserProperty toUserProperty(UserPropertyEntity entity) {
-        return new UserProperty(entity.getKey(), jsonMapper.readTree(entity.getValue()), entity.getLastModifiedAt());
+        return new UserProperty(entity.getKey(), jsonMapper.readTree(entity.getValue()));
     }
 }

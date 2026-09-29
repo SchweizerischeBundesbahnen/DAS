@@ -12,7 +12,7 @@ import { SpecialHolidayService } from './special-holiday.service';
 const specialHoliday: SpecialHoliday = {
   id: 1,
   name: 'Auffahrt',
-  date: new Date('2026-05-14'),
+  date: '2026-05-14',
   scheduleType: 'SUNDAY_SCHEDULE',
   companies: ['1085', '1087'],
 };
@@ -76,7 +76,7 @@ describe('SpecialHolidayService', () => {
     expect(apiSpy).toHaveBeenCalledWith(1, {
       id: 1,
       name: 'Updated',
-      date: new Date('2026-05-14'),
+      date: '2026-05-14',
       scheduleType: 'SUNDAY_SCHEDULE',
       companies: ['1085', '1087', '1090'],
     });
@@ -127,7 +127,7 @@ describe('SpecialHolidayService', () => {
     const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
     const holidayToCreate: SpecialHoliday = {
       name: 'Nationalfeiertag',
-      date: new Date('2026-08-01'),
+      date: '2026-08-01',
       scheduleType: 'MONDAY_SCHEDULE',
       companies: ['1085'],
     };
@@ -160,7 +160,7 @@ describe('SpecialHolidayService', () => {
       {
         id: 2,
         name: 'Berchtoldstag',
-        date: new Date('2026-01-02'),
+        date: '2026-01-02',
         scheduleType: 'MONDAY_SCHEDULE',
         companies: ['1087'],
       },

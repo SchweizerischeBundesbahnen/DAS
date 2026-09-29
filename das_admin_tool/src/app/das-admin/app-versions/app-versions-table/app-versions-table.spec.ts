@@ -13,7 +13,7 @@ const appVersion: AppVersion = {
   id: 1,
   version: '1.0.0',
   minimalVersion: true,
-  expiryDate: new Date('2026-12-31'),
+  expiryDate: '2026-12-31',
 };
 
 function createComponent(): AppVersionsTable {

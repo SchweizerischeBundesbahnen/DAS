@@ -7,8 +7,7 @@ class const Signal({
   required super.kilometre,
   final String? visualIdentifier,
   final List<SignalFunction> functions = const [],
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .signal);
 

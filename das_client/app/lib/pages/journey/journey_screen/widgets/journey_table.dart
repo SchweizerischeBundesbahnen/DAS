@@ -52,6 +52,7 @@ import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/local_key_value_store.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/assets.dart';
@@ -118,6 +119,7 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
       chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      acknowledgedModifications: model.acknowledgedModifications,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
     journeyTableScrollController.updateRenderedRows(rowBuilders);
@@ -146,6 +148,7 @@ class JourneyTable extends StatelessWidget {
     required JourneyPositionModel journeyPosition,
     required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
+    required Set<Modification> acknowledgedModifications,
   }) {
     final groupedRows = journeyTableRowData
         .whereType<BaliseLevelCrossingGroup>()
@@ -157,6 +160,7 @@ class JourneyTable extends StatelessWidget {
 
     return List.generate(journeyTableRowData.length, (index) {
       final rowData = journeyTableRowData[index];
+      final modification = rowData is JourneyPoint ? rowData.modification : null;
 
       final journeyConfig = JourneyConfig(
         settings: settings,
@@ -176,6 +180,7 @@ class JourneyTable extends StatelessWidget {
           expandedGroups: settings.expandedGroups,
           journeyEnd: journeyTableVM.journeyEnd,
         ),
+        showModification: settings.showAcknowledgedModifications || !acknowledgedModifications.contains(modification),
       );
 
       var attachAnnotationToPrevious = false;
@@ -184,6 +189,8 @@ class JourneyTable extends StatelessWidget {
         attachAnnotationToPrevious =
             previous is JourneyAnnotation || (previous is ServicePoint && previous.order == rowData.order);
       }
+
+      final acknowledgeModificationCallback = _acknowledgeModificationCallback(context, modification, journeyTableVM);
 
       switch (rowData.dataType) {
         case .servicePoint:
@@ -195,6 +202,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             context: context,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .protectionSection:
           return ProtectionSectionRow(
@@ -204,6 +212,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .curvePoint:
           return CurvePointRow(
@@ -213,6 +222,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .signal:
           return SignalRow(
@@ -222,6 +232,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
@@ -250,6 +261,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .cabSignaling:
           return CABSignalingRow(
@@ -623,5 +635,35 @@ class JourneyTable extends StatelessWidget {
           )
           .toList(growable: false),
     );
+  }
+
+  VoidCallback? _acknowledgeModificationCallback(
+    BuildContext context,
+    Modification? modification,
+    JourneyTableViewModel vm,
+  ) {
+    return modification != null
+        ? () {
+            vm.acknowledgeModification(modification);
+            SBBToast.of(context).show(
+              style: SBBToastStyle(
+                titleTextStyle: SBBTextStyles.mediumLight,
+                backgroundColor: DASColors.modificationToastColor,
+                padding: EdgeInsets.symmetric(horizontal: SBBSpacing.xLarge, vertical: SBBSpacing.small),
+              ),
+              titleText: context.l10n.w_journey_table_modification_acknowledged,
+              action: GestureDetector(
+                onTap: () {
+                  vm.undoModificationAcknowledgement(modification);
+                },
+                child: Text(
+                  context.l10n.w_journey_table_modification_acknowledged_undo,
+                  style: SBBTextStyles.mediumBold,
+                ),
+              ),
+              duration: SBBToast.durationLong,
+            );
+          }
+        : null;
   }
 }

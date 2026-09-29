@@ -22,6 +22,7 @@ class ReducedOverviewViewModel({
   required final RouteVariantViewModel _routeVariantViewModel,
   required final CollapsibleRowsViewModel _collapsibleRowsViewModel,
   required final JourneyFilterViewModel _journeyFilterViewModel,
+  required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
 }) {
   this {
     _init();
@@ -41,18 +42,21 @@ class ReducedOverviewViewModel({
 
   void _init() {
     _subscription =
-        CombineLatestStream.combine4(
+        CombineLatestStream.combine5(
           _journeyViewModel.journey,
           _routeVariantViewModel.variantsByOrder,
           _collapsibleRowsViewModel.collapsedRows,
           _journeyFilterViewModel.model,
-          (journey, variantsByOrder, collapsedRows, filters) => (journey, variantsByOrder, collapsedRows, filters),
+          _acknowledgedModificationRepository.model,
+          (journey, variantsByOrder, collapsedRows, filters, acknowledgedModifications) =>
+              (journey, variantsByOrder, collapsedRows, filters, acknowledgedModifications),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,
             variantsByOrder: data.$2,
             collapsedRows: data.$3,
             filter: data.$4,
+            acknowledgedModifications: data.$5,
           ),
           onError: _rxModel.addError,
         );
@@ -63,6 +67,7 @@ class ReducedOverviewViewModel({
     required Map<int, RouteVariant> variantsByOrder,
     required Map<int, CollapsedState> collapsedRows,
     required JourneyFilterModel? filter,
+    required Set<Modification> acknowledgedModifications,
   }) {
     if (journey == null) {
       _emitLoading();
@@ -94,6 +99,7 @@ class ReducedOverviewViewModel({
         variantsByOrder: variantsByOrder,
         collapsedRows: collapsedRows,
         filter: filter,
+        acknowledgedModifications: acknowledgedModifications,
       ),
     );
   }

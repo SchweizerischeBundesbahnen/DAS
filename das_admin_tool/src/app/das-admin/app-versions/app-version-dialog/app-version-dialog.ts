@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbDateInputModule } from '@sbb-esta/lyne-angular/date-input';
@@ -12,12 +12,18 @@ import { AppVersion } from '~app/das-admin/das-admin-api';
 import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
 import { toUtcDateOnly } from '~shared/date-util';
 
+interface VersionData {
+  version: string;
+  minimalVersion: boolean;
+  expiryDate: Date | null;
+}
+
 export type VersionDialogEditResult = AppVersion | 'delete';
 
 @Component({
   selector: 'app-app-version-dialog',
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SbbFormFieldModule,
     SbbToggleCheckModule,
     SbbDateInputModule,
@@ -36,39 +42,46 @@ export class AppVersionDialog {
 
   private static readonly VERSION_REGEX = /^\d+\.\d+\.\d+$/;
 
-  protected readonly title: string;
-  protected readonly isEdit: boolean;
+  protected readonly dialogTitle: string;
 
-  protected versionForm = new FormGroup({
-    version: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.pattern(AppVersionDialog.VERSION_REGEX)],
-    }),
-    minimalVersion: new FormControl(false, { nonNullable: true }),
-    expiryDate: new FormControl<Date | null>(null),
+  protected readonly versionModel = signal<VersionData>({
+    version: '',
+    minimalVersion: false,
+    expiryDate: null,
   });
+  protected readonly versionForm = form(this.versionModel, (version) => {
+    required(version.version, {
+      message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
+    });
+    pattern(version.version, AppVersionDialog.VERSION_REGEX, {
+      message: $localize`:@@app_versions_form_version_error_pattern:Feld muss dem Format MAJOR.MINOR.PATCH entsprechen`,
+    });
+  });
+
   protected minDate = new Date();
 
   constructor() {
-    this.isEdit = this.dialogData?.id !== undefined;
-    this.title = this.isEdit
+    const isEdit = this.dialogData?.id !== undefined;
+    this.dialogTitle = isEdit
       ? $localize`:@@app_versions_dialog_title_edit:Blockierte App Version bearbeiten`
       : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;
 
-    if (this.isEdit && this.dialogData) {
-      this.versionForm.patchValue({
-        version: this.dialogData.version,
-        minimalVersion: this.dialogData.minimalVersion,
-        expiryDate: this.dialogData.expiryDate ? new Date(this.dialogData.expiryDate) : null,
-      });
+    if (isEdit && this.dialogData) {
+      this.versionModel.update((initial) => ({
+        version: this.dialogData!.version,
+        minimalVersion: this.dialogData!.minimalVersion,
+        expiryDate: this.dialogData!.expiryDate
+          ? new Date(this.dialogData!.expiryDate)
+          : initial.expiryDate,
+      }));
     }
   }
 
   get formValue(): AppVersion {
-    const formValue = this.versionForm.value;
+    const formValue = this.versionModel();
     return {
       ...formValue,
-      expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate) : undefined,
-    } as AppVersion;
+      expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate).toJSON() : undefined,
+    };
   }
 }

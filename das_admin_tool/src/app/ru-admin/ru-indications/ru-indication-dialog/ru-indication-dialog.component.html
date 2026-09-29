@@ -1,37 +1,30 @@
-<sbb-dialog-title>{{ title }}</sbb-dialog-title>
+<sbb-dialog-title>{{ dialogTitle }}</sbb-dialog-title>
 <sbb-dialog-close-button />
 <sbb-dialog-content>
-  <form [formGroup]="ruIndicationForm">
+  <form>
     <sbb-stepper linear (stepchange)="stepchange.set($event)">
       <sbb-step-label i18n="@@ru_indications_step_content">Titel und Text</sbb-step-label>
       <sbb-step>
         <sbb-title i18n="@@ru_indications_form_content_title" visualLevel="5"
           >Titel und Text</sbb-title
         >
-        <app-category-content-form
-          [dialogData]="dialogData"
-          [form]="ruIndicationForm.controls.content"
-        />
+        <app-category-content-form [dialogData]="dialogData" [form]="ruIndicationForm.content" />
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_scope">Anwendungsbereich</sbb-step-label>
-      <sbb-step formGroupName="scope">
+      <sbb-step>
         <sbb-title i18n="@@ru_indications_form_company_title" visualLevel="5">EVU</sbb-title>
-        <app-companies-input [control]="ruIndicationForm.controls.scope.controls.companies" />
+        <app-companies-input multiselect [field]="ruIndicationForm.scope.companies" />
 
         <sbb-title i18n="@@ru_indications_form_train_numbers_title" visualLevel="5"
           >Zugnummer</sbb-title
         >
-        <app-train-number-input
-          [control]="ruIndicationForm.controls.scope.controls.operationalTrainNumberFilters"
-        />
+        <app-train-number-input [form]="ruIndicationForm.scope.operationalTrainNumber" />
 
         <sbb-title i18n="@@ru_indications_form_location_title" visualLevel="5"
           >Betriebspunkt</sbb-title
         >
-        <app-locations-input
-          [control]="ruIndicationForm.controls.scope.controls.tafTapLocationReferences"
-        />
+        <app-locations-input [field]="ruIndicationForm.scope.tafTapLocationReferences" />
       </sbb-step>
 
       <sbb-step-label i18n="@@ru_indications_step_periods">Zeitraum</sbb-step-label>
@@ -39,7 +32,7 @@
         <sbb-title i18n="@@ru_indications_form_periods_title" visualLevel="5"
           >Zeitraum der Gültigkeit</sbb-title
         >
-        <app-periods-input [control]="ruIndicationForm.controls.periods" />
+        <app-periods-input [field]="ruIndicationForm.periods" />
       </sbb-step>
       @if (isEdit) {
         <sbb-step-label disabled i18n="@@dialog_step_label_audit">Stammdaten</sbb-step-label>
@@ -74,7 +67,7 @@
     } @else {
       <sbb-button
         i18n="@@dialog_action_save"
-        [disabled]="ruIndicationForm.invalid || ruIndicationForm.pristine"
+        [disabled]="ruIndicationForm().invalid() || !ruIndicationForm().dirty()"
         [sbb-dialog-close]="formValue"
         >Speichern</sbb-button
       >

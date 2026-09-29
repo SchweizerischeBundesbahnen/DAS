@@ -55,7 +55,7 @@ class UserPropertyControllerTest {
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].key", is("tourSystem")))
             .andExpect(jsonPath("$.data[0].value", is("tour1")))
-            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").doesNotExist());
     }
 
     @Test
@@ -77,7 +77,7 @@ class UserPropertyControllerTest {
             .andExpect(jsonPath("$.data", hasSize(1)))
             .andExpect(jsonPath("$.data[0].key", is("tourSystem")))
             .andExpect(jsonPath("$.data[0].value", is("tip")))
-            .andExpect(jsonPath("$.data[0].lastModifiedAt").exists());
+            .andExpect(jsonPath("$.data[0].lastModifiedAt").doesNotExist());
     }
 
     @Test

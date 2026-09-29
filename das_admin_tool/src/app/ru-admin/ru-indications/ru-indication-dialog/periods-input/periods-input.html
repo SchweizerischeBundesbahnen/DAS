@@ -1,9 +1,9 @@
-<form [formGroup]="periodForm">
+<form>
   <div class="date-inputs">
     <sbb-form-field>
       <label for="validFrom" i18n="@@ru_indications_form_period_valid_from">Von</label>
       <sbb-datepicker-previous-day />
-      <sbb-date-input formControlName="validFrom" required />
+      <sbb-date-input [formField]="periodForm.validFrom" />
       <sbb-datepicker-toggle />
       <sbb-datepicker-next-day />
       <sbb-datepicker />
@@ -11,18 +11,20 @@
     <sbb-form-field>
       <label for="validTo" i18n="@@ru_indications_form_period_valid_to">Bis</label>
       <sbb-datepicker-previous-day />
-      <sbb-date-input formControlName="validTo" required />
+      <sbb-date-input [formField]="periodForm.validTo" />
       <sbb-datepicker-toggle />
       <sbb-datepicker-next-day />
       <sbb-datepicker />
     </sbb-form-field>
   </div>
 
-  <sbb-toggle-check formControlName="isRange" i18n="@@ru_indications_form_period_range_toggle"
+  <sbb-toggle-check
+    i18n="@@ru_indications_form_period_range_toggle"
+    [formField]="periodForm.isRange"
     >Zeitspanne</sbb-toggle-check
   >
 
-  <sbb-checkbox-group [disabled]="periodForm.controls.weekdays.disabled">
+  <sbb-checkbox-group [disabled]="periodForm.weekdays().disabled()">
     @for (weekday of weekdays; track weekday.value) {
       <sbb-checkbox
         [checked]="isWeekdaySelected(weekday.value)"
@@ -32,33 +34,27 @@
     }
   </sbb-checkbox-group>
 
-  <sbb-chip-group [displayWith]="displayPeriod" [formControl]="control()" />
+  <sbb-chip-group [displayWith]="displayPeriod" [formField]="field()" />
 
   <sbb-secondary-button
     i18n="@@ru_indications_form_period_add"
     iconName="plus-small"
-    [disabled]="periodForm.invalid"
+    [disabled]="
+      periodForm()
+        .errorSummary()
+        .some((e) => e.kind !== 'draftInvalid')
+    "
     (click)="addPeriod()"
     >Auswahl hinzufügen</sbb-secondary-button
   >
-
-  @if (periodForm.get('validFrom')?.hasError('required') && periodForm.touched) {
-    <sbb-error i18n="@@ru_indications_form_period_date_error">"Von" muss gesetzt werden</sbb-error>
+  @if (periodForm().touched()) {
+    @for (error of periodForm().errors(); track error.kind) {
+      <sbb-error>{{ error.message }}</sbb-error>
+    }
   }
-
-  @if (periodForm.hasError('dateRangeInvalid') && periodForm.touched) {
-    <sbb-error i18n="@@ru_indications_form_period_date_range_error"
-      >"Von" muss vor "Bis" liegen</sbb-error
-    >
-  }
-  @if (periodForm.hasError('validToRequired') && periodForm.touched) {
-    <sbb-error i18n="@@ru_indications_form_period_valid_to_required_error"
-      >Für eine Zeitspanne muss "Bis" gesetzt werden</sbb-error
-    >
-  }
-  @if (control().hasError('draftInvalid') && control().touched) {
-    <sbb-error i18n="@@ru_indications_form_period_draft_error"
-      >Nicht gespeicherte Eingabe - bitte zur Auswahl hinzufügen oder leeren</sbb-error
-    >
+  @if (periodForm.validFrom().touched()) {
+    @for (error of periodForm.validFrom().errors(); track error.kind) {
+      <sbb-error>{{ error.message }}</sbb-error>
+    }
   }
 </form>

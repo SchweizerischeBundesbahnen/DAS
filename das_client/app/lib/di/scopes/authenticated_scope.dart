@@ -65,6 +65,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
     getIt.registerPersonalNotesRepository();
+    getIt.registerAcknowledgedModificationRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
@@ -170,6 +171,13 @@ extension AuthenticatedScopeExtension on GetIt {
 
     registerSingleton<SettingsRepository>(settingsRepository);
     registerSingleton<LogEndpoint>(settingsRepository);
+  }
+
+  void registerAcknowledgedModificationRepository() {
+    registerSingleton<AcknowledgedModificationRepository>(
+      SferaComponent.createAcknowledgedModificationRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 
   void registerAppExpirationViewModel() {

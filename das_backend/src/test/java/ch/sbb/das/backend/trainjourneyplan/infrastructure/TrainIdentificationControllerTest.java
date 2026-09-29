@@ -42,21 +42,21 @@ class TrainIdentificationControllerTest {
             .andExpect(jsonPath("$.data[*].startDate", containsInAnyOrder(TODAY.toString(), TODAY.toString())));
     }
 
-    @DisplayName("getCompanies_differentDate_returnsDifferentCompanies|2VLN2sTDLHY5sp9nntYE|tests:2136")
+    @DisplayName("getCompanies_beyondFourHours_isFilteredOut|2VLN2sTDLHY5sp9nntYE|tests:2136,2638")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
-    void getCompanies_differentDate_returnsDifferentCompanies() throws Exception {
+    void getCompanies_beyondFourHours_isFilteredOut() throws Exception {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
+                .param("startDate", TODAY.toString())
                 .param("startDate", TOMORROW.toString())
                 .param("operationalTrainNumber", "728"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data", hasSize(1)))
-            .andExpect(jsonPath("$.data[0].company.code").value("3333"))
-            .andExpect(jsonPath("$.data[0].company.shortName").value("MOCK_C"))
-            .andExpect(jsonPath("$.data[0].startDate").value(TOMORROW.toString()));
+            .andExpect(jsonPath("$.data", hasSize(2)))
+            .andExpect(jsonPath("$.data[*].company.code", containsInAnyOrder("1111", "2222")))
+            .andExpect(jsonPath("$.data[*].company.shortName", containsInAnyOrder("MOCK_A", "MOCK_B")));
     }
 
-    @DisplayName("getCompanies_multipleDates_returnsCompaniesWithMatchingStartDate|D7ucp0T2i8wW1uZp8sRj|tests:2136")
+    @DisplayName("getCompanies_multipleDates_returnsCompaniesWithMatchingStartDate|D7ucp0T2i8wW1uZp8sRj|tests:2136,2638")
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
     void getCompanies_multipleDates_returnsCompaniesWithMatchingStartDate() throws Exception {
@@ -65,9 +65,9 @@ class TrainIdentificationControllerTest {
                 .param("startDate", TOMORROW.toString())
                 .param("operationalTrainNumber", "728"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data", hasSize(3)))
-            .andExpect(jsonPath("$.data[*].company.code", containsInAnyOrder("1111", "2222", "3333")))
-            .andExpect(jsonPath("$.data[*].startDate", containsInAnyOrder(TODAY.toString(), TODAY.toString(), TOMORROW.toString())));
+            .andExpect(jsonPath("$.data", hasSize(2)))
+            .andExpect(jsonPath("$.data[*].company.code", containsInAnyOrder("1111", "2222")))
+            .andExpect(jsonPath("$.data[*].startDate", containsInAnyOrder(TODAY.toString(), TODAY.toString())));
     }
 
     @DisplayName("getCompanies_noMatch_returns404|WDOUcBO3Rt0PLdLBgUtl|tests:2136")

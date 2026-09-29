@@ -64,6 +64,6 @@ class PersonalNoteServiceImpl implements UserDataService {
     }
 
     private PersonalNote toPersonalNote(PersonalNoteEntity entity) {
-        return new PersonalNote(entity.getKey(), jsonMapper.readTree(entity.getValue()), entity.getLastModifiedAt());
+        return new PersonalNote(entity.getKey(), jsonMapper.readTree(entity.getValue()));
     }
 }

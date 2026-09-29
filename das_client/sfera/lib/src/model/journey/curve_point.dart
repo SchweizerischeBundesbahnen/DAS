@@ -10,8 +10,7 @@ class const CurvePoint({
   final CurveType? curveType,
   final String? text,
   final String? comment,
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .curvePoint);
 

@@ -326,6 +326,7 @@ extension JourneyScopeExtension on GetIt {
         decisiveGradientVM: DI.get(),
         navigationVM: DI.get(),
         userSettings: DI.get(),
+        acknowledgedModificationRepository: DI.get(),
         personalNotesVM: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
@@ -365,6 +366,8 @@ extension JourneyScopeExtension on GetIt {
     registerSingleton<JourneyFilterViewModel>(
       JourneyFilterViewModel(
         journeyViewModel: DI.get(),
+        acknowledgedModificationRepository: DI.get(),
+        journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/journey_screen/reduced_overview/reduced_overview_modal_sheet.dart';
+import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ExtendedMenu extends StatelessWidget {
   static const Key maneuverModeMenuItemKey = Key('maneuverModeMenuItem');
   static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
   static const Key openTourSystemItemKey = Key('openTourSystemItem');
+  static const Key acknowledgedModificationsItemKey = Key('acknowledgedModificationsItem');
 
   static const double _maxWidth = 360;
 
@@ -50,6 +52,7 @@ class ExtendedMenu extends StatelessWidget {
                         _journeyOverviewItem(context, hidePopover),
                         _maneuverItem(context, hidePopover),
                         _waraItem(context, hidePopover),
+                        _acknowledgedModificationsItem(context, hidePopover),
                       ],
                     ),
                   ),
@@ -83,6 +86,20 @@ class ExtendedMenu extends StatelessWidget {
         if (context.mounted) {
           showReducedOverviewModalSheet(context);
         }
+      },
+    );
+  }
+
+  Widget _acknowledgedModificationsItem(BuildContext context, VoidCallback hideOverlay) {
+    final vm = DI.get<JourneySettingsViewModel>();
+
+    return SBBSwitchListItem(
+      key: acknowledgedModificationsItemKey,
+      titleText: context.l10n.w_extended_menu_show_acknowledged_modifications,
+      value: vm.modelValue.showAcknowledgedModifications,
+      onChanged: (value) {
+        hideOverlay();
+        vm.toggleShowAcknowledgedModifications();
       },
     );
   }
