@@ -18,11 +18,7 @@ import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/st
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
-import {
-  RuIndication,
-  RuIndicationPeriod,
-  RuIndicationTrainNumberFilter,
-} from '~ru-admin/ru-admin-api';
+import { DayOfWeek, RuIndication, RuIndicationTrainNumberFilter } from '~ru-admin/ru-admin-api';
 import {
   contentFormValue,
   createContentFormTree,
@@ -30,6 +26,7 @@ import {
 } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
 import { Audit } from '~shared/audit/audit';
 import { CompaniesInputComponent } from '~shared/companies-input/companies-input.component';
+import { toUtcDateOnly } from '~shared/date-util';
 import { arrayRequired, languageRequired, oneLanguageRequired } from '~shared/form-validators.util';
 import { RuIndicationDialogData } from '../ru-indication.service';
 import { CategoryContentForm } from './content-form/category-content-form';
@@ -42,16 +39,22 @@ export interface OperationalTrainNumber {
   filters: RuIndicationTrainNumberFilter[];
 }
 
-interface RuIndicationScope {
+interface RuIndicationScopeData {
   companies: string[];
   operationalTrainNumber: OperationalTrainNumber;
   tafTapLocationReferences: string[];
 }
 
+export interface RuIndicationPeriodData {
+  validFrom: Date;
+  validTo: Date;
+  weekdays?: DayOfWeek[];
+}
+
 export interface RuIndicationData {
   content: RuIndicationContentWithCategoryData;
-  scope: RuIndicationScope;
-  periods: RuIndicationPeriod[];
+  scope: RuIndicationScopeData;
+  periods: RuIndicationPeriodData[];
 }
 
 @Component({
@@ -189,7 +192,11 @@ export class RuIndicationDialog {
           tafTapLocationReferences:
             ruIndication.scope.tafTapLocationReferences ?? initial.scope.tafTapLocationReferences,
         },
-        periods: ruIndication.periods,
+        periods: ruIndication.periods.map((period) => ({
+          validFrom: new Date(period.validFrom),
+          validTo: new Date(period.validTo),
+          weekdays: period.weekdays,
+        })),
       }));
     }
 
@@ -214,7 +221,11 @@ export class RuIndicationDialog {
         operationalTrainNumberFilters: formValue.scope.operationalTrainNumber.filters,
         tafTapLocationReferences: formValue.scope.tafTapLocationReferences,
       },
-      periods: formValue.periods,
+      periods: formValue.periods.map((period) => ({
+        validFrom: toUtcDateOnly(period.validFrom).toJSON(),
+        validTo: toUtcDateOnly(period.validTo).toJSON(),
+        weekdays: period.weekdays,
+      })),
     };
   }
 }

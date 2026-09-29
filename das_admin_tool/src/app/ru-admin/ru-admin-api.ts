@@ -3,6 +3,7 @@ import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '~shared/api-response';
 import { Auditable } from '~shared/audit/auditable';
+import { DateString } from '~shared/date-util';
 import { environment } from '~src/environments/environment';
 
 export interface RuIndicationLanguageContent {
@@ -29,8 +30,8 @@ export type DayOfWeek =
   'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
 
 export interface RuIndicationPeriod {
-  validFrom: Date | string;
-  validTo: Date | string;
+  validFrom: DateString;
+  validTo: DateString;
   weekdays?: DayOfWeek[];
 }
 
@@ -85,7 +86,7 @@ export const SCHEDULE_TYPE_LABELS = (): { value: ScheduleType; label: string }[]
 export interface SpecialHoliday extends Auditable {
   id?: number;
   name: string;
-  date: string;
+  date: DateString;
   scheduleType: ScheduleType;
   companies: string[];
 }

@@ -20,7 +20,7 @@ const sample: RuIndication = {
     operationalTrainNumberFilters: [{ expression: '100', parity: 'ANY' }],
     tafTapLocationReferences: ['LOC1'],
   },
-  periods: [{ validFrom: new Date('2026-01-10'), validTo: new Date('2026-01-10') }],
+  periods: [{ validFrom: '2026-01-10', validTo: '2026-01-10' }],
   status: 'ACTIVE',
   lastModifiedBy: 'tester',
   lastModifiedAt: new Date('2026-01-01'),

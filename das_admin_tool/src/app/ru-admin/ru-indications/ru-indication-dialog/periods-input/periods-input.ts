@@ -18,10 +18,13 @@ import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
 import { DayOfWeek, RuIndicationPeriod } from '~ru-admin/ru-admin-api';
-import { toUtcDateOnly } from '~shared/date-util';
 import { LanguageProvider } from '~shared/language-provider';
+import { RuIndicationPeriodData } from '../ru-indication-dialog.component';
 
-export function displayPeriod(period: RuIndicationPeriod, localeId = 'de-CH'): string {
+export function displayPeriod(
+  period: RuIndicationPeriod | RuIndicationPeriodData,
+  localeId = 'de-CH',
+): string {
   const from = formatDate(period.validFrom, 'shortDate', localeId);
   const to = formatDate(period.validTo, 'shortDate', localeId);
   if (from === to) {
@@ -69,7 +72,7 @@ function periodValid<TValue extends PeriodsData, TPathKind extends PathKind = Pa
       return null;
     }
 
-    if (new Date(tree.validFrom) >= new Date(tree.validTo)) {
+    if (tree.validFrom >= tree.validTo) {
       return { kind: 'dateRangeInvalid', message: config?.message.dateRangeInvalid };
     }
 
@@ -116,7 +119,7 @@ export interface PeriodsData {
 export class PeriodsInput {
   private readonly languageProvider = inject(LanguageProvider);
 
-  readonly field = input.required<FieldTree<RuIndicationPeriod[]>>();
+  readonly field = input.required<FieldTree<RuIndicationPeriodData[]>>();
 
   private readonly default: PeriodsData = {
     validFrom: null,
@@ -148,7 +151,7 @@ export class PeriodsInput {
   protected readonly weekdays = weekdays();
   private readonly localeId = this.languageProvider.currentLanguage.localeId;
 
-  protected readonly displayPeriod = (period: RuIndicationPeriod) =>
+  protected readonly displayPeriod = (period: RuIndicationPeriodData) =>
     displayPeriod(period, this.localeId);
 
   constructor() {
@@ -191,14 +194,7 @@ export class PeriodsInput {
 
     // add period
     const periods = this.field()();
-    periods.value.set([
-      ...periods.value(),
-      {
-        validFrom: toUtcDateOnly(new Date(validFrom)),
-        validTo: toUtcDateOnly(new Date(validTo)),
-        weekdays,
-      },
-    ]);
+    periods.value.set([...periods.value(), { validFrom, validTo, weekdays }]);
     periods.markAsTouched();
     periods.markAsDirty();
 

@@ -112,6 +112,7 @@ export default defineConfig(
       // sonarjs
       // Disabled because this is opinionated
       'sonarjs/function-return-type': 'off',
+      'sonarjs/redundant-type-aliases': 'off',
       // Disabled because handled by sonarjs/cognitive-complexity
       'sonarjs/no-nested-conditional': 'off',
       // unicorn
