@@ -59,7 +59,11 @@ void main() {
       mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
       mockLocalKeyValueStore = MockLocalKeyValueStore();
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
-      testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo, userSettings: mockLocalKeyValueStore);
+      testee = JourneyNavigationViewModel(
+        sferaRepo: mockSferaRepo,
+        userSettings: mockLocalKeyValueStore,
+        userPropertiesRepository: null,
+      );
       emitRegister = <dynamic>[];
       sub = testee.model.listen(emitRegister.add);
     });

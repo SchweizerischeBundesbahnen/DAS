@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/launcher/launcher.dart';
-import 'package:app/model/tour_system.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';

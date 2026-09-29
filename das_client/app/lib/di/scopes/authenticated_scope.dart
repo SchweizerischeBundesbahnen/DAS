@@ -54,6 +54,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
+    await getIt.registerUserPropertiesRepository();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
     getIt.registerRuFeatureProvider();
@@ -90,6 +91,10 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerAuthProvider() {
     registerSingleton<AuthProvider>(_AuthProvider(authenticator: DI.get()));
+  }
+
+  void registerPropertiesUserIdProvider() {
+    registerSingleton<UserIdProvider>(_PropertiesUserIdProvider(authenticator: DI.get()));
   }
 
   void registerSferaAuthProvider() {
@@ -170,6 +175,25 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingleton<LogEndpoint>(settingsRepository);
   }
 
+  Future<void> registerUserPropertiesRepository() async {
+    final flavor = DI.get<Flavor>();
+    final appVersion = DI.get<AppInfo>().version;
+
+    final repository = UserPropertiesComponent.createRepository(
+      baseUrl: flavor.backendUrl,
+      client: DI.get(),
+      localStore: DI.get(),
+      appVersion: appVersion,
+    );
+
+    registerSingleton<UserPropertiesRepository>(repository, dispose: (repo) => repo.dispose());
+    try {
+      await repository.syncUserProperties();
+    } catch (e, s) {
+      _log.warning('Initial user properties sync failed. The app continues with local values.', e, s);
+    }
+  }
+
   void registerAppExpirationViewModel() {
     final appVersion = DI.get<AppInfo>().version;
     final vm = AppExpirationViewModel(
@@ -225,7 +249,8 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
-      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
+      () async =>
+          JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get(), userPropertiesRepository: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );
@@ -360,6 +385,14 @@ class const _AuthProvider({required final Authenticator authenticator}) implemen
     final oidcToken = await authenticator.token(tokenId: tokenId);
     final accessToken = oidcToken.accessToken;
     return '${oidcToken.tokenType} $accessToken';
+  }
+}
+
+class const _PropertiesUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> getUserId() async {
+    final user = await authenticator.user();
+    return user.userId;
   }
 }
 
