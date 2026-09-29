@@ -8,4 +8,6 @@ abstract class PersonalNotesRepository {
   Future<void> saveNote(PersonalNote note);
 
   Future<void> deleteNote(PersonalNote note);
+
+  Future<void> synchronizeNotes();
 }

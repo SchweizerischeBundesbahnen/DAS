@@ -1,4 +1,5 @@
 import 'package:core_data/component.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -76,6 +77,7 @@ void main() {
     clearInteractions(mockListRequest);
     clearInteractions(mockPutRequest);
     clearInteractions(mockDeleteRequest);
+    clearInteractions(mockUserIdProvider);
   });
 
   test('saveNote_whenCalled_thenSavesToDatabaseAndCallsApi', () async {
@@ -270,6 +272,34 @@ void main() {
     // THEN
     verify(mockPutRequest.call(note: anyNamed('note'))).called(1);
     verifyNever(mockDatabaseService.saveNote(userId: anyNamed('userId'), note: anyNamed('note')));
+  });
+
+  test('synchronizeNotes_whenSyncToRemoteFails_thenRetriesGivenDelay', () {
+    // GIVEN
+    var listRequestCount = 0;
+    when(mockListRequest.call()).thenAnswer((_) async {
+      listRequestCount++;
+      if (listRequestCount == 1) {
+        throw Exception('Remote list request failed');
+      }
+      return PersonalNotesListResponse(headers: const {}, body: const []);
+    });
+
+    // WHEN
+    fakeAsync((async) {
+      testee.synchronizeNotes();
+      async.flushMicrotasks();
+
+      // THEN
+      expect(listRequestCount, 1);
+      async.elapse(PersonalNotesRepositoryImpl.syncRetryDelay - const Duration(milliseconds: 1));
+      async.flushMicrotasks();
+      expect(listRequestCount, 1);
+
+      async.elapse(const Duration(milliseconds: 1));
+      async.flushMicrotasks();
+      expect(listRequestCount, 2);
+    });
   });
 
   test('synchronizeNotes_whenTimestampsAreEqual_thenDoesNotSyncAnyDirection', () async {

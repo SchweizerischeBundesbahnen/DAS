@@ -17,4 +17,9 @@ class MockPersonalNotesRepository implements PersonalNotesRepository {
 
   @override
   Future<void> saveNote(PersonalNote note) async => _personalNotes.add(note);
+
+  @override
+  Future<void> synchronizeNotes() async {
+    // unused
+  }
 }
