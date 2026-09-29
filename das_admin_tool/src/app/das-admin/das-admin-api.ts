@@ -3,13 +3,14 @@ import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '~shared/api-response';
 import { Auditable } from '~shared/audit/auditable';
+import { DateString } from '~shared/date-util';
 import { environment } from '~src/environments/environment';
 
 export interface AppVersion extends Auditable {
   id?: number;
   version: string;
   minimalVersion: boolean;
-  expiryDate?: Date;
+  expiryDate?: DateString;
 }
 
 export type AppVersionApiResponse = ApiResponse<AppVersion>;

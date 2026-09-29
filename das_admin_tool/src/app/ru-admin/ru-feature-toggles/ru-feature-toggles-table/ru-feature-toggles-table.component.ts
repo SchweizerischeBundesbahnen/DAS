@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl } from '@angular/forms';
+import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import {
   SbbSort,
@@ -10,7 +9,6 @@ import {
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { startWith } from 'rxjs';
 import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '~ru-admin/ru-admin-api';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
@@ -47,7 +45,11 @@ export class RuFeatureTogglesTable {
     'lastModifiedBy',
     'action',
   ];
-  protected readonly searchControl = new FormControl('', { nonNullable: true });
+
+  protected readonly filterModel = signal({
+    search: '',
+  });
+  protected readonly filterForm = form(this.filterModel);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
@@ -57,16 +59,16 @@ export class RuFeatureTogglesTable {
       if (this.ruFeatureService.ruFeaturesResource.hasValue()) {
         this.dataSource.data = this.ruFeatureService.ruFeaturesResource.value().data;
       }
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: RuFeature, filter: RuFeatureFilter) =>
       this.searchFilter(filter, data);
-    this.searchControl.valueChanges
-      .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
-      .subscribe((search) => {
-        this.dataSource.filter = { search };
-      });
+    effect(() => {
+      this.dataSource.filter = this.filterModel();
+    });
   }
 
   protected async edit(ruFeature: RuFeature): Promise<void> {

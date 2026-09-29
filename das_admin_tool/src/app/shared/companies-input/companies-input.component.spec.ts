@@ -1,5 +1,6 @@
+import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
+import { FieldTree, form } from '@angular/forms/signals';
 import { RecentCompaniesStore } from '../recent-companies.store';
 import { ToastService } from '../toast-service';
 import { CompaniesInputComponent } from './companies-input.component';
@@ -16,7 +17,7 @@ const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { get: () => [] 
 describe('CompaniesInputComponent', () => {
   let fixture: ComponentFixture<CompaniesInputComponent>;
   let component: CompaniesInputComponent;
-  let selectedCompaniesControl: FormControl<string[]>;
+  let selectedCompaniesField: FieldTree<string[]>;
   let companyService: CompanyService;
 
   beforeEach(async () => {
@@ -46,8 +47,9 @@ describe('CompaniesInputComponent', () => {
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
     component = fixture.componentInstance;
-    selectedCompaniesControl = new FormControl<string[]>([], { nonNullable: true });
-    fixture.componentRef.setInput('control', selectedCompaniesControl);
+    selectedCompaniesField = form(signal([]), { injector: TestBed.inject(Injector) });
+    fixture.componentRef.setInput('multiselect', true);
+    fixture.componentRef.setInput('field', selectedCompaniesField);
     fixture.detectChanges();
     await fixture.whenStable();
   });
@@ -57,7 +59,7 @@ describe('CompaniesInputComponent', () => {
   });
 
   it('should show all non-selected companies when query is empty', () => {
-    component['inputControl'].setValue('');
+    component['inputField']().value.set('');
 
     expect(component['filteredCompanies']().map((company) => company.code)).toEqual([
       '1085',
@@ -67,15 +69,15 @@ describe('CompaniesInputComponent', () => {
   });
 
   it('should filter by code and name', () => {
-    component['inputControl'].setValue('sbb');
+    component['inputField']().value.set('sbb');
     expect(component['filteredCompanies']().map((company) => company.code)).toEqual(['1085']);
 
-    component['inputControl'].setValue('1087');
+    component['inputField']().value.set('1087');
     expect(component['filteredCompanies']().map((company) => company.code)).toEqual(['1087']);
   });
 
   it('should rank exact and prefix matches before contains matches', () => {
-    component['inputControl'].setValue('b');
+    component['inputField']().value.set('b');
     const codes = component['filteredCompanies']().map((company) => company.code);
 
     expect(codes[0]).toBe('1087');
@@ -83,9 +85,9 @@ describe('CompaniesInputComponent', () => {
   });
 
   it('should not include already selected companies in suggestions', () => {
-    selectedCompaniesControl.setValue(['1087']);
+    selectedCompaniesField().value.set(['1087']);
 
-    component['inputControl'].setValue('1');
+    component['inputField']().value.set('1');
     const suggestedCodes = component['filteredCompanies']().map((company) => company.code);
 
     expect(suggestedCodes).not.toContain('1087');
@@ -96,19 +98,20 @@ describe('CompaniesInputComponent', () => {
     mockRecentCompaniesStore.get = () => ['1085', '1087'];
 
     const localFixture = TestBed.createComponent(CompaniesInputComponent);
-    const localControl = new FormControl<string[]>([], { nonNullable: true });
-    localFixture.componentRef.setInput('control', localControl);
+    const localField = form(signal([]), { injector: TestBed.inject(Injector) });
+    localFixture.componentRef.setInput('multiselect', true);
+    localFixture.componentRef.setInput('field', localField);
     localFixture.detectChanges();
 
     return localFixture.whenStable().then(() => {
-      expect(localControl.value).toEqual(['1085', '1087']);
+      expect(localField().value()).toEqual(['1085', '1087']);
     });
   });
 });
 
 describe('CompaniesInputComponent (single-select)', () => {
   let fixture: ComponentFixture<CompaniesInputComponent>;
-  let singleControl: FormControl<string>;
+  let singleField: FieldTree<string>;
   let companyService: CompanyService;
   let element: HTMLElement;
 
@@ -138,9 +141,8 @@ describe('CompaniesInputComponent (single-select)', () => {
 
     fixture = TestBed.createComponent(CompaniesInputComponent);
     element = fixture.nativeElement as HTMLElement;
-    singleControl = new FormControl<string>(initialValue, { nonNullable: true });
-    fixture.componentRef.setInput('control', singleControl);
-    fixture.componentRef.setInput('multiselect', false);
+    singleField = form(signal(initialValue), { injector: TestBed.inject(Injector) });
+    fixture.componentRef.setInput('field', singleField);
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -158,7 +160,7 @@ describe('CompaniesInputComponent (single-select)', () => {
   it('should keep a pre-filled value intact when the field is never touched (edit mode)', async () => {
     await createSingle('1085');
 
-    expect(singleControl.value).toBe('1085');
+    expect(singleField().value()).toBe('1085');
   });
 
   it('should keep a pre-filled value intact after a blur with no user interaction', async () => {
@@ -167,6 +169,6 @@ describe('CompaniesInputComponent (single-select)', () => {
     input.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
     await fixture.whenStable();
 
-    expect(singleControl.value).toBe('1085');
+    expect(singleField().value()).toBe('1085');
   });
 });

@@ -1,5 +1,7 @@
+import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { createContentFormGroup } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
+import { form } from '@angular/forms/signals';
+import { createContentFormTree } from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
 import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
 import { CategoryContentForm } from './category-content-form';
 
@@ -15,7 +17,10 @@ describe('CategoryContentForm', () => {
     fixture = TestBed.createComponent(CategoryContentForm);
     component = fixture.componentInstance;
     const dialogData: RuIndicationDialogData = { templates: [] };
-    fixture.componentRef.setInput('form', createContentFormGroup());
+    fixture.componentRef.setInput(
+      'form',
+      form(signal(createContentFormTree()), { injector: TestBed.inject(Injector) }),
+    );
     fixture.componentRef.setInput('dialogData', dialogData);
     fixture.detectChanges();
     await fixture.whenStable();
