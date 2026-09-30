@@ -25,15 +25,15 @@ class PersonalNotesRepositoryImpl({
   DateTime? _lastSyncDate;
 
   @override
-  Future<List<PersonalNote>> findNotes(String locationCode) async {
+  Stream<List<PersonalNote>> observeNotes(String locationCode) async* {
     final userId = await _userIdProvider();
-    return _databaseService.findNotes(userId: userId, locationCode: locationCode);
+    yield* _databaseService.observeNotes(userId: userId, locationCode: locationCode);
   }
 
   @override
-  Future<List<PersonalNote>> findAllNotes() async {
+  Stream<List<PersonalNote>> observeAllNotes() async* {
     final userId = await _userIdProvider();
-    return _databaseService.findAllNotes(userId: userId);
+    yield* _databaseService.observeAllNotes(userId: userId);
   }
 
   @override
@@ -72,10 +72,9 @@ class PersonalNotesRepositoryImpl({
 
     final userId = await _userIdProvider();
     final remoteNotes = response.body.map((it) => it.toDomain()).toList(growable: false);
-    final localNotesForSync = (await _databaseService.findAllNotes(
-      userId: userId,
-      includeDeleted: true,
-    )).where((note) => note.shouldBeSynchronized);
+    final localNotesForSync = (await _databaseService.findAllNotes(userId: userId, includeDeleted: true)).where(
+      (note) => note.shouldBeSynchronized,
+    );
 
     final remoteByKey = <String, PersonalNote>{for (final note in remoteNotes) note.locationCode: note};
     final localByKey = <String, PersonalNote>{for (final note in localNotesForSync) note.locationCode: note};

@@ -59,6 +59,9 @@ void main() {
 
     when(mockDatabaseService.findAllNotes(userId: userId, includeDeleted: true)).thenAnswer((_) async => const []);
     when(mockDatabaseService.findAllNotes(userId: userId)).thenAnswer((_) async => const []);
+    when(mockDatabaseService.observeAllNotes(userId: userId, includeDeleted: true))
+        .thenAnswer((_) => Stream.value(const []));
+    when(mockDatabaseService.observeAllNotes(userId: userId)).thenAnswer((_) => Stream.value(const []));
     when(mockDatabaseService.saveNote(userId: anyNamed('userId'), note: anyNamed('note'))).thenAnswer((_) async {});
     when(mockDatabaseService.deleteNote(userId: anyNamed('userId'), note: anyNamed('note'))).thenAnswer((_) async {});
 
@@ -68,9 +71,8 @@ void main() {
       userIdProvider: mockUserIdProvider,
     );
 
-    // clear repository interactions after initial sync and clean up job
-    await untilCalled(mockListRequest.call());
-    await Future<void>.delayed(const Duration(milliseconds: 10));
+    // Clear repository interactions after the initial clean up job.
+    await untilCalled(mockDatabaseService.findAllNotes(userId: userId, includeDeleted: true));
 
     clearInteractions(mockApiService);
     clearInteractions(mockDatabaseService);
@@ -112,30 +114,31 @@ void main() {
     verify(mockDeleteRequest.call(key: note.locationCode)).called(1);
   });
 
-  test('findNotes_whenCalled_thenQueriesDatabaseForCurrentUser', () async {
+  test('observeNotes_whenCalled_thenEmitsNotesForCurrentUser', () async {
     // GIVEN
     final note = _note(locationCode: 'CH001', text: 'Note text', modifiedAt: DateTime(2026, 1, 1, 8));
-    when(mockDatabaseService.findNotes(userId: userId, locationCode: 'CH001')).thenAnswer((_) async => [note]);
+    when(mockDatabaseService.observeNotes(userId: userId, locationCode: 'CH001'))
+        .thenAnswer((_) => Stream.value([note]));
 
     // WHEN
-    final result = await testee.findNotes('CH001');
+    final result = testee.observeNotes('CH001');
 
     // THEN
-    expect(result, [note]);
-    verify(mockDatabaseService.findNotes(userId: userId, locationCode: 'CH001')).called(1);
+    await expectLater(result, emits(orderedEquals([note])));
+    verify(mockDatabaseService.observeNotes(userId: userId, locationCode: 'CH001')).called(1);
   });
 
-  test('findAllNotes_whenCalled_thenQueriesDatabaseForCurrentUser', () async {
+  test('observeAllNotes_whenCalled_thenEmitsNotesForCurrentUser', () async {
     // GIVEN
     final note = _note(locationCode: 'CH001', text: 'Note text', modifiedAt: DateTime(2026, 1, 1, 8));
-    when(mockDatabaseService.findAllNotes(userId: userId)).thenAnswer((_) async => [note]);
+    when(mockDatabaseService.observeAllNotes(userId: userId)).thenAnswer((_) => Stream.value([note]));
 
     // WHEN
-    final result = await testee.findAllNotes();
+    final result = testee.observeAllNotes();
 
     // THEN
-    expect(result, [note]);
-    verify(mockDatabaseService.findAllNotes(userId: userId)).called(1);
+    await expectLater(result, emits(orderedEquals([note])));
+    verify(mockDatabaseService.observeAllNotes(userId: userId)).called(1);
   });
 
   test('saveNote_whenSingleUseNote_thenSavesToDatabaseWithoutCallingApi', () async {

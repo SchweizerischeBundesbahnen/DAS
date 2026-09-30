@@ -1,9 +1,11 @@
 import 'package:personal_notes/src/model/personal_note.dart';
 
 abstract class PersonalNotesRepository {
-  Future<List<PersonalNote>> findNotes(String locationCode);
+  /// Watches the notes at the given location. Emits whenever the underlying data changes.
+  Stream<List<PersonalNote>> observeNotes(String locationCode);
 
-  Future<List<PersonalNote>> findAllNotes();
+  /// Watches all notes. Emits whenever the underlying data changes.
+  Stream<List<PersonalNote>> observeAllNotes();
 
   Future<void> saveNote(PersonalNote note);
 

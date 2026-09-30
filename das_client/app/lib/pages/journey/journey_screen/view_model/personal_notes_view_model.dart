@@ -12,7 +12,7 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PersonalNotesViewModel');
 
-// TODO: On Resumed Sync, clean-up modifications
+// TODO: Add note when general note is hidden
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,
   required final ServicePointModalViewModel _servicePointModalViewModel,
@@ -43,6 +43,7 @@ class PersonalNotesViewModel({
 
   ServicePoint? _currentServicePoint;
   List<ServicePoint> _journeyServicePoints = const [];
+  List<PersonalNote> _allNotes = const [];
 
   @override
   void onJourneyChanged(Journey? journey) => _handleJourneyUpdate(journey);
@@ -73,15 +74,9 @@ class PersonalNotesViewModel({
       trainIdentification: trainIdentification,
     );
 
-    final reloadNeeded = _rxServicePointNotes.value.any((note) => note.showAsFootnote) || personalNote.showAsFootnote;
     try {
       await _personalNotesRepository.saveNote(personalNote);
       _log.fine('Personal note saved for location $locationCode');
-
-      _loadNotesOfServicePoint();
-      if (reloadNeeded) {
-        _loadPersonalNoteAnnotations();
-      }
     } catch (e) {
       _log.severe('Error saving personal note for location $locationCode', e);
       rethrow;
@@ -92,11 +87,6 @@ class PersonalNotesViewModel({
     try {
       await _personalNotesRepository.deleteNote(note);
       _log.fine('Personal note deleted for location $locationCode');
-
-      _loadNotesOfServicePoint();
-      if (note.showAsFootnote) {
-        _loadPersonalNoteAnnotations();
-      }
     } catch (e, st) {
       _log.severe('Error deleting personal note', e, st);
       rethrow;
@@ -111,15 +101,28 @@ class PersonalNotesViewModel({
 
     _rxServicePointNotes.close();
     _rxPersonalNotesAnnotation.close();
+    _rxPrioritizedNote.close();
     super.dispose();
   }
 
   void _init() {
-    final modalSubscription = _servicePointModalViewModel.servicePoint.listen((servicePoint) {
-      _currentServicePoint = servicePoint;
-      _loadNotesOfServicePoint();
-    });
-    _subscriptions.add(modalSubscription);
+    final servicePointNotesSubscription = _servicePointModalViewModel.servicePoint
+        .doOnData((servicePoint) => _currentServicePoint = servicePoint)
+        .switchMap((servicePoint) => _personalNotesRepository.observeNotes(servicePoint.locationCode))
+        .listen(
+          (notes) => _emitServicePointNotes(notes),
+          onError: (e, st) => _log.severe('Error loading personal notes of service point', e, st),
+        );
+    _subscriptions.add(servicePointNotesSubscription);
+
+    final allNotesSubscription = _personalNotesRepository.observeAllNotes().listen(
+      (notes) {
+        _allNotes = notes;
+        _emitPersonalNoteAnnotations();
+      },
+      onError: (e, st) => _log.severe('Error loading personal notes as journey annotations', e, st),
+    );
+    _subscriptions.add(allNotesSubscription);
 
     final notesSubscription = _rxServicePointNotes.listen((notes) {
       if (notes.isEmpty) {
@@ -130,13 +133,6 @@ class PersonalNotesViewModel({
       _rxPrioritizedNote.add(prioritizedNote);
     });
     _subscriptions.add(notesSubscription);
-  }
-
-  Future<void> _loadNotesOfServicePoint() async {
-    if (_currentServicePoint == null) return;
-    final notes = await _personalNotesRepository.findNotes(_currentServicePoint!.locationCode);
-    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(lastJourney)).toList();
-    _rxServicePointNotes.add(journeyRelevantNotes);
   }
 
   void _handleJourneyUpdate(Journey? journey) {
@@ -150,29 +146,33 @@ class PersonalNotesViewModel({
     if (!servicePoints.hasChanges(_journeyServicePoints)) return;
 
     _journeyServicePoints = servicePoints;
-    _loadPersonalNoteAnnotations();
+    _emitPersonalNoteAnnotations();
   }
 
-  Future<void> _loadPersonalNoteAnnotations() async {
-    try {
-      final notes = await _personalNotesRepository.findAllNotes();
-      final notesByLocationCode = <String, PersonalNote>{
-        for (final note in notes)
-          if (note.isRelevantFor(lastJourney)) note.locationCode: note,
-      };
+  void _emitServicePointNotes(List<PersonalNote> notes) {
+    if (_rxServicePointNotes.isClosed) return;
 
-      final annotations = <PersonalNoteAnnotation>[];
-      for (final servicePoint in _journeyServicePoints) {
-        final note = notesByLocationCode[servicePoint.locationCode];
-        if (note == null || !note.showAsFootnote) continue;
+    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(lastJourney)).toList();
+    _rxServicePointNotes.add(journeyRelevantNotes);
+  }
 
-        annotations.add(PersonalNoteAnnotation(text: note.text, order: servicePoint.order));
-      }
+  void _emitPersonalNoteAnnotations() {
+    if (_rxPersonalNotesAnnotation.isClosed) return;
 
-      _rxPersonalNotesAnnotation.add(annotations);
-    } catch (e) {
-      _log.severe('Error loading personal notes as journey annotations', e);
+    final notesByLocationCode = <String, PersonalNote>{
+      for (final note in _allNotes)
+        if (note.isRelevantFor(lastJourney)) note.locationCode: note,
+    };
+
+    final annotations = <PersonalNoteAnnotation>[];
+    for (final servicePoint in _journeyServicePoints) {
+      final note = notesByLocationCode[servicePoint.locationCode];
+      if (note == null || !note.showAsFootnote) continue;
+
+      annotations.add(PersonalNoteAnnotation(text: note.text, order: servicePoint.order));
     }
+
+    _rxPersonalNotesAnnotation.add(annotations);
   }
 }
 

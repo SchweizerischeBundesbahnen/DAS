@@ -28,11 +28,20 @@ class DriftPersonalNotesDatabaseService._()
   int get schemaVersion => 1;
 
   @override
-  Future<List<PersonalNote>> findNotes({required String userId, required String locationCode}) async {
-    final personalNotes = await _tableManager
+  Stream<List<PersonalNote>> observeNotes({required String userId, required String locationCode}) {
+    return _tableManager
         .filter((f) => f.userId.equals(userId) & f.locationCode.equals(locationCode) & f.deleted.equals(false))
-        .get();
-    return personalNotes.map((it) => it.toDomain()).toList(growable: false);
+        .watch()
+        .map((notes) => notes.map((it) => it.toDomain()).toList(growable: false));
+  }
+
+  @override
+  Stream<List<PersonalNote>> observeAllNotes({required String userId, bool includeDeleted = false}) {
+    final query = includeDeleted
+        ? _tableManager.filter((f) => f.userId.equals(userId))
+        : _tableManager.filter((f) => f.userId.equals(userId) & f.deleted.equals(false));
+
+    return query.watch().map((notes) => notes.map((it) => it.toDomain()).toList(growable: false));
   }
 
   @override
