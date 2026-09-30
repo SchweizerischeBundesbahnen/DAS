@@ -17,7 +17,7 @@ import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('personalNotes_whenCreateThenUpdateNote_thenUpdatesModal|tests:1009', (tester) async {
+  testWidgets('personalNotes_whenCreateThenUpdateNote_thenUpdatesModal|1VehH7uMXywgKQOOzOIC|tests:1009', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -40,7 +40,7 @@ void main() {
   });
 
   testWidgets(
-    'personalNotes_whenExistingSingleUseAndGeneralAndDeleteAfterwards_thenShowsSingleUseThenGeneralThenNothing|tests:1009',
+    'personalNotes_whenExistingSingleUseAndGeneralAndDeleteAfterwards_thenShowsSingleUseThenGeneralThenNothing|4uZZWz3SWW0IYo7oidAJ|tests:1009',
     (tester) async {
       await IntegrationTestApp.start(tester);
 
@@ -111,7 +111,7 @@ void main() {
     },
   );
 
-  testWidgets('personalNotes_whenCreateNoteAsFootNoteThenDelete_thenUpdatesJourneyTable|tests:1009', (tester) async {
+  testWidgets('personalNotes_whenCreateNoteAsFootNoteThenDelete_thenUpdatesJourneyTable|3ZCteqwJAfzRLMjae4uy|tests:1009', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -147,7 +147,7 @@ void main() {
   });
 
   testWidgets(
-    'personalNotes_whenCreateSingleUseNote_thenOnlyShowsInCurrentJourney|tests:1009',
+    'personalNotes_whenCreateSingleUseNote_thenOnlyShowsInCurrentJourney|UBhcHMmWcVTq6qejZjrJ|tests:1009',
     (tester) async {
       await IntegrationTestApp.start(tester);
 
