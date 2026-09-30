@@ -174,28 +174,51 @@ class DetailTabCommunication extends StatelessWidget {
           crossAxisAlignment: .start,
           children: [
             _listHeader(text: context.l10n.w_service_point_modal_personal_note),
-            if (personalNote != null)
-              Container(
-                key: personalNoteContainerKey,
-                constraints: BoxConstraints(maxHeight: 160, minWidth: double.infinity),
-                padding: const .symmetric(
-                  horizontal: SBBSpacing.medium,
-                  vertical: SBBSpacing.xSmall,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: SBBContentBoxStyle.radius,
-                  border: BoxBorder.all(
-                    color: ThemeUtil.getColor(context, SBBColors.silver, SBBColors.anthracite),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  child: Text(personalNote.text),
-                ),
-              ),
+            if (viewModel.servicePointHasMultipleNotes) _hiddenNoteInformation(context),
+            if (personalNote != null) _personalNoteText(context, personalNote),
             _personalNoteButton(context, personalNote),
           ],
         );
       },
+    );
+  }
+
+  Widget _hiddenNoteInformation(BuildContext context) {
+    final secondaryColor = Theme.of(context).sbbBaseStyle.colorScheme.textSecondary;
+    return Row(
+      spacing: SBBSpacing.xSmall,
+      children: [
+        Icon(
+          SBBIcons.circle_information_small,
+          color: secondaryColor,
+        ),
+        Expanded(
+          child: Text(
+            context.l10n.w_service_point_modal_personal_hidden_note_information,
+            style: sbbTextStyle.small.lightStyle.copyWith(color: secondaryColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _personalNoteText(BuildContext context, PersonalNote personalNote) {
+    return Container(
+      key: personalNoteContainerKey,
+      constraints: BoxConstraints(maxHeight: 160, minWidth: double.infinity),
+      padding: const .symmetric(
+        horizontal: SBBSpacing.medium,
+        vertical: SBBSpacing.xSmall,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: SBBContentBoxStyle.radius,
+        border: BoxBorder.all(
+          color: ThemeUtil.getColor(context, SBBColors.silver, SBBColors.anthracite),
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Text(personalNote.text),
+      ),
     );
   }
 

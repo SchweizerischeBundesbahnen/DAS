@@ -188,6 +188,7 @@
   "w_service_point_modal_local_regulations_label": "Lokale Bestimmungen",
   "w_service_point_modal_links": "Links",
   "w_service_point_modal_personal_note": "Notiz zum Betriebspunkt",
+  "w_service_point_modal_personal_hidden_note_information": "Notiz zum Betriebspunkt aufgrund einmaliger ausgeblendet.",
   "w_service_point_modal_personal_note_create_button": "Notiz erfassen",
   "w_service_point_modal_personal_note_edit_button": "Notiz bearbeiten",
   "w_service_point_modal_portal_label": "Bahnhofportal",

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:personal_notes/component.dart';
 
+import '../app_test.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_personal_notes_repository.dart';
 import '../mocks/mock_settings_repository.dart';
@@ -81,6 +82,9 @@ void main() {
       // check that single use note is prioritized
       _checkModalHasPersonalNoteWithText(singleUseNote.text);
 
+      // warn message should be shown that there is a general note hidden
+      expect(find.text(l10n.w_service_point_modal_personal_hidden_note_information), findsOne);
+
       // open dialog and delete single use note
       await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
       await _awaitAndCheckEditDialog(tester, singleUseNote.text);
@@ -89,6 +93,9 @@ void main() {
 
       // check that now the general note is shown
       _checkModalHasPersonalNoteWithText(generalNote.text);
+
+      // warn message should not be shown anymore
+      expect(find.text(l10n.w_service_point_modal_personal_hidden_note_information), findsNothing);
 
       // open dialog and also delete general note
       await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
