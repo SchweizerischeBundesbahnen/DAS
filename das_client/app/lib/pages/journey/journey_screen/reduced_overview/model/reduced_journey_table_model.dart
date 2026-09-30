@@ -22,6 +22,7 @@ class ReducedTableLoaded({
   required final Map<int, RouteVariant> variantsByOrder,
   required final Map<int, CollapsedState> collapsedRows,
   required final JourneyFilterModel? filter,
+  required final Set<Modification> acknowledgedModifications,
 }) extends ReducedJourneyTableModel {
   this : super._();
 
@@ -33,6 +34,7 @@ class ReducedTableLoaded({
         ', variantsByOrder: $variantsByOrder'
         ', collapsedRows: $collapsedRows'
         ', filter: $filter'
+        ', acknowledgedModifications: $acknowledgedModifications'
         '}';
   }
 
@@ -46,7 +48,8 @@ class ReducedTableLoaded({
           journeyMetadata == other.journeyMetadata &&
           variantsByOrder == other.variantsByOrder &&
           collapsedRows == other.collapsedRows &&
-          filter == other.filter;
+          filter == other.filter &&
+          acknowledgedModifications == other.acknowledgedModifications;
 
   @override
   int get hashCode => Object.hash(
@@ -56,5 +59,6 @@ class ReducedTableLoaded({
     variantsByOrder,
     collapsedRows,
     filter,
+    acknowledgedModifications,
   );
 }

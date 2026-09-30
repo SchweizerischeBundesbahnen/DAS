@@ -1,7 +1,6 @@
 import test, { expect, Locator, Page } from '@playwright/test';
 import {
   clickAddButton,
-  deleteEntryIfExists,
   deleteEntryViaDialog,
   deleteEntryViaSelection,
   findRow,
@@ -9,13 +8,14 @@ import {
   openEditEntryDialog,
   saveEntryDialog,
   selectAnyOption,
+  uniqueSuffix,
 } from '../utils/admin-test-helpers';
 
 test.describe('special holidays test', () => {
-  const TEST_HOLIDAY_NAME = 'E2E Special Holiday 9999';
   const TEST_HOLIDAY_IS_A_UPDATED = 'Montag';
   const TEST_VALID_DATE = '01.01.2040';
 
+  let holidayName: string;
   let row: Locator;
   let updatedRow: Locator;
 
@@ -45,22 +45,20 @@ test.describe('special holidays test', () => {
   }
 
   test.beforeEach(async ({ page }) => {
+    holidayName = `E2E Special Holiday ${uniqueSuffix()}`;
+
     await page.goto('ru-admin/special-holidays');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Spezielle Feiertage');
 
-    row = findRow(page, TEST_HOLIDAY_NAME);
-    updatedRow = findRow(page, TEST_HOLIDAY_IS_A_UPDATED);
-
-    // clean up leftover from previous run if present
-    await deleteEntryIfExists(page, row);
-    await deleteEntryIfExists(page, updatedRow);
+    row = findRow(page, holidayName);
+    updatedRow = findRow(page, holidayName, TEST_HOLIDAY_IS_A_UPDATED);
   });
 
   test('specialHoliday_whenCreatedEditedAndDeleted_thenSucceeds|gOwwfY8O1yUCX7lueI8X|tests:1656', async ({
     page,
   }) => {
     // create
-    await createSpecialHoliday(page, TEST_HOLIDAY_NAME, TEST_VALID_DATE);
+    await createSpecialHoliday(page, holidayName, TEST_VALID_DATE);
 
     // edit
     const dialog = await openEditEntryDialog(page, row);
@@ -84,7 +82,7 @@ test.describe('special holidays test', () => {
     page,
   }) => {
     // create one entry to select and bulk-delete
-    await createSpecialHoliday(page, TEST_HOLIDAY_NAME, TEST_VALID_DATE);
+    await createSpecialHoliday(page, holidayName, TEST_VALID_DATE);
 
     await deleteEntryViaSelection(page, row);
   });

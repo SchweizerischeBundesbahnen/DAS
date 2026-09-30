@@ -26,8 +26,7 @@ class const ServicePoint({
   final List<StationProperty> properties = const [],
   final List<String> localRegulationSegmentIds = const [],
   final DepartureAuthorization? departureAuthorization,
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .servicePoint);
 

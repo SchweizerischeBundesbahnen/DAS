@@ -62,7 +62,7 @@ void main() {
     );
 
     await localRegulationsTask.execute(
-      (_, __) {},
+      (_, _) {},
       (task, error) => fail('Task failed with error $error'),
     );
 

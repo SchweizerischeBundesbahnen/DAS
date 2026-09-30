@@ -1,20 +1,20 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+  FieldTree,
+  form,
+  FormField,
+  PathKind,
+  SchemaPath,
+  SchemaPathRules,
+  validate,
+} from '@angular/forms/signals';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
 import { RuIndicationTrainNumberFilter, TrainNumberParity } from '~ru-admin/ru-admin-api';
-
-type TrainFilterMode = 'all' | 'filtered';
+import { OperationalTrainNumber } from '../ru-indication-dialog.component';
 
 export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): string {
   let parity;
@@ -26,30 +26,59 @@ export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): 
   return value.expression + (parity ? ` (${parity})` : '');
 }
 
-function numberRangeValidator(control: AbstractControl): ValidationErrors | null {
-  const value = (control as FormControl<string>).value;
-  if (!value) {
+function numberRangeValid<TValue extends string, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: {
+    message: {
+      invalidFormat?: string;
+      rangeInvalid?: string;
+    };
+  },
+): void {
+  validate(path, ({ value }) => {
+    if (!value()) {
+      return null;
+    }
+
+    const regex = /^\d+(-\d+)?$/;
+    if (!regex.test(value())) {
+      return { kind: 'invalidFormat', message: config?.message.invalidFormat };
+    }
+
+    const [first, second] = value().split('-').map(Number);
+
+    if (first >= second) {
+      return { kind: 'rangeInvalid', message: config?.message.rangeInvalid };
+    }
+
     return null;
-  }
+  });
+}
 
-  const regex = /^\d+(-\d+)?$/;
-  if (!regex.test(value)) {
-    return { invalidFormat: true };
-  }
+function noDraft<TValue extends TrainNumberData, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  config?: {
+    message?: string;
+  },
+): void {
+  validate(path, ({ value }) => {
+    const tree = value();
+    if (tree.trainNumber.trim().length > 0) {
+      return { kind: 'draftInvalid', message: config?.message };
+    }
+    return null;
+  });
+}
 
-  const [first, second] = value.split('-').map(Number);
-
-  if (first >= second) {
-    return { rangeInvalid: true };
-  }
-
-  return null;
+export interface TrainNumberData {
+  trainNumber: string;
+  parity: TrainNumberParity;
 }
 
 @Component({
   selector: 'app-train-number-input',
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SbbFormFieldModule,
     SbbRadioButtonModule,
     SbbButtonModule,
@@ -59,88 +88,56 @@ function numberRangeValidator(control: AbstractControl): ValidationErrors | null
   templateUrl: './train-number-input.html',
   styleUrl: './train-number-input.css',
 })
-export class TrainNumberInput implements OnInit {
-  readonly control = input.required<FormControl<RuIndicationTrainNumberFilter[]>>();
+export class TrainNumberInput {
+  public readonly form = input.required<FieldTree<OperationalTrainNumber>>();
 
-  protected trainFilterModeControl = new FormControl<TrainFilterMode>('all', { nonNullable: true });
-  protected trainNumberFilterForm = new FormGroup({
-    trainNumber: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, numberRangeValidator],
-    }),
-    parity: new FormControl<TrainNumberParity>('ANY', { nonNullable: true }),
+  private readonly default: TrainNumberData = {
+    trainNumber: '',
+    parity: 'ANY',
+  };
+  protected readonly trainNumberModel = signal(this.default);
+  protected readonly trainNumberForm = form(this.trainNumberModel, (trainNumber) => {
+    numberRangeValid(trainNumber.trainNumber, {
+      message: {
+        invalidFormat: $localize`:@@ru_indications_form_train_filter_draft_error:Format stimmt nicht`,
+        rangeInvalid: $localize`:@@ru_indications_form_train_filter_draft_error:Bereich stimmt nicht`,
+      },
+    });
+    noDraft(trainNumber, {
+      message: $localize`:@@ru_indications_form_train_filter_draft_error:Nicht gespeicherte Eingabe - bitte zur Auswahl hinzufügen oder leeren`,
+    });
   });
+
   protected readonly displayTrainNumberFilter = displayTrainNumberFilter;
-
-  ngOnInit(): void {
-    this.initializeTrainFilterMode();
-
-    this.trainFilterModeControl.valueChanges.subscribe((mode) => {
-      if (mode === 'all') {
-        this.control().setValue([]);
-        this.trainNumberFilterForm.reset();
-      } else {
-        this.control().markAsTouched();
-      }
-      this.updateValidationState();
-    });
-
-    // make sure value changes from outside are also considered for validation
-    this.control().parent?.valueChanges.subscribe(() => {
-      this.updateValidationState();
-    });
-
-    this.trainNumberFilterForm.valueChanges.subscribe(() => this.updateValidationState());
-    this.updateValidationState();
-  }
 
   protected isTrainNumberRange(): boolean {
     return (
-      this.trainNumberFilterForm.valid
-      && this.trainNumberFilterForm.controls.trainNumber.value.includes('-')
+      this.trainNumberForm.trainNumber().valid()
+      && this.trainNumberModel().trainNumber.includes('-')
     );
   }
 
   protected addTrainNumberFilter(): void {
-    if (this.trainNumberFilterForm.invalid) {
-      this.control().markAsTouched();
-      this.updateValidationState();
+    if (
+      this.trainNumberForm()
+        .errorSummary()
+        .some((e) => e.kind !== 'draftInvalid')
+    ) {
       return;
     }
 
-    const current = this.control().value ?? [];
-    const next: RuIndicationTrainNumberFilter[] = [
-      ...current,
+    // add train number filter
+    const filters = this.form().filters();
+    filters.value.set([
+      ...filters.value(),
       {
-        expression: this.trainNumberFilterForm.controls.trainNumber.value,
-        parity: this.trainNumberFilterForm.controls.parity.value,
+        expression: this.trainNumberModel().trainNumber,
+        parity: this.trainNumberModel().parity,
       },
-    ];
-    this.control().setValue(next);
-    this.control().markAsTouched();
-    this.trainNumberFilterForm.reset();
-    this.updateValidationState();
-  }
+    ]);
+    filters.markAsTouched();
+    filters.markAsDirty();
 
-  private initializeTrainFilterMode(): void {
-    if ((this.control().value ?? []).length > 0) {
-      this.trainFilterModeControl.setValue('filtered', { emitEvent: false });
-    } else {
-      this.trainFilterModeControl.setValue('all', { emitEvent: false });
-    }
-  }
-
-  private updateValidationState(): void {
-    if (this.trainFilterModeControl.value === 'all') {
-      this.control().setErrors(null);
-      return;
-    }
-
-    const hasCommittedFilters = (this.control().value ?? []).length > 0;
-    const hasDraftValue = this.trainNumberFilterForm.controls.trainNumber.value.trim().length > 0;
-    const errors: ValidationErrors = {};
-    if (!hasCommittedFilters) errors['required'] = true;
-    if (hasDraftValue) errors['draftInvalid'] = true;
-    this.control().setErrors(Object.keys(errors).length > 0 ? errors : null);
+    this.trainNumberForm().reset(this.default);
   }
 }

@@ -31,6 +31,7 @@ class JourneyTableViewModel({
   required final DetailModalViewModel _detailModalVM,
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
+  required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
   required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
   this {
@@ -65,7 +66,7 @@ class JourneyTableViewModel({
   void _initRxModel() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine8(
+        CombineLatestStream.combine9(
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
@@ -73,6 +74,8 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
+          _acknowledgedModificationRepository.model,
+          (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
           _userPropertiesRepository.model,
           (a, b, c, d, e, f, g, h) => (a, b, c, d, e, f, g, h),
         ).listen(
@@ -84,6 +87,7 @@ class JourneyTableViewModel({
             detailModalType: data.$5,
             showDecisiveGradient: data.$6,
             navigationModel: data.$7,
+            acknowledgedModifications: data.$9,
           ),
         );
   }
@@ -100,6 +104,7 @@ class JourneyTableViewModel({
     required Map<int, CollapsedState> collapsibleRows,
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
+    required Set<Modification> acknowledgedModifications,
     JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
     Journey? journey,
@@ -113,6 +118,7 @@ class JourneyTableViewModel({
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .removeIrrelevantServicePoints(journey.metadata.calculatedSpeeds)
         .hideJourneyPointsThatShouldNotBeDisplayed()
+        .hideAcknowledgedDeletedRows(acknowledgedModifications, settings)
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(position.currentPosition)
@@ -142,6 +148,7 @@ class JourneyTableViewModel({
         chevronPosition: chevronPosition,
         showDecisiveGradient: showDecisiveGradient,
         detailModalType: detailModalType,
+        acknowledgedModifications: acknowledgedModifications,
       ),
     );
   }
@@ -202,5 +209,15 @@ class JourneyTableViewModel({
   void _emitLoaded(TableLoaded loadedModel) {
     _log.fine('Emitting TableLoaded.');
     _rxModel.add(loadedModel);
+  }
+
+  void acknowledgeModification(Modification modification) {
+    _log.info('Acknowledging modification: $modification');
+    _acknowledgedModificationRepository.insert(modification);
+  }
+
+  void undoModificationAcknowledgement(Modification modification) {
+    _log.info('Undoing acknowledgement of modification: $modification');
+    _acknowledgedModificationRepository.delete(modification);
   }
 }

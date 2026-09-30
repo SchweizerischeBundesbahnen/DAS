@@ -65,6 +65,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
               routeVariantViewModel: routeVariantVM,
               collapsibleRowsViewModel: collapsibleRowsVM,
               journeyFilterViewModel: DI.get(),
+              acknowledgedModificationRepository: DI.get(),
             );
           },
           dispose: (_, vm) => vm.dispose(),

@@ -1,10 +1,10 @@
-form {
+:host {
   display: grid;
   gap: var(--sbb-spacing-responsive-xxxs);
   justify-items: start;
   margin-bottom: var(--sbb-spacing-responsive-xs);
 
-  sbb-error {
+  & > sbb-error {
     margin-top: calc(-1 * var(--sbb-spacing-responsive-xxxs));
   }
 }

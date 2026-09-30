@@ -80,6 +80,7 @@ trainjourneyplan:
 trainjourneypreloader:
   fetch-cron: '-'
   max-preload-duration: PT4M
+  hours-before-departure: 4
   storage-clean-up:
     hours: 24
 

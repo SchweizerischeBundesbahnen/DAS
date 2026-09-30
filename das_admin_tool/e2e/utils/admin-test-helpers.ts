@@ -3,6 +3,15 @@ import { expect, Locator, Page } from '@playwright/test';
 /**
  * Generic helpers for ru admin feature tests
  */
+
+/**
+ * Returns a short unique suffix for test data so each test run creates rows
+ * with a distinct, identifiable name.
+ */
+export function uniqueSuffix(): string {
+  return crypto.randomUUID().replaceAll('-', '').slice(0, 10);
+}
+
 export function findRow(page: Page, ...cellTexts: string[]): Locator {
   let loc: Locator = page.locator('tr[sbb-row]');
   for (const txt of cellTexts) {

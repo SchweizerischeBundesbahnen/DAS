@@ -1,8 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
@@ -11,7 +10,6 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { startWith } from 'rxjs';
 import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
 import { LanguageCode, LanguageProvider } from '~shared/language-provider';
 import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
@@ -52,10 +50,13 @@ export class RuIndicationTemplatesTable {
   ];
   protected selection = new SelectionModel<RuIndicationTemplate>(true, []);
   protected isDeleting = false;
-  protected form = new FormGroup({
-    search: new FormControl('', { nonNullable: true }),
-    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
+
+  protected readonly filterModel = signal({
+    search: '',
+    language: this.languageProvider.currentLanguage.path,
   });
+  protected readonly filterForm = form(this.filterModel);
+
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
 
@@ -65,6 +66,8 @@ export class RuIndicationTemplatesTable {
         this.dataSource.data =
           this.ruIndicationTemplateService.ruIndicationTemplatesResource.value().data;
       }
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
@@ -78,15 +81,13 @@ export class RuIndicationTemplatesTable {
       }
       return data[column as keyof RuIndicationTemplate] as string;
     };
-    this.form.valueChanges
-      .pipe(startWith(this.form.value), takeUntilDestroyed())
-      .subscribe((form) => {
-        this.dataSource.filter = form as RuIndicationTemplateFilter;
-      });
+    effect(() => {
+      this.dataSource.filter = this.filterModel();
+    });
   }
 
   protected currentLanguage(ruIndicationTemplate: RuIndicationTemplate) {
-    return ruIndicationTemplate[this.form.controls.language.value];
+    return ruIndicationTemplate[this.filterModel().language];
   }
 
   protected async edit(ruIndicationTemplate: RuIndicationTemplate) {

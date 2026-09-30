@@ -9,6 +9,7 @@ sfera_mock/src/main/java/org/w3/_2001/xmlschema/**
 *.p12
 *.env
 sfera_mock/src/main/resources/localregulations.json
+/.angular/cache
 
 ### STS ###
 .apt_generated

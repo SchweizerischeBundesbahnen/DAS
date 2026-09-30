@@ -9,7 +9,7 @@
       "~shared/*": ["./src/app/shared/*"],
       "~app/*": ["./src/app/*"],
       "~src/*": ["./src/*"],
-      "~*": ["./*"]
+      "~package.json": ["./package.json"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

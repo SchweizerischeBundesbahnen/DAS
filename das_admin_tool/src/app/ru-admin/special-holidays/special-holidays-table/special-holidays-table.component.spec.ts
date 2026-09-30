@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SpecialHoliday } from '~ru-admin/ru-admin-api';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { SpecialHolidayService } from '../special-holiday.service';
@@ -8,7 +8,7 @@ const holidays: SpecialHoliday[] = [
   {
     id: 1,
     name: 'Auffahrt',
-    date: new Date('2026-05-14'),
+    date: '2026-05-14',
     scheduleType: 'SUNDAY_SCHEDULE',
     companies: ['1085', '1087'],
     lastModifiedBy: 'admin',
@@ -17,7 +17,7 @@ const holidays: SpecialHoliday[] = [
   {
     id: 2,
     name: '1. Mai',
-    date: new Date('2026-05-01'),
+    date: '2026-05-01',
     scheduleType: 'MONDAY_SCHEDULE',
     companies: ['1089'],
     lastModifiedBy: 'editor',
@@ -36,53 +36,55 @@ const mockCompanyService: Partial<CompanyService> = {
   formatCompanies: vi.fn((codes: string[]) => codes.join(', ')),
 };
 
-function createComponent(): SpecialHolidaysTable {
-  TestBed.configureTestingModule({
-    providers: [
-      SpecialHolidaysTable,
-      { provide: SpecialHolidayService, useValue: mockHolidayService },
-      { provide: CompanyService, useValue: mockCompanyService },
-    ],
-  });
-  return TestBed.inject(SpecialHolidaysTable);
-}
-
 describe('SpecialHolidaysTable', () => {
-  beforeEach(() => vi.clearAllMocks());
+  let component: SpecialHolidaysTable;
+  let fixture: ComponentFixture<SpecialHolidaysTable>;
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+
+    await TestBed.configureTestingModule({
+      imports: [SpecialHolidaysTable],
+      providers: [
+        SpecialHolidaysTable,
+        { provide: SpecialHolidayService, useValue: mockHolidayService },
+        { provide: CompanyService, useValue: mockCompanyService },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(SpecialHolidaysTable);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
 
   describe('scheduleTypeLabel', () => {
     it('should return label for SUNDAY_SCHEDULE', () => {
-      const comp = createComponent();
-      const label = comp['scheduleTypeLabel']('SUNDAY_SCHEDULE');
+      const label = component['scheduleTypeLabel']('SUNDAY_SCHEDULE');
       expect(label).toBeTruthy();
       expect(label).toContain('Sonntag');
     });
 
     it('should return label for MONDAY_SCHEDULE', () => {
-      const comp = createComponent();
-      const label = comp['scheduleTypeLabel']('MONDAY_SCHEDULE');
+      const label = component['scheduleTypeLabel']('MONDAY_SCHEDULE');
       expect(label).toBeTruthy();
       expect(label).toContain('Montag');
     });
 
     it('should return empty string for unknown schedule type', () => {
-      const comp = createComponent();
-      const label = comp['scheduleTypeLabel']('UNKNOWN' as never);
+      const label = component['scheduleTypeLabel']('UNKNOWN' as never);
       expect(label).toBe('');
     });
   });
 
   describe('companiesValue', () => {
     it('should delegate to CompanyService.formatCompanies', () => {
-      const comp = createComponent();
-      const result = comp['companiesValue'](['1085', '1087']);
+      const result = component['companiesValue'](['1085', '1087']);
       expect(mockCompanyService.formatCompanies).toHaveBeenCalledWith(['1085', '1087']);
       expect(result).toBe('1085, 1087');
     });
 
     it('should handle empty array', () => {
-      const comp = createComponent();
-      const result = comp['companiesValue']([]);
+      const result = component['companiesValue']([]);
       expect(mockCompanyService.formatCompanies).toHaveBeenCalledWith([]);
       expect(result).toBe('');
     });
@@ -99,133 +101,121 @@ describe('SpecialHolidaysTable', () => {
       { search: 'AUFFAHRT', expected: true, description: 'is case-insensitive' },
       { search: 'xyz-nomatch', expected: false, description: 'returns false when no match' },
     ])('$description (search="$search")', ({ search, expected }) => {
-      const comp = createComponent();
-      expect(comp['searchFilter']({ search }, holidays[0])).toBe(expected);
+      expect(component['searchFilter']({ search }, holidays[0])).toBe(expected);
     });
   });
 
   describe('edit', () => {
     it('should call specialHolidayService.edit with the holiday', async () => {
-      const comp = createComponent();
-      await comp['edit'](holidays[0]);
+      await component['edit'](holidays[0]);
       expect(mockHolidayService.edit).toHaveBeenCalledWith(holidays[0]);
     });
   });
 
   describe('add', () => {
     it('should call specialHolidayService.add', async () => {
-      const comp = createComponent();
-      await comp['add']();
+      await component['add']();
       expect(mockHolidayService.add).toHaveBeenCalled();
     });
   });
 
   describe('deleteSelected', () => {
     it('should call specialHolidayService.deleteAll with selected items and clear selection', async () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(...holidays);
-      await comp['deleteSelected']();
+      component['dataSource'].data = holidays;
+      component['selection'].select(...holidays);
+      await component['deleteSelected']();
       expect(mockHolidayService.deleteAll).toHaveBeenCalledWith(holidays);
-      expect(comp['selection'].selected).toEqual([]);
+      expect(component['selection'].selected).toEqual([]);
     });
 
     it('should set isDeleting flag during deletion', async () => {
       let resolveFn: () => void;
       mockHolidayService.deleteAll.mockReturnValue(new Promise<void>((r) => (resolveFn = r)));
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(holidays[0]);
+      component['dataSource'].data = holidays;
+      component['selection'].select(holidays[0]);
 
-      const promise = comp['deleteSelected']();
-      expect(comp['isDeleting']).toBe(true);
+      const promise = component['deleteSelected']();
+      expect(component['isDeleting']).toBe(true);
 
       resolveFn!();
       await promise;
-      expect(comp['isDeleting']).toBe(false);
+      expect(component['isDeleting']).toBe(false);
     });
 
     it('should not call deleteAll when already deleting', async () => {
-      const comp = createComponent();
-      comp['isDeleting'] = true;
-      comp['selection'].select(holidays[0]);
-      await comp['deleteSelected']();
+      component['isDeleting'] = true;
+      component['selection'].select(holidays[0]);
+      await component['deleteSelected']();
       expect(mockHolidayService.deleteAll).not.toHaveBeenCalled();
     });
 
     it('should reset isDeleting even when deleteAll throws', async () => {
       mockHolidayService.deleteAll.mockRejectedValue(new Error('API error'));
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(holidays[0]);
+      component['dataSource'].data = holidays;
+      component['selection'].select(holidays[0]);
 
-      await comp['deleteSelected']().catch(() => {
+      await component['deleteSelected']().catch(() => {
         // expected
       });
-      expect(comp['isDeleting']).toBe(false);
+      expect(component['isDeleting']).toBe(false);
     });
   });
 
   describe('isAllSelected', () => {
     it('should return false when nothing is selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      expect(comp['isAllSelected']()).toBe(false);
+      component['dataSource'].data = holidays;
+      expect(component['isAllSelected']()).toBe(false);
     });
 
     it('should return false when only some rows are selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(holidays[0]);
-      expect(comp['isAllSelected']()).toBe(false);
+      component['dataSource'].data = holidays;
+      component['selection'].select(holidays[0]);
+      expect(component['isAllSelected']()).toBe(false);
     });
 
     it('should return true when all rows are selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(...holidays);
-      expect(comp['isAllSelected']()).toBe(true);
+      component['dataSource'].data = holidays;
+      component['selection'].select(...holidays);
+      expect(component['isAllSelected']()).toBe(true);
     });
   });
 
   describe('parentToggle', () => {
     it('should select all rows when none are selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['parentToggle']();
-      expect(comp['selection'].selected).toEqual(holidays);
+      component['dataSource'].data = holidays;
+      component['parentToggle']();
+      expect(component['selection'].selected).toEqual(holidays);
     });
 
     it('should select all rows when only some are selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(holidays[0]);
-      comp['parentToggle']();
-      expect(comp['selection'].selected).toHaveLength(holidays.length);
+      component['dataSource'].data = holidays;
+      component['selection'].select(holidays[0]);
+      component['parentToggle']();
+      expect(component['selection'].selected).toHaveLength(holidays.length);
     });
 
     it('should clear selection when all rows are already selected', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
-      comp['selection'].select(...holidays);
-      comp['parentToggle']();
-      expect(comp['selection'].selected).toEqual([]);
+      component['dataSource'].data = holidays;
+      component['selection'].select(...holidays);
+      component['parentToggle']();
+      expect(component['selection'].selected).toEqual([]);
     });
   });
 
-  describe('searchControl integration (regression)', () => {
-    it('should show all entries again after clearing search text', () => {
-      const comp = createComponent();
-      comp['dataSource'].data = holidays;
+  describe('filterForm.search integration (regression)', () => {
+    it('should show all entries again after clearing search text', async () => {
+      component['dataSource'].data = holidays;
 
       // Type a filter that matches only one entry
-      comp['searchControl'].setValue('Auffahrt');
-      expect(comp['dataSource'].filteredData).toHaveLength(1);
-      expect(comp['dataSource'].filteredData[0].name).toBe('Auffahrt');
+      component['filterForm'].search().value.set('Auffahrt');
+      await fixture.whenStable();
+      expect(component['dataSource'].filteredData).toHaveLength(1);
+      expect(component['dataSource'].filteredData[0].name).toBe('Auffahrt');
 
       // Clear the search - should show all entries again
-      comp['searchControl'].setValue('');
-      expect(comp['dataSource'].filteredData).toHaveLength(holidays.length);
+      component['filterForm'].search().value.set('');
+      await fixture.whenStable();
+      expect(component['dataSource'].filteredData).toHaveLength(holidays.length);
     });
   });
 });
