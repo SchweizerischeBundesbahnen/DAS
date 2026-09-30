@@ -74,10 +74,9 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
+          _userPropertiesRepository.model,
           _acknowledgedModificationRepository.model,
           (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
-          _userPropertiesRepository.model,
-          (a, b, c, d, e, f, g, h) => (a, b, c, d, e, f, g, h),
         ).listen(
           (data) => _handleDataChanged(
             journey: data.$1,
