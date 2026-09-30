@@ -44,7 +44,7 @@ class DASBaseScope extends DIScope {
     getIt.registerMotionDataService();
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
-    getIt.registerUserSettings();
+    getIt.registerUserPropertiesRepository();
     getIt.registerConnectivityManager();
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
@@ -118,11 +118,17 @@ extension BaseScopeExtension on GetIt {
     registerSingleton<TimeConstants>(TimeConstants());
   }
 
-  void registerUserSettings() {
-    _log.fine('Register UserSettings');
-    registerSingleton<LocalKeyValueStore>(
-      LocalKeyValueStore(),
-      dispose: (store) => store.dispose(),
+  void registerUserPropertiesRepository() {
+    final flavor = DI.get<Flavor>();
+    final appVersion = DI.get<AppInfo>().version;
+
+    registerSingleton(
+      UserPropertiesComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        appVersion: appVersion,
+      ),
+      dispose: (repo) => repo.dispose(),
     );
   }
 
@@ -150,7 +156,7 @@ extension BaseScopeExtension on GetIt {
 
   void registerLauncher() {
     _log.fine('Register Launcher');
-    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get(), flavor: DI.get()));
+    registerSingleton<Launcher>(LauncherImpl(userPropertiesRepository: DI.get(), flavor: DI.get()));
   }
 
   void registerSferaLocalRepo() {

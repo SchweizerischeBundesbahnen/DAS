@@ -10,18 +10,16 @@ final _log = Logger('LinksViewModel');
 
 class LinksViewModel({
   required final ExternalLinksRepository _externalLinksRepository,
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
   required final Launcher _launcher,
 }) {
   this {
-    _init();
+    _watchLinksForCompanies(_userPropertiesRepository.companyCodes);
   }
 
   final BehaviorSubject<List<ExternalLink>> _rxExternalLinks = BehaviorSubject<List<ExternalLink>>.seeded(const []);
 
   StreamSubscription<List<ExternalLink>>? _externalLinksSubscription;
-  StreamSubscription<LocalKeyValueStoreKeys?>? _userSettingsSubscription;
-  List<String> _currentCompanyCodes = const [];
 
   Stream<List<ExternalLink>> get links => _rxExternalLinks.stream;
 
@@ -31,31 +29,11 @@ class LinksViewModel({
 
   void dispose() {
     _externalLinksSubscription?.cancel();
-    _userSettingsSubscription?.cancel();
     _rxExternalLinks.close();
   }
 
-  void _init() {
-    _watchLinksForCompanies(_userSettings.companyCodes);
-    _userSettingsSubscription = _userSettings.model.listen((_) => _handleUserSettingsChanged());
-  }
-
-  void _handleUserSettingsChanged() {
-    final updatedCompanyCodes = _userSettings.companyCodes;
-    if (_listEquals(_currentCompanyCodes, updatedCompanyCodes)) return;
-    _watchLinksForCompanies(updatedCompanyCodes);
-  }
-
   void _watchLinksForCompanies(List<String> companyCodes) {
-    _externalLinksSubscription?.cancel();
-    _currentCompanyCodes = List.unmodifiable(companyCodes);
-
-    if (companyCodes.isEmpty) {
-      _rxExternalLinks.add(const []);
-      return;
-    }
-
-    _externalLinksRepository.reloadExternalLinksByCompanies(companyCodes);
+    if (companyCodes.isEmpty) return;
 
     _externalLinksSubscription = _externalLinksRepository
         .watchExternalLinksByCompanies(companyCodes)
@@ -71,16 +49,5 @@ class LinksViewModel({
   List<ExternalLink> _deduplicateLinks(List<ExternalLink> links) {
     final seen = <(String, String)>{};
     return links.where((link) => seen.add((link.title.localized, link.link.localized))).toList();
-  }
-
-  bool _listEquals(List<String> left, List<String> right) {
-    if (identical(left, right)) return true;
-    if (left.length != right.length) return false;
-
-    for (var i = 0; i < left.length; i++) {
-      if (left[i] != right[i]) return false;
-    }
-
-    return true;
   }
 }

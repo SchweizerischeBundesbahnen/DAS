@@ -1,3 +1,3 @@
-abstract interface class const UserIdProvider._() {
+abstract interface class UserIdProvider {
   Future<String> getUserId();
 }

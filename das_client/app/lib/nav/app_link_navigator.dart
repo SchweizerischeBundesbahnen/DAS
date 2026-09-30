@@ -77,7 +77,7 @@ class AppLinkNavigator({
   /// The resolvedTrainIdentifications contains the successfully resolved train identifications.
   Future<(bool, List<ExtendedTrainIdentification>)> _resolveCompanies(List<TrainJourneyLinkData> journeys) async {
     final trainIdentificationRepository = DI.get<TrainIdentificationRepository>();
-    final userSettings = DI.get<LocalKeyValueStore>();
+    final userPropertiesRepository = DI.get<UserPropertiesRepository>();
     final result = <ExtendedTrainIdentification>[];
 
     for (final journey in journeys) {
@@ -94,7 +94,7 @@ class AppLinkNavigator({
           result.add(journey.toTrainIdentification(sameDayMatches.first.companyCode));
           continue;
         } else {
-          final selectedCompanyCode = userSettings.lastUsedCompanyCode;
+          final selectedCompanyCode = userPropertiesRepository.lastUsedCompanyCode;
           if (selectedCompanyCode != null) {
             final companyMatch = sameDayMatches.firstWhereOrNull((it) => it.companyCode == selectedCompanyCode);
             if (companyMatch != null) {

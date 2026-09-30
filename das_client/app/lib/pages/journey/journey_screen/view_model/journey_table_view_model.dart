@@ -31,7 +31,7 @@ class JourneyTableViewModel({
   required final DetailModalViewModel _detailModalVM,
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
   this {
     _init();
@@ -73,7 +73,7 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
-          _userSettings.model,
+          _userPropertiesRepository.model,
           (a, b, c, d, e, f, g, h) => (a, b, c, d, e, f, g, h),
         ).listen(
           (data) => _handleDataChanged(
@@ -120,9 +120,9 @@ class JourneyTableViewModel({
         .combineFootNoteAndIndications()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .hideSignals(
-          stationSignals: !_userSettings.showStationSignals,
-          conventionalSpeedSignals: !_userSettings.showEctsConventionalSpeedSignals,
-          extendedSpeedSignals: !_userSettings.showEctsExtendedSpeedSignals,
+          stationSignals: !_userPropertiesRepository.showStationSignals,
+          conventionalSpeedSignals: !_userPropertiesRepository.showEctsConventionalSpeedSignals,
+          extendedSpeedSignals: !_userPropertiesRepository.showEctsExtendedSpeedSignals,
           nonStandardTrackEquipmentSegments: journey.metadata.nonStandardTrackEquipmentSegments,
         )
         .sorted((a1, a2) => a1.compareTo(a2));

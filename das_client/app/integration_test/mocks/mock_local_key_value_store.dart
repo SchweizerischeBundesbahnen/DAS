@@ -1,7 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:user_properties/component.dart';
 
-class MockLocalKeyValueStore extends LocalKeyValueStore {
+class MockLocalKeyValueStore({required super.userIdProvider}) extends LocalKeyValueStore {
   final Map<String, Object?> _settingsMap = {};
 
   final _rxModel = BehaviorSubject<LocalKeyValueStoreKeys?>.seeded(null);

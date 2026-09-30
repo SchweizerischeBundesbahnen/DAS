@@ -22,7 +22,7 @@ class JourneySelectionViewModel({
   required final SettingsRepository _settingsRepository,
   required final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected,
   required final TrainIdentificationRepository _trainIdentificationRepository,
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
 }) {
   this {
     _emitSelectingWithDefaults();
@@ -105,7 +105,7 @@ class JourneySelectionViewModel({
       );
     }
 
-    final lastUsedCompanyCode = _userSettings.lastUsedCompanyCode;
+    final lastUsedCompanyCode = _userPropertiesRepository.lastUsedCompanyCode;
     final lastUsedCompanyMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedCompanyCode);
     if (lastUsedCompanyMatch != null) {
       _log.info('Found company match with last used company code: $lastUsedCompanyMatch');

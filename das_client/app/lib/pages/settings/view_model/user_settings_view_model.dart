@@ -7,7 +7,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:user_properties/component.dart';
 
 class UserSettingsViewModel({
-  required final LocalKeyValueStore _userSettings,
   required final UserPropertiesRepository _userPropertiesRepository,
   required final ExternalLinksRepository _externalLinksRepository,
 }) {
@@ -50,18 +49,18 @@ class UserSettingsViewModel({
   }
 
   void _init() {
-    _userSettingsSubscription = _userSettings.model.listen((_) => _emitModel());
+    _userSettingsSubscription = _userPropertiesRepository.model.listen((_) => _emitModel());
   }
 
   void _emitModel() {
     _rxModel.add(
       UserSettingsModel(
-        companyCodes: List.unmodifiable(_userSettings.companyCodes),
-        tourSystem: _userSettings.tourSystem,
-        showDecisiveGradient: _userSettings.showDecisiveGradient,
-        showStationSignals: _userSettings.showStationSignals,
-        showEctsConventionalSpeedSignals: _userSettings.showEctsConventionalSpeedSignals,
-        showEctsExtendedSpeedSignals: _userSettings.showEctsExtendedSpeedSignals,
+        companyCodes: List.unmodifiable(_userPropertiesRepository.companyCodes),
+        tourSystem: _userPropertiesRepository.tourSystem,
+        showDecisiveGradient: _userPropertiesRepository.showDecisiveGradient,
+        showStationSignals: _userPropertiesRepository.showStationSignals,
+        showEctsConventionalSpeedSignals: _userPropertiesRepository.showEctsConventionalSpeedSignals,
+        showEctsExtendedSpeedSignals: _userPropertiesRepository.showEctsExtendedSpeedSignals,
       ),
     );
   }

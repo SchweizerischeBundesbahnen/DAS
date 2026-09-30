@@ -20,13 +20,13 @@ import 'journey_selection_view_model_test.mocks.dart';
   MockSpec<SferaRepository>(),
   MockSpec<SettingsRepository>(),
   MockSpec<TrainIdentificationRepository>(),
-  MockSpec<LocalKeyValueStore>(),
+  MockSpec<UserPropertiesRepository>(),
 ])
 void main() {
   late SferaRepository mockSferaRepo;
   late MockSettingsRepository mockSettingsRepository;
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
-  late MockLocalKeyValueStore mockLocalKeyValueStore;
+  late MockUserPropertiesRepository mockUserPropertiesRepository;
   late JourneySelectionViewModel testee;
   final List<ExtendedTrainIdentification?> callRegister = [];
   final today = DateTime.utc(2025, 1, 1);
@@ -37,13 +37,13 @@ void main() {
     mockSferaRepo = MockSferaRepository();
     mockSettingsRepository = MockSettingsRepository();
     mockTrainIdentificationRepository = MockTrainIdentificationRepository();
-    mockLocalKeyValueStore = MockLocalKeyValueStore();
+    mockUserPropertiesRepository = MockUserPropertiesRepository();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
         settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
-        userSettings: mockLocalKeyValueStore,
+        userPropertiesRepository: mockUserPropertiesRepository,
         onJourneySelected: (trainIdentification) async {
           callRegister.add(trainIdentification);
         },
@@ -66,7 +66,7 @@ void main() {
         sferaRepo: mockSferaRepo,
         settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
-        userSettings: mockLocalKeyValueStore,
+        userPropertiesRepository: mockUserPropertiesRepository,
         onJourneySelected: (_) async {},
       );
     });
@@ -240,7 +240,7 @@ void main() {
   test('loadJourney_whenMultipleMatchesForDay_thenEmitsSelectingCompanyMatch', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
+    when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: today),
@@ -269,7 +269,7 @@ void main() {
   test('loadJourney_whenMatchesForSelectedDay_thenOnlyShowExactDayMatches', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
+    when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: today),
@@ -299,7 +299,7 @@ void main() {
   test('loadJourney_whenNoMatchesForSelectedDay_thenShowOtherDayMatches', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
+    when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: tomorrow),
@@ -326,7 +326,7 @@ void main() {
   test('loadJourney_whenMultipleMatchesForDayAndLastUsedFound_thenLoadsJourneyDirectly', () async {
     // ARRANGE
     testee.updateTrainNumber('123');
-    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn('1163');
+    when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn('1163');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: today),
@@ -371,7 +371,7 @@ void main() {
   test('loadJourney_whenSelectingCompanyMatchAndSelectionSet_thenLoadsSelectedTrain', () async {
     // ARRANGE
     testee.updateTrainNumber('789');
-    when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
+    when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '789')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: today),

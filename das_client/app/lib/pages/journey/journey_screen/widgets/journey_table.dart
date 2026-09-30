@@ -392,30 +392,36 @@ class JourneyTable extends StatelessWidget {
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
-    final userSettings = DI.get<LocalKeyValueStore>();
+    final userPropertiesRepository = DI.get<UserPropertiesRepository>();
 
     return [
       if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[
-        if (userSettings.showDecisiveGradient ||
-            (!userSettings.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
+        if (userPropertiesRepository.showDecisiveGradient ||
+            (!userPropertiesRepository.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
             child: Text(context.l10n.p_journey_table_kilometre_label),
             width: 66.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
-        if (userSettings.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
+        if (userPropertiesRepository.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
           DASTableColumn(
             id: ColumnDefinition.gradientDownhill.index,
             child: Text('-'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
           DASTableColumn(
             id: ColumnDefinition.gradientUphill.index,
             child: Text('+'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
         ],
       ],

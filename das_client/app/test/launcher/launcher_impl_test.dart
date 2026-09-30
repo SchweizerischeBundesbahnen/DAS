@@ -17,24 +17,24 @@ import 'launcher_impl_test.mocks.dart';
 const _urlLauncherChannel = MethodChannel('plugins.flutter.io/url_launcher');
 
 @GenerateNiceMocks([
-  MockSpec<LocalKeyValueStore>(),
+  MockSpec<UserPropertiesRepository>(),
   MockSpec<JourneyNavigationViewModel>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late LauncherImpl testee;
-  late MockLocalKeyValueStore mockLocalKeyValueStore;
+  late MockUserPropertiesRepository mockUserPropertiesRepository;
   late List<MethodCall> methodCalls;
   late bool launchResult;
 
   setUp(() {
-    mockLocalKeyValueStore = MockLocalKeyValueStore();
+    mockUserPropertiesRepository = MockUserPropertiesRepository();
     methodCalls = <MethodCall>[];
     launchResult = true;
 
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1285']);
-    when(mockLocalKeyValueStore.tourSystem).thenReturn(.tip);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['1285']);
+    when(mockUserPropertiesRepository.tourSystem).thenReturn(.tip);
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
       _urlLauncherChannel,
@@ -47,7 +47,7 @@ void main() {
       },
     );
 
-    testee = LauncherImpl(userSettings: mockLocalKeyValueStore, flavor: Flavor.dev());
+    testee = LauncherImpl(userPropertiesRepository: mockUserPropertiesRepository, flavor: Flavor.dev());
   });
 
   tearDown(() async {
@@ -125,7 +125,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenAllRusAreBls_thenUsesBlsPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['3356', '1163']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['3356', '1163']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -137,7 +137,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenNoRuSelected_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn([]);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn([]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -149,7 +149,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenRuSelectionIsMixedBlsAndSbb_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1163', '1285']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['1163', '1285']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),

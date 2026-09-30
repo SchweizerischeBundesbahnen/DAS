@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
@@ -18,8 +16,7 @@ class RuFeatureStatusDisplay extends StatefulWidget {
 class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   static const _iconSize = 20.0;
   late final SettingsRepository _settingsRepository;
-  late final LocalKeyValueStore _localStore;
-  StreamSubscription<LocalKeyValueStoreKeys?>? _userSettingsSubscription;
+  late final UserPropertiesRepository _userPropertiesRepository;
 
   String? _selectedCompanyCode;
 
@@ -27,19 +24,8 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   void initState() {
     super.initState();
     _settingsRepository = DI.get<SettingsRepository>();
-    _localStore = DI.get<LocalKeyValueStore>();
-    _selectedCompanyCode = _localStore.lastUsedCompanyCode;
-    _userSettingsSubscription = _localStore.model.listen((_) {
-      final updatedCompanyCode = _localStore.lastUsedCompanyCode;
-      if (!mounted || updatedCompanyCode == _selectedCompanyCode || updatedCompanyCode == null) return;
-      setState(() => _selectedCompanyCode = updatedCompanyCode);
-    });
-  }
-
-  @override
-  void dispose() {
-    _userSettingsSubscription?.cancel();
-    super.dispose();
+    _userPropertiesRepository = DI.get<UserPropertiesRepository>();
+    _selectedCompanyCode = _userPropertiesRepository.lastUsedCompanyCode;
   }
 
   @override

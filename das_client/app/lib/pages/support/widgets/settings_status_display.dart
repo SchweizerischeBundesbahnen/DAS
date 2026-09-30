@@ -12,13 +12,13 @@ class SettingsStatusDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localStore = DI.get<LocalKeyValueStore>();
+    final userPropertiesRepository = DI.get<UserPropertiesRepository>();
 
     return StreamBuilder(
-      stream: localStore.model,
+      stream: userPropertiesRepository.model,
       builder: (context, snapshot) {
-        final isRequestSuccessful = localStore.lastSettingsRequestSuccessful;
-        final lastSuccessTimestamp = localStore.lastSuccessfulSettingsTimestamp;
+        final isRequestSuccessful = userPropertiesRepository.lastSettingsRequestSuccessful;
+        final lastSuccessTimestamp = userPropertiesRepository.lastSuccessfulSettingsTimestamp;
 
         return Column(
           crossAxisAlignment: .start,

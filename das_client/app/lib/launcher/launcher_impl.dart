@@ -11,7 +11,7 @@ import 'package:user_properties/component.dart';
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl({
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
   required final Flavor flavor,
 }) implements Launcher {
   static const _blsCompanyCodes = [
@@ -43,12 +43,12 @@ class LauncherImpl({
   String? _tourSystemUrl() {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
-    return returnUrl ?? flavor.tourSystemUrls[_userSettings.tourSystem];
+    return returnUrl ?? flavor.tourSystemUrls[_userPropertiesRepository.tourSystem];
   }
 
   @override
   Future<bool> launchServicePointPortal(ServicePoint servicePoint) {
-    final companyCodes = _userSettings.companyCodes;
+    final companyCodes = _userPropertiesRepository.companyCodes;
     if (companyCodes.isNotEmpty && companyCodes.every((it) => _blsCompanyCodes.contains(it))) {
       return launch(ServicePointPortal.bls.urlFor(servicePoint));
     } else {

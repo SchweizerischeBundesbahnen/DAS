@@ -1,5 +1,5 @@
-import 'package:app/model/tour_system.dart';
 import 'package:collection/collection.dart';
+import 'package:core_data/component.dart';
 
 class const UserSettingsModel({
   final List<String> companyCodes = const [],

@@ -15,8 +15,7 @@ final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel({
   required final SferaRepository _sferaRepo,
-  required final LocalKeyValueStore _userSettings,
-  required final UserPropertiesRepository? _userPropertiesRepository,
+  required final UserPropertiesRepository _userPropertiesRepository,
 }) {
   this {
     _initSferaRemoteStateSubscription();
@@ -95,12 +94,7 @@ class JourneyNavigationViewModel({
     if (trainId != null) {
       _log.fine('Establish connection to $trainId');
       final companyCode = trainId.trainIdentification.companyCode;
-      final userPropertiesRepository = _userPropertiesRepository;
-      if (userPropertiesRepository != null) {
-        await userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, companyCode);
-      } else {
-        await _userSettings.set(.lastUsedCompanyCode, companyCode);
-      }
+      await _userPropertiesRepository.saveUserProperty(.lastUsedCompanyCode, companyCode);
       await DI.get<ScopeHandler>().push<JourneyScope>();
       await _sferaRepo.connect(trainId.trainIdentification);
     }

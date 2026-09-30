@@ -1,151 +1,149 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
-import 'package:clock/clock.dart';
-import 'package:http_x/component.dart';
+import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
-import 'package:user_properties/src/api/model/user_property_model.dart';
+import 'package:user_properties/component.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';
-import 'package:user_properties/src/repository/user_properties_repository.dart';
 import 'package:user_properties/src/repository/user_properties_syncer.dart';
-import 'package:user_properties/src/repository/local_key_value_store.dart';
 
 final _log = Logger('UserPropertiesRepositoryImpl');
 
 const _syncRetryDelay = Duration(minutes: 5);
 
+//todo temporary fix
+class const _UserIdProvider() implements UserIdProvider {
+  @override
+  Future<String> getUserId() async {
+    return 'userId';
+  }
+}
+
 class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
   UserPropertiesRepositoryImpl({
     required UserPropertiesApiService apiService,
-    required LocalKeyValueStore localStore,
     UserPropertiesSyncer? syncer,
-  }) : _apiService = apiService,
-       _localStore = localStore,
-       _syncer = syncer ?? UserPropertiesSyncer(apiService, localStore);
+  }) {
+    _syncer = syncer ?? UserPropertiesSyncer(apiService, _localStore);
+  }
 
-  final UserPropertiesApiService _apiService;
-  final LocalKeyValueStore _localStore;
-  final UserPropertiesSyncer _syncer;
+  final LocalKeyValueStore _localStore = LocalKeyValueStore(userIdProvider: _UserIdProvider());
+  late UserPropertiesSyncer _syncer;
 
-  Future<List<UserPropertyModel>>? _pendingSync;
-  Timer? _retrySyncTimer;
+  Future<void>? _runningSync;
+  var _syncRequested = false;
+  Timer? _retryTimer;
   var _disposed = false;
 
   @override
-  Future<void> clearLocalUserProperties() async {
-    await _localStore.clearUserProperties();
-    _cancelScheduledRetry();
+  Future<void> saveUserProperty(LocalKeyValueStoreKeys key, Object? value) async {
+    if (value == null) return deleteUserProperty(key);
+
+    await _localStore.set(key, value);
+    _triggerSync();
   }
 
   @override
   Future<void> deleteUserProperty(LocalKeyValueStoreKeys key) async {
     _log.fine('Deleting user property for key=$key');
-    try {
-      await _apiService.deleteUserProperty(key.name).call();
-      await _localStore.delete(key);
-      _log.fine('User property deleted from both backend and local store: $key');
-    } on Exception catch (e, s) {
-      _log.severe('Failed to delete user property for key=$key', e, s);
-      rethrow;
-    }
+    await _localStore.delete(key);
+    await _syncer.deleteRemote(key);
   }
 
   @override
-  Future<List<UserPropertyModel>> syncUserProperties() {
-    return _pendingSync ??= _syncUserProperties().whenComplete(() => _pendingSync = null);
+  Future<void> clearLocalUserProperties() async {
+    _cancelRetry();
+    await _localStore.clearUserProperties();
   }
 
-  Future<List<UserPropertyModel>> _syncUserProperties() async {
-    _log.fine('Syncing all user properties');
+  @override
+  Future<void> syncUserProperties() {
+    if (_disposed) return Future.value();
 
+    _syncRequested = true;
+    return _runningSync ??= _syncUntilSettled();
+  }
+
+  List<String> _convertToList(Object? value) => switch (value) {
+    final List<dynamic> list => List<String>.from(list),
+    final String json => List<String>.from(jsonDecode(json) as List),
+    _ => throw StateError('Unexpected companyCodes value: $value'),
+  };
+
+  static DateTime? _parseDate(Object? value) => value is String ? DateTime.tryParse(value) : null;
+
+  @override
+  bool get showDecisiveGradient => _localStore.get(.showDecisiveGradient, true).value as bool;
+
+  @override
+  bool get showStationSignals => _localStore.get(.showStationSignals, true).value as bool;
+
+  @override
+  bool get showEctsConventionalSpeedSignals => _localStore.get(.showEctsConventionalSpeedSignals, true).value as bool;
+
+  @override
+  bool get showEctsExtendedSpeedSignals => _localStore.get(.showEctsExtendedSpeedSignals, true).value as bool;
+
+  @override
+  List<String> get companyCodes => _convertToList(_localStore.get(.companyCodes, <String>[]).value);
+
+  @override
+  TourSystem? get tourSystem => TourSystem.values.asNameMap()[_localStore.get(.tourSystem, null).value];
+
+  @override
+  String? get lastUsedCompanyCode => _localStore.get<String?>(.lastUsedCompanyCode, null).value as String?;
+
+  @override
+  bool get lastSettingsRequestSuccessful => _localStore.get<bool>(.lastSettingsRequestSuccessful, false).value as bool;
+
+  @override
+  DateTime? get lastSuccessfulSettingsTimestamp =>
+      _parseDate(_localStore.get(.lastSuccessfulSettingsTimestamp, null).value);
+
+  @override
+  DateTime? get lastUserPropertiesSyncTimestamp =>
+      _parseDate(_localStore.get(.lastUserPropertiesSyncTimestamp, null).value);
+
+  @override
+  Stream<LocalKeyValueStoreKeys?> get model => _localStore.model;
+
+  Future<void> _syncUntilSettled() async {
     try {
-      final result = await _syncer.sync();
-      _cancelScheduledRetry();
-      return result;
+      while (_syncRequested && !_disposed) {
+        _syncRequested = false;
+        await _syncer.sync();
+      }
+      _cancelRetry();
     } on Exception catch (e, s) {
       _log.warning('Syncing user properties failed. Scheduling retry.', e, s);
       _scheduleRetry();
       rethrow;
+    } finally {
+      _runningSync = null;
     }
+  }
+
+  void _triggerSync() {
+    unawaited(syncUserProperties().catchError((_) {}, test: (e) => e is Exception));
   }
 
   void _scheduleRetry() {
-    if (_disposed || _retrySyncTimer != null) return;
+    if (_disposed || _retryTimer != null) return;
 
-    _retrySyncTimer = Timer(_syncRetryDelay, () {
-      _retrySyncTimer = null;
-      unawaited(
-        syncUserProperties().catchError((error, stackTrace) {
-          _log.warning('Scheduled retry for user properties sync failed.', error, stackTrace);
-          return <UserPropertyModel>[];
-        }),
-      );
+    _retryTimer = Timer(_syncRetryDelay, () {
+      _retryTimer = null;
+      _triggerSync();
     });
   }
 
-  void _cancelScheduledRetry() {
-    _retrySyncTimer?.cancel();
-    _retrySyncTimer = null;
-  }
-
-  @override
-  Future<List<UserPropertyModel>> getAllUserProperties() => syncUserProperties();
-
-  @override
-  Future<UserPropertyModel?> getUserProperty(LocalKeyValueStoreKeys key) async {
-    _log.fine('Loading user property for key=$key from backend');
-
-    try {
-      final response = await _apiService.userProperty(key.name).call();
-      if (response.body.data.isEmpty) {
-        _log.fine('No user property found for key=$key on backend');
-        return null;
-      }
-
-      final model = response.body.data.first.toModel();
-      await _localStore.put(model);
-
-      _log.fine('Synced user property to local store: $key');
-      return model;
-    } on HttpException catch (e) {
-      if (e.statusCode == HttpStatus.notFound) {
-        _log.fine('No user property found for key=$key');
-        return null;
-      }
-      rethrow;
-    }
-  }
-
-  @override
-  Future<UserPropertyModel> saveUserProperty(LocalKeyValueStoreKeys key, Object? value) async {
-    _log.fine('Saving user property for key=$key with value=$value');
-
-    final model = UserPropertyModel(key: key.name, value: value, lastUpdated: clock.now().toUtc());
-    await _localStore.put(model);
-
-    if (!await _tryPush(model)) {
-      _log.warning('Failed to push user property for key=$key. Keeping local value and scheduling retry.');
-      _scheduleRetry();
-    } else {
-      _log.fine('User property saved and pushed: $key');
-    }
-
-    return model;
-  }
-
-  Future<bool> _tryPush(UserPropertyModel p) async {
-    try {
-      await _apiService.saveUserProperty(p.key, p.value).call();
-      return true;
-    } on Exception catch (e, s) {
-      _log.warning('Push failed for key=${p.key}', e, s);
-      return false;
-    }
+  void _cancelRetry() {
+    _retryTimer?.cancel();
+    _retryTimer = null;
   }
 
   @override
   void dispose() {
     _disposed = true;
-    _cancelScheduledRetry();
+    _cancelRetry();
   }
 }

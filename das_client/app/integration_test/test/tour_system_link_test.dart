@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
-import 'package:app/model/tour_system.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:user_properties/component.dart';
 

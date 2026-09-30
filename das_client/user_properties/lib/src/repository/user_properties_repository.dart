@@ -1,17 +1,36 @@
+import 'package:core_data/component.dart';
 import 'package:user_properties/component.dart';
 
-abstract class UserPropertiesRepository._() {
-  Future<List<UserPropertyModel>> getAllUserProperties();
+abstract interface class UserPropertiesRepository {
+  Future<void> syncUserProperties();
 
-  Future<List<UserPropertyModel>> syncUserProperties();
-
-  Future<UserPropertyModel?> getUserProperty(LocalKeyValueStoreKeys key);
-
-  Future<UserPropertyModel> saveUserProperty(LocalKeyValueStoreKeys key, Object? value);
+  Future<void> saveUserProperty(LocalKeyValueStoreKeys key, Object? value);
 
   Future<void> deleteUserProperty(LocalKeyValueStoreKeys key);
 
   Future<void> clearLocalUserProperties();
+
+  bool get showDecisiveGradient;
+
+  bool get showStationSignals;
+
+  bool get showEctsConventionalSpeedSignals;
+
+  bool get showEctsExtendedSpeedSignals;
+
+  List<String> get companyCodes;
+
+  TourSystem? get tourSystem;
+
+  String? get lastUsedCompanyCode;
+
+  bool get lastSettingsRequestSuccessful;
+
+  DateTime? get lastSuccessfulSettingsTimestamp;
+
+  DateTime? get lastUserPropertiesSyncTimestamp;
+
+  Stream<LocalKeyValueStoreKeys?> get model;
 
   void dispose();
 }
