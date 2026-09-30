@@ -12,6 +12,7 @@ import 'package:personal_notes/component.dart';
 
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_personal_notes_repository.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -43,7 +44,9 @@ void main() {
       await IntegrationTestApp.start(tester);
 
       // initialize personal note repository with two personal notes on Bahnhof A
-      final company = Company(code: '1285', shortName: 'SBBP');
+      final company = companySBBP;
+      final now = DateTime.now();
+      final todayTrimmedToDay = DateTime(now.year, now.month, now.day);
       final generalNote = PersonalNote(locationCode: 'CH09991', text: 'Test General', showAsFootnote: false);
       final singleUseNote = PersonalNote(
         locationCode: 'CH09991',
@@ -52,17 +55,19 @@ void main() {
         trainIdentification: TrainIdentification(
           companyCode: company.code,
           trainNumber: 'T9999M',
-          date: DateTime.now(),
+          date: todayTrimmedToDay,
+          operatingDay: DateTime(2025, 12, 1),
         ),
       );
       final singleUseNoteOnOtherDay = PersonalNote(
         locationCode: 'CH09991',
-        text: 'Test Single Use',
+        text: 'Test Single Use on other day',
         showAsFootnote: false,
         trainIdentification: TrainIdentification(
           companyCode: company.code,
           trainNumber: 'T9999M',
-          date: DateTime.now().subtract(Duration(days: 3)),
+          date: todayTrimmedToDay.subtract(Duration(days: 3)),
+          operatingDay: DateTime(2025, 12, 1),
         ),
       );
 
@@ -120,7 +125,7 @@ void main() {
     _checkModalHasPersonalNoteWithText(text);
 
     // check that foot note exists
-    expect(find.descendant(of: find.byType(BasicTextAccordion), matching: find.text(text)), findsOne);
+    expect(findDASTableRowByText(text), findsOne);
 
     // open dialog and delete note
     await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
@@ -139,9 +144,8 @@ void main() {
     (tester) async {
       await IntegrationTestApp.start(tester);
 
-      final company = Company(code: '1285', shortName: 'SBBP');
       final today = DateTime.now();
-      await loadJourney(tester, trainNumber: 'T9999M', company: company);
+      await loadJourney(tester, trainNumber: 'T9999M', company: companySBBP);
 
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
 
@@ -175,7 +179,7 @@ void main() {
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      await loadJourney(tester, trainNumber: 'T9999M', company: company);
+      await loadJourney(tester, trainNumber: 'T9999M', company: companySBBP);
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
       _checkModalHasNoPersonalNote();
 
@@ -185,7 +189,7 @@ void main() {
       await loadJourney(
         tester,
         trainNumber: 'T9999M',
-        company: Company(code: '3356', shortName: 'BLSC'),
+        company: companyBLSC,
       );
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
       _checkModalHasNoPersonalNote();

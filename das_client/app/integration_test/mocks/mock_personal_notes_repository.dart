@@ -26,5 +26,7 @@ class MockPersonalNotesRepository implements PersonalNotesRepository {
   }
 
   @override
-  void dispose() => _rxPersonalNotes.close();
+  void dispose() {
+    _rxPersonalNotes.close();
+  }
 }
