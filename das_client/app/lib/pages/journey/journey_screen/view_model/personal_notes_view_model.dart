@@ -12,7 +12,6 @@ import 'package:sfera/component.dart';
 
 final _log = Logger('PersonalNotesViewModel');
 
-// TODO: Add note when general note is hidden
 class PersonalNotesViewModel({
   required final PersonalNotesRepository _personalNotesRepository,
   required final ServicePointModalViewModel _servicePointModalViewModel,
