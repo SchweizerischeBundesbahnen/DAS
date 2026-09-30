@@ -17,7 +17,9 @@ import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('personalNotes_whenCreateThenUpdateNote_thenUpdatesModal|1VehH7uMXywgKQOOzOIC|tests:1009', (tester) async {
+  testWidgets('personalNotes_whenCreateThenUpdateNote_thenUpdatesModal|1VehH7uMXywgKQOOzOIC|tests:1009', (
+    tester,
+  ) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -111,40 +113,43 @@ void main() {
     },
   );
 
-  testWidgets('personalNotes_whenCreateNoteAsFootNoteThenDelete_thenUpdatesJourneyTable|3ZCteqwJAfzRLMjae4uy|tests:1009', (tester) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T9999M');
+  testWidgets(
+    'personalNotes_whenCreateNoteAsFootNoteThenDelete_thenUpdatesJourneyTable|3ZCteqwJAfzRLMjae4uy|tests:1009',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T9999M');
 
-    await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
+      await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
 
-    // check that no personal note exists and open create dialog
-    _checkModalHasNoPersonalNote();
-    await tapElement(tester, find.byKey(DetailTabCommunication.createPersonalNoteButtonKey));
-    await _awaitAndCheckCreateDialog(tester);
+      // check that no personal note exists and open create dialog
+      _checkModalHasNoPersonalNote();
+      await tapElement(tester, find.byKey(DetailTabCommunication.createPersonalNoteButtonKey));
+      await _awaitAndCheckCreateDialog(tester);
 
-    // add new personal note as foot note
-    final text = 'This is a personal note that is shown as foot note';
-    await enterText(tester, _findPersonalNoteTextArea(), text);
-    await tapElement(tester, find.byKey(PersonalNoteDialog.showAsFootNoteSwitchKey));
-    await tapElement(tester, find.byKey(PersonalNoteDialog.saveButtonKey));
-    await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
+      // add new personal note as foot note
+      final text = 'This is a personal note that is shown as foot note';
+      await enterText(tester, _findPersonalNoteTextArea(), text);
+      await tapElement(tester, find.byKey(PersonalNoteDialog.showAsFootNoteSwitchKey));
+      await tapElement(tester, find.byKey(PersonalNoteDialog.saveButtonKey));
+      await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
 
-    _checkModalHasPersonalNoteWithText(text);
+      _checkModalHasPersonalNoteWithText(text);
 
-    // check that foot note exists
-    expect(findDASTableRowByText(text), findsOne);
+      // check that foot note exists
+      expect(findDASTableRowByText(text), findsOne);
 
-    // open dialog and delete note
-    await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
-    await _awaitAndCheckEditDialog(tester, text);
-    await tapElement(tester, find.byKey(PersonalNoteDialog.deleteButtonKey));
-    await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
+      // open dialog and delete note
+      await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
+      await _awaitAndCheckEditDialog(tester, text);
+      await tapElement(tester, find.byKey(PersonalNoteDialog.deleteButtonKey));
+      await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
 
-    // check that foot note is removed
-    expect(find.descendant(of: find.byType(BasicTextAccordion), matching: find.text(text)), findsNothing);
+      // check that foot note is removed
+      expect(find.descendant(of: find.byType(BasicTextAccordion), matching: find.text(text)), findsNothing);
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 
   testWidgets(
     'personalNotes_whenCreateSingleUseNote_thenOnlyShowsInCurrentJourney|UBhcHMmWcVTq6qejZjrJ|tests:1009',
