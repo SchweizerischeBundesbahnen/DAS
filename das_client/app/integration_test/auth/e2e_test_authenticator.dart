@@ -35,7 +35,7 @@ class E2ETestAuthenticator implements Authenticator {
   }
 
   OidcToken _token() => OidcToken(
-    tokenType: 'Bearer',
+    accessTokenType: 'Bearer',
     accessToken: const String.fromEnvironment(accessToken),
     idToken: const String.fromEnvironment(accessToken),
   );

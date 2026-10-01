@@ -1,12 +1,8 @@
 import 'package:auth/src/token_spec.dart';
 import 'package:collection/collection.dart';
 
-class TokenSpecProvider {
-  const TokenSpecProvider(this._specs);
-
-  const TokenSpecProvider.empty() : _specs = const <TokenSpec>[];
-
-  final List<TokenSpec> _specs;
+class const TokenSpecProvider(final List<TokenSpec> _specs) {
+  const TokenSpecProvider.empty() : this(const <TokenSpec>[]);
 
   TokenSpec operator [](int i) => _specs[i];
 

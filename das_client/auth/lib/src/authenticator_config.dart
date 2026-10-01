@@ -7,56 +7,48 @@ const sobTenantId = 'a64ce5df-4ad8-40b9-91ee-54bac2bb8326';
 
 @sealed
 @immutable
-class AuthenticatorConfig {
-  const AuthenticatorConfig({
-    required this.discoveryUrl,
-    required this.clientId,
-    required this.redirectUrl,
-    required this.tokenSpecs,
-    this.postLogoutRedirectUrl,
-    this.trustedTenantIds = const [sbbTenantId, blsTenantId, sobTenantId],
-    this.allowedRoles = const [Role.driver, Role.observer],
-  });
-
-  const AuthenticatorConfig.empty()
-    : discoveryUrl = '',
-      clientId = '',
-      redirectUrl = '',
-      postLogoutRedirectUrl = null,
-      tokenSpecs = const TokenSpecProvider.empty(),
-      trustedTenantIds = const [],
-      allowedRoles = const [];
-
-  final String discoveryUrl;
-  final String clientId;
-  final String redirectUrl;
-  final String? postLogoutRedirectUrl;
-  final TokenSpecProvider tokenSpecs;
+class const AuthenticatorConfig({
+  required final String tenantId,
+  required final String clientId,
+  required final String redirectUrl,
+  required final String keychainAccessGroup,
+  required final TokenSpecProvider tokenSpecs,
 
   /// list of trusted tenants that are validated in token claim
-  final List<String> trustedTenantIds;
+  final List<String> trustedTenantIds = const [sbbTenantId, blsTenantId, sobTenantId],
 
   /// list of roles, at least one of which must be present in the token claim
-  final List<Role> allowedRoles;
+  final List<Role> allowedRoles = const [Role.driver, Role.observer],
+}) {
+  const AuthenticatorConfig.empty()
+    : this(
+        tenantId: '',
+        clientId: '',
+        redirectUrl: '',
+        keychainAccessGroup: '',
+        tokenSpecs: const TokenSpecProvider.empty(),
+        trustedTenantIds: const [],
+        allowedRoles: const [],
+      );
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is AuthenticatorConfig &&
-        other.discoveryUrl == discoveryUrl &&
+        other.tenantId == tenantId &&
         other.clientId == clientId &&
         other.redirectUrl == redirectUrl &&
-        other.postLogoutRedirectUrl == postLogoutRedirectUrl &&
+        other.keychainAccessGroup == keychainAccessGroup &&
         other.tokenSpecs == tokenSpecs;
   }
 
   @override
   int get hashCode {
     return Object.hash(
-      discoveryUrl,
+      tenantId,
       clientId,
       redirectUrl,
-      postLogoutRedirectUrl,
+      keychainAccessGroup,
       tokenSpecs,
     );
   }

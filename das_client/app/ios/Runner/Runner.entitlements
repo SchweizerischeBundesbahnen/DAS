@@ -8,5 +8,9 @@
 	<array>
 		<string>applinks:driveradvisorysystem.app.sbb.ch</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 </dict>
 </plist>

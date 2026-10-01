@@ -366,8 +366,7 @@ class const _AuthProvider({required final Authenticator authenticator}) implemen
   @override
   Future<String> call({String? tokenId}) async {
     final oidcToken = await authenticator.token(tokenId: tokenId);
-    final accessToken = oidcToken.accessToken;
-    return '${oidcToken.tokenType} $accessToken';
+    return oidcToken.authorizationHeader;
   }
 }
 

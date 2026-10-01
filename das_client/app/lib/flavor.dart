@@ -162,9 +162,10 @@ const Map<TourSystem, String> _prodTourSystemUrls = {
 const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 
 const _authenticatorConfigDev = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '5467e91f-a84c-40a5-89ba-75dcefc5569c',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das.dev',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
@@ -175,9 +176,10 @@ const _authenticatorConfigDev = AuthenticatorConfig(
 );
 
 const _authenticatorConfigInte = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das.inte',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
@@ -188,9 +190,10 @@ const _authenticatorConfigInte = AuthenticatorConfig(
 );
 
 const _authenticatorConfigProd = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,

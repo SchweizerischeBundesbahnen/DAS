@@ -574,22 +574,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_appauth:
-    dependency: transitive
-    description:
-      name: flutter_appauth
-      sha256: "9bacc200937c61c7ed4e64ecee3fc0d4042133405a00b56de8fbe401aa16d228"
-      url: "https://pub.dev"
-    source: hosted
-    version: "12.1.0"
-  flutter_appauth_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_appauth_platform_interface
-      sha256: c88f8edf43bf3b2c8fed73a04ba78309f00c549306a27f5ef818d767701a6eb6
-      url: "https://pub.dev"
-    source: hosted
-    version: "12.1.0"
   flutter_driver:
     dependency: transitive
     description: flutter
@@ -612,18 +596,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_secure_storage
-      sha256: fe638107c5f69119156ada2db5a57734385fac3f64430bd7252a00d3ead2ca4b
+      sha256: d4e1fb6b2cb524868929e78dc0282fa000554b22060fb53789dc481c9fc95bb8
       url: "https://pub.dev"
     source: hosted
-    version: "10.3.4"
+    version: "11.2.0"
   flutter_secure_storage_darwin:
     dependency: transitive
     description:
       name: flutter_secure_storage_darwin
-      sha256: "82329fa5cdf343773b1b6897dea959105a29f092454259edff92f9f6637e8149"
+      sha256: a031ceac9b070e62ef183cd7f7d1a8798ebde402d5049f0fe6eb3a51bd797a21
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.2"
+    version: "0.4.3"
   flutter_secure_storage_linux:
     dependency: transitive
     description:
@@ -1248,10 +1232,10 @@ packages:
     dependency: transitive
     description:
       name: sbb_oidc
-      sha256: "79fbeae2b0728adaa6a0cea7968483c30e40d4395e332aa365ee493b62b8657a"
+      sha256: ba9d9b15c7b643c1d2b1e70b32f042928e4744a3b10a6610ee8dcac181d9d7ee
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.0"
+    version: "5.0.0"
   screen_brightness:
     dependency: transitive
     description:
@@ -1810,5 +1794,5 @@ packages:
     source: hosted
     version: "2.2.4"
 sdks:
-  dart: ">=3.13.0 <4.0.0"
-  flutter: ">=3.47.0"
+  dart: ">=3.13.2 <4.0.0"
+  flutter: ">=3.47.2"

@@ -33,7 +33,7 @@ class IntegrationTestAuthenticator implements Authenticator {
     return User(userId: 'tester@testeee.com', roles: [], displayName: 'Integration Tester');
   }
 
-  OidcToken _token() => OidcToken(tokenType: '', accessToken: '', idToken: '');
+  OidcToken _token() => OidcToken(accessTokenType: '', accessToken: '');
 
   @override
   Stream<bool> get reauthenticationRequired => reauthenticationRequiredSubject.distinct();
