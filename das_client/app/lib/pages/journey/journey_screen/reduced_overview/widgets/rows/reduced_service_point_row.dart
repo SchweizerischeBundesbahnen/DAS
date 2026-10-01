@@ -68,16 +68,18 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell timeCell(BuildContext context) {
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     final times = data.arrivalDepartureTime;
     if (times == null && data.mandatoryStop) {
       return DASTableCell.empty(
+        onTap: () => viewModel.toggleOperationalTime(),
         decoration: DASTableCellDecoration(color: specialCellColor),
       );
     }
 
-    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-
     return DASTableCell(
+      onTap: () => viewModel.toggleOperationalTime(),
       child: TimeCellBody(
         viewModel: viewModel,
         times: times,
