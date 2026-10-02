@@ -37,6 +37,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     DI.get<AppLifecycleViewModel>().updateState(state);
+    //todo theoretically reference my repo with di.get and trigger sync. ofc with checking the state if it is in the foreground
   }
 
   @override

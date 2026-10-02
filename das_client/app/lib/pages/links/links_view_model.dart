@@ -1,20 +1,20 @@
 import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:external_links/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('LinksViewModel');
 
 class LinksViewModel({
   required final ExternalLinksRepository _externalLinksRepository,
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
   required final Launcher _launcher,
 }) {
   this {
-    _init();
+    _watchLinksForCompanies(_userPropertiesRepository.companyCodes);
   }
 
   final BehaviorSubject<List<ExternalLink>> _rxExternalLinks = BehaviorSubject<List<ExternalLink>>.seeded(const []);
@@ -32,17 +32,8 @@ class LinksViewModel({
     _rxExternalLinks.close();
   }
 
-  void _init() {
-    _watchLinksForCompanies(_userSettings.companyCodes);
-  }
-
   void _watchLinksForCompanies(List<String> companyCodes) {
-    _externalLinksSubscription?.cancel();
-
-    if (companyCodes.isEmpty) {
-      _rxExternalLinks.add(const []);
-      return;
-    }
+    if (companyCodes.isEmpty) return;
 
     _externalLinksSubscription = _externalLinksRepository
         .watchExternalLinksByCompanies(companyCodes)

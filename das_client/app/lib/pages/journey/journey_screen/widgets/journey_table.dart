@@ -51,7 +51,6 @@ import 'package:app/pages/journey/journey_validation/validation_mode_view_model.
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
@@ -67,6 +66,7 @@ import 'package:provider/provider.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 class JourneyTable extends StatelessWidget {
   const JourneyTable({super.key});
@@ -404,30 +404,36 @@ class JourneyTable extends StatelessWidget {
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
-    final userSettings = DI.get<LocalKeyValueStore>();
+    final userPropertiesRepository = DI.get<UserPropertiesRepository>();
 
     return [
       if (openModalType == null || openModalType == .additionalSpeedRestriction) ...[
-        if (userSettings.showDecisiveGradient ||
-            (!userSettings.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
+        if (userPropertiesRepository.showDecisiveGradient ||
+            (!userPropertiesRepository.showDecisiveGradient && !decisiveGradientVM.showDecisiveGradientValue))
           DASTableColumn(
             id: ColumnDefinition.kilometre.index,
             child: Text(context.l10n.p_journey_table_kilometre_label),
             width: 66.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
-        if (userSettings.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
+        if (userPropertiesRepository.showDecisiveGradient || decisiveGradientVM.showDecisiveGradientValue) ...[
           DASTableColumn(
             id: ColumnDefinition.gradientDownhill.index,
             child: Text('-'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
           DASTableColumn(
             id: ColumnDefinition.gradientUphill.index,
             child: Text('+'),
             width: 40.0,
-            onTap: !userSettings.showDecisiveGradient ? () => decisiveGradientVM.toggleShowDecisiveGradient() : null,
+            onTap: !userPropertiesRepository.showDecisiveGradient
+                ? () => decisiveGradientVM.toggleShowDecisiveGradient()
+                : null,
           ),
         ],
       ],

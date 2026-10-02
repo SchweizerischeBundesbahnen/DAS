@@ -1,7 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/launcher/launcher.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -18,7 +17,6 @@ import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
 import '../mocks/mock_launcher.dart';
-import '../mocks/mock_local_key_value_store.dart';
 import '../mocks/mock_preload_repository.dart';
 import '../util/test_time_constants.dart';
 
@@ -41,7 +39,6 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
     _registerMockMotionDataService();
     getIt.registerWarnapp();
     _registerTestTimeConstants();
-    _registerUserSettings();
     _registerMockConnectivityManager();
     getIt.registerLoginViewModel();
     _registerMockAppLinksManager();
@@ -91,16 +88,12 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
     getIt.registerSingleton<TimeConstants>(TestTimeConstants());
   }
 
-  void _registerUserSettings() {
-    getIt.registerSingleton<LocalKeyValueStore>(MockLocalKeyValueStore());
-  }
-
   void _registerMockConnectivityManager() {
     getIt.registerSingleton<ConnectivityManager>(MockConnectivityManager());
   }
 
   void _registerMockLauncher() {
-    getIt.registerSingleton<Launcher>(MockLauncher(userSettings: DI.get(), flavor: DI.get()));
+    getIt.registerSingleton<Launcher>(MockLauncher(userPropertiesRepository: DI.get(), flavor: DI.get()));
   }
 
   void _registerMockPreloadRepository() {

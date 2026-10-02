@@ -12,7 +12,6 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/timed_route_provider.dart';
@@ -33,6 +32,7 @@ import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -91,6 +91,10 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerAuthProvider() {
     registerSingleton<AuthProvider>(_AuthProvider(authenticator: DI.get()));
+  }
+
+  void registerUserIdProvider() {
+    registerSingleton<UserIdProvider>(_UserIdProvider(authenticator: DI.get()));
   }
 
   void registerSferaAuthProvider() {
@@ -209,7 +213,7 @@ extension AuthenticatedScopeExtension on GetIt {
     final repo = ExternalLinksComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
     registerSingleton<ExternalLinksRepository>(repo);
 
-    final companyCodes = DI.get<LocalKeyValueStore>().companyCodes;
+    final companyCodes = DI.get<UserPropertiesRepository>().companyCodes;
     repo.reloadExternalLinksByCompanies(companyCodes);
   }
 
@@ -233,7 +237,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
-      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
+      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userPropertiesRepository: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );
@@ -245,7 +249,7 @@ extension AuthenticatedScopeExtension on GetIt {
         sferaRepo: DI.get(),
         settingsRepository: DI.get(),
         trainIdentificationRepository: DI.get(),
-        userSettings: DI.get(),
+        userPropertiesRepository: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
@@ -368,6 +372,14 @@ class const _AuthProvider({required final Authenticator authenticator}) implemen
     final oidcToken = await authenticator.token(tokenId: tokenId);
     final accessToken = oidcToken.accessToken;
     return '${oidcToken.tokenType} $accessToken';
+  }
+}
+
+class const _UserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> getUserId() async {
+    final user = await authenticator.user();
+    return user.userId;
   }
 }
 
