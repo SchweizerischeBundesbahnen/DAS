@@ -114,10 +114,10 @@ void main() {
     verify(mockDeleteRequest.call(key: note.locationCode)).called(1);
   });
 
-  test('observeNotes_whenCalled_thenEmitsNotesForCurrentUser', () async {
+  test('observeNotesForLocation_whenCalled_thenEmitsNotesForCurrentUser', () async {
     // GIVEN
     final note = _note(locationCode: 'CH001', text: 'Note text', modifiedAt: DateTime(2026, 1, 1, 8));
-    when(mockDatabaseService.observeNotes(userId: userId, locationCode: 'CH001'))
+    when(mockDatabaseService.observeNotesForLocation(userId: userId, locationCode: 'CH001'))
         .thenAnswer((_) => Stream.value([note]));
 
     // WHEN
@@ -125,7 +125,7 @@ void main() {
 
     // THEN
     await expectLater(result, emits(orderedEquals([note])));
-    verify(mockDatabaseService.observeNotes(userId: userId, locationCode: 'CH001')).called(1);
+    verify(mockDatabaseService.observeNotesForLocation(userId: userId, locationCode: 'CH001')).called(1);
   });
 
   test('observeAllNotes_whenCalled_thenEmitsNotesForCurrentUser', () async {

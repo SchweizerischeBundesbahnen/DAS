@@ -62,8 +62,6 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
 
   @override
   void dispose() {
-    widget.modalSheetController?.resetAutomaticClose();
-
     textController.dispose();
     super.dispose();
   }

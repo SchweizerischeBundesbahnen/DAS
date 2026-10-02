@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 class MockPersonalNotesRepository implements PersonalNotesRepository {
   final _rxPersonalNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
 
-  void initializeWith(List<PersonalNote> notes) => _rxPersonalNotes.add([..._rxPersonalNotes.value, ...notes]);
+  void initializeWith(List<PersonalNote> notes) => _rxPersonalNotes.add(notes);
 
   @override
   Future<void> deleteNote(PersonalNote note) async =>

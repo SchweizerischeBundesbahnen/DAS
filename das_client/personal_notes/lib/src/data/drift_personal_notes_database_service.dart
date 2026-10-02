@@ -28,7 +28,7 @@ class DriftPersonalNotesDatabaseService._()
   int get schemaVersion => 1;
 
   @override
-  Stream<List<PersonalNote>> observeNotes({required String userId, required String locationCode}) {
+  Stream<List<PersonalNote>> observeNotesForLocation({required String userId, required String locationCode}) {
     return _tableManager
         .filter((f) => f.userId.equals(userId) & f.locationCode.equals(locationCode) & f.deleted.equals(false))
         .watch()
@@ -81,7 +81,7 @@ class DriftPersonalNotesDatabaseService._()
 
     final tombstone = existingNote.toDomain().copyWith(deleted: true, lastModifiedAt: DateTime.now());
     await saveNote(userId: userId, note: tombstone);
-    _log.fine('Marked note for ${note.locationCode} and ${note.trainIdentification}');
+    _log.fine('Marked note for ${note.locationCode} and ${note.trainIdentification} as deleted');
   }
 
   $$PersonalNotesTableTableTableManager get _tableManager => managers.personalNotesTable;

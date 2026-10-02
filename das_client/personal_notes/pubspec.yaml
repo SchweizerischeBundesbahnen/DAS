@@ -22,6 +22,8 @@ dependencies:
   path_provider: ^2.1.6
   # https://pub.dev/packages/logging
   logging: ^1.3.0
+  # https://pub.dev/packages/meta
+  meta: ^1.19.0
 
 dev_dependencies:
   flutter_test:

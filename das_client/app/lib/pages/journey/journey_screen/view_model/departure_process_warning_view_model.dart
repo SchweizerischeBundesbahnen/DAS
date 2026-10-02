@@ -32,10 +32,12 @@ class DepartureProcessWarningViewModel({
   }
 
   @override
-  Future<void> onJourneyChanged(Journey? journey) async {
-    _isDepartureProcessFeatureEnabled = await _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
-    if (_rxShowChronographWarning.isClosed) return;
-    _rxShowChronographWarning.add(_isDepartureProcessFeatureEnabled);
+  void onJourneyChanged(Journey? journey) {
+    _ruFeatureProvider.isRuFeatureEnabled(.departureProcess).then((enabled) {
+      _isDepartureProcessFeatureEnabled = enabled;
+      if (_rxShowChronographWarning.isClosed) return;
+      _rxShowChronographWarning.add(enabled);
+    });
   }
 
   @override

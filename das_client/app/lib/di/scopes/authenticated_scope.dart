@@ -409,7 +409,7 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
 
 class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
   @override
-  Future<String> call({String? tokenId}) async {
+  Future<String> call() async {
     final user = await authenticator.user();
     return user.userId;
   }

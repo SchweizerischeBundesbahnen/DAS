@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:personal_notes/component.dart';
 import 'package:personal_notes/src/api/dto/personal_note_dto.dart';
 import 'package:personal_notes/src/api/endpoint/personal_notes.dart';
@@ -27,7 +28,7 @@ class PersonalNotesRepositoryImpl({
   @override
   Stream<List<PersonalNote>> observeNotes(String locationCode) async* {
     final userId = await _userIdProvider();
-    yield* _databaseService.observeNotes(userId: userId, locationCode: locationCode);
+    yield* _databaseService.observeNotesForLocation(userId: userId, locationCode: locationCode);
   }
 
   @override
@@ -94,7 +95,7 @@ class PersonalNotesRepositoryImpl({
           continue;
         }
 
-        syncSucceeded = await _deleteNoteOnRemote(remoteNote.locationCode) && syncSucceeded;
+        syncSucceeded &= await _deleteNoteOnRemote(remoteNote.locationCode);
         continue;
       }
 
@@ -104,22 +105,20 @@ class PersonalNotesRepositoryImpl({
       }
 
       if (localNote.lastModifiedAt.isAfter(remoteNote.lastModifiedAt)) {
-        syncSucceeded = await _saveNoteToRemote(localNote) && syncSucceeded;
+        syncSucceeded &= await _saveNoteToRemote(localNote);
       }
     }
 
     for (final localNote in localNotesForSync) {
       if (!remoteByKey.containsKey(localNote.locationCode) && !localNote.deleted) {
-        syncSucceeded = await _saveNoteToRemote(localNote) && syncSucceeded;
+        syncSucceeded &= await _saveNoteToRemote(localNote);
       }
     }
 
-    if (syncSucceeded) {
-      _retryTimer?.cancel();
-      _retryTimer = null;
-    }
+    if (!syncSucceeded) _scheduleRetry();
   }
 
+  @visibleForTesting
   Future<void> cleanUpSingleUseNotes() async {
     final userId = await _userIdProvider();
     final cutoffDate = DateTime.now().subtract(_singleUseNotesRetention);

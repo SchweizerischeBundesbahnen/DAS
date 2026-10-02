@@ -43,6 +43,7 @@ class PersonalNotesViewModel({
   ServicePoint? _currentServicePoint;
   List<ServicePoint> _journeyServicePoints = const [];
   List<PersonalNote> _allNotes = const [];
+  Journey? _currentJourney;
 
   @override
   void onJourneyChanged(Journey? journey) => _handleJourneyUpdate(journey);
@@ -58,7 +59,7 @@ class PersonalNotesViewModel({
 
     TrainIdentification? trainIdentification;
     if (singleUse) {
-      trainIdentification = lastJourney?.metadata.trainIdentification;
+      trainIdentification = _currentJourney?.metadata.trainIdentification;
       if (trainIdentification == null) {
         _log.warning('Called saveNote without existing train identification');
         return;
@@ -135,6 +136,10 @@ class PersonalNotesViewModel({
   }
 
   void _handleJourneyUpdate(Journey? journey) {
+    final trainIdentificationChanged =
+        _currentJourney?.metadata.trainIdentification != journey?.metadata.trainIdentification;
+    _currentJourney = journey;
+
     if (journey == null) {
       _journeyServicePoints = const [];
       _rxPersonalNotesAnnotation.add(const []);
@@ -142,7 +147,7 @@ class PersonalNotesViewModel({
     }
 
     final servicePoints = journey.journeyPoints.whereType<ServicePoint>().toList(growable: false);
-    if (!servicePoints.hasChanges(_journeyServicePoints)) return;
+    if (!trainIdentificationChanged && !servicePoints.hasChanges(_journeyServicePoints)) return;
 
     _journeyServicePoints = servicePoints;
     _emitPersonalNoteAnnotations();
@@ -151,7 +156,7 @@ class PersonalNotesViewModel({
   void _emitServicePointNotes(List<PersonalNote> notes) {
     if (_rxServicePointNotes.isClosed) return;
 
-    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(lastJourney)).toList();
+    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(_currentJourney)).toList();
     _rxServicePointNotes.add(journeyRelevantNotes);
   }
 
@@ -160,7 +165,7 @@ class PersonalNotesViewModel({
 
     final notesByLocationCode = <String, PersonalNote>{
       for (final note in _allNotes)
-        if (note.isRelevantFor(lastJourney)) note.locationCode: note,
+        if (note.isRelevantFor(_currentJourney)) note.locationCode: note,
     };
 
     final annotations = <PersonalNoteAnnotation>[];

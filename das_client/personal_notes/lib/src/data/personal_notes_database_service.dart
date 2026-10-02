@@ -1,7 +1,7 @@
 import 'package:personal_notes/src/model/personal_note.dart';
 
 abstract class PersonalNotesDatabaseService {
-  Stream<List<PersonalNote>> observeNotes({required String userId, required String locationCode});
+  Stream<List<PersonalNote>> observeNotesForLocation({required String userId, required String locationCode});
 
   Stream<List<PersonalNote>> observeAllNotes({required String userId, bool includeDeleted = false});
 
