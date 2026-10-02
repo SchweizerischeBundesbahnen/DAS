@@ -47,9 +47,8 @@ public class ServicePointApiClient {
         return restClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/service-point-directory/v1/service-points")
-                .queryParam("meansOfTransport", "TRAIN")
                 .queryParam("statusRestrictions", "VALIDATED")
-                .queryParam("countries", "SWITZERLAND", "ITALY", "FRANCE", "GERMANY")
+                .queryParam("countries", "SWITZERLAND", "ITALY", "FRANCE", "GERMANY", "AUSTRIA")
                 .queryParam("validToFromDate", DateTimeUtil.today().toString())
                 .queryParam("page", page)
                 .queryParam("size", MAX_PAGE_SIZE)
