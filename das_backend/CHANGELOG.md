@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.17.0...backend-v0.18.0) (2026-10-02)
+
+
+### Features
+
+* filter train identifications with hours before departure ([#2638](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2638)) ([#2873](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2873)) ([46b8bd0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/46b8bd0eff670b6f7713383f5eb9abf780c66a43))
+* preload local regulation sps ([#1648](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1648)) ([#2800](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2800)) ([9d19c86](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9d19c86c04160bfcfcd92fffa0e5936a0edeb1b4))
+
 ## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.16.0...backend-v0.17.0) (2026-09-17)
 
 
