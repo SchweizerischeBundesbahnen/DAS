@@ -26,11 +26,11 @@ class AcknowledgedModificationRepositoryImpl({
 
   @override
   Future<void> insert(Modification modification) async {
-    _deleteExpiredModifications();
     await _databaseService.saveModification(modification);
   }
 
-  Future<void> _deleteExpiredModifications() async {
+  @override
+  Future<void> deleteExpiredModifications() async {
     final now = DateTime.now();
     if (_lastCleanupDate == null || !_lastCleanupDate!.isSameDay(now)) {
       _lastCleanupDate = now;

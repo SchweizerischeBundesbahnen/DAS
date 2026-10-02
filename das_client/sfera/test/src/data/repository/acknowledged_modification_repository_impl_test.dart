@@ -28,11 +28,7 @@ void main() {
   });
 
   test('modificationsStream_whenPersistedModificationsChange_thenEmitsModifications', () async {
-    final modification = Modification(
-      identifier: 'signal-1',
-      date: DateTime(2026, 9, 25),
-      type: ModificationType.updated,
-    );
+    final modification = Modification(identifier: 'signal-1', date: DateTime(2026, 9, 25), type: .updated);
 
     final expectation = expectLater(testee.model.skip(1), emits({modification}));
     modificationsSubject.add({modification});
@@ -40,11 +36,7 @@ void main() {
   });
 
   test('insert_whenCalled_thenDelegatesToLocalDatabaseService', () async {
-    final modification = Modification(
-      identifier: 'signal-1',
-      date: DateTime(2026, 9, 25),
-      type: ModificationType.updated,
-    );
+    final modification = Modification(identifier: 'signal-1', date: DateTime(2026, 9, 25), type: .updated);
 
     await testee.insert(modification);
 
@@ -52,87 +44,57 @@ void main() {
   });
 
   test('delete_whenCalled_thenDelegatesToLocalDatabaseService', () async {
-    final modification = Modification(
-      identifier: 'signal-1',
-      date: DateTime(2026, 9, 25),
-      type: ModificationType.updated,
-    );
+    final modification = Modification(identifier: 'signal-1', date: DateTime(2026, 9, 25), type: .updated);
 
     await testee.delete(modification);
 
     verify(localService.deleteModification(modification)).called(1);
   });
 
-  group('cleanup on insert', () {
-    test('insert_whenCalledForFirstTimeOfDay_thenDeletesModificationsOlderThanShowModificationDays', () async {
+  test(
+    'deleteExpiredModifications_whenCalledForFirstTimeOfDay_thenDeletesModificationsOlderThanShowModificationDays',
+    () async {
+      // GIVEN
       final baseDate = DateTime(2026, 9, 28, 12);
-
       final oldModification = Modification(
         identifier: 'old-signal',
         date: baseDate.subtract(const Duration(days: JourneyPoint.showModificationDays + 1)),
-        type: ModificationType.updated,
+        type: .updated,
       );
       final recentModification = Modification(
         identifier: 'recent-signal',
         date: baseDate.subtract(const Duration(days: JourneyPoint.showModificationDays - 1)),
-        type: ModificationType.updated,
+        type: .updated,
       );
-
       modificationsSubject.add({oldModification, recentModification});
 
-      testee = AcknowledgedModificationRepositoryImpl(
-        databaseService: localService,
-      );
+      // WHEN
+      await testee.deleteExpiredModifications();
 
-      final newModification = Modification(
-        identifier: 'new-signal',
-        date: baseDate,
-        type: ModificationType.updated,
-      );
-
-      await testee.insert(newModification);
-
+      // THEN
       verify(localService.deleteExpiredModification(any)).called(1);
       verifyNever(localService.deleteModification(recentModification));
-      verify(localService.saveModification(newModification)).called(1);
-    });
+    },
+  );
 
-    test('insert_whenCalledSecondTimeOnSameDay_thenDoesNotDeleteModificationsAgain', () async {
-      final baseDate = DateTime(2026, 9, 28, 12);
-      var currentDate = baseDate;
+  test('deleteExpiredModifications_whenCalledSecondTimeOnSameDay_thenDoesNotDeleteModificationsAgain', () async {
+    // GIVEN
+    final baseDate = DateTime(2026, 9, 28, 12);
+    final oldModification = Modification(
+      identifier: 'old-signal',
+      date: baseDate.subtract(const Duration(days: JourneyPoint.showModificationDays + 1)),
+      type: .updated,
+    );
+    modificationsSubject.add({oldModification});
 
-      final oldModification = Modification(
-        identifier: 'old-signal',
-        date: baseDate.subtract(const Duration(days: JourneyPoint.showModificationDays + 1)),
-        type: ModificationType.updated,
-      );
+    // WHEN THEN first time
+    await testee.deleteExpiredModifications();
+    verify(localService.deleteExpiredModification(any)).called(1);
+    clearInteractions(localService);
 
-      modificationsSubject.add({oldModification});
-
-      testee = AcknowledgedModificationRepositoryImpl(
-        databaseService: localService,
-      );
-
-      final firstModification = Modification(
-        identifier: 'first-signal',
-        date: currentDate,
-        type: ModificationType.updated,
-      );
-      final secondModification = Modification(
-        identifier: 'second-signal',
-        date: currentDate.add(const Duration(hours: 2)),
-        type: ModificationType.updated,
-      );
-
-      await testee.insert(firstModification);
-      verify(localService.deleteExpiredModification(any)).called(1);
-      clearInteractions(localService);
-
-      currentDate = currentDate.add(const Duration(hours: 2));
-      await testee.insert(secondModification);
-
-      verifyNever(localService.deleteModification(any));
-      verify(localService.saveModification(secondModification)).called(1);
-    });
+    // WHEN THEN second time
+    modificationsSubject.add({oldModification});
+    await testee.deleteExpiredModifications();
+    verifyNever(localService.deleteModification(any));
   });
 }

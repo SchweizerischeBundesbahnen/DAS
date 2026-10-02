@@ -30,7 +30,7 @@ class AppExpirationGuard extends AutoRouteGuard {
       if (resolver.isResolved) return;
 
       if (!appExpirationVM.mustShowDialog) {
-        _log.fine('AppExpiraton dialog must not be shown. Navigating to ${resolver.route}');
+        _log.fine('AppExpiration dialog must not be shown. Navigating to ${resolver.route}');
         resolver.next(true);
         return;
       }

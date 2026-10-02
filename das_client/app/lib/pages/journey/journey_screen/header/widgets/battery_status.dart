@@ -12,18 +12,18 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 final _log = Logger('BatteryStatus');
 
 class BatteryStatus extends StatefulWidget {
+  static const Key batteryLevelLowIconKey = Key('batteryStatusLow');
+
   const BatteryStatus({super.key});
 
   @override
   State<BatteryStatus> createState() => _BatteryStatusState();
-
-  static const Key batteryLevelLowIconKey = Key('batteryStatusLow');
 }
 
 class _BatteryStatusState extends State<BatteryStatus> {
   static const Duration batteryCheckInterval = Duration(minutes: 1);
 
-  final Battery _battery = DI.get<Battery>();
+  final _battery = DI.get<Battery>();
   Timer? _batteryTimer;
   int? _batteryLevel;
 
@@ -38,10 +38,13 @@ class _BatteryStatusState extends State<BatteryStatus> {
     _batteryTimer = Timer.periodic(batteryCheckInterval, (_) => _setBatteryLevel());
   }
 
-  void _setBatteryLevel() {
-    _battery.batteryLevel.then((level) => setState(() => _batteryLevel = level)).catchError((error) {
-      _log.warning('Battery is unavailable: $error');
-    });
+  Future<void> _setBatteryLevel() async {
+    try {
+      final level = await _battery.batteryLevel;
+      setState(() => _batteryLevel = level);
+    } catch (e) {
+      _log.warning('Battery is unavailable: $e');
+    }
   }
 
   @override

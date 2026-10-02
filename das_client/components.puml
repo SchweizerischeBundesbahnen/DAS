@@ -21,6 +21,7 @@ component customer_oriented_departure
 component ru_indications
 component external_links
 component core_data
+component personal_notes
 
 app --> auth
 app --> sfera
@@ -38,6 +39,7 @@ app --> customer_oriented_departure
 app --> ru_indications
 app --> external_links
 app --> core_data
+app --> personal_notes
 
 settings --> http_x
 settings --> logger
@@ -72,5 +74,8 @@ ru_indications --> http_x
 
 external_links --> http_x
 external_links --> core_data
+
+personal_notes --> http_x
+personal_notes --> core_data
 
 @enduml

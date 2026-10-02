@@ -1,6 +1,6 @@
-import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
@@ -17,6 +17,7 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/timed_route_provider.dart';
 import 'package:app/provider/timed_route_provider_impl.dart';
+import 'package:app/sync/app_sync_handler.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:customer_oriented_departure/component.dart';
@@ -28,6 +29,7 @@ import 'package:local_regulations/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:personal_notes/component.dart';
 import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
@@ -63,7 +65,9 @@ class AuthenticatedScope extends DIScope {
     getIt.registerRuIndicationsRepository();
     getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
+    getIt.registerPersonalNotesRepository();
     getIt.registerAcknowledgedModificationRepository();
+    getIt.registerAppSyncHandler();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
@@ -178,6 +182,18 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
+  void registerAppSyncHandler() {
+    registerSingletonAsync<AppSyncHandler>(
+      () async => AppSyncHandler(
+        acknowledgedModificationRepository: DI.get(),
+        personalNotesRepository: DI.get(),
+        appLifecycleVM: DI.get(),
+      ),
+      dependsOn: [PersonalNotesRepository],
+      dispose: (handler) => handler.dispose(),
+    );
+  }
+
   void registerAppExpirationViewModel() {
     final appVersion = DI.get<AppInfo>().version;
     final vm = AppExpirationViewModel(
@@ -228,6 +244,18 @@ extension AuthenticatedScopeExtension on GetIt {
         client: DI.get(),
         sferaLocalRepo: DI.get(),
       ),
+    );
+  }
+
+  void registerPersonalNotesRepository() {
+    final flavor = DI.get<Flavor>();
+    registerSingletonAsync<PersonalNotesRepository>(
+      () async => PersonalNotesComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        userIdProvider: _PersonalNoteUserIdProvider(authenticator: DI.get()),
+      ),
+      dispose: (repo) => repo.dispose(),
     );
   }
 
@@ -376,6 +404,14 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
   Future<bool> isDriver() async {
     final user = await authenticator.user();
     return user.roles.contains(Role.driver);
+  }
+}
+
+class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> call() async {
+    final user = await authenticator.user();
+    return user.userId;
   }
 }
 
