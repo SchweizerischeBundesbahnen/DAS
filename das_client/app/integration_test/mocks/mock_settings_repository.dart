@@ -24,8 +24,8 @@ const availableCompanies = [
   companyTHURBO,
 ];
 
-class MockSettingsRepository implements SettingsRepository {
-  MockSettingsRepository() : _appVersionExpiration = AppVersionExpiration(expired: false);
+class MockSettingsRepository() implements SettingsRepository {
+  this : _appVersionExpiration = AppVersionExpiration(expired: false);
 
   AppVersionExpiration? _appVersionExpiration;
 

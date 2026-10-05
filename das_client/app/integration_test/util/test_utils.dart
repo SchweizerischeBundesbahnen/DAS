@@ -131,6 +131,7 @@ Future<void> disconnect(WidgetTester tester) async {
 Future<void> closeJourney(WidgetTester tester) async {
   await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
   await confirmCloseJourneyDialogIfShown(tester);
+  await tester.pumpAndSettle();
 }
 
 Future<void> confirmCloseJourneyDialogIfShown(WidgetTester tester) async {

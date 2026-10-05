@@ -31,6 +31,7 @@ dependencies:
   ru_indications: 1.0.0
   train_identification: 1.0.0
   core_data: 1.0.0
+  personal_notes: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.8.1
