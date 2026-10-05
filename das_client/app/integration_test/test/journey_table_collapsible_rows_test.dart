@@ -281,7 +281,63 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|tests:2219', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T54M');
+
+    // first occurrence of line foot note A is expanded
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+    // repetition of line foot note A at second service point is collapsed
+    await _moveToServicePoint(tester, 'Lausanne');
+    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+
+    // repetition of line foot note A expands on tap
+    await tapElement(tester, _lineFootNoteA().first, warnIfMissed: false);
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+    // first occurrence of line foot note B in the middle of the journey is expanded
+    await _moveToServicePoint(tester, 'Pully');
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteB());
+
+    // repetition of line foot note B is collapsed
+    await _moveToServicePoint(tester, 'Taillepied');
+    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteB());
+
+    await disconnect(tester);
+  });
+
+  testWidgets('collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|tests:2219', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T54M');
+
+    await _moveToServicePoint(tester, 'Pully');
+
+    // repetition of line foot note A stays collapsed
+    await _moveToServicePoint(tester, 'Lausanne');
+    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+
+    // first occurrence of line foot note A is expanded again
+    await _moveToServicePoint(tester, 'Renens VD');
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+    await disconnect(tester);
+  });
 }
+
+Future<void> _moveToServicePoint(WidgetTester tester, String servicePoint) async {
+  await tester.drag(findDASTableRowByText(servicePoint), const Offset(600, 0));
+  await tester.pumpAndSettle();
+}
+
+Finder _lineFootNoteA() => _findDASTableAccordionByContainsText('Renens VD - Taillepied', FootNoteAccordion);
+
+Finder _lineFootNoteB() => _findDASTableAccordionByContainsText('Pully - Taillepied', FootNoteAccordion);
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {
   // should be expanded by default
