@@ -1,8 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
 import {
@@ -11,7 +10,6 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { startWith } from 'rxjs';
 import { ExternalLink } from '~ru-admin/ru-admin-api';
 import { LanguageCode, LanguageProvider } from '~shared/language-provider';
 import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
@@ -44,10 +42,13 @@ export class ExternalLinksTable {
   protected columns = ['select', 'title', 'link', 'lastModifiedAt', 'lastModifiedBy', 'action'];
   protected selection = new SelectionModel<ExternalLink>(true, []);
   protected isDeleting = false;
-  protected form = new FormGroup({
-    search: new FormControl('', { nonNullable: true }),
-    language: new FormControl(this.languageProvider.currentLanguage.path, { nonNullable: true }),
+
+  protected readonly filterModel = signal({
+    search: '',
+    language: this.languageProvider.currentLanguage.path,
   });
+  protected readonly filterForm = form(this.filterModel);
+
   private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
   private readonly bottomBar = viewChild.required(TableBottomBar);
@@ -57,7 +58,8 @@ export class ExternalLinksTable {
       if (this.externalLinksResource.hasValue()) {
         this.dataSource.data = this.externalLinksResource.value().data;
       }
-
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
@@ -69,15 +71,13 @@ export class ExternalLinksTable {
       }
       return data[column as keyof ExternalLink] as string;
     };
-    this.form.valueChanges
-      .pipe(startWith(this.form.value), takeUntilDestroyed())
-      .subscribe((form) => {
-        this.dataSource.filter = form as ExternalLinkFilter;
-      });
+    effect(() => {
+      this.dataSource.filter = this.filterModel();
+    });
   }
 
   protected currentLanguage(externalLink: ExternalLink) {
-    return externalLink[this.form.controls.language.value];
+    return externalLink[this.filterModel().language];
   }
 
   protected async edit(externalLink: ExternalLink): Promise<void> {

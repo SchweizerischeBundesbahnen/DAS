@@ -111,8 +111,7 @@ fvm dart run melos test
 ### Running integration tests
 
 Instrumentation tests do not use user authentication. Therefore, the credentials must be provided as
-environment
-variables.
+environment variables.
 Run the following command in the `app` directory.
 
 ```shell

@@ -20,7 +20,7 @@ const sample: RuIndication = {
     operationalTrainNumberFilters: [{ expression: '100', parity: 'ANY' }],
     tafTapLocationReferences: ['LOC1'],
   },
-  periods: [{ validFrom: new Date('2026-01-10'), validTo: new Date('2026-01-10') }],
+  periods: [{ validFrom: '2026-01-10', validTo: '2026-01-10' }],
   status: 'ACTIVE',
   lastModifiedBy: 'tester',
   lastModifiedAt: new Date('2026-01-01'),
@@ -69,11 +69,11 @@ describe('RuIndicationsTable', () => {
 
   it('titleValue/textValue should return language specific values', () => {
     const comp = createComponent();
-    comp['form'].patchValue({ language: 'de' });
+    comp['filterForm'].language().value.set('de');
     expect(comp['titleValue'](sample)).toBe('Titel DE');
     expect(comp['textValue'](sample)).toBe('Text DE');
 
-    comp['form'].patchValue({ language: 'fr' });
+    comp['filterForm'].language().value.set('fr');
     expect(comp['titleValue'](sample)).toBe('Titre FR');
     expect(comp['textValue'](sample)).toBe('Texte FR');
   });

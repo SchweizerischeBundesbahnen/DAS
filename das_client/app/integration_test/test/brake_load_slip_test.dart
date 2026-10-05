@@ -2,6 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_page.dart';
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
+import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_brake_details.dart';
+import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_hauled_load_details.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_header_box.dart';
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_special_restrictions.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -9,6 +11,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_modal/brake_load_slip_modal_overview.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/brake_load_slip_notification.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -21,6 +24,7 @@ import '../app_test.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_formation_repository.dart';
 import '../mocks/mock_launcher.dart';
+import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -123,6 +127,54 @@ void main() {
 
     expect(find.text('Haltestelle B'), findsOneWidget);
     expect(find.text('Halt auf Verlangen C'), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('brakeSlip_whenBrakeDetailsFeatureEnabled_thenShowsBrakeDetails|uSAIOF7ht1RLvSOPKHb6|tests:2641', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+
+    final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+    featureProvider.enableFeature(.brakeLoadSlipBrakeDetails);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT49Formation();
+
+    await loadJourney(tester, trainNumber: 'T49M');
+
+    await openBrakeSlipPage(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BrakeLoadSlipBrakeDetails), findsOneWidget);
+    expect(find.text(l10n.p_brake_load_slip_brake_details_title), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('brakeSlip_whenBrakeDetailsFeatureDisabled_thenHidesBrakeDetails|otnw80xp0sracqUJLFCJ|tests:2641', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+
+    final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+    featureProvider.disableFeature(.brakeLoadSlipBrakeDetails);
+
+    final formationRepository = DI.get<FormationRepository>() as MockFormationRepository;
+    formationRepository.emitT49Formation();
+
+    await loadJourney(tester, trainNumber: 'T49M');
+
+    await openBrakeSlipPage(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BrakeLoadSlipBrakeDetails), findsNothing);
+    expect(find.text(l10n.p_brake_load_slip_brake_details_title), findsNothing);
+
+    // the remaining load details are still displayed
+    expect(find.byType(BrakeLoadSlipSpecialRestrictions), findsOneWidget);
+    expect(find.byType(BrakeLoadSlipHauledLoadDetails), findsOneWidget);
 
     await disconnect(tester);
   });

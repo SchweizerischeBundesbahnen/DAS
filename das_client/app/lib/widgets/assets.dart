@@ -50,7 +50,6 @@ class const AppAssets._() {
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
-  static const shapeMenuArrow = '$_othersDir/shape_menu_arrow.svg';
   static const shapeRoundedEdgeLeftSmall = '$_othersDir/shape_rounded_edge_left_small.svg';
   static const shapeRoundedEdgeLeftMedium = '$_othersDir/shape_rounded_edge_left_medium.svg';
   static const shapeRoundedEdgeLeftLarge = '$_othersDir/shape_rounded_edge_left_large.svg';

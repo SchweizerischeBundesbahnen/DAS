@@ -54,12 +54,11 @@ class SferaModelMapper._() {
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
-    var segmentJourneyData = segmentProfileReferences
+    final segmentJourneyData = segmentProfileReferences
         .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
         .flattened;
 
     final calculatedSpeeds = _parseCalculatedSpeeds(journeyProfile, segmentJourneyData.whereType<ServicePoint>());
-    segmentJourneyData = segmentJourneyData.removeIrrelevantServicePoints(calculatedSpeeds);
     journeyData.addAll(segmentJourneyData);
 
     final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
@@ -871,20 +870,5 @@ class _SegmentMapperData {
   @override
   String toString() {
     return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation, startKmRef: $startKmRef, endKmRef: $endKmRef}';
-  }
-}
-
-extension _BaseDataIterableExtension on Iterable<BaseData> {
-  /// removes all additional service points that are not at the route start/end and have no speed change and are not a stop.
-  Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {
-    final servicePoints = whereType<ServicePoint>().toList()..sort();
-    return whereNot((data) {
-      final isNotStartOrEndServicePoint = data != servicePoints.first && data != servicePoints.last;
-      return data is ServicePoint &&
-          data.isAdditional &&
-          isNotStartOrEndServicePoint &&
-          calculatedSpeeds[data.order] == null &&
-          !data.isStop;
-    });
   }
 }

@@ -37,4 +37,7 @@ class IntegrationTestAuthenticator implements Authenticator {
 
   @override
   Stream<bool> get reauthenticationRequired => reauthenticationRequiredSubject.distinct();
+
+  @override
+  bool get reauthenticationRequiredValue => reauthenticationRequiredSubject.value;
 }

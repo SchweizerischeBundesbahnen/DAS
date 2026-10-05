@@ -1,13 +1,78 @@
 import 'package:app/pages/settings/settings_page.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
+import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';
+import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  testWidgets('settings_whenOpened_thenShowsHeaderInformation|asZ1tS4kU7Nf5OXr8iPr|tests:427', (tester) async {
+    await IntegrationTestApp.start(tester);
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+
+    expect(find.text('Integration Tester'), findsAny);
+    expect(find.text('tester@testeee.com'), findsAny);
+  });
+
+  testWidgets('settings_whenCompanySelectedAndUnselected_thenDisplaysSelection|O7WL0FgVcL2yp91SBkO3|tests:427', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+
+    // check initial company is empty
+    expect(find.text(l10n.p_train_selection_company_description), findsNWidgets(2));
+
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SelectCompanyInput));
+
+    // select 3 companies
+    await tapElement(tester, find.text(companyBLSI.shortName).first);
+    await tapElement(tester, find.text(companyBLSC.shortName).first);
+    await tapElement(tester, find.text(companyDB.shortName).first);
+
+    await _confirmSelection(tester);
+    await tester.pumpAndSettle(Duration(seconds: 1));
+
+    // check that selected companies are shown in profile in alphabetical order
+    final evuText = '${companyBLSC.shortName}, ${companyBLSI.shortName}, ${companyDB.shortName}';
+    expect(find.text(evuText), findsOneWidget);
+
+    // unselect BLSC
+    await tapElement(tester, find.text(evuText));
+    await tapElement(tester, find.text(companyBLSC.shortName).first);
+
+    await _confirmSelection(tester);
+
+    final evuText2 = '${companyBLSI.shortName}, ${companyDB.shortName}';
+    expect(find.text(evuText2), findsOneWidget);
+  });
+
+  testWidgets('settings_whenTourSystemSelected_thenDisplaysSelection|Vg694p8aplw0hptHokay|tests:427', (tester) async {
+    await IntegrationTestApp.start(tester);
+    await openDrawer(tester);
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
+
+    // check initial tour system is empty
+    expect(find.text(l10n.w_user_tour_system_selection_label), findsNWidgets(2));
+
+    // Select tour system
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBDropdown));
+    await tapElement(tester, find.text(l10n.c_tour_system_rail_cube).first);
+    expect(find.text(l10n.c_tour_system_rail_cube), findsOne);
+
+    // select second tour system
+    await tapElement(tester, find.byWidgetPredicate((it) => it is SBBDropdown));
+    await tapElement(tester, find.text(l10n.c_tour_system_bls_ivu).first);
+    expect(find.text(l10n.c_tour_system_bls_ivu), findsOne);
+  });
+
   testWidgets('settings_whenDecisiveGradientDisabled_thenHidesGradients|dnFjNfPHHPUOOjuVfnrE|tests:583', (
     tester,
   ) async {
@@ -34,9 +99,9 @@ void main() {
     gradientSwitch = tester.widget(gradientSwitchFinder) as SBBSwitchListItemBoxed;
     expect(gradientSwitch.value, false);
 
-    // Navigate back to fahrtinfo page
+    // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     // check km is shown, up and down gradients are hidden
     expect(find.text('km'), findsOneWidget);
@@ -58,9 +123,9 @@ void main() {
     // disable decisive gradient setting
     await tapElement(tester, find.text(l10n.p_settings_page_decisive_gradient_show_setting));
 
-    // Navigate back to fahrtinfo page
+    // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -134,9 +199,9 @@ void main() {
     // disable decisive gradient setting
     await tapElement(tester, find.text(l10n.p_settings_page_signal_station_setting));
 
-    // Navigate back to fahrtinfo page
+    // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     // Check entry and exit signals no longer shown
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
@@ -157,9 +222,9 @@ void main() {
     // disable decisive gradient setting
     await tapElement(tester, find.text(l10n.p_settings_page_signal_station_setting));
 
-    // Navigate back to fahrtinfo page
+    // Navigate back to fahrordnung page
     await openDrawer(tester);
-    await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+    await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
 
     await loadJourney(tester, trainNumber: 'T9999');
 
@@ -320,5 +385,9 @@ Future<void> _toggleSignalSwitch(WidgetTester tester, Key switchKey) async {
   await tapElement(tester, switchFinder);
 
   await openDrawer(tester);
-  await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+  await tapElement(tester, find.text(l10n.w_navigation_drawer_journey_title));
+}
+
+Future<void> _confirmSelection(WidgetTester tester) async {
+  await tapElement(tester, find.byKey(SelectCompanyModal.confirmButtonKey));
 }

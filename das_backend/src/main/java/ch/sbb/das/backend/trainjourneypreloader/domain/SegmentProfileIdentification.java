@@ -36,6 +36,9 @@ public record SegmentProfileIdentification(String spid, String spVersionMajor, S
     }
 
     public String toIdVersionString() {
+        if (spVersionMinor() == null || spVersionMinor().isBlank()) {
+            return String.format("%s_%s", spid(), spVersionMajor());
+        }
         return String.format("%s_%s_%s", spid(), spVersionMajor(), spVersionMinor());
     }
 }

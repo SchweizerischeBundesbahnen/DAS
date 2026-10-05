@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/extension/short_term_change_extension.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
@@ -14,10 +15,10 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equip
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/journey_config.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_cell_body.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/das_badge_overlay.dart';
-import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
@@ -47,6 +48,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.config = const JourneyConfig(),
     this.defaultAlignment = .bottomCenter,
     this.onTap,
+    this.onDoubleTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
     this.isGrouped = false,
@@ -58,6 +60,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final ChevronPositionModel chevronPosition;
   final JourneyConfig config;
   final VoidCallback? onTap;
+  final VoidCallback? onDoubleTap;
   final VoidCallback? onStartToEndDragReached;
   final Widget Function(BuildContext, bool)? draggableBackgroundBuilder;
   final bool isGrouped;
@@ -69,6 +72,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       height: height,
       decoration: _decorationWithOptionalShortTermChangeBorders(context),
       onTap: onTap,
+      onDoubleTap: onDoubleTap,
       onStartToEndDragReached: onStartToEndDragReached,
       draggableBackgroundBuilder: draggableBackgroundBuilder,
       stickyLevel: stickyLevel,
@@ -110,19 +114,14 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCell(
       decoration: DASTableCellDecoration(color: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
-      child: DASBadgeOverlay(
-        badgeVisible: data.hasModificationUpdated,
-        badgeOffset: Offset(0, -SBBSpacing.small),
-        badge: const ModificationIcon(),
-        child: Column(
-          mainAxisAlignment: .end,
-          crossAxisAlignment: .start,
-          mainAxisSize: .min,
-          children: [
-            Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
-            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: .end,
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
+        children: [
+          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
+        ],
       ),
       alignment: .bottomLeft,
     );
@@ -185,14 +184,21 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     if (isInEtcsLevel2Segment && data.dataType != .cabSignaling) {
       return DASTableCell.empty();
     }
+    final isValidationMode = DI.get<ValidationModeViewModel>().validationModeValue;
     return DASTableCell(
       alignment: .center,
-      padding: .symmetric(vertical: 2.0, horizontal: SBBSpacing.xSmall),
-      child: LineSpeedCellBody(
-        order: data.order,
-        showSpeedBehavior: showSpeedBehavior,
-        isNextStop: _isNextStop,
-      ),
+      padding: .symmetric(vertical: 2.0, horizontal: isValidationMode ? 0 : SBBSpacing.xSmall),
+      child: DI.get<ValidationModeViewModel>().validationModeValue
+          ? MultiLineSpeedCellBody(
+              order: data.order,
+              showSpeedBehavior: showSpeedBehavior,
+              isNextStop: _isNextStop,
+            )
+          : LineSpeedCellBody(
+              order: data.order,
+              showSpeedBehavior: showSpeedBehavior,
+              isNextStop: _isNextStop,
+            ),
     );
   }
 

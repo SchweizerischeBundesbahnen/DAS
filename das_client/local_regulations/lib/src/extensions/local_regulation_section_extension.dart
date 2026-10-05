@@ -3,21 +3,21 @@ import 'package:sfera/component.dart';
 
 extension LocalRegulationSectionExtension on LocalRegulationSection {
   String toHtml() {
-    final relevance = LocalRegulationRelevance.from(title.localized);
+    final relevance = LocalRegulationRelevance.from(title);
     if (relevance == null) {
       return '''
-      ${title.hasTranslation ? '<h3>${title.localized}</h3>' : ''}
-      ${content.hasTranslation ? '<div>${content.localized}</div>' : ''}
+      ${title != null && title!.isNotEmpty ? '<h3>$title</h3>' : ''}
+      ${content != null && content!.isNotEmpty ? '<div>$content</div>' : ''}
       ''';
     }
 
-    final titleWithoutAbbreviation = title.localized.replaceFirst(RegExp(r'^\s*\S+\s*'), '');
+    final titleWithoutAbbreviation = title?.replaceFirst(RegExp(r'^\s*\S+\s*'), '');
     return '''
       <div class="base-row">
         <div class="col-relevance">${relevance.abbreviation}</div>
         <div class="col-content">
           <div class="title">$titleWithoutAbbreviation</div>
-          ${content.hasTranslation ? '<div>${content.localized}</div>' : ''}
+          ${content != null && content!.isNotEmpty ? '<div>$content</div>' : ''}
         </div>
       </div>
       ''';

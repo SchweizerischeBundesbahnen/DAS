@@ -21,7 +21,6 @@ export class SimpleXmlComponent implements AfterViewInit {
   private el = inject(ElementRef);
   private renderer = inject(Renderer2);
 
-  @Input() xml: Document | undefined;
   @Input() xmlString: string | undefined;
   @Input() collapsedText: string = '...';
   @Input() collapsed: boolean = false;
@@ -32,19 +31,12 @@ export class SimpleXmlComponent implements AfterViewInit {
   private wrapperNode: HTMLElement | undefined;
 
   ngAfterViewInit() {
-    if (this.xml === undefined && this.xmlString === undefined) {
+    if (this.xmlString === undefined) {
       throw new Error('No XML to be displayed was supplied');
     }
 
-    if (this.xml !== undefined && this.xmlString !== undefined) {
-      throw new Error('Only one of xml and xmlString may be supplied');
-    }
-
-    let xml = this.xml;
-    if (xml === undefined && this.xmlString) {
-      const parser = new DOMParser();
-      xml = parser.parseFromString(this.xmlString, 'text/xml');
-    }
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(this.xmlString, 'text/xml');
 
     const wrapperNode = this.el.nativeElement.querySelector('.simpleXML') as HTMLElement;
     this.wrapperNode = wrapperNode;
@@ -67,7 +59,7 @@ export class SimpleXmlComponent implements AfterViewInit {
   }
 
   async copyToClipboard() {
-    const text = this.wrapperNode?.innerText ?? this.xmlString ?? '';
+    const text = this.getFullXmlText();
     try {
       await navigator.clipboard.writeText(text);
       this.copied = true;
@@ -75,6 +67,10 @@ export class SimpleXmlComponent implements AfterViewInit {
     } catch {
       this.copied = false;
     }
+  }
+
+  private getFullXmlText(): string {
+    return this.xmlString ?? this.wrapperNode?.innerText ?? '';
   }
 
   private setAllExpanded(expanded: boolean) {

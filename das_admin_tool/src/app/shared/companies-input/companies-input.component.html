@@ -1,37 +1,45 @@
-<sbb-form-field errorSpace="reserve" class="full-width">
-  <label for="companies">{{ label() }}</label>
-  @if (multiselect()) {
+@if (multiselect()) {
+  <sbb-form-field errorSpace="reserve" class="full-width">
+    <label for="companies">{{ label() }}</label>
     <sbb-chip-group
       name="companies"
       [displayWith]="codeToName"
-      [formControl]="multiControl()"
+      [formField]="multiField()"
       [separatorKeys]="[]"
     >
       <!-- stopPropagation because chip-group would get marked dirty otherwise -->
       <input
-        [formControl]="inputControl"
+        [formField]="inputField"
         [sbbAutocomplete]="auto"
         (change)="$event.stopPropagation()"
       />
     </sbb-chip-group>
-  } @else {
-    <input
-      [formControl]="singleControl()"
-      [sbbAutocomplete]="auto"
-      (input)="onSearchInput($event)"
-    />
-  }
 
-  <sbb-autocomplete
-    #auto="sbbAutocomplete"
-    [displayWith]="multiselect() ? null : codeToName"
-    [requireSelection]="!multiselect()"
-  >
-    @for (company of filteredCompanies(); track company.code) {
-      <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
+    <sbb-autocomplete #auto="sbbAutocomplete" [requireSelection]="false">
+      @for (company of filteredCompanies(); track company.code) {
+        <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
+      }
+    </sbb-autocomplete>
+    @if (field()().touched()) {
+      @for (error of field()().errors(); track error.kind) {
+        <sbb-error>{{ error.message }}</sbb-error>
+      }
     }
-  </sbb-autocomplete>
-  @if (control().hasError('required') && control().touched) {
-    <sbb-error i18n="@@form_field_error_required">Feld darf nicht leer sein</sbb-error>
-  }
-</sbb-form-field>
+  </sbb-form-field>
+} @else {
+  <sbb-form-field errorSpace="reserve" class="full-width">
+    <label for="companies">{{ label() }}</label>
+    <input [formField]="singleField()" [sbbAutocomplete]="auto" (input)="onSearchInput($event)" />
+
+    <sbb-autocomplete #auto="sbbAutocomplete" [displayWith]="codeToName" [requireSelection]="true">
+      @for (company of filteredCompanies(); track company.code) {
+        <sbb-option [value]="company.code">{{ company.shortName }}</sbb-option>
+      }
+    </sbb-autocomplete>
+    @if (field()().touched()) {
+      @for (error of field()().errors(); track error.kind) {
+        <sbb-error>{{ error.message }}</sbb-error>
+      }
+    }
+  </sbb-form-field>
+}

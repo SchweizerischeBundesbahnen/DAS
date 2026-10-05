@@ -55,11 +55,16 @@ export interface TcRequestOptions {
   minorVersion: string;
 }
 
+export interface RtiRequestOptions {
+  trainIdentification: TrainIdentification;
+}
+
 export interface RequestOptions {
   header?: SferaHeaderOptions;
   jpRequests?: JpRequestOptions[];
   spRequests?: SpRequestOptions[];
   tcRequests?: TcRequestOptions[];
+  rtiRequests?: RtiRequestOptions[];
 }
 
 export interface EventOptions {
@@ -148,6 +153,7 @@ export class SferaXmlCreation {
     const jpRequests = this.createJpRequest(options.jpRequests);
     const spRequests = this.createSpRequest(options.spRequests);
     const tcRequests = this.createTcRequest(options.tcRequests);
+    const rtiRequests = this.createRtiRequest(options.rtiRequests);
 
     return `<?xml version="1.0"?>
                   <SFERA_B2G_RequestMessage>
@@ -159,6 +165,7 @@ export class SferaXmlCreation {
                         ${jpRequests}
                         ${spRequests}
                         ${tcRequests}
+                        ${rtiRequests}
                     </B2G_Request>
                 </SFERA_B2G_RequestMessage>
     `;
@@ -234,6 +241,22 @@ export class SferaXmlCreation {
       return `<TC_Request TC_ID="${tcRequest.tcId}">
                 <TC_RU_ID>${tcRequest.ruId}</TC_RU_ID>
       </TC_Request>
+      `;
+    });
+    return (strings || []).join('');
+  }
+
+  static createRtiRequest(rtiRequests: RtiRequestOptions[] | undefined): string {
+    const strings = rtiRequests?.map((rtiRequest) => {
+      return `<RelatedTrainInformationRequest>
+                            <TrainIdentification>
+                                <OTN_ID>
+                                    <teltsi_Company>${rtiRequest.trainIdentification.company}</teltsi_Company>
+                                    <teltsi_OperationalTrainNumber>${rtiRequest.trainIdentification.operationalTrainNumber}</teltsi_OperationalTrainNumber>
+                                    <teltsi_StartDate>${rtiRequest.trainIdentification.startDate}</teltsi_StartDate>
+                                </OTN_ID>
+                            </TrainIdentification>
+                        </RelatedTrainInformationRequest>
       `;
     });
     return (strings || []).join('');

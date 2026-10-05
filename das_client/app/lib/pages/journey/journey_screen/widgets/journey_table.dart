@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
@@ -44,10 +45,14 @@ import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journe
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection.dart';
+import 'package:app/pages/journey/journey_validation/multi_brake_series_selection_view_model.dart';
+import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:app/provider/local_key_value_store.dart';
+import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/assets.dart';
@@ -74,25 +79,31 @@ class JourneyTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<JourneyTableViewModel>();
     final advancementViewModel = context.read<JourneyTableAdvancementViewModel>();
+    final multiBrakeSeriesVM = DI.get<MultiBrakeSeriesSelectionViewModel>();
 
-    return StreamBuilder<JourneyTableModel>(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        final model = snapshot.requireData;
-        return switch (model) {
-          TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
-          TableLoaded() => KeyedSubtree(
-            key: loadedJourneyTableKey,
-            child: NotificationListener<UserScrollNotification>(
-              onNotification: (_) {
-                advancementViewModel.resetIdleScrollTimer();
-                return false;
-              },
-              child: _table(context, model),
-            ),
-          ),
-        };
+    return StreamBuilder(
+      stream: multiBrakeSeriesVM.brakeSeriesModel,
+      builder: (context, asyncSnapshot) {
+        return StreamBuilder<JourneyTableModel>(
+          stream: viewModel.model,
+          initialData: viewModel.modelValue,
+          builder: (context, snapshot) {
+            final model = snapshot.requireData;
+            return switch (model) {
+              TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
+              TableLoaded() => KeyedSubtree(
+                key: loadedJourneyTableKey,
+                child: NotificationListener<UserScrollNotification>(
+                  onNotification: (_) {
+                    advancementViewModel.resetIdleScrollTimer();
+                    return false;
+                  },
+                  child: _table(context, model),
+                ),
+              ),
+            };
+          },
+        );
       },
     );
   }
@@ -109,6 +120,7 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
       chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      acknowledgedModifications: model.acknowledgedModifications,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
     journeyTableScrollController.updateRenderedRows(rowBuilders);
@@ -137,6 +149,7 @@ class JourneyTable extends StatelessWidget {
     required JourneyPositionModel journeyPosition,
     required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
+    required Set<Modification> acknowledgedModifications,
   }) {
     final groupedRows = journeyTableRowData
         .whereType<BaliseLevelCrossingGroup>()
@@ -148,6 +161,7 @@ class JourneyTable extends StatelessWidget {
 
     return List.generate(journeyTableRowData.length, (index) {
       final rowData = journeyTableRowData[index];
+      final modification = rowData is JourneyPoint ? rowData.modification : null;
 
       final journeyConfig = JourneyConfig(
         settings: settings,
@@ -167,6 +181,7 @@ class JourneyTable extends StatelessWidget {
           expandedGroups: settings.expandedGroups,
           journeyEnd: journeyTableVM.journeyEnd,
         ),
+        showModification: settings.showAcknowledgedModifications || !acknowledgedModifications.contains(modification),
       );
 
       var attachAnnotationToPrevious = false;
@@ -175,6 +190,8 @@ class JourneyTable extends StatelessWidget {
         attachAnnotationToPrevious =
             previous is JourneyAnnotation || (previous is ServicePoint && previous.order == rowData.order);
       }
+
+      final acknowledgeModificationCallback = _acknowledgeModificationCallback(context, modification, journeyTableVM);
 
       switch (rowData.dataType) {
         case .servicePoint:
@@ -186,6 +203,7 @@ class JourneyTable extends StatelessWidget {
             config: journeyConfig,
             context: context,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .protectionSection:
           return ProtectionSectionRow(
@@ -195,6 +213,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .curvePoint:
           return CurvePointRow(
@@ -204,6 +223,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .signal:
           return SignalRow(
@@ -213,6 +233,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
@@ -241,6 +262,7 @@ class JourneyTable extends StatelessWidget {
             chevronPosition: chevronPosition,
             config: journeyConfig,
             rowIndex: index,
+            onDoubleTap: acknowledgeModificationCallback,
           );
         case .cabSignaling:
           return CABSignalingRow(
@@ -376,6 +398,8 @@ class JourneyTable extends StatelessWidget {
     JourneySettings? settings,
     DetailModalType? openModalType,
   ) {
+    if (DI.get<ValidationModeViewModel>().validationModeValue) return _validationJourneyTable(context);
+
     final currentBrakeSeries = settings?.currentBrakeSeries;
 
     final decisiveGradientVM = context.read<DecisiveGradientViewModel>();
@@ -412,17 +436,14 @@ class JourneyTable extends StatelessWidget {
           id: ColumnDefinition.time.index,
           child: StreamBuilder(
             stream: timeViewModel.showOperationalTime,
-            builder: (context, showCalcTimeSnap) => Text(
-              showCalcTimeSnap.data ?? false
+            builder: (context, showOperationalTimeSnap) => Text(
+              showOperationalTimeSnap.data ?? false
                   ? context.l10n.p_journey_table_time_label_new
                   : context.l10n.p_journey_table_time_label_planned,
             ),
           ),
           width: 111.0,
-          onTap: () {
-            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-            viewModel.toggleOperationalTime();
-          },
+          onTap: () => timeViewModel.toggleOperationalTime(),
         ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
@@ -453,6 +474,11 @@ class JourneyTable extends StatelessWidget {
         width: 62.0,
         onTap: () => _onBrakeSeriesTap(context, metadata, settings),
         headerKey: brakeSeriesHeaderKey,
+        decoration: DASTableColumnDecoration(
+          border: Border(
+            right: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
+          ),
+        ),
       ),
       DASTableColumn(
         id: ColumnDefinition.advisedSpeed.index,
@@ -563,5 +589,91 @@ class JourneyTable extends StatelessWidget {
         ? rowBuilders.lastWhereOrNull((it) => it.stickyLevel == .first)?.height ?? CellRowBuilder.rowHeight
         : 0.0;
     return marginAdjustment;
+  }
+
+  List<DASTableColumn> _validationJourneyTable(BuildContext context) {
+    final multiBrakeSeriesVM = DI.get<MultiBrakeSeriesSelectionViewModel>();
+    return [
+      DASTableColumn(
+        id: ColumnDefinition.kilometre.index,
+        child: Text(context.l10n.p_journey_table_kilometre_label),
+        width: 66.0,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.informationCell.index,
+        child: Text(context.l10n.p_journey_table_journey_information_label),
+        expanded: true,
+        alignment: .centerLeft,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.brakedWeightSpeed.index,
+        child: _multiBrakeSeriesHeader(multiBrakeSeriesVM),
+        padding: EdgeInsets.zero,
+        width: 62.0 * max(multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries.length, 1),
+        onTap: () => _onMultiBrakeSeriesTap(context),
+        headerKey: brakeSeriesHeaderKey,
+      ),
+    ];
+  }
+
+  Future<void> _onMultiBrakeSeriesTap(BuildContext context) async {
+    final viewModel = context.read<JourneySettingsViewModel>();
+
+    final selectedBrakeSeries = await showSBBBottomSheet<BrakeSeries>(
+      context: context,
+      titleText: context.l10n.p_journey_brake_series,
+      isScrollControlled: true,
+      style: const SBBBottomSheetStyle(constraints: BoxConstraints()),
+      body: MultiBrakeSeriesSelection(),
+    );
+
+    if (selectedBrakeSeries != null) viewModel.updateBrakeSeries(selectedBrakeSeries);
+  }
+
+  Widget? _multiBrakeSeriesHeader(MultiBrakeSeriesSelectionViewModel multiBrakeSeriesVM) {
+    final selectedBrakeSeries = multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries;
+    if (selectedBrakeSeries.isEmpty) return Text('??', style: sbbTextStyle.lightStyle.small);
+
+    return Row(
+      mainAxisAlignment: .spaceEvenly,
+      children: multiBrakeSeriesVM.brakeSeriesModelValue.selectedBrakeSeries
+          .map(
+            (it) => ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 62.0),
+              child: Center(child: Text(it.name, style: sbbTextStyle.lightStyle.small)),
+            ),
+          )
+          .toList(growable: false),
+    );
+  }
+
+  VoidCallback? _acknowledgeModificationCallback(
+    BuildContext context,
+    Modification? modification,
+    JourneyTableViewModel vm,
+  ) {
+    return modification != null
+        ? () {
+            vm.acknowledgeModification(modification);
+            SBBToast.of(context).show(
+              style: SBBToastStyle(
+                titleTextStyle: SBBTextStyles.mediumLight,
+                backgroundColor: DASColors.modificationToastColor,
+                padding: EdgeInsets.symmetric(horizontal: SBBSpacing.xLarge, vertical: SBBSpacing.small),
+              ),
+              titleText: context.l10n.w_journey_table_modification_acknowledged,
+              action: GestureDetector(
+                onTap: () {
+                  vm.undoModificationAcknowledgement(modification);
+                },
+                child: Text(
+                  context.l10n.w_journey_table_modification_acknowledged_undo,
+                  style: SBBTextStyles.mediumBold,
+                ),
+              ),
+              duration: SBBToast.durationLong,
+            );
+          }
+        : null;
   }
 }

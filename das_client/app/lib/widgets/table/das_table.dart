@@ -426,6 +426,7 @@ class _CellRowState extends State<_CellRow> {
   Widget build(BuildContext context) {
     final foreground = GestureDetector(
       onTap: widget.row.onTap,
+      onDoubleTap: widget.row.onDoubleTap,
       child: DASRowControllerWrapper(
         isAlwaysSticky: widget.isSticky,
         rowKey: widget.row.key,

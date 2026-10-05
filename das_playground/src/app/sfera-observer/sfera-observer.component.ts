@@ -1,17 +1,17 @@
-import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {SbbFormFieldModule} from '@sbb-esta/angular/form-field';
-import {SbbInputModule} from '@sbb-esta/angular/input';
-import {MqService} from '../mq.service';
-import {SbbButtonModule} from '@sbb-esta/angular/button';
-import {firstValueFrom, map, Subscription} from 'rxjs';
-import {CommonModule} from '@angular/common';
-import {MqttConnectionState} from 'ngx-mqtt';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
-import {SbbCheckboxModule} from '@sbb-esta/angular/checkbox';
-import {environment} from '../../environments/environment';
-import {MessageTableComponent, TableData} from './message-table/message-table.component';
-import {SbbTableDataSource} from '@sbb-esta/angular/table';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SbbFormFieldModule } from '@sbb-esta/angular/form-field';
+import { SbbInputModule } from '@sbb-esta/angular/input';
+import { MqService } from '../mq.service';
+import { SbbButtonModule } from '@sbb-esta/angular/button';
+import { firstValueFrom, map, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MqttConnectionState } from 'ngx-mqtt';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { SbbCheckboxModule } from '@sbb-esta/angular/checkbox';
+import { environment } from '../../environments/environment';
+import { MessageTableComponent, TableData } from './message-table/message-table.component';
+import { SbbTableDataSource } from '@sbb-esta/angular/table';
 import {
   G2BEventNSPOptions,
   READONLY_MODE,
@@ -19,11 +19,11 @@ import {
   SpRequestOptions,
   TcRequestOptions,
 } from './sfera-xml-creation';
-import {SbbAccordionModule} from '@sbb-esta/angular/accordion';
-import {SessionsService} from '../sfera-discover/sessions.service';
-import {ActivatedRoute} from '@angular/router';
-import {FormationsService} from './formations.service';
-import {SbbNotificationToast} from '@sbb-esta/angular/notification-toast';
+import { SbbAccordionModule } from '@sbb-esta/angular/accordion';
+import { SessionsService } from '../sfera-discover/sessions.service';
+import { ActivatedRoute } from '@angular/router';
+import { FormationsService } from './formations.service';
+import { SbbNotificationToast } from '@sbb-esta/angular/notification-toast';
 
 @Component({
   selector: 'app-sfera-observer',
@@ -42,17 +42,17 @@ import {SbbNotificationToast} from '@sbb-esta/angular/notification-toast';
   styleUrl: './sfera-observer.component.scss',
 })
 export class SferaObserverComponent implements OnInit, OnDestroy {
-  companyControl = new FormControl('1085', {nonNullable: true});
-  trainControl = new FormControl('1513', {nonNullable: true});
-  dateControl = new FormControl(new Date().toISOString().split('T')[0], {nonNullable: true});
-  clientIdControl = new FormControl(environment.mqttServiceOptions.clientId, {nonNullable: true});
+  companyControl = new FormControl('1085', { nonNullable: true });
+  trainControl = new FormControl('1513', { nonNullable: true });
+  dateControl = new FormControl(new Date().toISOString().split('T')[0], { nonNullable: true });
+  clientIdControl = new FormControl(environment.mqttServiceOptions.clientId, { nonNullable: true });
   environmentControl = new FormControl(environment.customTopicPrefix.length > 0, {
     nonNullable: true,
   });
-  customPrefixControl = new FormControl(environment.customTopicPrefix, {nonNullable: true});
-  xmlStringControl = new FormControl('', {nonNullable: true});
-  lrListControl = new FormControl('', {nonNullable: true});
-  lrLanguageControl = new FormControl('DE', {nonNullable: true});
+  customPrefixControl = new FormControl(environment.customTopicPrefix, { nonNullable: true });
+  xmlStringControl = new FormControl('', { nonNullable: true });
+  lrListControl = new FormControl('', { nonNullable: true });
+  lrLanguageControl = new FormControl('DE', { nonNullable: true });
   g2bTopic?: string;
   b2gTopic?: string;
   eventTopic?: string;
@@ -74,8 +74,8 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   private readonly MOCK_OPATIONAL_DAY = '2025-12-01';
   private readonly formationObserver = {
     next: () => {
-      this.sendG2BEvent({formation: true});
-      this.toastService.open('Bremszettel erstellt', {type: 'success', duration: 5000});
+      this.sendG2BEvent({ formation: true });
+      this.toastService.open('Bremszettel erstellt', { type: 'success', duration: 5000 });
     },
     error: () =>
       this.toastService.open('Bremszettel konnte nicht erstellt werden', {
@@ -210,6 +210,24 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     this.mqService.publish(this.b2gTopic!, jpRequest);
   }
 
+  sendRelatedTrainInformationRequest() {
+    const relatedTrainInformationRequest = SferaXmlCreation.createRequest({
+      header: {
+        sourceDevice: this.clientIdControl.value,
+      },
+      rtiRequests: [
+        {
+          trainIdentification: {
+            company: this.companyControl.value,
+            operationalTrainNumber: this.trainControl.value,
+            startDate: this.dateControl.value,
+          },
+        },
+      ],
+    });
+    this.mqService.publish(this.b2gTopic!, relatedTrainInformationRequest);
+  }
+
   sendSPRequest() {
     const jpReplies = this.data.filter(
       (row) => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'),
@@ -278,7 +296,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     }
 
     const spRequests: SpRequestOptions[] = Array.from(lrIds).map((lrId) => ({
-      spZone: {imId: '0085'},
+      spZone: { imId: '0085' },
       spId: `${lrId}_DE`,
       majorVersion: '0',
       minorVersion: '0',
@@ -306,7 +324,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
     }
 
     const spRequests: SpRequestOptions[] = lrIds.map((lrId) => ({
-      spZone: {imId: '0085'},
+      spZone: { imId: '0085' },
       spId: `${lrId}_${lang}`,
       majorVersion: '0',
       minorVersion: '0',

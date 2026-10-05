@@ -1,21 +1,21 @@
 import test, { expect, Locator, Page } from '@playwright/test';
 import {
   clickAddButton,
-  deleteEntryIfExists,
   deleteEntryViaDialog,
   deleteEntryViaSelection,
   findRow,
   getEntryDialog,
   openEditEntryDialog,
   saveEntryDialog,
+  uniqueSuffix,
 } from '../utils/admin-test-helpers';
 
 test.describe('ru indication templates test', () => {
   const TEST_CATEGORY = 'E2E Test Category 9999';
-  const TEST_TITLE_DE = 'E2E Titel DE';
   const TEST_TEXT_DE = 'E2E Text DE';
-  const TEST_TITLE_DE_UPDATED = 'E2E Titel DE aktualisiert';
 
+  let titleDe: string;
+  let titleDeUpdated: string;
   let row: Locator;
   let updatedRow: Locator;
 
@@ -46,29 +46,29 @@ test.describe('ru indication templates test', () => {
   }
 
   test.beforeEach(async ({ page }) => {
+    const suffix = uniqueSuffix();
+    titleDe = `E2E Titel DE ${suffix}`;
+    titleDeUpdated = `E2E Titel DE ${suffix} aktualisiert`;
+
     await page.goto('ru-admin/ruindication-templates');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Titel und Texte');
 
-    row = findRow(page, TEST_TITLE_DE);
-    updatedRow = findRow(page, TEST_TITLE_DE_UPDATED);
-
-    // clean up leftover from previous run if present
-    await deleteEntryIfExists(page, row);
-    await deleteEntryIfExists(page, updatedRow);
+    row = findRow(page, titleDe);
+    updatedRow = findRow(page, titleDeUpdated);
   });
 
   test('ruIndicationTemplate_whenCreatedEditedAndDeleted_thenSucceeds|rHW2EVKOiAuStBxcRSyj|tests:1626', async ({
     page,
   }) => {
     // create
-    await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
+    await createRuIndicationTemplate(page, TEST_CATEGORY, titleDe, TEST_TEXT_DE);
 
     // edit
     const dialog = await openEditEntryDialog(page, row);
     const deTitleInput = dialog.getByRole('textbox', { name: 'Titel' });
-    await expect(deTitleInput).toHaveValue(TEST_TITLE_DE);
-    await deTitleInput.fill(TEST_TITLE_DE_UPDATED);
-    await expect(deTitleInput).toHaveValue(TEST_TITLE_DE_UPDATED);
+    await expect(deTitleInput).toHaveValue(titleDe);
+    await deTitleInput.fill(titleDeUpdated);
+    await expect(deTitleInput).toHaveValue(titleDeUpdated);
 
     await saveEntryDialog(page, updatedRow, {
       method: 'PUT',
@@ -76,9 +76,7 @@ test.describe('ru indication templates test', () => {
       dialogTitle: 'Titel und Text bearbeiten',
     });
 
-    await expect(
-      updatedRow.getByRole('cell', { name: TEST_TITLE_DE_UPDATED, exact: true }),
-    ).toBeVisible();
+    await expect(updatedRow.getByRole('cell', { name: titleDeUpdated, exact: true })).toBeVisible();
 
     // delete
     await deleteEntryViaDialog(page, updatedRow);
@@ -88,7 +86,7 @@ test.describe('ru indication templates test', () => {
     page,
   }) => {
     // create one entry to select and bulk-delete
-    await createRuIndicationTemplate(page, TEST_CATEGORY, TEST_TITLE_DE, TEST_TEXT_DE);
+    await createRuIndicationTemplate(page, TEST_CATEGORY, titleDe, TEST_TEXT_DE);
 
     // delete
     await deleteEntryViaSelection(page, row);

@@ -34,6 +34,7 @@ import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_mode
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
@@ -51,10 +52,10 @@ class JourneyOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return _ProviderScope(
       builder: (context) {
-        final detailModalController = context.read<DetailModalViewModel>().controller;
+        final detailModalController = context.read<ModalViewModel>().controller;
         return Listener(
-          onPointerDown: (_) => detailModalController.resetAutomaticClose(),
-          onPointerUp: (_) => detailModalController.resetAutomaticClose(),
+          onPointerDown: (_) => detailModalController?.resetAutomaticClose(),
+          onPointerUp: (_) => detailModalController?.resetAutomaticClose(),
           child: Row(
             children: [
               Expanded(child: _content(context)),
@@ -76,7 +77,7 @@ class JourneyOverview extends StatelessWidget {
             children: [
               JourneyTable(),
               Align(alignment: .bottomCenter, child: JourneyNavigationButtons()),
-              Align(alignment: .bottomLeft, child: FloatingDepartureChecklistButton()),
+              Align(alignment: .bottomRight, child: FloatingDepartureChecklistButton()),
               Align(alignment: .bottomCenter, child: _tourSystemLink(context)),
             ],
           ),
@@ -142,7 +143,7 @@ class _ProviderScope extends StatelessWidget {
         Provider<DecisiveGradientViewModel>.value(
           value: DI.get(),
         ),
-        Provider<DetailModalViewModel>.value(
+        Provider<ModalViewModel>.value(
           value: DI.get<DetailModalViewModel>(),
         ),
         Provider<DisturbanceViewModel>.value(
@@ -168,6 +169,9 @@ class _ProviderScope extends StatelessWidget {
         ),
         Provider<LineSpeedViewModel>.value(
           value: DI.get<LineSpeedViewModel>(),
+        ),
+        Provider<MultiLineSpeedViewModel>.value(
+          value: DI.get<MultiLineSpeedViewModel>(),
         ),
         Provider<CalculatedSpeedViewModel>.value(
           value: DI.get<CalculatedSpeedViewModel>(),

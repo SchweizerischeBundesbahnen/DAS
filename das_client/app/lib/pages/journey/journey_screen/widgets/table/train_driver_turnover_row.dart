@@ -13,7 +13,6 @@ class TrainDriverTurnoverRow extends WidgetRowBuilder<TrainDriverTurnover> {
     required super.data,
     required super.rowIndex,
     super.config,
-    super.identifier,
   }) : super(height: 48.0);
 
   @override

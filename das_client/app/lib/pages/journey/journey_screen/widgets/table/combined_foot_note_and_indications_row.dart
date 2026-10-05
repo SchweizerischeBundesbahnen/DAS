@@ -18,8 +18,8 @@ class CombinedFootNoteAndIndicationsRow extends WidgetRowBuilder<CombinedFootNot
     required super.data,
     required this.footNoteState,
     required this.indicationStates,
+    super.key,
     super.config,
-    super.identifier,
     this.leftPadding = 0,
   }) : super(
          stickyLevel: .second,

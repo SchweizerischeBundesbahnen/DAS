@@ -16,6 +16,7 @@ import 'package:sfera/src/data/api/event/related_train_information_event_handler
 import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
 import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
+import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
 import 'package:sfera/src/data/api/task/request_related_train_information_task.dart';
 import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
@@ -70,6 +71,7 @@ class SferaRepoImpl({
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
   bool _hasOfflineData = false;
+
   int _missingSpRequestRetryCount = 0;
   int _lastMissingSegmentProfileCount = 0;
 
@@ -320,11 +322,13 @@ class SferaRepoImpl({
         await _handleRequestJourneyProfileTaskCompleted(data);
       case RequestSegmentProfilesTask _:
         await _handleRequestSegmentProfilesTaskCompleted();
+      case RequestLocalRegulationsTask _:
+        return;
       case RequestRelatedTrainInformationTask _:
         await _handleRequestRelatedTrainInformationCompleted(data);
     }
 
-    if (_allTasksCompleted()) {
+    if (_allMandatoryTasksCompleted()) {
       switch (_rxState.value) {
         case .loadingAdditionalData:
           await _refreshTrainCharacteristics();
@@ -449,6 +453,26 @@ class SferaRepoImpl({
     requestTrainCharacteristicsTask.execute(_onTaskCompleted, _onTaskFailed);
   }
 
+  void _startRequestLocalRegulationsTask() {
+    final runningTask = _tasks.whereType<RequestLocalRegulationsTask>().firstOrNull;
+    if (runningTask != null) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+
+    final requestLocalRegulationsTask = RequestLocalRegulationsTask(
+      sferaRepo: this,
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _localService,
+      otnId: _otnId!,
+      servicePoints: _rxJourney.value?.data.whereType<ServicePoint>().toList() ?? [],
+    );
+    _tasks.add(requestLocalRegulationsTask);
+    requestLocalRegulationsTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
+
   void _startRequestRelatedTrainInformationTask() {
     final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
       mqttService: _mqttService,
@@ -458,8 +482,6 @@ class SferaRepoImpl({
     _tasks.add(requestRelatedTrainInformationTask);
     requestRelatedTrainInformationTask.execute(_onTaskCompleted, _onTaskFailed);
   }
-
-  bool _allTasksCompleted() => _tasks.whereType<SferaTask>().isEmpty;
 
   Future<void> _refreshSegmentProfiles() async {
     if (_journeyProfile == null) return;
@@ -514,6 +536,7 @@ class SferaRepoImpl({
         _rxJourney.add(newJourney);
         _log.fine('Journey updates successfully.');
         onSuccess?.call();
+        _startRequestLocalRegulationsTask();
       } else {
         _log.warning('Failed to update journey as it is not valid');
         lastError = .invalid();
@@ -580,10 +603,15 @@ class SferaRepoImpl({
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
     lastError = error;
-    if (_rxState.value != .connected) {
+
+    if (_rxState.value != .connected && _isMandatoryTask(task)) {
       await _loadLocalJourney(_otnId!);
       _useOfflineDataOrDisconnect();
     }
+  }
+
+  bool _isMandatoryTask(SferaTask task) {
+    return task is! RequestLocalRegulationsTask;
   }
 
   @override

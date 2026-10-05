@@ -9,12 +9,12 @@ class DetailModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<DetailModalViewModel>();
+    final viewModel = context.read<ModalViewModel>();
     return StreamBuilder(
       stream: viewModel.contentBuilder,
       builder: (context, snapshot) {
         return DasModalSheet(
-          controller: viewModel.controller,
+          controller: viewModel.controller!,
           leftMargin: SBBSpacing.xSmall,
           builder: snapshot.data ?? DASModalSheetBuilder(),
         );

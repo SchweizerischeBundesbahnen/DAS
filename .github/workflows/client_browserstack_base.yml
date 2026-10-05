@@ -35,10 +35,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '25.0.4+101.0.LTS'
           cache: 'gradle'
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
@@ -257,7 +257,7 @@ jobs:
           customId: das_client_ios_${{ inputs.enable_e2e && 'e2e' || 'integration' }}
           buildTag: ${{ steps.extract_branch.outputs.branch }}
           testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
-          devices: iPad 9th-18
+          devices: iPad Air 11 2026-26
 
       - name: Restore readable test names in Browserstack report
         if: ${{ !cancelled() && github.event_name == 'schedule' && env.test_report_path != '' }}
@@ -265,7 +265,7 @@ jobs:
 
       - name: Upload Browserstack test report artifact
         if: ${{ !cancelled() && github.event_name == 'schedule' && env.test_report_path != '' }}
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: browserstack-test-report-${{ env.build_id }}
           path: ${{ env.test_report_path }}

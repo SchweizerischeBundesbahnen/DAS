@@ -1,8 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, effect, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl } from '@angular/forms';
+import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckboxModule } from '@sbb-esta/lyne-angular/checkbox';
 import {
@@ -11,7 +10,6 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { startWith } from 'rxjs';
 import { SCHEDULE_TYPE_LABELS, ScheduleType, SpecialHoliday } from '~ru-admin/ru-admin-api';
 import { CompanyService } from '~shared/companies-input/company.service';
 import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
@@ -52,7 +50,9 @@ export class SpecialHolidaysTable {
   ];
   protected selection = new SelectionModel<SpecialHoliday>(true, []);
   protected isDeleting = false;
-  protected readonly searchControl = new FormControl('', { nonNullable: true });
+
+  protected readonly filterModel = signal({ search: '' });
+  protected readonly filterForm = form(this.filterModel);
 
   private readonly bottomBar = viewChild.required(TableBottomBar);
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
@@ -62,16 +62,16 @@ export class SpecialHolidaysTable {
       if (this.specialHolidayService.specialHolidaysResource.hasValue()) {
         this.dataSource.data = this.specialHolidayService.specialHolidaysResource.value().data;
       }
+    });
+    afterNextRender(() => {
       this.dataSource.paginator = this.bottomBar().paginator();
       this.dataSource.sort = this.sort();
     });
     this.dataSource.filterPredicate = (data: SpecialHoliday, filter: SpecialHolidayFilter) =>
       this.searchFilter(filter, data);
-    this.searchControl.valueChanges
-      .pipe(startWith(this.searchControl.value), takeUntilDestroyed())
-      .subscribe((search) => {
-        this.dataSource.filter = { search };
-      });
+    effect(() => {
+      this.dataSource.filter = this.filterModel();
+    });
   }
 
   protected async edit(holiday: SpecialHoliday): Promise<void> {

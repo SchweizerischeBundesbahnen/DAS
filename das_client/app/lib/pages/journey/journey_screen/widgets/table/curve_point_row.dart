@@ -19,7 +19,9 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     required super.rowIndex,
     required super.journeyPosition,
     required super.chevronPosition,
+    super.key,
     super.config,
+    super.onDoubleTap,
   });
 
   @override
@@ -35,12 +37,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerLeft,
         clipBehavior: Clip.none,
-        child: DASBadgeOverlay(
-          badgeVisible: data.hasModificationUpdated,
-          badgeOffset: Offset(0, -SBBSpacing.small),
-          badge: const ModificationIcon(),
-          child: Text(data.kilometre[0].toStringAsFixed(1)),
-        ),
+        child: Text(data.kilometre[0].toStringAsFixed(1)),
       );
     }
   }
@@ -54,9 +51,14 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : typeText;
 
     return DASTableCell(
-      child: Text(
-        overflow: .ellipsis,
-        text,
+      child: DASBadgeOverlay(
+        badgeVisible: data.hasModificationUpdated && config.showModification,
+        badgeOffset: Offset(0, -SBBSpacing.small),
+        badge: const ModificationIcon(),
+        child: Text(
+          overflow: .ellipsis,
+          text,
+        ),
       ),
     );
   }

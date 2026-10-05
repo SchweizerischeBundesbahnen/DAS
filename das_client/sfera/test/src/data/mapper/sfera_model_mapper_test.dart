@@ -1731,33 +1731,20 @@ void main() {
 
     // Genève-Aéroport
     final geneveAirport = servicePoints[0];
-    final geneveAirportRegulations = geneveAirport.localRegulationSections;
-    expect(geneveAirportRegulations, hasLength(1));
-    final geneveAirportTitle = geneveAirportRegulations.first.title;
-    expect(geneveAirportTitle.de, 'GEAP Genf Flughafen');
-    expect(geneveAirportTitle.fr, 'GEAP Genève Aéroport');
-    expect(geneveAirportTitle.it, 'GEAP Aeroporto di Ginevra');
-    final geneveAirportContent = geneveAirportRegulations.first.content;
-    expect(geneveAirportContent.de, '<div>Inhalt</div>');
-    expect(geneveAirportContent.fr, '<div>Contenu</div>');
-    expect(geneveAirportContent.it, '<div>Contenuto</div>');
+    final geneveAirportSegmentsIds = geneveAirport.localRegulationSegmentIds;
+    expect(geneveAirportSegmentsIds, hasLength(1));
+    expect(geneveAirportSegmentsIds.first, 'RL_701');
 
     // Genève
     final geneve = servicePoints[1];
-    final geneveRegulations = geneve.localRegulationSections;
-    expect(geneveRegulations, hasLength(1));
-    final geneveTitle = geneveRegulations.first.title;
-    expect(geneveTitle.de, 'ZR Titel');
-    expect(geneveTitle.fr, isNull);
-    expect(geneveTitle.it, isNull);
-    final geneveContent = geneveRegulations.first.content;
-    expect(geneveContent.de, '<div>Test</div>');
-    expect(geneveContent.fr, isNull);
-    expect(geneveContent.it, isNull);
+    final geneveSegmentIds = geneve.localRegulationSegmentIds;
+    expect(geneveSegmentIds, hasLength(2));
+    expect(geneveSegmentIds[0], 'RL_702');
+    expect(geneveSegmentIds[1], 'RL_703');
 
     // Coppet
     final coppet = servicePoints[2];
-    expect(coppet.localRegulationSections, isEmpty);
+    expect(coppet.localRegulationSegmentIds, isEmpty);
   });
 
   test('Test between brackets is parsed correctly', () {
@@ -1779,19 +1766,18 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
-    expect(servicePoints, hasLength(9));
+    expect(servicePoints, hasLength(11));
     final additionalServicePoints = servicePoints.where((point) => point.isAdditional).toList();
-    expect(additionalServicePoints, hasLength(6));
+    expect(additionalServicePoints, hasLength(8));
 
-    // Olten Nord (Abzw) should not be listed as it is not at start/end of route or speed relevant
-    // Olten VL should be ignored as ADL is not applied to additional service points
-    // Bern Hidden Stop and Olten Hidden Stop should be listed as they are stops
     expect(additionalServicePoints[0].name, 'Bern (Depot)');
     expect(additionalServicePoints[1].name, 'Bern Hidden Stop');
     expect(additionalServicePoints[2].name, 'Olten Ost (Abzw)');
-    expect(additionalServicePoints[3].name, 'Olten Tunnel (Spw)');
-    expect(additionalServicePoints[4].name, 'Olten Hidden Stop');
-    expect(additionalServicePoints[5].name, 'Dulliken (Depot)');
+    expect(additionalServicePoints[3].name, 'Olten VL');
+    expect(additionalServicePoints[4].name, 'Olten Nord (Abzw)');
+    expect(additionalServicePoints[5].name, 'Olten Tunnel (Spw)');
+    expect(additionalServicePoints[6].name, 'Olten Hidden Stop');
+    expect(additionalServicePoints[7].name, 'Dulliken (Depot)');
 
     // ADL speed update should ignore additional service points and land on closest JourneyPoints
     final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
@@ -1869,11 +1855,20 @@ void main() {
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
     expect(servicePoints, hasLength(5));
+    expect(servicePoints[0].modification, isNull);
     expect(servicePoints[0].lastModificationDate, isNull);
     expect(servicePoints[0].lastModificationType, isNull);
     expect(servicePoints[0].hasModificationUpdated, false);
     expect(servicePoints[0].shouldHide, false);
     expect(servicePoints[0].isDeleted, false);
+    expect(
+      servicePoints[1].modification,
+      Modification(
+        identifier: 'CH00300T35_1_Normal_station',
+        date: DateTime(2050, 1, 1),
+        type: ModificationType.updated,
+      ),
+    );
     expect(servicePoints[1].lastModificationDate, DateTime(2050, 1, 1));
     expect(servicePoints[1].lastModificationType, ModificationType.updated);
     expect(servicePoints[1].hasModificationUpdated, true);
@@ -1894,9 +1889,18 @@ void main() {
     expect(servicePoints[4].hasModificationUpdated, false);
     expect(servicePoints[4].shouldHide, false);
     expect(servicePoints[4].isDeleted, false);
+    expect(
+      servicePoints[4].modification,
+      Modification(
+        identifier: 'CH00900T35_1_Normal_station',
+        date: DateTime(2024, 1, 1),
+        type: ModificationType.updated,
+      ),
+    );
 
     final signals = journey.data.whereType<Signal>().toList();
     expect(signals, hasLength(5));
+    expect(signals[0].modification, isNull);
     expect(signals[0].lastModificationDate, isNull);
     expect(signals[0].lastModificationType, isNull);
     expect(signals[0].hasModificationUpdated, false);
@@ -1907,11 +1911,19 @@ void main() {
     expect(signals[1].hasModificationUpdated, true);
     expect(signals[1].shouldHide, false);
     expect(signals[1].isDeleted, false);
+    expect(
+      signals[1].modification,
+      Modification(identifier: 'C1', date: DateTime(2050, 1, 1), type: ModificationType.updated),
+    );
     expect(signals[2].lastModificationDate, DateTime(2050, 1, 1));
     expect(signals[2].lastModificationType, ModificationType.deleted);
     expect(signals[2].hasModificationUpdated, false);
     expect(signals[2].shouldHide, false);
     expect(signals[2].isDeleted, true);
+    expect(
+      signals[2].modification,
+      Modification(identifier: 'D1', date: DateTime(2050, 1, 1), type: .deleted),
+    );
     expect(signals[3].lastModificationDate, DateTime(2024, 1, 1));
     expect(signals[3].lastModificationType, ModificationType.updated);
     expect(signals[3].hasModificationUpdated, false);
@@ -1925,6 +1937,7 @@ void main() {
 
     final protectionSections = journey.data.whereType<ProtectionSection>().toList();
     expect(protectionSections, hasLength(5));
+    expect(protectionSections[0].modification, isNull);
     expect(protectionSections[0].lastModificationDate, isNull);
     expect(protectionSections[0].lastModificationType, isNull);
     expect(protectionSections[0].hasModificationUpdated, false);
@@ -1935,6 +1948,14 @@ void main() {
     expect(protectionSections[1].hasModificationUpdated, true);
     expect(protectionSections[1].shouldHide, false);
     expect(protectionSections[1].isDeleted, false);
+    expect(
+      protectionSections[1].modification,
+      Modification(
+        identifier: 'T35_1_Normal_station_370.0',
+        date: DateTime(2050, 1, 1),
+        type: ModificationType.updated,
+      ),
+    );
     expect(protectionSections[2].lastModificationDate, DateTime(2050, 1, 1));
     expect(protectionSections[2].lastModificationType, ModificationType.deleted);
     expect(protectionSections[2].hasModificationUpdated, false);
@@ -1950,9 +1971,18 @@ void main() {
     expect(protectionSections[4].hasModificationUpdated, false);
     expect(protectionSections[4].shouldHide, true);
     expect(protectionSections[4].isDeleted, true);
+    expect(
+      protectionSections[4].modification,
+      Modification(
+        identifier: 'T35_1_Normal_station_970.0',
+        date: DateTime(2024, 1, 1),
+        type: .deleted,
+      ),
+    );
 
     final curvePoints = journey.data.whereType<CurvePoint>().toList();
     expect(curvePoints, hasLength(5));
+    expect(curvePoints[0].modification, isNull);
     expect(curvePoints[0].lastModificationDate, isNull);
     expect(curvePoints[0].lastModificationType, isNull);
     expect(curvePoints[0].hasModificationUpdated, false);
@@ -1963,6 +1993,14 @@ void main() {
     expect(curvePoints[1].hasModificationUpdated, true);
     expect(curvePoints[1].shouldHide, false);
     expect(curvePoints[1].isDeleted, false);
+    expect(
+      curvePoints[1].modification,
+      Modification(
+        identifier: '871EC7BF49524D868B0D6B6F67544EDD',
+        date: DateTime(2050, 1, 1),
+        type: ModificationType.updated,
+      ),
+    );
     expect(curvePoints[2].lastModificationDate, DateTime(2050, 1, 1));
     expect(curvePoints[2].lastModificationType, ModificationType.deleted);
     expect(curvePoints[2].hasModificationUpdated, false);
@@ -1981,6 +2019,7 @@ void main() {
 
     final speedChanges = journey.data.whereType<SpeedChange>().toList();
     expect(speedChanges, hasLength(5));
+    expect(speedChanges[0].modification, isNull);
     expect(speedChanges[0].lastModificationDate, isNull);
     expect(speedChanges[0].lastModificationType, isNull);
     expect(speedChanges[0].hasModificationUpdated, false);
@@ -1991,6 +2030,14 @@ void main() {
     expect(speedChanges[1].hasModificationUpdated, true);
     expect(speedChanges[1].shouldHide, false);
     expect(speedChanges[1].isDeleted, false);
+    expect(
+      speedChanges[1].modification,
+      Modification(
+        identifier: 'T35_1_Normal_station_360.0',
+        date: DateTime(2050, 1, 1),
+        type: ModificationType.updated,
+      ),
+    );
     expect(speedChanges[2].lastModificationDate, DateTime(2050, 1, 1));
     expect(speedChanges[2].lastModificationType, ModificationType.deleted);
     expect(speedChanges[2].hasModificationUpdated, false);
@@ -2077,7 +2124,7 @@ void main() {
     expect(suspiciousPoints[1].kilometre, equals([]));
     expect(suspiciousPoints[1].spId, equals('T40_4'));
 
-    // No regular BaseData should exist within the suspicious segments
+    // No regular BaseData should exist within the segment
     final suspiciousSegments = journey.metadata.suspiciousSegments;
     final dataInSuspiciousSegments = journey.data.where(
       (p) => p is! SuspiciousJourneyPoint && suspiciousSegments.any((s) => s.appliesToOrder(p.order)),

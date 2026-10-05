@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/journey_screen/header/header.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_search_overlay.dart';
@@ -82,7 +81,7 @@ void main() {
 
     // close journey
     await stopAutomaticAdvancement(tester);
-    await tapElement(tester, find.byKey(JourneyPage.disconnectButtonKey));
+    await closeJourney(tester);
 
     // wait for unsubscribe to be called (it is called after the scope is popped, which is delayed by AppExpirationGuard)
     await Future.delayed(Duration(seconds: 2));
@@ -112,6 +111,7 @@ Future<void> _openJourneyOverSearchOverlay(WidgetTester tester, {required String
     matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
   );
   await tapElement(tester, primaryButton);
+  await confirmCloseJourneyDialogIfShown(tester);
 
   // wait until journey opened
   await waitUntilExists(

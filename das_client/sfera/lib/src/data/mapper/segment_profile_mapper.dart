@@ -8,9 +8,7 @@ import 'package:sfera/src/data/dto/departure_auth_nsp_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
-import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -36,6 +34,36 @@ class SegmentProfileMapper._() {
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
   static String _trainSeriesKey(TrainSeriesSpeed speed) => '${speed.trainSeries}_${speed.brakedWeightPercentage ?? ''}';
+
+  static String _locationIdentifier(double location, String spId) => '${spId}_$location';
+
+  static Modification? _modification({
+    required String identifier,
+    required DateTime? date,
+    required ModificationType? type,
+  }) {
+    if (date == null || type == null) {
+      return null;
+    }
+
+    return Modification(identifier: identifier, date: date, type: type);
+  }
+
+  static Modification? _mergeModification(Modification? primary, Modification? secondary) {
+    if (primary == null && secondary == null) {
+      return null;
+    }
+
+    return Modification(
+      identifier: primary?.identifier ?? secondary!.identifier,
+      date: primary?.date ?? secondary!.date,
+      type: primary?.type ?? secondary!.type,
+    );
+  }
+
+  static String _servicePointModificationIdentifier(TafTapLocationDto tafTapLocation, String spId) {
+    return '${tafTapLocation.locationIdent.locationCode}$spId';
+  }
 
   static List<BaseData> parseSegmentProfile(
     SegmentProfileReferenceDto segmentProfileReference,
@@ -156,10 +184,13 @@ class SegmentProfileMapper._() {
           trackGroup: routeTableData?.trackGroup,
           departureAuthorization: _parseDepartureAuthorization(tafTapLocation.departureAuthNsp),
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
-          localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
+          localRegulationSegmentIds: _parseLocalRegulationTree(tafTapLocation.localRegulations),
           locationCode: tafTapLocation.locationIdent.locationCode,
-          lastModificationDate: tafTapLocation.lastModificationDate,
-          lastModificationType: tafTapLocation.lastModificationType?.modificationType,
+          modification: _modification(
+            identifier: _servicePointModificationIdentifier(tafTapLocation, segmentProfileReference.spId),
+            date: tafTapLocation.lastModificationDate,
+            type: tafTapLocation.lastModificationType?.modificationType,
+          ),
         ),
       );
     }
@@ -177,8 +208,11 @@ class SegmentProfileMapper._() {
         functions: signal.functions.map((function) => SignalFunction.from(function.value!)).toList(),
         order: calculateOrder(mapperData.segmentIndex, signal.id.location),
         kilometre: kmNspRef ?? mapperData.kilometreMap[signal.id.location] ?? [],
-        lastModificationDate: signal.lastModificationDate,
-        lastModificationType: signal.lastModificationType?.modificationType,
+        modification: _modification(
+          identifier: signal.id.physicalId,
+          date: signal.lastModificationDate,
+          type: signal.lastModificationType?.modificationType,
+        ),
       );
     });
   }
@@ -206,8 +240,13 @@ class SegmentProfileMapper._() {
                 : false,
             order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
             kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
-            lastModificationDate: protectionSectionNsp?.lastModificationDate,
-            lastModificationType: protectionSectionNsp?.lastModificationType?.modificationType,
+            modification: _modification(
+              identifier:
+                  protectionSectionNsp?.identifier ??
+                  _locationIdentifier(currentLimitationChange.location, mapperData.segmentProfile.id),
+              date: protectionSectionNsp?.lastModificationDate,
+              type: protectionSectionNsp?.lastModificationType?.modificationType,
+            ),
           ),
         );
       }
@@ -259,8 +298,11 @@ class SegmentProfileMapper._() {
             text: xml?.text,
             comment: xml?.comment,
             localSpeeds: SpeedMapper.fromVelocities(xml?.speeds?.velocities),
-            lastModificationDate: nsp.lastModificationDate,
-            lastModificationType: nsp.lastModificationType?.modificationType,
+            modification: _modification(
+              identifier: nsp.identifier ?? _locationIdentifier(nsp.location, mapperData.segmentProfile.id),
+              date: nsp.lastModificationDate,
+              type: nsp.lastModificationType?.modificationType,
+            ),
           );
         })
         .sortedBy((p) => p.order)
@@ -335,8 +377,7 @@ class SegmentProfileMapper._() {
         curveType: begin.curveType,
         text: begin.text,
         comment: begin.comment,
-        lastModificationDate: begin.lastModificationDate ?? end.lastModificationDate,
-        lastModificationType: begin.lastModificationType ?? end.lastModificationType,
+        modification: _mergeModification(begin.modification, end.modification),
       );
     }).toList();
   }
@@ -418,8 +459,12 @@ class SegmentProfileMapper._() {
         text: newLineSpeed.xmlNewLineSpeedLine?.element.text,
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
-        lastModificationDate: newLineSpeed.lastModificationDate,
-        lastModificationType: newLineSpeed.lastModificationType?.modificationType,
+        modification: _modification(
+          identifier:
+              newLineSpeed.identifier ?? _locationIdentifier(newLineSpeed.location, mapperData.segmentProfile.id),
+          date: newLineSpeed.lastModificationDate,
+          type: newLineSpeed.lastModificationType?.modificationType,
+        ),
       );
     }).toList();
   }
@@ -599,13 +644,8 @@ class SegmentProfileMapper._() {
     }).toList();
   }
 
-  static List<LocalRegulationSection> _parseLocalRegulationSegments(Iterable<LocalRegulationNspDto> localRegulations) {
-    return localRegulations.map((dto) {
-      return LocalRegulationSection(
-        title: dto.titles.toLocalizedString,
-        content: dto.contents.toLocalizedString,
-      );
-    }).toList();
+  static List<String> _parseLocalRegulationTree(Iterable<LocalRegulationTafTapLocationNspDto> localRegulations) {
+    return localRegulations.map((dto) => dto.languageNeutralTree).nonNulls.expand((it) => it.split(';')).toList();
   }
 
   static DepartureAuthorization? _parseDepartureAuthorization(DepartureAuthNspDto? departureAuthNsp) {

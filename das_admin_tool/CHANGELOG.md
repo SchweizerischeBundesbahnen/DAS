@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.6.0...das-admin-tool-v0.7.0) (2026-09-17)
+
+
+### Features
+
+* add brake load slip detail toggle to admin tool ([#2640](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2640)) ([#2812](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2812)) ([6202f3e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6202f3e6afb85cdc072a49a3f05baf5706775e25))
+* translate admin tool ([#2719](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2719)) ([#2730](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2730)) ([994568b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/994568b8936bd962b20dd02f3cd8b0a8f468350b))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.5.1...das-admin-tool-v0.6.0) (2026-08-10)
 
 

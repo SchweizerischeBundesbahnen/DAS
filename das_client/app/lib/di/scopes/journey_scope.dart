@@ -6,6 +6,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/chronograph_v
 import 'package:app/pages/journey/journey_screen/header/view_model/short_term_change_view_model.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/suspicious_segment_view_model.dart';
 import 'package:app/pages/journey/journey_screen/journey_table_scroll_controller.dart';
+import 'package:app/pages/journey/journey_screen/reduced_overview/view_model/journey_filter_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/advised_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_process_view_model.dart';
@@ -26,6 +27,7 @@ import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_v
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
+import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -34,8 +36,10 @@ import 'package:logging/logging.dart';
 final _log = Logger('JourneyScope');
 
 class JourneyScope extends DIScope {
+  static final journeyScopeName = 'JourneyScope';
+
   @override
-  String get scopeName => 'JourneyScope';
+  String get scopeName => journeyScopeName;
 
   @override
   Future<void> push() async {
@@ -57,6 +61,7 @@ class JourneyScope extends DIScope {
     getIt.registerShortTermChangeViewModel();
     getIt.registerSuspiciousSegmentViewModel();
     getIt.registerLineSpeedViewModel();
+    getIt.registerMultiLineSpeedViewModel();
     getIt.registerCalculatedSpeedViewModel();
     getIt.registerAdvisedSpeedViewModel();
     getIt.registerChronographViewModel();
@@ -66,6 +71,7 @@ class JourneyScope extends DIScope {
     getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
+    getIt.registerJourneyFilterViewModel();
     getIt.registerServicePointModalViewModel();
 
     await getIt.allReady();
@@ -207,6 +213,15 @@ extension JourneyScopeExtension on GetIt {
     );
   }
 
+  void registerMultiLineSpeedViewModel() {
+    registerSingleton<MultiLineSpeedViewModel>(
+      MultiLineSpeedViewModel(
+        lineSpeedVM: DI.get(),
+        multiBrakeSeriesSelectionVM: DI.get(),
+      ),
+    );
+  }
+
   void registerAdvisedSpeedViewModel() {
     registerSingleton<AdvisedSpeedViewModel>(
       AdvisedSpeedViewModel(
@@ -260,6 +275,7 @@ extension JourneyScopeExtension on GetIt {
         journeySettingsViewModel: DI.get(),
         notificationViewModel: DI.get(),
         launcher: DI.get(),
+        ruFeatureProvider: DI.get(),
         detailModalViewModel: DI.get(),
         connectivityManager: DI.get(),
         checkForUpdates: true,
@@ -308,6 +324,7 @@ extension JourneyScopeExtension on GetIt {
         decisiveGradientVM: DI.get(),
         navigationVM: DI.get(),
         userSettings: DI.get(),
+        acknowledgedModificationRepository: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -336,6 +353,18 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         localRegulationHtmlGenerator: DI.get(),
         settingsVM: DI.get(),
+        sferaRepo: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneyFilterViewModel() {
+    registerSingleton<JourneyFilterViewModel>(
+      JourneyFilterViewModel(
+        journeyViewModel: DI.get(),
+        acknowledgedModificationRepository: DI.get(),
+        journeySettingsViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

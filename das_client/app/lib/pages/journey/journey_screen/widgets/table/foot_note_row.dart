@@ -17,7 +17,6 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.isExpanded,
     required this.addTopMargin,
     super.config,
-    super.identifier,
     this.leftPadding = 0,
   }) : super(
          stickyLevel: data.stickyLevel,

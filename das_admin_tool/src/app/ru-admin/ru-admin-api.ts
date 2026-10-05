@@ -3,6 +3,7 @@ import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '~shared/api-response';
 import { Auditable } from '~shared/audit/auditable';
+import { DateString } from '~shared/date-util';
 import { environment } from '~src/environments/environment';
 
 export interface RuIndicationLanguageContent {
@@ -29,8 +30,8 @@ export type DayOfWeek =
   'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
 
 export interface RuIndicationPeriod {
-  validFrom: Date | string;
-  validTo: Date | string;
+  validFrom: DateString;
+  validTo: DateString;
   weekdays?: DayOfWeek[];
 }
 
@@ -85,7 +86,7 @@ export const SCHEDULE_TYPE_LABELS = (): { value: ScheduleType; label: string }[]
 export interface SpecialHoliday extends Auditable {
   id?: number;
   name: string;
-  date: Date;
+  date: DateString;
   scheduleType: ScheduleType;
   companies: string[];
 }
@@ -111,7 +112,8 @@ export type RuFeatureKey =
   | 'WARNAPP'
   | 'CUSTOMER_ORIENTED_DEPARTURE_PROCESS'
   | 'CHECKLIST_DEPARTURE_PROCESS'
-  | 'DISPLAY_PLANNED_TIME_DEVIATION';
+  | 'DISPLAY_PLANNED_TIME_DEVIATION'
+  | 'DISPLAY_BRAKE_LOAD_SLIP_BRAKE_DETAILS';
 
 export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[] => [
   {
@@ -129,6 +131,10 @@ export const RU_FEATURE_KEY_LABELS = (): { value: RuFeatureKey; label: string }[
   {
     value: 'DISPLAY_PLANNED_TIME_DEVIATION',
     label: $localize`:@@ru_feature_toggles_key_label_display_planned_time_deviation:Planzeitabweichung`,
+  },
+  {
+    value: 'DISPLAY_BRAKE_LOAD_SLIP_BRAKE_DETAILS',
+    label: $localize`:@@ru_feature_toggles_key_label_display_brake_load_slip_brake_details:Bremsdetails`,
   },
 ];
 

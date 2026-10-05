@@ -17,6 +17,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0400.JPRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.MessageHeader;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.OTNIDComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.Recipient;
+import ch.sbb.sferamock.adapters.sfera.model.v0400.RelatedTrainInformationRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.ReportedDASDrivingMode;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.SFERAB2GRequestMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0400.SPRequest;
@@ -69,6 +70,14 @@ class SferaIntegrationTestData {
         return createRequestMessage(spRequest, messageHeader);
     }
 
+    static SFERAB2GRequestMessage createSferaRtiRequest(UUID messageId, CompanyCode ruCompanyCode, CompanyCode imCompanyCode,
+        String operationalNumberRequest, LocalDate startDate) {
+        val messageHeader = createMessageHeader(ruCompanyCode, imCompanyCode, messageId);
+        val trainIdentification = createTrainIdentification(operationalNumberRequest, ruCompanyCode, startDate);
+        val rtiRequest = createRtiRequest(trainIdentification);
+        return createRequestMessage(rtiRequest, messageHeader);
+    }
+
     private static SFERAB2GRequestMessage createHandshakeRequest(UUID messageId, CompanyCode ruCompanyCode, CompanyCode imCompanyCod, String version,
         DASModesComplexType... modes) {
         val messageHeader = createMessageHeader(ruCompanyCode, imCompanyCod, messageId);
@@ -94,6 +103,12 @@ class SferaIntegrationTestData {
         result.setSPVersionMinor(sPVersionMinor);
         result.setSPID(sPID);
         result.setSPZone(spZone);
+        return result;
+    }
+
+    private static RelatedTrainInformationRequest createRtiRequest(TrainIdentificationComplexType trainIdentification) {
+        val result = new RelatedTrainInformationRequest();
+        result.setTrainIdentification(trainIdentification);
         return result;
     }
 
@@ -151,6 +166,15 @@ class SferaIntegrationTestData {
         result.setMessageHeader(header);
         val payload = new B2GRequest();
         payload.getSPRequest().add(spRequest);
+        result.setB2GRequest(payload);
+        return result;
+    }
+
+    private static SFERAB2GRequestMessage createRequestMessage(RelatedTrainInformationRequest relatedTrainInformationRequest, MessageHeader header) {
+        val result = new SFERAB2GRequestMessage();
+        result.setMessageHeader(header);
+        val payload = new B2GRequest();
+        payload.getRelatedTrainInformationRequest().add(relatedTrainInformationRequest);
         result.setB2GRequest(payload);
         return result;
     }

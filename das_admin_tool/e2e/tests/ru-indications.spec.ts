@@ -1,7 +1,6 @@
 import test, { expect, Locator, Page } from '@playwright/test';
 import {
   clickAddButton,
-  deleteEntryIfExists,
   deleteEntryViaDialog,
   deleteEntryViaSelection,
   findRow,
@@ -9,14 +8,15 @@ import {
   openEditEntryDialog,
   saveEntryDialog,
   selectAnyOption,
+  uniqueSuffix,
 } from '../utils/admin-test-helpers';
 
 test.describe('ru indications test', () => {
-  const TEST_TITLE_DE = 'E2E Hinweis DE 9999';
   const TEST_TEXT_DE = 'E2E Hinweis Text DE';
-  const TEST_TITLE_DE_UPDATED = 'E2E Hinweis DE 9999 Aktualisiert';
   const TEST_VALID_DATE = '01.01.2040';
 
+  let titleDe: string;
+  let titleDeUpdated: string;
   let row: Locator;
   let updatedRow: Locator;
 
@@ -59,29 +59,29 @@ test.describe('ru indications test', () => {
   }
 
   test.beforeEach(async ({ page }) => {
+    const suffix = uniqueSuffix();
+    titleDe = `E2E Hinweis DE ${suffix}`;
+    titleDeUpdated = `E2E Hinweis DE ${suffix} Aktualisiert`;
+
     await page.goto('ru-admin/ruindications');
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Hinweise');
 
-    row = findRow(page, TEST_TITLE_DE);
-    updatedRow = findRow(page, TEST_TITLE_DE_UPDATED);
-
-    // clean up leftover from previous run if present
-    await deleteEntryIfExists(page, row);
-    await deleteEntryIfExists(page, updatedRow);
+    row = findRow(page, titleDe);
+    updatedRow = findRow(page, titleDeUpdated);
   });
 
   test('ruIndication_whenCreatedEditedAndDeleted_thenSucceeds|mAxDTAXFUf6YgD74EcqA|tests:144', async ({
     page,
   }) => {
     // create
-    await createRUIndication(page, TEST_TITLE_DE, TEST_TEXT_DE, TEST_VALID_DATE);
+    await createRUIndication(page, titleDe, TEST_TEXT_DE, TEST_VALID_DATE);
 
     // edit
     const dialog = await openEditEntryDialog(page, row);
     const deTitleInput = dialog.getByRole('textbox', { name: 'Titel' });
-    await expect(deTitleInput).toHaveValue(TEST_TITLE_DE);
-    await deTitleInput.fill(TEST_TITLE_DE_UPDATED);
-    await expect(deTitleInput).toHaveValue(TEST_TITLE_DE_UPDATED);
+    await expect(deTitleInput).toHaveValue(titleDe);
+    await deTitleInput.fill(titleDeUpdated);
+    await expect(deTitleInput).toHaveValue(titleDeUpdated);
 
     // skip other steps in edit mode
     await dialog.getByText('Weiter', { exact: true }).click({ clickCount: 2 });
@@ -92,9 +92,7 @@ test.describe('ru indications test', () => {
       dialogTitle: 'Hinweis bearbeiten',
     });
 
-    await expect(
-      updatedRow.getByRole('cell', { name: TEST_TITLE_DE_UPDATED, exact: true }),
-    ).toBeVisible();
+    await expect(updatedRow.getByRole('cell', { name: titleDeUpdated, exact: true })).toBeVisible();
 
     // delete
     await deleteEntryViaDialog(page, updatedRow);
@@ -104,7 +102,7 @@ test.describe('ru indications test', () => {
     page,
   }) => {
     // create one entry to select and bulk-delete
-    await createRUIndication(page, TEST_TITLE_DE, TEST_TEXT_DE, TEST_VALID_DATE);
+    await createRUIndication(page, titleDe, TEST_TEXT_DE, TEST_VALID_DATE);
 
     // delete
     await deleteEntryViaSelection(page, row);

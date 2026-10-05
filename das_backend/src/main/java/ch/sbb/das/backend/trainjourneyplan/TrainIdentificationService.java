@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +30,13 @@ public class TrainIdentificationService {
     private final TrainIdentificationRepository trainIdentificationRepository;
     private final CompanyService companyService;
 
+    /**
+     * A train journey is only available at TMS-VAD within this many hours around departure (shared with the preloader via {@code trainjourneypreloader.hours-before-departure}). Candidates whose
+     * departure is outside the {@code now +/- hoursBeforeDeparture} window cannot be called and are excluded from the search-without-RU results.
+     */
+    @Value("${trainjourneypreloader.hours-before-departure}")
+    private int hoursBeforeDeparture;
+
     public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
         List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before);
         return trainRunEntities.stream()
@@ -39,27 +47,18 @@ public class TrainIdentificationService {
             .toList();
     }
 
-    public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(List<LocalDate> startDates, String operationalTrainNumber) {
+    public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(Set<LocalDate> startDates, String operationalTrainNumber) {
         validateStartDates(startDates);
-        Set<LocalDate> requestedDates = Set.copyOf(startDates);
-        OffsetDateTime from = startDates.stream().min(Comparator.naturalOrder())
+        OffsetDateTime earliestStartDateTime = startDates.stream().min(Comparator.naturalOrder())
             .orElseThrow()
             .atStartOfDay(DateTimeUtil.SWISS_ZONE)
             .toOffsetDateTime();
-        OffsetDateTime to = startDates.stream().max(Comparator.naturalOrder())
-            .orElseThrow()
-            .plusDays(1)
-            .atStartOfDay(DateTimeUtil.SWISS_ZONE)
-            .toOffsetDateTime();
+        OffsetDateTime latestStartDateTime = DateTimeUtil.now().plusHours(hoursBeforeDeparture);
 
-        // Query by a plain start_date_time range instead of wrapping the column in a
-        // date-cast/IN clause: a raw range comparison is sargable, so database can use the
-        // index for a single index range scan instead of a full table scan.
         List<TrainIdentificationEntity> entities = trainIdentificationRepository
-            .findAllByStartDateTimeRangeAndOperationalTrainNumber(from, to, operationalTrainNumber).stream()
-            // the range query above may cover dates outside the requested set if the requested dates have gaps;
-            // narrow the (already small) result set down to the exact requested dates
-            .filter(entity -> requestedDates.contains(entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate()))
+            .findAllByStartDateTimeRangeAndOperationalTrainNumber(earliestStartDateTime, latestStartDateTime, operationalTrainNumber).stream()
+            // narrow to the exact requested dates in case the request had gaps
+            .filter(entity -> startDates.contains(startDateOf(entity)))
             .toList();
 
         Map<CompanyCode, Company> companiesByCode = companyService.getAllCompanies().stream()
@@ -69,13 +68,17 @@ public class TrainIdentificationService {
             .flatMap(entity -> readCompanyCodes(entity.getCompanies()).stream()
                 .map(companiesByCode::get)
                 .filter(Objects::nonNull) // defensive: guards against timing mismatch between readCompanyCodes and getAllCompanies
-                .map(company -> new CompanyMatch(company, entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate())))
+                .map(company -> new CompanyMatch(company, startDateOf(entity))))
             .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
     }
 
-    private void validateStartDates(List<LocalDate> startDates) {
+    private static LocalDate startDateOf(TrainIdentificationEntity entity) {
+        return entity.getStartDateTime().atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
+    }
+
+    private void validateStartDates(Set<LocalDate> startDates) {
         LocalDate today = DateTimeUtil.today();
         LocalDate earliest = today.minusDays(1);
         LocalDate latest = today.plusDays(1);

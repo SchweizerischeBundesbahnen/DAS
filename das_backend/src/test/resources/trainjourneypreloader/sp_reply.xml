@@ -11,7 +11,19 @@
             <SP_Zone>
                 <IM_ID>0011</IM_ID>
             </SP_Zone>
-
+            <SP_Areas>
+                <TAF_TAP_Location startEndQualifier="WholeSP" TAF_TAP_location_abbreviation="OL">
+                    <TAF_TAP_LocationIdent>
+                        <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                        <teltsi_LocationPrimaryCode>100</teltsi_LocationPrimaryCode>
+                    </TAF_TAP_LocationIdent>
+                    <TAF_TAP_Location_NSP>
+                        <teltsi_Company>0085</teltsi_Company>
+                        <NSP_GroupName>localRegulations</NSP_GroupName>
+                        <NetworkSpecificParameter name="languageNeutralTree" value="LR_1;LR_2"/>
+                    </TAF_TAP_Location_NSP>
+                </TAF_TAP_Location>
+            </SP_Areas>
         </SegmentProfile>
     </G2B_ReplyPayload>
 

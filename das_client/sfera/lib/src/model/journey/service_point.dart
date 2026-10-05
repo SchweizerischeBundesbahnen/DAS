@@ -24,10 +24,9 @@ class const ServicePoint({
   final StationSign? stationSign2,
   final String? trackGroup,
   final List<StationProperty> properties = const [],
-  final List<LocalRegulationSection> localRegulationSections = const [],
+  final List<String> localRegulationSegmentIds = const [],
   final DepartureAuthorization? departureAuthorization,
-  super.lastModificationDate,
-  super.lastModificationType,
+  super.modification,
 }) extends JourneyPoint {
   this : super(dataType: .servicePoint);
 
@@ -130,7 +129,7 @@ class const ServicePoint({
         'trackGroup: $trackGroup, '
         'departureAuthorization: $departureAuthorization, '
         'properties: $properties, '
-        'localRegulationSections: $localRegulationSections'
+        'localRegulationSegmentIds: $localRegulationSegmentIds'
         '}';
   }
 }

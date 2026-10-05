@@ -30,6 +30,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerRuIndicationsRepository();
     getIt.registerTrainIdentificationRepository();
     getIt.registerTimedRouteProvider();
+    getIt.registerAcknowledgedModificationRepository();
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
@@ -39,6 +40,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerJourneySettingsViewModel();
     getIt.registerViewModeViewModel();
     getIt.registerWarnAppViewModel();
+    getIt.registerMultiBrakeSeriesSelectionViewModel();
     getIt.registerLocalRegulationHtmlGenerator();
 
     await getIt.allReady();

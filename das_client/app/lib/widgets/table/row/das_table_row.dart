@@ -42,6 +42,7 @@ class DASTableCellRow extends DASTableRow {
     required super.rowIndex,
     super.decoration,
     this.onTap,
+    this.onDoubleTap,
     this.onStartToEndDragReached,
     this.draggableBackgroundBuilder,
     super.stickyLevel,
@@ -52,6 +53,8 @@ class DASTableCellRow extends DASTableRow {
   final Map<int, DASTableCell> cells;
 
   final VoidCallback? onTap;
+
+  final VoidCallback? onDoubleTap;
 
   /// The callback that is invoked if the user drags the row over a certain extent.
   final VoidCallback? onStartToEndDragReached;

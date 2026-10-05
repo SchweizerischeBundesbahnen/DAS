@@ -2,6 +2,8 @@ import 'package:auth/component.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
+import 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
+import 'package:sfera/src/data/repository/acknowledged_modification_repository_impl.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -11,6 +13,7 @@ import 'package:sfera/src/provider/sfera_auth_provider.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
+export 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
 export 'package:sfera/src/data/repository/sfera_remote_repo_state.dart';
 export 'package:sfera/src/data/repository/sfera_repository.dart';
@@ -71,6 +74,7 @@ export 'package:sfera/src/model/journey/unsupervised_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
+export 'package:sfera/src/model/modification.dart';
 export 'package:sfera/src/model/sfera_db_metrics.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
@@ -99,6 +103,11 @@ class SferaComponent._() {
 
   static SferaLocalRepo createSferaLocalRepo() {
     final localDatabaseService = DriftSferaLocalDatabaseService.instance;
-    return SferaLocalRepoImpl(localService: localDatabaseService);
+    return SferaLocalRepoImpl(databaseService: localDatabaseService);
+  }
+
+  static AcknowledgedModificationRepository createAcknowledgedModificationRepository() {
+    final localDatabaseService = DriftSferaLocalDatabaseService.instance;
+    return AcknowledgedModificationRepositoryImpl(databaseService: localDatabaseService);
   }
 }

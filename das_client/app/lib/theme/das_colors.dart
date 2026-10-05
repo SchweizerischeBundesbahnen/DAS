@@ -13,5 +13,6 @@ class const DASColors._() {
   static const Color nextStopBackgroundDark = SBBColors.nightDark;
   static const Color manualPositionSetBackgroundBright = SBBColors.milk;
   static const Color manualPositionSetBackgroundDark = SBBColors.midnight;
-  static const Color protectionSectionBackground = SBBColors.peach;
+  static const Color protectionSectionBackground = SBBColors.lemon;
+  static const Color modificationToastColor = SBBColors.turquoise;
 }
