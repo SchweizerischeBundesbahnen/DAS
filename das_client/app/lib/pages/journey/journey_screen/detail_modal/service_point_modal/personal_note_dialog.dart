@@ -155,8 +155,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
       );
 
       _closeDialog();
-    } catch (e) {
-      _log.severe('Error saving personal note', e);
+    } catch (_) {
       _showErrorMessage();
     }
   }
@@ -166,8 +165,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
     try {
       await widget.viewModel.deleteNote(widget.note!);
       _closeDialog();
-    } catch (e) {
-      _log.severe('Error deleting personal note', e);
+    } catch (_) {
       _showErrorMessage();
     }
   }

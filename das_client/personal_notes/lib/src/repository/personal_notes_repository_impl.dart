@@ -69,7 +69,10 @@ class PersonalNotesRepositoryImpl({
     }
 
     final response = await _fetchRemoteNotes();
-    if (response == null) return;
+    if (response == null) {
+      _scheduleRetry();
+      return;
+    }
 
     final userId = await _userIdProvider();
     final remoteNotes = response.body.map((it) => it.toDomain()).toList(growable: false);
@@ -136,7 +139,6 @@ class PersonalNotesRepositoryImpl({
       return await _apiService.personalNotes();
     } catch (e) {
       _log.severe('Failed to fetch personal notes from remote. Schedule retry...', e);
-      _scheduleRetry();
       return null;
     }
   }
@@ -157,7 +159,6 @@ class PersonalNotesRepositoryImpl({
       return true;
     } catch (e) {
       _log.severe('Failed to delete note for $locationCode on remote', e);
-      _scheduleRetry();
       return false;
     }
   }
@@ -169,7 +170,6 @@ class PersonalNotesRepositoryImpl({
       return true;
     } catch (e) {
       _log.severe('Failed to save note for $note to remote', e);
-      _scheduleRetry();
       return false;
     }
   }
