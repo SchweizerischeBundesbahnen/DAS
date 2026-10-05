@@ -247,3 +247,19 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
 Finder findChevronPositionAtRowWithText(String text) {
   return find.descendant(of: findDASTableRowByText(text), matching: find.byKey(RouteChevron.chevronKey));
 }
+
+void ignoreOverflowErrors(
+  FlutterErrorDetails details, {
+  bool forceReport = false,
+}) {
+  final exception = details.exception;
+  final isOverflowError =
+      exception is FlutterError &&
+      exception.diagnostics.any((e) => e.value.toString().contains('A RenderFlex overflowed by'));
+
+  if (isOverflowError) {
+    debugPrint('Ignored pixel overflow error');
+  } else {
+    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
+  }
+}
