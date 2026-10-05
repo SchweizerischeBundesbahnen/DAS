@@ -61,9 +61,7 @@ class SignalRow extends CellRowBuilder<Signal> {
           badge: const ModificationIcon(),
           child: Text(
             signalFunctions
-                .map(
-                  (function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context),
-                )
+                .map((function) => isModalOpen ? function.localizedNameShort(context) : function.localizedName(context))
                 .join('/'),
             overflow: .ellipsis,
           ),
