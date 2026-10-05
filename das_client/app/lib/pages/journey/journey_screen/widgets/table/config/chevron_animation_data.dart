@@ -7,19 +7,12 @@ import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.
-class ChevronAnimationData {
-  const ChevronAnimationData({
-    required this.startOffset,
-    required this.endOffset,
-    required this.currentPosition,
-    this.lastPosition,
-  });
-
-  final double startOffset;
-  final double endOffset;
-  final JourneyPoint currentPosition;
-  final JourneyPoint? lastPosition;
-
+class const ChevronAnimationData({
+  required final double startOffset,
+  required final double endOffset,
+  required final JourneyPoint currentPosition,
+  final JourneyPoint? lastPosition,
+}) {
   static ChevronAnimationData? from({
     required List<JourneyPoint> journeyPoints,
     required ChevronPositionModel chevronPositionModel,
