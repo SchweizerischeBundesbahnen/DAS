@@ -28,7 +28,6 @@ class CollapsibleRowsViewModel({
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
-  /// Hash codes of line foot notes repeating an earlier one of the journey. They are collapsed by default.
   Set<int> _repeatedLineFootNotes = {};
 
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
