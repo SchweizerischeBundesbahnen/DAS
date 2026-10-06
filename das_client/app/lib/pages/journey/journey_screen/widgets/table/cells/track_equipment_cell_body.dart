@@ -191,11 +191,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
   Color _lineColor(BuildContext context) => lineColor ?? ThemeUtil.getIconColor(context);
 }
 
-class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
-  const _ConventionalExtendedSpeedBorderPainter({required this.color});
-
-  final Color color;
-
+class const _ConventionalExtendedSpeedBorderPainter({required final Color color}) extends CustomPainter {
   static const double height = 3.0;
   static const double width = 10.0;
 
@@ -213,22 +209,15 @@ class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
   bool shouldRepaint(_) => true;
 }
 
-class _CumulativeDashedLinePainter extends CustomPainter {
-  _CumulativeDashedLinePainter({
-    required this.cumulativeHeight,
-    required this.color,
-    this.dashHeights = const [4.0],
-    this.dashSpace = 4.0,
-    this.width = 3.0,
-    this.borderWidth,
-  }) : assert(dashHeights.isNotEmpty);
-
-  final double cumulativeHeight;
-  final List<double> dashHeights;
-  final double dashSpace;
-  final double width;
-  final double? borderWidth;
-  final Color color;
+class _CumulativeDashedLinePainter({
+  required final double cumulativeHeight,
+  required final Color color,
+  final List<double> dashHeights = const [4.0],
+  final double dashSpace = 4.0,
+  final double width = 3.0,
+  final double? borderWidth,
+}) extends CustomPainter {
+  this : assert(dashHeights.isNotEmpty);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -279,14 +268,10 @@ class _CumulativeDashedLinePainter extends CustomPainter {
   bool shouldRepaint(_) => true;
 }
 
-class _SingleTrackNoBlockPainter extends CustomPainter {
-  _SingleTrackNoBlockPainter({
-    required this.cumulativeHeight,
-    required this.color,
-  });
-
-  final double cumulativeHeight;
-  final Color color;
+class _SingleTrackNoBlockPainter({
+  required final double cumulativeHeight,
+  required final Color color,
+}) extends CustomPainter {
   static const double _strokeWidth = 3.0;
   static const double _dashHeight = 6.0;
   static const double _crossSize = 9.0;
