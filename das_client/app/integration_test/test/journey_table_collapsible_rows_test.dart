@@ -282,7 +282,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|tests:2219', (
+  testWidgets('collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|156zLPEeDK5CzaN0BPcM|tests:2219', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
@@ -310,7 +310,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|tests:2219', (
+  testWidgets('collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|n1p736TbYkrBbZ4IoM2X|tests:2219', (
     tester,
   ) async {
     await IntegrationTestApp.start(tester);
