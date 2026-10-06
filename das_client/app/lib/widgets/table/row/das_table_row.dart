@@ -1,5 +1,6 @@
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,6 @@ sealed class DASTableRow {
     required this.rowIndex,
     this.stickyLevel = .none,
     this.identifier,
-    this.decoration,
   });
 
   final GlobalKey key;
@@ -23,13 +23,6 @@ sealed class DASTableRow {
   final String? identifier;
 
   final int rowIndex;
-
-  /// The decoration for the specific row.
-  ///
-  /// Decorations from this will try to merge with column or Table wide decorations or override them.
-  ///
-  /// This will be overridden or merged where possible by specific cell decorations.
-  final DASTableRowDecoration? decoration;
 }
 
 /// Represents a row in the [DASTable] containing cells.
@@ -40,7 +33,8 @@ class DASTableCellRow extends DASTableRow {
     required super.height,
     required super.key,
     required super.rowIndex,
-    super.decoration,
+    this.style,
+    this.decoration,
     this.onTap,
     this.onDoubleTap,
     this.onStartToEndDragReached,
@@ -51,6 +45,18 @@ class DASTableCellRow extends DASTableRow {
   });
 
   final Map<int, DASTableCell> cells;
+
+  /// The style of the cells of this row.
+  ///
+  /// Overrides the styles of the columns and theme and is overridden by cell styles.
+  final DASTableCellStyle? style;
+
+  /// The decoration for the specific row.
+  ///
+  /// Decorations from this will try to merge with column or Table wide decorations or override them.
+  ///
+  /// This will be overridden or merged where possible by specific cell decorations.
+  final DASTableRowDecoration? decoration;
 
   final VoidCallback? onTap;
 
@@ -76,7 +82,6 @@ class DASTableWidgetRow extends DASTableRow {
     required super.rowIndex,
     super.stickyLevel,
     super.identifier,
-    super.decoration,
   });
 
   final Widget widget;

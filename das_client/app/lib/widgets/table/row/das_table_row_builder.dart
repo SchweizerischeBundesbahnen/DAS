@@ -1,6 +1,5 @@
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
-import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/widgets.dart';
 
 /// Interface for a class that builds [DASTableRow]
@@ -20,7 +19,6 @@ abstract class DASTableRowBuilder<T> {
     required this.height,
     required this.data,
     required this.rowIndex,
-    this.decoration,
     this.stickyLevel = .none,
     GlobalKey? key,
   }) : key = key ?? _getRowKey(data.hashCode ^ rowIndex ^ height.hashCode);
@@ -31,6 +29,5 @@ abstract class DASTableRowBuilder<T> {
   final StickyLevel stickyLevel;
   final T data;
   final int rowIndex;
-  final DASTableRowDecoration? decoration;
   final GlobalKey key;
 }

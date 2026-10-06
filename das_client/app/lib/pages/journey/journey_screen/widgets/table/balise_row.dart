@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -25,10 +26,10 @@ class BaliseRow extends CellRowBuilder<Balise> {
   DASTableCell kilometreCell(BuildContext context) {
     if (!isGrouped) return super.kilometreCell(context);
 
-    if (data.kilometre.isEmpty) return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+    if (data.kilometre.isEmpty) return DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
+      style: DASTableCellStyle(backgroundColor: specialCellColor),
       child: Padding(
         padding: const .only(left: 8.0),
         child: OverflowBox(

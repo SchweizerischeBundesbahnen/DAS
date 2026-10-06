@@ -21,6 +21,7 @@ import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
@@ -44,7 +45,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
-    super.decoration,
+    this.style,
+    this.decoration,
     this.config = const JourneyConfig(),
     this.defaultAlignment = .bottomCenter,
     this.onTap,
@@ -54,6 +56,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     this.isGrouped = false,
   });
 
+  final DASTableCellStyle? style;
+  final DASTableRowDecoration? decoration;
   final Alignment defaultAlignment;
   final Metadata metadata;
   final JourneyPositionModel journeyPosition;
@@ -70,6 +74,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     return DASTableCellRow(
       key: key,
       height: height,
+      style: style,
       decoration: _decorationWithOptionalShortTermChangeBorders(context),
       onTap: onTap,
       onDoubleTap: onDoubleTap,
@@ -101,18 +106,16 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
       return DASTableCell.empty(
-        decoration: DASTableCellDecoration(
-          color: specialCellColor,
-        ),
+        style: DASTableCellStyle(backgroundColor: specialCellColor),
       );
     }
 
     final hasShortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
     final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
-    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
+    final defaultTextStyle = DASTableTheme.of(context)?.data.dataCellStyle?.textStyle;
     final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
+      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
       child: Column(
         mainAxisAlignment: .end,
@@ -131,7 +134,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
+      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -162,11 +165,11 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      return DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
     }
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
+      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
@@ -246,7 +249,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell timeCell(BuildContext context) =>
-      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
 
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
@@ -288,10 +291,10 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
 
   DASTableCell gradientUphillCell(BuildContext context) =>
-      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
 
   DASTableCell gradientDownhillCell(BuildContext context) =>
-      DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
 
   bool get isInEtcsLevel2Segment => metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
 

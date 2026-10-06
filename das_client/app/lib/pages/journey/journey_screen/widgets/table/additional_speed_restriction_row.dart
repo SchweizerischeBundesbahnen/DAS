@@ -4,7 +4,7 @@ import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/row/das_table_row_decoration.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfera/component.dart';
@@ -21,7 +21,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
     super.key,
     super.onTap,
     super.config,
-  }) : super(decoration: DASTableRowDecoration(color: DASColors.additionalSpeedRestriction));
+  }) : super(style: DASTableCellStyle(backgroundColor: DASColors.additionalSpeedRestriction));
 
   @override
   DASTableCell informationCell(BuildContext context) {
