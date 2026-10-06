@@ -313,7 +313,7 @@ class SferaRepoImpl({
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
     _tasks.remove(task);
-    _log.info('Task $task completed');
+    _log.fine('Task $task completed');
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
