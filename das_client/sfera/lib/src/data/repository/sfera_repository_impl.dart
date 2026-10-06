@@ -264,7 +264,7 @@ class SferaRepoImpl({
   void _handleMqttMessage(String xmlMessage) async {
     final message = SferaReplyParser.parse<SferaXmlElementDto>(xmlMessage);
     if (!message.validate()) {
-      _log.warning('Validation failed for MQTT response $xmlMessage');
+      _log.warning('Validation failed for MQTT response ${message.toLogSummary(xmlMessage.length)}');
       return;
     }
 
@@ -282,7 +282,7 @@ class SferaRepoImpl({
     }
 
     if (!handled) {
-      _log.warning('Could not handle Sfera reply message $xmlMessage');
+      _log.warning('Could not handle Sfera reply message ${message.toLogSummary(xmlMessage.length)}');
     }
   }
 
@@ -293,7 +293,7 @@ class SferaRepoImpl({
     }
 
     if (!handled) {
-      _log.warning('Could not handle Sfera event message $xmlMessage');
+      _log.warning('Could not handle Sfera event message ${message.toLogSummary(xmlMessage.length)}');
     }
   }
 
@@ -619,4 +619,18 @@ enum SferaRemoteRepositoryInternalState {
     .connecting || .handshaking || .loadingJourney || .loadingAdditionalData => .connecting,
     .connected => .connected,
   };
+}
+
+extension _SferaMessageLogX on SferaXmlElementDto {
+  /// Compact description for logs, as the full XML message can be several hundred kB.
+  String toLogSummary(int length) {
+    final header = children.whereType<MessageHeaderDto>().firstOrNull;
+    final content = children
+        .whereNot((child) => child is MessageHeaderDto)
+        .map((child) => '${child.type}${child.children.map((it) => it.type).toSet()}');
+    return '$type{message_ID: ${header?.attributes['message_ID']}, '
+        'correlation_ID: ${header?.attributes['correlation_ID']}, '
+        'content: $content, '
+        'length: $length}';
+  }
 }
