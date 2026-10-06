@@ -61,6 +61,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           DASColors.nextStopBackgroundDark,
         ),
         foregroundColor: SBBColors.white,
+        secondaryForegroundColor: SBBColors.white,
       );
     }
     return DASTableCellStyle(

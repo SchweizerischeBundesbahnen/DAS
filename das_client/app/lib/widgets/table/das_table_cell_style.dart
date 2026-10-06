@@ -21,6 +21,7 @@ class DASTableCellStyle {
   const DASTableCellStyle({
     this.backgroundColor,
     this.foregroundColor,
+    this.secondaryForegroundColor,
     this.textStyle,
   });
 
@@ -29,6 +30,9 @@ class DASTableCellStyle {
 
   /// The color of the content of the cell, e.g. text, icons and lines.
   final Color? foregroundColor;
+
+  /// The muted color of secondary content of the cell, e.g. supplementary icons.
+  final Color? secondaryForegroundColor;
 
   /// The text style of the cell. Will be overridden if Text in cells provide own style.
   final TextStyle? textStyle;
@@ -51,6 +55,7 @@ class DASTableCellStyle {
     return DASTableCellStyle(
       backgroundColor: other.backgroundColor ?? backgroundColor,
       foregroundColor: foreground,
+      secondaryForegroundColor: other.secondaryForegroundColor ?? secondaryForegroundColor,
       textStyle: mergedTextStyle,
     );
   }
@@ -58,11 +63,13 @@ class DASTableCellStyle {
   DASTableCellStyle copyWith({
     Color? backgroundColor,
     Color? foregroundColor,
+    Color? secondaryForegroundColor,
     TextStyle? textStyle,
   }) {
     return DASTableCellStyle(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
+      secondaryForegroundColor: secondaryForegroundColor ?? this.secondaryForegroundColor,
       textStyle: textStyle ?? this.textStyle,
     );
   }
@@ -72,6 +79,7 @@ class DASTableCellStyle {
     return DASTableCellStyle(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
+      secondaryForegroundColor: Color.lerp(a?.secondaryForegroundColor, b?.secondaryForegroundColor, t),
       textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
     );
   }
@@ -90,7 +98,7 @@ class DASTableCellStyle {
   }
 
   @override
-  int get hashCode => Object.hash(backgroundColor, foregroundColor, textStyle);
+  int get hashCode => Object.hash(backgroundColor, foregroundColor, secondaryForegroundColor, textStyle);
 
   @override
   bool operator ==(Object other) {
@@ -99,6 +107,7 @@ class DASTableCellStyle {
     return other is DASTableCellStyle &&
         other.backgroundColor == backgroundColor &&
         other.foregroundColor == foregroundColor &&
+        other.secondaryForegroundColor == secondaryForegroundColor &&
         other.textStyle == textStyle;
   }
 }

@@ -230,6 +230,7 @@ class _DASTableState extends State<DASTable> {
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
       dataCellStyle: DASTableCellStyle(
         foregroundColor: isDarkTheme ? SBBColors.white : SBBColors.black,
+        secondaryForegroundColor: ThemeUtil.getIconSecondaryColor(context),
         textStyle: sbbTextStyle.romanStyle.large,
       ),
       tableBorder: TableBorder(

@@ -69,6 +69,7 @@ class TimeCellBody extends StatelessWidget {
                 text: departureTime,
                 style: departureStyle.copyWith(
                   decoration: formattedTimes.isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                  decorationColor: DASTableCellStyle.of(context)?.foregroundColor,
                 ),
               ),
             ],
@@ -125,7 +126,7 @@ class TimeCellBody extends StatelessWidget {
         icon,
         key: ServicePointRow.fixedPointRelevanceKey,
         colorFilter: ColorFilter.mode(
-          ThemeUtil.getIconSecondaryColor(context),
+          DASTableCellStyle.of(context)?.secondaryForegroundColor ?? ThemeUtil.getIconSecondaryColor(context),
           BlendMode.srcIn,
         ),
       ),
