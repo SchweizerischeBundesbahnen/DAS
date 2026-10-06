@@ -313,8 +313,6 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
-    _tasks.remove(task);
-    _log.info('Task $task completed');
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -328,6 +326,8 @@ class SferaRepoImpl({
         await _handleRequestRelatedTrainInformationCompleted(data);
     }
 
+    _log.info('Task $task completed');
+    _tasks.remove(task);
     if (_allMandatoryTasksCompleted()) {
       switch (_rxState.value) {
         case .loadingAdditionalData:

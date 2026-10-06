@@ -47,6 +47,8 @@ void main() {
     return File(path).readAsStringSync();
   }
 
+  final rtiResponse = loadFile('test_resources/SFERA_G2B_Reply_RTI_request.xml');
+
   String wrapReplyMessage(String payloadXml) {
     final normalizedPayload = payloadXml.replaceFirst(RegExp(r'<\?xml[^>]*\?>\s*'), '');
     return '''<?xml version="1.0" encoding="UTF-8"?>
@@ -233,7 +235,7 @@ $normalizedPayload
   });
 
   test(
-    'connect_whenJourneyProfileResponseIsReceived_thenStartsLoadingSegmentProfilesAndTrainCharacteristics',
+    'connect_whenJourneyProfileResponseIsReceived_thenStartsLoadingSPsAndTCsAndRTI',
     () async {
       // GIVEN
       when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
@@ -280,10 +282,17 @@ $normalizedPayload
           argThat(contains('<TC_Request')),
         ),
       ).called(1);
+      verify(
+        mockMqttService.publishMessage(
+          any,
+          any,
+          argThat(contains('<RelatedTrainInformationRequest')),
+        ),
+      ).called(1);
     },
   );
 
-  test('connect_whenSegmentProfileAndTrainCharacteristicsTasksFinish_thenLoadsJourney', () async {
+  test('connect_whenSPAndTCAndRTITasksFinish_thenLoadsJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -348,6 +357,7 @@ $normalizedPayload
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
+    mqttSubject.add(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
     await Future.delayed(Duration(milliseconds: 1));
@@ -355,7 +365,7 @@ $normalizedPayload
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
     verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(2);
   });
 
   test('handleEventMessage_whenJourneyUpdateEventIsReceived_thenRefreshesJourney', () async {
@@ -424,6 +434,7 @@ $normalizedPayload
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
+    mqttSubject.add(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -435,7 +446,7 @@ $normalizedPayload
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
     verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(2);
   });
 
   test(
@@ -506,6 +517,7 @@ $normalizedPayload
 
       mqttSubject.add(spResponse);
       mqttSubject.add(tcResponse);
+      mqttSubject.add(rtiResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
@@ -516,8 +528,8 @@ $normalizedPayload
 
       // THEN
       verify(mockMqttService.connect(any, any)).called(1);
-      verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(6);
-      verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(7);
+      verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(5);
+      verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
     },
   );
 
@@ -588,6 +600,7 @@ $normalizedPayload
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
+    mqttSubject.add(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -854,6 +867,7 @@ $normalizedPayload
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
+    mqttSubject.add(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -1147,6 +1161,7 @@ $normalizedPayload
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
+    mqttSubject.add(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
     await Future.delayed(Duration(milliseconds: 1));
