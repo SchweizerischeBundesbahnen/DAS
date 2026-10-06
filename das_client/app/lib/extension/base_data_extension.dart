@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:app/pages/journey/journey_screen/view_model/switchback_annotation.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:collection/collection.dart';
@@ -107,5 +108,23 @@ extension BaseDataX on Iterable<BaseData> {
 
       return !acknowledgedModifications.contains(modification);
     });
+  }
+
+  Iterable<BaseData> addSwitchbackRows(Map<ServicePoint, bool> switchbackStationMap) {
+    if (switchbackStationMap.isEmpty) return this;
+
+    final List<BaseData> resultList = toList();
+
+    for (final it in switchbackStationMap.entries) {
+      final isArrival = it.value;
+      if (!isArrival) {
+        final order = it.key.order;
+        // Place at the end of the last segment
+        final switchbackOrder = order - (order % segmentProfileOrderSize) - 1;
+        resultList.add(SwitchbackAnnotation(order: switchbackOrder));
+      }
+    }
+
+    return resultList;
   }
 }

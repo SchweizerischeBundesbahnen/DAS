@@ -12,6 +12,7 @@ import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+export 'package:sfera/src/data/mapper/mapper_utils.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';

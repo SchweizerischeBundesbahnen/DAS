@@ -23,4 +23,5 @@ enum Datatype {
   suspiciousJourneyPoint,
   ruIndication,
   personalNote,
+  switchback,
 }
