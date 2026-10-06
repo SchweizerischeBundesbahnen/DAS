@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA.xsd"
+                SP_ID="T54_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Renens_VD" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1118</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="REN"/>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="J3" location="200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="J3"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="B814" location="1600"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B814"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="REN" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1118</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Renens VD</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote identifier=&quot;54a0000000000000000000000000000a&quot;&gt;
+						&lt;text&gt;Linienfussnote A: zugelassen nur für &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="4.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="4.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="6.1"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>
