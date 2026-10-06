@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -230,6 +231,25 @@ void main() {
     final validButUnsupportedElement = SferaReplyParser.parse('<KM_Reference kmRef="60"/>');
     expect(validButUnsupportedElement.validate(), isTrue);
     expect(await testee.saveData([validButUnsupportedElement]), isFalse);
+  });
+
+  test('saveData_whenValidAndInvalidDataIsPassed_thenSavesValidAndLogsValidationOncePerElement', () async {
+    final validSp = SferaReplyParser.parse(
+      '<SegmentProfile SP_ID="T35" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="800" SP_Status="Valid">'
+      '</SegmentProfile>',
+    );
+    final invalidSp = SferaReplyParser.parse(
+      '<SegmentProfile SP_ID="T36" SP_VersionMajor="1" SP_VersionMinor="4" SP_Status="Valid"></SegmentProfile>',
+    );
+    final records = <LogRecord>[];
+    final logSubscription = Logger.root.onRecord.listen(records.add);
+
+    expect(await testee.saveData([validSp, invalidSp]), isTrue);
+    await logSubscription.cancel();
+
+    verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
+    expect(records.where((record) => record.loggerName == 'SferaXmlElementDto'), hasLength(1));
+    expect(records.where((record) => record.loggerName == 'SferaLocalRepoImpl'), hasLength(1));
   });
 
   test('saveData_whenJourneyProfileDataIsPassed_thenReturnsTrue', () async {
