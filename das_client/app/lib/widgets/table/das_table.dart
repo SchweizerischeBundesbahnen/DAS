@@ -7,6 +7,7 @@ import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_column.dart';
+import 'package:app/widgets/table/das_table_header_theme.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
@@ -35,6 +36,7 @@ class DASTable extends StatefulWidget {
     this.minBottomMargin = 128.0,
     this.bottomMarginAdjustment = 0,
     this.themeData,
+    this.headerThemeData,
     this.alignToItem = true,
     this.addBottomSpacer = true,
     this.hasStickyRows = true,
@@ -49,6 +51,9 @@ class DASTable extends StatefulWidget {
 
   /// Theme data used to style the table.
   final DASTableThemeData? themeData;
+
+  /// Theme data used to style the header row of the table.
+  final DASTableHeaderThemeData? headerThemeData;
 
   /// Scroll controller for managing scrollable content (rows) within the table.
   final ScrollController scrollController;
@@ -133,22 +138,25 @@ class _DASTableState extends State<DASTable> {
     final tableThemeData = widget.themeData ?? _defaultThemeData(context);
     return DASTableTheme(
       data: tableThemeData,
-      child: Container(
-        decoration: BoxDecoration(
-          color: tableThemeData.backgroundColor,
-          borderRadius: tableThemeData.tableBorder?.borderRadius,
-          border: BorderDirectional(
-            top: tableThemeData.tableBorder?.top ?? BorderSide.none,
-            start: tableThemeData.tableBorder?.left ?? BorderSide.none,
-            end: tableThemeData.tableBorder?.right ?? BorderSide.none,
-            bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+      child: DASTableHeaderTheme(
+        data: widget.headerThemeData ?? _defaultHeaderThemeData(context),
+        child: Container(
+          decoration: BoxDecoration(
+            color: tableThemeData.backgroundColor,
+            borderRadius: tableThemeData.tableBorder?.borderRadius,
+            border: BorderDirectional(
+              top: tableThemeData.tableBorder?.top ?? BorderSide.none,
+              start: tableThemeData.tableBorder?.left ?? BorderSide.none,
+              end: tableThemeData.tableBorder?.right ?? BorderSide.none,
+              bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            _headerRow(),
-            Expanded(child: widget.hasStickyRows ? _stickyHeaderList() : _animatedList()),
-          ],
+          child: Column(
+            children: [
+              _headerRow(),
+              Expanded(child: widget.hasStickyRows ? _stickyHeaderList() : _animatedList()),
+            ],
+          ),
         ),
       ),
     );
@@ -220,12 +228,10 @@ class _DASTableState extends State<DASTable> {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
-      headingTextStyle: sbbTextStyle.lightStyle.small,
       dataCellStyle: DASTableCellStyle(
         foregroundColor: isDarkTheme ? SBBColors.white : SBBColors.black,
         textStyle: sbbTextStyle.romanStyle.large,
       ),
-      headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),
         borderRadius: BorderRadius.only(
@@ -233,6 +239,14 @@ class _DASTableState extends State<DASTable> {
           topRight: Radius.circular(SBBSpacing.medium),
         ),
       ),
+    );
+  }
+
+  DASTableHeaderThemeData _defaultHeaderThemeData(BuildContext context) {
+    final borderColor = ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron);
+    return DASTableHeaderThemeData(
+      textStyle: sbbTextStyle.lightStyle.small,
+      border: Border(bottom: BorderSide(width: 2, color: borderColor)),
     );
   }
 
@@ -246,7 +260,9 @@ class _DASTableState extends State<DASTable> {
   Widget _headerCell(DASTableColumn column) {
     return Builder(
       builder: (context) {
-        final tableThemeData = DASTableTheme.of(context)?.data;
+        final headerThemeData = DASTableHeaderTheme.of(context)?.data;
+        final foregroundColor = headerThemeData?.foregroundColor;
+        final textStyle = DefaultTextStyle.of(context).style.merge(headerThemeData?.textStyle);
         final headerCell = KeyedSubtree(
           key: DASTable.columnHeaderKey,
           child: _TableCellWrapper(
@@ -255,17 +271,20 @@ class _DASTableState extends State<DASTable> {
             child: Container(
               key: column.headerKey,
               decoration: BoxDecoration(
-                border: tableThemeData?.headingRowBorder ?? column.decoration?.border,
-                color: tableThemeData?.headingRowColor,
+                border: headerThemeData?.border ?? column.decoration?.border,
+                color: headerThemeData?.backgroundColor,
               ),
               padding: column.padding,
               child: column.child == null
                   ? SizedBox.shrink()
                   : DefaultTextStyle(
-                      style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
-                      child: column.alignment != null
-                          ? Align(alignment: column.alignment!, child: column.child)
-                          : column.child!,
+                      style: textStyle.copyWith(color: foregroundColor),
+                      child: IconTheme.merge(
+                        data: IconThemeData(color: foregroundColor),
+                        child: column.alignment != null
+                            ? Align(alignment: column.alignment!, child: column.child)
+                            : column.child!,
+                      ),
                     ),
             ),
           ),

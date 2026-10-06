@@ -80,7 +80,10 @@ class DASTableCellStyle {
   Widget apply({required Widget child}) {
     Widget result = child;
     if (foregroundColor != null) {
-      result = IconTheme.merge(data: IconThemeData(color: foregroundColor), child: result);
+      result = IconTheme.merge(
+        data: IconThemeData(color: foregroundColor),
+        child: result,
+      );
     }
     if (textStyle != null) result = DefaultTextStyle.merge(style: textStyle, child: result);
     return _DASTableCellStyleScope(style: this, child: result);
