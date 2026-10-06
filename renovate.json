@@ -47,13 +47,34 @@
       ],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "@angular/**",
+        "@angular-devkit/**",
+        "@schematics/angular"
+      ],
+      "groupName": "angular"
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "@sbb-esta/lyne-**"
+      ],
+      "groupName": "lyne"
     }
   ],
+  "timezone": "Europe/Zurich",
   "schedule": [
-    "before 7am on Thursday"
+    "before 8am"
   ],
   "automergeSchedule": [
-    "before 7am on Thursday"
+    "before 8am"
   ],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
