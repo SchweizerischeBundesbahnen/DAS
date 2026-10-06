@@ -324,13 +324,14 @@ void main() {
       await _moveToServicePoint(tester, 'Pully');
 
       // repetition of line foot note A stays collapsed
-      await _scrollUpToServicePoint(tester, 'Lausanne');
+      await _scrollUpToRowWithText(tester, 'Lausanne');
       await _moveToServicePoint(tester, 'Lausanne');
       _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
 
       // first occurrence of line foot note A is expanded again
-      await _scrollUpToServicePoint(tester, 'Renens VD');
+      await _scrollUpToRowWithText(tester, 'Renens VD');
       await _moveToServicePoint(tester, 'Renens VD');
+      await _scrollUpToRowWithText(tester, 'Renens VD');
       _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
 
       await disconnect(tester);
@@ -338,7 +339,7 @@ void main() {
   );
 }
 
-Future<void> _scrollUpToServicePoint(WidgetTester tester, String servicePoint) async {
+Future<void> _scrollUpToRowWithText(WidgetTester tester, String servicePoint) async {
   final scrollableFinder = find.byType(AnimatedList);
   await tester.dragUntilVisible(findDASTableRowByText(servicePoint), scrollableFinder, const Offset(0, 50));
   await tester.pumpAndSettle();
