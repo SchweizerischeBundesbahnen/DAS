@@ -38,4 +38,7 @@ abstract class SferaTask<T>({final Duration _timeout = const Duration(seconds: 1
     timeoutTimer?.cancel();
     timeoutTimer = null;
   }
+
+  @override
+  String toString() => runtimeType.toString();
 }
