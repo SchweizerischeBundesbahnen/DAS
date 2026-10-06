@@ -25,17 +25,6 @@ void main() {
   late MockSferaLocalDatabaseService sferaLocalService;
   late OtnId otnId;
 
-  String loadFile(String path) => File(path).readAsStringSync();
-
-  ServicePoint buildServicePoint({List<String> localRegulationSegmentIds = const []}) => ServicePoint(
-    name: 'Test SP',
-    abbreviation: 'TSP',
-    locationCode: '8500000',
-    order: 1000,
-    kilometre: const [0.0],
-    localRegulationSegmentIds: localRegulationSegmentIds,
-  );
-
   setUp(() {
     mockSferaRepo = MockSferaRepository();
     when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
@@ -49,8 +38,8 @@ void main() {
     when(sferaLocalService.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
 
     final servicePoints = <ServicePoint>[
-      buildServicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702']),
-      buildServicePoint(localRegulationSegmentIds: ['RL_702', 'RL_703']),
+      _servicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702']),
+      _servicePoint(localRegulationSegmentIds: ['RL_702', 'RL_703']),
     ];
 
     final localRegulationsTask = RequestLocalRegulationsTask(
@@ -90,7 +79,7 @@ void main() {
     );
 
     final servicePoints = <ServicePoint>[
-      buildServicePoint(localRegulationSegmentIds: ['RL_701']),
+      _servicePoint(localRegulationSegmentIds: ['RL_701']),
     ];
 
     var taskCompleted = false;
@@ -117,10 +106,6 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
     when(sferaLocalService.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
 
-    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml'),
-    );
-
     var completedCount = 0;
     final localRegulationsTask = RequestLocalRegulationsTask(
       mqttService: mqttService,
@@ -128,7 +113,7 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
+        _servicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
       ],
     );
 
@@ -140,6 +125,7 @@ void main() {
       (task, error) => fail('Task failed with error $error'),
     );
 
+    final reply = _parseReplyMessage('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml');
     final result = await localRegulationsTask.handleMessage(reply);
 
     expect(result, true);
@@ -157,7 +143,7 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701']),
+        _servicePoint(localRegulationSegmentIds: ['RL_701']),
       ],
     );
 
@@ -166,10 +152,7 @@ void main() {
       (task, error) => fail('Test should not call error'),
     );
 
-    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml'),
-    );
-
+    final reply = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     final result = await localRegulationsTask.handleMessage(reply);
 
     expect(result, false);
@@ -188,7 +171,7 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701']),
+        _servicePoint(localRegulationSegmentIds: ['RL_701']),
       ],
       timeout: const Duration(seconds: 1),
     );
@@ -221,18 +204,14 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
+        _servicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
       ],
       timeout: const Duration(seconds: 1),
     );
 
     await localRegulationsTask.execute(
-      (task, data) {
-        taskCompleted = true;
-      },
-      (task, error) {
-        taskFailed = true;
-      },
+      (task, data) => taskCompleted = true,
+      (task, error) => taskFailed = true,
     );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -245,10 +224,7 @@ void main() {
     expect(taskCompleted, false);
     expect(taskFailed, false);
 
-    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml'),
-    );
-
+    final reply = _parseReplyMessage('test_resources/SFERA_G2B_Reply_SP_reply_0001.xml');
     final result = await localRegulationsTask.handleMessage(reply);
 
     expect(result, false);
@@ -265,7 +241,7 @@ void main() {
       sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       servicePoints: [
-        buildServicePoint(localRegulationSegmentIds: ['RL_701']),
+        _servicePoint(localRegulationSegmentIds: ['RL_701']),
       ],
     );
 
@@ -279,12 +255,21 @@ void main() {
       },
     );
 
-    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      loadFile('test_resources/SFERA_G2B_ReplyMessage_Error.xml'),
-    );
-
+    final reply = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
     final result = await localRegulationsTask.handleMessage(reply);
 
     expect(result, false);
   });
 }
+
+SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
+    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());
+
+ServicePoint _servicePoint({List<String> localRegulationSegmentIds = const []}) => ServicePoint(
+  name: 'Test SP',
+  abbreviation: 'TSP',
+  locationCode: '8500000',
+  order: 1000,
+  kilometre: const [0.0],
+  localRegulationSegmentIds: localRegulationSegmentIds,
+);
