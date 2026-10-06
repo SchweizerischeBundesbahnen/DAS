@@ -203,7 +203,7 @@ void main() {
     });
 
     testWidgets(
-      'automaticAdvancement_whenJourneyOpened_thenRequestsRelatedTrainInformationAndUpdatesPosition|tests:2593',
+      'automaticAdvancement_whenJourneyOpened_thenRequestsRelatedTrainInformationAndUpdatesPosition|GCochosi7eqj4EwcXlEL|tests:2593',
       (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T55');
