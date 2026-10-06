@@ -25,7 +25,6 @@ import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
-import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -48,11 +47,25 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
-  static Color _resolveRowColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
-    if (position.nextStop == data) {
-      return ThemeUtil.getColor(context, DASColors.nextStopBackgroundBright, DASColors.nextStopBackgroundDark);
+  static DASTableCellStyle _resolveRowStyle(
+    BuildContext context,
+    JourneyPositionModel position,
+    ServicePoint data,
+    bool highlightNextStop,
+  ) {
+    if (highlightNextStop && position.nextStop == data) {
+      return DASTableCellStyle(
+        backgroundColor: ThemeUtil.getColor(
+          context,
+          DASColors.nextStopBackgroundBright,
+          DASColors.nextStopBackgroundDark,
+        ),
+        foregroundColor: SBBColors.white,
+      );
     }
-    return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
+    return DASTableCellStyle(
+      backgroundColor: data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context),
+    );
   }
 
   static Color? _resolveChevronAnimationColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
@@ -80,7 +93,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.onDoubleTap,
     Color? rowColor,
   }) : super(
-         style: DASTableCellStyle(backgroundColor: rowColor ?? _resolveRowColor(context, journeyPosition, data)),
+         style: rowColor != null
+             ? DASTableCellStyle(backgroundColor: rowColor)
+             : _resolveRowStyle(context, journeyPosition, data, highlightNextStop),
          decoration: DASTableRowDecoration(
            chevronAnimationColor: _resolveChevronAnimationColor(context, journeyPosition, data),
          ),
@@ -167,7 +182,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     if ((times == null || !times.hasAnyTime) && data.mandatoryStop) {
       return DASTableCell.empty(
-        style: DASTableCellStyle(backgroundColor: specialCellColor),
         onTap: () => viewModel.toggleOperationalTime(),
       );
     }
@@ -180,10 +194,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           viewModel: viewModel,
           showTimesInBrackets: !data.isStop,
           mandatoryStop: data.mandatoryStop,
-          fontColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         ),
         alignment: .bottomLeft,
-        style: DASTableCellStyle(backgroundColor: specialCellColor),
       ),
     );
   }
@@ -193,7 +205,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -205,7 +216,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: calculatedChevronPosition,
-        routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
         shortTermChangeData: routeCellShortTermChangeData,
       ),
     );
@@ -274,17 +284,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+      return DASTableCell.empty();
     }
 
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: const .all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
         position: RouteCellBody.routeCirclePosition + (data.isStop ? RouteCellBody.routeCircleSize * 0.5 : 0.0),
-        lineColor: _isNextStop && specialCellColor == null ? SBBColors.white : null,
       ),
     );
   }
@@ -304,17 +312,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   DASTableCell _gradientCell(BuildContext context, double? value) {
     if (value == null) {
-      return DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+      return DASTableCell.empty();
     }
 
-    final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
-    final defaultTextStyle = DASTableTheme.of(context)?.data.dataCellStyle?.textStyle ?? sbbTextStyle.romanStyle.large;
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
-      child: Text(
-        value.round().toString(),
-        style: defaultTextStyle.copyWith(color: textColor),
-      ),
+      child: Text(value.round().toString()),
       alignment: defaultAlignment,
     );
   }
@@ -351,9 +353,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 Text.rich(
                   TextUtil.parseHtmlTextWithMarkdownLinks(
                     property.text!,
-                    _isNextStop && highlightNextStop
-                        ? sbbTextStyle.romanStyle.medium.copyWith(color: SBBColors.white)
-                        : sbbTextStyle.romanStyle.medium,
+                    sbbTextStyle.romanStyle.medium,
                   ),
                   overflow: .ellipsis,
                 ),
@@ -372,12 +372,14 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   Widget _icon(BuildContext context, String assetName, Key key) {
-    return SvgPicture.asset(
-      assetName,
-      key: key,
-      colorFilter: ColorFilter.mode(
-        _isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context),
-        BlendMode.srcIn,
+    return Builder(
+      builder: (context) => SvgPicture.asset(
+        assetName,
+        key: key,
+        colorFilter: ColorFilter.mode(
+          DASTableCellStyle.of(context)?.foregroundColor ?? ThemeUtil.getIconColor(context),
+          BlendMode.srcIn,
+        ),
       ),
     );
   }
@@ -393,12 +395,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   bool get _isNextStop => journeyPosition.nextStop == data;
-
-  @override
-  Color? get specialCellColor {
-    if (_isNextStop) return null;
-    return super.specialCellColor;
-  }
 
   static bool get _hideStationProperties => DI.get<ValidationModeViewModel>().validationModeValue;
 }

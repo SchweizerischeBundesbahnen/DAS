@@ -2,6 +2,7 @@ import 'package:app/pages/journey/journey_screen/chevron_animation_controller.da
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -75,7 +76,9 @@ class _RouteChevronState extends State<RouteChevron> {
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, RouteChevron.chevronHeight),
             painter: _ChevronPainter(
-              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+              color:
+                  DASTableCellStyle.of(context)?.foregroundColor ??
+                  ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
             ),
           ),
         ),

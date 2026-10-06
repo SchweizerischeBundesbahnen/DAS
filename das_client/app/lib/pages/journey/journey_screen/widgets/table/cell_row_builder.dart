@@ -22,7 +22,6 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
-import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
@@ -71,6 +70,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   @override
   DASTableRow build(BuildContext context) {
+    final asrStyle = _additionalSpeedRestrictionStyle(context);
     return DASTableCellRow(
       key: key,
       height: height,
@@ -83,10 +83,10 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       stickyLevel: stickyLevel,
       rowIndex: rowIndex,
       cells: {
-        ColumnDefinition.kilometre.index: kilometreCell(context),
-        ColumnDefinition.time.index: timeCell(context),
-        ColumnDefinition.route.index: routeCell(context),
-        ColumnDefinition.trackEquipment.index: trackEquipment(context),
+        ColumnDefinition.kilometre.index: _withStyle(kilometreCell(context), asrStyle),
+        ColumnDefinition.time.index: _withStyle(timeCell(context), asrStyle),
+        ColumnDefinition.route.index: _withStyle(routeCell(context), asrStyle),
+        ColumnDefinition.trackEquipment.index: _withStyle(trackEquipment(context), asrStyle),
         ColumnDefinition.icons1.index: iconsCell1(context),
         ColumnDefinition.bracketStation.index: bracketStation(context),
         ColumnDefinition.informationCell.index: informationCell(context),
@@ -96,8 +96,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
         ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
         ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
-        ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
-        ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
+        ColumnDefinition.gradientUphill.index: _withStyle(gradientUphillCell(context), asrStyle),
+        ColumnDefinition.gradientDownhill.index: _withStyle(gradientDownhillCell(context), asrStyle),
       },
       markAsDeleted: data.isDeleted,
     );
@@ -105,25 +105,19 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(
-        style: DASTableCellStyle(backgroundColor: specialCellColor),
-      );
+      return DASTableCell.empty();
     }
 
     final hasShortTermChange = metadata.shortTermChanges.appliesToOrder(data.order).isNotEmpty;
-    final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
-    final defaultTextStyle = DASTableTheme.of(context)?.data.dataCellStyle?.textStyle;
-    final textStyle = (defaultTextStyle ?? sbbTextStyle.romanStyle.large).copyWith(color: textColor);
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: hasShortTermChange ? EdgeInsets.all(SBBSpacing.xSmall).copyWith(left: SBBSpacing.small) : null,
       child: Column(
         mainAxisAlignment: .end,
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
-          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
+          Text(data.kilometre[0].toStringAsFixed(1)),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
         ],
       ),
       alignment: .bottomLeft,
@@ -134,7 +128,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
@@ -165,17 +158,13 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+      return DASTableCell.empty();
     }
 
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
-      child: TrackEquipmentCellBody(
-        renderData: config.trackEquipmentRenderData!,
-        lineColor: _isNextStop && specialCellColor == null ? SBBColors.white : null,
-      ),
+      child: TrackEquipmentCellBody(renderData: config.trackEquipmentRenderData!),
     );
   }
 
@@ -248,8 +237,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell timeCell(BuildContext context) =>
-      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+  DASTableCell timeCell(BuildContext context) => DASTableCell.empty();
 
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
@@ -290,15 +278,28 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell gradientUphillCell(BuildContext context) =>
-      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell gradientDownhillCell(BuildContext context) =>
-      DASTableCell.empty(style: DASTableCellStyle(backgroundColor: specialCellColor));
+  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty();
 
   bool get isInEtcsLevel2Segment => metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
 
-  Color? get specialCellColor => getAdditionalSpeedRestriction() != null ? DASColors.additionalSpeedRestriction : null;
+  /// The style of the cells that are highlighted if an additional speed restriction applies to this row.
+  ///
+  /// The next stop highlighting takes precedence over the additional speed restriction.
+  DASTableCellStyle? _additionalSpeedRestrictionStyle(BuildContext context) {
+    if (_isNextStop || getAdditionalSpeedRestriction() == null) return null;
+    return DASTableCellStyle(
+      backgroundColor: DASColors.additionalSpeedRestriction,
+      foregroundColor: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+    );
+  }
+
+  /// Applies [style] beneath the own style of the [cell], so that the fields of the cell style win.
+  DASTableCell _withStyle(DASTableCell cell, DASTableCellStyle? style) {
+    if (style == null) return cell;
+    return cell.copyWith(style: style.merge(cell.style));
+  }
 
   AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
     return metadata.additionalSpeedRestrictions

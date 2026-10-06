@@ -10,7 +10,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_b
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -75,7 +74,6 @@ class ReducedServicePointRow extends ServicePointRow {
     if (times == null && data.mandatoryStop) {
       return DASTableCell.empty(
         onTap: () => viewModel.toggleOperationalTime(),
-        style: DASTableCellStyle(backgroundColor: specialCellColor),
       );
     }
 
@@ -88,7 +86,6 @@ class ReducedServicePointRow extends ServicePointRow {
         mandatoryStop: data.mandatoryStop,
       ),
       alignment: .bottomLeft,
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
     );
   }
 
@@ -100,7 +97,6 @@ class ReducedServicePointRow extends ServicePointRow {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      style: DASTableCellStyle(backgroundColor: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,
