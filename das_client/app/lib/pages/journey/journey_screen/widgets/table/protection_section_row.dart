@@ -23,7 +23,12 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
     super.key,
     super.config,
     super.onDoubleTap,
-  }) : super(style: DASTableCellStyle(backgroundColor: DASColors.protectionSectionBackground));
+  }) : super(
+         style: DASTableCellStyle(
+           backgroundColor: DASColors.protectionSectionBackground,
+           foregroundColor: DASColors.protectionSectionForeground,
+         ),
+       );
 
   @override
   DASTableCell informationCell(BuildContext context) {
