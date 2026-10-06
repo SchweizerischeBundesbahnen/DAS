@@ -31,7 +31,7 @@
     "@angular/forms": "22.1.7",
     "@angular/platform-browser": "22.1.7",
     "@angular/platform-browser-dynamic": "22.1.7",
-    "@angular/router": "22.1.7",
+    "@angular/router": "22.2.0",
     "@sbb-esta/angular": "22.1.0",
     "angular-auth-oidc-client": "22.0.0",
     "angular-server-side-configuration": "22.0.2",
