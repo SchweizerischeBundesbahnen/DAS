@@ -282,52 +282,66 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|156zLPEeDK5CzaN0BPcM|tests:2219', (
-    tester,
-  ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T54M');
+  testWidgets(
+    'collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|156zLPEeDK5CzaN0BPcM|tests:2219',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T54M');
 
-    // first occurrence of line foot note A is expanded
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+      // first occurrence of line foot note A is expanded
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
 
-    // repetition of line foot note A at second service point is collapsed
-    await _moveToServicePoint(tester, 'Lausanne');
-    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+      // repetition of line foot note A at second service point is collapsed
+      await _moveToServicePoint(tester, 'Lausanne');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
 
-    // repetition of line foot note A expands on tap
-    await tapElement(tester, _lineFootNoteA().first, warnIfMissed: false);
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+      // repetition of line foot note A expands on tap
+      await tapElement(tester, _lineFootNoteA().first, warnIfMissed: false);
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
 
-    // first occurrence of line foot note B in the middle of the journey is expanded
-    await _moveToServicePoint(tester, 'Pully');
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteB());
+      // first occurrence of line foot note B in the middle of the journey is expanded
+      await _moveToServicePoint(tester, 'Pully');
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteB());
 
-    // repetition of line foot note B is collapsed
-    await _moveToServicePoint(tester, 'Taillepied');
-    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteB());
+      // repetition of line foot note B is collapsed
+      await _moveToServicePoint(tester, 'Taillepied');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteB());
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
 
-  testWidgets('collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|n1p736TbYkrBbZ4IoM2X|tests:2219', (
-    tester,
-  ) async {
-    await IntegrationTestApp.start(tester);
-    await loadJourney(tester, trainNumber: 'T54M');
+  testWidgets(
+    'collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|n1p736TbYkrBbZ4IoM2X|tests:2219',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T54M');
 
-    await _moveToServicePoint(tester, 'Pully');
+      await _moveToServicePoint(tester, 'Pully');
 
-    // repetition of line foot note A stays collapsed
-    await _moveToServicePoint(tester, 'Lausanne');
-    _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+      // repetition of line foot note A stays collapsed
+      await _scrollUpToServicePoint(tester, 'Lausanne');
+      await _moveToServicePoint(tester, 'Lausanne');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
 
-    // first occurrence of line foot note A is expanded again
-    await _moveToServicePoint(tester, 'Renens VD');
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+      // first occurrence of line foot note A is expanded again
+      await _scrollUpToServicePoint(tester, 'Renens VD');
+      await _moveToServicePoint(tester, 'Renens VD');
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
 
-    await disconnect(tester);
-  });
+      await disconnect(tester);
+    },
+  );
+}
+
+Future<void> _scrollUpToServicePoint(WidgetTester tester, String servicePoint) async {
+  final scrollableFinder = find.byType(AnimatedList);
+  await tester.dragUntilVisible(findDASTableRowByText(servicePoint), scrollableFinder, const Offset(0, 50));
+  await tester.pumpAndSettle();
 }
 
 Future<void> _moveToServicePoint(WidgetTester tester, String servicePoint) async {
