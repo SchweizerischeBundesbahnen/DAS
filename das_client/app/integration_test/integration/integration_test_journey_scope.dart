@@ -36,9 +36,10 @@ class IntegrationTestJourneyScope extends JourneyScope {
     // gets registered inside authenticated scope in tests to access before loading journey
     // getIt.registerSimTrainViewModel();
     getIt.registerCollapsibleRowsViewModel();
+    getIt.registerServicePointModalViewModel();
+    getIt.registerPersonalNotesViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
-    getIt.registerServicePointModalViewModel();
     getIt.registerJourneyFilterViewModel();
 
     await getIt.allReady();

@@ -9,5 +9,7 @@ abstract class const AcknowledgedModificationRepository._() {
 
   Future<void> delete(Modification modification);
 
+  Future<void> deleteExpiredModifications();
+
   void dispose();
 }

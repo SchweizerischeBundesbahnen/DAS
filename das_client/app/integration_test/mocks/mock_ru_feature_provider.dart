@@ -1,8 +1,8 @@
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:settings/src/model/ru_feature_keys.dart';
 
-class MockRuFeatureProvider implements RuFeatureProvider {
-  MockRuFeatureProvider() {
+class MockRuFeatureProvider() implements RuFeatureProvider {
+  this {
     for (final it in RuFeatureKeys.values) {
       _featureFlags[it] = true;
     }

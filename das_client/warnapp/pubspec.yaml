@@ -13,7 +13,7 @@ dependencies:
   # https://pub.dev/packages/sensors_plus
   sensors_plus: ^7.1.0
   # https://pub.dev/packages/geolocator
-  geolocator: ^14.0.3
+  geolocator: ^14.1.1
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/path_provider
@@ -27,4 +27,4 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.16.0
+  build_runner: ^2.16.1

@@ -1,5 +1,5 @@
-import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
+import 'package:app/model/app_info.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

@@ -23,6 +23,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/chevron_positi
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
@@ -69,10 +70,11 @@ class JourneyScope extends DIScope {
     getIt.registerBrakeLoadSlipViewModel();
     getIt.registerSimTrainViewModel();
     getIt.registerCollapsibleRowsViewModel();
+    getIt.registerServicePointModalViewModel();
+    getIt.registerPersonalNotesViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerJourneyFilterViewModel();
-    getIt.registerServicePointModalViewModel();
 
     await getIt.allReady();
   }
@@ -325,6 +327,7 @@ extension JourneyScopeExtension on GetIt {
         navigationVM: DI.get(),
         userSettings: DI.get(),
         acknowledgedModificationRepository: DI.get(),
+        personalNotesVM: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -379,6 +382,16 @@ extension JourneyScopeExtension on GetIt {
         notificationViewModel: DI.get(),
         appLifecycleViewModel: DI.get(),
         settingsRepository: DI.get(),
+      ),
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerPersonalNotesViewModel() {
+    registerSingleton<PersonalNotesViewModel>(
+      PersonalNotesViewModel(
+        personalNotesRepository: DI.get(),
+        servicePointModalViewModel: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );
