@@ -297,7 +297,7 @@ static BOOL RunnerDidRun = NO;
     [runner testIntegrationTestWithResults:^(SEL testSelector, BOOL success, NSString *failureMessage) {
       NSString *name = NSStringFromSelector(testSelector);
       if (success) {
-        [RunnerSuccesses addObject:name];
+        [RunnerSuccesses addObject:[name lowercaseString]];
       } else {
         RunnerFailures[name] = failureMessage ?: @"(no message)";
       }
@@ -313,7 +313,7 @@ static BOOL RunnerDidRun = NO;
     SEL selector = NSSelectorFromString(name);
     IMP implementation = imp_implementationWithBlock(^(XCTestCase *testCase) {
       [RunnerTests ensureIntegrationTestsExecuted];
-      if (![RunnerSuccesses containsObject:name]) {
+      if (![RunnerSuccesses containsObject:[name lowercaseString]]) {
         NSString *message = RunnerFailures[name] ?: @"not recorded";
         XCTIssue *issue = [[XCTIssue alloc] initWithType:XCTIssueTypeAssertionFailure
                                       compactDescription:[NSString stringWithFormat:@"%@: %@", name, message]];
