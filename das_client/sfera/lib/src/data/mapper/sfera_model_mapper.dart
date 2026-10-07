@@ -836,13 +836,21 @@ class SferaModelMapper._() {
     }
   }
 
-  static Map<ServicePoint, bool> _parseSwitchbackStationMap(List<ServicePoint> servicePoints) {
-    final Map<ServicePoint, bool> switchbackStationMap = {};
+  static Map<ServicePoint, SwitchbackStation> _parseSwitchbackStationMap(List<ServicePoint> servicePoints) {
+    final Map<ServicePoint, SwitchbackStation> switchbackStationMap = {};
     ServicePoint? lastServicePoint;
     for (final servicePoint in servicePoints) {
       if (lastServicePoint != null && lastServicePoint.locationCode == servicePoint.locationCode) {
-        switchbackStationMap[lastServicePoint] = true;
-        switchbackStationMap[servicePoint] = false;
+        switchbackStationMap[lastServicePoint] = SwitchbackStation(
+          station: lastServicePoint,
+          otherStation: servicePoint,
+          isArrival: true,
+        );
+        switchbackStationMap[servicePoint] = SwitchbackStation(
+          station: servicePoint,
+          otherStation: lastServicePoint,
+          isArrival: false,
+        );
       }
 
       lastServicePoint = servicePoint;

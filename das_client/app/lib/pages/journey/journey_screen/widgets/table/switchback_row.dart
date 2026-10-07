@@ -8,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SwitchbackRow extends WidgetRowBuilder<SwitchbackAnnotation> {
+  static final _routeColumnWidth = 48.0;
+
   SwitchbackRow({
     required super.metadata,
     required super.data,
@@ -27,20 +29,25 @@ class SwitchbackRow extends WidgetRowBuilder<SwitchbackAnnotation> {
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Container(
         margin: EdgeInsets.symmetric(vertical: SBBSpacing.xSmall),
-        padding: EdgeInsets.symmetric(horizontal: SBBSpacing.xSmall),
-        decoration: BoxDecoration(color: ThemeUtil.getDASTableColor(context)),
+        decoration: BoxDecoration(
+          color: ThemeUtil.getDASTableColor(context),
+          border: Border.symmetric(
+            horizontal: BorderSide(color: ThemeUtil.getDASTableBorderColor(context)),
+          ),
+        ),
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: routePadding),
+              padding: EdgeInsets.only(left: routePadding, top: SBBSpacing.xxSmall, bottom: SBBSpacing.xxSmall),
               child: SizedBox(
-                width: informationPadding - routePadding,
+                width: _routeColumnWidth,
                 child: SvgPicture.asset(
                   AppAssets.iconUturnTurquoise,
                   colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
                 ),
               ),
             ),
+            SizedBox(width: informationPadding - _routeColumnWidth - routePadding + SBBSpacing.xSmall),
             Text(
               context.l10n.w_switchback_row_title,
               style: SBBTextStyles.largeBold,

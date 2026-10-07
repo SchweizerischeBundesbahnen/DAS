@@ -237,13 +237,13 @@ class JourneyPositionViewModel({
   }
 
   List<ServicePoint> _validStoppingPoints(List<JourneyPoint> journeyPoints, Metadata metadata) {
-    final departureSwitchbackStations = metadata.switchbackStationMap.keys.where(
-      (it) => metadata.switchbackStationMap[it] == false,
+    final departureSwitchbackStations = metadata.switchbackStationMap.entries.where(
+      (it) => it.value.isDeparture,
     );
 
     return journeyPoints
         .whereType<ServicePoint>()
-        .where((it) => it.isStop && !departureSwitchbackStations.contains(it))
+        .where((it) => it.isStop && !departureSwitchbackStations.any((entry) => entry.key == it))
         .toList();
   }
 

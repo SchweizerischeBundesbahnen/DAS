@@ -110,17 +110,19 @@ extension BaseDataX on Iterable<BaseData> {
     });
   }
 
-  Iterable<BaseData> addSwitchbackRows(Map<ServicePoint, bool> switchbackStationMap) {
+  Iterable<BaseData> addSwitchbackRows(Map<ServicePoint, SwitchbackStation> switchbackStationMap) {
     if (switchbackStationMap.isEmpty) return this;
 
     final List<BaseData> resultList = toList();
 
     for (final it in switchbackStationMap.entries) {
-      final isArrival = it.value;
-      if (!isArrival) {
-        final order = it.key.order;
-        // Place at the end of the last segment
-        final switchbackOrder = order - (order % segmentProfileOrderSize) - 1;
+      final switchbackStation = it.value;
+      if (switchbackStation.isArrival) {
+        final arrivalOrder = switchbackStation.station.order;
+        final departureOrder = switchbackStation.otherStation.order;
+
+        // Place in the middle between the 2 stations
+        final switchbackOrder = ((arrivalOrder + departureOrder) / 2).toInt();
         resultList.add(SwitchbackAnnotation(order: switchbackOrder));
       }
     }

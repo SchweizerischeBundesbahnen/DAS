@@ -122,6 +122,7 @@ class JourneyTableViewModel({
 
     final rowData = journeyData
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
+        .addSwitchbackRows(journey.metadata.switchbackStationMap)
         .removeIrrelevantServicePoints(journey.metadata.calculatedSpeeds)
         .hideJourneyPointsThatShouldNotBeDisplayed()
         .hideAcknowledgedDeletedRows(acknowledgedModifications, settings)

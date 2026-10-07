@@ -2220,6 +2220,32 @@ void main() {
     expect(servicePoints[3].arrivalDepartureTime?.fixedPointRelevance, true);
     expect(servicePoints[4].arrivalDepartureTime?.fixedPointRelevance, true);
   });
+
+  test('Test switchback station parsing', () async {
+    final journey = getJourney('T56');
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(8));
+
+    final switchbackMap = journey.metadata.switchbackStationMap;
+    expect(switchbackMap, hasLength(6));
+
+    expect(switchbackMap[servicePoints[0]], null);
+    expect(switchbackMap[servicePoints[1]], isA<SwitchbackStation>());
+    expect((switchbackMap[servicePoints[1]] as SwitchbackStation).station, servicePoints[1]);
+    expect((switchbackMap[servicePoints[1]] as SwitchbackStation).otherStation, servicePoints[2]);
+    expect((switchbackMap[servicePoints[1]] as SwitchbackStation).isArrival, true);
+    expect(switchbackMap[servicePoints[2]], isA<SwitchbackStation>());
+    expect((switchbackMap[servicePoints[2]] as SwitchbackStation).station, servicePoints[2]);
+    expect((switchbackMap[servicePoints[2]] as SwitchbackStation).otherStation, servicePoints[1]);
+    expect((switchbackMap[servicePoints[2]] as SwitchbackStation).isDeparture, true);
+    expect(switchbackMap[servicePoints[3]], isA<SwitchbackStation>());
+    expect(switchbackMap[servicePoints[4]], isA<SwitchbackStation>());
+    expect(switchbackMap[servicePoints[5]], isA<SwitchbackStation>());
+    expect(switchbackMap[servicePoints[6]], isA<SwitchbackStation>());
+    expect(switchbackMap[servicePoints[7]], null);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
