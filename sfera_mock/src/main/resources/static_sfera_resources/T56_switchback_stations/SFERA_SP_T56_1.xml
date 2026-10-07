@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA.xsd" SP_ID="T56_1" SP_VersionMajor="1"
-                SP_VersionMinor="0" SP_Length="10000" SP_Status="Valid">
+                SP_VersionMinor="1" SP_Length="10000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -18,6 +18,12 @@
                 <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+        
+        <Signal>
+            <Signal_ID signal_ID_Physical="E2" location="1500" />
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E2"/>
+        </Signal>
     </SP_Points>
 
     <SP_Areas>
@@ -48,6 +54,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="10.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="10.5"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>
