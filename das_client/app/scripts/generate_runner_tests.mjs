@@ -26,9 +26,6 @@ function main() {
       ...test,
       filePath,
       relativeFilePath: path.relative(appDir, filePath).replaceAll(path.sep, '/'),
-      // The integration_test plugin derives the Objective-C selector from the
-      // FULL dart test description (group names + test name), so build it from
-      // fullName, not the leaf name.
       selector: toObjCTestSelector(test.name),
     }));
   });
@@ -437,53 +434,25 @@ function isIdentifierChar(char) {
   return /[A-Za-z0-9_]/.test(char);
 }
 
-// Reproduces exactly what the integration_test plugin computes natively in
-// +[FLTIntegrationTestRunner testCaseNameFromDartTestName:], which is:
-//
-//   test<[[dartTestName localizedCapitalizedString] stripped of non-alphanumerics]>
-//
-// -[NSString localizedCapitalizedString] upper-cases the first letter of every
-// "word" and lower-cases the rest. Foundation's word boundaries fall not only
-// on whitespace/punctuation but also on letter<->digit transitions, so the
-// first letter following a digit is capitalized too (e.g. "p7ydFbgh" becomes
-// "P7Ydfbgh"). Non-alphanumeric characters are then removed entirely.
-//
-// The generated selector must match this byte-for-byte: RunnerTests.m looks the
-// name up with an exact, case-sensitive set membership check, so any divergence
-// turns the corresponding XCTest red.
 function toObjCTestSelector(testName) {
-  const characters = [...testName.normalize('NFC')];
-  let result = '';
-  let atWordStart = true;
+  const words = testName
+    .normalize('NFKD')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(capitalizeFirstCharacter)
+    .join('');
 
-  for (const character of characters) {
-    if (isLetterCharacter(character)) {
-      result += atWordStart ? character.toLocaleUpperCase() : character.toLocaleLowerCase();
-      atWordStart = false;
-      continue;
-    }
+  return `test${words}`;
+}
 
-    if (isDigitCharacter(character)) {
-      result += character;
-      // A letter directly after a digit starts a new word.
-      atWordStart = true;
-      continue;
-    }
-
-    // Any other (non-alphanumeric) character is dropped, and the next letter
-    // begins a new word.
-    atWordStart = true;
+function capitalizeFirstCharacter(value) {
+  if (value.length === 0) {
+    return value;
   }
 
-  return `test${result}`;
-}
-
-function isLetterCharacter(character) {
-  return /\p{L}/u.test(character);
-}
-
-function isDigitCharacter(character) {
-  return /\p{N}/u.test(character);
+  return value[0].toLocaleUpperCase() + value.slice(1);
 }
 
 function validateUniqueSelectors(collectedTests) {
