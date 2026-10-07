@@ -46,7 +46,7 @@
     "@angular/compiler-cli": "22.2.1",
     "@angular/localize": "22.2.1",
     "@eslint/js": "10.0.1",
-    "@types/jasmine": "6.0.0",
+    "@types/jasmine": "7.0.0",
     "angular-eslint": "22.5.0",
     "eslint": "10.10.0",
     "eslint-config-prettier": "10.1.8",
