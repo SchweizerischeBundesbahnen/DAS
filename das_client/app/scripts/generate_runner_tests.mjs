@@ -29,7 +29,7 @@ function main() {
       // The integration_test plugin derives the Objective-C selector from the
       // FULL dart test description (group names + test name), so build it from
       // fullName, not the leaf name.
-      selector: toObjCTestSelector(test.fullName),
+      selector: toObjCTestSelector(test.name),
     }));
   });
 

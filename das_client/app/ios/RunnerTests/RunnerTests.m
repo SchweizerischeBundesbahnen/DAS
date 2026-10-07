@@ -14,30 +14,30 @@ static NSArray<NSString *> *RunnerDartTestNames(void) {
       @"testAsrmodalWhenradiochanneltappedwhileopenThenswitcheswithoutclosingFycl15Anxotsmygvuzl3Tests1875", // integration_test/test/additional_speed_restriction_modal_test.dart
       @"testAsrmodalWhennoninteractiveareatappedThenclosesmodalJajhl07W13Dg4G0WsctjTests1875", // integration_test/test/additional_speed_restriction_modal_test.dart
       @"testAsrmodalWhencomplexasrwithmultipleentriesThenshowsallentries4Dhyrq0I6Dm7WccmpmdrTests227", // integration_test/test/additional_speed_restriction_modal_test.dart
-      @"testAppExpirationTestAppexpirationWhenexpiressoonThenshowsdismissibledialogonceWdtkidfsmgo3Zr9DwxhhTests245", // integration_test/test/app_expiration_test.dart
-      @"testAppExpirationTestAppexpirationWhenexpiredThenshowsnondismissibledialogRppcazq2Uo5W3Xr0IzlgTests245", // integration_test/test/app_expiration_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithsingletrainOpensjourneyN2Dspgyq3Ku5M4Zwxh7QTests97", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithmultipletrainsOpensfirstjourneyandrestinnavigationFvylq39Apcu9HxydxoreTests97", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithvalidandunknowntrainOpensfirstjourneyandshowserrorpageforsecondPekbdz3Nheevcicqd6WyTests97", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwhileunauthenticatedOpensjourneyafterloginflowAzdiagi51Vkrpz2ShznrTests97", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithunknowntrainShowserrorpage15G1Jt1Szm8J2Gsw3MbsTests97", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithtaftapstartandendShowstraindriverturnoverrowsTliaikurerftrsyxwv1STests296", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithreturnurlShouldusereturnurloverdefaulttoursystemurlB6Vkx9Lfhgrkizsz1Us6Tests9796", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensnewjourneyRwoqbfy4K3Xnudz0SdxoTests1852", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenlinkwithsingletrainShowscompanymatchselectionWrcsxpxpyvtjofkqofynTests702", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensselectionwithcompanymatchMsfnfsboibb94SxzptbdTests702", // integration_test/test/app_link_test.dart
-      @"testTrainJourneyAppLinkApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensnewjourneywithmatchingru3Rmlqu5Rkmlbwnkw3HatTests702", // integration_test/test/app_link_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhenjourneyloadedThenscrollsautomaticallyZgzabcsbv7Ppjgvndu2MTests94", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhenidletimereachedThenscrollsbacktoposition78V0Rplxi8A6Lgzwhf3RTests94", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhentableistappedThenidletimeisnotresetO2Jzoxivpjxpp5Kp71BtTests1923", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhentableisscrolledThenidletimeisresetCwg37Cldza4TygxweeusTests192394", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhenreenabledThenscrollstocurrentposition4Ia2Ip74Kn6Fpymenx80Tests94", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhendisabledThendoesnotscroll4Jebtnrj2Fhdv4Ab1Fx9Tests94", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhenjourneyloadedThenisenabledbydefaultQolt57Vft3Usf96YbyjaTests94", // integration_test/test/automatic_advancement_test.dart
-      @"testAutomaticAdvancementTestsAutomaticadvancementWhendisabledThenshowsstickyfooter2Unryr5Awqhqmmyn9QaeTests94", // integration_test/test/automatic_advancement_test.dart
-      @"testTimedAdvancementTestsTimedadvancementWhenjourneyloadedThenadvancescorrectly6Vsc8W1Yfguw4Cktbx7QTests1419", // integration_test/test/automatic_advancement_test.dart
-      @"testTimedAdvancementTestsTimedadvancementWhenjourneyloadedThenadvancesbyoperationalandplannedtimesKp3Wqzt9Rlxyhnv2QmdeTests939", // integration_test/test/automatic_advancement_test.dart
-      @"testTimedAdvancementTestsTimedadvancementWhensignaledpositionbehindandpunctualityhiddenThensignalwinsXw7Rtlm2Qpkvyc9Hbnd3Tests2491", // integration_test/test/automatic_advancement_test.dart
+      @"testAppexpirationWhenexpiressoonThenshowsdismissibledialogonceWdtkidfsmgo3Zr9DwxhhTests245", // integration_test/test/app_expiration_test.dart
+      @"testAppexpirationWhenexpiredThenshowsnondismissibledialogRppcazq2Uo5W3Xr0IzlgTests245", // integration_test/test/app_expiration_test.dart
+      @"testApplinkWhenlinkwithsingletrainOpensjourneyN2Dspgyq3Ku5M4Zwxh7QTests97", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithmultipletrainsOpensfirstjourneyandrestinnavigationFvylq39Apcu9HxydxoreTests97", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithvalidandunknowntrainOpensfirstjourneyandshowserrorpageforsecondPekbdz3Nheevcicqd6WyTests97", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwhileunauthenticatedOpensjourneyafterloginflowAzdiagi51Vkrpz2ShznrTests97", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithunknowntrainShowserrorpage15G1Jt1Szm8J2Gsw3MbsTests97", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithtaftapstartandendShowstraindriverturnoverrowsTliaikurerftrsyxwv1STests296", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithreturnurlShouldusereturnurloverdefaulttoursystemurlB6Vkx9Lfhgrkizsz1Us6Tests9796", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensnewjourneyRwoqbfy4K3Xnudz0SdxoTests1852", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenlinkwithsingletrainShowscompanymatchselectionWrcsxpxpyvtjofkqofynTests702", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensselectionwithcompanymatchMsfnfsboibb94SxzptbdTests702", // integration_test/test/app_link_test.dart
+      @"testApplinkWhenalreadyonjourneypagereceivingdeeplinkOpensnewjourneywithmatchingru3Rmlqu5Rkmlbwnkw3HatTests702", // integration_test/test/app_link_test.dart
+      @"testAutomaticadvancementWhenjourneyloadedThenscrollsautomaticallyZgzabcsbv7Ppjgvndu2MTests94", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhenidletimereachedThenscrollsbacktoposition78V0Rplxi8A6Lgzwhf3RTests94", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhentableistappedThenidletimeisnotresetO2Jzoxivpjxpp5Kp71BtTests1923", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhentableisscrolledThenidletimeisresetCwg37Cldza4TygxweeusTests192394", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhenreenabledThenscrollstocurrentposition4Ia2Ip74Kn6Fpymenx80Tests94", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhendisabledThendoesnotscroll4Jebtnrj2Fhdv4Ab1Fx9Tests94", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhenjourneyloadedThenisenabledbydefaultQolt57Vft3Usf96YbyjaTests94", // integration_test/test/automatic_advancement_test.dart
+      @"testAutomaticadvancementWhendisabledThenshowsstickyfooter2Unryr5Awqhqmmyn9QaeTests94", // integration_test/test/automatic_advancement_test.dart
+      @"testTimedadvancementWhenjourneyloadedThenadvancescorrectly6Vsc8W1Yfguw4Cktbx7QTests1419", // integration_test/test/automatic_advancement_test.dart
+      @"testTimedadvancementWhenjourneyloadedThenadvancesbyoperationalandplannedtimesKp3Wqzt9Rlxyhnv2QmdeTests939", // integration_test/test/automatic_advancement_test.dart
+      @"testTimedadvancementWhensignaledpositionbehindandpunctualityhiddenThensignalwinsXw7Rtlm2Qpkvyc9Hbnd3Tests2491", // integration_test/test/automatic_advancement_test.dart
       @"testBrakeslipWhenpositionupdatewhilebrakeslippageopenThendoesnotupdatetonewpositionLqq9Jbqezxkwyjm3VwyfTests1605", // integration_test/test/brake_load_slip_test.dart
       @"testBrakeslipWhennodataavailableThendoesnotshowbutton4Z9DtxcnpqahgoefcxqoTests692568", // integration_test/test/brake_load_slip_test.dart
       @"testBrakeslipWhenformationdataloadedThenshowsinformationandnavigationLtujgubevybkxbp0MwcsTests692", // integration_test/test/brake_load_slip_test.dart
@@ -53,59 +53,59 @@ static NSArray<NSString *> *RunnerDartTestNames(void) {
       @"testBrakeslipWhenformationupdatedThenshowsnotificationHt9Hpozmhcatzuyqb4RfTests695", // integration_test/test/brake_load_slip_test.dart
       @"testBrakeslipWhenformationrunchangedThenupdatesrunchangedisplayIg1Dyvhq8Huk2UhyomojTests694", // integration_test/test/brake_load_slip_test.dart
       @"testBrakeslipWhentransportdocumentsareconfiguredThenbuttonvisibilityandlaunchbehaviormatchformationdataK2Dx0Vd8R1Sz9Fqm7UjmTests1620", // integration_test/test/brake_load_slip_test.dart
-      @"testChronographTestChronographWhennoupdatesThenhidespunctualitydisplayRhunle41Envoe7Vzk3UpTests300", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhennoupdatesThenpunctualitybecomesstale1W4Nytamrijrry9Nzjj0Tests300", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhenpunctualityupdatereceivedThendisplayscorrectlyCa2H5Q5Rfvvivzjocl9ITests300", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhennocalculatedspeedandnoplannedtimesThenhidespunctuality8Bo2Dgfbglmqvht7MrlbTests19692257", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhennosferadelayavailableThenshowsplannedtimedeviationIxktmp5Ojttzd7Eo7Vf5Tests1851", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhenplannedtimedeviationfeaturedisabledThennevershowsdeviationIk64Kpz9J4Qn3KlsockbTests1851", // integration_test/test/chronograph_test.dart
-      @"testChronographTestChronographWhenjourneyloadedThenshowscorrectcurrenttimeXvdcwlyyq41Hhar9P2HmTests79", // integration_test/test/chronograph_test.dart
-      @"testCloseJourneyTestsClosejourneyWhentrainnotinmotionThencloseswithoutconfirmationOzopj2Dv77Yjmnggfb3LTests2219", // integration_test/test/close_journey_test.dart
-      @"testCloseJourneyTestsClosejourneyWhentraininmotionanddismissedThenstaysonjourneyL0Sday1Hffdw8Kz5W4UqTests2219", // integration_test/test/close_journey_test.dart
-      @"testCloseJourneyTestsClosejourneyWhentraininmotionandconfirmedThenclosesjourneyMqdaitcqlvtmatyuwwjjTests2219", // integration_test/test/close_journey_test.dart
-      @"testCloseJourneyTestsJourneysearchoverlayWhenopenedThenshowsnoconfirmationImamqzatvhzq6PwsfwpxTests2219", // integration_test/test/close_journey_test.dart
-      @"testCloseJourneyTestsJourneysearchoverlayWhennewtrainloadedanddismissedThenstaysonjourneyLk3Zlofv6Lng08Nyvwb2Tests2219", // integration_test/test/close_journey_test.dart
-      @"testCloseJourneyTestsJourneysearchoverlayWhendifferenttrainloadedandconfirmedThenloadsotherjourney8B0Dxfqyhlwo6Ocv6TqwTests2219", // integration_test/test/close_journey_test.dart
-      @"testDepartureProcessTestDepartureprocessWhenfeatureenabledThenchecklistbuttondisplayedcorrectlyNw7Qkkijklymlt0Yngj6Tests627", // integration_test/test/departure_process_test.dart
-      @"testDepartureProcessTestDepartureprocessWhennocustomerorienteddepartureThenchecklistbuttonopensdeparturedialogLwlj8Frlqy7Pbq76LgkuTests627", // integration_test/test/departure_process_test.dart
-      @"testDepartureProcessTestDepartureprocessWhenfeatureenabledThenshowschronographwarningNqr5G6Ro4Aw4Aezlyzl4Tests627", // integration_test/test/departure_process_test.dart
-      @"testLinksPageTestsExternallinksWhennocompanyselectedThenshowsemptystateYwizuavbvmwzqn5OoqieTests147", // integration_test/test/external_links_test.dart
-      @"testLinksPageTestsExternallinksWhencompanyselectedinsettingspageThenshowscorrectlinksVnfgpqg3Ma8VupxenmkyTests147", // integration_test/test/external_links_test.dart
-      @"testLinksPageTestsExternallinksWhencompanyselectionchangesThenupdateslinksMzf1Gipytu39GeqhczcaTests147", // integration_test/test/external_links_test.dart
+      @"testChronographWhennoupdatesThenhidespunctualitydisplayRhunle41Envoe7Vzk3UpTests300", // integration_test/test/chronograph_test.dart
+      @"testChronographWhennoupdatesThenpunctualitybecomesstale1W4Nytamrijrry9Nzjj0Tests300", // integration_test/test/chronograph_test.dart
+      @"testChronographWhenpunctualityupdatereceivedThendisplayscorrectlyCa2H5Q5Rfvvivzjocl9ITests300", // integration_test/test/chronograph_test.dart
+      @"testChronographWhennocalculatedspeedandnoplannedtimesThenhidespunctuality8Bo2Dgfbglmqvht7MrlbTests19692257", // integration_test/test/chronograph_test.dart
+      @"testChronographWhennosferadelayavailableThenshowsplannedtimedeviationIxktmp5Ojttzd7Eo7Vf5Tests1851", // integration_test/test/chronograph_test.dart
+      @"testChronographWhenplannedtimedeviationfeaturedisabledThennevershowsdeviationIk64Kpz9J4Qn3KlsockbTests1851", // integration_test/test/chronograph_test.dart
+      @"testChronographWhenjourneyloadedThenshowscorrectcurrenttimeXvdcwlyyq41Hhar9P2HmTests79", // integration_test/test/chronograph_test.dart
+      @"testClosejourneyWhentrainnotinmotionThencloseswithoutconfirmationOzopj2Dv77Yjmnggfb3LTests2219", // integration_test/test/close_journey_test.dart
+      @"testClosejourneyWhentraininmotionanddismissedThenstaysonjourneyL0Sday1Hffdw8Kz5W4UqTests2219", // integration_test/test/close_journey_test.dart
+      @"testClosejourneyWhentraininmotionandconfirmedThenclosesjourneyMqdaitcqlvtmatyuwwjjTests2219", // integration_test/test/close_journey_test.dart
+      @"testJourneysearchoverlayWhenopenedThenshowsnoconfirmationImamqzatvhzq6PwsfwpxTests2219", // integration_test/test/close_journey_test.dart
+      @"testJourneysearchoverlayWhennewtrainloadedanddismissedThenstaysonjourneyLk3Zlofv6Lng08Nyvwb2Tests2219", // integration_test/test/close_journey_test.dart
+      @"testJourneysearchoverlayWhendifferenttrainloadedandconfirmedThenloadsotherjourney8B0Dxfqyhlwo6Ocv6TqwTests2219", // integration_test/test/close_journey_test.dart
+      @"testDepartureprocessWhenfeatureenabledThenchecklistbuttondisplayedcorrectlyNw7Qkkijklymlt0Yngj6Tests627", // integration_test/test/departure_process_test.dart
+      @"testDepartureprocessWhennocustomerorienteddepartureThenchecklistbuttonopensdeparturedialogLwlj8Frlqy7Pbq76LgkuTests627", // integration_test/test/departure_process_test.dart
+      @"testDepartureprocessWhenfeatureenabledThenshowschronographwarningNqr5G6Ro4Aw4Aezlyzl4Tests627", // integration_test/test/departure_process_test.dart
+      @"testExternallinksWhennocompanyselectedThenshowsemptystateYwizuavbvmwzqn5OoqieTests147", // integration_test/test/external_links_test.dart
+      @"testExternallinksWhencompanyselectedinsettingspageThenshowscorrectlinksVnfgpqg3Ma8VupxenmkyTests147", // integration_test/test/external_links_test.dart
+      @"testExternallinksWhencompanyselectionchangesThenupdateslinksMzf1Gipytu39GeqhczcaTests147", // integration_test/test/external_links_test.dart
       @"testCustomerorienteddepartureWhenstatuschangesThendisplaysnotificationscorrectlyDiw8Ooyfmkindzpgcp4STests148", // integration_test/test/journey_customer_oriented_departure_test.dart
       @"testCustomerorienteddepartureWhenjourneychangesThensubscriptionupdates7Cmv7S3VxpmskqjvucxdTests148", // integration_test/test/journey_customer_oriented_departure_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenconnectivitychangesThenshowscorrectstateInnxrgqxweq3Dkjj5XkoTests119", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenjourneyloadedThenturnsonalwaysondisplayWxr40HihesioewydjtedTests591", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenjourneyclosedThenturnsoffalwaysondisplay85Sj2C4Mlmjhgoj8QzcxTests591", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhentrainactiveThenhidesappbarY8Vn9Cr9Fywhirxbzq68Tests79670", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenthemeswitchtappedThenswitchesthemeZhltx4Wiqlsmqxd537PsTests102", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenextendedmenuopenedThenshowsclosebutton3Nd51Aamnm7Ziq6JqujsTests497", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenmaneuvermodetoggledThenshowsnotificationCnrguvzwd6Cz1WjtrpnmTests242", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenmaneuvernotificationswitchtappedThenhidesnotificationXqixbnfdnl2YeeegdmmtTests242", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenwaraappinstalledandmaneuvermodeThenshowswaraapplinkMfgc6Wm2Zhgavzoru19ZTests242", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenwarnappdisabledThenhidesmaneuvermodeTwnozeohbpzvpfl5L5TtTests242445", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenwaraappinstalledThenshowsopenmenuitemBc5Toxjbc31R6U4Oe66LTests242", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenbatteryabove15PercentThenhidesicon5Ehxse0Aany05Pmacf9GTests123", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenbatterybelow15PercentThenshowsiconandmodalEm5Ecudyqo96Tv29Cg28Tests123590", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhencommunicationnetworkchangesThendisplayscorrectlyC3Ikkuijmloz0Xz3GsptTests125", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhenradiocontactschangeThendisplayscorrectlyTr4Sky5Hk17Bxb622PstTests125", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhendoubletappedThensetsbrightnesstozeroO8Gnedoxv3QsxnynimpkTests101", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhendraggedrightThenincreasesbrightnessDsetqydlocusgsqfmnmtTests101", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhendraggedleftThendecreasesbrightnessVenb2YzwbokurpbzfdswTests101", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyHeaderTestJourneyheaderWhendepartureauthorizationpresentThendisplayscorrectly1Kg0Kdpujd6Ndmn4Q7C6Tests226", // integration_test/test/journey_header_test.dart
-      @"testTrainJourneyNotificationTestNotificationWhendepartureprocessdialogopenedThendisplayscorrectlyT2Ga4Z72Zhw01N8Dya7MTests624627", // integration_test/test/journey_notification_test.dart
-      @"testTrainJourneyNotificationTestNotificationWhendisturbanceoccursThenshowsandhidesnotificationM1Oe34O4N52Uyyirvmu2Tests244", // integration_test/test/journey_notification_test.dart
-      @"testTrainJourneyNotificationTestNotificationWhendeparturedispatchreceivedThendisplayscorrectlyXgzcksb39KkesylhsvywTests124", // integration_test/test/journey_notification_test.dart
-      @"testTrainJourneyNotificationTestNotificationWhenmultiplenotificationsThenprioritizescorrectlyJ6Off00Oszo3Qqy0XdqmTests1402", // integration_test/test/journey_notification_test.dart
-      @"testTrainJourneyNotificationTestNotificationWhenreauthenticationrequiredThenshowsnotificationJvuwuj6R5Melk0DpaauwTests1320", // integration_test/test/journey_notification_test.dart
+      @"testJourneyheaderWhenconnectivitychangesThenshowscorrectstateInnxrgqxweq3Dkjj5XkoTests119", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenjourneyloadedThenturnsonalwaysondisplayWxr40HihesioewydjtedTests591", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenjourneyclosedThenturnsoffalwaysondisplay85Sj2C4Mlmjhgoj8QzcxTests591", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhentrainactiveThenhidesappbarY8Vn9Cr9Fywhirxbzq68Tests79670", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenthemeswitchtappedThenswitchesthemeZhltx4Wiqlsmqxd537PsTests102", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenextendedmenuopenedThenshowsclosebutton3Nd51Aamnm7Ziq6JqujsTests497", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenmaneuvermodetoggledThenshowsnotificationCnrguvzwd6Cz1WjtrpnmTests242", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenmaneuvernotificationswitchtappedThenhidesnotificationXqixbnfdnl2YeeegdmmtTests242", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenwaraappinstalledandmaneuvermodeThenshowswaraapplinkMfgc6Wm2Zhgavzoru19ZTests242", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenwarnappdisabledThenhidesmaneuvermodeTwnozeohbpzvpfl5L5TtTests242445", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenwaraappinstalledThenshowsopenmenuitemBc5Toxjbc31R6U4Oe66LTests242", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenbatteryabove15PercentThenhidesicon5Ehxse0Aany05Pmacf9GTests123", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenbatterybelow15PercentThenshowsiconandmodalEm5Ecudyqo96Tv29Cg28Tests123590", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhencommunicationnetworkchangesThendisplayscorrectlyC3Ikkuijmloz0Xz3GsptTests125", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhenradiocontactschangeThendisplayscorrectlyTr4Sky5Hk17Bxb622PstTests125", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhendoubletappedThensetsbrightnesstozeroO8Gnedoxv3QsxnynimpkTests101", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhendraggedrightThenincreasesbrightnessDsetqydlocusgsqfmnmtTests101", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhendraggedleftThendecreasesbrightnessVenb2YzwbokurpbzfdswTests101", // integration_test/test/journey_header_test.dart
+      @"testJourneyheaderWhendepartureauthorizationpresentThendisplayscorrectly1Kg0Kdpujd6Ndmn4Q7C6Tests226", // integration_test/test/journey_header_test.dart
+      @"testNotificationWhendepartureprocessdialogopenedThendisplayscorrectlyT2Ga4Z72Zhw01N8Dya7MTests624627", // integration_test/test/journey_notification_test.dart
+      @"testNotificationWhendisturbanceoccursThenshowsandhidesnotificationM1Oe34O4N52Uyyirvmu2Tests244", // integration_test/test/journey_notification_test.dart
+      @"testNotificationWhendeparturedispatchreceivedThendisplayscorrectlyXgzcksb39KkesylhsvywTests124", // integration_test/test/journey_notification_test.dart
+      @"testNotificationWhenmultiplenotificationsThenprioritizescorrectlyJ6Off00Oszo3Qqy0XdqmTests1402", // integration_test/test/journey_notification_test.dart
+      @"testNotificationWhenreauthenticationrequiredThenshowsnotificationJvuwuj6R5Melk0DpaauwTests1320", // integration_test/test/journey_notification_test.dart
       @"testReplacementseriesWhensuggestedThenselectsandreturnstooriginalMm0Ytfua6Pymsusjg4TrTests507", // integration_test/test/journey_replacement_series_test.dart
       @"testReplacementseriesWhennoreplacementavailableThendoesnotsuggestUlgxunaeoxdqnsbksvyiTests507", // integration_test/test/journey_replacement_series_test.dart
       @"testReplacementseriesWhenendofsegmentreachedThenmessagedisappearsLizlpyffxgbtt95ZmbirTests507", // integration_test/test/journey_replacement_series_test.dart
       @"testReplacementseriesWhennoreplacementforbrakeseriesThenshowsnotificationNvohvz4Dmlz4SanartplTests938", // integration_test/test/journey_replacement_series_test.dart
-      @"testJourneySearchOverlayTestsJourneysearchoverlayWhenopenedanddismissedThentogglescorrectlyHjtzmqmajvvbofkjfxjiTests456", // integration_test/test/journey_search_overlay_test.dart
-      @"testJourneySearchOverlayTestsJourneysearchoverlayWhenopenedThenshowsdefaultsandvalidation7Pjrxknm1Dj2SoexzetoTests456", // integration_test/test/journey_search_overlay_test.dart
-      @"testJourneySearchOverlayTestsJourneysearchoverlayWhentrainloadedThenopensjourneywithoutnavigationbuttonsPffjikgb8Rju5Bakp7S1Tests456", // integration_test/test/journey_search_overlay_test.dart
-      @"testJourneySearchOverlayTestsJourneysearchoverlayWhenmultiplecompanymatchesThenredirectstoselectionscreen78G6Wgafp4Dv86Tsgl14Tests702", // integration_test/test/journey_search_overlay_test.dart
+      @"testJourneysearchoverlayWhenopenedanddismissedThentogglescorrectlyHjtzmqmajvvbofkjfxjiTests456", // integration_test/test/journey_search_overlay_test.dart
+      @"testJourneysearchoverlayWhenopenedThenshowsdefaultsandvalidation7Pjrxknm1Dj2SoexzetoTests456", // integration_test/test/journey_search_overlay_test.dart
+      @"testJourneysearchoverlayWhentrainloadedThenopensjourneywithoutnavigationbuttonsPffjikgb8Rju5Bakp7S1Tests456", // integration_test/test/journey_search_overlay_test.dart
+      @"testJourneysearchoverlayWhenmultiplecompanymatchesThenredirectstoselectionscreen78G6Wgafp4Dv86Tsgl14Tests702", // integration_test/test/journey_search_overlay_test.dart
       @"testAdditionalspeedrestrictionWhenrowdisplayedThenshowscorrectlyH60Hiyvcm6InpqtwssdiTests87", // integration_test/test/journey_table_additional_speed_restriction_test.dart
       @"testAdditionalspeedrestrictionWhennonasrrowsbetweenThencolorscorrectlyYa4Ssmxttnzic4SckmrcTests87", // integration_test/test/journey_table_additional_speed_restriction_test.dart
       @"testAdditionalspeedrestrictionWhencomplexasrThendisplayscorrectlyPe2Toyhui8Ow7Pkpelj7Tests227", // integration_test/test/journey_table_additional_speed_restriction_test.dart
@@ -140,33 +140,33 @@ static NSArray<NSString *> *RunnerDartTestNames(void) {
       @"testStationpropertyWhenstationsignspresentThendisplayscorrectly33P6HqftzihpswxiqymfTests127", // integration_test/test/journey_table_station_property_test.dart
       @"testStationpropertyWhenpropertiespresentThendisplayscorrectly2048M4Ei2Xwf3Xp9FnzrTests127", // integration_test/test/journey_table_station_property_test.dart
       @"testStationpropertyWhentrainserieschangesThenupdatesdisplay6Yg8Vyvmt02Jomus9RdcTests127", // integration_test/test/journey_table_station_property_test.dart
-      @"testTrainJourneyTableTestJourneytableWhencurvespresentThendisplaysendofcurvescorrectlyGfsq5X3EgvhqdizfmdamTests478", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhensummarizedcurveThendisplaysasoneFsnnju7Cwww3Zx7ZxrfqTests584", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenkilometerandnetworkchangesThendisplayscorrectly4R5G55Qzylcbrpp8BwycTests1251237356", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhengradientpresentThendisplaysupanddownhillWivyo0Q3Nnowuwnkvm28Tests225", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenbrakeseriesa50ChosenThenfindstwocurves6DftwlixiswnwpyqibjjTests478584", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenbrakeseriesr115ChosenThenfindsthreecurvesGa09Ybxy1Saxs4SdpfkqTests478584", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenwhistleandtramareaThendisplayscorrectlyUsmlmc9Mbo7Ngo9Crec8Tests224", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenchevroningroupeditemsThenpositionscorrectlyJoe81L2AczcxfgnhasnyTests94", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhendefaultbrakeseriesThenshowscorrectspeedvalues8X1Ka8Bgi8Yzoh4UjfzaTests89", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenmissingbrakeseriesThenshowscorrectspeedvaluesLlhbviwehyzfnedkofeeTests89", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenconnectiontrackandzahnstangepresentThendisplayscorrectlyUk1Rmjxg0Jcgsi5ArethTests136", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenloadedThenshowsallcolumnswithheaders2Xkqzqkinzvqyxlvy6H4Tests79", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenroutepresentThendisplayscorrectlyRyz21Ezspmxaa5NgydjjTests801557", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenprotectionsectionspresentThendisplayscorrectlyHw5Shuks9Djre4Ik706ZTests223", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenbothkilometrespresentThendisplaysbothGxhdmhah4BtjsxlsqhccTests1863", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenbracketstationsThendisplayscorrectlyR7Bvetxlois8Nat7DgnvTests81", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenhaltonrequestThendisplayscorrectlySvxw9Sgr7Xui7ZbberszTests81", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenhaltpresentThendisplaysitalicPsvc3Eahhti7Mnl15VlnTests81", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenservicepointhastrackgroupThendisplayscorrectlywithdetailmodalGobfvft2Aaypwmxp9CenTests1072", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhencurvespresentThendisplayscurvescorrectlyPnclwjdbimf8IumwaxueTests82", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhensignalspresentThendisplayscorrectly17Wdiw5Hyko2IvvtiobpTests82", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenstationspeedsThendisplayscorrectlyFxmx5Vrkhafegsmwh1G5Tests82", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenlinespeedThenalwaysdisplaysinstickyheaderJd3Nqcaive8Ivy8CnawmTests932", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenetcslevel2SectionThenhideslinespeed3Qrwumgq0Aqm4HaxpnjlTests120", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenadditionalservicepointsThendisplayscorrectlyIfrok0Ce5Yyxlnxw2CzbTests258", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenshuntingmovementThendisplaysmarkerscorrectly1Hj3Sn82MojhdbszhwudTests264", // integration_test/test/journey_table_test.dart
-      @"testTrainJourneyTableTestJourneytableWhenmultiplecolorsThendisplayscorrectpriorityBedmots6Ncw5Xayvseo6Tests1125", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhencurvespresentThendisplaysendofcurvescorrectlyGfsq5X3EgvhqdizfmdamTests478", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhensummarizedcurveThendisplaysasoneFsnnju7Cwww3Zx7ZxrfqTests584", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenkilometerandnetworkchangesThendisplayscorrectly4R5G55Qzylcbrpp8BwycTests1251237356", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhengradientpresentThendisplaysupanddownhillWivyo0Q3Nnowuwnkvm28Tests225", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenbrakeseriesa50ChosenThenfindstwocurves6DftwlixiswnwpyqibjjTests478584", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenbrakeseriesr115ChosenThenfindsthreecurvesGa09Ybxy1Saxs4SdpfkqTests478584", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenwhistleandtramareaThendisplayscorrectlyUsmlmc9Mbo7Ngo9Crec8Tests224", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenchevroningroupeditemsThenpositionscorrectlyJoe81L2AczcxfgnhasnyTests94", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhendefaultbrakeseriesThenshowscorrectspeedvalues8X1Ka8Bgi8Yzoh4UjfzaTests89", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenmissingbrakeseriesThenshowscorrectspeedvaluesLlhbviwehyzfnedkofeeTests89", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenconnectiontrackandzahnstangepresentThendisplayscorrectlyUk1Rmjxg0Jcgsi5ArethTests136", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenloadedThenshowsallcolumnswithheaders2Xkqzqkinzvqyxlvy6H4Tests79", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenroutepresentThendisplayscorrectlyRyz21Ezspmxaa5NgydjjTests801557", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenprotectionsectionspresentThendisplayscorrectlyHw5Shuks9Djre4Ik706ZTests223", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenbothkilometrespresentThendisplaysbothGxhdmhah4BtjsxlsqhccTests1863", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenbracketstationsThendisplayscorrectlyR7Bvetxlois8Nat7DgnvTests81", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenhaltonrequestThendisplayscorrectlySvxw9Sgr7Xui7ZbberszTests81", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenhaltpresentThendisplaysitalicPsvc3Eahhti7Mnl15VlnTests81", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenservicepointhastrackgroupThendisplayscorrectlywithdetailmodalGobfvft2Aaypwmxp9CenTests1072", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhencurvespresentThendisplayscurvescorrectlyPnclwjdbimf8IumwaxueTests82", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhensignalspresentThendisplayscorrectly17Wdiw5Hyko2IvvtiobpTests82", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenstationspeedsThendisplayscorrectlyFxmx5Vrkhafegsmwh1G5Tests82", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenlinespeedThenalwaysdisplaysinstickyheaderJd3Nqcaive8Ivy8CnawmTests932", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenetcslevel2SectionThenhideslinespeed3Qrwumgq0Aqm4HaxpnjlTests120", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenadditionalservicepointsThendisplayscorrectlyIfrok0Ce5Yyxlnxw2CzbTests258", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenshuntingmovementThendisplaysmarkerscorrectly1Hj3Sn82MojhdbszhwudTests264", // integration_test/test/journey_table_test.dart
+      @"testJourneytableWhenmultiplecolorsThendisplayscorrectpriorityBedmots6Ncw5Xayvseo6Tests1125", // integration_test/test/journey_table_test.dart
       @"testTimecellWhenfixedpointrelevanceDisplaycorrecticons3Lgb8Le756Lixsoviyg8Tests1201", // integration_test/test/journey_table_time_test.dart
       @"testTimecellWhenfarfuturejourneyThenshowsplannedtimesonly8Vwuvllyxynacmpov6JxTests84", // integration_test/test/journey_table_time_test.dart
       @"testTimecellWhennearfuturejourneyThenshowsoperationalandplannedtimesNx7Awinxvpgmh5BqoxmgTests84", // integration_test/test/journey_table_time_test.dart
@@ -178,63 +178,63 @@ static NSArray<NSString *> *RunnerDartTestNames(void) {
       @"testJourneyupdatesWhenchangesreceivedThendisplayscorrectlyRcw5QkoqduwtfxveeihrTests241", // integration_test/test/journey_table_updates_test.dart
       @"testJourneyupdatesWhenmodificationsacknowledgedThenhandlesacknowledgeundoandvisibilityQcfafzgvqun2Ea6Aoh8ZTests2218", // integration_test/test/journey_table_updates_test.dart
       @"testJourneyupdatesWhentraincharacteristicsupdatedThenignoresupdateLd7G7Ossekkpbbgjj5AmTests1416", // integration_test/test/journey_table_updates_test.dart
-      @"testJourneyValidationTestsJourneyvalidationWhenactivatedThenallowsmultiplebrakeseriesselectionanddisplaysX0Mynzy28I2Ijmp07SsbTests2734", // integration_test/test/journey_validation_test.dart
-      @"testLoginTestsLoginWhenlogoutdialogisdismissedThenisstillloggedinQrcd5Jy91Tve7Kucfsq7Tests1870", // integration_test/test/login_test.dart
-      @"testLoginTestsLoginWhenstarteddefaultforintegrationtestThenisconnectedtomockbrokerO1Ttzfxvce93K82Zfcob", // integration_test/test/login_test.dart
-      @"testLoginTestsLoginWhenlogoutThendefaultselectionistmsvadonloginpageMgpv1Rit2X8BfrjxjhsdTests2399", // integration_test/test/login_test.dart
-      @"testLoginTestsLoginWhenlogoutthenloginThenwillconnecttotmsvadVezt1C1Nxqkljokbjk7QTests2399", // integration_test/test/login_test.dart
-      @"testLoginTestsLoginWhenlogoutthenloginwithsferamocktoggledThenwillconnecttosferamockUcmthmlv4Xgl5Dw8BdeoTests2399", // integration_test/test/login_test.dart
-      @"testManualAdvancementTestsManualadvancementWhenservicepointdraggedThenjourneypositionmovedIu0Xywtq0Mgpanerdou9Tests741", // integration_test/test/manual_advancement_test.dart
-      @"testManualAdvancementTestsManualadvancementWhenmanualpositionsetThenmanualmodeactivateduntiljourneypositionsignaledVf1Buwaj8Ok5Qj9NsrvzTests741", // integration_test/test/manual_advancement_test.dart
-      @"testManualAdvancementTestsManualadvancementWhenmanualpositionsetThenstarttimedadvancementQidaqqpf9ZctfyvurotnTests1314", // integration_test/test/manual_advancement_test.dart
-      @"testManualAdvancementTestsManualadvancementWhenmanualpositionsetThenrestartspositiontimersTvzbkb7A7Zmsilorpp0OTests1314", // integration_test/test/manual_advancement_test.dart
-      @"testManualAdvancementTestsManualadvancementWhenmanualpositionsetThenshowschevronanimationcolorRdlrfyar0Jbcplagyvb1Tests1617", // integration_test/test/manual_advancement_test.dart
-      @"testNavigationDrawerTestsNavigationWhendraweropenedThenshowsallnavigationitems4Zq12YxohybvffmmbrmuTests80", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhenlinksselectedThenshowslinkspage6Ud9Zviyraalfwadmi7BTests80", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhensettingsselectedThenshowssettingspageNse6Erby0UokifbulzbaTests80", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhensupportselectedThenshowssupportpageUwgtlis6Brdbdk4ShrwjTests80", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhenjourneyselectionpageselectedThenshowsselectionpageF5Ahhw7Wfexfvwdrzzh6Tests80", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhennavigatingbacktojourneyThenjourneystaysloadedTvsaoe6Gbj5Bwoqpd2V1Tests801557", // integration_test/test/navigation_test.dart
-      @"testNavigationDrawerTestsNavigationWhennavigatingbackThenjourneysettingsnotresetRijoj3T18MvgvznmrmtqTests80583811", // integration_test/test/navigation_test.dart
+      @"testJourneyvalidationWhenactivatedThenallowsmultiplebrakeseriesselectionanddisplaysX0Mynzy28I2Ijmp07SsbTests2734", // integration_test/test/journey_validation_test.dart
+      @"testLoginWhenlogoutdialogisdismissedThenisstillloggedinQrcd5Jy91Tve7Kucfsq7Tests1870", // integration_test/test/login_test.dart
+      @"testLoginWhenstarteddefaultforintegrationtestThenisconnectedtomockbrokerO1Ttzfxvce93K82Zfcob", // integration_test/test/login_test.dart
+      @"testLoginWhenlogoutThendefaultselectionistmsvadonloginpageMgpv1Rit2X8BfrjxjhsdTests2399", // integration_test/test/login_test.dart
+      @"testLoginWhenlogoutthenloginThenwillconnecttotmsvadVezt1C1Nxqkljokbjk7QTests2399", // integration_test/test/login_test.dart
+      @"testLoginWhenlogoutthenloginwithsferamocktoggledThenwillconnecttosferamockUcmthmlv4Xgl5Dw8BdeoTests2399", // integration_test/test/login_test.dart
+      @"testManualadvancementWhenservicepointdraggedThenjourneypositionmovedIu0Xywtq0Mgpanerdou9Tests741", // integration_test/test/manual_advancement_test.dart
+      @"testManualadvancementWhenmanualpositionsetThenmanualmodeactivateduntiljourneypositionsignaledVf1Buwaj8Ok5Qj9NsrvzTests741", // integration_test/test/manual_advancement_test.dart
+      @"testManualadvancementWhenmanualpositionsetThenstarttimedadvancementQidaqqpf9ZctfyvurotnTests1314", // integration_test/test/manual_advancement_test.dart
+      @"testManualadvancementWhenmanualpositionsetThenrestartspositiontimersTvzbkb7A7Zmsilorpp0OTests1314", // integration_test/test/manual_advancement_test.dart
+      @"testManualadvancementWhenmanualpositionsetThenshowschevronanimationcolorRdlrfyar0Jbcplagyvb1Tests1617", // integration_test/test/manual_advancement_test.dart
+      @"testNavigationWhendraweropenedThenshowsallnavigationitems4Zq12YxohybvffmmbrmuTests80", // integration_test/test/navigation_test.dart
+      @"testNavigationWhenlinksselectedThenshowslinkspage6Ud9Zviyraalfwadmi7BTests80", // integration_test/test/navigation_test.dart
+      @"testNavigationWhensettingsselectedThenshowssettingspageNse6Erby0UokifbulzbaTests80", // integration_test/test/navigation_test.dart
+      @"testNavigationWhensupportselectedThenshowssupportpageUwgtlis6Brdbdk4ShrwjTests80", // integration_test/test/navigation_test.dart
+      @"testNavigationWhenjourneyselectionpageselectedThenshowsselectionpageF5Ahhw7Wfexfvwdrzzh6Tests80", // integration_test/test/navigation_test.dart
+      @"testNavigationWhennavigatingbacktojourneyThenjourneystaysloadedTvsaoe6Gbj5Bwoqpd2V1Tests801557", // integration_test/test/navigation_test.dart
+      @"testNavigationWhennavigatingbackThenjourneysettingsnotresetRijoj3T18MvgvznmrmtqTests80583811", // integration_test/test/navigation_test.dart
       @"testPersonalnotesWhencreatethenupdatenoteThenupdatesmodal1Vehh7UmxywgkqoozoicTests1009", // integration_test/test/personal_notes_test.dart
       @"testPersonalnotesWhenexistingsingleuseandgeneralanddeleteafterwardsThenshowssingleusethengeneralthennothing4Uzzwz3Sww0Iyo7OidajTests1009", // integration_test/test/personal_notes_test.dart
       @"testPersonalnotesWhencreatenoteasfootnotethendeleteThenupdatesjourneytable3Zcteqwjafzrlmjae4UyTests1009", // integration_test/test/personal_notes_test.dart
       @"testPersonalnotesWhencreatesingleusenoteThenonlyshowsincurrentjourneyUbhchmmwcvtq6QejzjrjTests1009", // integration_test/test/personal_notes_test.dart
       @"testPreloadWhenstatuschangesThendisplayscorrectlyVzryogxmwq20YjramwsnTests90", // integration_test/test/preload_test.dart
       @"testPreloadWhenusingpreloaddataThenreconnectssuccessfullyNw5Bzk5Bhro3Tbua6KwoTests90", // integration_test/test/preload_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhennetworkchangepresentThendisplayswithkmBg8F0Zcws1Ha8Umhb6XjTests356", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenloadedThendisplaystraininformationVaibsv3Jaxe2IslmbuphTests626", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenshuntingmovementjourneyThendisplaystraininformationHrt2S4Ied0Ewnedvvs14Tests264", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenstoppingandpassingpointsThendisplayscorrectly49Ntmpongah3D2TefradTests626", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenduplicatedasrThendisplaysonlyoncePczskx79Ogmg0Q3Pqn5DTests626", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenloadedThendisplaysoperationaltimesTk4Dmru7Xmiasig1ZnwdTests84", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenroutevariantspresentThendisplaysexpectedviatexts243626Psbihpnaiwu3Ewwui8Wo", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenfilterstoggledThendisplaysexpectedfiltereddata8Gtxulilune990Rfs6TqTests243", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenfilteroptionhasnoelementsThenfilteroptionisnotdisplayedNcea7Zkv9QkrskpnebmvTests243", // integration_test/test/reduced_journey_table_test.dart
-      @"testTrainReducedJourneyTestReducedjourneyWhenfilterhasnodataThenfilterbarisnotdisplayedZp6YldzlciyrywglwxfyTests243", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhennetworkchangepresentThendisplayswithkmBg8F0Zcws1Ha8Umhb6XjTests356", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenloadedThendisplaystraininformationVaibsv3Jaxe2IslmbuphTests626", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenshuntingmovementjourneyThendisplaystraininformationHrt2S4Ied0Ewnedvvs14Tests264", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenstoppingandpassingpointsThendisplayscorrectly49Ntmpongah3D2TefradTests626", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenduplicatedasrThendisplaysonlyoncePczskx79Ogmg0Q3Pqn5DTests626", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenloadedThendisplaysoperationaltimesTk4Dmru7Xmiasig1ZnwdTests84", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenroutevariantspresentThendisplaysexpectedviatexts243626Psbihpnaiwu3Ewwui8Wo", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenfilterstoggledThendisplaysexpectedfiltereddata8Gtxulilune990Rfs6TqTests243", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenfilteroptionhasnoelementsThenfilteroptionisnotdisplayedNcea7Zkv9QkrskpnebmvTests243", // integration_test/test/reduced_journey_table_test.dart
+      @"testReducedjourneyWhenfilterhasnodataThenfilterbarisnotdisplayedZp6YldzlciyrywglwxfyTests243", // integration_test/test/reduced_journey_table_test.dart
       @"testRuindicationsWhenshouldreturnmockdataThenindicationsareshownYejd2Tuqjowvkqcf7RycTests700", // integration_test/test/ru_indications_test.dart
       @"testRuindicationsWhenlongtextwithlinkThenshowmoreisvisibleGiyge5R7Ypqaht07DghwTests700", // integration_test/test/ru_indications_test.dart
       @"testRuindicationsWhenlongtextwithmarkdownlinkThenlinklabelisrenderedGuprxy8Bqyidlcgugxu0Tests700", // integration_test/test/ru_indications_test.dart
       @"testRuindicationsWhenlongtextexpandedThenfullcontentisvisibleR66Dkes5LmwlwiwhevsvTests700", // integration_test/test/ru_indications_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenbahnhofportallinktappedThenopensexpectedurlHjoshoannns1Uizv1PizTests1485", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenopenedThenhideskilometrecolumnZnzvrpa4V1Zbwe1GlnmiTests497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWheninteractedThenopensandclosescorrectlyBulpri837Zbdhbf9Ozo1Tests497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhensamecelltappedtwiceThenclosesmodalBlzzhmecrmoz03Ghc4KoTests1875", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenradiochanneltappedtwiceThenclosesmodal47Updax6Hsiyclucw05KTests1875", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhendifferentservicepointtappedThenswitcheswithoutclosingYnah8X76Zb856Tyrx9MjTests1875", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenactivetabreselectedThendoesnothingQd8Zin2Izxvs5Dgo9ZjdTests1875", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenopenedThencollapsesheaderbuttonsQ7V14S34B9G0J5OvssvyTests497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhendataavailableThenshowsonlyrelevanttabsHcumxsq54On6AaciawkyTests1040497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhentabchangedThendisplayscorrectcontent7Umiwrpg9Zo3Wq1YohzfTests497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhentimeoutThenclosesautomaticallyL3Ivfdwk1Kz8T4Zbo1CwTests497", // integration_test/test/service_point_modal_test.dart
-      @"testGeneralServicePointModalSheetTestsServicepointmodalWhenadvancementpausedThenclosesaftertimeoutPzmrskglsqo1CxxdrssfTests497", // integration_test/test/service_point_modal_test.dart
-      @"testGraduatedSpeedTabTestsGraduatedspeedWhenpresentThendisplaysinfodetails4Mjc7Eegubicosw69JyaTests231", // integration_test/test/service_point_modal_test.dart
-      @"testCommunicationTabTestsCommunicationtabWhenopenedThendisplaysnetworkandradiochannels02Dnnckadwrripfdp8RgTests229", // integration_test/test/service_point_modal_test.dart
-      @"testCommunicationTabTestsCommunicationtabWhenopenedfromothertabThenshowsinformationPnui8Yhc85RazhmisaezTests229", // integration_test/test/service_point_modal_test.dart
-      @"testCommunicationTabTestsCommunicationtabWhendepartureauthorizationpresentThendisplaysinmodal02Daropx5Oqot03Mcvb8Tests226", // integration_test/test/service_point_modal_test.dart
-      @"testLocalRegulationTabTestsLocalregulationtabWhenpresentThenshowstabG2Kzy4GafaapiqmdgefgTests95", // integration_test/test/service_point_modal_test.dart
-      @"testLocalRegulationTabTestsLocalregulationtabWhentabchangedThenupdatesdisplayLoewpfso4Qcapw2AvhuzTests95", // integration_test/test/service_point_modal_test.dart
-      @"testLocalRegulationTabTestsLocalregulationtabWhenopenedThenshowswebviewCccuxowsksjlpqmqsxttTests95", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenbahnhofportallinktappedThenopensexpectedurlHjoshoannns1Uizv1PizTests1485", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenopenedThenhideskilometrecolumnZnzvrpa4V1Zbwe1GlnmiTests497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWheninteractedThenopensandclosescorrectlyBulpri837Zbdhbf9Ozo1Tests497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhensamecelltappedtwiceThenclosesmodalBlzzhmecrmoz03Ghc4KoTests1875", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenradiochanneltappedtwiceThenclosesmodal47Updax6Hsiyclucw05KTests1875", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhendifferentservicepointtappedThenswitcheswithoutclosingYnah8X76Zb856Tyrx9MjTests1875", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenactivetabreselectedThendoesnothingQd8Zin2Izxvs5Dgo9ZjdTests1875", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenopenedThencollapsesheaderbuttonsQ7V14S34B9G0J5OvssvyTests497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhendataavailableThenshowsonlyrelevanttabsHcumxsq54On6AaciawkyTests1040497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhentabchangedThendisplayscorrectcontent7Umiwrpg9Zo3Wq1YohzfTests497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhentimeoutThenclosesautomaticallyL3Ivfdwk1Kz8T4Zbo1CwTests497", // integration_test/test/service_point_modal_test.dart
+      @"testServicepointmodalWhenadvancementpausedThenclosesaftertimeoutPzmrskglsqo1CxxdrssfTests497", // integration_test/test/service_point_modal_test.dart
+      @"testGraduatedspeedWhenpresentThendisplaysinfodetails4Mjc7Eegubicosw69JyaTests231", // integration_test/test/service_point_modal_test.dart
+      @"testCommunicationtabWhenopenedThendisplaysnetworkandradiochannels02Dnnckadwrripfdp8RgTests229", // integration_test/test/service_point_modal_test.dart
+      @"testCommunicationtabWhenopenedfromothertabThenshowsinformationPnui8Yhc85RazhmisaezTests229", // integration_test/test/service_point_modal_test.dart
+      @"testCommunicationtabWhendepartureauthorizationpresentThendisplaysinmodal02Daropx5Oqot03Mcvb8Tests226", // integration_test/test/service_point_modal_test.dart
+      @"testLocalregulationtabWhenpresentThenshowstabG2Kzy4GafaapiqmdgefgTests95", // integration_test/test/service_point_modal_test.dart
+      @"testLocalregulationtabWhentabchangedThenupdatesdisplayLoewpfso4Qcapw2AvhuzTests95", // integration_test/test/service_point_modal_test.dart
+      @"testLocalregulationtabWhenopenedThenshowswebviewCccuxowsksjlpqmqsxttTests95", // integration_test/test/service_point_modal_test.dart
       @"testServicepointmodalWhenmodalopenThenshowsshortsignalnamesD56Hz2Flgtw6Tj4Ome9VTests980", // integration_test/test/service_point_modal_test.dart
       @"testServicepointmodalWhennavigatedandreturnedThenstaysdisplayed1Qsvqp8Jis2Qsg4DklioTests497", // integration_test/test/service_point_modal_test.dart
       @"testSettingsWhenopenedThenshowsheaderinformationAsz1Ts4Ku7Nf5Oxr8IprTests427", // integration_test/test/settings_test.dart
@@ -244,34 +244,34 @@ static NSArray<NSString *> *RunnerDartTestNames(void) {
       @"testSettingsWhenkmheaderclickedwithgradienthiddenThentogglesdisplayLdw7Fzgpdn3ZytjjtduaTests583", // integration_test/test/settings_test.dart
       @"testSettingsWhenstationsignalhiddenThenhidescorrectsignalsWfjtznpiekwtpvmb9Rw0Tests811", // integration_test/test/settings_test.dart
       @"testSettingsWhenstationsignalhiddenThenchevronpositionscorrectly3Xkydx4SwtjlxynqgmoiTests811", // integration_test/test/settings_test.dart
-      @"testT45NspSignalsSettingsWhenstationsignalstoggledThenhidesbutkeepsetcsstopsignsVxfgyvh5Oeitemad3EvqTests16281484", // integration_test/test/settings_test.dart
-      @"testT45NspSignalsSettingsWhenetcsconventionaltoggledThenhidesonlyconventionalstopsignD70X81Okbp7Mf1FptjejTests16281484", // integration_test/test/settings_test.dart
-      @"testT45NspSignalsSettingsWhenetcsextendedtoggledThenhidesonlyextendedstopsignsWyfgcqfbagrteltqj00QTests16281484", // integration_test/test/settings_test.dart
-      @"testT45NspSignalsSettingsWhenbothetcstoggledoffThenhidesalletcsstopsignsX7Guyj0Rrgj3KycghzapTests16281484", // integration_test/test/settings_test.dart
-      @"testShortTermChangesTestsShorttermchangesWhenpresentThendisplaysallcorrectlyinjourneytableRpkzrlcoufvvodilaj3HTests99", // integration_test/test/short_term_changes_test.dart
+      @"testSettingsWhenstationsignalstoggledThenhidesbutkeepsetcsstopsignsVxfgyvh5Oeitemad3EvqTests16281484", // integration_test/test/settings_test.dart
+      @"testSettingsWhenetcsconventionaltoggledThenhidesonlyconventionalstopsignD70X81Okbp7Mf1FptjejTests16281484", // integration_test/test/settings_test.dart
+      @"testSettingsWhenetcsextendedtoggledThenhidesonlyextendedstopsignsWyfgcqfbagrteltqj00QTests16281484", // integration_test/test/settings_test.dart
+      @"testSettingsWhenbothetcstoggledoffThenhidesalletcsstopsignsX7Guyj0Rrgj3KycghzapTests16281484", // integration_test/test/settings_test.dart
+      @"testShorttermchangesWhenpresentThendisplaysallcorrectlyinjourneytableRpkzrlcoufvvodilaj3HTests99", // integration_test/test/short_term_changes_test.dart
       @"testShorttermchangesWhenpresentThendisplaysallcorrectlyinflapKshbuncrkalvbi9O4DavTests99", // integration_test/test/short_term_changes_test.dart
-      @"testSuspiciousSegmentTestsSuspicioussegmentWhenloadedThenshowsrowsandnotificationanddismissesEhjmbx24Ewgwgg10BezqTests409", // integration_test/test/suspicious_segment_test.dart
-      @"testSuspiciousSegmentTestsSuspicioussegmentWhenallpassedThendisappearsandreappearsonupdateObl4K6Vmunfhbxfuzby8Tests409", // integration_test/test/suspicious_segment_test.dart
-      @"testSuspiciousSegmentTestsSuspicioussegmentWhenjourneyupdatedThenshowsnotificationCqaskmxsyq2Yekuchh6YTests409", // integration_test/test/suspicious_segment_test.dart
-      @"testTourSystemLinkTestToursystemWhennotconfiguredThenhidesbuttonsJpxguirh7Wxqnvb04ZmjTests96", // integration_test/test/tour_system_link_test.dart
-      @"testTourSystemLinkTestToursystemWhenconfiguredThenshowsbuttonsDnnl6Kr0Cr51Ghfbwop5Tests96", // integration_test/test/tour_system_link_test.dart
-      @"testTourSystemLinkTestToursystemWhenpositionchangesThenupdatesbuttonvisibilityLshbn4Urksjx7Napw9GoTests96", // integration_test/test/tour_system_link_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenpageloadedThenshowsdefaultvaluesYjslvmx6Prhdbt3GnctgTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhencompanyselectionopenedThenshowsoptions4V8Lvliaxkstk9LkhcfvTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenrufilterenteredThenfiltersresultsK9Lxjibbfwa0SakjbxjuTests596", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhennotrainnumberenteredThendisablesbutton3JeyvxxjnxvgfeaoufjkTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenyesterdayselectedThenshowswarningRh6SvdbhmuibnydfpxfoTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhendaybeforeyesterdayThencannotselectT4Mnyzwoakpfwz6CypkaTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenjpunavailableThenshowserrorIpmnmrosspbbs6AhadtkTests92", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenerrorfromsferaThendisplayserrorcode9Uiii436R7Pmuxwlx6ZrTests652", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenmultiplecompanymatchesThenshowsselectionEdyqlmrib617Kcxr5XxnTests702703", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhenlastcompanycoderememberedThenautoselectsG6T83P9J45Q6Kft4Y70FTests702", // integration_test/test/train_search_test.dart
-      @"testTrainSearchScreenTestsTrainsearchWhennocompanymatchThenshowsnoresultmessageWq4Rtb8Lzngl5Hw7Dbq0Tests702", // integration_test/test/train_search_test.dart
-      @"testWarnappTestWarnappWhensignalisredThentriggerswarningFyc1Jkh9Cdcbv12Psb7QTests98", // integration_test/test/warnapp_test.dart
-      @"testWarnappTestWarnappWhenuirebuiltThennotificationnotreappearingUotbx3Swk0Erq5UknypqTests98", // integration_test/test/warnapp_test.dart
-      @"testWarnappTestWarnappWhenmaneuverbuttontappedThenactivatesmaneuvermodeFzvou1Fqoyjnn2Es2No0Tests98", // integration_test/test/warnapp_test.dart
-      @"testWarnappTestWarnappWheninmaneuvermodeThendoesnottriggerL1Acz9Qnjvnywflskh9YTests98", // integration_test/test/warnapp_test.dart
-      @"testWarnappTestWarnappWhensignalisgreenThendoesnottrigger8Evsobx4Adhhzex7HtwvTests98", // integration_test/test/warnapp_test.dart
+      @"testSuspicioussegmentWhenloadedThenshowsrowsandnotificationanddismissesEhjmbx24Ewgwgg10BezqTests409", // integration_test/test/suspicious_segment_test.dart
+      @"testSuspicioussegmentWhenallpassedThendisappearsandreappearsonupdateObl4K6Vmunfhbxfuzby8Tests409", // integration_test/test/suspicious_segment_test.dart
+      @"testSuspicioussegmentWhenjourneyupdatedThenshowsnotificationCqaskmxsyq2Yekuchh6YTests409", // integration_test/test/suspicious_segment_test.dart
+      @"testToursystemWhennotconfiguredThenhidesbuttonsJpxguirh7Wxqnvb04ZmjTests96", // integration_test/test/tour_system_link_test.dart
+      @"testToursystemWhenconfiguredThenshowsbuttonsDnnl6Kr0Cr51Ghfbwop5Tests96", // integration_test/test/tour_system_link_test.dart
+      @"testToursystemWhenpositionchangesThenupdatesbuttonvisibilityLshbn4Urksjx7Napw9GoTests96", // integration_test/test/tour_system_link_test.dart
+      @"testTrainsearchWhenpageloadedThenshowsdefaultvaluesYjslvmx6Prhdbt3GnctgTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhencompanyselectionopenedThenshowsoptions4V8Lvliaxkstk9LkhcfvTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenrufilterenteredThenfiltersresultsK9Lxjibbfwa0SakjbxjuTests596", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhennotrainnumberenteredThendisablesbutton3JeyvxxjnxvgfeaoufjkTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenyesterdayselectedThenshowswarningRh6SvdbhmuibnydfpxfoTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhendaybeforeyesterdayThencannotselectT4Mnyzwoakpfwz6CypkaTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenjpunavailableThenshowserrorIpmnmrosspbbs6AhadtkTests92", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenerrorfromsferaThendisplayserrorcode9Uiii436R7Pmuxwlx6ZrTests652", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenmultiplecompanymatchesThenshowsselectionEdyqlmrib617Kcxr5XxnTests702703", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhenlastcompanycoderememberedThenautoselectsG6T83P9J45Q6Kft4Y70FTests702", // integration_test/test/train_search_test.dart
+      @"testTrainsearchWhennocompanymatchThenshowsnoresultmessageWq4Rtb8Lzngl5Hw7Dbq0Tests702", // integration_test/test/train_search_test.dart
+      @"testWarnappWhensignalisredThentriggerswarningFyc1Jkh9Cdcbv12Psb7QTests98", // integration_test/test/warnapp_test.dart
+      @"testWarnappWhenuirebuiltThennotificationnotreappearingUotbx3Swk0Erq5UknypqTests98", // integration_test/test/warnapp_test.dart
+      @"testWarnappWhenmaneuverbuttontappedThenactivatesmaneuvermodeFzvou1Fqoyjnn2Es2No0Tests98", // integration_test/test/warnapp_test.dart
+      @"testWarnappWheninmaneuvermodeThendoesnottriggerL1Acz9Qnjvnywflskh9YTests98", // integration_test/test/warnapp_test.dart
+      @"testWarnappWhensignalisgreenThendoesnottrigger8Evsobx4Adhhzex7HtwvTests98", // integration_test/test/warnapp_test.dart
   ];
 }
 
