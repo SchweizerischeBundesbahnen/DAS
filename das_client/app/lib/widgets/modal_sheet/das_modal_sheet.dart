@@ -138,6 +138,12 @@ class DASModalSheetController({
     }
   }
 
+  /// Stops the automatic close timer. Call [resetAutomaticClose] to resume it.
+  void stopAutomaticClose() {
+    _idleTimer?.cancel();
+    _idleTimer = null;
+  }
+
   void dispose() {
     _idleTimer?.cancel();
     if (_initialized) {

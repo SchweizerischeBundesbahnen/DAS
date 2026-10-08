@@ -1,10 +1,10 @@
-import 'package:app/app_info/app_info.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/launcher_impl.dart';
+import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/sound/das_sounds.dart';

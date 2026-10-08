@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+import 'package:sfera/src/data/parser/parse_utils.dart';
 
 class TrainCharacteristicsRefDto({super.type = elementType, super.attributes, super.children, super.value})
     extends SferaXmlElementDto {
@@ -10,17 +11,15 @@ class TrainCharacteristicsRefDto({super.type = elementType, super.attributes, su
 
   String get versionMajor => attributes['TC_VersionMajor']!;
 
-  String get versionMinor => attributes['TC_VersionMinor']!;
+  String get versionMinor => attributes['TC_VersionMinor'] ?? '0';
 
-  double get location => double.parse(attributes['location']!);
+  double get location => ParseUtils.tryParseDouble(attributes['location']) ?? 0.0;
 
   @override
   bool validate() {
     return validateHasAttribute('TC_ID') &&
         validateHasChild('TC_RU_ID') &&
-        validateHasAttributeDouble('location') &&
         validateHasAttribute('TC_VersionMajor') &&
-        validateHasAttribute('TC_VersionMinor') &&
         super.validate();
   }
 

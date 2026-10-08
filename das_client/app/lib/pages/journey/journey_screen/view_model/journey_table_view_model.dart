@@ -7,7 +7,9 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
@@ -31,6 +33,8 @@ class JourneyTableViewModel({
   required final DetailModalViewModel _detailModalVM,
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
+  required final PersonalNotesViewModel _personalNotesVM,
+  required final LocalKeyValueStore _userSettings,
   required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
   required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
@@ -66,7 +70,7 @@ class JourneyTableViewModel({
   void _initRxModel() {
     _streamSubscription?.cancel();
     _streamSubscription =
-        CombineLatestStream.combine9(
+        CombineLatestStream.list([
           journeyViewModel.journey,
           _settingsVM.model,
           _collapsibleRowsVM.collapsedRows,
@@ -74,19 +78,21 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
+          _personalNotesVM.personalNoteAnnotations,
           _userPropertiesRepository.model,
           _acknowledgedModificationRepository.model,
-          (a, b, c, d, e, f, g, h, i) => (a, b, c, d, e, f, g, h, i),
-        ).listen(
+          _userSettings.model,
+        ]).listen(
           (data) => _handleDataChanged(
-            journey: data.$1,
-            settings: data.$2,
-            collapsibleRows: data.$3,
-            position: data.$4,
-            detailModalType: data.$5,
-            showDecisiveGradient: data.$6,
-            navigationModel: data.$7,
-            acknowledgedModifications: data.$9,
+            journey: data[0] as Journey?,
+            settings: data[1] as JourneySettings,
+            collapsibleRows: data[2] as Map<int, CollapsedState>,
+            position: data[3] as JourneyPositionModel,
+            detailModalType: data[4] as DetailModalType?,
+            showDecisiveGradient: data[5] as bool,
+            navigationModel: data[6] as JourneyNavigationModel?,
+            personalNoteAnnotations: data[7] as List<PersonalNoteAnnotation>,
+            acknowledgedModifications: data[8] as Set<Modification>,
           ),
         );
   }
@@ -104,6 +110,7 @@ class JourneyTableViewModel({
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
     required Set<Modification> acknowledgedModifications,
+    required List<PersonalNoteAnnotation> personalNoteAnnotations,
     JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
     Journey? journey,
@@ -113,7 +120,9 @@ class JourneyTableViewModel({
       return;
     }
 
-    final rowData = journey.data
+    final journeyData = [...journey.data, ...personalNoteAnnotations];
+
+    final rowData = journeyData
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .removeIrrelevantServicePoints(journey.metadata.calculatedSpeeds)
         .hideJourneyPointsThatShouldNotBeDisplayed()
@@ -122,7 +131,7 @@ class JourneyTableViewModel({
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideRepeatedLineFootNotes(position.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(settings.currentBrakeSeries?.trainSeries)
-        .combineFootNoteAndIndications()
+        .combineFootNoteAndTextAnnotations()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .hideSignals(
           stationSignals: !_userPropertiesRepository.showStationSignals,
@@ -157,17 +166,13 @@ class JourneyTableViewModel({
     required JourneyPositionModel position,
   }) {
     final lastVisiblePosition = _positionOrLastVisibleBefore(visibleJourneyPoints, position.lastPosition);
-    final currentVisiblePosition = _positionOrLastVisibleBefore(
-      visibleJourneyPoints,
-      position.currentPosition,
-    );
-
     if (lastVisiblePosition != position.lastPosition) {
       _log.fine(
         'Last position ${position.lastPosition} is not visible, using $lastVisiblePosition as last position for chevron animation.',
       );
     }
 
+    final currentVisiblePosition = _positionOrLastVisibleBefore(visibleJourneyPoints, position.currentPosition);
     if (currentVisiblePosition != position.currentPosition) {
       _log.fine(
         'Current position ${position.currentPosition} is not visible, using $currentVisiblePosition as current position for chevron animation.',

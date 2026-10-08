@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 extension TourSystemX on TourSystem {
   String localizedName(BuildContext context) => switch (this) {
-    TourSystem.tip => context.l10n.c_tour_system_tip,
-    TourSystem.caros => context.l10n.c_tour_system_caros,
-    TourSystem.railOpt => context.l10n.c_tour_system_rail_opt,
-    TourSystem.blsIvu => context.l10n.c_tour_system_bls_ivu,
-    TourSystem.railCube => context.l10n.c_tour_system_rail_cube,
+    .tip => context.l10n.c_tour_system_tip,
+    .caros => context.l10n.c_tour_system_caros,
+    .railOpt => context.l10n.c_tour_system_rail_opt,
+    .blsIvu => context.l10n.c_tour_system_bls_ivu,
+    .railCube => context.l10n.c_tour_system_rail_cube,
   };
 }

@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.52.0+95
+version: 0.54.0+97
 
 environment:
   sdk: ^3.13.0
@@ -31,20 +31,21 @@ dependencies:
   ru_indications: 1.0.0
   train_identification: 1.0.0
   core_data: 1.0.0
+  personal_notes: 1.0.0
   user_properties: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.8.1
   # https://pub.dev/packages/android_id
-  android_id: ^0.5.2+1
+  android_id: ^0.6.0
   # https://pub.dev/packages/auto_route
-  auto_route: ^11.1.0
+  auto_route: ^11.2.0
   # https://pub.dev/packages/battery_plus
   battery_plus: ^7.1.1
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/clock
-  clock: ^1.1.2
+  clock: ^1.1.3
   # https://pub.dev/packages/device_info_plus
   device_info_plus: ^13.2.0
   # https://pub.dev/packages/extra_hittest_area
@@ -54,7 +55,7 @@ dependencies:
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.3.0
   # https://pub.dev/packages/get_it
-  get_it: ^9.2.1
+  get_it: ^9.3.0
   # https://pub.dev/packages/intl
   intl: ^0.20.3
   # https://pub.dev/packages/meta
@@ -65,9 +66,9 @@ dependencies:
   rxdart: ^0.28.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.1.0
+  sbb_design_system_mobile: ^5.2.0
   # https://pub.dev/packages/volume_controller
-  volume_controller: ^3.6.1
+  volume_controller: ^3.7.1
   # https://pub.dev/packages/wakelock_plus
   wakelock_plus: ^1.7.0
   # https://pub.dev/packages/screen_brightness/
@@ -83,9 +84,9 @@ dependencies:
   # https://pub.dev/packages/webview_flutter
   webview_flutter: ^4.14.1
   # https://pub.dev/packages/skeletonizer
-  skeletonizer: ^2.1.3
+  skeletonizer: ^3.0.0
   # https://pub.dev/packages/appcheck
-  appcheck: ^1.8.0
+  appcheck: ^1.8.1
   # https://pub.dev/packages/dotted_border
   dotted_border: ^3.1.0
   # https://pub.dev/packages/url_launcher
@@ -100,11 +101,11 @@ dev_dependencies:
   # https://pub.dev/packages/auto_route_generator
   auto_route_generator: ^10.6.0
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.16.0
+  build_runner: ^2.16.1
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/mockito
-  mockito: ^5.6.7
+  mockito: ^5.8.1
   # https://pub.dev/packages/fake_async
   fake_async: ^1.3.3
 

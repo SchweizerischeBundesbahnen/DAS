@@ -28,6 +28,8 @@ class CollapsibleRowsViewModel({
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
+  Set<int> _repeatedLineFootNotes = {};
+
   StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
   StreamSubscription<bool>? _simTrainSubscription;
 
@@ -39,7 +41,8 @@ class CollapsibleRowsViewModel({
     final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
     final currentState = newMap.stateOf(data);
     if (currentState == .collapsed) {
-      newMap[data.hashCode] = .defaultOf(data);
+      final defaultState = _defaultOf(data);
+      newMap[data.hashCode] = defaultState == .collapsed ? .expanded : defaultState;
     } else if (currentState == .expandedWithCollapsedContent && isContentExpandable) {
       newMap[data.hashCode] = .expanded;
     } else {
@@ -123,7 +126,7 @@ class CollapsibleRowsViewModel({
           continue;
         }
 
-        newMap[data.hashCode] = .defaultOf(data);
+        newMap[data.hashCode] = _defaultOf(data);
       }
     }
 
@@ -131,6 +134,32 @@ class CollapsibleRowsViewModel({
       _rxCollapsedRows.add(newMap);
     }
   }
+
+  /// Collapses line foot notes repeating an earlier one unless the driver already changed their state.
+  /// SIM foot notes are excluded as their state depends on the train being a SIM train.
+  void _collapseRepeatedLineFootNotes(Journey? journey) {
+    if (journey == null) return;
+
+    final seenIdentifiers = <String>{};
+    _repeatedLineFootNotes = journey.data
+        .whereType<LineFootNote>()
+        .where((fn) => !fn.footNote.isSIM && !seenIdentifiers.add(fn.identifier))
+        .map((fn) => fn.hashCode)
+        .toSet();
+
+    final collapsedRows = _rxCollapsedRows.value;
+    final newMap = Map.of(collapsedRows);
+    for (final hashCode in _repeatedLineFootNotes) {
+      newMap.putIfAbsent(hashCode, () => .collapsed);
+    }
+
+    if (!newMap.isSameStateAs(collapsedRows)) {
+      _rxCollapsedRows.add(newMap);
+    }
+  }
+
+  CollapsedState _defaultOf(BaseData data) =>
+      _repeatedLineFootNotes.contains(data.hashCode) ? .collapsed : .defaultOf(data);
 
   @override
   void dispose() {
@@ -144,7 +173,11 @@ class CollapsibleRowsViewModel({
   void onJourneyChanged(journey) {
     _rxCollapsedRows.add({});
     _updateSimFootNotes(journey);
+    _collapseRepeatedLineFootNotes(journey);
   }
+
+  @override
+  void onJourneyUpdated(journey) => _collapseRepeatedLineFootNotes(journey);
 }
 
 extension BaseDataX on BaseData {
