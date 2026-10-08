@@ -40,18 +40,15 @@ class JourneyPositionViewModel({
 
   JourneyPositionModel get modelValue => _rxModel.value;
 
-  void setManualPosition(JourneyPoint? manualPosition) {
-    final position = switch (manualPosition) {
-      null => null,
-      final ServicePoint servicePoint => 'ServicePoint{name: ${servicePoint.name}, order: ${servicePoint.order}}',
-      final JourneyPoint point => '${point.runtimeType}{order: ${point.order}}',
-    };
-    _log.info('Setting manual position to: $position');
-    _rxManualPosition.add(manualPosition);
+  void setManualPosition(ServicePoint? manualServicePoint) {
+    _log.info(
+      'Setting manual position to: ${manualServicePoint == null ? ' null' : manualServicePoint.toShortString()}',
+    );
+    _rxManualPosition.add(manualServicePoint);
     _manualPositionTime = clock.now();
     _manuelPositionAdvancementTimer?.cancel();
-    if (manualPosition is ServicePoint) {
-      _startManualPositionTimer(manualPosition);
+    if (manualServicePoint != null) {
+      _startManualPositionTimer(manualServicePoint);
     }
   }
 

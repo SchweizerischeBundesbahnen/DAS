@@ -132,4 +132,6 @@ class const ServicePoint({
         'localRegulationSegmentIds: $localRegulationSegmentIds'
         '}';
   }
+
+  String toShortString() => 'ServicePoint{order: $order, name: $name}';
 }
