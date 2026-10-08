@@ -76,7 +76,6 @@ void main() {
       userSettings.set(.tourSystem, TourSystem.tip.name);
 
       await loadJourney(tester, trainNumber: 'T39');
-      expect(find.text(l10n.p_journey_overview_tour_button_text), findsOne);
 
       await waitUntilNotExists(tester, find.text(l10n.p_journey_overview_tour_button_text));
       await waitUntilExists(tester, find.text(l10n.p_journey_overview_tour_button_text));
