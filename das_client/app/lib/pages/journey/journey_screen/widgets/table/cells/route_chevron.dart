@@ -90,11 +90,7 @@ class _RouteChevronState extends State<RouteChevron> {
   }
 }
 
-class _ChevronPainter extends CustomPainter {
-  _ChevronPainter({this.color = SBBColors.black});
-
-  final Color color;
-
+class _ChevronPainter({final Color color = SBBColors.black}) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

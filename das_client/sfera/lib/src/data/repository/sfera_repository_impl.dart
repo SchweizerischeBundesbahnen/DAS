@@ -17,6 +17,7 @@ import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
 import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
 import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
+import 'package:sfera/src/data/api/task/request_related_train_information_task.dart';
 import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -312,8 +313,6 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
-    _tasks.remove(task);
-    _log.info('Task $task completed');
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -323,8 +322,12 @@ class SferaRepoImpl({
         await _handleRequestSegmentProfilesTaskCompleted();
       case RequestLocalRegulationsTask _:
         return;
+      case RequestRelatedTrainInformationTask _:
+        await _handleRequestRelatedTrainInformationCompleted(data);
     }
 
+    _log.info('Task $task completed');
+    _tasks.remove(task);
     if (_allMandatoryTasksCompleted()) {
       switch (_rxState.value) {
         case .loadingAdditionalData:
@@ -367,6 +370,14 @@ class SferaRepoImpl({
     _resetSegmentProfileRetryState();
     _startRequestSegmentProfileTask();
     _startRequestTrainCharacteristicsTask();
+    _startRequestRelatedTrainInformationTask();
+  }
+
+  Future<void> _handleRequestRelatedTrainInformationCompleted(dynamic data) async {
+    if (data is RelatedTrainInformationDto) {
+      _relatedTrainInformation = data;
+      _updateJourney();
+    }
   }
 
   /// It's possible that not all SPs are provided because of a MQTT limit.
@@ -461,6 +472,16 @@ class SferaRepoImpl({
   }
 
   bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
+
+  void _startRequestRelatedTrainInformationTask() {
+    final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
+      mqttService: _mqttService,
+      sferaRepo: this,
+      otnId: _otnId!,
+    );
+    _tasks.add(requestRelatedTrainInformationTask);
+    requestRelatedTrainInformationTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
 
   Future<void> _refreshSegmentProfiles() async {
     if (_journeyProfile == null) return;

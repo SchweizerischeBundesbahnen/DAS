@@ -35,9 +35,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsSuccessful_thenReturnsTrue', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -63,9 +61,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsSuccessful_thenSavesToSferaRepository', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -90,9 +86,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsWithOtherMessage_thenIsIgnored', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -108,10 +102,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      handShakefile.readAsStringSync(),
-    );
+    final handshakeSferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     final result = await tcTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -119,9 +110,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsIsTimedOut_thenFailsWithRequestTimeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -149,9 +138,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsFailsWithError_thenFailsWithProtocolError', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final tcRequestFile = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final tcRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcRequestFile.readAsStringSync());
-
+    final tcRequest = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -181,9 +168,11 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
     final result = await tcTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
   });
 }
+
+SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
+    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());

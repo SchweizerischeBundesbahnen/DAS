@@ -336,11 +336,7 @@ class _FixedHeightRow extends StatelessWidget {
   }
 }
 
-class _StrikethroughPainter extends CustomPainter {
-  _StrikethroughPainter(this.color);
-
-  final Color color;
-
+class _StrikethroughPainter(final Color color) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

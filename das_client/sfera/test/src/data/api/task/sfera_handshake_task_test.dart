@@ -49,9 +49,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
@@ -95,9 +93,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
@@ -119,9 +115,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
   });
@@ -182,10 +176,11 @@ void main() {
       },
     );
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
   });
 }
+
+SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
+    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());
