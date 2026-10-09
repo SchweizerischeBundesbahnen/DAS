@@ -11,23 +11,17 @@ final _log = Logger('UserPropertiesRepositoryImpl');
 
 const _syncRetryDelay = Duration(minutes: 5);
 
-//todo temporary fix
-class const _UserIdProvider() implements UserIdProvider {
-  @override
-  Future<String> getUserId() async {
-    return 'userId';
-  }
-}
-
 class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
   UserPropertiesRepositoryImpl({
     required UserPropertiesApiService apiService,
+    required UserIdProviderProperties userIdProvider,
+    LocalKeyValueStore? localStore,
     UserPropertiesSyncer? syncer,
-  }) {
+  }) : _localStore = localStore ?? LocalKeyValueStore(userIdProvider: userIdProvider) {
     _syncer = syncer ?? UserPropertiesSyncer(apiService, _localStore);
   }
 
-  final LocalKeyValueStore _localStore = LocalKeyValueStore(userIdProvider: _UserIdProvider());
+  final LocalKeyValueStore _localStore;
   late UserPropertiesSyncer _syncer;
 
   Future<void>? _runningSync;
@@ -40,15 +34,17 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
     if (value == null) return deleteUserProperty(key);
 
     await _localStore.set(key, value);
-    _triggerSync();
+    if (_isSynced(key)) _triggerSync();
   }
 
   @override
   Future<void> deleteUserProperty(LocalKeyValueStoreKeys key) async {
     _log.fine('Deleting user property for key=$key');
     await _localStore.delete(key);
-    await _syncer.deleteRemote(key);
+    if (_isSynced(key)) await _syncer.deleteRemote(key);
   }
+
+  bool _isSynced(LocalKeyValueStoreKeys key) => LocalKeyValueStore.syncedKeyNames.contains(key.name);
 
   @override
   Future<void> clearLocalUserProperties() async {

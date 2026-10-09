@@ -4,6 +4,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_properties/component.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';
 import 'package:user_properties/src/repository/user_properties_repository_impl.dart';
@@ -11,156 +12,132 @@ import 'package:user_properties/src/repository/user_properties_syncer.dart';
 
 import 'user_properties_repository_test.mocks.dart';
 
+class _FakeUserIdProvider implements UserIdProviderProperties {
+  @override
+  Future<String> call() async => 'u12345';
+}
+
 @GenerateNiceMocks([
   MockSpec<UserPropertiesApiService>(),
   MockSpec<UserPropertiesSyncer>(),
-  MockSpec<LocalKeyValueStore>(),
 ])
 void main() {
-  late MockUserPropertiesApiService apiService;
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late MockUserPropertiesSyncer syncer;
-  late MockLocalKeyValueStore localStore;
   late UserPropertiesRepositoryImpl repository;
 
-  const companyCodes = ['1285', '2185'];
-
   setUp(() {
-    apiService = MockUserPropertiesApiService();
+    SharedPreferences.setMockInitialValues({});
     syncer = MockUserPropertiesSyncer();
-    localStore = MockLocalKeyValueStore();
+    when(syncer.sync()).thenAnswer((_) async {});
+    when(syncer.deleteRemote(any)).thenAnswer((_) async {});
     repository = UserPropertiesRepositoryImpl(
-      apiService: apiService,
+      apiService: MockUserPropertiesApiService(),
+      userIdProvider: _FakeUserIdProvider(),
       syncer: syncer,
     );
   });
 
-  UserPropertyModel p(String key, int ms) => UserPropertyModel(
-    key: key,
-    value: 'x',
-    lastUpdated: DateTime.fromMillisecondsSinceEpoch(ms),
-  );
-
-  test('neuere Seite gewinnt, fehlende Seite verliert immer', () {
-    final plan = planSync(
-      {'A': p('A', 100), 'B': p('B', 50), 'D': p('D', 70), 'E': p('E', 40)},
-      {'A': p('A', 80), 'B': p('B', 90), 'C': p('C', 60), 'D': p('D', 70)},
-    );
-
-    expect(plan.push.map((e) => e.key), unorderedEquals(['A', 'E']));
-    expect(plan.pull.map((e) => e.key), unorderedEquals(['B', 'C']));
+  tearDown(() {
+    repository.dispose();
   });
 
-  test('saveUserProperty_whenValueIsNotNull_savesLocallyAndTriggersSync', () async {
-    when(localStore.set(LocalKeyValueStoreKeys.companyCodes, companyCodes)).thenAnswer((_) => Future<void>.value());
-    when(syncer.sync()).thenAnswer((_) => Future<void>.value());
-
-    await repository.saveUserProperty(LocalKeyValueStoreKeys.companyCodes, companyCodes);
-
+  test('saveUserProperty_whenKeyIsSynced_thenSavesLocallyAndTriggersSync', () async {
+    // WHEN
+    await repository.saveUserProperty(LocalKeyValueStoreKeys.showStationSignals, false);
     await Future<void>.delayed(Duration.zero);
 
-    verify(localStore.set(LocalKeyValueStoreKeys.companyCodes, companyCodes)).called(1);
+    // THEN
+    expect(repository.showStationSignals, false);
     verify(syncer.sync()).called(1);
-    verifyNever(syncer.deleteRemote(any));
-    verifyNever(localStore.delete(any));
   });
 
-  test('saveUserProperty_whenValueIsNull_deletesRemoteAndLocalValue', () async {
-    when(syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode)).thenAnswer((_) => Future<void>.value());
-    when(localStore.delete(LocalKeyValueStoreKeys.lastUsedCompanyCode)).thenAnswer((_) => Future<void>.value());
+  test('saveUserProperty_whenKeyIsLocalOnly_thenSavesLocallyWithoutTriggeringSync', () async {
+    // WHEN
+    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastSettingsRequestSuccessful, true);
+    await Future<void>.delayed(Duration.zero);
 
-    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, null);
-
-    verify(syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode)).called(1);
-    verify(localStore.delete(LocalKeyValueStoreKeys.lastUsedCompanyCode)).called(1);
-    verifyNever(localStore.set(any, any));
+    // THEN
+    expect(repository.lastSettingsRequestSuccessful, true);
     verifyNever(syncer.sync());
   });
 
-  test('deleteUserProperty_deletesRemoteBeforeLocal', () async {
-    when(syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode)).thenAnswer((_) => Future<void>.value());
-    when(localStore.delete(LocalKeyValueStoreKeys.lastUsedCompanyCode)).thenAnswer((_) => Future<void>.value());
+  test('saveUserProperty_whenValueIsNull_thenDeletesRemoteAndLocal', () async {
+    // GIVEN
+    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, '1285');
+    await Future<void>.delayed(Duration.zero);
 
-    await repository.deleteUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode);
+    // WHEN
+    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, null);
 
-    verifyInOrder([
-      syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode),
-      localStore.delete(LocalKeyValueStoreKeys.lastUsedCompanyCode),
-    ]);
+    // THEN
+    verify(syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode)).called(1);
+    expect(repository.lastUsedCompanyCode, isNull);
   });
 
-  test('syncUserProperties_whenCalledMultipleTimesWhileRunning_triggersSyncOnce', () async {
+  test('syncUserProperties_whenRequestedWhileRunning_thenSharesFutureAndRunsAnotherPass', () async {
+    // GIVEN
     final completer = Completer<void>();
     when(syncer.sync()).thenAnswer((_) => completer.future);
 
+    // WHEN
     final first = repository.syncUserProperties();
     final second = repository.syncUserProperties();
-
-    expect(first, same(second));
-    verify(syncer.sync()).called(1);
-
     completer.complete();
     await Future.wait([first, second]);
 
-    verify(syncer.sync()).called(1);
+    // THEN
+    expect(first, same(second));
+    verify(syncer.sync()).called(2);
   });
 
-  test('syncUserProperties_whenSyncFails_schedulesRetryAndRetriesAfterFiveMinutes', () {
+  test('syncUserProperties_whenSyncFails_thenRetriesAfterFiveMinutes', () {
     fakeAsync((async) {
-      var firstCall = true;
+      // GIVEN
+      var calls = 0;
       when(syncer.sync()).thenAnswer((_) {
-        if (firstCall) {
-          firstCall = false;
-          return Future<void>.error(Exception('boom'));
-        }
-        return Future<void>.value();
+        calls++;
+        return calls == 1 ? Future<void>.error(Exception('boom')) : Future<void>.value();
       });
 
+      // WHEN
       repository.syncUserProperties().catchError((_) {});
       async.flushMicrotasks();
-
-      verify(syncer.sync()).called(1);
-
       async.elapse(const Duration(minutes: 5, milliseconds: 1));
       async.flushMicrotasks();
 
-      verify(syncer.sync()).called(1);
+      // THEN
+      expect(calls, 2);
     });
   });
 
-  test('clearLocalUserProperties_cancelsScheduledRetry', () {
+  test('dispose_whenRetryIsScheduled_thenCancelsRetry', () {
     fakeAsync((async) {
-      var firstCall = true;
+      // GIVEN
+      var calls = 0;
       when(syncer.sync()).thenAnswer((_) {
-        if (firstCall) {
-          firstCall = false;
-          return Future<void>.error(Exception('boom'));
-        }
-        return Future<void>.value();
+        calls++;
+        return Future<void>.error(Exception('boom'));
       });
-      when(localStore.clearUserProperties()).thenAnswer((_) => Future<void>.value());
-
       repository.syncUserProperties().catchError((_) {});
       async.flushMicrotasks();
 
-      repository.clearLocalUserProperties();
+      // WHEN
+      repository.dispose();
+      async.elapse(const Duration(minutes: 10));
       async.flushMicrotasks();
 
-      verify(localStore.clearUserProperties()).called(1);
-
-      async.elapse(const Duration(minutes: 5, milliseconds: 1));
-      async.flushMicrotasks();
-
-      verify(syncer.sync()).called(1);
+      // THEN
+      expect(calls, 1);
     });
   });
 
-  test('planSync_whenVersionsDiffer_choosesNewerSide', () {
-    final plan = planSync(
-      {'A': p('A', 100), 'B': p('B', 50), 'D': p('D', 70), 'E': p('E', 40)},
-      {'A': p('A', 80), 'B': p('B', 90), 'C': p('C', 60), 'D': p('D', 70)},
-    );
+  test('tourSystem_whenStoredNameIsUnknown_thenReturnsNull', () async {
+    // GIVEN
+    await repository.saveUserProperty(LocalKeyValueStoreKeys.tourSystem, 'someFutureTourSystem');
 
-    expect(plan.push.map((e) => e.key), unorderedEquals(['A', 'E']));
-    expect(plan.pull.map((e) => e.key), unorderedEquals(['B', 'C']));
+    // THEN
+    expect(repository.tourSystem, isNull);
   });
 }

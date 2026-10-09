@@ -18,6 +18,8 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
+    getIt.registerUserPropertiesRepository();
+    getIt.registerLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();

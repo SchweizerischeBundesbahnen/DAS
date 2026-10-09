@@ -34,7 +34,6 @@ class JourneyTableViewModel({
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
   required final PersonalNotesViewModel _personalNotesVM,
-  required final LocalKeyValueStore _userSettings,
   required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
   required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
@@ -81,7 +80,6 @@ class JourneyTableViewModel({
           _personalNotesVM.personalNoteAnnotations,
           _userPropertiesRepository.model,
           _acknowledgedModificationRepository.model,
-          _userSettings.model,
         ]).listen(
           (data) => _handleDataChanged(
             journey: data[0] as Journey?,

@@ -4,7 +4,7 @@ import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_properties/src/api/model/user_property_model.dart';
-import 'package:user_properties/src/provider/user_id_provider.dart';
+import 'package:user_properties/src/provider/user_id_provider_properties.dart';
 
 class LocalKeyValueStore {
   LocalKeyValueStore({required this._userIdProvider}) {
@@ -23,10 +23,11 @@ class LocalKeyValueStore {
   };
 
   late final SharedPreferences _prefs;
-  late final String _userId;
   late final Future<void> _ready;
-  final UserIdProvider _userIdProvider;
+  final UserIdProviderProperties _userIdProvider;
   final _rxModel = BehaviorSubject<LocalKeyValueStoreKeys?>.seeded(null);
+
+  String? _userId;
 
   Stream<LocalKeyValueStoreKeys?> get model => _rxModel.stream;
 
@@ -34,8 +35,19 @@ class LocalKeyValueStore {
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
-    _userId = await _userIdProvider.getUserId();
   }
+
+  Future<String> _ensureUserId() async {
+    final cached = _userId;
+    if (cached != null) return cached;
+
+    final userId = await _userIdProvider();
+    _userId = userId;
+    _rxModel.add(null);
+    return userId;
+  }
+
+  String _prefsKey(String userId, String key) => '$userId-$key';
 
   UserPropertyModel get<T>(LocalKeyValueStoreKeys key, T defaultValue) =>
       _read(key.name) ?? UserPropertyModel(key: key.name, lastUpdated: null, value: defaultValue);
@@ -47,11 +59,12 @@ class LocalKeyValueStore {
 
   Future<void> put(UserPropertyModel model) async {
     await _ready;
+    final userId = await _ensureUserId();
 
     if (model.value == null) {
-      await _prefs.remove(model.key);
+      await _prefs.remove(_prefsKey(userId, model.key));
     } else {
-      await _prefs.setString('$_userId}-${model.key}', jsonEncode(model.toJson()));
+      await _prefs.setString(_prefsKey(userId, model.key), jsonEncode(model.toJson()));
     }
 
     _rxModel.add(LocalKeyValueStoreKeys.values.asNameMap()[model.key]);
@@ -59,32 +72,40 @@ class LocalKeyValueStore {
 
   Future<void> delete(LocalKeyValueStoreKeys key) async {
     await _ready;
-    await _prefs.remove('$_userId-${key.name}');
+    final userId = await _ensureUserId();
+    await _prefs.remove(_prefsKey(userId, key.name));
     _rxModel.add(key);
   }
 
-  List<UserPropertyModel> getAllLocalUserProperties() => [
-    for (final key in syncedKeyNames) ?_read(key),
-  ];
+  Future<List<UserPropertyModel>> getAllLocalUserProperties() async {
+    await _ready;
+    await _ensureUserId();
+    return [
+      for (final key in syncedKeyNames) ?_read(key),
+    ];
+  }
 
   Future<void> clearUserProperties() async {
     await _ready;
+    final userId = await _ensureUserId();
 
     for (final key in syncedKeyNames) {
-      await _prefs.remove('$_userId-$key');
+      await _prefs.remove(_prefsKey(userId, key));
     }
-    await _prefs.remove('$_userId-${LocalKeyValueStoreKeys.lastUserPropertiesSyncTimestamp.name}');
+    await _prefs.remove(_prefsKey(userId, LocalKeyValueStoreKeys.lastUserPropertiesSyncTimestamp.name));
 
     _rxModel.add(null);
   }
 
   UserPropertyModel? _read(String key) {
+    final userId = _userId;
+    if (userId == null) return null;
+
     try {
-      final raw = _prefs.getString('$_userId-$key');
+      final raw = _prefs.getString(_prefsKey(userId, key));
       if (raw == null) return null;
 
-      final json = jsonDecode(raw);
-
+      final json = Map<String, dynamic>.from(jsonDecode(raw) as Map)..putIfAbsent('key', () => key);
       return UserPropertyModel.fromJson(json);
     } catch (_) {
       return null;

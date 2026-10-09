@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/launcher/launcher.dart';
+import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -53,6 +55,9 @@ class AuthenticatedScope extends DIScope {
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
+    getIt.registerUserPropertiesRepository();
+    await getIt.syncUserPropertiesInitially();
+    getIt.registerLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
@@ -85,6 +90,37 @@ class AuthenticatedScope extends DIScope {
 }
 
 extension AuthenticatedScopeExtension on GetIt {
+  void registerUserPropertiesRepository() {
+    _log.fine('Register UserPropertiesRepository');
+    final flavor = DI.get<Flavor>();
+
+    registerSingleton<UserPropertiesRepository>(
+      UserPropertiesComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        appVersion: DI.get<AppInfo>().version,
+        userIdProvider: _PropsUserIdProvider(authenticator: DI.get()),
+      ),
+      dispose: (repo) async {
+        await repo.clearLocalUserProperties();
+        repo.dispose();
+      },
+    );
+  }
+
+  Future<void> syncUserPropertiesInitially() async {
+    try {
+      await DI.get<UserPropertiesRepository>().syncUserProperties();
+    } on Exception catch (e, s) {
+      _log.warning('Initial user properties sync failed', e, s);
+    }
+  }
+
+  void registerLauncher() {
+    _log.fine('Register Launcher');
+    registerSingleton<Launcher>(LauncherImpl(userPropertiesRepository: DI.get(), flavor: DI.get()));
+  }
+
   void registerViewModeViewModel() {
     registerSingletonAsync<ViewModeViewModel>(
       () async => ViewModeViewModel(journeySettingsViewModel: DI.get()),
@@ -95,10 +131,6 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerAuthProvider() {
     registerSingleton<AuthProvider>(_AuthProvider(authenticator: DI.get()));
-  }
-
-  void registerUserIdProvider() {
-    registerSingleton<UserIdProvider>(_UserIdProvider(authenticator: DI.get()));
   }
 
   void registerSferaAuthProvider() {
@@ -166,10 +198,10 @@ extension AuthenticatedScopeExtension on GetIt {
         DI.get<PreloadRepository>().updateConfiguration(credentials);
       },
       onSettingsLoaded: (success) {
-        final localStore = DI.get<LocalKeyValueStore>();
-        localStore.set(.lastSettingsRequestSuccessful, success);
+        final userProperties = DI.get<UserPropertiesRepository>();
+        userProperties.saveUserProperty(.lastSettingsRequestSuccessful, success);
         if (success) {
-          localStore.set(.lastSuccessfulSettingsTimestamp, DateTime.now().toIso8601String());
+          userProperties.saveUserProperty(.lastSuccessfulSettingsTimestamp, DateTime.now().toIso8601String());
         }
       },
       appVersion: appVersion,
@@ -403,14 +435,6 @@ class const _AuthProvider({required final Authenticator authenticator}) implemen
   }
 }
 
-class const _UserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
-  @override
-  Future<String> getUserId() async {
-    final user = await authenticator.user();
-    return user.userId;
-  }
-}
-
 class const _SferaAuthProvider({required final Authenticator authenticator}) implements SferaAuthProvider {
   @override
   Future<bool> isDriver() async {
@@ -420,6 +444,14 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
 }
 
 class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> call() async {
+    final user = await authenticator.user();
+    return user.userId;
+  }
+}
+
+class const _PropsUserIdProvider({required final Authenticator authenticator}) implements UserIdProviderProperties {
   @override
   Future<String> call() async {
     final user = await authenticator.user();

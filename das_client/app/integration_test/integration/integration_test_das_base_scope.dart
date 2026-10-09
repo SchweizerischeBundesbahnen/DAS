@@ -1,6 +1,5 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
-import 'package:app/launcher/launcher.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app_links_x/component.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -16,7 +15,6 @@ import '../mocks/mock_app_links_manager.dart';
 import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
-import '../mocks/mock_launcher.dart';
 import '../mocks/mock_preload_repository.dart';
 import '../util/test_time_constants.dart';
 
@@ -42,7 +40,6 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
     _registerMockConnectivityManager();
     getIt.registerLoginViewModel();
     _registerMockAppLinksManager();
-    _registerMockLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerAppLifecycleViewModel();
     getIt.registerValidationModeViewModel();
@@ -90,10 +87,6 @@ class IntegrationTestDASBaseScope extends DASBaseScope {
 
   void _registerMockConnectivityManager() {
     getIt.registerSingleton<ConnectivityManager>(MockConnectivityManager());
-  }
-
-  void _registerMockLauncher() {
-    getIt.registerSingleton<Launcher>(MockLauncher(userPropertiesRepository: DI.get(), flavor: DI.get()));
   }
 
   void _registerMockPreloadRepository() {

@@ -2,8 +2,6 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:app/launcher/launcher.dart';
-import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
@@ -21,7 +19,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:sfera/component.dart';
-import 'package:user_properties/component.dart';
 import 'package:warnapp/component.dart';
 
 final _log = Logger('DASBaseScope');
@@ -37,6 +34,7 @@ class DASBaseScope extends DIScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAppInfoAsync();
+    await getIt.isReady<AppInfo>();
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
     getIt.registerSounds();
@@ -44,11 +42,9 @@ class DASBaseScope extends DIScope {
     getIt.registerMotionDataService();
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
-    getIt.registerUserPropertiesRepository();
     getIt.registerConnectivityManager();
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
-    getIt.registerLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
     getIt.registerAppLifecycleViewModel();
@@ -118,20 +114,6 @@ extension BaseScopeExtension on GetIt {
     registerSingleton<TimeConstants>(TimeConstants());
   }
 
-  void registerUserPropertiesRepository() {
-    final flavor = DI.get<Flavor>();
-    final appVersion = DI.get<AppInfo>().version;
-
-    registerSingleton(
-      UserPropertiesComponent.createRepository(
-        baseUrl: flavor.backendUrl,
-        client: DI.get(),
-        appVersion: appVersion,
-      ),
-      dispose: (repo) => repo.dispose(),
-    );
-  }
-
   void registerConnectivityManager() {
     _log.fine('Register ConnectivityManager');
     registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
@@ -152,11 +134,6 @@ extension BaseScopeExtension on GetIt {
       factoryFunc,
       dispose: (manager) => manager.dispose(),
     );
-  }
-
-  void registerLauncher() {
-    _log.fine('Register Launcher');
-    registerSingleton<Launcher>(LauncherImpl(userPropertiesRepository: DI.get(), flavor: DI.get()));
   }
 
   void registerSferaLocalRepo() {

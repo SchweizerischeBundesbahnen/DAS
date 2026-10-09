@@ -10,8 +10,6 @@ final _log = Logger('UserPropertiesSyncer');
 
 typedef SyncPlan = ({List<UserPropertyModel> pull, List<UserPropertyModel> push});
 
-/// Vergleicht Local und Remote pro Key (Last-Write-Wins).
-/// Neuere Seite gewinnt, fehlende Seite verliert immer, Gleichstand = nichts tun.
 SyncPlan planSync(
   Map<String, UserPropertyModel> local,
   Map<String, UserPropertyModel> remote,
@@ -29,13 +27,13 @@ SyncPlan planSync(
   return (pull: pull, push: push);
 }
 
-/// Fehlende Property = -1 (älter als alles).
-/// Property ohne lastUpdated = 0 (1.1.1970).
 int _version(UserPropertyModel? p) => p == null ? -1 : p.lastUpdated?.millisecondsSinceEpoch ?? 0;
 
 Map<String, UserPropertyModel> _byKey(Iterable<UserPropertyModel> props) => {for (final p in props) p.key: p};
 
-/// Wird geworfen, wenn mindestens ein Push im Abgleich fehlgeschlagen ist.
+String _describe(Map<String, UserPropertyModel> props) =>
+    props.values.map((p) => '${p.key}@${p.lastUpdated?.toIso8601String()}').join(', ');
+
 class SyncPartiallyFailedException implements Exception {
   const SyncPartiallyFailedException(this.failedKeys);
 
@@ -45,19 +43,20 @@ class SyncPartiallyFailedException implements Exception {
   String toString() => 'SyncPartiallyFailedException(failedKeys: $failedKeys)';
 }
 
-/// Einziger Ort, der mit dem User-Properties-Backend spricht.
-/// Kennt weder Retry-Timer noch Single-Flight — das ist Sache des Repositories.
 class UserPropertiesSyncer {
   UserPropertiesSyncer(this._apiService, this._localStore);
 
   final UserPropertiesApiService _apiService;
   final LocalKeyValueStore _localStore;
 
-  /// Vollständiger LWW-Abgleich.
-  /// Wirft [SyncPartiallyFailedException], wenn einzelne Pushes scheitern.
   Future<void> sync() async {
+    await _localStore.ready;
+
     final remote = _byKey(await _fetchRemote());
-    final local = _byKey(_localStore.getAllLocalUserProperties());
+    final local = _byKey(await _localStore.getAllLocalUserProperties());
+    _log.fine('Remote: ${_describe(remote)}');
+    _log.fine('Local:  ${_describe(local)}');
+
     final plan = planSync(local, remote);
     _log.info('Sync plan: pull=${plan.pull.length}, push=${plan.push.length}');
 
@@ -76,8 +75,6 @@ class UserPropertiesSyncer {
     await _localStore.setLastUserPropertiesSyncTimestamp(clock.now().toUtc());
   }
 
-  /// Löscht eine Property im Backend.
-  /// 404 zählt als Erfolg: Das Ziel "nicht vorhanden" ist erreicht (Idempotenz).
   Future<void> deleteRemote(LocalKeyValueStoreKeys key) async {
     try {
       await _apiService.deleteUserProperty(key.name).call();
@@ -87,8 +84,6 @@ class UserPropertiesSyncer {
     }
   }
 
-  /// Wirft nie: Fehler werden als `false` zurückgegeben,
-  /// damit Future.wait alle Pushes zu Ende laufen lässt.
   Future<bool> _tryPush(UserPropertyModel p) async {
     try {
       await _apiService.saveUserProperty(p.key, p.value).call();
@@ -99,8 +94,6 @@ class UserPropertiesSyncer {
     }
   }
 
-  /// Keys, die diese App-Version nicht kennt, werden ignoriert (Forward Compatibility).
-  /// Sonst würden sie bei jedem Sync erneut gepullt.
   Future<List<UserPropertyModel>> _fetchRemote() async {
     final response = await _apiService.userProperties().call();
     return response.body.data
