@@ -621,7 +621,8 @@ class SferaModelMapper._() {
     return combinedBracketStations.values.map((bracketStations) {
       if (bracketStations.length < 2) {
         _log.warning(
-          'There should at least be two bracket stations for a segment. Found service points: $bracketStations',
+          'There should at least be two bracket stations for a segment. '
+          'Found service points: ${bracketStations.map((it) => '${it.name} (order: ${it.order})')}',
         );
       }
 

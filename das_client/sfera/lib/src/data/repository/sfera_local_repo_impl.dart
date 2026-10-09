@@ -105,7 +105,10 @@ class const SferaLocalRepoImpl({required final SferaLocalDatabaseService _databa
   @override
   Future<bool> saveData(Iterable<SferaXmlElementDto> elements) async {
     try {
-      final validElements = elements.whereIsSupportedType().whereIsValid();
+      final (validElements, invalidElements) = elements.whereIsSupportedType().partitionByValidity();
+      if (invalidElements.isNotEmpty) {
+        _log.warning('Skipping ${invalidElements.length} invalid elements: ${invalidElements.countByType()}');
+      }
       if (validElements.isEmpty) {
         _log.warning('No valid or supported SferaXmlElementDto passed to save');
         return false;
@@ -173,14 +176,22 @@ class const SferaLocalRepoImpl({required final SferaLocalDatabaseService _databa
 }
 
 extension _SferaElementIterableExtension on Iterable<SferaXmlElementDto> {
-  Iterable<SferaXmlElementDto> whereIsValid() => where((element) {
-    if (!element.validate()) {
-      _log.warning('Parsed data is invalid: ${element.runtimeType}');
-      return false;
+  (List<SferaXmlElementDto>, List<SferaXmlElementDto>) partitionByValidity() {
+    final valid = <SferaXmlElementDto>[];
+    final invalid = <SferaXmlElementDto>[];
+    for (final element in this) {
+      (element.validate() ? valid : invalid).add(element);
     }
+    return (valid, invalid);
+  }
 
-    return true;
-  });
+  Map<Type, int> countByType() {
+    final counts = <Type, int>{};
+    for (final element in this) {
+      counts.update(element.runtimeType, (count) => count + 1, ifAbsent: () => 1);
+    }
+    return counts;
+  }
 
   Iterable<SferaXmlElementDto> whereIsSupportedType() => where(
     (element) => element is JourneyProfileDto || element is SegmentProfileDto || element is TrainCharacteristicsDto,
