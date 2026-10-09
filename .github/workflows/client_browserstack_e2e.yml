@@ -6,6 +6,8 @@ on:
   pull_request:
     paths:
       - 'das_client/app/integration_test/**/*e2e_test.dart'
+      - '.github/workflows/client_browserstack_e2e.yml'
+      - '.github/workflows/client_browserstack_base.yml'
     branches: [ "main" ]
   workflow_dispatch:
 

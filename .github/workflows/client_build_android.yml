@@ -12,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'das_client/**'
+      - '.github/workflows/client_build_android.yml'
     branches: [ "main" ]
 
 jobs:
