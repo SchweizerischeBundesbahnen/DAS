@@ -1,4 +1,5 @@
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -12,6 +13,7 @@ class DASTableColumn {
   const DASTableColumn({
     this.id,
     this.child,
+    this.style,
     this.decoration,
     this.padding = const .all(SBBSpacing.xSmall),
     this.expanded = false,
@@ -26,6 +28,12 @@ class DASTableColumn {
 
   /// The content of the column header as a widget.
   final Widget? child;
+
+  /// The style of the data cells in this column.
+  ///
+  /// Overrides the [DASTableThemeData.dataCellStyle] and is overridden by row and cell styles.
+  /// Does not apply to the header cell.
+  final DASTableCellStyle? style;
 
   /// The decoration for the column.
   ///
@@ -57,12 +65,8 @@ class DASTableColumn {
 @immutable
 class DASTableColumnDecoration {
   const DASTableColumnDecoration({
-    this.color,
     this.border,
   });
-
-  /// The background color of this column. This is overridden by specific row background colors.
-  final Color? color;
 
   /// The sides of the border of this column.
   ///
@@ -73,11 +77,9 @@ class DASTableColumnDecoration {
 
   DASTableColumnDecoration copyWith({
     Border? border,
-    Color? color,
   }) {
     return DASTableColumnDecoration(
       border: border ?? this.border,
-      color: color ?? this.color,
     );
   }
 }

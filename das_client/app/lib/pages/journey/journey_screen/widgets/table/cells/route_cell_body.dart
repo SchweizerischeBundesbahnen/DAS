@@ -3,6 +3,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/short_term_
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -32,7 +33,6 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.chevronAnimationData,
-    this.routeColor,
     this.shortTermChangeData,
   });
 
@@ -48,18 +48,10 @@ class RouteCellBody extends StatelessWidget {
 
   final ShortTermChangeRouteCellData? shortTermChangeData;
 
-  final Color? routeColor;
-
   final ChevronAnimationData? chevronAnimationData;
 
   @override
   Widget build(BuildContext context) {
-    if (routeColor != null) return _coloredRoute(_route());
-
-    return _route();
-  }
-
-  Widget _route() {
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -75,13 +67,6 @@ class RouteCellBody extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-
-  Widget _coloredRoute(Widget child) {
-    return ColorFiltered(
-      colorFilter: ColorFilter.mode(routeColor!, BlendMode.srcATop),
-      child: child,
     );
   }
 
@@ -102,7 +87,7 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Widget _routeLine(BuildContext context, double height, double width) {
-    final lineColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
+    final lineColor = _foregroundColor(context);
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? SBBSpacing.medium;
     return Positioned(
@@ -115,12 +100,15 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Positioned _circle(BuildContext context) {
-    final circleColor = ThemeUtil.isDarkMode(context) ? SBBColors.white : SBBColors.black;
+    final circleColor = _foregroundColor(context);
     return Positioned(
       top: routeCirclePosition,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }
+
+  Color _foregroundColor(BuildContext context) =>
+      DASTableCellStyle.of(context)?.foregroundColor ?? ThemeUtil.getColor(context, SBBColors.black, SBBColors.white);
 
   Key? _routeKey() {
     if (!isRouteStart && !isRouteEnd) {

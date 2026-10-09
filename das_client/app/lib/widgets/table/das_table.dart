@@ -5,7 +5,9 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_column.dart';
+import 'package:app/widgets/table/das_table_header_theme.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
@@ -34,6 +36,7 @@ class DASTable extends StatefulWidget {
     this.minBottomMargin = 128.0,
     this.bottomMarginAdjustment = 0,
     this.themeData,
+    this.headerThemeData,
     this.alignToItem = true,
     this.addBottomSpacer = true,
     this.hasStickyRows = true,
@@ -48,6 +51,9 @@ class DASTable extends StatefulWidget {
 
   /// Theme data used to style the table.
   final DASTableThemeData? themeData;
+
+  /// Theme data used to style the header row of the table.
+  final DASTableHeaderThemeData? headerThemeData;
 
   /// Scroll controller for managing scrollable content (rows) within the table.
   final ScrollController scrollController;
@@ -132,22 +138,25 @@ class _DASTableState extends State<DASTable> {
     final tableThemeData = widget.themeData ?? _defaultThemeData(context);
     return DASTableTheme(
       data: tableThemeData,
-      child: Container(
-        decoration: BoxDecoration(
-          color: tableThemeData.backgroundColor,
-          borderRadius: tableThemeData.tableBorder?.borderRadius,
-          border: BorderDirectional(
-            top: tableThemeData.tableBorder?.top ?? BorderSide.none,
-            start: tableThemeData.tableBorder?.left ?? BorderSide.none,
-            end: tableThemeData.tableBorder?.right ?? BorderSide.none,
-            bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+      child: DASTableHeaderTheme(
+        data: widget.headerThemeData ?? _defaultHeaderThemeData(context),
+        child: Container(
+          decoration: BoxDecoration(
+            color: tableThemeData.backgroundColor,
+            borderRadius: tableThemeData.tableBorder?.borderRadius,
+            border: BorderDirectional(
+              top: tableThemeData.tableBorder?.top ?? BorderSide.none,
+              start: tableThemeData.tableBorder?.left ?? BorderSide.none,
+              end: tableThemeData.tableBorder?.right ?? BorderSide.none,
+              bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            _headerRow(),
-            Expanded(child: widget.hasStickyRows ? _stickyHeaderList() : _animatedList()),
-          ],
+          child: Column(
+            children: [
+              _headerRow(),
+              Expanded(child: widget.hasStickyRows ? _stickyHeaderList() : _animatedList()),
+            ],
+          ),
         ),
       ),
     );
@@ -219,9 +228,11 @@ class _DASTableState extends State<DASTable> {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
-      headingTextStyle: sbbTextStyle.lightStyle.small,
-      dataTextStyle: sbbTextStyle.romanStyle.large,
-      headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
+      dataCellStyle: DASTableCellStyle(
+        foregroundColor: isDarkTheme ? SBBColors.white : SBBColors.black,
+        secondaryForegroundColor: ThemeUtil.getIconSecondaryColor(context),
+        textStyle: sbbTextStyle.romanStyle.large,
+      ),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),
         borderRadius: BorderRadius.only(
@@ -229,6 +240,14 @@ class _DASTableState extends State<DASTable> {
           topRight: Radius.circular(SBBSpacing.medium),
         ),
       ),
+    );
+  }
+
+  DASTableHeaderThemeData _defaultHeaderThemeData(BuildContext context) {
+    final borderColor = ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron);
+    return DASTableHeaderThemeData(
+      textStyle: sbbTextStyle.lightStyle.small,
+      border: Border(bottom: BorderSide(width: 2, color: borderColor)),
     );
   }
 
@@ -242,7 +261,9 @@ class _DASTableState extends State<DASTable> {
   Widget _headerCell(DASTableColumn column) {
     return Builder(
       builder: (context) {
-        final tableThemeData = DASTableTheme.of(context)?.data;
+        final headerThemeData = DASTableHeaderTheme.of(context)?.data;
+        final foregroundColor = headerThemeData?.foregroundColor;
+        final textStyle = DefaultTextStyle.of(context).style.merge(headerThemeData?.textStyle);
         final headerCell = KeyedSubtree(
           key: DASTable.columnHeaderKey,
           child: _TableCellWrapper(
@@ -251,17 +272,20 @@ class _DASTableState extends State<DASTable> {
             child: Container(
               key: column.headerKey,
               decoration: BoxDecoration(
-                border: tableThemeData?.headingRowBorder ?? column.decoration?.border,
-                color: column.decoration?.color ?? tableThemeData?.headingRowColor,
+                border: headerThemeData?.border ?? column.decoration?.border,
+                color: headerThemeData?.backgroundColor,
               ),
               padding: column.padding,
               child: column.child == null
                   ? SizedBox.shrink()
                   : DefaultTextStyle(
-                      style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
-                      child: column.alignment != null
-                          ? Align(alignment: column.alignment!, child: column.child)
-                          : column.child!,
+                      style: textStyle.copyWith(color: foregroundColor),
+                      child: IconTheme.merge(
+                        data: IconThemeData(color: foregroundColor),
+                        child: column.alignment != null
+                            ? Align(alignment: column.alignment!, child: column.child)
+                            : column.child!,
+                      ),
                     ),
             ),
           ),
@@ -504,11 +528,7 @@ class _CellRowState extends State<_CellRow> {
           if (rowBorder != null) effectiveBorder = rowBorder.override(effectiveBorder);
           if (cellBorder != null) effectiveBorder = cellBorder.override(effectiveBorder);
         }
-        final effectiveBackgroundColor =
-            cell.decoration?.color ??
-            _effectiveRowBackgroundColor(row.decoration) ??
-            column.decoration?.color ??
-            tableThemeData?.dataRowColor;
+        final cellStyle = _resolveCellStyle(context, cell, column, row, tableThemeData);
 
         return _TableCellWrapper(
           expanded: column.expanded,
@@ -518,15 +538,14 @@ class _CellRowState extends State<_CellRow> {
             child: Container(
               decoration: BoxDecoration(
                 border: effectiveBorder,
-                color: effectiveBackgroundColor,
+                color: cellStyle.backgroundColor,
               ),
               padding: _adjustPaddingToBorder(
                 cell.padding ?? column.padding ?? .all(SBBSpacing.xSmall),
                 effectiveBorder,
               ),
               clipBehavior: cell.clipBehavior,
-              child: DefaultTextStyle(
-                style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
+              child: cellStyle.apply(
                 child: effectiveAlignment != null
                     ? Align(alignment: effectiveAlignment, child: cell.child)
                     : cell.child,
@@ -538,11 +557,29 @@ class _CellRowState extends State<_CellRow> {
     );
   }
 
-  Color? _effectiveRowBackgroundColor(DASTableRowDecoration? decoration) {
-    if (_chevronAnimationController?.isAnimating == true && decoration?.chevronAnimationColor != null) {
-      return decoration!.chevronAnimationColor;
+  /// Resolves the style of a cell from the least to the most specific level: theme, column, row and cell.
+  ///
+  /// A more specific level always overrides a less specific one.
+  DASTableCellStyle _resolveCellStyle(
+    BuildContext context,
+    DASTableCell cell,
+    DASTableColumn column,
+    DASTableCellRow row,
+    DASTableThemeData? tableThemeData,
+  ) {
+    return DASTableCellStyle(textStyle: DefaultTextStyle.of(context).style)
+        .merge(tableThemeData?.dataCellStyle)
+        .merge(column.style)
+        .merge(_effectiveRowStyle(row))
+        .merge(cell.style);
+  }
+
+  DASTableCellStyle? _effectiveRowStyle(DASTableCellRow row) {
+    final chevronAnimationColor = row.decoration?.chevronAnimationColor;
+    if (_chevronAnimationController?.isAnimating == true && chevronAnimationColor != null) {
+      return (row.style ?? DASTableCellStyle()).copyWith(backgroundColor: chevronAnimationColor);
     }
-    return decoration?.color;
+    return row.style;
   }
 
   EdgeInsets? _adjustPaddingToBorder(EdgeInsets? padding, BoxBorder? border) {

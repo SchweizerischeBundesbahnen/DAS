@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/widgets/communication_network_i
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/row/das_table_row_decoration.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -16,15 +16,14 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
     required super.chevronPosition,
     required BuildContext context,
     super.config,
-  }) : super(decoration: DASTableRowDecoration(color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black)));
+  }) : super(style: DASTableCellStyle(backgroundColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black)));
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      return DASTableCell.empty();
     } else {
       return DASTableCell(
-        decoration: DASTableCellDecoration(color: specialCellColor),
         padding: const .all(8.0),
         alignment: .centerLeft,
         clipBehavior: .none,

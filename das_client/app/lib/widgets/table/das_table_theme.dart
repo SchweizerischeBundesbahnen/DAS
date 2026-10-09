@@ -1,3 +1,4 @@
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 
 /// Contains the theme data for styling the [DASTable].
@@ -5,31 +6,17 @@ import 'package:flutter/material.dart';
 class DASTableThemeData {
   const DASTableThemeData({
     this.backgroundColor,
-    this.dataRowColor,
-    this.headingRowColor,
+    this.dataCellStyle,
     this.tableBorder,
-    this.headingRowBorder,
-    this.headingTextStyle,
-    this.dataTextStyle,
   });
 
   /// The background color of the table.
   final Color? backgroundColor;
 
-  /// The background color of data rows.
-  final Color? dataRowColor;
-
-  /// The background color of the heading row.
-  final Color? headingRowColor;
-
-  /// The text style for data cells. Will be overridden if Text in cells provide own style.
-  final TextStyle? dataTextStyle;
-
-  /// The text style for heading cells. Will be overridden if Text in cells provide own style.
-  final TextStyle? headingTextStyle;
-
-  /// The border style for the heading row.
-  final Border? headingRowBorder;
+  /// The least specific style of the data cells.
+  ///
+  /// Will be overridden by the styles of columns, rows and cells.
+  final DASTableCellStyle? dataCellStyle;
 
   /// The border style for the table.
   ///
@@ -38,20 +25,14 @@ class DASTableThemeData {
   final TableBorder? tableBorder;
 
   DASTableThemeData copyWith({
-    Color? dataRowColor,
-    Color? headingRowColor,
+    Color? backgroundColor,
+    DASTableCellStyle? dataCellStyle,
     TableBorder? tableBorder,
-    TextStyle? dataTextStyle,
-    TextStyle? headingTextStyle,
-    Border? headingRowBorder,
   }) {
     return DASTableThemeData(
-      dataRowColor: dataRowColor ?? this.dataRowColor,
-      headingRowColor: headingRowColor ?? this.headingRowColor,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      dataCellStyle: dataCellStyle ?? this.dataCellStyle,
       tableBorder: tableBorder ?? this.tableBorder,
-      dataTextStyle: dataTextStyle ?? this.dataTextStyle,
-      headingTextStyle: headingTextStyle ?? this.headingTextStyle,
-      headingRowBorder: headingRowBorder ?? this.headingRowBorder,
     );
   }
 
@@ -60,24 +41,14 @@ class DASTableThemeData {
       return a;
     }
     return DASTableThemeData(
-      dataRowColor: Color.lerp(a.dataRowColor, b.dataRowColor, t),
-      headingRowColor: Color.lerp(a.headingRowColor, b.headingRowColor, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      dataCellStyle: DASTableCellStyle.lerp(a.dataCellStyle, b.dataCellStyle, t),
       tableBorder: TableBorder.lerp(a.tableBorder, b.tableBorder, t),
-      headingTextStyle: TextStyle.lerp(a.headingTextStyle, b.headingTextStyle, t),
-      dataTextStyle: TextStyle.lerp(a.dataTextStyle, b.dataTextStyle, t),
-      headingRowBorder: Border.lerp(a.headingRowBorder, b.headingRowBorder, t),
     );
   }
 
   @override
-  int get hashCode => Object.hash(
-    dataRowColor,
-    headingRowColor,
-    tableBorder,
-    dataTextStyle,
-    headingTextStyle,
-    headingRowBorder,
-  );
+  int get hashCode => Object.hash(backgroundColor, dataCellStyle, tableBorder);
 
   @override
   bool operator ==(Object other) {
@@ -88,11 +59,8 @@ class DASTableThemeData {
       return false;
     }
     return other is DASTableThemeData &&
-        other.dataRowColor == dataRowColor &&
-        other.headingRowColor == headingRowColor &&
-        other.headingTextStyle == headingTextStyle &&
-        other.dataTextStyle == dataTextStyle &&
-        other.headingRowBorder == headingRowBorder &&
+        other.backgroundColor == backgroundColor &&
+        other.dataCellStyle == dataCellStyle &&
         other.tableBorder == tableBorder;
   }
 }

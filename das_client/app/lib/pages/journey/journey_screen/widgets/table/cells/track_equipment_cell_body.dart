@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -16,15 +17,11 @@ class TrackEquipmentCellBody extends StatelessWidget {
   const TrackEquipmentCellBody({
     this.renderData = const TrackEquipmentRenderData(),
     this.position,
-    this.lineColor,
     super.key,
   });
 
   final TrackEquipmentRenderData renderData;
   final double? position;
-
-  /// optional line color. [ThemeUtil.getIconColor] is used otherwise
-  final Color? lineColor;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +185,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   static double get conventionalExtendedSpeedBorderSpace => 5.0 + _ConventionalExtendedSpeedBorderPainter.height;
 
-  Color _lineColor(BuildContext context) => lineColor ?? ThemeUtil.getIconColor(context);
+  Color _lineColor(BuildContext context) =>
+      DASTableCellStyle.of(context)?.foregroundColor ?? ThemeUtil.getIconColor(context);
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {

@@ -27,10 +27,9 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   DASTableCell kilometreCell(BuildContext context) {
     if (!isGrouped) return super.kilometreCell(context);
 
-    if (data.kilometre.isEmpty) return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+    if (data.kilometre.isEmpty) return DASTableCell.empty();
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
       child: Padding(
         padding: .only(left: 8.0),
         child: OverflowBox(

@@ -30,10 +30,9 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   @override
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty(decoration: DASTableCellDecoration(color: specialCellColor));
+      return DASTableCell.empty();
     } else {
       return DASTableCell(
-        decoration: DASTableCellDecoration(color: specialCellColor),
         padding: const EdgeInsets.all(8.0),
         alignment: Alignment.centerLeft,
         clipBehavior: Clip.none,
