@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'docs/**'
+      - '.github/workflows/documentation-gh-pages.yml'
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab

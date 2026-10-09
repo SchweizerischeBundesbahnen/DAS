@@ -16,6 +16,7 @@ on:
   pull_request:
     paths:
       - 'das_client/**'
+      - '.github/workflows/client_format_analyze_test.yml'
     branches: [ "main" ]
 
 jobs:

@@ -20,6 +20,7 @@ on:
   pull_request:
     paths:
       - 'sfera_mock/**'
+      - '.github/workflows/ci-sfera-mock.yml'
     branches: [ "main" ]
 
 jobs:

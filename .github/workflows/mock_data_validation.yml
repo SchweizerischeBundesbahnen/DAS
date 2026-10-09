@@ -19,6 +19,7 @@ on:
     paths:
       - 'sfera_mock/src/main/resources/static_sfera_resources/**'
       - 'das_client/sfera/test_resources/**'
+      - '.github/workflows/mock_data_validation.yml'
     branches: [ "main" ]
 
 jobs:
