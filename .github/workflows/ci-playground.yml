@@ -12,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'das_playground/**'
+      - '.github/workflows/ci-playground.yml'
     branches: [ "main" ]
 
 

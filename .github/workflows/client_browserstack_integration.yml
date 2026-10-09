@@ -6,6 +6,8 @@ on:
   pull_request:
     paths:
       - 'das_client/**'
+      - '.github/workflows/client_browserstack_integration.yml'
+      - '.github/workflows/client_browserstack_base.yml'
     branches: [ "main" ]
   workflow_dispatch:
 

@@ -12,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'das_admin_tool/**'
+      - '.github/workflows/ci-admin-tool.yml'
     branches: [ "main" ]
 
 

@@ -20,6 +20,7 @@ on:
   pull_request:
     paths:
       - 'das_e2e_testsuite/**'
+      - '.github/workflows/ci-e2e_testsuite.yml'
     branches: [ "main" ]
 
 jobs:
