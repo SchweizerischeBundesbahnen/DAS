@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.21.0...sfera_mock-v0.22.0) (2026-10-10)
+
+
+### Features
+
+* repeated line foot notes are collapsed on second appearance ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2917](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2917)) ([ee926cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee926cf1851e11748d543ccfb176ad7dd0f47a58))
+
 ## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.20.0...sfera_mock-v0.21.0) (2026-10-02)
 
 
