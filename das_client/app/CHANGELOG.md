@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.55.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.54.0...das_client-v0.55.0) (2026-10-10)
+
+
+### Features
+
+* protection section foreground color is always black ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2920](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2920)) ([835c809](https://github.com/SchweizerischeBundesbahnen/DAS/commit/835c809219c43af0970b1ec3ac7c62ef679ed350))
+* repeated line foot notes are collapsed on second appearance ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2917](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2917)) ([ee926cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee926cf1851e11748d543ccfb176ad7dd0f47a58))
+
 ## [0.54.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.53.0...das_client-v0.54.0) (2026-10-05)
 
 
