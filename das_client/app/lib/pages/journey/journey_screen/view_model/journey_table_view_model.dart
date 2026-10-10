@@ -16,12 +16,12 @@ import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('JourneyTableViewModel');
 
@@ -34,8 +34,8 @@ class JourneyTableViewModel({
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
   required final PersonalNotesViewModel _personalNotesVM,
-  required final LocalKeyValueStore _userSettings,
   required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
+  required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
   this {
     _init();
@@ -78,8 +78,8 @@ class JourneyTableViewModel({
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
           _personalNotesVM.personalNoteAnnotations,
+          _userPropertiesRepository.model,
           _acknowledgedModificationRepository.model,
-          _userSettings.model,
         ]).listen(
           (data) => _handleDataChanged(
             journey: data[0] as Journey?,
@@ -132,9 +132,9 @@ class JourneyTableViewModel({
         .combineFootNoteAndTextAnnotations()
         .addTrainDriverTurnoverRows(navigationModel?.trainIdentification)
         .hideSignals(
-          stationSignals: !_userSettings.showStationSignals,
-          conventionalSpeedSignals: !_userSettings.showEctsConventionalSpeedSignals,
-          extendedSpeedSignals: !_userSettings.showEctsExtendedSpeedSignals,
+          stationSignals: !_userPropertiesRepository.showStationSignals,
+          conventionalSpeedSignals: !_userPropertiesRepository.showEctsConventionalSpeedSignals,
+          extendedSpeedSignals: !_userPropertiesRepository.showEctsExtendedSpeedSignals,
           nonStandardTrackEquipmentSegments: journey.metadata.nonStandardTrackEquipmentSegments,
         )
         .sorted((a1, a2) => a1.compareTo(a2));

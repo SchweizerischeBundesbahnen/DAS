@@ -6,7 +6,6 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('AppLinkNavigator');
 
@@ -77,7 +77,7 @@ class AppLinkNavigator({
   /// The resolvedTrainIdentifications contains the successfully resolved train identifications.
   Future<(bool, List<ExtendedTrainIdentification>)> _resolveCompanies(List<TrainJourneyLinkData> journeys) async {
     final trainIdentificationRepository = DI.get<TrainIdentificationRepository>();
-    final userSettings = DI.get<LocalKeyValueStore>();
+    final userPropertiesRepository = DI.get<UserPropertiesRepository>();
     final result = <ExtendedTrainIdentification>[];
 
     for (final journey in journeys) {
@@ -94,7 +94,7 @@ class AppLinkNavigator({
           result.add(journey.toTrainIdentification(sameDayMatches.first.companyCode));
           continue;
         } else {
-          final selectedCompanyCode = userSettings.lastUsedCompanyCode;
+          final selectedCompanyCode = userPropertiesRepository.lastUsedCompanyCode;
           if (selectedCompanyCode != null) {
             final companyMatch = sameDayMatches.firstWhereOrNull((it) => it.companyCode == selectedCompanyCode);
             if (companyMatch != null) {

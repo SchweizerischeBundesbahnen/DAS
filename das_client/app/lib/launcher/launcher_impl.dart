@@ -3,15 +3,15 @@ import 'package:app/flavor.dart';
 import 'package:app/launcher/launcher.dart';
 import 'package:app/launcher/service_point_portal.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('LauncherImpl');
 
 class LauncherImpl({
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
   required final Flavor flavor,
 }) implements Launcher {
   static const _blsCompanyCodes = [
@@ -43,12 +43,12 @@ class LauncherImpl({
   String? _tourSystemUrl() {
     final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
     final returnUrl = journeyNavigationViewModel?.modelValue?.trainIdentification.returnUrl;
-    return returnUrl ?? flavor.tourSystemUrls[_userSettings.tourSystem];
+    return returnUrl ?? flavor.tourSystemUrls[_userPropertiesRepository.tourSystem];
   }
 
   @override
   Future<bool> launchServicePointPortal(ServicePoint servicePoint) {
-    final companyCodes = _userSettings.companyCodes;
+    final companyCodes = _userPropertiesRepository.companyCodes;
     if (companyCodes.isNotEmpty && companyCodes.every((it) => _blsCompanyCodes.contains(it))) {
       return launch(ServicePointPortal.bls.urlFor(servicePoint));
     } else {

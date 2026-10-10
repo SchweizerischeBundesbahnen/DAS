@@ -1,13 +1,13 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:user_properties/component.dart';
 
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_local_key_value_store.dart';

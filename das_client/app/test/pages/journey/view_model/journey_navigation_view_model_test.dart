@@ -4,7 +4,6 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -12,11 +11,16 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 import '../../../test_util.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SferaRepository>(), MockSpec<ScopeHandler>(), MockSpec<LocalKeyValueStore>()])
+@GenerateNiceMocks([
+  MockSpec<SferaRepository>(),
+  MockSpec<ScopeHandler>(),
+  MockSpec<UserPropertiesRepository>(),
+])
 void main() {
   group('JourneyNavigationViewModel', () {
     late JourneyNavigationViewModel testee;
@@ -25,7 +29,7 @@ void main() {
     late MockSferaRepository mockSferaRepo;
     late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
     late MockScopeHandler mockScopeHandler;
-    late MockLocalKeyValueStore mockLocalKeyValueStore;
+    late MockUserPropertiesRepository mockUserPropertiesRepository;
 
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
@@ -57,9 +61,12 @@ void main() {
       GetIt.I.registerSingleton<ScopeHandler>(mockScopeHandler);
       mockSferaRepo = MockSferaRepository();
       mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(.disconnected);
-      mockLocalKeyValueStore = MockLocalKeyValueStore();
+      mockUserPropertiesRepository = MockUserPropertiesRepository();
       when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
-      testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo, userSettings: mockLocalKeyValueStore);
+      testee = JourneyNavigationViewModel(
+        sferaRepo: mockSferaRepo,
+        userPropertiesRepository: mockUserPropertiesRepository,
+      );
       emitRegister = <dynamic>[];
       sub = testee.model.listen(emitRegister.add);
     });
@@ -360,7 +367,7 @@ void main() {
 
       // EXPECT
       verify(
-        mockLocalKeyValueStore.set(
+        mockUserPropertiesRepository.saveUserProperty(
           LocalKeyValueStoreKeys.lastUsedCompanyCode,
           trainId1.trainIdentification.companyCode,
         ),

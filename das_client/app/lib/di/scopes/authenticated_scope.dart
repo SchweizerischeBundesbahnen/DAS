@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/launcher/launcher.dart';
+import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_screen/view_model/mock/sfera_mock_customer_oriented_departure_repository_impl.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
@@ -12,7 +14,6 @@ import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/provider/timed_route_provider.dart';
@@ -35,6 +36,7 @@ import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -53,6 +55,9 @@ class AuthenticatedScope extends DIScope {
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
+    getIt.registerUserPropertiesRepository();
+    await getIt.syncUserPropertiesInitially();
+    getIt.registerLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
     getIt.registerSferaRemoteRepository();
@@ -85,6 +90,37 @@ class AuthenticatedScope extends DIScope {
 }
 
 extension AuthenticatedScopeExtension on GetIt {
+  void registerUserPropertiesRepository() {
+    _log.fine('Register UserPropertiesRepository');
+    final flavor = DI.get<Flavor>();
+
+    registerSingleton<UserPropertiesRepository>(
+      UserPropertiesComponent.createRepository(
+        baseUrl: flavor.backendUrl,
+        client: DI.get(),
+        appVersion: DI.get<AppInfo>().version,
+        userIdProvider: _PropsUserIdProvider(authenticator: DI.get()),
+      ),
+      dispose: (repo) async {
+        await repo.clearLocalUserProperties();
+        repo.dispose();
+      },
+    );
+  }
+
+  Future<void> syncUserPropertiesInitially() async {
+    try {
+      await DI.get<UserPropertiesRepository>().syncUserProperties();
+    } on Exception catch (e, s) {
+      _log.warning('Initial user properties sync failed', e, s);
+    }
+  }
+
+  void registerLauncher() {
+    _log.fine('Register Launcher');
+    registerSingleton<Launcher>(LauncherImpl(userPropertiesRepository: DI.get(), flavor: DI.get()));
+  }
+
   void registerViewModeViewModel() {
     registerSingletonAsync<ViewModeViewModel>(
       () async => ViewModeViewModel(journeySettingsViewModel: DI.get()),
@@ -162,10 +198,10 @@ extension AuthenticatedScopeExtension on GetIt {
         DI.get<PreloadRepository>().updateConfiguration(credentials);
       },
       onSettingsLoaded: (success) {
-        final localStore = DI.get<LocalKeyValueStore>();
-        localStore.set(.lastSettingsRequestSuccessful, success);
+        final userProperties = DI.get<UserPropertiesRepository>();
+        userProperties.saveUserProperty(.lastSettingsRequestSuccessful, success);
         if (success) {
-          localStore.set(.lastSuccessfulSettingsTimestamp, DateTime.now().toIso8601String());
+          userProperties.saveUserProperty(.lastSuccessfulSettingsTimestamp, DateTime.now().toIso8601String());
         }
       },
       appVersion: appVersion,
@@ -225,7 +261,7 @@ extension AuthenticatedScopeExtension on GetIt {
     final repo = ExternalLinksComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
     registerSingleton<ExternalLinksRepository>(repo);
 
-    final companyCodes = DI.get<LocalKeyValueStore>().companyCodes;
+    final companyCodes = DI.get<UserPropertiesRepository>().companyCodes;
     repo.reloadExternalLinksByCompanies(companyCodes);
   }
 
@@ -261,7 +297,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
-      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
+      () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userPropertiesRepository: DI.get()),
       dependsOn: [SferaRepository],
       dispose: (vm) => vm.dispose(),
     );
@@ -273,7 +309,7 @@ extension AuthenticatedScopeExtension on GetIt {
         sferaRepo: DI.get(),
         settingsRepository: DI.get(),
         trainIdentificationRepository: DI.get(),
-        userSettings: DI.get(),
+        userPropertiesRepository: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
@@ -408,6 +444,14 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
 }
 
 class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> call() async {
+    final user = await authenticator.user();
+    return user.userId;
+  }
+}
+
+class const _PropsUserIdProvider({required final Authenticator authenticator}) implements UserIdProviderProperties {
   @override
   Future<String> call() async {
     final user = await authenticator.user();
