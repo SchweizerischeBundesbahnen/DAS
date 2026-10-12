@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_positi
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/row/das_table_row_decoration.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -17,7 +17,7 @@ class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationN
     required super.rowIndex,
     required BuildContext context,
   }) : super(
-         decoration: DASTableRowDecoration(color: ThemeUtil.getDASTableColor(context)),
+         style: DASTableCellStyle(backgroundColor: ThemeUtil.getDASTableColor(context)),
          journeyPosition: JourneyPositionModel(),
          chevronPosition: ChevronPositionModel(),
        );

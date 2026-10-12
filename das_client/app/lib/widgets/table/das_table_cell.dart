@@ -1,3 +1,4 @@
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
@@ -15,6 +16,7 @@ class DASTableCell {
   const DASTableCell({
     required this.child,
     this.onTap,
+    this.style,
     this.decoration,
     this.padding,
     this.alignment,
@@ -24,9 +26,13 @@ class DASTableCell {
   const DASTableCell.empty({
     VoidCallback? onTap,
     EdgeInsets? padding,
+    DASTableCellStyle? style,
     DASTableCellDecoration? decoration,
     Clip clipBehaviour = Clip.hardEdge,
-  }) : this(child: emptyBuilder, onTap: onTap, decoration: decoration);
+  }) : this(child: emptyBuilder, onTap: onTap, style: style, decoration: decoration);
+
+  /// The most specific style of this cell. Overrides the styles of row, column and theme.
+  final DASTableCellStyle? style;
 
   final DASTableCellDecoration? decoration;
   final Widget child;
@@ -40,6 +46,7 @@ class DASTableCell {
   DASTableCell copyWith({
     Widget? child,
     VoidCallback? onTap,
+    DASTableCellStyle? style,
     DASTableCellDecoration? decoration,
     EdgeInsets? padding,
     Alignment? alignment,
@@ -48,6 +55,7 @@ class DASTableCell {
     return DASTableCell(
       child: child ?? this.child,
       onTap: onTap ?? this.onTap,
+      style: style ?? this.style,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
       alignment: alignment ?? this.alignment,
@@ -60,21 +68,16 @@ class DASTableCell {
 @immutable
 class DASTableCellDecoration {
   const DASTableCellDecoration({
-    this.color,
     this.border,
   });
 
-  final Color? color;
   final Border? border;
 
   DASTableCellDecoration copyWith({
     Border? border,
-    BorderRadius? borderRadius,
-    Color? color,
   }) {
     return DASTableCellDecoration(
       border: border ?? this.border,
-      color: color ?? this.color,
     );
   }
 }

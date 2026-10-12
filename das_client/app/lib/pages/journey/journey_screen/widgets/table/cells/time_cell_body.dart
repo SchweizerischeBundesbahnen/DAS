@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,7 +19,6 @@ class TimeCellBody extends StatelessWidget {
     required this.showTimesInBrackets,
     required this.mandatoryStop,
     this.times,
-    this.fontColor,
     super.key,
   });
 
@@ -26,7 +26,6 @@ class TimeCellBody extends StatelessWidget {
   final ArrivalDepartureTimeViewModel viewModel;
   final bool showTimesInBrackets;
   final bool mandatoryStop;
-  final Color? fontColor;
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +63,13 @@ class TimeCellBody extends StatelessWidget {
             children: [
               TextSpan(
                 text: arrivalTime,
-                style: isArrivalBold
-                    ? sbbTextStyle.boldStyle.large.copyWith(color: fontColor)
-                    : sbbTextStyle.romanStyle.large.copyWith(color: fontColor),
+                style: isArrivalBold ? sbbTextStyle.boldStyle.large : sbbTextStyle.romanStyle.large,
               ),
               TextSpan(
                 text: departureTime,
                 style: departureStyle.copyWith(
                   decoration: formattedTimes.isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
-                  decorationColor: fontColor,
-                  color: fontColor,
+                  decorationColor: DASTableCellStyle.of(context)?.foregroundColor,
                 ),
               ),
             ],
@@ -130,7 +126,7 @@ class TimeCellBody extends StatelessWidget {
         icon,
         key: ServicePointRow.fixedPointRelevanceKey,
         colorFilter: ColorFilter.mode(
-          fontColor ?? ThemeUtil.getIconSecondaryColor(context),
+          DASTableCellStyle.of(context)?.secondaryForegroundColor ?? ThemeUtil.getIconSecondaryColor(context),
           BlendMode.srcIn,
         ),
       ),
@@ -142,7 +138,7 @@ class TimeCellBody extends StatelessWidget {
       AppAssets.iconStopOnRequest,
       key: ServicePointRow.stopOnRequestKey,
       colorFilter: ColorFilter.mode(
-        fontColor ?? ThemeUtil.getIconColor(context),
+        DASTableCellStyle.of(context)?.foregroundColor ?? ThemeUtil.getIconColor(context),
         BlendMode.srcIn,
       ),
     );

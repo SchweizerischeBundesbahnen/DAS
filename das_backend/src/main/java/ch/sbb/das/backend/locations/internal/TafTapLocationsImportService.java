@@ -36,7 +36,10 @@ public class TafTapLocationsImportService {
     }
 
     private List<TafTapLocationEntity> getLocations() {
-        List<ServicePoint> servicePoints = mergeAdjacentDuplicates(servicePointApiClient.getAll());
+        List<ServicePoint> relevant = servicePointApiClient.getAll().stream()
+            .filter(ServicePoint::isRelevant)
+            .toList();
+        List<ServicePoint> servicePoints = mergeAdjacentDuplicates(relevant);
         return servicePoints.stream()
             .map(tafTapLocationMapper::toEntityFromServicePoint)
             .filter(this::isBeforeFutureCutoff)

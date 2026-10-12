@@ -13,7 +13,6 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
     required super.height,
     super.key,
     super.stickyLevel,
-    super.decoration,
     this.config = const JourneyConfig(),
   });
 
