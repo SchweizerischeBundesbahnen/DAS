@@ -15,6 +15,15 @@
       "enabled": false
     },
     {
+      "matchFileNames": [
+        ".github/workflows/client_*.yml"
+      ],
+      "matchDepNames": [
+        "java-jdk"
+      ],
+      "allowedVersions": "/^21\\./"
+    },
+    {
       "matchDatasources": [
         "npm"
       ],
