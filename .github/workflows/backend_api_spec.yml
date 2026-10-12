@@ -4,6 +4,11 @@
 name: Backend API Specification
 
 on:
+  pull_request: # TEMPORARY: dry-run check for #2535, remove before merge
+    paths:
+      - '.github/workflows/*_release.yml'
+      - '.github/workflows/backend_api_spec.yml'
+      - '.github/actions/**'
   workflow_call:
     inputs:
       tag-name:
@@ -51,6 +56,7 @@ jobs:
           args: test -Dtest=ch.sbb.das.backend.ApiExtractionTest
 
       - name: Upload Release Artifact
+        if: github.event_name != 'pull_request'
         working-directory: das_backend
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

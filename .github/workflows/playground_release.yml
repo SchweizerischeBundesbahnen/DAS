@@ -4,6 +4,11 @@
 name: Playground Release
 
 on:
+  pull_request: # TEMPORARY: dry-run check for #2535, remove before merge
+    paths:
+      - '.github/workflows/*_release.yml'
+      - '.github/workflows/backend_api_spec.yml'
+      - '.github/actions/**'
   workflow_call:
     inputs:
       version:
@@ -37,9 +42,10 @@ jobs:
           scripts: build:ngssc
           build-image: true
           image-name: playground
-          image-tag: ${{ inputs.version }}
+          image-tag: ${{ inputs.version || 'pr-check' }}
 
       - uses: ./.github/actions/push-image
+        if: github.event_name != 'pull_request'
         with:
           image-ref: ${{ steps.build.outputs.image-ref }}
           latest: 'true'
