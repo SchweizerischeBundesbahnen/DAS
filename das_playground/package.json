@@ -35,7 +35,7 @@
     "@sbb-esta/angular": "22.1.0",
     "angular-auth-oidc-client": "22.0.1",
     "angular-server-side-configuration": "22.0.2",
-    "ngx-mqtt": "17.0.0",
+    "ngx-mqtt": "22.0.0",
     "rxjs": "7.8.2",
     "tslib": "2.8.1",
     "zone.js": "0.16.3"
