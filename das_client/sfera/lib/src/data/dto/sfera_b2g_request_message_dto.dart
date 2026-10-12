@@ -1,10 +1,12 @@
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
+import 'package:sfera/src/data/dto/sfera_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 class SferaB2gRequestMessageDto({super.type = elementType, super.attributes, super.children, super.value})
-    extends SferaXmlElementDto {
+    extends SferaXmlElementDto
+    with SferaMessageDto {
   static const String elementType = 'SFERA_B2G_RequestMessage';
 
   factory create(
@@ -23,8 +25,6 @@ class SferaB2gRequestMessageDto({super.type = elementType, super.attributes, sup
 
     return requestMessage;
   }
-
-  MessageHeaderDto get messageHeader => children.whereType<MessageHeaderDto>().first;
 
   HandshakeRequestDto? get handshakeRequest => children.whereType<HandshakeRequestDto>().firstOrNull;
 
