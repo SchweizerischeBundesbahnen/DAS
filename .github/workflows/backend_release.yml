@@ -1,0 +1,61 @@
+# Called by release-please whenever a new release of this module is created.
+# This builds the backend container image and pushes it with the release version and as latest.
+
+name: Backend Release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version, e.g. "1.2.3"'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version, e.g. "1.2.3"'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-das-backend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
+
+      - name: Build
+        id: build
+        uses: ./.github/actions/maven-test-build
+        env:
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
+        with:
+          working-directory: das_backend
+          build-image: true
+          image-name: backend
+          image-tag: ${{ inputs.version }}
+
+      - uses: ./.github/actions/push-image
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}
+          latest: 'true'

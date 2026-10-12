@@ -1,0 +1,44 @@
+# Called by release-please whenever a new release of this module is created.
+# This builds the SFERA mock container image and pushes it with the release version and as latest.
+
+name: SFERA mock Release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version, e.g. "1.2.3"'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version, e.g. "1.2.3"'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-sfera-mock
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build
+        id: build
+        uses: ./.github/actions/maven-test-build
+        with:
+          working-directory: sfera_mock
+          build-image: true
+          image-name: sfera-mock
+          image-tag: ${{ inputs.version }}
+
+      - uses: ./.github/actions/push-image
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}
+          latest: 'true'

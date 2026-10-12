@@ -1,0 +1,58 @@
+# Called by release-please whenever a new release of this module is created.
+# This extracts the OpenAPI specification of the backend and uploads it to the GitHub release.
+
+name: Backend API Specification
+
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        description: 'Tag of the GitHub release to upload the specification to'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        description: 'Tag of the GitHub release to upload the specification to'
+        type: string
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  api-spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_URL ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_KEY ;
+            kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
+
+      - name: Extract API specification
+        uses: ./.github/actions/maven-test-build
+        env:
+          TESTCONTAINERS_RYUK_DISABLED: "true"
+          KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
+          KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}
+          KAFKA_SR_API_SECRET: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_SECRET }}
+        with:
+          working-directory: das_backend
+          args: test -Dtest=ch.sbb.das.backend.ApiExtractionTest
+
+      - name: Upload Release Artifact
+        working-directory: das_backend
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ inputs.tag-name }}
+        run: gh release upload "$TAG_NAME" ./src/main/resources/api/api-specification.yaml

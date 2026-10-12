@@ -1,0 +1,68 @@
+name: Node test & build
+description: Sets up Node, installs dependencies, runs npm scripts and optionally builds a container image.
+
+inputs:
+  working-directory:
+    description: 'Directory of the npm project, e.g. das_admin_tool'
+    required: true
+  scripts:
+    description: 'Space-separated npm scripts to run after install, e.g. "build:ngssc gzip". Only installs when empty.'
+    required: false
+    default: ''
+  build-image:
+    description: 'Build a container image from the Dockerfile after the run'
+    required: false
+    default: 'false'
+  image-name:
+    description: 'Image name below ghcr.io/<repository>/, e.g. playground. Required when build-image is true.'
+    required: false
+    default: ''
+  image-tag:
+    description: 'Tag of the container image, e.g. "main" or "1.2.3"'
+    required: false
+    default: 'main'
+
+outputs:
+  image-ref:
+    description: 'Full reference of the built container image, empty if none was built'
+    value: ${{ steps.image.outputs.ref }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: '${{ inputs.working-directory }}/.nvmrc'
+        cache: 'npm'
+        cache-dependency-path: '${{ inputs.working-directory }}/package-lock.json'
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm clean-install
+
+    - name: Run npm scripts
+      if: inputs.scripts != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        SCRIPTS: ${{ inputs.scripts }}
+      run: |
+        for script in $SCRIPTS; do
+          npm run "$script"
+        done
+
+    - name: Create container image
+      id: image
+      if: inputs.build-image == 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        IMAGE_NAME: ${{ inputs.image-name }}
+        IMAGE: ghcr.io/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.image-tag }}
+        DOCKER_BUILDKIT: 1
+      run: |
+        : "${IMAGE_NAME:?image-name is required when build-image is true}"
+        IMAGE_REF=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+        docker build -t "$IMAGE_REF" .
+        echo "ref=$IMAGE_REF" >> "$GITHUB_OUTPUT"

@@ -8,10 +8,16 @@ on:
   push:
     paths:
       - 'das_playground/**'
+      - '.github/workflows/ci-playground.yml'
+      - '.github/actions/node-test-build/**'
+      - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_playground/**'
+      - '.github/workflows/ci-playground.yml'
+      - '.github/actions/node-test-build/**'
+      - '.github/actions/push-image/**'
     branches: [ "main" ]
 
 
@@ -27,52 +33,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: ./.github/actions/node-test-build
         with:
-          node-version-file: 'das_playground/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
-      - run: npm clean-install
-      - run: npm run lint
+          working-directory: das_playground
+          scripts: lint
 
   test:
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: ./.github/actions/node-test-build
         with:
-          node-version-file: 'das_playground/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
-      - run: npm clean-install
-      - run: npm test
+          working-directory: das_playground
+          scripts: test
 
   build:
     runs-on: ubuntu-latest
-    needs: lint
-    env:
-      IMAGE_ID: ghcr.io/${{ github.repository }}/playground
-      VERSION: main
+    # On main the image is pushed, so lint and test must pass first
+    needs: [lint, test]
+    # Serialize main runs so an older run cannot overwrite the main image of a newer one
+    concurrency:
+      group: ${{ github.workflow }}-build-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Build (+ image on main)
+        id: build
+        uses: ./.github/actions/node-test-build
         with:
-          node-version-file: 'das_playground/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_playground/package-lock.json'
-      - run: npm clean-install
-      - run: npm run build:ngssc
-      - name: Login to GitHub Container Registry
+          working-directory: das_playground
+          scripts: build:ngssc
+          build-image: ${{ github.ref == 'refs/heads/main' }}
+          image-name: playground
+      - uses: ./.github/actions/push-image
         if: github.ref == 'refs/heads/main'
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-      - name: Create container image
-        if: github.ref == 'refs/heads/main'
-        run: |
-          # Convert to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          
-          docker build -t $IMAGE_ID:$VERSION .
-          docker push $IMAGE_ID:$VERSION
-        env:
-          DOCKER_BUILDKIT: 1
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}

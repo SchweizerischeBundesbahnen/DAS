@@ -8,10 +8,16 @@ on:
   push:
     paths:
       - 'das_admin_tool/**'
+      - '.github/workflows/ci-admin-tool.yml'
+      - '.github/actions/node-test-build/**'
+      - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_admin_tool/**'
+      - '.github/workflows/ci-admin-tool.yml'
+      - '.github/actions/node-test-build/**'
+      - '.github/actions/push-image/**'
     branches: [ "main" ]
 
 
@@ -45,15 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: ./.github/actions/node-test-build
         with:
-          node-version-file: 'das_admin_tool/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_admin_tool/package-lock.json'
-
-      - run: npm clean-install
-
-      - run: npm run lint
+          working-directory: das_admin_tool
+          scripts: lint
 
 
   test:
@@ -61,12 +62,6 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: 'das_admin_tool/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_admin_tool/package-lock.json'
 
       - name: Vault Secrets 🤫
         id: vault-secrets
@@ -79,9 +74,10 @@ jobs:
           secrets: |
             kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
 
-      - run: npm clean-install
-
-      - run: npm test
+      - uses: ./.github/actions/node-test-build
+        with:
+          working-directory: das_admin_tool
+          scripts: test
 
       - name: Sonar scan
         uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
@@ -119,11 +115,6 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: 'das_admin_tool/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_admin_tool/package-lock.json'
       - name: Vault Secrets 🤫
         id: vault-secrets
         uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
@@ -136,7 +127,9 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_PASSWORD ;
 
-      - run: npm clean-install
+      - uses: ./.github/actions/node-test-build
+        with:
+          working-directory: das_admin_tool
 
       - run: npx playwright install --with-deps
         working-directory: das_admin_tool
@@ -167,36 +160,25 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: lint
-    env:
-      IMAGE_ID: ghcr.io/${{ github.repository }}/das_admin_tool
-      VERSION: main
+    # On main the image is pushed, so lint and test must pass first
+    needs: [lint, test]
+    # Serialize main runs so an older run cannot overwrite the main image of a newer one
+    concurrency:
+      group: ${{ github.workflow }}-build-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Build (+ image on main)
+        id: build
+        uses: ./.github/actions/node-test-build
         with:
-          node-version-file: 'das_admin_tool/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'das_admin_tool/package-lock.json'
+          working-directory: das_admin_tool
+          scripts: build:ngssc gzip
+          build-image: ${{ github.ref == 'refs/heads/main' }}
+          image-name: das_admin_tool
 
-      - run: npm clean-install
-
-      - run: npm run build:ngssc
-
-      - run: npm run gzip
-
-      - name: Login to GitHub Container Registry
+      - uses: ./.github/actions/push-image
         if: github.ref == 'refs/heads/main'
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-
-      - name: Create container image
-        if: github.ref == 'refs/heads/main'
-        run: |
-          # Convert to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-
-          docker build -t $IMAGE_ID:$VERSION .
-          docker push $IMAGE_ID:$VERSION
-        env:
-          DOCKER_BUILDKIT: 1
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}
