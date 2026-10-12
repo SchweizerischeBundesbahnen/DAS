@@ -25,15 +25,20 @@ extension BaseDataX on Iterable<BaseData> {
     final List<BaseData> resultList = toList();
 
     TrainDriverTurnover? endTrainDriverTurnover;
+    TrainDriverTurnover? startTrainDriverTurnover;
 
     for (final data in servicePoints) {
       if (data == firstServicePoint || data == lastServicePoint) continue;
 
-      if (startLocation != null && startLocation == data.locationCode) {
-        resultList.add(TrainDriverTurnover(order: data.order, isStart: true));
+      if (startTrainDriverTurnover == null && startLocation != null && startLocation == data.locationCode) {
+        startTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: true);
       } else if (endLocation != null && endLocation == data.locationCode) {
         endTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: false);
       }
+    }
+
+    if (startTrainDriverTurnover != null) {
+      resultList.add(startTrainDriverTurnover);
     }
 
     if (endTrainDriverTurnover != null) {
@@ -124,7 +129,7 @@ extension BaseDataX on Iterable<BaseData> {
       final switchbackStation = it.value;
       if (switchbackStation.isArrival) {
         final arrivalOrder = switchbackStation.station.order;
-        final departureOrder = switchbackStation.otherStation.order;
+        final departureOrder = switchbackStation.counterpartStation.order;
 
         // Place in the middle between the 2 stations
         final switchbackOrder = ((arrivalOrder + departureOrder) / 2).toInt();

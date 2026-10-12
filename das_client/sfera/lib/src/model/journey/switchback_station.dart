@@ -2,7 +2,7 @@ import 'package:sfera/component.dart';
 
 class SwitchbackStation({
   required final ServicePoint station,
-  required final ServicePoint otherStation,
+  required final ServicePoint counterpartStation,
   required final bool isArrival,
 }) {
   bool get isDeparture => !isArrival;
@@ -13,14 +13,14 @@ class SwitchbackStation({
       other is SwitchbackStation &&
           runtimeType == other.runtimeType &&
           station == other.station &&
-          otherStation == other.otherStation &&
+          counterpartStation == other.counterpartStation &&
           isArrival == other.isArrival;
 
   @override
-  int get hashCode => station.hashCode ^ otherStation.hashCode ^ isArrival.hashCode;
+  int get hashCode => station.hashCode ^ counterpartStation.hashCode ^ isArrival.hashCode;
 
   @override
   String toString() {
-    return 'SwitchbackStation{station: $station, otherStation: $otherStation, isArrival: $isArrival}';
+    return 'SwitchbackStation{station: $station, counterpartStation: $counterpartStation, isArrival: $isArrival}';
   }
 }

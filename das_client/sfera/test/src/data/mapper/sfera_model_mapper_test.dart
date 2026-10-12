@@ -2234,11 +2234,11 @@ void main() {
     expect(switchbackMap[servicePoints[0]], null);
     expect(switchbackMap[servicePoints[1]], isA<SwitchbackStation>());
     expect((switchbackMap[servicePoints[1]] as SwitchbackStation).station, servicePoints[1]);
-    expect((switchbackMap[servicePoints[1]] as SwitchbackStation).otherStation, servicePoints[2]);
+    expect((switchbackMap[servicePoints[1]] as SwitchbackStation).counterpartStation, servicePoints[2]);
     expect((switchbackMap[servicePoints[1]] as SwitchbackStation).isArrival, true);
     expect(switchbackMap[servicePoints[2]], isA<SwitchbackStation>());
     expect((switchbackMap[servicePoints[2]] as SwitchbackStation).station, servicePoints[2]);
-    expect((switchbackMap[servicePoints[2]] as SwitchbackStation).otherStation, servicePoints[1]);
+    expect((switchbackMap[servicePoints[2]] as SwitchbackStation).counterpartStation, servicePoints[1]);
     expect((switchbackMap[servicePoints[2]] as SwitchbackStation).isDeparture, true);
     expect(switchbackMap[servicePoints[3]], isA<SwitchbackStation>());
     expect(switchbackMap[servicePoints[4]], isA<SwitchbackStation>());

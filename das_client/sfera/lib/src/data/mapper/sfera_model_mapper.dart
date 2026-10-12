@@ -843,12 +843,12 @@ class SferaModelMapper._() {
       if (lastServicePoint != null && lastServicePoint.locationCode == servicePoint.locationCode) {
         switchbackStationMap[lastServicePoint] = SwitchbackStation(
           station: lastServicePoint,
-          otherStation: servicePoint,
+          counterpartStation: servicePoint,
           isArrival: true,
         );
         switchbackStationMap[servicePoint] = SwitchbackStation(
           station: servicePoint,
-          otherStation: lastServicePoint,
+          counterpartStation: lastServicePoint,
           isArrival: false,
         );
       }

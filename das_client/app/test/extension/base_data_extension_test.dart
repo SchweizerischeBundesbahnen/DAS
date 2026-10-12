@@ -765,12 +765,12 @@ void main() {
       final switchbackStationMap = <ServicePoint, SwitchbackStation>{
         arrivalStation: SwitchbackStation(
           station: arrivalStation,
-          otherStation: departureStation,
+          counterpartStation: departureStation,
           isArrival: true,
         ),
         departureStation: SwitchbackStation(
           station: departureStation,
-          otherStation: arrivalStation,
+          counterpartStation: arrivalStation,
           isArrival: false,
         ),
       };
@@ -798,10 +798,10 @@ void main() {
       final baseData = <BaseData>[arrival1, departure1, arrival2, departure2];
 
       final switchbackStationMap = <ServicePoint, SwitchbackStation>{
-        arrival1: SwitchbackStation(station: arrival1, otherStation: departure1, isArrival: true),
-        departure1: SwitchbackStation(station: departure1, otherStation: arrival1, isArrival: false),
-        arrival2: SwitchbackStation(station: arrival2, otherStation: departure2, isArrival: true),
-        departure2: SwitchbackStation(station: departure2, otherStation: arrival2, isArrival: false),
+        arrival1: SwitchbackStation(station: arrival1, counterpartStation: departure1, isArrival: true),
+        departure1: SwitchbackStation(station: departure1, counterpartStation: arrival1, isArrival: false),
+        arrival2: SwitchbackStation(station: arrival2, counterpartStation: departure2, isArrival: true),
+        departure2: SwitchbackStation(station: departure2, counterpartStation: arrival2, isArrival: false),
       };
 
       // WHEN
@@ -892,8 +892,16 @@ void main() {
       ];
 
       final switchbackStationMap = <ServicePoint, SwitchbackStation>{
-        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
-        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+        arrivalStation: SwitchbackStation(
+          station: arrivalStation,
+          counterpartStation: departureStation,
+          isArrival: true,
+        ),
+        departureStation: SwitchbackStation(
+          station: departureStation,
+          counterpartStation: arrivalStation,
+          isArrival: false,
+        ),
       };
 
       // WHEN
@@ -967,8 +975,16 @@ void main() {
       ];
 
       final switchbackStationMap = <ServicePoint, SwitchbackStation>{
-        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
-        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+        arrivalStation: SwitchbackStation(
+          station: arrivalStation,
+          counterpartStation: departureStation,
+          isArrival: true,
+        ),
+        departureStation: SwitchbackStation(
+          station: departureStation,
+          counterpartStation: arrivalStation,
+          isArrival: false,
+        ),
       };
 
       // WHEN
@@ -1009,8 +1025,16 @@ void main() {
       final baseData = <BaseData>[arrivalStation, arrivalSignal, departureStation, departureSignal];
 
       final switchbackStationMap = <ServicePoint, SwitchbackStation>{
-        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
-        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+        arrivalStation: SwitchbackStation(
+          station: arrivalStation,
+          counterpartStation: departureStation,
+          isArrival: true,
+        ),
+        departureStation: SwitchbackStation(
+          station: departureStation,
+          counterpartStation: arrivalStation,
+          isArrival: false,
+        ),
       };
 
       // WHEN

@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
@@ -926,6 +927,40 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets(
+      'journeyTable_whenSwitchbackStationsPresent_thenDisplaysSwitchbackRowCorrectly|6avqDUSPA3zHRcHwnzJr|tests:2227',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T56');
+
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
+
+        // Verify switchback row at Luzern is displayed between arrival and departure
+        final switchbackRows = findDASTableRowByText(l10n.w_switchback_row_title);
+        expect(switchbackRows, findsAtLeast(1));
+
+        final luzernRows = findDASTableRowByText('Luzern');
+        expect(luzernRows, findsAtLeast(2));
+
+        final luzernArrivalY = tester.getTopLeft(luzernRows.at(0)).dy;
+        final switchbackY = tester.getTopLeft(switchbackRows.first).dy;
+        final luzernDepartureY = tester.getTopLeft(luzernRows.at(1)).dy;
+
+        expect(luzernArrivalY, lessThan(switchbackY));
+        expect(switchbackY, lessThan(luzernDepartureY));
+
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('E2'));
+
+        final nextStopFinder = find.descendant(of: find.byType(NextStop), matching: find.text('Zürich HB'));
+        expect(nextStopFinder, findsOneWidget);
+
+        await disconnect(tester);
+      },
+    );
   });
 }
 
