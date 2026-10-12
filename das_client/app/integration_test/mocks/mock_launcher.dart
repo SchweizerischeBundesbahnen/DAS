@@ -1,8 +1,6 @@
 import 'package:app/launcher/launcher_impl.dart';
 
-class MockLauncher extends LauncherImpl {
-  MockLauncher({required super.userPropertiesRepository, required super.flavor});
-
+class MockLauncher({required super.userPropertiesRepository, required super.flavor}) extends LauncherImpl {
   final launchedUrls = <String>[];
 
   @override

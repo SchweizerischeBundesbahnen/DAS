@@ -56,7 +56,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
     getIt.registerUserPropertiesRepository();
-    await getIt.syncUserPropertiesInitially();
+    getIt.syncUserPropertiesInitially();
     getIt.registerLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
