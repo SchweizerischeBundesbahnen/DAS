@@ -21,7 +21,7 @@ class AuthGuard({required final Authenticator _authenticator}) extends AutoRoute
           _authenticator.login();
         }
 
-        _log.fine('Authenticated. Navigating to ${resolver.route}');
+        _log.fine('Authenticated. Navigating to ${resolver.route.name}');
         resolver.next(true);
         return;
       }
@@ -32,7 +32,7 @@ class AuthGuard({required final Authenticator _authenticator}) extends AutoRoute
       router.push(
         LoginRoute(
           onSuccess: () {
-            _log.info('Login successful. Navigating to ${resolver.route}');
+            _log.info('Login successful. Navigating to ${resolver.route.name}');
             resolver.next(true);
           },
         ),

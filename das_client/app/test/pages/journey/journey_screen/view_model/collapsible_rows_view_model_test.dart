@@ -2,6 +2,7 @@ import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -502,6 +503,205 @@ void main() {
       simTrainSubject.add(true);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
+    });
+  });
+
+  group('lineFootNotes', () {
+    final lineFootNoteA = FootNote(text: 'Line foot note A', identifier: 'LFN_A');
+    final lineFootNoteB = FootNote(text: 'Line foot note B', identifier: 'LFN_B');
+    final lineFootNoteWithoutId = FootNote(text: 'Line foot note without identifier');
+    final simLineFootNote = FootNote(
+      text: 'SIM line foot note',
+      identifier: 'LFN_SIM',
+      type: FootNoteType.contact,
+      refText: 'SIM',
+    );
+
+    final lineSignal1 = Signal(order: 100, kilometre: []);
+    final lineA1 = LineFootNote(order: 110, footNote: lineFootNoteA, locationName: 'Bern');
+    final simLine1 = LineFootNote(order: 115, footNote: simLineFootNote, locationName: 'Bern');
+    final lineSignal2 = Signal(order: 120, kilometre: []);
+    final lineA2 = LineFootNote(order: 130, footNote: lineFootNoteA, locationName: 'Thun');
+    final lineB1 = LineFootNote(order: 135, footNote: lineFootNoteB, locationName: 'Thun');
+    final simLine2 = LineFootNote(order: 137, footNote: simLineFootNote, locationName: 'Thun');
+    final lineSignal3 = Signal(order: 140, kilometre: []);
+    final lineA3 = LineFootNote(order: 150, footNote: lineFootNoteA, locationName: 'Spiez');
+    final lineB2 = LineFootNote(order: 155, footNote: lineFootNoteB, locationName: 'Spiez');
+    final lineWithoutId1 = LineFootNote(order: 160, footNote: lineFootNoteWithoutId, locationName: 'Spiez');
+    final lineSignal4 = Signal(order: 170, kilometre: []);
+    final lineWithoutId2 = LineFootNote(order: 180, footNote: lineFootNoteWithoutId, locationName: 'Frutigen');
+    final lineSignal5 = Signal(order: 200, kilometre: []);
+
+    final lineFootNoteMetadata = Metadata(
+      trainIdentification: TrainIdentification(companyCode: '1285', trainNumber: '54', date: DateTime(2026, 10, 5)),
+    );
+    final lineFootNoteJourney = Journey(
+      metadata: lineFootNoteMetadata,
+      data: [
+        lineSignal1,
+        lineA1,
+        simLine1,
+        lineSignal2,
+        lineA2,
+        lineB1,
+        simLine2,
+        lineSignal3,
+        lineA3,
+        lineB2,
+        lineWithoutId1,
+        lineSignal4,
+        lineWithoutId2,
+        lineSignal5,
+      ],
+    );
+
+    setUp(() async {
+      journeySubject.add(lineFootNoteJourney);
+      await processStreams();
+    });
+
+    test('collapsedRows_whenLineFootNoteIsRepeated_thenFirstIsExpandedAndRepetitionsAreCollapsed', () {
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(lineA3), CollapsedState.collapsed);
+    });
+
+    test('collapsedRows_whenLineFootNoteFirstAppearsMidJourney_thenFirstIsExpandedAndRepetitionIsCollapsed', () {
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineB1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineB2), CollapsedState.collapsed);
+    });
+
+    test('collapsedRows_whenLineFootNoteHasNoIdentifier_thenAllAreExpanded', () {
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineWithoutId1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineWithoutId2), CollapsedState.expanded);
+    });
+
+    test('collapsedRows_whenNoSimTrain_thenRepeatedSimLineFootNoteIsCollapsed', () {
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simLine1), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(simLine2), CollapsedState.collapsed);
+    });
+
+    test('collapsedRows_whenSimTrain_thenRepeatedSimLineFootNoteIsExpanded', () async {
+      // ACT
+      simTrainSubject.add(true);
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simLine1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(simLine2), CollapsedState.expanded);
+    });
+
+    test('toggleRow_whenRepeatedLineFootNoteIsCollapsed_thenExpandsIt', () async {
+      // ACT
+      testee.toggleRow(lineA2);
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
+    });
+
+    test('toggleRow_whenRepeatedLineFootNoteIsExpanded_thenCollapsesIt', () async {
+      // ARRANGE
+      testee.toggleRow(lineA2);
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
+
+      // ACT
+      testee.toggleRow(lineA2);
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
+    });
+
+    test('updatePassedAccordionRowsState_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault', () async {
+      // ARRANGE - collapse all line foot notes while moving forward
+      testee.toggleRow(lineA2);
+      await processStreams();
+      journeyPositionSubject.add(JourneyPositionModel(lastPosition: lineSignal1, currentPosition: lineSignal5));
+      await processStreams();
+      expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
+
+      // ACT
+      journeyPositionSubject.add(JourneyPositionModel(lastPosition: lineSignal5, currentPosition: lineSignal1));
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(lineA3), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(lineB1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineB2), CollapsedState.collapsed);
+      expect(testee.collapsedRowsValue.stateOf(lineWithoutId2), CollapsedState.expanded);
+    });
+
+    test('onJourneyUpdated_whenRepeatedLineFootNoteWasToggled_thenKeepsToggledState', () async {
+      // ARRANGE
+      testee.toggleRow(lineA2);
+      await processStreams();
+
+      // ACT
+      journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data]));
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
+    });
+
+    test('onJourneyUpdated_whenNewRepetitionOfLineFootNoteIsAdded_thenNewRepetitionIsCollapsed', () async {
+      // ARRANGE
+      final lineA4 = LineFootNote(order: 190, footNote: lineFootNoteA, locationName: 'Kandersteg');
+
+      // ACT
+      journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data, lineA4]));
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA4), CollapsedState.collapsed);
+    });
+
+    test('onJourneyUpdated_whenSimTrainAndNewRepetitionOfSimLineFootNoteIsAdded_thenNewRepetitionIsExpanded', () async {
+      // ARRANGE
+      simTrainSubject.add(true);
+      await processStreams();
+      final simLine3 = LineFootNote(order: 190, footNote: simLineFootNote, locationName: 'Kandersteg');
+
+      // ACT
+      journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data, simLine3]));
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(simLine3), CollapsedState.expanded);
+    });
+
+    test('onJourneyChanged_whenNewTrainIsLoaded_thenRepeatedLineFootNotesAreCollapsedAgain', () async {
+      // ARRANGE
+      testee.toggleRow(lineA2);
+      await processStreams();
+
+      // ACT
+      journeySubject.add(
+        Journey(
+          metadata: Metadata(
+            trainIdentification: TrainIdentification(
+              companyCode: '1285',
+              trainNumber: '55',
+              date: DateTime(2026, 10, 5),
+            ),
+          ),
+          data: lineFootNoteJourney.data,
+        ),
+      );
+      await processStreams();
+
+      // EXPECT
+      expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
+      expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
     });
   });
 }
