@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:app/extension/base_data_extension.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
+import 'package:app/pages/journey/journey_screen/view_model/switchback_annotation.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:core_data/component.dart';
@@ -718,6 +720,304 @@ void main() {
 
       // THEN
       expect(result, hasLength(2));
+      expect(result, equals(baseData));
+    },
+  );
+
+  test(
+    'addSwitchbackRows_whenSwitchbackStationMapIsEmpty_thenDoNothing',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+      ];
+
+      // WHEN
+      final result = baseData.addSwitchbackRows({}).toList();
+
+      // THEN
+      expect(result, hasLength(2));
+      expect(result, equals(baseData));
+    },
+  );
+
+  test(
+    'addSwitchbackRows_whenMapContainsSwitchbackStation_thenAddsSwitchbackAnnotationBetweenStations',
+    () {
+      // GIVEN
+      final arrivalStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 100,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final departureStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 200,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final baseData = <BaseData>[arrivalStation, departureStation];
+
+      final switchbackStationMap = <ServicePoint, SwitchbackStation>{
+        arrivalStation: SwitchbackStation(
+          station: arrivalStation,
+          otherStation: departureStation,
+          isArrival: true,
+        ),
+        departureStation: SwitchbackStation(
+          station: departureStation,
+          otherStation: arrivalStation,
+          isArrival: false,
+        ),
+      };
+
+      // WHEN
+      final result = baseData.addSwitchbackRows(switchbackStationMap).toList();
+
+      // THEN
+      expect(result, hasLength(3));
+      expect(result[0], arrivalStation);
+      expect(result[1], departureStation);
+      expect(result[2], const SwitchbackAnnotation(order: 150));
+    },
+  );
+
+  test(
+    'addSwitchbackRows_whenMapContainsMultipleArrivalStations_thenAddsSwitchbackAnnotationForEach',
+    () {
+      // GIVEN
+      final arrival1 = ServicePoint(name: 'A', abbreviation: 'A', order: 100, kilometre: [10.0], locationCode: 'A');
+      final departure1 = ServicePoint(name: 'A', abbreviation: 'A', order: 200, kilometre: [10.0], locationCode: 'A');
+      final arrival2 = ServicePoint(name: 'B', abbreviation: 'B', order: 300, kilometre: [30.0], locationCode: 'B');
+      final departure2 = ServicePoint(name: 'B', abbreviation: 'B', order: 500, kilometre: [30.0], locationCode: 'B');
+
+      final baseData = <BaseData>[arrival1, departure1, arrival2, departure2];
+
+      final switchbackStationMap = <ServicePoint, SwitchbackStation>{
+        arrival1: SwitchbackStation(station: arrival1, otherStation: departure1, isArrival: true),
+        departure1: SwitchbackStation(station: departure1, otherStation: arrival1, isArrival: false),
+        arrival2: SwitchbackStation(station: arrival2, otherStation: departure2, isArrival: true),
+        departure2: SwitchbackStation(station: departure2, otherStation: arrival2, isArrival: false),
+      };
+
+      // WHEN
+      final result = baseData.addSwitchbackRows(switchbackStationMap).toList();
+      final switchbacks = result.whereType<SwitchbackAnnotation>().toList();
+
+      // THEN
+      expect(result, hasLength(6));
+      expect(switchbacks, hasLength(2));
+      expect(switchbacks[0], const SwitchbackAnnotation(order: 150));
+      expect(switchbacks[1], const SwitchbackAnnotation(order: 400));
+    },
+  );
+
+  test(
+    'hideJourneyAnnotationsOnSwitchbackStations_whenSwitchbackStationMapIsEmpty_thenDoNothing',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 100, kilometre: [10.0], locationCode: 'A'),
+        OperationalIndication(order: 100, texts: ['Hinweis']),
+        RuIndication(order: 100, title: 'RU', text: 'Text'),
+        const PersonalNoteAnnotation(order: 100, text: 'Notiz'),
+        OpFootNote(order: 100, footNote: FootNote(text: 'OpFootNote')),
+        LineFootNote(
+          order: 100,
+          footNote: FootNote(text: 'LineFootNote'),
+          locationName: 'A',
+        ),
+      ];
+
+      // WHEN
+      final result = baseData.hideJourneyAnnotationsOnSwitchbackStations({}).toList();
+
+      // THEN
+      expect(result, hasLength(6));
+      expect(result, equals(baseData));
+    },
+  );
+
+  test(
+    'hideJourneyAnnotationsOnSwitchbackStations_whenIndicationsOnDepartureStation_thenHidesIndicationsOnDepartureStationOnly',
+    () {
+      // GIVEN
+      final arrivalStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 100,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final departureStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 200,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final regularStation = ServicePoint(
+        name: 'Landquart',
+        abbreviation: 'LQ',
+        order: 300,
+        kilometre: [20.0],
+        locationCode: 'LQ',
+      );
+
+      final opArrival = OperationalIndication(order: 100, texts: ['Arrival OpIndication']);
+      final ruArrival = RuIndication(order: 100, title: 'RU', text: 'Arrival RuIndication');
+      final personalArrival = const PersonalNoteAnnotation(order: 100, text: 'Arrival PersonalNote');
+
+      final opDeparture = OperationalIndication(order: 200, texts: ['Departure OpIndication']);
+      final ruDeparture = RuIndication(order: 200, title: 'RU', text: 'Departure RuIndication');
+      final personalDeparture = const PersonalNoteAnnotation(order: 200, text: 'Departure PersonalNote');
+
+      final opRegular = OperationalIndication(order: 300, texts: ['Regular OpIndication']);
+
+      final baseData = <BaseData>[
+        arrivalStation,
+        opArrival,
+        ruArrival,
+        personalArrival,
+        departureStation,
+        opDeparture,
+        ruDeparture,
+        personalDeparture,
+        regularStation,
+        opRegular,
+      ];
+
+      final switchbackStationMap = <ServicePoint, SwitchbackStation>{
+        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
+        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+      };
+
+      // WHEN
+      final result = baseData.hideJourneyAnnotationsOnSwitchbackStations(switchbackStationMap).toList();
+
+      // THEN
+      expect(result, contains(opArrival));
+      expect(result, contains(ruArrival));
+      expect(result, contains(personalArrival));
+      expect(result, contains(opRegular));
+      expect(result, isNot(contains(opDeparture)));
+      expect(result, isNot(contains(ruDeparture)));
+      expect(result, isNot(contains(personalDeparture)));
+      expect(result, hasLength(7));
+    },
+  );
+
+  test(
+    'hideJourneyAnnotationsOnSwitchbackStations_whenFootNotesOnArrivalStation_thenHidesFootNotesOnArrivalStationOnly',
+    () {
+      // GIVEN
+      final arrivalStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 100,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final departureStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 200,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final regularStation = ServicePoint(
+        name: 'Landquart',
+        abbreviation: 'LQ',
+        order: 300,
+        kilometre: [20.0],
+        locationCode: 'LQ',
+      );
+
+      final opFootNoteArrival = OpFootNote(order: 100, footNote: FootNote(text: 'OpFootNote Arrival'));
+      final lineFootNoteArrival = LineFootNote(
+        order: 100,
+        footNote: FootNote(text: 'LineFootNote Arrival'),
+        locationName: 'CH',
+      );
+      final trackFootNoteArrival = TrackFootNote(order: 100, footNote: FootNote(text: 'TrackFootNote Arrival'));
+
+      final opFootNoteDeparture = OpFootNote(order: 200, footNote: FootNote(text: 'OpFootNote Departure'));
+      final lineFootNoteDeparture = LineFootNote(
+        order: 200,
+        footNote: FootNote(text: 'LineFootNote Departure'),
+        locationName: 'CH',
+      );
+
+      final opFootNoteRegular = OpFootNote(order: 300, footNote: FootNote(text: 'OpFootNote Regular'));
+
+      final baseData = <BaseData>[
+        arrivalStation,
+        opFootNoteArrival,
+        lineFootNoteArrival,
+        trackFootNoteArrival,
+        departureStation,
+        opFootNoteDeparture,
+        lineFootNoteDeparture,
+        regularStation,
+        opFootNoteRegular,
+      ];
+
+      final switchbackStationMap = <ServicePoint, SwitchbackStation>{
+        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
+        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+      };
+
+      // WHEN
+      final result = baseData.hideJourneyAnnotationsOnSwitchbackStations(switchbackStationMap).toList();
+
+      // THEN
+      expect(result, isNot(contains(opFootNoteArrival)));
+      expect(result, isNot(contains(lineFootNoteArrival)));
+      expect(result, contains(trackFootNoteArrival));
+      expect(result, contains(opFootNoteDeparture));
+      expect(result, contains(lineFootNoteDeparture));
+      expect(result, contains(opFootNoteRegular));
+      expect(result, hasLength(7));
+    },
+  );
+
+  test(
+    'hideJourneyAnnotationsOnSwitchbackStations_whenOtherBaseDataTypesOnSwitchbackStations_thenKeepsOtherBaseData',
+    () {
+      // GIVEN
+      final arrivalStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 100,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final departureStation = ServicePoint(
+        name: 'Chur',
+        abbreviation: 'CH',
+        order: 200,
+        kilometre: [10.0],
+        locationCode: 'CH',
+      );
+      final arrivalSignal = Signal(order: 100, kilometre: [10.0]);
+      final departureSignal = Signal(order: 200, kilometre: [10.0]);
+
+      final baseData = <BaseData>[arrivalStation, arrivalSignal, departureStation, departureSignal];
+
+      final switchbackStationMap = <ServicePoint, SwitchbackStation>{
+        arrivalStation: SwitchbackStation(station: arrivalStation, otherStation: departureStation, isArrival: true),
+        departureStation: SwitchbackStation(station: departureStation, otherStation: arrivalStation, isArrival: false),
+      };
+
+      // WHEN
+      final result = baseData.hideJourneyAnnotationsOnSwitchbackStations(switchbackStationMap).toList();
+
+      // THEN
+      expect(result, hasLength(4));
       expect(result, equals(baseData));
     },
   );
