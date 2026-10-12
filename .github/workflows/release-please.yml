@@ -155,7 +155,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Create container image
         env:
-          IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+          IMAGE_ID: ghcr.io/${{ github.repository }}/playground
           VERSION: ${{ needs.release-please.outputs.das_playground--version }}
           DOCKER_BUILDKIT: 1
         run: |

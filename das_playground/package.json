@@ -7,9 +7,9 @@
     "test": "ng test -c ci",
     "lint": "ng lint",
     "format": "prettier --write .",
-    "build:ngssc": "ng run webapp:ngsscbuild:production"
+    "build:ngssc": "ng run playground:ngsscbuild:production"
   },
-  "name": "webapp",
+  "name": "playground",
   "version": "0.9.1",
   "private": true,
   "files": [

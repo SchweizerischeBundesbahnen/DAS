@@ -3,8 +3,8 @@ FROM nginxinc/nginx-unprivileged:alpine-slim
 # Copy nginx configuration
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy webapp
-COPY ./dist/webapp/browser /usr/share/nginx/html
+# Copy playground
+COPY ./dist/playground/browser /usr/share/nginx/html
 
 USER root
 

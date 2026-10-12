@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     env:
-      IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+      IMAGE_ID: ghcr.io/${{ github.repository }}/playground
       VERSION: main
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
