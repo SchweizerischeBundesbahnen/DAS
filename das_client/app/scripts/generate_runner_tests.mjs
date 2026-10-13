@@ -104,8 +104,8 @@ function printHelpAndExit() {
   process.stdout.write(
     [
       'Usage:',
-      '  node app/scripts/generate_runner_tests.js [--suite <test|e2e_test>]',
-      '  node app/scripts/generate_runner_tests.js [test|e2e_test]',
+      '  node app/scripts/generate_runner_tests.mjs [--suite <test|e2e_test>]',
+      '  node app/scripts/generate_runner_tests.mjs [test|e2e_test]',
       '',
       'Notes:',
       '  - e2e_test is an alias and maps to integration_test/e2e_tests',
