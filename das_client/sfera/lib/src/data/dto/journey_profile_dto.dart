@@ -10,6 +10,23 @@ class JourneyProfileDto({super.type = elementType, super.attributes, super.child
     extends SferaXmlElementDto {
   static const String elementType = 'JourneyProfile';
 
+  factory create({
+    required String version,
+    required TrainIdentificationDto trainIdentification,
+    required List<SegmentProfileReferenceDto> segmentProfileReferences,
+    required GeneralJpInformationDto? generalJpInformation,
+  }) {
+    final request = JourneyProfileDto();
+    request.attributes['JP_Version'] = version;
+    request.attributes['JP_Status'] = JpStatusDto.valid.name;
+    request.children.add(trainIdentification);
+    request.children.addAll(segmentProfileReferences);
+    if (generalJpInformation != null) {
+      request.children.add(generalJpInformation);
+    }
+    return request;
+  }
+
   String get version => attributes['JP_Version']!;
 
   TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
