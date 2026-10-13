@@ -20,6 +20,7 @@ class Metadata({
   final Iterable<RadioContactList> radioContactLists = const [],
   final List<LevelCrossingGroup> levelCrossingGroups = const [],
   final List<SuspiciousSegment> suspiciousSegments = const [],
+  final Map<ServicePoint, SwitchbackStation> switchbackStationMap = const {},
   this.signaledPosition,
   DateTime? timestamp,
   bool? anyOperationalArrivalDepartureTimes,
