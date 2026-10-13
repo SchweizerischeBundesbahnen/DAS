@@ -21,6 +21,10 @@ on:
         description: 'Release version, e.g. "1.2.3"'
         type: string
         required: true
+      tag-name:
+        description: 'Release tag to build, e.g. "backend-v1.2.3"'
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -33,6 +37,9 @@ jobs:
       group: release-das-backend
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Empty when called by release-please, which already runs on the release commit
+          ref: ${{ inputs.tag-name }}
 
       - name: Vault Secrets 🤫
         id: vault-secrets
