@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
+import 'package:app/pages/journey/journey_screen/view_model/switchback_annotation.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_settings.dart';
 import 'package:collection/collection.dart';
@@ -22,16 +24,25 @@ extension BaseDataX on Iterable<BaseData> {
 
     final List<BaseData> resultList = toList();
 
-    for (final data in this) {
+    TrainDriverTurnover? endTrainDriverTurnover;
+    TrainDriverTurnover? startTrainDriverTurnover;
+
+    for (final data in servicePoints) {
       if (data == firstServicePoint || data == lastServicePoint) continue;
 
-      if (data is ServicePoint) {
-        if (startLocation != null && startLocation == data.locationCode) {
-          resultList.add(TrainDriverTurnover(order: data.order, isStart: true));
-        } else if (endLocation != null && endLocation == data.locationCode) {
-          resultList.add(TrainDriverTurnover(order: data.order, isStart: false));
-        }
+      if (startLocation != null && startLocation == data.locationCode) {
+        startTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: true);
+      } else if (endTrainDriverTurnover == null && endLocation != null && endLocation == data.locationCode) {
+        endTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: false);
       }
+    }
+
+    if (startTrainDriverTurnover != null) {
+      resultList.add(startTrainDriverTurnover);
+    }
+
+    if (endTrainDriverTurnover != null) {
+      resultList.add(endTrainDriverTurnover);
     }
 
     return resultList;
@@ -107,5 +118,60 @@ extension BaseDataX on Iterable<BaseData> {
 
       return !acknowledgedModifications.contains(modification);
     });
+  }
+
+  Iterable<BaseData> addSwitchbackRows(Map<ServicePoint, SwitchbackStation> switchbackStationMap) {
+    if (switchbackStationMap.isEmpty) return this;
+
+    final List<BaseData> resultList = toList();
+
+    for (final it in switchbackStationMap.entries) {
+      final switchbackStation = it.value;
+      if (switchbackStation.isArrival) {
+        final arrivalOrder = switchbackStation.station.order;
+        final departureOrder = switchbackStation.counterpartStation.order;
+
+        // Place in the middle between the 2 stations
+        final switchbackOrder = ((arrivalOrder + departureOrder) / 2).toInt();
+        resultList.add(SwitchbackAnnotation(order: switchbackOrder));
+      }
+    }
+
+    return resultList;
+  }
+
+  Iterable<BaseData> hideJourneyAnnotationsOnSwitchbackStations(
+    Map<ServicePoint, SwitchbackStation> switchbackStationMap,
+  ) {
+    if (switchbackStationMap.isEmpty) return this;
+
+    final List<BaseData> resultList = toList();
+
+    final arrivalStationsOrders = switchbackStationMap.values
+        .where((it) => it.isArrival)
+        .map((it) => it.station.order)
+        .toSet();
+    final departureStationsOrders = switchbackStationMap.values
+        .where((it) => it.isDeparture)
+        .map((it) => it.station.order)
+        .toSet();
+
+    final indications = where(
+      (item) => item is OperationalIndication || item is RuIndication || item is PersonalNoteAnnotation,
+    );
+    for (final item in indications) {
+      if (departureStationsOrders.contains(item.order)) {
+        resultList.remove(item);
+      }
+    }
+
+    final radnFootNotes = where((item) => item is OpFootNote || item is LineFootNote);
+    for (final item in radnFootNotes) {
+      if (arrivalStationsOrders.contains(item.order)) {
+        resultList.remove(item);
+      }
+    }
+
+    return resultList;
   }
 }

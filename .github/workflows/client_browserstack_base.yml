@@ -172,7 +172,6 @@ jobs:
           node-version: 'lts/krypton'
 
       - name: Generate RunnerTests
-        if: ${{ github.event_name == 'schedule' }}
         run: node app/scripts/generate_runner_tests.mjs ${{ inputs.enable_e2e && 'e2e_test' || 'test' }}
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0

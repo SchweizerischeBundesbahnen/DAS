@@ -14,7 +14,6 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/short_term_change_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
@@ -134,6 +133,7 @@ class SferaModelMapper._() {
         lineSpeeds: lineSpeeds,
         calculatedSpeeds: calculatedSpeeds,
         levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
+        switchbackStationMap: _parseSwitchbackStationMap(servicePoints),
         suspiciousSegments: suspiciousSegments,
       ),
       data: journeyData,
@@ -835,6 +835,28 @@ class SferaModelMapper._() {
         journeyData.add(SuspiciousJourneyPoint(order: segment.startOrder!, kilometre: [], spId: segment.spId));
       }
     }
+  }
+
+  static Map<ServicePoint, SwitchbackStation> _parseSwitchbackStationMap(List<ServicePoint> servicePoints) {
+    final Map<ServicePoint, SwitchbackStation> switchbackStationMap = {};
+    ServicePoint? lastServicePoint;
+    for (final servicePoint in servicePoints) {
+      if (lastServicePoint != null && lastServicePoint.locationCode == servicePoint.locationCode) {
+        switchbackStationMap[lastServicePoint] = SwitchbackStation(
+          station: lastServicePoint,
+          counterpartStation: servicePoint,
+          isArrival: true,
+        );
+        switchbackStationMap[servicePoint] = SwitchbackStation(
+          station: servicePoint,
+          counterpartStation: lastServicePoint,
+          isArrival: false,
+        );
+      }
+
+      lastServicePoint = servicePoint;
+    }
+    return switchbackStationMap;
   }
 }
 
