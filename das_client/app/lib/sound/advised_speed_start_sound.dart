@@ -8,7 +8,7 @@ class const AdvisedSpeedStartSound() extends Sound {
 
   @override
   Future<void> play() async {
-    await Sound.volumeController.setVolume(_volume);
+    await Sound.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
     await audioPlayer.play(AssetSource(AppAssets.soundAdvisedSpeedStart));
