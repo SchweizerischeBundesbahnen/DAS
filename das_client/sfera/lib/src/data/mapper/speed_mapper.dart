@@ -50,6 +50,9 @@ class SpeedMapper._() {
     final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
+      // Ignore '---' speed strings in graduatedSpeedInfo
+      if ('---' == speedString) return;
+
       try {
         final speeds = TrainSeriesSpeed(trainSeries: trainSeries, speed: Speed.parse(speedString), text: text);
         result.add(speeds);
