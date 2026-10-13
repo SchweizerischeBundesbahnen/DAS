@@ -15,6 +15,9 @@ class FilterOption({
 
   @override
   int get hashCode => Object.hash(active, affectedData);
+
+  @override
+  String toString() => 'FilterOption{active: $active, affectedData: ${affectedData.length}}';
 }
 
 class JourneyFilterModel({

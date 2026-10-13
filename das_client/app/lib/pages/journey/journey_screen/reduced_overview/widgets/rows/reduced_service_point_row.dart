@@ -74,7 +74,6 @@ class ReducedServicePointRow extends ServicePointRow {
     if (times == null && data.mandatoryStop) {
       return DASTableCell.empty(
         onTap: () => viewModel.toggleOperationalTime(),
-        decoration: DASTableCellDecoration(color: specialCellColor),
       );
     }
 
@@ -87,7 +86,6 @@ class ReducedServicePointRow extends ServicePointRow {
         mandatoryStop: data.mandatoryStop,
       ),
       alignment: .bottomLeft,
-      decoration: DASTableCellDecoration(color: specialCellColor),
     );
   }
 
@@ -99,7 +97,6 @@ class ReducedServicePointRow extends ServicePointRow {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,

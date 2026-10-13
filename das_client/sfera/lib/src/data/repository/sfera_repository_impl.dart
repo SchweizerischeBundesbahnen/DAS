@@ -31,6 +31,7 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_message_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
@@ -265,37 +266,35 @@ class SferaRepoImpl({
   void _handleMqttMessage(String xmlMessage) async {
     final message = SferaReplyParser.parse<SferaXmlElementDto>(xmlMessage);
     if (!message.validate()) {
-      _log.warning('Validation failed for MQTT response $xmlMessage');
+      _log.warning('Validation failed for MQTT message ${message.type} (${xmlMessage.length} chars)');
       return;
     }
 
-    if (message is SferaG2bReplyMessageDto) {
-      await _handleReplyMessage(message, xmlMessage);
-    } else if (message is SferaG2bEventMessageDto) {
-      await _handleEventMessage(message, xmlMessage);
+    final handled = switch (message) {
+      SferaG2bReplyMessageDto() => await _handleReplyMessage(message),
+      SferaG2bEventMessageDto() => await _handleEventMessage(message),
+      _ => false,
+    };
+    if (!handled) {
+      final description = message is SferaMessageDto ? message.logSummary : message.type;
+      _log.warning('Could not handle $description (${xmlMessage.length} chars)');
     }
   }
 
-  Future<void> _handleReplyMessage(SferaG2bReplyMessageDto message, String xmlMessage) async {
+  Future<bool> _handleReplyMessage(SferaG2bReplyMessageDto message) async {
     var handled = false;
     for (final handler in List.from(_tasks)) {
       handled |= await handler.handleMessage(message);
     }
-
-    if (!handled) {
-      _log.warning('Could not handle Sfera reply message $xmlMessage');
-    }
+    return handled;
   }
 
-  Future<void> _handleEventMessage(SferaG2bEventMessageDto message, String xmlMessage) async {
+  Future<bool> _handleEventMessage(SferaG2bEventMessageDto message) async {
     var handled = false;
     for (final handler in List.from(_eventMessageHandlers)) {
       handled |= await handler.handleMessage(message);
     }
-
-    if (!handled) {
-      _log.warning('Could not handle Sfera event message $xmlMessage');
-    }
+    return handled;
   }
 
   Future<void> _initiateHandshake(OtnId otnId) async {
@@ -326,7 +325,7 @@ class SferaRepoImpl({
         await _handleRequestRelatedTrainInformationCompleted(data);
     }
 
-    _log.info('Task $task completed');
+    _log.fine('Task $task completed');
     _tasks.remove(task);
     if (_allMandatoryTasksCompleted()) {
       switch (_rxState.value) {

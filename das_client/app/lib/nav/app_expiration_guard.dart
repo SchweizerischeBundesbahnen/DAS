@@ -13,7 +13,9 @@ class AppExpirationGuard extends AutoRouteGuard {
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     final appExpirationVM = DI.getOrNull<AppExpirationViewModel>();
     if (appExpirationVM == null) {
-      _log.warning('AppExpirationViewModel not found in DI. Navigating to ${resolver.route} without expiration check.');
+      _log.warning(
+        'AppExpirationViewModel not found in DI. Navigating to ${resolver.route.name} without expiration check.',
+      );
       resolver.next(true);
       return;
     }
@@ -30,7 +32,7 @@ class AppExpirationGuard extends AutoRouteGuard {
       if (resolver.isResolved) return;
 
       if (!appExpirationVM.mustShowDialog) {
-        _log.fine('AppExpiration dialog must not be shown. Navigating to ${resolver.route}');
+        _log.fine('AppExpiration dialog must not be shown. Navigating to ${resolver.route.name}');
         resolver.next(true);
         return;
       }
@@ -39,7 +41,7 @@ class AppExpirationGuard extends AutoRouteGuard {
       router.push(
         JourneySelectionRoute(
           onAppExpiredDialogDismissed: () {
-            _log.fine('Dialog dismissed. Navigating to ${resolver.route}');
+            _log.fine('Dialog dismissed. Navigating to ${resolver.route.name}');
             resolver.next(true);
           },
         ),
