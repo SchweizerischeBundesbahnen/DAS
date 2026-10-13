@@ -32,19 +32,19 @@ class ResponseEntityFactoryTest {
         final DummyResponse response = new DummyResponse();
         response.getData().add(entry);
 
-        ResponseEntity<DummyResponse> responseEntity = ResponseEntityFactory.createOkResponse(response, Locale.FRENCH, "UnitTest");
+        ResponseEntity<DummyResponse> responseEntity = ResponseEntityFactory.createOkResponse(response, Locale.FRENCH);
         assertThat(responseEntity.getBody()).isEqualTo(response);
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
         assertThat(responseEntity.getHeaders().getContentLanguage().toLanguageTag()).isEqualTo("fr");
-        assertThat(responseEntity.getHeaders().get(ApiParametersDefault.HEADER_REQUEST_ID).getFirst()).isEqualTo("UnitTest");
+        assertThat(responseEntity.getHeaders().containsHeader(ApiParametersDefault.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
     }
 
     @Test
     void createNotFoundResponse() {
-        ResponseEntity<Problem> responseEntity = ResponseEntityFactory.createNotFoundResponse("notFound", "Pojo not found", null, "createNotFoundResponse", "/nowhere");
+        ResponseEntity<Problem> responseEntity = ResponseEntityFactory.createNotFoundResponse("notFound", "Pojo not found", null, "/nowhere");
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_PROBLEM_JSON);
         assertThat(responseEntity.getHeaders().getContentLanguage().toString()).isEqualTo("en");
-        assertThat(responseEntity.getHeaders().get(ApiParametersDefault.HEADER_REQUEST_ID).getFirst()).isEqualTo("createNotFoundResponse");
+        assertThat(responseEntity.getHeaders().containsHeader(ApiParametersDefault.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
         assertThat(responseEntity.getBody()).isInstanceOf(Problem.class);
         assertThat(responseEntity.getBody().getStatus()).isEqualTo(404);
         assertThat(responseEntity.getBody().getTitle()).isEqualTo("notFound");

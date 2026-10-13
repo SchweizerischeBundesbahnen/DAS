@@ -2,8 +2,6 @@ package ch.sbb.das.backend.externallinks.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,10 +45,8 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "200", description = "External links found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllExternalLinks(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId) {
-        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAll()), requestId);
+    public ResponseEntity<? extends Response> getAllExternalLinks() {
+        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAll()));
     }
 
     @GetMapping(API_DRIVER_EXTERNAL_LINKS)
@@ -63,12 +58,10 @@ public class ExternalLinkController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getAllExternalLinksByCompanies(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId,
         @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
         @RequestParam
         Set<CompanyCode> companies) {
-        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAllByCompanies(companies)), requestId);
+        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAllByCompanies(companies)));
     }
 
     @GetMapping(API_EXTERNAL_LINKS_ID)
@@ -78,15 +71,13 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "404", description = "External link not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getExternalLinkById(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId,
         @PathVariable
         Integer id) {
         ExternalLink externalLink = externalLinkService.getById(id);
         if (externalLink == null) {
-            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+            return ResponseEntityFactory.createNotFoundResponse();
         }
-        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink), requestId);
+        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink));
     }
 
     @PostMapping(API_ADMIN_EXTERNAL_LINKS)
@@ -95,11 +86,9 @@ public class ExternalLinkController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<ExternalLinkResponse> createExternalLink(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId,
         @RequestBody @Valid
         ExternalLinkRequest createRequest) {
-        return ResponseEntityFactory.createCreatedResponse(new ExternalLinkResponse(externalLinkService.create(createRequest)), requestId);
+        return ResponseEntityFactory.createCreatedResponse(new ExternalLinkResponse(externalLinkService.create(createRequest)));
     }
 
     @PutMapping(API_EXTERNAL_LINKS_ID)
@@ -109,17 +98,15 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "404", description = "External link not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateExternalLink(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId,
         @RequestBody @Valid
         ExternalLinkRequest updateRequest,
         @PathVariable
         Integer id) {
         ExternalLink externalLink = externalLinkService.update(id, updateRequest);
         if (externalLink == null) {
-            return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+            return ResponseEntityFactory.createNotFoundResponse();
         }
-        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink), requestId);
+        return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink));
     }
 
     @DeleteMapping(API_ADMIN_EXTERNAL_LINKS)
@@ -127,11 +114,9 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "204", description = "External links deleted.")
     @ApiErrorResponses
     public ResponseEntity<Void> deleteExternalLinkByIds(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false)
-        String requestId,
         @RequestBody @Valid
         DeleteByIdsRequest deleteRequest) {
         externalLinkService.deleteAllById(deleteRequest.ids());
-        return ResponseEntityFactory.createNoContentResponse(requestId);
+        return ResponseEntityFactory.createNoContentResponse();
     }
 }

@@ -6,8 +6,6 @@ import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.Problem;
 import ch.sbb.das.backend.common.Response;
@@ -32,7 +30,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,8 +65,6 @@ public class FormationController {
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
         in = ParameterIn.HEADER)
     ResponseEntity<? extends Response> getFormations(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
-
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
         @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
 
@@ -86,13 +81,13 @@ public class FormationController {
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
                 return ResponseEntityFactory.createNotFoundResponse(
                     ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
-                    null, requestId, null);
+                    null, null);
             } else {
-                return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+                return ResponseEntityFactory.createNotFoundResponse();
             }
         }
 
-        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
+        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "private");
         return ResponseEntityFactory.createOkResponse(
             headers,
