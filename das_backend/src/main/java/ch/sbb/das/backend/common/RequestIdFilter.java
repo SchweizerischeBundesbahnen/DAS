@@ -16,6 +16,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * manually.
  * <p>
  * Runs before Spring Security and sets the header before the response is committed.
+ * <p>
+ * Unlike {@link RequestLoggingFilter} this is not a {@code @WebFilter}: filters picked up by {@code @ServletComponentScan} ignore {@link Order} and are registered with
+ * {@link Ordered#LOWEST_PRECEDENCE}, i.e. after Spring Security, which writes 401/403 itself without ever reaching them. {@link RequestLogger} relies on this order too, since it
+ * logs the value from the response header set here.
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)

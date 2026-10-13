@@ -6,28 +6,36 @@ import org.junit.jupiter.api.Test;
 
 class RequestIdFilterTest {
 
-    private static final String REQUEST_ID = "shouldEcho[1] requestId=4711, rail";
+    /**
+     * Shape sent by das_e2e_testsuite for a parameterized test: brackets, spaces and commas must pass unchanged.
+     */
+    private static final String E2E_REQUEST_ID = "e2eTest_getById[1] 1, de";
 
     @Test
-    void sanitize_absentOrBlank_null() {
+    void sanitize_nullOrBlank_returnsNull() {
         assertThat(RequestIdFilter.sanitize(null)).isNull();
         assertThat(RequestIdFilter.sanitize(" ")).isNull();
     }
 
     @Test
-    void sanitize_printableAscii_keptTrimmed() {
-        assertThat(RequestIdFilter.sanitize(" " + REQUEST_ID + " ")).isEqualTo(REQUEST_ID);
+    void sanitize_paddedPrintableAscii_returnsStripped() {
+        assertThat(RequestIdFilter.sanitize(" " + E2E_REQUEST_ID + " ")).isEqualTo(E2E_REQUEST_ID);
     }
 
     @Test
-    void sanitize_tooLong_truncatedPrefix() {
+    void sanitize_exceedsMaxLength_returnsTruncatedPrefix() {
+        // Given
         final String tooLong = "x".repeat(RequestIdFilter.MAX_LENGTH + 10);
 
-        assertThat(RequestIdFilter.sanitize(tooLong)).isEqualTo(tooLong.substring(0, RequestIdFilter.MAX_LENGTH));
+        // When
+        final String sanitized = RequestIdFilter.sanitize(tooLong);
+
+        // Then
+        assertThat(sanitized).isEqualTo(tooLong.substring(0, RequestIdFilter.MAX_LENGTH));
     }
 
     @Test
-    void sanitize_nonPrintable_null() {
+    void sanitize_controlOrNonAsciiChars_returnsNull() {
         assertThat(RequestIdFilter.sanitize("id\tinjected")).isNull();
         assertThat(RequestIdFilter.sanitize("id\ninjected")).isNull();
         assertThat(RequestIdFilter.sanitize("Zürich")).isNull();

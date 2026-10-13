@@ -41,7 +41,7 @@ class RequestLoggingFilterTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
-    void filter_logsRequest() throws Exception {
+    void doFilter_anyRequest_logsPath() throws Exception {
         mockMvc.perform(get("/driver/v1/personal-notes"));
 
         assertThat(appender.list)
@@ -53,7 +53,7 @@ class RequestLoggingFilterTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
-    void filter_logsRequestIdHeader() throws Exception {
+    void doFilter_requestIdHeader_logsRequestId() throws Exception {
         mockMvc.perform(get("/driver/v1/personal-notes").header(ApiParametersDefault.HEADER_REQUEST_ID, "log-4711"));
 
         assertThat(appender.list)
