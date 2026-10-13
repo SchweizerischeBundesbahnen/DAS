@@ -16,14 +16,14 @@ on:
   push:
     paths:
       - 'sfera_mock/**'
-      - '.github/workflows/ci-sfera-mock.yml'
+      - '.github/workflows/sfera_mock_ci.yml'
       - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'sfera_mock/**'
-      - '.github/workflows/ci-sfera-mock.yml'
+      - '.github/workflows/sfera_mock_ci.yml'
       - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]

@@ -8,14 +8,14 @@ on:
   push:
     paths:
       - 'das_playground/**'
-      - '.github/workflows/ci-playground.yml'
+      - '.github/workflows/playground_ci.yml'
       - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_playground/**'
-      - '.github/workflows/ci-playground.yml'
+      - '.github/workflows/playground_ci.yml'
       - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]

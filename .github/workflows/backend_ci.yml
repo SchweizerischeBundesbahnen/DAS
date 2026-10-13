@@ -16,14 +16,14 @@ on:
   push:
     paths:
       - 'das_backend/**'
-      - '.github/workflows/ci-backend.yml'
+      - '.github/workflows/backend_ci.yml'
       - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_backend/**'
-      - '.github/workflows/ci-backend.yml'
+      - '.github/workflows/backend_ci.yml'
       - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]

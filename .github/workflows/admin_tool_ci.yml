@@ -8,14 +8,14 @@ on:
   push:
     paths:
       - 'das_admin_tool/**'
-      - '.github/workflows/ci-admin-tool.yml'
+      - '.github/workflows/admin_tool_ci.yml'
       - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_admin_tool/**'
-      - '.github/workflows/ci-admin-tool.yml'
+      - '.github/workflows/admin_tool_ci.yml'
       - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]
