@@ -11,16 +11,12 @@ on:
       - '.github/actions/**'
   workflow_call:
     inputs:
-      version:
-        description: 'Release version, e.g. "1.2.3"'
+      tag-name:
+        description: 'Release tag to build, e.g. "backend-v1.2.3"'
         type: string
         required: true
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Release version, e.g. "1.2.3"'
-        type: string
-        required: true
       tag-name:
         description: 'Release tag to build, e.g. "backend-v1.2.3"'
         type: string
@@ -38,8 +34,19 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Empty when called by release-please, which already runs on the release commit
           ref: ${{ inputs.tag-name }}
+
+      - name: Derive version from tag
+        id: version
+        env:
+          TAG_NAME: ${{ inputs.tag-name }}
+        run: |
+          # Release tags have the form <component>-v<version>, e.g. backend-v1.2.3
+          if [ -n "$TAG_NAME" ] && [[ "$TAG_NAME" != *-v* ]]; then
+            echo "::error::Tag '$TAG_NAME' does not match <component>-v<version>"
+            exit 1
+          fi
+          echo "version=${TAG_NAME##*-v}" >> "$GITHUB_OUTPUT"
 
       - name: Vault Secrets 🤫
         id: vault-secrets
@@ -65,7 +72,7 @@ jobs:
           working-directory: das_backend
           build-image: true
           image-name: backend
-          image-tag: ${{ inputs.version || 'pr-check' }}
+          image-tag: ${{ steps.version.outputs.version || 'pr-check' }}
 
       - uses: ./.github/actions/push-image
         if: github.event_name != 'pull_request'

@@ -22,16 +22,12 @@ jobs:
       das_client--version: ${{ steps.release.outputs['das_client/app--version'] }}
       das_client--tag_name: ${{ steps.release.outputs['das_client/app--tag_name'] }}
       sfera_mock--release_created: ${{ steps.release.outputs.sfera_mock--release_created }}
-      sfera_mock--version: ${{ steps.release.outputs.sfera_mock--version }}
       sfera_mock--tag_name: ${{ steps.release.outputs.sfera_mock--tag_name }}
       das_backend--release_created: ${{ steps.release.outputs.das_backend--release_created }}
-      das_backend--version: ${{ steps.release.outputs.das_backend--version }}
       das_backend--tag_name: ${{ steps.release.outputs.das_backend--tag_name }}
       das_playground--release_created: ${{ steps.release.outputs.das_playground--release_created }}
-      das_playground--version: ${{ steps.release.outputs.das_playground--version }}
       das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
       das_admin_tool--release_created: ${{ steps.release.outputs.das_admin_tool--release_created }}
-      das_admin_tool--version: ${{ steps.release.outputs.das_admin_tool--version }}
       das_admin_tool--tag_name: ${{ steps.release.outputs.das_admin_tool--tag_name }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
@@ -57,7 +53,7 @@ jobs:
     if: needs.release-please.outputs.sfera_mock--release_created
     uses: ./.github/workflows/sfera_mock_release.yml
     with:
-      version: ${{ needs.release-please.outputs.sfera_mock--version }}
+      tag-name: ${{ needs.release-please.outputs.sfera_mock--tag_name }}
     secrets: inherit
 
   das_backend-release:
@@ -65,7 +61,7 @@ jobs:
     if: needs.release-please.outputs.das_backend--release_created
     uses: ./.github/workflows/backend_release.yml
     with:
-      version: ${{ needs.release-please.outputs.das_backend--version }}
+      tag-name: ${{ needs.release-please.outputs.das_backend--tag_name }}
     secrets: inherit
 
   das_backend-api-spec:
@@ -82,7 +78,7 @@ jobs:
     if: needs.release-please.outputs.das_playground--release_created
     uses: ./.github/workflows/playground_release.yml
     with:
-      version: ${{ needs.release-please.outputs.das_playground--version }}
+      tag-name: ${{ needs.release-please.outputs.das_playground--tag_name }}
     secrets: inherit
 
   das_admin_tool-release:
@@ -90,5 +86,5 @@ jobs:
     if: needs.release-please.outputs.das_admin_tool--release_created
     uses: ./.github/workflows/admin_tool_release.yml
     with:
-      version: ${{ needs.release-please.outputs.das_admin_tool--version }}
+      tag-name: ${{ needs.release-please.outputs.das_admin_tool--tag_name }}
     secrets: inherit
