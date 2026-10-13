@@ -2,7 +2,7 @@
 @import integration_test;
 @import ObjectiveC.runtime;
 
-// One entry per Flutter test. Filled by app/scripts/generate_runner_tests.mjs at the //GENERATED CODE marker
+// One entry per Flutter test. Filled by app/scripts/generate_runner_tests.mjs
 static NSArray<NSString *> *RunnerDartTestNames(void) {
   return @[
       //GENERATED CODE
