@@ -69,7 +69,8 @@ jobs:
     secrets: inherit
 
   das_backend-api-spec:
-    needs: release-please
+    # Only upload the specification once the release image was built and pushed
+    needs: [release-please, das_backend-release]
     if: needs.release-please.outputs.das_backend--release_created
     uses: ./.github/workflows/backend_api_spec.yml
     with:
