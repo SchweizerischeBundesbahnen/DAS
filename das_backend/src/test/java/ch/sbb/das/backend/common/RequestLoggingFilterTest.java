@@ -12,7 +12,6 @@ import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,6 @@ class RequestLoggingFilterTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
-    @DisplayName("filter_logsRequestIdHeader|AKJZm3jDFSmfhpwHZSgC|tests:2649")
     void filter_logsRequestIdHeader() throws Exception {
         mockMvc.perform(get("/driver/v1/personal-notes").header(ApiParametersDefault.HEADER_REQUEST_ID, "log-4711"));
 
