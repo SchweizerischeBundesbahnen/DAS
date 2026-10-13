@@ -41,6 +41,7 @@ import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRepoImpl');
@@ -75,6 +76,8 @@ class SferaRepoImpl({
 
   int _missingSpRequestRetryCount = 0;
   int _lastMissingSegmentProfileCount = 0;
+
+  final _taskDeleteLock = Lock();
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -319,15 +322,21 @@ class SferaRepoImpl({
         await _handleRequestJourneyProfileTaskCompleted(data);
       case RequestSegmentProfilesTask _:
         await _handleRequestSegmentProfilesTaskCompleted();
-      case RequestLocalRegulationsTask _:
-        return;
       case RequestRelatedTrainInformationTask _:
         await _handleRequestRelatedTrainInformationCompleted(data);
+      case RequestLocalRegulationsTask _:
+        _tasks.remove(task);
+        return;
     }
 
     _log.fine('Task $task completed');
-    _tasks.remove(task);
-    if (_allMandatoryTasksCompleted()) {
+    var allMandatoryTasksCompleted = false;
+    await _taskDeleteLock.synchronized(() {
+      _tasks.remove(task);
+      allMandatoryTasksCompleted = _allMandatoryTasksCompleted();
+    });
+
+    if (allMandatoryTasksCompleted) {
       switch (_rxState.value) {
         case .loadingAdditionalData:
           await _refreshTrainCharacteristics();

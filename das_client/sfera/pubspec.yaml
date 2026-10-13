@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.20.3
   # https://pub.dev/packages/meta
   meta: ^1.19.0
+  # https://pub.dev/packages/synchronized
+  synchronized: ^3.4.2
 
 dev_dependencies:
   flutter_test:
