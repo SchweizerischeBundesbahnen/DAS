@@ -954,9 +954,7 @@ void main() {
 
     testWidgets(
       'journeyTable_whenSwitchbackStationsPresent_thenDisplaysSwitchbackRowCorrectly|6avqDUSPA3zHRcHwnzJr|tests:2227',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T56');
 

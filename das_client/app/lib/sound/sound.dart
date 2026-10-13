@@ -18,11 +18,11 @@ abstract class const Sound() {
   static Future<void> setVolume(double volume) async {
     try {
       await volumeController.setVolume(volume);
-    } on MissingPluginException catch (error, stackTrace) {
-      _log.warning('Skipping sound volume update because the volume controller plugin is unavailable.', error, stackTrace);
-    } on PlatformException catch (error, stackTrace) {
-      if (error.code != 'SetVolumeError') rethrow;
-      _log.warning('Skipping sound volume update because the system volume slider is unavailable.', error, stackTrace);
+    } on MissingPluginException catch (err, st) {
+      _log.warning('Skipping sound volume update because the volume controller plugin is unavailable.', err, st);
+    } on PlatformException catch (err, st) {
+      if (err.code != 'SetVolumeError') rethrow;
+      _log.warning('Skipping sound volume update because the system volume slider is unavailable.', err, st);
     }
   }
 
