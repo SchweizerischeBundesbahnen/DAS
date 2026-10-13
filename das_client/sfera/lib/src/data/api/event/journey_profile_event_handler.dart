@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
-import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
@@ -28,10 +27,10 @@ class JourneyProfileEventHandler(
     final updatedJourneyProfile = eventMessage.payload!.journeyProfiles.first;
     final status = updatedJourneyProfile.status;
     switch (status) {
-      case JpStatusDto.invalid:
-      case JpStatusDto.unavailable:
+      case .invalid:
+      case .unavailable:
         return true;
-      case JpStatusDto.update:
+      case .update:
         final currentJourneyProfile = _currentJourneyProfile();
         if (currentJourneyProfile == null) {
           _log.info('Received update for journey profile, but no current journey profile exists');
@@ -43,8 +42,8 @@ class JourneyProfileEventHandler(
           onMessageHandled(this, mergedJourneyProfile);
           return true;
         }
-      case JpStatusDto.overwrite:
-      case JpStatusDto.valid:
+      case .overwrite:
+      case .valid:
         _log.info('Received ${status.name.toUpperCase()} journey profile, saving it');
         await _sferaDatabaseRepository.saveJourneyProfile(updatedJourneyProfile);
         onMessageHandled(this, updatedJourneyProfile);
@@ -78,6 +77,7 @@ class JourneyProfileEventHandler(
       trainIdentification: updatedJourneyProfile.trainIdentification,
       segmentProfileReferences: mergedSegmentProfileReferences,
       // TODO: Check with TMS how GeneralJPInformation merging should be done, or if they will provide everything
+      // https://github.com/SchweizerischeBundesbahnen/DAS/issues/2962
       generalJpInformation: updatedJourneyProfile.generalJpInformation,
     );
   }
