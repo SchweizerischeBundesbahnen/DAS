@@ -127,6 +127,104 @@ void main() {
   );
 
   test(
+    'addTrainDriverTurnoverRows_whenConsecutiveServicePointsAndEndLocationMatches_thenAttachesToEndOfFirstServicePoint',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 2, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'C', abbreviation: 'C', order: 3, kilometre: [2.0], locationCode: 'C'),
+      ];
+
+      final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
+        trainIdentification: TrainIdentification(
+          companyCode: '1285',
+          trainNumber: '123',
+          date: DateTime.now(),
+        ),
+        tafTapLocationReferenceEnd: 'B',
+      );
+
+      // WHEN
+      final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+      final turnovers = resultList.whereType<TrainDriverTurnover>().toList();
+
+      // THEN
+      expect(turnovers, hasLength(1));
+      expect(turnovers.first.order, 1);
+      expect(turnovers.first.isStart, false);
+    },
+  );
+
+  test(
+    'addTrainDriverTurnoverRows_whenConsecutiveServicePointsAndStartLocationMatches_thenAttachesToSecondServicePoint',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 2, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'C', abbreviation: 'C', order: 3, kilometre: [2.0], locationCode: 'C'),
+      ];
+
+      final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
+        trainIdentification: TrainIdentification(
+          companyCode: '1285',
+          trainNumber: '123',
+          date: DateTime.now(),
+        ),
+        tafTapLocationReferenceStart: 'B',
+      );
+
+      // WHEN
+      final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+      final turnovers = resultList.whereType<TrainDriverTurnover>().toList();
+
+      // THEN
+      expect(turnovers, hasLength(1));
+      expect(turnovers.first.order, 2);
+      expect(turnovers.first.isStart, true);
+    },
+  );
+
+  test(
+    'addTrainDriverTurnoverRows_whenConsecutiveServicePointsForBothStartAndEnd_thenAttachesStartToSecondAndEndToFirst',
+    () {
+      // GIVEN
+      final baseData = <BaseData>[
+        ServicePoint(name: 'A', abbreviation: 'A', order: 0, kilometre: [0.0], locationCode: 'A'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 1, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'B', abbreviation: 'B', order: 2, kilometre: [1.0], locationCode: 'B'),
+        ServicePoint(name: 'C', abbreviation: 'C', order: 3, kilometre: [2.0], locationCode: 'C'),
+        ServicePoint(name: 'C', abbreviation: 'C', order: 4, kilometre: [2.0], locationCode: 'C'),
+        ServicePoint(name: 'D', abbreviation: 'D', order: 5, kilometre: [3.0], locationCode: 'D'),
+      ];
+
+      final ExtendedTrainIdentification trainIdentification = ExtendedTrainIdentification(
+        trainIdentification: TrainIdentification(
+          companyCode: '1285',
+          trainNumber: '123',
+          date: DateTime.now(),
+        ),
+        tafTapLocationReferenceStart: 'B',
+        tafTapLocationReferenceEnd: 'C',
+      );
+
+      // WHEN
+      final resultList = baseData.addTrainDriverTurnoverRows(trainIdentification).toList();
+      final turnovers = resultList.whereType<TrainDriverTurnover>().toList();
+
+      // THEN
+      expect(turnovers, hasLength(2));
+      final startTurnover = turnovers.firstWhere((it) => it.isStart);
+      final endTurnover = turnovers.firstWhere((it) => !it.isStart);
+      expect(startTurnover.order, 2);
+      expect(endTurnover.order, 3);
+    },
+  );
+
+  test(
     'hideSignals_whenStationsSignalsIsFalse_thenDoesNothing',
     () {
       // GIVEN

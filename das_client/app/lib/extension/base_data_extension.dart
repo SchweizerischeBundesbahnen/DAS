@@ -30,9 +30,9 @@ extension BaseDataX on Iterable<BaseData> {
     for (final data in servicePoints) {
       if (data == firstServicePoint || data == lastServicePoint) continue;
 
-      if (startTrainDriverTurnover == null && startLocation != null && startLocation == data.locationCode) {
+      if (startLocation != null && startLocation == data.locationCode) {
         startTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: true);
-      } else if (endLocation != null && endLocation == data.locationCode) {
+      } else if (endTrainDriverTurnover == null && endLocation != null && endLocation == data.locationCode) {
         endTrainDriverTurnover = TrainDriverTurnover(order: data.order, isStart: false);
       }
     }
