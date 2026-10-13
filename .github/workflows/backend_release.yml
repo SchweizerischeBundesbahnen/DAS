@@ -4,11 +4,6 @@
 name: Backend Release
 
 on:
-  pull_request: # TEMPORARY: dry-run check for #2535, remove before merge
-    paths:
-      - '.github/workflows/*_release.yml'
-      - '.github/workflows/backend_api_spec.yml'
-      - '.github/actions/**'
   workflow_call:
     inputs:
       tag-name:
@@ -42,7 +37,7 @@ jobs:
           TAG_NAME: ${{ inputs.tag-name }}
         run: |
           # Release tags have the form <component>-v<version>, e.g. backend-v1.2.3
-          if [ -n "$TAG_NAME" ] && [[ "$TAG_NAME" != *-v* ]]; then
+          if [[ "$TAG_NAME" != *-v* ]]; then
             echo "::error::Tag '$TAG_NAME' does not match <component>-v<version>"
             exit 1
           fi
@@ -72,10 +67,9 @@ jobs:
           working-directory: das_backend
           build-image: true
           image-name: backend
-          image-tag: ${{ steps.version.outputs.version || 'pr-check' }}
+          image-tag: ${{ steps.version.outputs.version }}
 
       - uses: ./.github/actions/push-image
-        if: github.event_name != 'pull_request'
         with:
           image-ref: ${{ steps.build.outputs.image-ref }}
           latest: 'true'
