@@ -17,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * <p>
  * Runs before Spring Security and sets the header before the response is committed.
  * <p>
+ * Only printable ASCII is echoed, stripped and truncated to {@value #MAX_LENGTH} characters; any other value is dropped (see {@link #sanitize(String)}).
+ * <p>
  * Unlike {@link RequestLoggingFilter} this is not a {@code @WebFilter}: filters picked up by {@code @ServletComponentScan} ignore {@link Order} and are registered with
  * {@link Ordered#LOWEST_PRECEDENCE}, i.e. after Spring Security, which writes 401/403 itself without ever reaching them. {@link RequestLogger} relies on this order too, since it
  * logs the value from the response header set here.
@@ -25,7 +27,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestIdFilter extends OncePerRequestFilter {
 
-    static final int MAX_LENGTH = 128;
+    static final int MAX_LENGTH = 256;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,7 +39,7 @@ public class RequestIdFilter extends OncePerRequestFilter {
     }
 
     /**
-     * The value is echoed and logged, therefore only printable ASCII is accepted and its length is limited (consumers must expect a truncated prefix).
+     * The value is echoed and logged, therefore only printable ASCII is accepted and its length is limited to {@value #MAX_LENGTH} characters (consumers must expect a truncated prefix).
      *
      * @return null if absent or not acceptable
      */
