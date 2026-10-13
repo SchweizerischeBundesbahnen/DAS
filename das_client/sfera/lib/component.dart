@@ -12,6 +12,7 @@ import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+export 'package:sfera/src/data/mapper/mapper_utils.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/data/repository/acknowledged_modification_repository.dart';
 export 'package:sfera/src/data/repository/sfera_local_repo.dart';
@@ -64,6 +65,7 @@ export 'package:sfera/src/model/journey/station_sign.dart';
 export 'package:sfera/src/model/journey/supervised_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/suspicious_journey_point.dart';
 export 'package:sfera/src/model/journey/suspicious_segment.dart';
+export 'package:sfera/src/model/journey/switchback_station.dart';
 export 'package:sfera/src/model/journey/track_equipment_segment.dart';
 export 'package:sfera/src/model/journey/track_foot_note.dart';
 export 'package:sfera/src/model/journey/train_driver_turnover.dart';

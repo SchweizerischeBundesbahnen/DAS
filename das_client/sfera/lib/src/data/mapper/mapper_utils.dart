@@ -1,9 +1,9 @@
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 
-const int _hundredThousand = 100000;
+const int segmentProfileOrderSize = 100000;
 
 int calculateOrder(int segmentIndex, double location) {
-  return (segmentIndex * _hundredThousand + location).toInt();
+  return (segmentIndex * segmentProfileOrderSize + location).toInt();
 }
 
 typedef KilometreMap = Map<double, List<double>>;

@@ -1,0 +1,68 @@
+name: Maven run
+description: Sets up Java, runs Maven and optionally builds a container image with Spring Boot buildpacks.
+
+inputs:
+  working-directory:
+    description: 'Directory of the Maven module, e.g. das_backend'
+    required: true
+  args:
+    description: 'Maven arguments for the build/test run, e.g. "verify". Skipped when empty.'
+    required: false
+    default: ''
+  build-image:
+    description: 'Build a container image with Spring Boot buildpacks (tests skipped) after the run'
+    required: false
+    default: 'false'
+  image-name:
+    description: 'Image name below ghcr.io/<repository>/, e.g. backend. Required when build-image is true.'
+    required: false
+    default: ''
+  image-tag:
+    description: 'Tag of the container image, e.g. "main" or "1.2.3"'
+    required: false
+    default: 'main'
+
+outputs:
+  image-ref:
+    description: 'Full reference of the built container image, empty if none was built'
+    value: ${{ steps.image.outputs.ref }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+      with:
+        java-version: '25.0.4+101.0.LTS'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Run Maven
+      if: inputs.args != ''
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        ARGS: ${{ inputs.args }}
+      run: |
+        # Split ARGS into words without glob expansion (e.g. Sonar resourceKey=**)
+        set -f
+        mvn --batch-mode --update-snapshots $ARGS
+
+    - name: Create container image
+      id: image
+      if: inputs.build-image == 'true'
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        IMAGE_NAME: ${{ inputs.image-name }}
+        IMAGE: ghcr.io/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.image-tag }}
+      run: |
+        : "${IMAGE_NAME:?image-name is required when build-image is true}"
+        IMAGE_REF=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+        SOURCE_DATE_EPOCH=$(date +%s)
+        export SOURCE_DATE_EPOCH
+
+        mvn --batch-mode spring-boot:build-image \
+          -Dmaven.test.skip=true \
+          -Dspring-boot.build-image.imageName="$IMAGE_REF"
+
+        echo "ref=$IMAGE_REF" >> "$GITHUB_OUTPUT"

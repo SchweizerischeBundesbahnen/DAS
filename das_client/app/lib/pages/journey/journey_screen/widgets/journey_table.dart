@@ -15,6 +15,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/switchback_annotation.dart';
 import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
@@ -42,6 +43,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journey_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/switchback_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
@@ -119,6 +121,7 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
       chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      leftOffsetToRouteCell: columns.leftOffsetTo(columnId: ColumnDefinition.route.index),
       acknowledgedModifications: model.acknowledgedModifications,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
@@ -148,6 +151,7 @@ class JourneyTable extends StatelessWidget {
     required JourneyPositionModel journeyPosition,
     required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
+    required double leftOffsetToRouteCell,
     required Set<Modification> acknowledgedModifications,
   }) {
     final groupedRows = journeyTableRowData
@@ -377,6 +381,14 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as SuspiciousJourneyPoint,
             rowIndex: index,
+          );
+        case Datatype.switchback:
+          return SwitchbackRow(
+            metadata: metadata,
+            data: rowData as SwitchbackAnnotation,
+            rowIndex: index,
+            routePadding: leftOffsetToRouteCell,
+            informationPadding: leftOffsetToInformationCell,
           );
       }
     });

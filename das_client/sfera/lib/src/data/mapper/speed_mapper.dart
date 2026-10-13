@@ -9,7 +9,6 @@ import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 import 'package:sfera/src/data/mapper/draft_advised_speed_segment.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
 final _log = Logger('SpeedMapper');
 
