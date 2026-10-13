@@ -90,9 +90,7 @@ void main() {
 
   testWidgets(
     'replacementSeries_whenNoReplacementForBrakeSeries_thenShowsNotification|NVOhVZ4DmLz4SAnArtpl|tests:938',
-    (
-      tester,
-    ) async {
+    (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T30M');
 

@@ -133,9 +133,7 @@ void main() {
 
     testWidgets(
       'servicePointModal_whenDifferentServicePointTapped_thenSwitchesWithoutClosing|YNAh8x76zB856tYRX9Mj|tests:1875',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T8');
 
@@ -359,6 +357,7 @@ void main() {
 
       await disconnect(tester);
     });
+
     testWidgets('communicationTab_whenOpenedFromOtherTab_thenShowsInformation|pNuI8yhc85razhMIsaEz|tests:229', (
       tester,
     ) async {

@@ -32,9 +32,7 @@ void main() {
 
     testWidgets(
       'externalLinks_whenCompanySelectedInSettingsPage_thenShowsCorrectLinks|vNfgpqG3Ma8VUpXenmkY|tests:147',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         // Navigate to settings and select SBB CH

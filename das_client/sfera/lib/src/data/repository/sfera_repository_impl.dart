@@ -619,7 +619,7 @@ class SferaRepoImpl({
   }
 
   bool _isMandatoryTask(SferaTask task) {
-    return task is! RequestLocalRegulationsTask;
+    return task is! RequestLocalRegulationsTask && task is! RequestRelatedTrainInformationTask;
   }
 
   @override

@@ -277,9 +277,7 @@ void main() {
 
     testWidgets(
       'settings_whenEtcsConventionalToggled_thenHidesOnlyConventionalStopSign|D70x81OKbP7Mf1fPtJeJ|tests:1628,1484',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T45');
         await stopAutomaticAdvancement(tester);

@@ -28,6 +28,7 @@ void main() {
 
     await disconnect(tester);
   });
+
   testWidgets('collapsibleRows_whenRadnFootNoteDisplayed_thenCollapses|ClmYSuxH6dOypT2xgln8|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15M');
@@ -43,6 +44,7 @@ void main() {
 
     await disconnect(tester);
   });
+
   testWidgets('collapsibleRows_whenLongTextPresent_thenShowsMoreButton|lEGwTOYFxWLauMjiWDDM|tests:126', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T22M');
@@ -85,11 +87,10 @@ void main() {
 
     await disconnect(tester);
   });
+
   testWidgets(
     'collapsibleRows_whenCombinedIndications_thenReplacesNewLinesWithDelimiter|Wn0E9HeXjfz8Lk3XEgva|tests:126,625',
-    (
-      tester,
-    ) async {
+    (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T22M');
 
@@ -130,6 +131,7 @@ void main() {
       await disconnect(tester);
     },
   );
+
   testWidgets(
     'collapsibleRows_whenSameServicePoint_thenCombinesIndicationAndFootNote|pkZjtPxXkInflC3IIs74|tests:126,625',
     (tester) async {
@@ -161,6 +163,7 @@ void main() {
       await disconnect(tester);
     },
   );
+
   testWidgets('collapsibleRows_whenOperationalIndicationPassed_thenCollapses|H9JLGRVgfPYcsgEwWMyX|tests:126', (
     tester,
   ) async {
@@ -173,6 +176,7 @@ void main() {
 
     await disconnect(tester);
   });
+
   testWidgets('collapsibleRows_whenRadnFootNotePassed_thenCollapses|sLbIwzyEcCfKwY77CQRz|tests:625', (tester) async {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T15');
@@ -223,9 +227,7 @@ void main() {
 
   testWidgets(
     'simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|wGzkdPjTfFUKkJKNw92k|tests:1126',
-    (
-      tester,
-    ) async {
+    (tester) async {
       // ARRANGE - mock SIM train
       await IntegrationTestApp.start(tester);
 
@@ -284,9 +286,7 @@ void main() {
 
   testWidgets(
     'collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|156zLPEeDK5CzaN0BPcM|tests:2219',
-    (
-      tester,
-    ) async {
+    (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T54M');
 
@@ -315,9 +315,7 @@ void main() {
 
   testWidgets(
     'collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|n1p736TbYkrBbZ4IoM2X|tests:2219',
-    (
-      tester,
-    ) async {
+    (tester) async {
       await IntegrationTestApp.start(tester);
       await loadJourney(tester, trainNumber: 'T54M');
 
