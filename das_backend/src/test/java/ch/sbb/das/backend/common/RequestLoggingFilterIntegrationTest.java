@@ -12,13 +12,14 @@ import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 @IntegrationTest
-class RequestLoggingFilterTest {
+class RequestLoggingFilterIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,6 +42,7 @@ class RequestLoggingFilterTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
+    @DisplayName("doFilter_anyRequest_logsPath|su1gce352FfEF3ZqCg7O|tests:2133")
     void doFilter_anyRequest_logsPath() throws Exception {
         mockMvc.perform(get("/driver/v1/personal-notes"));
 
@@ -53,6 +55,7 @@ class RequestLoggingFilterTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
+    @DisplayName("doFilter_requestIdHeader_logsRequestId|AKJZm3jDFSmfhpwHZSgC|tests:2649")
     void doFilter_requestIdHeader_logsRequestId() throws Exception {
         mockMvc.perform(get("/driver/v1/personal-notes").header(ApiParametersDefault.HEADER_REQUEST_ID, "log-4711"));
 
