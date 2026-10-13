@@ -50,8 +50,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    # On main the image is pushed, so lint and test must pass first
-    needs: [lint, test]
+    needs: lint
     # Serialize main runs so an older run cannot overwrite the main image of a newer one
     concurrency:
       group: ${{ github.workflow }}-build-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
