@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
-import { CompanyService } from '~shared/companies-input/company.service';
-import { RecentCompaniesStore } from '~shared/recent-companies.store';
+import { CompanyApi } from '~shared/services/company.api';
+import { RecentCompaniesService } from '~shared/services/recent-companies.service';
 import { hasError } from '~src/testing/utils';
 import { RuIndicationDialogData } from '../ru-indication.service';
-import { RuIndicationDialog } from './ru-indication-dialog.component';
+import { RuIndicationDialog } from './ru-indication-dialog';
 
-const mockRecentCompaniesStore = { get: () => [] };
+const mockRecentCompaniesService = { get: () => [] };
 
-const mockCompanyService = {
+const mockCompanyApi = {
   filterCompanies: vi.fn(),
 };
 
@@ -23,8 +23,8 @@ describe('RuIndicationDialog', () => {
       imports: [RuIndicationDialog],
       providers: [
         { provide: SBB_OVERLAY_DATA, useValue: dialogData },
-        { provide: CompanyService, useValue: mockCompanyService },
-        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
+        { provide: CompanyApi, useValue: mockCompanyApi },
+        { provide: RecentCompaniesService, useValue: mockRecentCompaniesService },
       ],
     }).compileComponents();
 

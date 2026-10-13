@@ -4,16 +4,16 @@ import { form, FormField } from '@angular/forms/signals';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
-import { ExternalLink } from '~ru-admin/ru-admin-api';
-import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
-import { CompaniesInputComponent } from '~shared/companies-input/companies-input.component';
+import { ExternalLink } from '~ru-admin/ru-admin.api';
+import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
+import { CompaniesInput } from '~shared/components/companies-input/companies-input';
+import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
 import {
   arrayRequired,
   languageRequired,
   oneLanguageRequired,
   url,
-} from '~shared/form-validators.util';
-import { LanguageCode, LanguageProvider } from '~shared/language-provider';
+} from '~shared/utils/form-validators.util';
 
 interface ExternalLinkContentData {
   title: string;
@@ -37,13 +37,13 @@ export type ExternalLinkDialogEditResult = ExternalLink | 'delete';
     SbbFormFieldModule,
     SbbTabsModule,
     BaseDialog,
-    CompaniesInputComponent,
+    CompaniesInput,
   ],
   templateUrl: './external-link-dialog.html',
   styleUrl: './external-link-dialog.css',
 })
 export class ExternalLinkDialog {
-  protected readonly languageProvider = inject(LanguageProvider);
+  protected readonly languageProviderService = inject(LanguageProviderService);
 
   protected readonly dialogData =
     inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;

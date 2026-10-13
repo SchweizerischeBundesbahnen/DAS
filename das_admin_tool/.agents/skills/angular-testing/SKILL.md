@@ -69,7 +69,7 @@ import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { MyService } from './my.service';
 import { MyApi } from '../my-api';
-import { ToastService } from '../../shared/toast-service';
+import { ToastService } from '~shared/toast.service';
 
 const mockApi: Partial<MyApi> = {
   getData: () => of({ data: [] }),
@@ -79,7 +79,7 @@ const mockApi: Partial<MyApi> = {
 const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
 
 describe('MyService', () => {
-  let service: MyService;
+  let myService: MyService;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -92,13 +92,13 @@ describe('MyService', () => {
       ],
     });
 
-    service = TestBed.inject(MyService);
+    myService = TestBed.inject(MyService);
   });
 
   it('should do something', async () => {
     const apiSpy = vi.spyOn(mockApi, 'postData');
 
-    await service.doSomething();
+    await myService.doSomething();
 
     expect(apiSpy).toHaveBeenCalledWith(expectedPayload);
     expect(mockToastService.success).toHaveBeenCalled();
@@ -109,7 +109,7 @@ describe('MyService', () => {
       throwError(() => new Error('API error')),
     );
 
-    await service.doSomething();
+    await myService.doSomething();
 
     expect(mockToastService.error).toHaveBeenCalled();
   });

@@ -59,3 +59,29 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Naming Conventions
+
+Newly created files need to follow the following naming conventions.
+
+### Components
+
+- File: name-something.[ts/spec.ts/html/css]
+- Class: NameSomething
+
+### Services
+
+- File: name-something.[service/api].[ts/spec.ts]
+- Class: NameSomething[Service/Api]
+
+### Routes
+
+- File: name-something.routes.ts
+
+### Utils
+
+- File: name-something.util.ts
+
+### Interfaces/Types
+
+- File: name-something.model.ts

@@ -8,9 +8,9 @@ import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbPopoverModule } from '@sbb-esta/lyne-angular/popover';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { AppVersion } from '~app/das-admin/das-admin-api';
-import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
-import { toUtcDateOnly } from '~shared/date-util';
+import { AppVersion } from '~app/das-admin/das-admin.api';
+import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
+import { toUtcDateOnly } from '~shared/utils/date.util';
 
 interface VersionData {
   version: string;

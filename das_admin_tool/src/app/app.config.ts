@@ -8,7 +8,7 @@ import {
 } from 'angular-auth-oidc-client';
 import { environment } from '~src/environments/environment';
 import { routes } from './app.routes';
-import { ReportToInstanaErrorHandler } from './error-handler';
+import { ReportToInstanaErrorHandler } from './instana-error-handler.util';
 import { setupInstana } from './instana-setup.util';
 
 const initApp = (): void => {

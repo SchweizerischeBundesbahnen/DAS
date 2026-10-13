@@ -1,9 +1,9 @@
 import { HttpResourceRef } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { RuIndication, RuIndicationApiResponse } from '~ru-admin/ru-admin-api';
-import { CompanyService } from '~shared/companies-input/company.service';
-import { LanguageProvider } from '~shared/language-provider';
-import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
+import { LocationApi } from '~ru-admin/location.api';
+import { RuIndication, RuIndicationApiResponse } from '~ru-admin/ru-admin.api';
+import { CompanyApi } from '~shared/services/company.api';
+import { LanguageProviderService } from '~shared/services/language-provider.service';
 import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
 import { RuIndicationService } from '../ru-indication.service';
 import { RuIndicationFilter, RuIndicationsTable } from './ru-indications-table';
@@ -35,15 +35,15 @@ const mockRuIndicationService: Partial<RuIndicationService> = {
   deleteAll: vi.fn(() => Promise.resolve()),
 };
 
-const mockLanguageProvider = {
+const mockLanguageProviderService = {
   currentLanguage: { localeId: 'de-CH', path: 'de', label: 'Deutsch' },
-} satisfies Partial<LanguageProvider>;
+} satisfies Partial<LanguageProviderService>;
 
-const mockCompanyService: Partial<CompanyService> = {
+const mockCompanyApi: Partial<CompanyApi> = {
   formatCompanies: () => 'SBB, BLS',
 };
 
-const mockLocationService: Partial<LocationService> = {
+const mockLocationApi: Partial<LocationApi> = {
   getLocation: (ref: string) => ({
     locationReference: ref,
     primaryLocationName: 'X',
@@ -56,9 +56,9 @@ function createComponent(): RuIndicationsTable {
     providers: [
       RuIndicationsTable,
       { provide: RuIndicationService, useValue: mockRuIndicationService },
-      { provide: LanguageProvider, useValue: mockLanguageProvider },
-      { provide: CompanyService, useValue: mockCompanyService },
-      { provide: LocationService, useValue: mockLocationService },
+      { provide: LanguageProviderService, useValue: mockLanguageProviderService },
+      { provide: CompanyApi, useValue: mockCompanyApi },
+      { provide: LocationApi, useValue: mockLocationApi },
     ],
   });
   return TestBed.inject(RuIndicationsTable);
@@ -100,7 +100,7 @@ describe('RuIndicationsTable', () => {
     const comp = createComponent();
     const expected = displayPeriod(
       sample.periods[0],
-      mockLanguageProvider.currentLanguage.localeId,
+      mockLanguageProviderService.currentLanguage.localeId,
     );
     expect(comp['periodsValue'](sample)).toBe(expected);
   });

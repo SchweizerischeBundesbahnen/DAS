@@ -3,15 +3,15 @@ import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { of, throwError } from 'rxjs';
-import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { ToastService } from '~shared/toast-service';
+import { RecentCompaniesService } from '~shared/services/recent-companies.service';
+import { ToastService } from '~shared/services/toast.service';
 import {
   RuAdminApi,
   RuIndication,
   RuIndicationApiResponse,
   RuIndicationTemplate,
   RuIndicationTemplateApiResponse,
-} from '../ru-admin-api';
+} from '../ru-admin.api';
 import { RuIndicationDialogEditResult, RuIndicationService } from './ru-indication.service';
 
 const ruIndicationSample: RuIndication = {
@@ -39,7 +39,7 @@ const mockToastService: Partial<ToastService> = {
 const openSpy = vi.fn();
 const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
-const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
+const mockRecentCompaniesService: Partial<RecentCompaniesService> = { save: vi.fn() };
 
 function mockDialogResult(result: RuIndicationDialogEditResult | null) {
   openSpy.mockReturnValue({
@@ -48,7 +48,7 @@ function mockDialogResult(result: RuIndicationDialogEditResult | null) {
 }
 
 describe('RuIndicationService', () => {
-  let service: RuIndicationService;
+  let ruIndicationService: RuIndicationService;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -59,11 +59,11 @@ describe('RuIndicationService', () => {
         { provide: RuAdminApi, useValue: mockRuAdminApi },
         { provide: SbbDialogService, useValue: mockSbbDialogService },
         { provide: ToastService, useValue: mockToastService },
-        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
+        { provide: RecentCompaniesService, useValue: mockRecentCompaniesService },
       ],
     });
 
-    service = TestBed.inject(RuIndicationService);
+    ruIndicationService = TestBed.inject(RuIndicationService);
   });
 
   it('edit should delete when dialog returns delete', async () => {
@@ -71,7 +71,7 @@ describe('RuIndicationService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult('delete');
 
-    await service.edit(ruIndicationSample);
+    await ruIndicationService.edit(ruIndicationSample);
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiDeleteSpy).toHaveBeenCalledWith([ruIndicationSample.id]);
@@ -86,18 +86,18 @@ describe('RuIndicationService', () => {
       scope: { companies: ['1085'] },
     });
 
-    await service.edit(ruIndicationSample);
+    await ruIndicationService.edit(ruIndicationSample);
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalled();
-    expect(mockRecentCompaniesStore.save).toHaveBeenCalledWith(['1085']);
+    expect(mockRecentCompaniesService.save).toHaveBeenCalledWith(['1085']);
   });
 
   it('edit should do nothing when dialog closed without result', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putRuIndication');
     mockDialogResult(null);
 
-    await service.edit(ruIndicationSample);
+    await ruIndicationService.edit(ruIndicationSample);
 
     expect(apiSpy).not.toHaveBeenCalled();
   });
@@ -116,18 +116,18 @@ describe('RuIndicationService', () => {
       }),
     });
 
-    await service.add();
+    await ruIndicationService.add();
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalled();
-    expect(mockRecentCompaniesStore.save).toHaveBeenCalledWith(['1087']);
+    expect(mockRecentCompaniesService.save).toHaveBeenCalledWith(['1087']);
   });
 
   it('deleteAll should call API and show toast', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'deleteAllRuIndications');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
 
-    await service.deleteAll([
+    await ruIndicationService.deleteAll([
       {
         id: 5,
         content: {},
@@ -153,7 +153,7 @@ describe('RuIndicationService', () => {
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
     mockDialogResult('delete');
 
-    await service.edit(ruIndicationSample);
+    await ruIndicationService.edit(ruIndicationSample);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -165,7 +165,7 @@ describe('RuIndicationService', () => {
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
     mockDialogResult({ ...ruIndicationSample, scope: { companies: ['1085'] } });
 
-    await service.edit(ruIndicationSample);
+    await ruIndicationService.edit(ruIndicationSample);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -185,7 +185,7 @@ describe('RuIndicationService', () => {
       }),
     });
 
-    await service.add();
+    await ruIndicationService.add();
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -196,7 +196,7 @@ describe('RuIndicationService', () => {
     );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
-    await service.deleteAll([
+    await ruIndicationService.deleteAll([
       {
         id: 20,
         content: {},
