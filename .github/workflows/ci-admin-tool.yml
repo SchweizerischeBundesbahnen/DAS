@@ -9,14 +9,14 @@ on:
     paths:
       - 'das_admin_tool/**'
       - '.github/workflows/ci-admin-tool.yml'
-      - '.github/actions/node-test-build/**'
+      - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_admin_tool/**'
       - '.github/workflows/ci-admin-tool.yml'
-      - '.github/actions/node-test-build/**'
+      - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]
 
@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/node-test-build
+      - uses: ./.github/actions/node-run
         with:
           working-directory: das_admin_tool
           scripts: lint
@@ -74,7 +74,7 @@ jobs:
           secrets: |
             kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
 
-      - uses: ./.github/actions/node-test-build
+      - uses: ./.github/actions/node-run
         with:
           working-directory: das_admin_tool
           scripts: test
@@ -127,7 +127,7 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_PASSWORD ;
 
-      - uses: ./.github/actions/node-test-build
+      - uses: ./.github/actions/node-run
         with:
           working-directory: das_admin_tool
 
@@ -171,7 +171,7 @@ jobs:
 
       - name: Build (+ image on main)
         id: build
-        uses: ./.github/actions/node-test-build
+        uses: ./.github/actions/node-run
         with:
           working-directory: das_admin_tool
           scripts: build:ngssc gzip

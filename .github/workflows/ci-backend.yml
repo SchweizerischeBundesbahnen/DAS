@@ -17,14 +17,14 @@ on:
     paths:
       - 'das_backend/**'
       - '.github/workflows/ci-backend.yml'
-      - '.github/actions/maven-test-build/**'
+      - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_backend/**'
       - '.github/workflows/ci-backend.yml'
-      - '.github/actions/maven-test-build/**'
+      - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]
 
@@ -76,7 +76,7 @@ jobs:
 
       - name: Maven verify + Sonar (+ image on main)
         id: build
-        uses: ./.github/actions/maven-test-build
+        uses: ./.github/actions/maven-run
         env:
           TESTCONTAINERS_RYUK_DISABLED: "true"
           SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}

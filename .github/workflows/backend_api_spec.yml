@@ -45,7 +45,7 @@ jobs:
             kv/data/DSO-BPS/driver-advisory-system/backend/maven KAFKA_SR_API_SECRET ;
 
       - name: Extract API specification
-        uses: ./.github/actions/maven-test-build
+        uses: ./.github/actions/maven-run
         env:
           TESTCONTAINERS_RYUK_DISABLED: "true"
           KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}

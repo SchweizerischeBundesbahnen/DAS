@@ -9,14 +9,14 @@ on:
     paths:
       - 'das_playground/**'
       - '.github/workflows/ci-playground.yml'
-      - '.github/actions/node-test-build/**'
+      - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'das_playground/**'
       - '.github/workflows/ci-playground.yml'
-      - '.github/actions/node-test-build/**'
+      - '.github/actions/node-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]
 
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/node-test-build
+      - uses: ./.github/actions/node-run
         with:
           working-directory: das_playground
           scripts: lint
@@ -43,7 +43,7 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/node-test-build
+      - uses: ./.github/actions/node-run
         with:
           working-directory: das_playground
           scripts: test
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Build (+ image on main)
         id: build
-        uses: ./.github/actions/node-test-build
+        uses: ./.github/actions/node-run
         with:
           working-directory: das_playground
           scripts: build:ngssc

@@ -1,4 +1,4 @@
-name: Node test & build
+name: Node run
 description: Sets up Node, installs dependencies, runs npm scripts and optionally builds a container image.
 
 inputs:

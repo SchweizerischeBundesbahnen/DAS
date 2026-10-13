@@ -1,4 +1,4 @@
-name: Maven test & build
+name: Maven run
 description: Sets up Java, runs Maven and optionally builds a container image with Spring Boot buildpacks.
 
 inputs:

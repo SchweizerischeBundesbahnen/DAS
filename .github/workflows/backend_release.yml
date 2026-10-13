@@ -49,7 +49,7 @@ jobs:
 
       - name: Build
         id: build
-        uses: ./.github/actions/maven-test-build
+        uses: ./.github/actions/maven-run
         env:
           KAFKA_SR_URL: ${{ steps.vault-secrets.outputs.KAFKA_SR_URL }}
           KAFKA_SR_API_KEY: ${{ steps.vault-secrets.outputs.KAFKA_SR_API_KEY }}

@@ -17,14 +17,14 @@ on:
     paths:
       - 'sfera_mock/**'
       - '.github/workflows/ci-sfera-mock.yml'
-      - '.github/actions/maven-test-build/**'
+      - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main", "renovate/**" ]
   pull_request:
     paths:
       - 'sfera_mock/**'
       - '.github/workflows/ci-sfera-mock.yml'
-      - '.github/actions/maven-test-build/**'
+      - '.github/actions/maven-run/**'
       - '.github/actions/push-image/**'
     branches: [ "main" ]
 
@@ -45,7 +45,7 @@ jobs:
 
       - name: Maven verify (+ image on main)
         id: build
-        uses: ./.github/actions/maven-test-build
+        uses: ./.github/actions/maven-run
         with:
           working-directory: sfera_mock
           args: verify

@@ -36,7 +36,7 @@ jobs:
 
       - name: Build
         id: build
-        uses: ./.github/actions/node-test-build
+        uses: ./.github/actions/node-run
         with:
           working-directory: das_playground
           scripts: build:ngssc
