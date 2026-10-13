@@ -292,7 +292,7 @@ $normalizedPayload
     },
   );
 
-  test('connect_whenSPAndTCAndRTITasksFinish_thenLoadsJourney', () async {
+  test('connect_whenSegmentProfileAndTrainCharacteristicsTasksFinish_thenLoadsJourney', () async {
     // GIVEN
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_request_9315.xml');
     final parsedSPResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(spResponse);
@@ -364,8 +364,8 @@ $normalizedPayload
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(2);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(3);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(3);
   });
 
   test('handleEventMessage_whenJourneyUpdateEventIsReceived_thenRefreshesJourney', () async {
@@ -445,8 +445,8 @@ $normalizedPayload
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(2);
-    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(2);
+    verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(3);
+    verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(3);
   });
 
   test(
@@ -528,8 +528,8 @@ $normalizedPayload
 
       // THEN
       verify(mockMqttService.connect(any, any)).called(1);
-      verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(5);
-      verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(4);
+      verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(6);
+      verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(5);
     },
   );
 
