@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_related_train_information_task.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -84,19 +86,22 @@ void main() {
       mqttService: mqttService,
       sferaRepo: mockSferaRepo,
       otnId: otnId,
-      timeout: const Duration(seconds: 1),
     );
 
     // WHEN
     var timeoutReached = false;
-    await rtiTask.execute(
-      (task, data) => fail('Test should not call success'),
-      (task, error) {
-        expect(error, isA<RequestTimeout>());
-        timeoutReached = true;
-      },
-    );
-    await Future.delayed(const Duration(milliseconds: 1200));
+    fakeAsync((async) {
+      rtiTask.execute(
+        (task, data) => fail('Test should not call success'),
+        (task, error) {
+          expect(error, isA<RequestTimeout>());
+          timeoutReached = true;
+        },
+      );
+      async.flushMicrotasks();
+
+      async.elapse(SferaTask.defaultTimeout + const Duration(milliseconds: 200));
+    });
 
     // THEN
     verify(mqttService.publishMessage(any, any, any)).called(1);

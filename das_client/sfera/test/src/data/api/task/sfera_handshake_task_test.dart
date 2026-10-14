@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/handshake_task.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
@@ -128,21 +130,23 @@ void main() {
       mqttService: mqttService,
       otnId: otnId,
       isDriver: false,
-      timeout: const Duration(seconds: 1),
     );
 
     var timeoutReached = false;
-    await handshakeTask.execute(
-      (task, data) => fail('Test should not call success'),
-      (task, error) {
-        expect(error, isA<RequestTimeout>());
-        timeoutReached = true;
-      },
-    );
+    fakeAsync((async) {
+      handshakeTask.execute(
+        (task, data) => fail('Test should not call success'),
+        (task, error) {
+          expect(error, isA<RequestTimeout>());
+          timeoutReached = true;
+        },
+      );
+      async.flushMicrotasks();
+      async.elapse(SferaTask.defaultTimeout + const Duration(milliseconds: 200));
+    });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    await Future.delayed(const Duration(milliseconds: 1200));
     expect(timeoutReached, true);
   });
 
@@ -154,7 +158,6 @@ void main() {
       mqttService: mqttService,
       otnId: otnId,
       isDriver: false,
-      timeout: const Duration(seconds: 1),
     );
 
     await handshakeTask.execute(

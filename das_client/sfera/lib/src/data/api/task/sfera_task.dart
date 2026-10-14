@@ -9,7 +9,9 @@ typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
 
 final _log = Logger('SferaTask');
 
-abstract class SferaTask<T>({final Duration _timeout = const Duration(seconds: 15)}) {
+abstract class SferaTask<T>({final Duration _timeout = defaultTimeout}) {
+  static const defaultTimeout = Duration(seconds: 15);
+
   Timer? timeoutTimer;
   bool _isCancelled = false;
 

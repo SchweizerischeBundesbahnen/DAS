@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
@@ -173,20 +175,21 @@ void main() {
       servicePoints: [
         _servicePoint(localRegulationSegmentIds: ['RL_701']),
       ],
-      timeout: const Duration(seconds: 1),
     );
 
-    await localRegulationsTask.execute(
-      (task, data) => fail('Test should not call success'),
-      (task, error) {
-        expect(error, isA<RequestTimeout>());
-        timeoutReached = true;
-      },
-    );
+    fakeAsync((async) {
+      localRegulationsTask.execute(
+        (task, data) => fail('Test should not call success'),
+        (task, error) {
+          expect(error, isA<RequestTimeout>());
+          timeoutReached = true;
+        },
+      );
+      async.flushMicrotasks();
+      async.elapse(SferaTask.defaultTimeout + const Duration(milliseconds: 200));
+    });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
-
-    await Future.delayed(const Duration(milliseconds: 1200));
 
     expect(timeoutReached, true);
   });
@@ -206,19 +209,21 @@ void main() {
       servicePoints: [
         _servicePoint(localRegulationSegmentIds: ['RL_701', 'RL_702', 'RL_703']),
       ],
-      timeout: const Duration(seconds: 1),
     );
 
-    await localRegulationsTask.execute(
-      (task, data) => taskCompleted = true,
-      (task, error) => taskFailed = true,
-    );
+    fakeAsync((async) {
+      localRegulationsTask.execute(
+        (task, data) => taskCompleted = true,
+        (task, error) => taskFailed = true,
+      );
+      async.flushMicrotasks();
 
-    verify(mqttService.publishMessage(any, any, any)).called(1);
+      verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    localRegulationsTask.cancel();
+      localRegulationsTask.cancel();
 
-    await Future.delayed(const Duration(milliseconds: 1200));
+      async.elapse(SferaTask.defaultTimeout + const Duration(milliseconds: 200));
+    });
 
     expect(localRegulationsTask.isCancelled, true);
     expect(taskCompleted, false);
