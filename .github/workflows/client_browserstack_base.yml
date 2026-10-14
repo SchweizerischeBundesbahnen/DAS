@@ -230,6 +230,12 @@ jobs:
           ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
           PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
         run: |
+          # Github does not mask dart-define base64 encoded secrets reliably - Xcode logs '=' escaped as '\=', so both are masked
+          for define in "MQTT_USERNAME=$MQTT_USERNAME" "MQTT_PASSWORD=$MQTT_PASSWORD" "ACCESS_TOKEN=$ACCESS_TOKEN"; do
+            encoded=$(printf '%s' "$define" | base64 | tr -d '\n')
+            echo "::add-mask::$encoded"
+            echo "::add-mask::${encoded//=/\\=}"
+          done
           flutter build ios --flavor dev --release --no-codesign -t ${{ inputs.entrypoint }} --no-tree-shake-icons \
             --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
             --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN
