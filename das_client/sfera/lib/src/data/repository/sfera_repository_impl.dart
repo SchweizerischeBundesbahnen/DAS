@@ -524,7 +524,9 @@ class SferaRepoImpl({
   }
 
   void _addEventMessageHandlers() {
-    _eventMessageHandlers.add(JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService));
+    _eventMessageHandlers.add(
+      JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService, () => _journeyProfile),
+    );
     _eventMessageHandlers.add(RelatedTrainInformationEventHandler(_onRelatedTrainInformationUpdated));
     _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }

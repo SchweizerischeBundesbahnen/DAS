@@ -178,6 +178,27 @@ void main() {
     expect(findDASTableColumnByText('N180'), findsNothing);
     expect(findDASTableColumnByText('R150'), findsOneWidget);
   });
+
+  testWidgets('journeyUpdates_whenUpdateOrOverride_thenUpdatesJourneyCorrectly|6EqoydUa6LEft0D3BVUL|tests:2940', (
+    tester,
+  ) async {
+    await IntegrationTestApp.start(tester);
+    await loadJourney(tester, trainNumber: 'T57');
+
+    expect(findDASTableRowByText('Station 1'), findsOneWidget);
+    expect(findDASTableRowByText('Station 2'), findsOneWidget);
+    expect(findDASTableRowByText('Station 3'), findsOneWidget);
+
+    await waitUntilExists(tester, findDASTableRowByText('Station 4'));
+    expect(findDASTableRowByText('Station 1'), findsOneWidget);
+    expect(findDASTableRowByText('Station 2'), findsOneWidget);
+    expect(findDASTableRowByText('Station 3'), findsNothing);
+
+    await waitUntilExists(tester, findDASTableRowByText('Station 3'));
+    expect(findDASTableRowByText('Station 1'), findsNothing);
+    expect(findDASTableRowByText('Station 2'), findsOneWidget);
+    expect(findDASTableRowByText('Station 4'), findsOneWidget);
+  });
 }
 
 Future<void> _doubleTap(WidgetTester tester, FinderBase<Element> element) async {
