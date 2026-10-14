@@ -229,6 +229,7 @@ jobs:
           MQTT_PASSWORD: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_PASSWORD }}
           ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
           PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
+          BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
           flutter build ios --flavor dev --release --no-codesign -t ${{ inputs.entrypoint }} --no-tree-shake-icons \
             --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
