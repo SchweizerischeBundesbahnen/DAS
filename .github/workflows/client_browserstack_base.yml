@@ -235,7 +235,7 @@ jobs:
             --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
             --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN
           pushd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          xcodebuild -workspace Runner.xcworkspace -scheme dev -configuration Release -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
           popd
           pushd build/ios_integration/Build/Products
           zip -r "$PACKAGE_NAME" Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
