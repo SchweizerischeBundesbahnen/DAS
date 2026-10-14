@@ -80,9 +80,7 @@ void main() {
 
     testWidgets(
       'journeySearchOverlay_whenTrainLoaded_thenOpensJourneyWithoutNavigationButtons|PfFjIKgB8Rju5BAkp7S1|tests:456',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T1');
         final journeySearchOverlay = find.byType(JourneySearchOverlay);

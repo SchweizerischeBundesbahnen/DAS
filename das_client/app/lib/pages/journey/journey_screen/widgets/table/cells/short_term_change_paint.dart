@@ -29,13 +29,11 @@ class ShortTermChangePaint extends StatelessWidget {
   }
 }
 
-class _ShortTermChangePainter extends CustomPainter {
-  const _ShortTermChangePainter({required this.isStart, required this.color, required this.thickness});
-
-  final bool isStart;
-  final Color color;
-  final double thickness;
-
+class const _ShortTermChangePainter({
+  required final bool isStart,
+  required final Color color,
+  required final double thickness,
+}) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

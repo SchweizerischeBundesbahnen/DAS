@@ -96,9 +96,7 @@ void main() {
 
     testWidgets(
       'appLink_whenLinkWithValidAndUnknownTrain_opensFirstJourneyAndShowsErrorPageForSecond|pekbdz3nHeeVcICqD6wY|tests:97',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         expect(find.byType(JourneySelectionPage), findsOne);
@@ -323,9 +321,7 @@ void main() {
 
     testWidgets(
       'appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensSelectionWithCompanyMatch|MSFNFsBOiBB94sxZptbD|tests:702',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T9999');
 
@@ -360,9 +356,7 @@ void main() {
 
     testWidgets(
       'appLink_whenAlreadyOnJourneyPageReceivingDeeplink_opensNewJourneyWithMatchingRu|3rMlQu5RKMLbWnkW3HAt|tests:702',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T9999');
 

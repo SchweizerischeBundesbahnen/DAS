@@ -223,9 +223,7 @@ void main() {
 
     testWidgets(
       'reducedJourney_whenFilterOptionHasNoElements_thenFilterOptionIsNotDisplayed|NcEa7zkv9QkRSKPNEBmV|tests:243',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         await loadJourney(tester, trainNumber: 'T35');

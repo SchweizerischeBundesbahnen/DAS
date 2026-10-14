@@ -86,9 +86,7 @@ Future<void> main() async {
 
     testWidgets(
       'chronograph_whenNoCalculatedSpeedAndNoPlannedTimes_thenHidesPunctuality|8bo2dGfbGlmQVHT7mRlB|tests:1969,2257',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T6');
 
@@ -148,9 +146,7 @@ Future<void> main() async {
 
     testWidgets(
       'chronograph_whenPlannedTimeDeviationFeatureDisabled_thenNeverShowsDeviation|Ik64KpZ9j4qN3klSOCkB|tests:1851',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
 
         final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;

@@ -607,9 +607,7 @@ void main() {
 
     testWidgets(
       'journeyTable_whenServicePointHasTrackGroup_thenDisplaysCorrectlyWithDetailModal|GObFVFt2aAyPWMXp9cEN|tests:1072',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T6M');
 
@@ -956,9 +954,7 @@ void main() {
 
     testWidgets(
       'journeyTable_whenSwitchbackStationsPresent_thenDisplaysSwitchbackRowCorrectly|6avqDUSPA3zHRcHwnzJr|tests:2227',
-      (
-        tester,
-      ) async {
+      (tester) async {
         await IntegrationTestApp.start(tester);
         await loadJourney(tester, trainNumber: 'T56');
 

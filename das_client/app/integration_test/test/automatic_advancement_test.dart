@@ -201,6 +201,18 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets(
+      'automaticAdvancement_whenJourneyOpened_thenRequestsRelatedTrainInformationAndUpdatesPosition|GCochosi7eqj4EwcXlEL|tests:2593',
+      (tester) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T55');
+
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('Genève'));
+
+        await disconnect(tester);
+      },
+    );
   });
 
   group('timed advancement tests', () {
