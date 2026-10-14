@@ -12,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'das_client/**'
+      - '.github/workflows/client_build_ios.yml'
     branches: [ "main" ]
 
 jobs:
@@ -86,7 +87,7 @@ jobs:
         security list-keychain -d user -s $KEYCHAIN_PATH
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
+      uses: apple-actions/download-provisioning-profiles@230860ab5f632551a5f9a5e1d98a774485463888 # v7.0.0
       with:
         bundle-id: 'ch.sbb.das.dev'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -94,11 +95,13 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App DEV
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor dev -t lib/main_dev.dart --release
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
+      uses: apple-actions/download-provisioning-profiles@230860ab5f632551a5f9a5e1d98a774485463888 # v7.0.0
       with:
         bundle-id: 'ch.sbb.das.inte'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -106,11 +109,13 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App INTE
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor inte -t lib/main_inte.dart --release
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
-      uses: apple-actions/download-provisioning-profiles@2126b5f86a0e2863cbf4d2d312112b22b943a594 # v6.1.0
+      uses: apple-actions/download-provisioning-profiles@230860ab5f632551a5f9a5e1d98a774485463888 # v7.0.0
       with:
         bundle-id: 'ch.sbb.das'
         issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -118,5 +123,7 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App PROD
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor prod -t lib/main_prod.dart --release
       working-directory: das_client/app

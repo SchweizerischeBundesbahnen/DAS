@@ -1,0 +1,36 @@
+name: Push image
+description: Pushes a locally built container image to the GitHub Container Registry, optionally also as latest.
+
+inputs:
+  image-ref:
+    description: 'Full reference of the local image, e.g. ghcr.io/owner/repo/backend:1.2.3'
+    required: true
+  latest:
+    description: 'Additionally tag and push the image as "latest"'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Login to GitHub Container Registry
+      shell: bash
+      env:
+        TOKEN: ${{ github.token }}
+        ACTOR: ${{ github.actor }}
+      run: echo "$TOKEN" | docker login ghcr.io --username "$ACTOR" --password-stdin
+
+    - name: Push container image
+      shell: bash
+      env:
+        IMAGE_REF: ${{ inputs.image-ref }}
+      run: docker push "$IMAGE_REF"
+
+    - name: Push container image as latest
+      if: inputs.latest == 'true'
+      shell: bash
+      env:
+        IMAGE_REF: ${{ inputs.image-ref }}
+      run: |
+        docker tag "$IMAGE_REF" "${IMAGE_REF%:*}:latest"
+        docker push "${IMAGE_REF%:*}:latest"

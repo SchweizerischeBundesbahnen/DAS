@@ -1,9 +1,9 @@
 import 'dart:math' show min;
 
-import 'package:app/app_info/app_info.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/src/build_context_x.dart';
+import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:app/pages/login/login_view_model.dart';

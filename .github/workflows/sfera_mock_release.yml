@@ -1,0 +1,58 @@
+# Called by release-please whenever a new release of this module is created.
+# This builds the SFERA mock container image and pushes it with the release version and as latest.
+
+name: SFERA mock Release
+
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        description: 'Release tag to build, e.g. "sfera_mock-v1.2.3"'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        description: 'Release tag to build, e.g. "sfera_mock-v1.2.3"'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-sfera-mock
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag-name }}
+
+      - name: Derive version from tag
+        id: version
+        env:
+          TAG_NAME: ${{ inputs.tag-name }}
+        run: |
+          # Release tags have the form <component>-v<version>, e.g. sfera_mock-v1.2.3
+          if [[ "$TAG_NAME" != *-v* ]]; then
+            echo "::error::Tag '$TAG_NAME' does not match <component>-v<version>"
+            exit 1
+          fi
+          echo "version=${TAG_NAME##*-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        id: build
+        uses: ./.github/actions/maven-run
+        with:
+          working-directory: sfera_mock
+          build-image: true
+          image-name: sfera-mock
+          image-tag: ${{ steps.version.outputs.version }}
+
+      - uses: ./.github/actions/push-image
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}
+          latest: 'true'

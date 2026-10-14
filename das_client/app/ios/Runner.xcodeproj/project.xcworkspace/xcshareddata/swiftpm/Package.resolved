@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "appauth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openid/AppAuth-iOS",
+      "state" : {
+        "revision" : "a7caeda164dc5108bf4649472b28a5af65dc6f33",
+        "version" : "2.1.0"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk",
@@ -97,15 +106,6 @@
       "state" : {
         "revision" : "a0bc79961d7be727d258d33d5a6b2f1023270ba1",
         "version" : "1.22.5"
-      }
-    },
-    {
-      "identity" : "microsoft-authentication-library-for-objc",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AzureAD/microsoft-authentication-library-for-objc.git",
-      "state" : {
-        "revision" : "d54e9653f94883a896af533133888be1c2ef5c75",
-        "version" : "2.15.0"
       }
     },
     {

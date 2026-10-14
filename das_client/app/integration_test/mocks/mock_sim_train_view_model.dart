@@ -3,8 +3,8 @@ import 'package:rxdart/rxdart.dart';
 
 /// Mock implementation of SimTrainViewModel for integration testing.
 /// Allows setting the SIM train state for testing purposes.
-class MockSimTrainViewModel extends SimTrainViewModel {
-  MockSimTrainViewModel() : super(journeyViewModel: null);
+class MockSimTrainViewModel() extends SimTrainViewModel {
+  this : super(journeyViewModel: null);
 
   final _mockIsSimTrain = BehaviorSubject<bool>.seeded(false);
 

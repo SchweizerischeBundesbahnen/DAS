@@ -68,16 +68,17 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell timeCell(BuildContext context) {
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     final times = data.arrivalDepartureTime;
     if (times == null && data.mandatoryStop) {
       return DASTableCell.empty(
-        decoration: DASTableCellDecoration(color: specialCellColor),
+        onTap: () => viewModel.toggleOperationalTime(),
       );
     }
 
-    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-
     return DASTableCell(
+      onTap: () => viewModel.toggleOperationalTime(),
       child: TimeCellBody(
         viewModel: viewModel,
         times: times,
@@ -85,7 +86,6 @@ class ReducedServicePointRow extends ServicePointRow {
         mandatoryStop: data.mandatoryStop,
       ),
       alignment: .bottomLeft,
-      decoration: DASTableCellDecoration(color: specialCellColor),
     );
   }
 
@@ -97,7 +97,6 @@ class ReducedServicePointRow extends ServicePointRow {
     final vm = context.read<JourneyTableViewModel>();
 
     return DASTableCell(
-      decoration: DASTableCellDecoration(color: specialCellColor),
       padding: .all(0.0),
       alignment: null,
       clipBehavior: .none,

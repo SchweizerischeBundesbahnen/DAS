@@ -15,7 +15,6 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';

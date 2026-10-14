@@ -15,16 +15,18 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_m
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/switchback_annotation.dart';
 import 'package:app/pages/journey/journey_screen/widgets/brake_series_selection.dart';
 import 'package:app/pages/journey/journey_screen/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/balise_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/column_definition.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/communication_network_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/config/chevron_animation_data.dart';
@@ -33,7 +35,6 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equi
 import 'package:app/pages/journey/journey_screen/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_row.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/level_crossing_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/protection_section_row.dart';
@@ -42,6 +43,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/shunting_movement
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/suspicious_journey_point_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/switchback_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/train_driver_turnover_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/whistle_row.dart';
@@ -64,7 +66,6 @@ import 'package:core_data/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -120,6 +121,7 @@ class JourneyTable extends StatelessWidget {
       journeyPosition: model.journeyPosition,
       chevronPosition: model.chevronPosition,
       leftOffsetToInformationCell: columns.leftOffsetTo(columnId: ColumnDefinition.informationCell.index),
+      leftOffsetToRouteCell: columns.leftOffsetTo(columnId: ColumnDefinition.route.index),
       acknowledgedModifications: model.acknowledgedModifications,
     );
     final journeyTableScrollController = DI.get<JourneyTableScrollController>();
@@ -149,6 +151,7 @@ class JourneyTable extends StatelessWidget {
     required JourneyPositionModel journeyPosition,
     required ChevronPositionModel chevronPosition,
     required double leftOffsetToInformationCell,
+    required double leftOffsetToRouteCell,
     required Set<Modification> acknowledgedModifications,
   }) {
     final groupedRows = journeyTableRowData
@@ -333,31 +336,22 @@ class JourneyTable extends StatelessWidget {
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .ruIndication:
-          return IndicationRow(
+        case .ruIndication || .operationalIndication || .personalNote:
+          return BasicTextAccordionRow(
             metadata: metadata,
-            data: rowData as RuIndication,
+            data: rowData as JourneyAnnotation,
             config: journeyConfig,
             collapsedState: collapsedRows.stateOf(rowData),
             rowIndex: index,
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
-        case .operationalIndication:
-          return IndicationRow(
-            metadata: metadata,
-            data: rowData as OperationalIndication,
-            config: journeyConfig,
-            collapsedState: collapsedRows.stateOf(rowData),
-            rowIndex: index,
-            leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
-          );
-        case .combinedFootNoteAndIndications:
-          return CombinedFootNoteAndIndicationsRow(
+        case .combinedFootNoteAndTextAnnotations:
+          return CombinedFootNoteAndTextAnnotationsRow(
             rowIndex: index,
             metadata: metadata,
-            data: rowData as CombinedFootNoteAndIndications,
+            data: rowData as CombinedFootNoteAndTextAnnotations,
             footNoteState: collapsedRows.stateOf(rowData.footNote),
-            indicationStates: collapsedRows.whereContains(rowData.indications),
+            textAnnotationStates: collapsedRows.whereContains(rowData.textAnnotations),
             leftPadding: leftOffsetToInformationCell - Accordion.contentPadding,
           );
         case .communicationNetworkChannel:
@@ -387,6 +381,14 @@ class JourneyTable extends StatelessWidget {
             metadata: metadata,
             data: rowData as SuspiciousJourneyPoint,
             rowIndex: index,
+          );
+        case Datatype.switchback:
+          return SwitchbackRow(
+            metadata: metadata,
+            data: rowData as SwitchbackAnnotation,
+            rowIndex: index,
+            routePadding: leftOffsetToRouteCell,
+            informationPadding: leftOffsetToInformationCell,
           );
       }
     });

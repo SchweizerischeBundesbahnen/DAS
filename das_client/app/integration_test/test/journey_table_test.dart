@@ -1,3 +1,5 @@
+import 'package:app/pages/journey/journey_screen/header/header.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/bracket_station_cell_body.dart';
@@ -457,6 +459,31 @@ void main() {
       expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsNothing);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('F')), findsNothing);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('L')), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('journeyTable_whenProtectionSectionInDarkTheme_thenDisplaysBlackText|853vIXBOeHDPtQF8zj9T|tests:2219', (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T3');
+
+      await _switchTheme(tester, to: .dark);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      await tester.dragUntilVisible(find.text('Gilly-Bursinel'), scrollableFinder, const Offset(0, -20));
+
+      final protectionSectionRow = findDASTableRowByText('km 32.2');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(_textColor(tester, of: protectionSectionRow, text: 'km 32.2'), DASColors.protectionSectionForeground);
+      expect(_textColor(tester, of: protectionSectionRow, text: 'FL'), DASColors.protectionSectionForeground);
+
+      // other rows keep the dark theme foreground
+      final servicePointRow = findDASTableRowByText('Gilly-Bursinel');
+      expect(_textColor(tester, of: servicePointRow, text: 'Gilly-Bursinel'), SBBColors.white);
+
+      await _switchTheme(tester, to: .light);
 
       await disconnect(tester);
     });
@@ -926,6 +953,40 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets(
+      'journeyTable_whenSwitchbackStationsPresent_thenDisplaysSwitchbackRowCorrectly|6avqDUSPA3zHRcHwnzJr|tests:2227',
+      (
+        tester,
+      ) async {
+        await IntegrationTestApp.start(tester);
+        await loadJourney(tester, trainNumber: 'T56');
+
+        final scrollableFinder = find.byType(AnimatedList);
+        expect(scrollableFinder, findsOneWidget);
+
+        // Verify switchback row at Luzern is displayed between arrival and departure
+        final switchbackRows = findDASTableRowByText(l10n.w_switchback_row_title);
+        expect(switchbackRows, findsAtLeast(1));
+
+        final luzernRows = findDASTableRowByText('Luzern');
+        expect(luzernRows, findsAtLeast(2));
+
+        final luzernArrivalY = tester.getTopLeft(luzernRows.at(0)).dy;
+        final switchbackY = tester.getTopLeft(switchbackRows.first).dy;
+        final luzernDepartureY = tester.getTopLeft(luzernRows.at(1)).dy;
+
+        expect(luzernArrivalY, lessThan(switchbackY));
+        expect(switchbackY, lessThan(luzernDepartureY));
+
+        await waitUntilExists(tester, findChevronPositionAtRowWithText('E2'));
+
+        final nextStopFinder = find.descendant(of: find.byType(NextStop), matching: find.text('Zürich HB'));
+        expect(nextStopFinder, findsOneWidget);
+
+        await disconnect(tester);
+      },
+    );
   });
 }
 
@@ -953,4 +1014,22 @@ Future<void> _checkRowColors(WidgetTester tester, String rowText, Map<Color, int
     final coloredCells = findColoredRowCells(of: rowFinder, color: color);
     expect(coloredCells, findsNWidgets(count));
   }
+}
+
+Future<void> _switchTheme(WidgetTester tester, {required Brightness to}) async {
+  final header = find.byType(Header);
+  if (Theme.of(tester.element(header)).brightness == to) return;
+
+  final buttonLabel = to == .dark ? l10n.p_journey_header_button_dark_theme : l10n.p_journey_header_button_light_theme;
+  await tapElement(tester, find.descendant(of: header, matching: find.widgetWithText(SBBTertiaryButton, buttonLabel)));
+  await tester.pumpAndSettle(Duration(milliseconds: 300));
+
+  expect(Theme.of(tester.element(header)).brightness, to);
+}
+
+/// Returns the effective color of the text, including the color inherited from the surrounding [DefaultTextStyle].
+Color? _textColor(WidgetTester tester, {required Finder of, required String text}) {
+  final textFinder = find.descendant(of: of, matching: find.text(text));
+  final richText = tester.widget<RichText>(find.descendant(of: textFinder, matching: find.byType(RichText)));
+  return richText.text.style?.color;
 }

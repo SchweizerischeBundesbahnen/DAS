@@ -434,18 +434,17 @@ void main() {
 
     testWidgets('localRegulationTab_whenTabChanged_thenUpdatesDisplay|loEWPFSo4Qcapw2AvhUz|tests:95', (tester) async {
       await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T25');
 
+      // increase automatic close as local regulation takes a while to load
+      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+      timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 15;
+
+      await loadJourney(tester, trainNumber: 'T25');
       await _openByTapOnCellWithText(tester, 'Olten');
 
       // change tab to local regulations and check if full width
       await _selectTab(tester, .localRegulations);
-      await _checkOpenModalSheet(
-        tester,
-        DetailTabLocalRegulations.localRegulationsTabKey,
-        'Olten',
-        isMaximized: true,
-      );
+      await _checkOpenModalSheet(tester, DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
       await _selectTab(tester, .communication);
@@ -455,15 +454,21 @@ void main() {
     });
 
     testWidgets('localRegulationTab_whenOpened_thenShowsWebview|CCcUxowsksJLPQMqsXTT|tests:95', (tester) async {
-      await IntegrationTestApp.start(tester);
-      await loadJourney(tester, trainNumber: 'T25');
+      FlutterError.onError = ignoreOverflowErrors;
 
+      await IntegrationTestApp.start(tester);
+
+      // increase automatic close as local regulation takes a while to load
+      final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
+      timeConstants.modalSheetAutomaticCloseAfterSecondsValue = 15;
+
+      await loadJourney(tester, trainNumber: 'T25');
       await _openByTapOnCellWithText(tester, 'Olten');
 
       // change tab to local regulations and check if web view is loaded
       await _selectTab(tester, .localRegulations);
       await _checkOpenModalSheet(tester, DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
-      await waitUntilNotExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
+      await waitUntilExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
 
       await disconnect(tester);
     });

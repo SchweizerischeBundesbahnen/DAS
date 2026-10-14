@@ -9,16 +9,16 @@ import 'package:screen_brightness/screen_brightness.dart';
 final _log = Logger('BrightnessManagerImpl');
 
 class BrightnessManagerImpl(final ScreenBrightness _screenBrightness) implements BrightnessManager {
-  final double minBrightness = 0.0;
-  final double maxBrightness = 1.0;
-  final double fallbackBrightness = 0.1;
-  final String brightnessManagerChannel = 'brightness_manager';
-  final String manageWriteSettingsAction = 'android.settings.action.MANAGE_WRITE_SETTINGS';
+  static final double _minBrightness = 0.0;
+  static final double _maxBrightness = 1.0;
+  static final double _fallbackBrightness = 0.1;
+  static final String _brightnessManagerChannel = 'brightness_manager';
+  static final String _manageWriteSettingsAction = 'android.settings.action.MANAGE_WRITE_SETTINGS';
 
   @override
   Future<bool> hasWriteSettingsPermission() async {
     if (Platform.isIOS) return true;
-    final platform = MethodChannel(brightnessManagerChannel);
+    final platform = MethodChannel(_brightnessManagerChannel);
     try {
       return await platform.invokeMethod('canWriteSettings') as bool;
     } catch (e) {
@@ -30,9 +30,7 @@ class BrightnessManagerImpl(final ScreenBrightness _screenBrightness) implements
   @override
   Future<void> requestWriteSettings() async {
     if (Platform.isAndroid) {
-      final intent = AndroidIntent(
-        action: manageWriteSettingsAction,
-      );
+      final intent = AndroidIntent(action: _manageWriteSettingsAction);
       await intent.launch();
     }
   }
@@ -56,7 +54,7 @@ class BrightnessManagerImpl(final ScreenBrightness _screenBrightness) implements
         _log.severe('Cannot set brightness: write settings permission denied');
         return;
       }
-      await _screenBrightness.setSystemScreenBrightness(value.clamp(minBrightness, maxBrightness));
+      await _screenBrightness.setSystemScreenBrightness(value.clamp(_minBrightness, _maxBrightness));
     } catch (e) {
       _log.severe('Failed to set brightness', e);
     }
@@ -68,7 +66,7 @@ class BrightnessManagerImpl(final ScreenBrightness _screenBrightness) implements
       return await _screenBrightness.system;
     } catch (e) {
       _log.severe('Failed to get brightness', e);
-      return fallbackBrightness;
+      return _fallbackBrightness;
     }
   }
 }

@@ -40,13 +40,13 @@ class JourneyPositionViewModel({
 
   JourneyPositionModel get modelValue => _rxModel.value;
 
-  void setManualPosition(JourneyPoint? manualPosition) {
-    _log.info('Setting manual position to: $manualPosition');
-    _rxManualPosition.add(manualPosition);
+  void setManualPosition(ServicePoint? manualServicePoint) {
+    _log.info('Setting manual position to: ${manualServicePoint?.toShortString()}');
+    _rxManualPosition.add(manualServicePoint);
     _manualPositionTime = clock.now();
     _manuelPositionAdvancementTimer?.cancel();
-    if (manualPosition is ServicePoint) {
-      _startManualPositionTimer(manualPosition);
+    if (manualServicePoint != null) {
+      _startManualPositionTimer(manualServicePoint);
     }
   }
 
@@ -124,8 +124,8 @@ class JourneyPositionViewModel({
             lastPosition: lastPosition,
             previousServicePoint: _calculatePreviousServicePoint(updatedPosition, journey.journeyPoints),
             nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
-            previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
-            nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
+            previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints, journey.metadata),
+            nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints, journey.metadata),
             isManualPosition: _isManualPosition(updatedPosition),
             isTrainInMotion: _isTrainInMotion(updatedPosition, journey.journeyPoints),
           );
@@ -209,10 +209,7 @@ class JourneyPositionViewModel({
     );
   }
 
-  ServicePoint? _calculateNextServicePoint(
-    JourneyPoint? updatedPosition,
-    List<JourneyPoint> journeyPoints,
-  ) {
+  ServicePoint? _calculateNextServicePoint(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
     if (updatedPosition == null) return null;
 
     return journeyPoints.whereType<ServicePoint>().toList().firstWhereOrNull(
@@ -220,20 +217,34 @@ class JourneyPositionViewModel({
     );
   }
 
-  ServicePoint? _calculatePreviousStop(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
+  ServicePoint? _calculatePreviousStop(
+    JourneyPoint? updatedPosition,
+    List<JourneyPoint> journeyPoints,
+    Metadata metadata,
+  ) {
     if (updatedPosition == null) return null;
 
-    return journeyPoints.whereType<ServicePoint>().toList().reversed.firstWhereOrNull(
-      (sP) => sP.order <= updatedPosition.order && sP.isStop,
-    );
+    return _validStoppingPoints(
+      journeyPoints,
+      metadata,
+    ).reversed.firstWhereOrNull((sP) => sP.order <= updatedPosition.order);
   }
 
-  ServicePoint? _calculateNextStop(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
+  ServicePoint? _calculateNextStop(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints, Metadata metadata) {
     if (updatedPosition == null) return null;
 
-    return journeyPoints.whereType<ServicePoint>().toList().firstWhereOrNull(
-      (sP) => (sP.order > updatedPosition.order) && sP.isStop,
+    return _validStoppingPoints(journeyPoints, metadata).firstWhereOrNull((sP) => (sP.order > updatedPosition.order));
+  }
+
+  List<ServicePoint> _validStoppingPoints(List<JourneyPoint> journeyPoints, Metadata metadata) {
+    final departureSwitchbackStations = metadata.switchbackStationMap.entries.where(
+      (it) => it.value.isDeparture,
     );
+
+    return journeyPoints
+        .whereType<ServicePoint>()
+        .where((it) => it.isStop && !departureSwitchbackStations.any((entry) => entry.key == it))
+        .toList();
   }
 
   void _calculateAndSetTimedServicePoint(

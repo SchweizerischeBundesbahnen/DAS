@@ -1,8 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_indications_row.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordion.dart';
-import 'package:app/pages/journey/journey_screen/widgets/table/indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
@@ -53,18 +53,18 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Pully');
 
     // should not be collapsed by default
-    final accordion = _findDASTableAccordionByContainsText(textToSearch, IndicationAccordion);
+    final accordion = _findDASTableAccordionByContainsText(textToSearch, BasicTextAccordion);
     _checkCollapsibleRow(isCollapsed: false, collapsibleRow: accordion);
 
     // should have show more button and collapsed content
     final collapsedContent = find.descendant(
       of: accordion,
-      matching: find.byKey(IndicationAccordion.collapsedContentKey),
+      matching: find.byKey(BasicTextAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     var showMoreButton = find.descendant(
       of: accordion,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -74,12 +74,12 @@ void main() {
 
     final rowWithExpandedText = _findDASTableAccordionByContainsText(
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
-      IndicationAccordion,
+      BasicTextAccordion,
     );
     expect(rowWithExpandedText, findsOneWidget);
     showMoreButton = find.descendant(
       of: rowWithExpandedText,
-      matching: find.byKey(IndicationAccordion.showMoreTextKey),
+      matching: find.byKey(BasicTextAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsNothing);
 
@@ -99,16 +99,16 @@ void main() {
       // should have show more button and collapsed content with " ;" delimiter
       final accordion = _findDASTableAccordionByContainsText(
         'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
-        IndicationAccordion,
+        BasicTextAccordion,
       );
       final collapsedContent = find.descendant(
         of: accordion,
-        matching: find.byKey(IndicationAccordion.collapsedContentKey),
+        matching: find.byKey(BasicTextAccordion.collapsedContentKey),
       );
       expect(collapsedContent, findsOneWidget);
       final showMoreButton = find.descendant(
         of: accordion,
-        matching: find.byKey(IndicationAccordion.showMoreTextKey),
+        matching: find.byKey(BasicTextAccordion.showMoreTextKey),
       );
       expect(showMoreButton, findsOneWidget);
 
@@ -116,7 +116,7 @@ void main() {
       await tapElement(tester, accordion);
       final expandedRow = _findDASTableAccordionByContainsText(
         'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
-        IndicationAccordion,
+        BasicTextAccordion,
       );
       expect(expandedRow, findsOneWidget);
 
@@ -138,12 +138,12 @@ void main() {
 
       final scrollableFinder = find.byType(AnimatedList);
       await tester.dragUntilVisible(
-        find.byKey(CombinedFootNoteAndIndicationsRow.rowKey),
+        find.byKey(CombinedFootNoteAndTextAnnotationsRow.rowKey),
         scrollableFinder,
         const Offset(0, -100),
       );
 
-      final combinedRow = find.byKey(CombinedFootNoteAndIndicationsRow.rowKey);
+      final combinedRow = find.byKey(CombinedFootNoteAndTextAnnotationsRow.rowKey);
       expect(combinedRow, findsOneWidget);
 
       final operationalIndicationRow = find.descendant(
@@ -281,7 +281,78 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets(
+    'collapsibleRows_whenLineFootNoteRepeated_thenRepetitionsAreCollapsedByDefault|156zLPEeDK5CzaN0BPcM|tests:2219',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T54M');
+
+      // first occurrence of line foot note A is expanded
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+      // repetition of line foot note A at second service point is collapsed
+      await _moveToServicePoint(tester, 'Lausanne');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+
+      // repetition of line foot note A expands on tap
+      await tapElement(tester, _lineFootNoteA().first, warnIfMissed: false);
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+      // first occurrence of line foot note B in the middle of the journey is expanded
+      await _moveToServicePoint(tester, 'Pully');
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteB());
+
+      // repetition of line foot note B is collapsed
+      await _moveToServicePoint(tester, 'Taillepied');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteB());
+
+      await disconnect(tester);
+    },
+  );
+
+  testWidgets(
+    'collapsibleRows_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault|n1p736TbYkrBbZ4IoM2X|tests:2219',
+    (
+      tester,
+    ) async {
+      await IntegrationTestApp.start(tester);
+      await loadJourney(tester, trainNumber: 'T54M');
+
+      await _moveToServicePoint(tester, 'Pully');
+
+      // repetition of line foot note A stays collapsed
+      await _scrollUpToRowWithText(tester, 'Lausanne');
+      await _moveToServicePoint(tester, 'Lausanne');
+      _checkCollapsibleRow(isCollapsed: true, collapsibleRow: _lineFootNoteA());
+
+      // first occurrence of line foot note A is expanded again
+      await _scrollUpToRowWithText(tester, 'Renens VD');
+      await _moveToServicePoint(tester, 'Renens VD');
+      await _scrollUpToRowWithText(tester, 'Renens VD');
+      _checkCollapsibleRow(isCollapsed: false, collapsibleRow: _lineFootNoteA());
+
+      await disconnect(tester);
+    },
+  );
 }
+
+Future<void> _scrollUpToRowWithText(WidgetTester tester, String servicePoint) async {
+  final scrollableFinder = find.byType(AnimatedList);
+  await tester.dragUntilVisible(findDASTableRowByText(servicePoint), scrollableFinder, const Offset(0, 50));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _moveToServicePoint(WidgetTester tester, String servicePoint) async {
+  await tester.drag(findDASTableRowByText(servicePoint), const Offset(600, 0));
+  await tester.pumpAndSettle();
+}
+
+Finder _lineFootNoteA() => _findDASTableAccordionByContainsText('Renens VD - Taillepied', FootNoteAccordion);
+
+Finder _lineFootNoteB() => _findDASTableAccordionByContainsText('Pully - Taillepied', FootNoteAccordion);
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {
   // should be expanded by default

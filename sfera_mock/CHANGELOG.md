@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.21.0...sfera_mock-v0.22.0) (2026-10-14)
+
+
+### Features
+
+* handle journey updates and overrides correctly ([#2940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2940)) ([#2961](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2961)) ([cd23f67](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd23f67c4c0e0255a0e3a39679064a43f8709b53))
+* implement switchback ([#2227](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2227)) ([#2955](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2955)) ([4723fb9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4723fb94a0439df9936033df5afcf83fbcf19e4f))
+* repeated line foot notes are collapsed on second appearance ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2917](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2917)) ([ee926cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee926cf1851e11748d543ccfb176ad7dd0f47a58))
+
+## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.20.0...sfera_mock-v0.21.0) (2026-10-02)
+
+
+### Features
+
+* build local regulation SPs and NSPs ([#1648](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1648)) ([#2798](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2798)) ([908c112](https://github.com/SchweizerischeBundesbahnen/DAS/commit/908c112ab5f19d70dd8f16729d13bed454e9b64e))
+* mock static related train information ([#2793](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2793)) ([#2848](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2848)) ([7183432](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7183432b66cff9f2d8d59f3976c6773f08e318cb))
+
+
+### Bug Fixes
+
+* load local regulation from file system ([#2847](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2847)) ([8ec2370](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8ec23709e02b75365cb97143a89701dc9cd95bd6))
+
 ## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.19.0...sfera_mock-v0.20.0) (2026-09-15)
 
 

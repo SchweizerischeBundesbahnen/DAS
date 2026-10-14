@@ -67,14 +67,18 @@ class JourneyPositionModel({
   @override
   String toString() {
     return 'JourneyPositionModel{'
-        'currentPosition: $currentPosition, '
-        'lastPosition: $lastPosition, '
-        'previousServicePoint: $previousServicePoint, '
-        'nextServicePoint: $nextServicePoint, '
-        'previousStop: $previousStop, '
-        'nextStop: $nextStop'
+        'currentPosition: ${currentPosition?.toPositionRelevantString()}, '
+        'lastPosition: ${lastPosition?.toPositionRelevantString()}, '
+        'previousServicePoint: ${previousServicePoint?.toPositionRelevantString()}, '
+        'nextServicePoint: ${nextServicePoint?.toPositionRelevantString()}, '
+        'previousStop: ${previousStop?.toPositionRelevantString()}, '
+        'nextStop: ${nextStop?.toPositionRelevantString()}, '
         'isManualPosition: $isManualPosition, '
         'isTrainInMotion: $isTrainInMotion'
         '}';
   }
+}
+
+extension _JourneyPointX on JourneyPoint {
+  String toPositionRelevantString() => '$runtimeType{order: $order, kilometre: $kilometre}';
 }

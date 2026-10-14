@@ -36,6 +36,7 @@ import 'test/journey_validation_test.dart' as journey_validation_tests;
 import 'test/login_test.dart' as login_tests;
 import 'test/manual_advancement_test.dart' as manual_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
+import 'test/personal_notes_test.dart' as personal_notes_tests;
 import 'test/preload_test.dart' as preload_tests;
 import 'test/reduced_journey_table_test.dart' as reduced_journey_table_tests;
 import 'test/ru_indications_test.dart' as ru_indications_tests;
@@ -93,6 +94,7 @@ void main() {
   navigation_tests.main();
   reduced_journey_table_tests.main();
   ru_indications_tests.main();
+  personal_notes_tests.main();
   service_point_modal_tests.main();
   settings_tests.main();
   short_term_changes_tests.main();

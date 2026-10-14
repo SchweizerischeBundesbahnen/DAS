@@ -13,7 +13,7 @@ class TrainCharacteristicsDto({super.type = elementType, super.attributes, super
 
   String get versionMajor => attributes['TC_VersionMajor']!;
 
-  String get versionMinor => attributes['TC_VersionMinor']!;
+  String get versionMinor => attributes['TC_VersionMinor'] ?? '0';
 
   TcFeaturesDto get tcFeatures => children.whereType<TcFeaturesDto>().first;
 
@@ -23,7 +23,6 @@ class TrainCharacteristicsDto({super.type = elementType, super.attributes, super
         validateHasAttribute('TC_ID') &&
         validateHasChild('TC_RU_ID') &&
         validateHasAttribute('TC_VersionMajor') &&
-        validateHasAttribute('TC_VersionMinor') &&
         super.validate();
   }
 }
