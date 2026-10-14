@@ -21,7 +21,7 @@ class JourneyProfileEventHandler(
     }
 
     if (eventMessage.payload!.journeyProfiles.length > 1) {
-      _log.warning('Received more then 1 journey profile which is not supported, using first one provided');
+      _log.warning('Received more than 1 journey profile which is not supported, using first one provided');
     }
 
     final updatedJourneyProfile = eventMessage.payload!.journeyProfiles.first;
@@ -33,7 +33,7 @@ class JourneyProfileEventHandler(
       case .update:
         final currentJourneyProfile = _currentJourneyProfile();
         if (currentJourneyProfile == null) {
-          _log.info('Received update for journey profile, but no current journey profile exists');
+          _log.warning('Received update for journey profile, but no current journey profile exists');
           return false;
         } else {
           _log.info('Received update for journey profile, merging it with the current journey profile');
@@ -58,13 +58,13 @@ class JourneyProfileEventHandler(
     JourneyProfileDto currentJourneyProfile,
     JourneyProfileDto updatedJourneyProfile,
   ) {
-    final firstUpdatedSegment = updatedJourneyProfile.segmentProfileReferences.first;
+    final firstUpdatedSegment = updatedJourneyProfile.segmentProfileReferences.firstOrNull;
 
     final mergedSegmentProfileReferences = <SegmentProfileReferenceDto>[];
     for (final segmentRef in currentJourneyProfile.segmentProfileReferences) {
-      if (segmentRef.spId == firstUpdatedSegment.spId &&
-          segmentRef.versionMajor == firstUpdatedSegment.versionMajor &&
-          segmentRef.versionMinor == firstUpdatedSegment.versionMinor) {
+      if (segmentRef.spId == firstUpdatedSegment?.spId &&
+          segmentRef.versionMajor == firstUpdatedSegment?.versionMajor &&
+          segmentRef.versionMinor == firstUpdatedSegment?.versionMinor) {
         break;
       }
       mergedSegmentProfileReferences.add(segmentRef);

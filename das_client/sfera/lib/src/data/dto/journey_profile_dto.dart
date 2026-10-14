@@ -18,7 +18,7 @@ class JourneyProfileDto({super.type = elementType, super.attributes, super.child
   }) {
     final request = JourneyProfileDto();
     request.attributes['JP_Version'] = version;
-    request.attributes['JP_Status'] = JpStatusDto.valid.name;
+    request.attributes['JP_Status'] = JpStatusDto.valid.xmlValue;
     request.children.add(trainIdentification);
     request.children.addAll(segmentProfileReferences);
     if (generalJpInformation != null) {
