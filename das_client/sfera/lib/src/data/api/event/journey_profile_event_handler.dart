@@ -76,8 +76,6 @@ class JourneyProfileEventHandler(
       version: updatedJourneyProfile.version,
       trainIdentification: updatedJourneyProfile.trainIdentification,
       segmentProfileReferences: mergedSegmentProfileReferences,
-      // TODO: Check with TMS how GeneralJPInformation merging should be done, or if they will provide everything
-      // https://github.com/SchweizerischeBundesbahnen/DAS/issues/2962
       generalJpInformation: updatedJourneyProfile.generalJpInformation,
     );
   }
