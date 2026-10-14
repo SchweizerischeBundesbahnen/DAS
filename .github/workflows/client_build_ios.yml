@@ -95,6 +95,8 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App DEV
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor dev -t lib/main_dev.dart --release
       working-directory: das_client/app
 
@@ -107,6 +109,8 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App INTE
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor inte -t lib/main_inte.dart --release
       working-directory: das_client/app
 
@@ -119,5 +123,7 @@ jobs:
         api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
     - name: Build iOS App PROD
+      env:
+        BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
       run: flutter build ipa --flavor prod -t lib/main_prod.dart --release
       working-directory: das_client/app

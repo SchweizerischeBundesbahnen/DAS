@@ -229,6 +229,7 @@ jobs:
           MQTT_PASSWORD: ${{ steps.vault-secrets.outputs.MOCK_BROKER_MQTT_PASSWORD }}
           ACCESS_TOKEN: ${{ steps.jwt.outputs.access_token }}
           PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
+          BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
           # Github does not mask dart-define base64 encoded secrets reliably - Xcode logs '=' escaped as '\=', so both are masked
           for define in "MQTT_USERNAME=$MQTT_USERNAME" "MQTT_PASSWORD=$MQTT_PASSWORD" "ACCESS_TOKEN=$ACCESS_TOKEN"; do
@@ -240,7 +241,7 @@ jobs:
             --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
             --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN
           pushd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          xcodebuild -workspace Runner.xcworkspace -scheme dev -configuration Release -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing -hideShellScriptEnvironment CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
           popd
           pushd build/ios_integration/Build/Products
           zip -r "$PACKAGE_NAME" Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
