@@ -63,6 +63,18 @@ export function baseBackupDir(repoRoot) {
 }
 
 /**
+ * The on-disk folder name for a flavor's source set: `.<flavor>` (dot-prefixed
+ * so the Dart analyzer treats it as a hidden folder and does not report errors
+ * for the flavor files). The sources still map to/from `lib/` — only the
+ * per-flavor source folder is dot-prefixed.
+ * @param {string} flavor one of {@link FLAVORS}
+ * @returns {string} the folder name, e.g. `.dev`
+ */
+export function flavorDirName(flavor) {
+  return `.${flavor}`;
+}
+
+/**
  * Build the CLI usage/help text (pure, no I/O).
  *
  * Returns the complete `--help`/`-h` output as a single string: a one-line
@@ -314,7 +326,7 @@ export function discoverComponents(repoRoot) {
 /**
  * Enumerate a component's flavor-folder files and map them to `lib/` targets.
  *
- * Per the design "Copy semantics": when `<componentDir>/<flavor>/` exists and is
+ * Per the design "Copy semantics": when `<componentDir>/.<flavor>/` exists and is
  * a directory, every file beneath it (recursively) at relative path `<relpath>`
  * maps to the target `<componentDir>/lib/<relpath>`, preserving the nested
  * structure. A component without a matching flavor folder contributes nothing
@@ -336,7 +348,7 @@ export function discoverComponents(repoRoot) {
  * @returns {Array<{source: string, target: string}>}
  */
 export function planCopy(componentDir, flavor, repoRoot) {
-  const flavorDir = path.join(componentDir, flavor);
+  const flavorDir = path.join(componentDir, flavorDirName(flavor));
 
   let stat;
   try {
@@ -372,7 +384,7 @@ export function planCopy(componentDir, flavor, repoRoot) {
 
 /**
  * Map a `<component>/lib/<rest>` source path to its flavor-folder destination
- * `<component>/<flavor>/<rest>` (pure, no filesystem access).
+ * `<component>/.<flavor>/<rest>` (pure, no filesystem access).
  *
  * Per the design "Save-to-Flavor Operation" (step 4) and the `deriveFlavorDest`
  * row in the Components-and-Interfaces module table: this derives the authoring
@@ -390,13 +402,13 @@ export function planCopy(componentDir, flavor, repoRoot) {
  *
  * Return shape (discriminated union consumed by `saveToFlavor` in task 17.2):
  *   - { ok: true,  dest }                         — `dest` is the repo-relative
- *       POSIX destination `<component>/<flavor>/<rest>`
+ *       POSIX destination `<component>/.<flavor>/<rest>`
  *   - { ok: false, reason: 'not_a_lib_path' }     — not a `<component>/lib/<rest>`
  *       path
  *
  * Examples:
  *   deriveFlavorDest('sfera/lib/src/foo.dart', 'dev')
- *     → { ok: true, dest: 'sfera/dev/src/foo.dart' }
+ *     → { ok: true, dest: 'sfera/.dev/src/foo.dart' }
  *   deriveFlavorDest('sfera/foo.dart', 'dev')  → { ok: false, reason: 'not_a_lib_path' }
  *   deriveFlavorDest('lib/foo.dart', 'dev')    → { ok: false, reason: 'not_a_lib_path' }
  *
@@ -418,7 +430,7 @@ export function deriveFlavorDest(file, flavor) {
 
   const component = m[1];
   const rest = m[2];
-  return { ok: true, dest: `${component}/${flavor}/${rest}` };
+  return { ok: true, dest: `${component}/${flavorDirName(flavor)}/${rest}` };
 }
 
 /**
@@ -803,7 +815,7 @@ export function restoreBase(repoRoot) {
 /**
  * Seed a flavor folder from an existing `lib/` file (standalone save-to-flavor
  * mode, Req 12.1–12.7). An authoring helper: it COPIES a `<component>/lib/<rest>`
- * source file to `<component>/<flavor>/<rest>`, leaving the source in place. It
+ * source file to `<component>/.<flavor>/<rest>`, leaving the source in place. It
  * performs NO flavor switch, touches NEITHER the manifest NOR the
  * Base_Backup_Directory, and spawns NO resolution.
  *

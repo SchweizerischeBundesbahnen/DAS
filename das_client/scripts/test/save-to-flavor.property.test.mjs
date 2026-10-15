@@ -101,7 +101,7 @@ test('Property 16: saveToFlavor preserves the lib/ source and copies it byte-ide
       const rest = randomRest();
       const sourceContent = randomContent();
       const sourceRel = `${componentName}/lib/${rest}`;
-      const destRel = `${componentName}/${flavor}/${rest}`;
+      const destRel = `${componentName}/.${flavor}/${rest}`;
 
       // In ~half the iterations pre-create a DIFFERENT-content file at the
       // destination to exercise the overwrite path (Req 12.4).
@@ -119,7 +119,7 @@ test('Property 16: saveToFlavor preserves the lib/ source and copies it byte-ide
       await buildRepo(repoRoot, { components: [componentSpec] });
 
       const sourceAbs = path.join(repoRoot, componentName, 'lib', rest);
-      const destAbs = path.join(repoRoot, componentName, flavor, rest);
+      const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
 
       // Capture the source bytes before the copy.
       const srcBefore = await fsp.readFile(sourceAbs);

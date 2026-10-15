@@ -238,7 +238,7 @@ test("Feature: flavor-code-switching, Property 19: Save-all copies every present
       // For every present lib file, a byte-identical copy exists at the derived
       // flavor destination AND the source under lib/ is unchanged (COPY, not move).
       for (const ch of libChanges) {
-        const destRel = `${ch.component}/${flavor}/${ch.rest}`;
+        const destRel = `${ch.component}/.${flavor}/${ch.rest}`;
         const destAbs = path.join(repoRoot, destRel);
         const srcAbs = path.join(repoRoot, ch.relPosix);
 
@@ -273,7 +273,7 @@ test("Feature: flavor-code-switching, Property 19: Save-all copies every present
         // We assert the specific would-be sibling path does not exist.
         const parts = nonLibRel.split('/');
         if (parts.length >= 2 && parts[1] === 'test') {
-          const wouldBe = path.join(repoRoot, parts[0], flavor, ...parts.slice(2));
+          const wouldBe = path.join(repoRoot, parts[0], `.${flavor}`, ...parts.slice(2));
           assert.ok(
             !fs.existsSync(wouldBe),
             `non-lib path ${nonLibRel} must NOT produce a flavor copy at ${parts[0]}/${flavor}/${parts.slice(2).join('/')} (${ctx})`,

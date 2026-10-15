@@ -188,8 +188,8 @@ async function addExcludedDirs(repoRoot, flavor) {
       await fs.writeFile(path.join(dir, 'pubspec.yaml'), 'name: tooling\n');
       await fs.mkdir(path.join(dir, 'lib'), { recursive: true });
       await fs.writeFile(path.join(dir, 'lib', 'x.dart'), '// x\n');
-      await fs.mkdir(path.join(dir, flavor), { recursive: true });
-      await fs.writeFile(path.join(dir, flavor, 'y.dart'), '// y\n');
+      await fs.mkdir(path.join(dir, `.${flavor}`), { recursive: true });
+      await fs.writeFile(path.join(dir, `.${flavor}`, 'y.dart'), '// y\n');
     } else {
       await fs.writeFile(path.join(dir, 'junk.txt'), 'junk\n');
     }
@@ -260,7 +260,7 @@ test('Property 1: discovery/plan selects exactly the components owning the match
         }
         // Source must point at the component's selected-flavor folder.
         assert.ok(
-          entry.source.includes(`${path.sep}${flavor}${path.sep}`),
+          entry.source.includes(`${path.sep}.${flavor}${path.sep}`),
           `copy source '${entry.source}' must come from the '${flavor}' folder (${ctx})`,
         );
       }

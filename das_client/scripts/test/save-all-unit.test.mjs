@@ -227,7 +227,7 @@ test('Group C: main --all routes to saveAllToFlavor and threads the injected spa
 
     // Proof main routed --all → saveAllToFlavor (which threaded the fake spawn):
     // the flavor copy <comp>/dev/<rest> was created from the changed lib file.
-    const destAbs = path.join(repoRoot, comp, 'dev', rest);
+    const destAbs = path.join(repoRoot, comp, '.dev', rest);
     assert.ok(fs.existsSync(destAbs), `flavor copy must exist at ${comp}/dev/${rest}`);
     const destBytes = await fsp.readFile(destAbs, 'utf8');
     assert.equal(destBytes, 'hello from lib');
@@ -257,7 +257,7 @@ test('Group C: main single-file --save-to-flavor (no --all) never touches git', 
     assert.equal(code, 0, 'main single-file save must return 0');
 
     // The single file was copied to the flavor folder, source left in place.
-    const destAbs = path.join(repoRoot, comp, 'dev', rest);
+    const destAbs = path.join(repoRoot, comp, '.dev', rest);
     assert.ok(fs.existsSync(destAbs), `flavor copy must exist at ${comp}/dev/${rest}`);
     assert.equal(await fsp.readFile(destAbs, 'utf8'), 'single file content');
     assert.ok(fs.existsSync(path.join(repoRoot, file)), 'source lib/ file must still exist');

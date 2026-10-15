@@ -178,7 +178,7 @@ test('Property 2: planCopy + copyFiles preserves nested structure with byte-iden
       // Every flavor source file now exists at its lib/ target with
       // byte-identical content — overwrite case included.
       for (const rel of Object.keys(tree)) {
-        const sourceAbs = path.join(componentDir, flavor, rel);
+        const sourceAbs = path.join(componentDir, `.${flavor}`, rel);
         const targetAbs = path.join(componentDir, 'lib', rel);
 
         assert.ok(fs.existsSync(targetAbs), `target must exist at lib/${rel} (${ctx})`);

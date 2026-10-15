@@ -53,7 +53,7 @@ export async function withTempDir(fn, prefix) {
  * @property {Record<string,string>} [lib]     files under lib/, keyed by relative POSIX path → content
  * @property {Record<string,Record<string,string>>} [flavors]
  *           flavor folders: flavorName → { relativePosixPath → content }
- *           e.g. { dev: { "src/foo.dart": "..." } } creates sfera/dev/src/foo.dart
+ *           e.g. { dev: { "src/foo.dart": "..." } } creates sfera/.dev/src/foo.dart
  * @property {boolean} [noPubspec]             when true, skip writing the component pubspec.yaml
  * @property {boolean} [noLib]                 when true, skip creating the lib/ folder
  */
@@ -113,7 +113,7 @@ async function writeFile(filePath, content) {
  *   - <dir>/app/pubspec.yaml                  (app component pubspec)
  *   - <dir>/<component>/pubspec.yaml          (unless noPubspec)
  *   - <dir>/<component>/lib/<...>             (unless noLib)
- *   - <dir>/<component>/<flavor>/<...>        (per flavors spec)
+ *   - <dir>/<component>/.<flavor>/<...>        (per flavors spec)
  *   - <dir>/.flavor-manifest.json             (when manifest/manifestRaw given)
  *
  * @param {string} dir   absolute path of an existing (temp) directory
@@ -157,7 +157,7 @@ export async function buildRepo(dir, spec = {}) {
 
     for (const [flavor, files] of Object.entries(component.flavors ?? {})) {
       for (const [rel, content] of Object.entries(files)) {
-        await writeFile(path.join(compDir, flavor, rel), content);
+        await writeFile(path.join(compDir, `.${flavor}`, rel), content);
       }
     }
   }

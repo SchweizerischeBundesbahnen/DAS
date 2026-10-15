@@ -169,7 +169,7 @@ test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor fil
       const destExistedBefore = new Map(); // rest -> boolean
       const destContentBefore = new Map(); // rest -> content (when existed)
       for (const rest of deletedRests) {
-        const destAbs = path.join(repoRoot, componentName, flavor, rest);
+        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
         const existed = fs.existsSync(destAbs);
         destExistedBefore.set(rest, existed);
         if (existed) destContentBefore.set(rest, fs.readFileSync(destAbs, 'utf8'));
@@ -194,8 +194,8 @@ test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor fil
 
       // Per deleted path: dest existed → now removed; dest absent → still absent.
       for (const rest of deletedRests) {
-        const destAbs = path.join(repoRoot, componentName, flavor, rest);
-        const destRel = `${componentName}/${flavor}/${rest}`;
+        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
+        const destRel = `${componentName}/.${flavor}/${rest}`;
         if (destExistedBefore.get(rest)) {
           assert.ok(
             !fs.existsSync(destAbs),
@@ -226,7 +226,7 @@ test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor fil
       const removedExpected = new Set(
         deletedRests
           .filter((rest) => destExistedBefore.get(rest))
-          .map((rest) => `${componentName}/${flavor}/${rest}`),
+          .map((rest) => `${componentName}/.${flavor}/${rest}`),
       );
       for (const f of filesBefore) {
         if (!filesAfter.has(f)) {

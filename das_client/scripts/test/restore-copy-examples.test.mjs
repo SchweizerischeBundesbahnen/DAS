@@ -143,7 +143,7 @@ test('saveToFlavor overwrites an existing destination and reports the overwrite 
     const preExistingDest = 'OLD DESTINATION CONTENT\n';
     const flavor = 'dev';
     const srcRel = 'sfera/lib/src/foo.dart';
-    const destRel = 'sfera/dev/src/foo.dart';
+    const destRel = 'sfera/.dev/src/foo.dart';
 
     await buildRepo(repoRoot, {
       components: [
@@ -156,7 +156,7 @@ test('saveToFlavor overwrites an existing destination and reports the overwrite 
       ],
     });
 
-    const destAbs = path.join(repoRoot, 'sfera', 'dev', 'src', 'foo.dart');
+    const destAbs = path.join(repoRoot, 'sfera', '.dev', 'src', 'foo.dart');
     assert.equal(
       fs.readFileSync(destAbs, 'utf8'),
       preExistingDest,
@@ -230,7 +230,7 @@ test('saveToFlavor leaves the source lib/ file in place after a successful copy 
     assert.equal(fs.readFileSync(srcAbs, 'utf8'), sourceContent, 'source content unchanged');
 
     // And the copy landed at the derived flavor destination.
-    const destAbs = path.join(repoRoot, 'sfera', 'inte', 'src', 'bar.dart');
+    const destAbs = path.join(repoRoot, 'sfera', '.inte', 'src', 'bar.dart');
     assert.equal(fs.readFileSync(destAbs, 'utf8'), sourceContent, 'copy produced at flavor dest');
   });
 });
