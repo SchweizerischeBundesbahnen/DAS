@@ -170,7 +170,7 @@ const _authenticatorConfigDev = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
+      scopes: ['api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
     ),
   ]),
 );
@@ -184,7 +184,7 @@ const _authenticatorConfigInte = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
+      scopes: ['api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
@@ -198,7 +198,7 @@ const _authenticatorConfigProd = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
+      scopes: ['api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );

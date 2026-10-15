@@ -18,7 +18,7 @@ class const AuthenticatorConfig({
   final List<String> trustedTenantIds = const [sbbTenantId, blsTenantId, sobTenantId],
 
   /// list of roles, at least one of which must be present in the token claim
-  final List<Role> allowedRoles = const [Role.driver, Role.observer],
+  final List<Role> allowedRoles = const [.driver, .observer],
 }) {
   const AuthenticatorConfig.empty()
     : this(
