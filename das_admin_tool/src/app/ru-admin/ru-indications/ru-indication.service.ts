@@ -1,15 +1,11 @@
 import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { BaseDialogService } from '../base-dialog.service';
-import { RuAdminApi, RuIndication, RuIndicationTemplate } from '../ru-admin-api';
-import { RuIndicationDialog } from './ru-indication-dialog/ru-indication-dialog.component';
-
-export type RuIndicationDialogEditResult = RuIndication | 'delete';
-
-export interface RuIndicationDialogData {
-  ruIndication?: RuIndication;
-  templates: RuIndicationTemplate[];
-}
+import { BaseDialogService } from '~shared/services/base-dialog.service';
+import { RuAdminApi, RuIndication } from '../ru-admin.api';
+import {
+  RuIndicationDialog,
+  RuIndicationDialogEditResult,
+} from './ru-indication-dialog/ru-indication-dialog';
 
 @Service()
 export class RuIndicationService extends BaseDialogService {

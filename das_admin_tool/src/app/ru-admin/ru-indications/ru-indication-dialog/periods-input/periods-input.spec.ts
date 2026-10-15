@@ -1,7 +1,7 @@
 import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FieldTree, form } from '@angular/forms/signals';
-import { RuIndicationPeriod } from '~ru-admin/ru-admin-api';
+import { RuIndicationPeriod } from '~ru-admin/ru-admin.api';
 import { hasError } from '~src/testing/utils';
 import { PeriodsInput } from './periods-input';
 

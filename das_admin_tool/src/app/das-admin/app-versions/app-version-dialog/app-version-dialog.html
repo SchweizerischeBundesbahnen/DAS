@@ -4,14 +4,14 @@
   [data]="dialogData"
   [dialogClose]="formValue"
   [dialogTitle]="dialogTitle"
-  [saveDisabled]="versionForm().invalid()"
+  [saveDisabled]="appVersionForm().invalid()"
 >
   <form class="form">
     <sbb-form-field errorSpace="reserve">
       <label for="version" i18n="@@app_versions_form_version_label">App Version</label>
-      <input placeholder="0.0.0" [formField]="versionForm.version" />
-      @if (versionForm.version().touched()) {
-        @for (error of versionForm.version().errors(); track error.kind) {
+      <input placeholder="0.0.0" [formField]="appVersionForm.version" />
+      @if (appVersionForm.version().touched()) {
+        @for (error of appVersionForm.version().errors(); track error.kind) {
           <sbb-error>{{ error.message }}</sbb-error>
         }
       }
@@ -19,7 +19,7 @@
     <div class="minimalVersion">
       <sbb-toggle-check
         i18n="@@app_versions_form_minimal_version_label"
-        [formField]="versionForm.minimalVersion"
+        [formField]="appVersionForm.minimalVersion"
         >Minimale Version</sbb-toggle-check
       >
       <sbb-mini-button iconName="circle-information-small" id="popover-trigger" />
@@ -37,7 +37,7 @@
         >Gültig ab (optional)</label
       >
       <sbb-datepicker-previous-day />
-      <sbb-date-input [formField]="versionForm.expiryDate" [min]="minDate" />
+      <sbb-date-input [formField]="appVersionForm.expiryDate" [min]="minDate" />
       <sbb-datepicker />
       <sbb-datepicker-toggle />
       <sbb-datepicker-next-day />

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppVersionService } from './app-version.service';
 import { AppVersions } from './app-versions';
-import { AppVersionsService } from './app-versions.service';
 
-const mockAppVersionsService = {
+const mockAppVersionService = {
   appVersionsResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
@@ -13,7 +13,7 @@ describe('AppVersions', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppVersions],
-      providers: [{ provide: AppVersionsService, useValue: mockAppVersionsService }],
+      providers: [{ provide: AppVersionService, useValue: mockAppVersionService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppVersions);

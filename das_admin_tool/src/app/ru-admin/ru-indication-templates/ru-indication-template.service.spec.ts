@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { of, throwError } from 'rxjs';
-import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { ToastService } from '~shared/toast-service';
-import { RuAdminApi, RuIndicationTemplate, RuIndicationTemplateApiResponse } from '../ru-admin-api';
+import { RecentCompaniesService } from '~shared/services/recent-companies.service';
+import { ToastService } from '~shared/services/toast.service';
+import { RuAdminApi, RuIndicationTemplate, RuIndicationTemplateApiResponse } from '../ru-admin.api';
 import { RuIndicationTemplateDialogEditResult } from './ru-indication-template-dialog/ru-indication-template-dialog';
 import { RuIndicationTemplateService } from './ru-indication-template.service';
 
@@ -40,7 +40,7 @@ function mockDialogResult(result: RuIndicationTemplateDialogEditResult | null): 
 }
 
 describe('RuIndicationTemplateService', () => {
-  let service: RuIndicationTemplateService;
+  let ruIndicationTemplateService: RuIndicationTemplateService;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -51,15 +51,15 @@ describe('RuIndicationTemplateService', () => {
         { provide: RuAdminApi, useValue: mockRuAdminApi },
         { provide: SbbDialogService, useValue: mockSbbDialogService },
         { provide: ToastService, useValue: mockToastService },
-        { provide: RecentCompaniesStore, useValue: {} },
+        { provide: RecentCompaniesService, useValue: {} },
       ],
     });
 
-    service = TestBed.inject(RuIndicationTemplateService);
+    ruIndicationTemplateService = TestBed.inject(RuIndicationTemplateService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(ruIndicationTemplateService).toBeTruthy();
   });
 
   it('edit should update ru indication template', async () => {
@@ -70,7 +70,7 @@ describe('RuIndicationTemplateService', () => {
       category: 'Updated',
     });
 
-    await service.edit(ruIndicationTemplate);
+    await ruIndicationTemplateService.edit(ruIndicationTemplate);
 
     expect(toastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalledWith(1, {
@@ -85,7 +85,7 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult('delete');
 
-    await service.edit(ruIndicationTemplate);
+    await ruIndicationTemplateService.edit(ruIndicationTemplate);
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiDeleteSpy).toHaveBeenCalledWith([ruIndicationTemplate.id]);
@@ -96,7 +96,7 @@ describe('RuIndicationTemplateService', () => {
     const successToastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult(null);
 
-    await service.edit(ruIndicationTemplate);
+    await ruIndicationTemplateService.edit(ruIndicationTemplate);
 
     expect(apiSpy).not.toHaveBeenCalled();
     expect(successToastSpy).not.toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe('RuIndicationTemplateService', () => {
       category: 'Updated',
     });
 
-    await service.edit(ruIndicationTemplate);
+    await ruIndicationTemplateService.edit(ruIndicationTemplate);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -126,7 +126,7 @@ describe('RuIndicationTemplateService', () => {
     };
     mockDialogResult(templateToCreate);
 
-    await service.add();
+    await ruIndicationTemplateService.add();
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalledWith(templateToCreate);
@@ -136,7 +136,7 @@ describe('RuIndicationTemplateService', () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'postRuIndicationTemplate');
     mockDialogResult(null);
 
-    await service.add();
+    await ruIndicationTemplateService.add();
 
     expect(apiSpy).not.toHaveBeenCalled();
   });
@@ -153,7 +153,7 @@ describe('RuIndicationTemplateService', () => {
       },
     ];
 
-    await service.deleteAll(templates);
+    await ruIndicationTemplateService.deleteAll(templates);
 
     expect(apiSpy).toHaveBeenCalledWith([1, 2]);
     expect(successToastSpy).toHaveBeenCalled();
@@ -165,7 +165,7 @@ describe('RuIndicationTemplateService', () => {
     );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
-    await service.deleteAll([ruIndicationTemplate]);
+    await ruIndicationTemplateService.deleteAll([ruIndicationTemplate]);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });

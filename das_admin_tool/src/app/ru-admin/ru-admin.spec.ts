@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { CompanyService } from '~shared/companies-input/company.service';
+import { CompanyApi } from '~shared/services/company.api';
+import { LocationApi } from './location.api';
 import { RuAdmin } from './ru-admin';
-import { LocationService } from './ru-indications/ru-indication-dialog/locations-input/location.service';
 
 describe('RuAdmin', () => {
   let component: RuAdmin;
@@ -13,8 +13,8 @@ describe('RuAdmin', () => {
       imports: [RuAdmin],
       providers: [
         provideRouter([]),
-        { provide: CompanyService, useValue: { loaded: () => true } },
-        { provide: LocationService, useValue: { loaded: () => true } },
+        { provide: CompanyApi, useValue: { loaded: () => true } },
+        { provide: LocationApi, useValue: { loaded: () => true } },
       ],
     }).compileComponents();
 
