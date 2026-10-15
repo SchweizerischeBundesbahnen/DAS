@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * Echoes the consumer given {@link ApiParametersDefault#HEADER_REQUEST_ID} on every response (success, {@link Problem}, security rejections), so controllers do not have to wire it
+ * Echoes the consumer given {@link #HEADER_REQUEST_ID} on every response (success, {@link Problem}, security rejections), so controllers do not have to wire it
  * manually.
  * <p>
  * Runs before Spring Security and sets the header before the response is committed.
@@ -27,13 +27,26 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestIdFilter extends OncePerRequestFilter {
 
+    /**
+     * devOps relevant header:
+     * <ul>
+     *     <li>Instana-Tracing among a chane of Instana based Applications is maintained by introspection intrinsically.</li>
+     *     <li>Splunk logging</li>
+     * </ul>
+     * <p>
+     *
+     * @see <a href="https://www.instana.com/docs/ecosystem/opentelemetry/">OpenTelemtry</a>
+     * @see <a href="https://confluence.sbb.ch/display/MON/Instana+-+HTTP+Header+Whitelist">Request-ID</a>
+     */
+    public static final String HEADER_REQUEST_ID = "Request-ID";
+
     static final int MAX_LENGTH = 256;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String requestId = sanitize(request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID));
+        final String requestId = sanitize(request.getHeader(HEADER_REQUEST_ID));
         if (requestId != null) {
-            response.setHeader(ApiParametersDefault.HEADER_REQUEST_ID, requestId);
+            response.setHeader(HEADER_REQUEST_ID, requestId);
         }
         filterChain.doFilter(request, response);
     }

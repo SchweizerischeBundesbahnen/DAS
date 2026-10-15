@@ -36,7 +36,7 @@ class ResponseEntityFactoryTest {
         assertThat(responseEntity.getBody()).isEqualTo(response);
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
         assertThat(responseEntity.getHeaders().getContentLanguage().toLanguageTag()).isEqualTo("fr");
-        assertThat(responseEntity.getHeaders().containsHeader(ApiParametersDefault.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
+        assertThat(responseEntity.getHeaders().containsHeader(RequestIdFilter.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
     }
 
     @Test
@@ -44,7 +44,7 @@ class ResponseEntityFactoryTest {
         ResponseEntity<Problem> responseEntity = ResponseEntityFactory.createNotFoundResponse("notFound", "Pojo not found", null, "/nowhere");
         assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_PROBLEM_JSON);
         assertThat(responseEntity.getHeaders().getContentLanguage().toString()).isEqualTo("en");
-        assertThat(responseEntity.getHeaders().containsHeader(ApiParametersDefault.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
+        assertThat(responseEntity.getHeaders().containsHeader(RequestIdFilter.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
         assertThat(responseEntity.getBody()).isInstanceOf(Problem.class);
         assertThat(responseEntity.getBody().getStatus()).isEqualTo(404);
         assertThat(responseEntity.getBody().getTitle()).isEqualTo("notFound");

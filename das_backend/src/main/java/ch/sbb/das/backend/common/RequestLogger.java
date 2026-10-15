@@ -28,16 +28,13 @@ public class RequestLogger {
 
     public void log(HttpServletRequest request, HttpServletResponse response) {
         stopWatch.stop();
-        if (request == null || response == null) {
-            return;
-        }
         String params = request.getParameterMap().entrySet().stream()
             .map(entry -> entry.getKey() + ":" + String.join(",", entry.getValue()))
             .collect(Collectors.joining("&"));
 
         var loggingEventBuilder = log.atLevel(level);
         loggingEventBuilder.log("Request path=" + request.getRequestURI() + ", " +
-            "requestId=" + response.getHeader(ApiParametersDefault.HEADER_REQUEST_ID) + ", " +
+            "requestId=" + response.getHeader(RequestIdFilter.HEADER_REQUEST_ID) + ", " +
             "method=" + request.getMethod() + ", " +
             "query=" + params + ", " +
             "user_agent=" + request.getHeader(HttpHeaders.USER_AGENT) + ", " +

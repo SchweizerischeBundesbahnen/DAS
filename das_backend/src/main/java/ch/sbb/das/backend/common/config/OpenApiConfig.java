@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.common.config;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
-import ch.sbb.das.backend.common.ApiParametersDefault;
 import ch.sbb.das.backend.common.RequestIdFilter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -63,7 +62,7 @@ public class OpenApiConfig {
     }
 
     /**
-     * Documents the optional {@link ApiParametersDefault#HEADER_REQUEST_ID} on every operation, handled centrally by {@link RequestIdFilter}.
+     * Documents the optional {@link RequestIdFilter#HEADER_REQUEST_ID} on every operation, handled centrally by {@link RequestIdFilter}.
      * <p>
      * Always the first parameter: generated clients (see das_e2e_testsuite sortParamsByRequiredFlag=false) derive their argument order from it.
      */
@@ -72,7 +71,7 @@ public class OpenApiConfig {
         return (operation, handlerMethod) -> {
             final List<Parameter> parameters = new ArrayList<>();
             parameters.add(new HeaderParameter()
-                .name(ApiParametersDefault.HEADER_REQUEST_ID)
+                .name(RequestIdFilter.HEADER_REQUEST_ID)
                 .description(ApiDocumentation.HEADER_REQUEST_ID_DESCRIPTION)
                 .required(false)
                 .schema(new StringSchema()));

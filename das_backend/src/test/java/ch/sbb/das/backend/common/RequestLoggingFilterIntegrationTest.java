@@ -57,7 +57,7 @@ class RequestLoggingFilterIntegrationTest {
     @WithMockRole(roles = UserRole.DRIVER)
     @DisplayName("doFilter_requestIdHeader_logsRequestId|AKJZm3jDFSmfhpwHZSgC|tests:2649")
     void doFilter_requestIdHeader_logsRequestId() throws Exception {
-        mockMvc.perform(get("/driver/v1/personal-notes").header(ApiParametersDefault.HEADER_REQUEST_ID, "log-4711"));
+        mockMvc.perform(get("/driver/v1/personal-notes").header(RequestIdFilter.HEADER_REQUEST_ID, "log-4711"));
 
         assertThat(appender.list)
             .anySatisfy(event -> assertThat(event.getFormattedMessage()).contains("requestId=log-4711"));
