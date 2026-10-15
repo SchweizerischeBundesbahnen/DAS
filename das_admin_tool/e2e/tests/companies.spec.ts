@@ -19,8 +19,17 @@ test.describe('companies test', () => {
   test('company_whenCreatedEditedAndDeleted_thenSucceeds|X3AAEqNVkEJsfnioDCRd|tests:1878', async ({
     page,
   }) => {
+    const companiesLoaded = page.waitForResponse(
+      (resp) =>
+        resp.request().method() === 'GET'
+        && ['xhr', 'fetch'].includes(resp.request().resourceType())
+        && new URL(resp.url()).pathname.endsWith('/companies'),
+    );
     await page.goto('das-admin/companies');
+    await companiesLoaded;
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('EVUs');
+    // the title renders before the data arrives, wait for rows so the cleanup below sees them
+    await expect(page.locator('tr[sbb-row]').first()).toBeVisible();
 
     const row = findRow(page, TEST_SHORT_NAME);
     const updatedRow = findRow(page, TEST_SHORT_NAME_UPDATED);
