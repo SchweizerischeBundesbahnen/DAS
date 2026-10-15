@@ -13,8 +13,8 @@ import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbRadioButtonModule } from '@sbb-esta/lyne-angular/radio-button';
 import { SbbTooltipModule } from '@sbb-esta/lyne-angular/tooltip';
-import { RuIndicationTrainNumberFilter, TrainNumberParity } from '~ru-admin/ru-admin-api';
-import { OperationalTrainNumber } from '../ru-indication-dialog.component';
+import { RuIndicationTrainNumberFilter, TrainNumberParity } from '~ru-admin/ru-admin.api';
+import { OperationalTrainNumber } from '../ru-indication-dialog';
 
 export function displayTrainNumberFilter(value: RuIndicationTrainNumberFilter): string {
   let parity;

@@ -1,8 +1,8 @@
 import { HttpResourceRef } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ExternalLink, ExternalLinkApiResponse } from '~ru-admin/ru-admin-api';
-import { ExternalLinksService } from '../external-links.service';
+import { ExternalLink, ExternalLinkApiResponse } from '~ru-admin/ru-admin.api';
+import { ExternalLinkService } from '../external-link.service';
 import { ExternalLinksTable } from './external-links-table';
 
 const externalLinks: ExternalLink[] = [
@@ -16,7 +16,7 @@ const externalLinks: ExternalLink[] = [
   { id: 2, companies: ['1080'], de: { title: 'Sicherheit', link: 'https://sbb.ch' } },
 ];
 
-const mockExternalLinksService: Partial<ExternalLinksService> = {
+const mockExternalLinkService: Partial<ExternalLinkService> = {
   edit: vi.fn(),
   add: vi.fn(),
   deleteAllByIds: vi.fn(),
@@ -37,7 +37,7 @@ describe('ExternalLinksTable', () => {
     await TestBed.configureTestingModule({
       imports: [ExternalLinksTable],
       providers: [
-        { provide: ExternalLinksService, useValue: mockExternalLinksService },
+        { provide: ExternalLinkService, useValue: mockExternalLinkService },
         { provide: LOCALE_ID, useValue: 'de-CH' },
       ],
     }).compileComponents();

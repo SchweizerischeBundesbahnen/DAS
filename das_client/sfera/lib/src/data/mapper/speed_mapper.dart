@@ -9,7 +9,6 @@ import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/dto/vpro_data_nsp_dto.dart';
 import 'package:sfera/src/data/mapper/draft_advised_speed_segment.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
 final _log = Logger('SpeedMapper');
 
@@ -51,6 +50,9 @@ class SpeedMapper._() {
     final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
+      // Ignore '---' speed strings in graduatedSpeedInfo
+      if ('---' == speedString) return;
+
       try {
         final speeds = TrainSeriesSpeed(trainSeries: trainSeries, speed: Speed.parse(speedString), text: text);
         result.add(speeds);

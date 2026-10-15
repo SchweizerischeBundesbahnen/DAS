@@ -59,3 +59,43 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Folder structure
+
+Files are placed where they are used.
+
+For example if a service is used in multiple places inside a package, it is placed in the deepest common parent folder.
+
+If a service is used in multiple packages, it is placed inside of the `shared` folder.
+
+### `shared` folder
+
+The `shared` folder has a special structure, it has sub-folders based on types to be easier to traverse compared to when everything lives in the top folder.
+
+## Naming Conventions
+
+Newly created files need to follow the following naming conventions.
+
+### Components
+
+- File: name-something.[ts/spec.ts/html/css]
+- Class: NameSomething
+
+### Services
+
+- File: name-something.[service/api].[ts/spec.ts]
+- Class: NameSomething[Service/Api]
+
+Services which interact with the backend api contain `api`, other services contain `service` in the name.
+
+### Routes
+
+- File: name-something.routes.ts
+
+### Utils
+
+- File: name-something.util.ts
+
+### Interfaces/Types
+
+- File: name-something.model.ts

@@ -16,7 +16,7 @@ service-contract [api-specification.yaml](./../das_backend/src/main/resources/ap
    the [released versions of 'backend'](https://github.com/SchweizerischeBundesbahnen/DAS/releases)
 2. [pom](./pom.xml) will generate an ApiClient out of the service-contract yaml (or adapt
    _inputSpec_ temporarily for a service-contract SNAPSHOT-version)
-3. upgrade [CI version](../.github/workflows/ci-e2e_testsuite.yml) for latest released to be tested
+3. upgrade [CI version](../.github/workflows/e2e_testsuite_ci.yml) for latest released to be tested
    automatically
 
 

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
-import { AuthService } from '~shared/auth-service';
+import { AuthService } from '~shared/services/auth.service';
 
 const isTenantAllowed = () => {
   const authService = inject(AuthService);

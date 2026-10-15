@@ -8,20 +8,20 @@ import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbPopoverModule } from '@sbb-esta/lyne-angular/popover';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { AppVersion } from '~app/das-admin/das-admin-api';
-import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
-import { toUtcDateOnly } from '~shared/date-util';
+import { AppVersion } from '~app/das-admin/das-admin.api';
+import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
+import { toUtcDateOnly } from '~shared/utils/date.util';
 
-interface VersionData {
+interface AppVersionData {
   version: string;
   minimalVersion: boolean;
   expiryDate: Date | null;
 }
 
-export type VersionDialogEditResult = AppVersion | 'delete';
+export type AppVersionDialogEditResult = AppVersion | 'delete';
 
 @Component({
-  selector: 'app-app-version-dialog',
+  selector: 'app-version-dialog',
   imports: [
     FormField,
     SbbFormFieldModule,
@@ -40,20 +40,20 @@ export class AppVersionDialog {
   protected readonly dialogData =
     inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
-  private static readonly VERSION_REGEX = /^\d+\.\d+\.\d+$/;
+  private static readonly APP_VERSION_REGEX = /^\d+\.\d+\.\d+$/;
 
   protected readonly dialogTitle: string;
 
-  protected readonly versionModel = signal<VersionData>({
+  protected readonly appVersionModel = signal<AppVersionData>({
     version: '',
     minimalVersion: false,
     expiryDate: null,
   });
-  protected readonly versionForm = form(this.versionModel, (version) => {
-    required(version.version, {
+  protected readonly appVersionForm = form(this.appVersionModel, (appVersion) => {
+    required(appVersion.version, {
       message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
     });
-    pattern(version.version, AppVersionDialog.VERSION_REGEX, {
+    pattern(appVersion.version, AppVersionDialog.APP_VERSION_REGEX, {
       message: $localize`:@@app_versions_form_version_error_pattern:Feld muss dem Format MAJOR.MINOR.PATCH entsprechen`,
     });
   });
@@ -67,7 +67,7 @@ export class AppVersionDialog {
       : $localize`:@@app_versions_dialog_title_create:App Version blockieren`;
 
     if (isEdit && this.dialogData) {
-      this.versionModel.update((initial) => ({
+      this.appVersionModel.update((initial) => ({
         version: this.dialogData!.version,
         minimalVersion: this.dialogData!.minimalVersion,
         expiryDate: this.dialogData!.expiryDate
@@ -78,7 +78,7 @@ export class AppVersionDialog {
   }
 
   get formValue(): AppVersion {
-    const formValue = this.versionModel();
+    const formValue = this.appVersionModel();
     return {
       ...formValue,
       expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate).toJSON() : undefined,

@@ -1,7 +1,7 @@
 import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { BaseDialogService } from '../base-dialog.service';
-import { RuAdminApi, RuIndicationTemplate } from '../ru-admin-api';
+import { BaseDialogService } from '~shared/services/base-dialog.service';
+import { RuAdminApi, RuIndicationTemplate } from '../ru-admin.api';
 import {
   RuIndicationTemplateDialog,
   RuIndicationTemplateDialogEditResult,

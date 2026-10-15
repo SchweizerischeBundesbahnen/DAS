@@ -13,6 +13,7 @@
       "bump-minor-pre-major": true
     },
     "das_playground": {
+      "package-name": "playground",
       "bump-minor-pre-major": true
     },
     "das_admin_tool": {

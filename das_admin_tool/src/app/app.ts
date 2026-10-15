@@ -4,7 +4,7 @@ import { SbbLink } from '@sbb-esta/lyne-angular/link';
 import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import packageJson from '~package.json';
-import { AuthService } from '~shared/auth-service';
+import { AuthService } from '~shared/services/auth.service';
 import { Header } from './header/header';
 import { IconSidebar } from './icon-sidebar/icon-sidebar';
 

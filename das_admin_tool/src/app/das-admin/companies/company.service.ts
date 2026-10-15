@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { BaseDialogService } from '~ru-admin/base-dialog.service';
-import { DasAdminApi, InternalCompany } from '../das-admin-api';
+import { BaseDialogService } from '~shared/services/base-dialog.service';
+import { DasAdminApi, InternalCompany } from '../das-admin.api';
 import { CompanyDialog, CompanyDialogEditResult } from './company-dialog/company-dialog';
 
 @Service()

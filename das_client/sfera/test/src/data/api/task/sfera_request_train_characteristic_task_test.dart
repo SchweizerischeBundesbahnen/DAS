@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
@@ -35,9 +37,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsSuccessful_thenReturnsTrue', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -63,9 +63,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsSuccessful_thenSavesToSferaRepository', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -90,9 +88,7 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsWithOtherMessage_thenIsIgnored', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -108,10 +104,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
-      handShakefile.readAsStringSync(),
-    );
+    final handshakeSferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     final result = await tcTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -119,39 +112,37 @@ void main() {
   test('execute_whenRequestTrainCharacteristicsIsTimedOut_thenFailsWithRequestTimeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
-
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
-      timeout: const Duration(seconds: 1),
     );
 
     var timeoutReached = false;
-    await tcTask.execute(
-      (task, data) => fail('Test should not call success'),
-      (task, error) {
-        expect(error, isA<RequestTimeout>());
-        timeoutReached = true;
-      },
-    );
+    fakeAsync((async) {
+      tcTask.execute(
+        (task, data) => fail('Test should not call success'),
+        (task, error) {
+          expect(error, isA<RequestTimeout>());
+          timeoutReached = true;
+        },
+      );
+      async.flushMicrotasks();
+      async.elapse(SferaTask.defaultTimeout + const Duration(milliseconds: 200));
+    });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    await Future.delayed(const Duration(milliseconds: 1200));
     expect(timeoutReached, true);
   });
 
   test('execute_whenRequestTrainCharacteristicsFailsWithError_thenFailsWithProtocolError', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final tcRequestFile = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final tcRequest = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcRequestFile.readAsStringSync());
-
+    final tcRequest = _parseReplyMessage('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
     final tcTask = RequestTrainCharacteristicsTask(
       sferaRepo: mockSferaRepo,
       mqttService: mqttService,
@@ -181,9 +172,11 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
+    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
     final result = await tcTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
   });
 }
+
+SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
+    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());

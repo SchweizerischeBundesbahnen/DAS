@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.21.0...sfera_mock-v0.22.0) (2026-10-14)
+
+
+### Features
+
+* handle journey updates and overrides correctly ([#2940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2940)) ([#2961](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2961)) ([cd23f67](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd23f67c4c0e0255a0e3a39679064a43f8709b53))
+* implement switchback ([#2227](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2227)) ([#2955](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2955)) ([4723fb9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4723fb94a0439df9936033df5afcf83fbcf19e4f))
+* repeated line foot notes are collapsed on second appearance ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2917](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2917)) ([ee926cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee926cf1851e11748d543ccfb176ad7dd0f47a58))
+
 ## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.20.0...sfera_mock-v0.21.0) (2026-10-02)
 
 

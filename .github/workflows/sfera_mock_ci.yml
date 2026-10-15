@@ -1,0 +1,58 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: SFERA mock Java CI with Maven
+
+defaults:
+  run:
+    working-directory: sfera_mock
+
+on:
+  push:
+    paths:
+      - 'sfera_mock/**'
+      - '.github/workflows/sfera_mock_ci.yml'
+      - '.github/actions/maven-run/**'
+      - '.github/actions/push-image/**'
+    branches: [ "main", "renovate/**" ]
+  pull_request:
+    paths:
+      - 'sfera_mock/**'
+      - '.github/workflows/sfera_mock_ci.yml'
+      - '.github/actions/maven-run/**'
+      - '.github/actions/push-image/**'
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Serialize main runs so an older run cannot overwrite the main image of a newer one
+    concurrency:
+      group: ${{ github.workflow }}-build-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Maven verify (+ image on main)
+        id: build
+        uses: ./.github/actions/maven-run
+        with:
+          working-directory: sfera_mock
+          args: verify
+          build-image: ${{ github.ref == 'refs/heads/main' }}
+          image-name: sfera-mock
+
+      - uses: ./.github/actions/push-image
+        if: github.ref == 'refs/heads/main'
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}

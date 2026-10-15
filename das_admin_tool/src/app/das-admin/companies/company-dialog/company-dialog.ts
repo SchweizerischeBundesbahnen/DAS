@@ -3,9 +3,9 @@ import { form, FormField, pattern, required } from '@angular/forms/signals';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { InternalCompany } from '~app/das-admin/das-admin-api';
-import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
-import { TenantService } from './tenant.service';
+import { InternalCompany } from '~app/das-admin/das-admin.api';
+import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
+import { TenantApi } from '../tenant.api';
 
 export interface CompanyData {
   code: string;
@@ -22,7 +22,7 @@ export type CompanyDialogEditResult = InternalCompany | 'delete';
   styleUrl: './company-dialog.css',
 })
 export class CompanyDialog {
-  private readonly tenantService = inject(TenantService);
+  private readonly tenantApi = inject(TenantApi);
 
   protected readonly dialogData =
     inject<InternalCompany>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
@@ -53,7 +53,7 @@ export class CompanyDialog {
     });
   });
 
-  protected readonly tenants = this.tenantService.tenants;
+  protected readonly tenants = this.tenantApi.tenants;
 
   constructor() {
     const isEdit = this.dialogData?.id !== undefined;

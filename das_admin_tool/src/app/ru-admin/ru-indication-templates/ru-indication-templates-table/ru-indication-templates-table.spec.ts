@@ -1,6 +1,6 @@
 import { LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin.api';
 import { RuIndicationTemplateService } from '../ru-indication-template.service';
 import { RuIndicationTemplatesTable } from './ru-indication-templates-table';
 

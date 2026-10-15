@@ -154,6 +154,7 @@ jobs:
         env:
           APPSTORE_CONNECT_KEY_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
           APPSTORE_CONNECT_ISSUER_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
+          BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
           flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release
           xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8

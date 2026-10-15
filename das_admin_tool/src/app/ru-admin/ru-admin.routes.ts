@@ -24,7 +24,7 @@ export const routes: Routes = [
       {
         path: 'special-holidays',
         loadComponent: () =>
-          import('./special-holidays/special-holidays.component').then((m) => m.SpecialHolidays),
+          import('./special-holidays/special-holidays').then((m) => m.SpecialHolidays),
       },
       {
         path: 'external-links',
@@ -33,9 +33,7 @@ export const routes: Routes = [
       {
         path: 'rufeatures',
         loadComponent: () =>
-          import('./ru-feature-toggles/ru-feature-toggles.component').then(
-            (m) => m.RuFeatureToggles,
-          ),
+          import('./ru-feature-toggles/ru-feature-toggles').then((m) => m.RuFeatureToggles),
       },
     ],
   },

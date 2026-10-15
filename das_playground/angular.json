@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "webapp": {
+    "playground": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/webapp"
+              "base": "dist/playground"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -44,7 +44,7 @@
           "configurations": {
             "production": {
               "outputPath": {
-                "base": "dist/webapp"
+                "base": "dist/playground"
               },
               "budgets": [
                 {
@@ -78,10 +78,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "webapp:build:production"
+              "buildTarget": "playground:build:production"
             },
             "development": {
-              "buildTarget": "webapp:build:development"
+              "buildTarget": "playground:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "webapp:build"
+            "buildTarget": "playground:build"
           }
         },
         "test": {
@@ -139,11 +139,11 @@
           "builder": "angular-server-side-configuration:ngsscbuild",
           "options": {
             "additionalEnvironmentVariables": [],
-            "buildTarget": "webapp:build"
+            "buildTarget": "playground:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "webapp:build:production"
+              "buildTarget": "playground:build:production"
             }
           }
         }

@@ -3,8 +3,8 @@ import { SbbDividerModule } from '@sbb-esta/lyne-angular/divider';
 import { SbbHeaderModule } from '@sbb-esta/lyne-angular/header';
 import { SbbMenuModule } from '@sbb-esta/lyne-angular/menu';
 import packageJson from '~package.json';
-import { AuthService } from '~shared/auth-service';
-import { Language, LanguageProvider } from '~shared/language-provider';
+import { AuthService } from '~shared/services/auth.service';
+import { Language, LanguageService } from '~shared/services/language.service';
 import { environment } from '~src/environments/environment';
 
 @Component({
@@ -15,11 +15,11 @@ import { environment } from '~src/environments/environment';
 })
 export class Header {
   protected readonly authService = inject(AuthService);
-  protected readonly languageProvider = inject(LanguageProvider);
+  protected readonly languageService = inject(LanguageService);
   protected readonly stage = environment.stage;
   protected readonly version = packageJson.version;
 
   protected languageIconName(language: Language) {
-    return language.localeId === this.languageProvider.currentLanguage.localeId ? 'tick-small' : '';
+    return language.localeId === this.languageService.currentLanguage.localeId ? 'tick-small' : '';
   }
 }

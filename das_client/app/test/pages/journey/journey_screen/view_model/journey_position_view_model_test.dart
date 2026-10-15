@@ -1345,6 +1345,114 @@ void main() {
         // ACT & EXPECT
         expect(testee.modelValue.nextStop, equals(bServicePoint));
       });
+
+      test('nextStop_whenSwitchbackStation_thenSkipsDepartureStation', () {
+        // ARRANGE
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          locationCode: '',
+          order: 20,
+          kilometre: [],
+          isStop: true,
+        );
+        final bServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          locationCode: '',
+          order: 25,
+          kilometre: [],
+          isStop: true,
+        );
+        final cServicePoint = ServicePoint(
+          name: 'c',
+          abbreviation: '',
+          locationCode: '',
+          order: 30,
+          kilometre: [],
+          isStop: true,
+        );
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(
+                signaledPosition: SignaledPosition(order: 20),
+                switchbackStationMap: {
+                  aServicePoint: SwitchbackStation(
+                    station: aServicePoint,
+                    counterpartStation: bServicePoint,
+                    isArrival: true,
+                  ),
+                  bServicePoint: SwitchbackStation(
+                    station: bServicePoint,
+                    counterpartStation: aServicePoint,
+                    isArrival: false,
+                  ),
+                },
+              ),
+              data: [zeroSignal, tenSignal, aServicePoint, bServicePoint, cServicePoint],
+            ),
+          );
+        });
+        testAsync.flushMicrotasks();
+
+        // ACT & EXPECT
+        expect(testee.modelValue.nextStop, equals(cServicePoint));
+      });
+
+      test('previousStop_whenSwitchbackStation_thenSkipsDepartureStation', () {
+        // ARRANGE
+        final aServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          locationCode: '',
+          order: 20,
+          kilometre: [],
+          isStop: true,
+        );
+        final bServicePoint = ServicePoint(
+          name: 'a',
+          abbreviation: '',
+          locationCode: '',
+          order: 25,
+          kilometre: [],
+          isStop: true,
+        );
+        final cServicePoint = ServicePoint(
+          name: 'c',
+          abbreviation: '',
+          locationCode: '',
+          order: 30,
+          kilometre: [],
+          isStop: true,
+        );
+        testAsync.run((_) {
+          rxMockJourney.add(
+            Journey(
+              metadata: Metadata(
+                signaledPosition: SignaledPosition(order: 29),
+                switchbackStationMap: {
+                  aServicePoint: SwitchbackStation(
+                    station: aServicePoint,
+                    counterpartStation: bServicePoint,
+                    isArrival: true,
+                  ),
+                  bServicePoint: SwitchbackStation(
+                    station: bServicePoint,
+                    counterpartStation: aServicePoint,
+                    isArrival: false,
+                  ),
+                },
+              ),
+              data: [zeroSignal, tenSignal, aServicePoint, bServicePoint, cServicePoint],
+            ),
+          );
+        });
+        testAsync.flushMicrotasks();
+
+        // ACT & EXPECT
+        expect(testee.modelValue.previousStop, equals(aServicePoint));
+      });
     });
 
     group('manual position', () {

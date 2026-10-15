@@ -20,7 +20,8 @@ mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
         _generateElement();
       } catch (e) {
         _log.severe(
-          'Failed to parse nsp xml element of type ${T.runtimeType.toString()} with value ${attributes['value']}',
+          'Failed to parse nsp xml element of type $T (name: ${attributes['name']}, '
+          'value length: ${attributes['value']?.length})',
           e,
         );
         return false;

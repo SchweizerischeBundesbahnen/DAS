@@ -11,12 +11,12 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin-api';
-import { CompanyService } from '~shared/companies-input/company.service';
-import { LanguageCode, LanguageProvider } from '~shared/language-provider';
-import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
-import { LocationService } from '../ru-indication-dialog/locations-input/location.service';
+import { LocationApi } from '~ru-admin/location.api';
+import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin.api';
+import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
+import { CompanyApi } from '~shared/services/company.api';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
 import { displayTrainNumberFilter } from '../ru-indication-dialog/train-number-input/train-number-input';
 import { RuIndicationService } from '../ru-indication.service';
@@ -47,9 +47,9 @@ export interface RuIndicationFilter extends SbbTableFilter {
   styleUrl: './ru-indications-table.css',
 })
 export class RuIndicationsTable {
-  protected readonly companyService = inject(CompanyService);
-  protected readonly locationService = inject(LocationService);
-  private readonly languageProvider = inject(LanguageProvider);
+  protected readonly companyApi = inject(CompanyApi);
+  protected readonly locationApi = inject(LocationApi);
+  private readonly languageService = inject(LanguageService);
   private readonly ruIndicationService = inject(RuIndicationService);
 
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
@@ -86,7 +86,7 @@ export class RuIndicationsTable {
 
   protected readonly filterModel = signal({
     search: '',
-    language: this.languageProvider.currentLanguage.path,
+    language: this.languageService.currentLanguage.path,
     category: '',
     companies: '',
     trainNumbers: '',
@@ -131,7 +131,7 @@ export class RuIndicationsTable {
   }
 
   protected companiesValue(companyCodes: string[]) {
-    return this.companyService.formatCompanies(companyCodes);
+    return this.companyApi.formatCompanies(companyCodes);
   }
 
   protected locationsValue(row: RuIndication): string {
@@ -139,7 +139,7 @@ export class RuIndicationsTable {
       row.scope.tafTapLocationReferences
         ?.map(
           (locationCode) =>
-            this.locationService.getLocation(locationCode)?.locationAbbreviation ?? locationCode,
+            this.locationApi.getLocation(locationCode)?.locationAbbreviation ?? locationCode,
         )
         .sort((a, b) => a.localeCompare(b))
         .join(', ') ?? ''
@@ -152,7 +152,7 @@ export class RuIndicationsTable {
 
   protected periodsValue(row: RuIndication): string {
     return row.periods
-      .map((period) => displayPeriod(period, this.languageProvider.currentLanguage.localeId))
+      .map((period) => displayPeriod(period, this.languageService.currentLanguage.localeId))
       .join(', ');
   }
 

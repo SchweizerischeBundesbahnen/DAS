@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
-import { ExternalLink } from '~ru-admin/ru-admin-api';
+import { ExternalLink } from '~ru-admin/ru-admin.api';
 import { hasError } from '~src/testing/utils';
 import { ExternalLinkDialog } from './external-link-dialog';
 

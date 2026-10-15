@@ -2,15 +2,10 @@ import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize bracket stations.
-class BracketStationRenderData {
-  const BracketStationRenderData({
-    this.stationAbbreviation,
-    this.isStart = false,
-  });
-
-  final String? stationAbbreviation;
-  final bool isStart;
-
+class const BracketStationRenderData({
+  final String? stationAbbreviation,
+  final bool isStart = false,
+}) {
   static BracketStationRenderData? from({required BaseData data, required Metadata metadata}) {
     final bracketStationSegments = metadata.bracketStationSegments;
     final segment = bracketStationSegments.appliesToOrder(data.order).firstOrNull;

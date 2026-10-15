@@ -1,0 +1,183 @@
+name: Continuous Integration Admin-Tool Webapp
+
+defaults:
+  run:
+    working-directory: das_admin_tool
+
+on:
+  push:
+    paths:
+      - 'das_admin_tool/**'
+      - '.github/workflows/admin_tool_ci.yml'
+      - '.github/actions/node-run/**'
+      - '.github/actions/push-image/**'
+    branches: [ "main", "renovate/**" ]
+  pull_request:
+    paths:
+      - 'das_admin_tool/**'
+      - '.github/workflows/admin_tool_ci.yml'
+      - '.github/actions/node-run/**'
+      - '.github/actions/push-image/**'
+    branches: [ "main" ]
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  packages: write
+
+jobs:
+  test-title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 'lts/krypton'
+
+      - name: Assign integration test traceability IDs and format whitespace
+        working-directory: ${{ github.workspace }}
+        run: node scripts/test_title_has_id_no_whitespace.mjs admin
+
+      - name: Fail if any integration test is missing a traceability ID
+        working-directory: ${{ github.workspace }}
+        run: git diff --exit-code -- das_admin_tool/e2e/tests
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: ./.github/actions/node-run
+        with:
+          working-directory: das_admin_tool
+          scripts: lint
+
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/common SONAR_TOKEN ;
+
+      - uses: ./.github/actions/node-run
+        with:
+          working-directory: das_admin_tool
+          scripts: test
+
+      - name: Sonar scan
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
+        env:
+          SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
+        with:
+          projectBaseDir: das_admin_tool
+          args: >
+            -Dsonar.organization=schweizerischebundesbahnen
+            -Dsonar.projectKey=schweizerischebundesbahnen-DAS-Admin-Tool
+            -Dsonar.projectName=DAS/Admin-Tool
+            -Dsonar.language=ts
+            -Dsonar.sources=src/app
+            -Dsonar.tests=src/app
+            -Dsonar.verbose=true
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.ts,**/*.module.ts,**/*.routes.ts
+            -Dsonar.test.inclusions=src/**/*.spec.ts
+            -Dsonar.typescript.lcov.reportPaths=coverage/das_admin_tool/lcov.info
+            -Dsonar.testExecutionReportPaths=coverage/das_admin_tool/sonarqube.xml
+            -Dsonar.issue.ignore.multicriteria=e1,e2,e3,e4
+            -Dsonar.issue.ignore.multicriteria.e1.ruleKey=css:S4667
+            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**
+            -Dsonar.issue.ignore.multicriteria.e2.ruleKey=Web:MouseEventWithoutKeyboardEquivalentCheck
+            -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**
+            -Dsonar.issue.ignore.multicriteria.e3.ruleKey=Web:InputWithoutLabelCheck
+            -Dsonar.issue.ignore.multicriteria.e3.resourceKey=**
+            -Dsonar.issue.ignore.multicriteria.e4.ruleKey=Web:S6853
+            -Dsonar.issue.ignore.multicriteria.e4.resourceKey=**
+
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: test
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Vault Secrets 🤫
+        id: vault-secrets
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
+        with:
+          url: https://vault-nonprod.sbb.ch:443
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          secrets: |
+            kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_USERNAME ;
+            kv/data/DSO-BPS/driver-advisory-system/ci/admin E2E_LOGIN_PASSWORD ;
+
+      - uses: ./.github/actions/node-run
+        with:
+          working-directory: das_admin_tool
+
+      - run: npx playwright install --with-deps
+        working-directory: das_admin_tool
+
+      - run: npm run e2e
+        working-directory: das_admin_tool
+        env:
+          CI: true
+          E2E_LOGIN_USERNAME: ${{ steps.vault-secrets.outputs.E2E_LOGIN_USERNAME }}
+          E2E_LOGIN_PASSWORD: ${{ steps.vault-secrets.outputs.E2E_LOGIN_PASSWORD }}
+
+      - name: Extract test report
+        if: always()
+        run: node ../scripts/extract_admin_tool_test_report.mjs e2e/test-results.json test-report.json
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: admin-tool-test-report
+          path: das_admin_tool/test-report.json
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: failure()
+        with:
+          name: playwright-test-results
+          path: das_admin_tool/test-results/
+
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+    # Serialize main runs so an older run cannot overwrite the main image of a newer one
+    concurrency:
+      group: ${{ github.workflow }}-build-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build (+ image on main)
+        id: build
+        uses: ./.github/actions/node-run
+        with:
+          working-directory: das_admin_tool
+          scripts: build:ngssc gzip
+          build-image: ${{ github.ref == 'refs/heads/main' }}
+          image-name: das_admin_tool
+
+      - uses: ./.github/actions/push-image
+        if: github.ref == 'refs/heads/main'
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}

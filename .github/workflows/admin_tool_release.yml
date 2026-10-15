@@ -1,0 +1,59 @@
+# Called by release-please whenever a new release of this module is created.
+# This builds the admin tool container image and pushes it with the release version and as latest.
+
+name: Admin Tool Release
+
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        description: 'Release tag to build, e.g. "das-admin-tool-v1.2.3"'
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        description: 'Release tag to build, e.g. "das-admin-tool-v1.2.3"'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-das-admin-tool
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag-name }}
+
+      - name: Derive version from tag
+        id: version
+        env:
+          TAG_NAME: ${{ inputs.tag-name }}
+        run: |
+          # Release tags have the form <component>-v<version>, e.g. das-admin-tool-v1.2.3
+          if [[ "$TAG_NAME" != *-v* ]]; then
+            echo "::error::Tag '$TAG_NAME' does not match <component>-v<version>"
+            exit 1
+          fi
+          echo "version=${TAG_NAME##*-v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        id: build
+        uses: ./.github/actions/node-run
+        with:
+          working-directory: das_admin_tool
+          scripts: build:ngssc gzip
+          build-image: true
+          image-name: das_admin_tool
+          image-tag: ${{ steps.version.outputs.version }}
+
+      - uses: ./.github/actions/push-image
+        with:
+          image-ref: ${{ steps.build.outputs.image-ref }}
+          latest: 'true'

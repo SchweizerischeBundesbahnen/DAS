@@ -405,6 +405,7 @@
   "w_ru_feature_status_planned_time_deviation": "Abweichung zur Planzeit",
   "w_ru_feature_status_brake_load_slip_brake_details": "Bremsdetails im Bremszettel",
   "w_train_driver_turnover_row_title": "Lokpersonalwechsel",
+  "w_switchback_row_title": "Wenden oder Rangierbewegung",
   "w_suspicious_journey_point_warning": "Rückfallebene benutzen",
   "w_suspicious_segment_notification_text": "Das Fahrbild enthält unvollständige Informationen.",
   "w_route_variant_loetschberg_via_bergstrecke": "via Bergstrecke",

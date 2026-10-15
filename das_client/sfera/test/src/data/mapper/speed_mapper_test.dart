@@ -66,6 +66,24 @@ void main() {
       () => expect(SpeedMapper.fromGraduatedSpeedInfo(null), isNull),
     );
 
+    test(
+      'fromGraduatedSpeedInfo_whenGraduatedSpeedInfoHas---_thenIgnoresSpeed',
+      () => expect(
+        SpeedMapper.fromGraduatedSpeedInfo(
+          GraduatedSpeedInfoDto(
+            children: [
+              GraduatedSpeedInfoEntriesDto(
+                children: [
+                  GraduatedSpeedInfoEntryDto(attributes: {'nSpeed': '---'}),
+                ],
+              ),
+            ],
+          ),
+        ),
+        isEmpty,
+      ),
+    );
+
     test('fromGraduatedSpeedInfo_whenGraduatedSpeedInfoHasEntities_thenReturnTrainSeriesSpeedList', () {
       // ARRANGE
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(

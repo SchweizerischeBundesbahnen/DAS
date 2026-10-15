@@ -2,7 +2,7 @@ import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FieldTree, form } from '@angular/forms/signals';
 import { hasError } from '~src/testing/utils';
-import { OperationalTrainNumber } from '../ru-indication-dialog.component';
+import { OperationalTrainNumber } from '../ru-indication-dialog';
 import { displayTrainNumberFilter, TrainNumberInput } from './train-number-input';
 
 describe('TrainNumberInput', () => {

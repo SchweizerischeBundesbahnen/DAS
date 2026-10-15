@@ -5,21 +5,13 @@ import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize the track equipment.
-class TrackEquipmentRenderData {
-  const TrackEquipmentRenderData({
-    this.cumulativeHeight = 0.0,
-    this.isStart = false,
-    this.isEnd = false,
-    this.isConventionalExtendedSpeedBorder = false,
-    this.trackEquipmentType,
-  });
-
-  final double cumulativeHeight;
-  final bool isStart;
-  final bool isEnd;
-  final bool isConventionalExtendedSpeedBorder;
-  final TrackEquipmentType? trackEquipmentType;
-
+class const TrackEquipmentRenderData({
+  final double cumulativeHeight = 0.0,
+  final bool isStart = false,
+  final bool isEnd = false,
+  final bool isConventionalExtendedSpeedBorder = false,
+  final TrackEquipmentType? trackEquipmentType,
+}) {
   static TrackEquipmentRenderData? from({
     required List<BaseData> rows,
     required Metadata metadata,

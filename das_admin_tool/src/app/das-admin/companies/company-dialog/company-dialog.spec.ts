@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TenantApi } from '../tenant.api';
 import { CompanyDialog } from './company-dialog';
-import { TenantService } from './tenant.service';
 
-const mockTenantService = { tenants: () => [] };
+const mockTenantApi = { tenants: () => [] };
 
 describe('CompanyDialog', () => {
   let component: CompanyDialog;
@@ -11,7 +11,7 @@ describe('CompanyDialog', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CompanyDialog],
-      providers: [{ provide: TenantService, useValue: mockTenantService }],
+      providers: [{ provide: TenantApi, useValue: mockTenantApi }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompanyDialog);

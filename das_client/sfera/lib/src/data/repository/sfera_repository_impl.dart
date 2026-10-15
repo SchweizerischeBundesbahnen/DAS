@@ -17,6 +17,7 @@ import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
 import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
 import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
+import 'package:sfera/src/data/api/task/request_related_train_information_task.dart';
 import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -30,6 +31,7 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_message_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
@@ -39,6 +41,7 @@ import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/otn_id.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRepoImpl');
@@ -73,6 +76,8 @@ class SferaRepoImpl({
 
   int _missingSpRequestRetryCount = 0;
   int _lastMissingSegmentProfileCount = 0;
+
+  final _taskDeleteLock = Lock();
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
@@ -264,37 +269,35 @@ class SferaRepoImpl({
   void _handleMqttMessage(String xmlMessage) async {
     final message = SferaReplyParser.parse<SferaXmlElementDto>(xmlMessage);
     if (!message.validate()) {
-      _log.warning('Validation failed for MQTT response $xmlMessage');
+      _log.warning('Validation failed for MQTT message ${message.type} (${xmlMessage.length} chars)');
       return;
     }
 
-    if (message is SferaG2bReplyMessageDto) {
-      await _handleReplyMessage(message, xmlMessage);
-    } else if (message is SferaG2bEventMessageDto) {
-      await _handleEventMessage(message, xmlMessage);
+    final handled = switch (message) {
+      SferaG2bReplyMessageDto() => await _handleReplyMessage(message),
+      SferaG2bEventMessageDto() => await _handleEventMessage(message),
+      _ => false,
+    };
+    if (!handled) {
+      final description = message is SferaMessageDto ? message.logSummary : message.type;
+      _log.warning('Could not handle $description (${xmlMessage.length} chars)');
     }
   }
 
-  Future<void> _handleReplyMessage(SferaG2bReplyMessageDto message, String xmlMessage) async {
+  Future<bool> _handleReplyMessage(SferaG2bReplyMessageDto message) async {
     var handled = false;
     for (final handler in List.from(_tasks)) {
       handled |= await handler.handleMessage(message);
     }
-
-    if (!handled) {
-      _log.warning('Could not handle Sfera reply message $xmlMessage');
-    }
+    return handled;
   }
 
-  Future<void> _handleEventMessage(SferaG2bEventMessageDto message, String xmlMessage) async {
+  Future<bool> _handleEventMessage(SferaG2bEventMessageDto message) async {
     var handled = false;
     for (final handler in List.from(_eventMessageHandlers)) {
       handled |= await handler.handleMessage(message);
     }
-
-    if (!handled) {
-      _log.warning('Could not handle Sfera event message $xmlMessage');
-    }
+    return handled;
   }
 
   Future<void> _initiateHandshake(OtnId otnId) async {
@@ -312,8 +315,6 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
-    _tasks.remove(task);
-    _log.info('Task $task completed');
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -321,11 +322,21 @@ class SferaRepoImpl({
         await _handleRequestJourneyProfileTaskCompleted(data);
       case RequestSegmentProfilesTask _:
         await _handleRequestSegmentProfilesTaskCompleted();
+      case RequestRelatedTrainInformationTask _:
+        await _handleRequestRelatedTrainInformationCompleted(data);
       case RequestLocalRegulationsTask _:
+        _tasks.remove(task);
         return;
     }
 
-    if (_allMandatoryTasksCompleted()) {
+    _log.fine('Task $task completed');
+    var allMandatoryTasksCompleted = false;
+    await _taskDeleteLock.synchronized(() {
+      _tasks.remove(task);
+      allMandatoryTasksCompleted = _allMandatoryTasksCompleted();
+    });
+
+    if (allMandatoryTasksCompleted) {
       switch (_rxState.value) {
         case .loadingAdditionalData:
           await _refreshTrainCharacteristics();
@@ -367,6 +378,14 @@ class SferaRepoImpl({
     _resetSegmentProfileRetryState();
     _startRequestSegmentProfileTask();
     _startRequestTrainCharacteristicsTask();
+    _startRequestRelatedTrainInformationTask();
+  }
+
+  Future<void> _handleRequestRelatedTrainInformationCompleted(dynamic data) async {
+    if (data is RelatedTrainInformationDto) {
+      _relatedTrainInformation = data;
+      _updateJourney();
+    }
   }
 
   /// It's possible that not all SPs are provided because of a MQTT limit.
@@ -462,6 +481,16 @@ class SferaRepoImpl({
 
   bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
 
+  void _startRequestRelatedTrainInformationTask() {
+    final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
+      mqttService: _mqttService,
+      sferaRepo: this,
+      otnId: _otnId!,
+    );
+    _tasks.add(requestRelatedTrainInformationTask);
+    requestRelatedTrainInformationTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
   Future<void> _refreshSegmentProfiles() async {
     if (_journeyProfile == null) return;
 
@@ -525,7 +554,9 @@ class SferaRepoImpl({
   }
 
   void _addEventMessageHandlers() {
-    _eventMessageHandlers.add(JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService));
+    _eventMessageHandlers.add(
+      JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService, () => _journeyProfile),
+    );
     _eventMessageHandlers.add(RelatedTrainInformationEventHandler(_onRelatedTrainInformationUpdated));
     _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }
@@ -590,7 +621,7 @@ class SferaRepoImpl({
   }
 
   bool _isMandatoryTask(SferaTask task) {
-    return task is! RequestLocalRegulationsTask;
+    return task is! RequestLocalRegulationsTask && task is! RequestRelatedTrainInformationTask;
   }
 
   @override
