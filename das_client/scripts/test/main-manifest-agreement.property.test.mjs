@@ -20,7 +20,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { FLAVORS, main, MANIFEST_FILENAME } from '../switch-flavor.mjs';
-import { makeTempDir, buildRepo, removeTempDir } from './helpers.mjs';
+import { makeTempDir, buildRepo, removeTempDir, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 120; // >= 100 minimum per the plan.
 
@@ -65,8 +65,11 @@ function uniqueNames(count, taken) {
 }
 
 /**
- * Build a random nested tree of small files, keyed by relative POSIX path.
- * Guarantees at least one file so the owning component always contributes.
+ * Build a random nested tree of small files, keyed by flavor-folder-relative
+ * POSIX path. Every key is prefixed with a recognized Flavor_Source_Root
+ * (`lib/` or `test/`) so a switch copies each `.<flavor>/<root>/<rest>` to the
+ * repo-relative target `<component>/<root>/<rest>`. Guarantees at least one
+ * file so the owning component always contributes.
  * @returns {Record<string,string>}
  */
 function randomFileTree() {
@@ -75,8 +78,9 @@ function randomFileTree() {
   let guard = 0;
   while (Object.keys(tree).length < fileCount && guard < 20) {
     guard++;
+    const root = pick(SOURCE_ROOTS);
     const depth = randIntRange(0, 2);
-    const segments = [];
+    const segments = [root];
     for (let d = 0; d < depth; d++) segments.push(randomName(2, 5));
     segments.push(`${randomName(2, 6)}.dart`);
     const rel = segments.join('/');
@@ -123,7 +127,7 @@ function buildSpec(flavor) {
         flavors: { [flavor]: tree },
       });
       for (const rel of Object.keys(tree)) {
-        expectedTargets.add(`${name}/lib/${rel}`);
+        expectedTargets.add(`${name}/${rel}`);
       }
       ownerCount++;
     } else if (roll < 0.65) {
@@ -151,7 +155,7 @@ function buildSpec(flavor) {
         flavors: { [flavor]: tree, [other]: randomFileTree() },
       });
       for (const rel of Object.keys(tree)) {
-        expectedTargets.add(`${name}/lib/${rel}`);
+        expectedTargets.add(`${name}/${rel}`);
       }
       ownerCount++;
     }
@@ -209,8 +213,10 @@ test('Property 4: manifest describes exactly the copied, on-disk lib/ targets', 
         // files actually copied by this switch (the placeholders already exist).
         const preLibFiles = new Set();
         for (const comp of spec.components) {
-          const libDir = path.join(dir, comp.name, 'lib');
-          for (const rel of await listFilesRel(libDir, dir)) preLibFiles.add(rel);
+          for (const root of SOURCE_ROOTS) {
+            const rootDir = path.join(dir, comp.name, root);
+            for (const rel of await listFilesRel(rootDir, dir)) preLibFiles.add(rel);
+          }
         }
 
         // Run the end-to-end switch. No spawn needed (no --remove-dep).
@@ -247,8 +253,10 @@ test('Property 4: manifest describes exactly the copied, on-disk lib/ targets', 
         // manifest set (manifest describes exactly the copied targets).
         const postLibFiles = new Set();
         for (const comp of spec.components) {
-          const libDir = path.join(dir, comp.name, 'lib');
-          for (const rel of await listFilesRel(libDir, dir)) postLibFiles.add(rel);
+          for (const root of SOURCE_ROOTS) {
+            const rootDir = path.join(dir, comp.name, root);
+            for (const rel of await listFilesRel(rootDir, dir)) postLibFiles.add(rel);
+          }
         }
         const copiedBySwitch = [...postLibFiles].filter((f) => !preLibFiles.has(f)).sort();
         assert.deepEqual(

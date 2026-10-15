@@ -63,7 +63,7 @@ test('MISSING manifest: deletion skipped, exit 0 (Req 4.3)', async () => {
   try {
     // A component owns the dev flavor folder; no manifest is written.
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const { result, stdout } = captureConsole(() => main(argv('dev'), { repoRoot: dir }));
@@ -83,7 +83,7 @@ test('CORRUPT manifest: deletion skipped, exit 0 (Req 4.3)', async () => {
   try {
     // Component owns the dev flavor folder; manifest is non-JSON (corrupt).
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
       manifestRaw: '{ this is not valid json',
     });
 
@@ -135,7 +135,7 @@ test('--remove-dep: resolution spawned once with correct command/cwd, exit 0 (Re
   try {
     // Component owns the dev folder; default app pubspec has sfera + warnapp.
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const calls = [];
@@ -166,7 +166,7 @@ test('without --remove-dep: resolution is NOT spawned (Req 8.1)', async () => {
   const dir = await makeTempDir();
   try {
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const calls = [];
@@ -192,7 +192,7 @@ test('--remove-dep: non-zero resolution exit reported, main exits 1 (Req 8.2)', 
   const dir = await makeTempDir();
   try {
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const spawn = () => ({ status: 1 });
@@ -219,7 +219,7 @@ test('--remove-dep: toolchain unavailable prints exact command, exit 1 (Req 8.1)
   const dir = await makeTempDir();
   try {
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const spawn = () => ({

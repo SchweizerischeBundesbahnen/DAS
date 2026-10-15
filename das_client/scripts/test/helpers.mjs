@@ -51,6 +51,9 @@ export async function withTempDir(fn, prefix) {
  * @typedef {Object} ComponentSpec
  * @property {string} name                     component directory name (e.g. "sfera")
  * @property {Record<string,string>} [lib]     files under lib/, keyed by relative POSIX path → content
+ * @property {Record<string,string>} [test]    files under test/, keyed by relative POSIX path → content
+ *           (optional; mirrors `lib`. Creates sfera/test/<rel> entries so fixtures
+ *           can pre-seed base files under the `test/` Flavor_Source_Root.)
  * @property {Record<string,Record<string,string>>} [flavors]
  *           flavor folders: flavorName → { relativePosixPath → content }
  *           e.g. { dev: { "src/foo.dart": "..." } } creates sfera/.dev/src/foo.dart
@@ -155,6 +158,12 @@ export async function buildRepo(dir, spec = {}) {
       await writeFile(path.join(compDir, 'lib', rel), content);
     }
 
+    // Optional base files under the `test/` Flavor_Source_Root. Mirrors `lib`;
+    // omitted components get no `test/` dir (backward-compatible default).
+    for (const [rel, content] of Object.entries(component.test ?? {})) {
+      await writeFile(path.join(compDir, 'test', rel), content);
+    }
+
     for (const [flavor, files] of Object.entries(component.flavors ?? {})) {
       for (const [rel, content] of Object.entries(files)) {
         await writeFile(path.join(compDir, `.${flavor}`, rel), content);
@@ -173,6 +182,122 @@ export async function buildRepo(dir, spec = {}) {
   }
 
   return dir;
+}
+
+/**
+ * Recognized Flavor_Source_Roots inside a flavor folder, mirroring
+ * `SOURCE_ROOTS` in `switch-flavor.mjs`. A Flavor_Folder is a partial mirror of
+ * the Workspace_Component root, so only these top-level dirs (`.<flavor>/lib/`
+ * and `.<flavor>/test/`) are copied/mapped on a switch; anything else is ignored
+ * (Req 1.6).
+ * @type {ReadonlyArray<'lib'|'test'>}
+ */
+export const SOURCE_ROOTS = ['lib', 'test'];
+
+/**
+ * @typedef {Object} SourceRootTree
+ * @property {Record<string,string>} tree
+ *   The flavor files to seed, keyed by the flavor-folder-relative POSIX path
+ *   (e.g. `lib/src/foo.dart`, `test/foo_test.dart`, or a stray `bin/x.dart`).
+ *   Pass this directly as a component's `flavors[flavor]` value — `buildRepo`
+ *   writes each entry to `<component>/.<flavor>/<rel>` verbatim, so the keys
+ *   already encode the on-disk layout.
+ * @property {Record<string,string>} mapped
+ *   Only the entries that fall under a recognized {@link SOURCE_ROOTS} root,
+ *   keyed by the flavor-folder-relative path (`<root>/<rest>`) → content. These
+ *   are the files a switch SHALL copy; the matching repo-relative target is
+ *   `<component>/<root>/<rest>`.
+ * @property {Record<string,string>} strays
+ *   The entries that fall OUTSIDE any recognized source root (files directly
+ *   under `.<flavor>/` or under an unrecognized top-level dir such as `bin/`).
+ *   A switch SHALL ignore these (Req 1.6); kept so callers can assert they are
+ *   never copied.
+ */
+
+/**
+ * Build a random flavor-folder tree spread across BOTH recognized source roots
+ * (`.<flavor>/lib/...` and `.<flavor>/test/...`), optionally sprinkled with
+ * stray entries OUTSIDE any source root (directly under `.<flavor>/` or under an
+ * unrecognized top-level dir like `.<flavor>/bin/...`) to exercise the Req 1.6
+ * ignore rule.
+ *
+ * Separates the files into `mapped` (under `lib/`/`test/` — a switch copies
+ * these to `<component>/<root>/<rest>`) and `strays` (ignored). The combined
+ * `tree` is what callers hand to a component's `flavors[flavor]` in
+ * {@link buildRepo}; the split sets let the caller assert copy fidelity for
+ * `mapped` and non-copy for `strays` without re-deriving the layout.
+ *
+ * The randomness is injected via the `random` callbacks so a property test can
+ * reuse its own generator conventions (iteration count, name/content shapes)
+ * rather than this helper owning them.
+ *
+ * @param {Object} random
+ * @param {() => string} random.name       produce a random path segment
+ * @param {() => string} random.content    produce random file content
+ * @param {(maxExclusive: number) => number} random.int  random int in [0, max)
+ * @param {Object} [opts]
+ * @param {boolean} [opts.allowStrays=true] when false, never emit stray entries
+ * @returns {SourceRootTree}
+ */
+export function buildSourceRootTree(random, opts = {}) {
+  const { name, content, int } = random;
+  const { allowStrays = true } = opts;
+
+  const mapped = {};
+  const strays = {};
+
+  // A shared pool of nested dir prefixes (incl. the empty prefix) so files under
+  // the same root share intermediate dirs, exercising "create missing dirs once".
+  const makeDirPool = () => {
+    const pool = [''];
+    const extra = int(3);
+    for (let i = 0; i < extra; i++) {
+      const depth = 1 + int(3);
+      const segs = [];
+      for (let d = 0; d < depth; d++) segs.push(name());
+      pool.push(segs.join('/'));
+    }
+    return pool;
+  };
+
+  // Seed each recognized source root with >= 1 file so BOTH roots are exercised.
+  for (const root of SOURCE_ROOTS) {
+    const dirPool = makeDirPool();
+    const fileCount = 1 + int(4); // 1..4 files per root
+    let attempts = 0;
+    let placed = 0;
+    while (placed < fileCount && attempts < fileCount * 10) {
+      attempts++;
+      const dir = dirPool[int(dirPool.length)];
+      const rel = `${root}/${dir === '' ? '' : `${dir}/`}${name()}.dart`;
+      if (Object.prototype.hasOwnProperty.call(mapped, rel)) continue;
+      mapped[rel] = content();
+      placed++;
+    }
+  }
+
+  // Occasionally sprinkle stray entries OUTSIDE any source root (Req 1.6):
+  //   - directly under `.<flavor>/` (no root segment)
+  //   - under an unrecognized top-level dir (e.g. `bin/`)
+  if (allowStrays) {
+    const strayCount = int(3); // 0..2 strays
+    const unrecognizedDirs = ['bin', 'example', 'tool', 'doc'];
+    for (let i = 0; i < strayCount; i++) {
+      const underRoot = int(2) === 0;
+      const rel = underRoot
+        ? `${unrecognizedDirs[int(unrecognizedDirs.length)]}/${name()}.dart`
+        : `${name()}.dart`; // directly under `.<flavor>/`
+      if (
+        Object.prototype.hasOwnProperty.call(mapped, rel) ||
+        Object.prototype.hasOwnProperty.call(strays, rel)
+      ) {
+        continue;
+      }
+      strays[rel] = content();
+    }
+  }
+
+  return { tree: { ...mapped, ...strays }, mapped, strays };
 }
 
 /**

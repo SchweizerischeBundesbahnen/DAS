@@ -92,16 +92,26 @@ function withSilencedConsole(fn) {
   }
 }
 
-test('Property 16: saveToFlavor preserves the lib/ source and copies it byte-identically to the flavor folder, incl. overwrite', async () => {
+// Recognized Flavor_Source_Roots. The derived destination now mirrors the
+// package root: a `<component>/<root>/<rest>` source maps to
+// `<component>/.<flavor>/<root>/<rest>` (the `<root>` segment is kept).
+const SOURCE_ROOTS = ['lib', 'test'];
+
+test('Property 16: saveToFlavor preserves the lib//test/ source and copies it byte-identically to the flavor folder under the matching root, incl. overwrite', async () => {
   for (let i = 0; i < ITERATIONS; i++) {
     const repoRoot = await makeTempDir('flavor-save-to-flavor-prop-');
     try {
       const flavor = pick(FLAVORS);
       const componentName = randomName(3, 10);
+      // Guarantee BOTH roots are exercised: force `test/` on the first iteration
+      // and `lib/` on the second, then randomize the rest.
+      const root = i === 0 ? 'test' : i === 1 ? 'lib' : pick(SOURCE_ROOTS);
       const rest = randomRest();
       const sourceContent = randomContent();
-      const sourceRel = `${componentName}/lib/${rest}`;
-      const destRel = `${componentName}/.${flavor}/${rest}`;
+      // Source lives under the chosen Flavor_Source_Root.
+      const sourceRel = `${componentName}/${root}/${rest}`;
+      // NEW layout: destination keeps the <root> segment after `.<flavor>`.
+      const destRel = `${componentName}/.${flavor}/${root}/${rest}`;
 
       // In ~half the iterations pre-create a DIFFERENT-content file at the
       // destination to exercise the overwrite path (Req 12.4).
@@ -110,16 +120,20 @@ test('Property 16: saveToFlavor preserves the lib/ source and copies it byte-ide
 
       const componentSpec = {
         name: componentName,
-        lib: { [rest]: sourceContent },
       };
+      // Seed the source under its root (lib or test).
+      componentSpec[root] = { [rest]: sourceContent };
       if (preExistDest) {
-        componentSpec.flavors = { [flavor]: { [rest]: oldDestContent } };
+        // `buildRepo` writes flavor entries to `<component>/.<flavor>/<key>`
+        // verbatim, so the key must carry the `<root>/` prefix to land at the
+        // new destination layout.
+        componentSpec.flavors = { [flavor]: { [`${root}/${rest}`]: oldDestContent } };
       }
 
       await buildRepo(repoRoot, { components: [componentSpec] });
 
-      const sourceAbs = path.join(repoRoot, componentName, 'lib', rest);
-      const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
+      const sourceAbs = path.join(repoRoot, componentName, root, rest);
+      const destAbs = path.join(repoRoot, componentName, `.${flavor}`, root, rest);
 
       // Capture the source bytes before the copy.
       const srcBefore = await fsp.readFile(sourceAbs);

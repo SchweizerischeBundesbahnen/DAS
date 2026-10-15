@@ -19,7 +19,7 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 
 import { main, FLAVORS } from '../switch-flavor.mjs';
-import { makeTempDir, removeTempDir, buildRepo } from './helpers.mjs';
+import { makeTempDir, removeTempDir, buildRepo, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 150; // >= 100 minimum per the plan.
 
@@ -74,8 +74,11 @@ function distinctRelPaths(count, used) {
   let attempts = 0;
   while (out.length < count && attempts < count * 20) {
     attempts++;
+    // Prefix each path with a recognized Flavor_Source_Root (lib/ or test/) so
+    // a switch copies `.<flavor>/<root>/<rest>` → `<component>/<root>/<rest>`.
+    const root = pick(SOURCE_ROOTS);
     const depth = randInt(3); // 0..2 nested dirs
-    const segs = [];
+    const segs = [root];
     for (let d = 0; d < depth; d++) segs.push(randomName(1, 5));
     segs.push(`${randomName(1, 8)}.dart`);
     const rel = segs.join('/');
@@ -135,7 +138,8 @@ test('Property 6: switching A then B yields a manifest of exactly B targets; A-e
           flavors[flavorA] = {};
           for (const rel of relsA) {
             flavors[flavorA][rel] = randomContent();
-            expectedA.add(`${name}/lib/${rel}`);
+            // `rel` already carries its source root → target is `<name>/<rel>`.
+            expectedA.add(`${name}/${rel}`);
           }
         }
         if (ownsB) {
@@ -143,7 +147,7 @@ test('Property 6: switching A then B yields a manifest of exactly B targets; A-e
           flavors[flavorB] = {};
           for (const rel of relsB) {
             flavors[flavorB][rel] = randomContent();
-            expectedB.add(`${name}/lib/${rel}`);
+            expectedB.add(`${name}/${rel}`);
           }
         }
 
@@ -161,7 +165,7 @@ test('Property 6: switching A then B yields a manifest of exactly B targets; A-e
         firstComp.flavors[flavor] = firstComp.flavors[flavor] ?? {};
         const [rel] = distinctRelPaths(1, usedRelPaths);
         firstComp.flavors[flavor][rel] = randomContent();
-        expectedSet.add(`${firstComp.name}/lib/${rel}`);
+        expectedSet.add(`${firstComp.name}/${rel}`);
       };
       ensureFlavorFile(flavorA, expectedA);
       ensureFlavorFile(flavorB, expectedB);
@@ -175,7 +179,7 @@ test('Property 6: switching A then B yields a manifest of exactly B targets; A-e
         firstComp.flavors[flavorA] = firstComp.flavors[flavorA] ?? {};
         const [rel] = distinctRelPaths(1, usedRelPaths);
         firstComp.flavors[flavorA][rel] = randomContent();
-        expectedA.add(`${firstComp.name}/lib/${rel}`);
+        expectedA.add(`${firstComp.name}/${rel}`);
       }
 
       await buildRepo(repoRoot, { components });

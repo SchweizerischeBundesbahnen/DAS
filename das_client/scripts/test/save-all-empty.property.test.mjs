@@ -2,12 +2,13 @@
 //
 // Property test for the save-all empty-changeset no-op.
 //
-// Feature: flavor-code-switching, Property 21: Save-all with no changed lib/
-// files is a safe no-op: when the (faked) Git state yields NO changed lib/
-// files — whether because `git status --porcelain -z` reports nothing at all,
-// or because it reports only non-lib/ changed paths that the lib/ filter drops —
-// `saveAllToFlavor` copies and deletes nothing anywhere in the repo tree, reports
-// "No changed lib/ files to save" to stdout, and returns exit code 0.
+// Feature: flavor-code-switching, Property 21: Save-all with no changed lib/ or
+// test/ files is a safe no-op: when the (faked) Git state yields NO changed
+// source files — whether because `git status --porcelain -z` reports nothing at
+// all, or because it reports only non-source changed paths that the lib/+test/
+// filter drops — `saveAllToFlavor` copies and deletes nothing anywhere in the
+// repo tree, reports "No changed lib/ or test/ files to save" to stdout, and
+// returns exit code 0.
 //
 // Validates: Requirements 13.8
 //
@@ -131,7 +132,7 @@ function assertSnapshotsEqual(before, after, ctx) {
 }
 
 /**
- * Build a fake `spawn` matching gitChangedLibFiles' two git calls:
+ * Build a fake `spawn` matching gitChangedSourceFiles' two git calls:
  *   - `git -C <repoRoot> rev-parse --show-toplevel` → { status: 0, stdout: repoRoot+'\n' }
  *   - `git -C <repoRoot> status --porcelain -z`     → { status: 0, stdout: statusOut }
  * @param {string} repoRoot
@@ -152,7 +153,7 @@ function makeFakeSpawn(repoRoot, statusOut) {
   };
 }
 
-test('Property 21: save-all with no changed lib/ files is a safe no-op', async () => {
+test('Feature: flavor-code-switching, Property 21: Save-all with no changed lib/ or test/ files is a safe no-op', async () => {
   for (let i = 0; i < ITERATIONS; i++) {
     const repoRoot = await makeTempDir('flavor-save-all-empty-prop-');
     try {
@@ -186,21 +187,23 @@ test('Property 21: save-all with no changed lib/ files is a safe no-op', async (
       await buildRepo(repoRoot, { components });
 
       // Choose a sub-case for the faked `git status --porcelain -z` output that
-      // yields NO changed lib/ files:
+      // yields NO changed source files:
       //   (a) completely empty output ('')
-      //   (b) only NON-lib/ changed paths, which the lib/ filter drops to empty.
+      //   (b) only NON-source changed paths, which the lib/+test/ filter drops to empty.
       let statusOut;
       let subcase;
       if (Math.random() < 0.5) {
         subcase = 'empty';
         statusOut = '';
       } else {
-        subcase = 'non-lib';
+        subcase = 'non-source';
         const comp = pick(components).name;
         // Porcelain -z records are NUL-terminated: 'XY PATH\0'. None of these
-        // qualify as <component>/lib/<rest>, so deriveFlavorDest drops them all.
+        // qualify as <component>/lib/<rest> or <component>/test/<rest>, so
+        // deriveFlavorDest drops them all. (A file directly under the component,
+        // the root pubspec, a README, and a doc are all outside a source root.)
         const records = [
-          `?? ${comp}/test/${randomName(1, 6)}.dart`,
+          `?? ${comp}/${randomName(1, 6)}.dart`,
           ` M README.md`,
           `?? ${comp}/pubspec.yaml`,
           `A  docs/${randomName(1, 6)}.md`,
@@ -222,11 +225,11 @@ test('Property 21: save-all with no changed lib/ files is a safe no-op', async (
       // Exit code 0 (no-op is a success).
       assert.equal(code, 0, `saveAllToFlavor must return 0 on an empty changeset (${ctx})`);
 
-      // The "No changed lib/ files to save" report was emitted to stdout.
-      const reported = logs.some((line) => line.includes('No changed lib/ files to save'));
+      // The "No changed lib/ or test/ files to save" report was emitted to stdout.
+      const reported = logs.some((line) => line.includes('No changed lib/ or test/ files to save'));
       assert.ok(
         reported,
-        `stdout must report "No changed lib/ files to save" (${ctx}); got: ${JSON.stringify(logs)}`,
+        `stdout must report "No changed lib/ or test/ files to save" (${ctx}); got: ${JSON.stringify(logs)}`,
       );
 
       // The full repo tree is byte-identical: nothing copied or deleted anywhere.

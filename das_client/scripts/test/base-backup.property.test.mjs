@@ -10,12 +10,19 @@
 // overwritten base files.
 //
 // For any successful switch, for every flavor target that overwrote a
-// pre-existing lib/ base file there is a byte-identical Base_Backup_File at the
-// mirrored path under .flavor-base-backup/ holding the ORIGINAL base content
-// (not the flavor content), and every target with `overwrote: true` in the
-// manifest; for every new target (no pre-existing lib/ file) there is NO backup
-// and `overwrote: false`; and the backup dir contains no extra files beyond the
+// pre-existing base file — under EITHER source root (lib/ OR test/) — there is a
+// byte-identical Base_Backup_File at the mirrored repo-relative path under
+// .flavor-base-backup/ holding the ORIGINAL base content (not the flavor
+// content), and that target has `overwrote: true` in the manifest; for every
+// new target (no pre-existing base file) there is NO backup and
+// `overwrote: false`; and the backup dir contains no extra files beyond the
 // overwritten set.
+//
+// Flavor folders now mirror the Workspace_Component root: a flavor file lives at
+// .<flavor>/lib/<rest> or .<flavor>/test/<rest> and maps to lib/<rest> /
+// test/<rest> respectively (planCopy walking SOURCE_ROOTS). Base backups mirror
+// the repo-relative target, so a backed-up test file lives at
+// .flavor-base-backup/<component>/test/<rest>.
 //
 // Validates: Requirements 10.1, 10.2, 10.3, 10.4, 10.5
 //
@@ -27,7 +34,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { FLAVORS, main, MANIFEST_FILENAME, BASE_BACKUP_DIRNAME } from '../switch-flavor.mjs';
-import { makeTempDir, buildRepo, removeTempDir } from './helpers.mjs';
+import { makeTempDir, buildRepo, removeTempDir, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 120; // >= 100 minimum per the plan.
 
@@ -68,26 +75,33 @@ function uniqueNames(count, taken) {
 }
 
 /**
- * Build a random nested tree of small files, keyed by relative POSIX path.
- * Guarantees at least one file so the owning component always contributes.
- * `tag` is woven into the content so flavor vs base content never accidentally
- * coincide.
+ * Build a random nested tree of small flavor files spread across BOTH recognized
+ * Flavor_Source_Roots (lib/ and test/), keyed by the flavor-folder-relative
+ * POSIX path (`<root>/<rest>`). Each key is written VERBATIM into the flavor
+ * folder by buildRepo (`.<flavor>/<root>/<rest>`), and planCopy maps it to the
+ * repo-relative target `<component>/<root>/<rest>`. Guarantees at least one file
+ * under each source root so both roots are exercised. `tag` is woven into the
+ * content so flavor vs base content never accidentally coincide.
  * @param {string} tag
  * @returns {Record<string,string>}
  */
 function randomFileTree(tag) {
-  const fileCount = randIntRange(1, 4);
   const tree = {};
-  let guard = 0;
-  while (Object.keys(tree).length < fileCount && guard < 20) {
-    guard++;
-    const depth = randIntRange(0, 2);
-    const segments = [];
-    for (let d = 0; d < depth; d++) segments.push(randomName(2, 5));
-    segments.push(`${randomName(2, 6)}.dart`);
-    const rel = segments.join('/');
-    if (tree[rel] !== undefined) continue; // skip accidental collisions
-    tree[rel] = `// ${tag} ${rel}\nvar v = ${randInt(1000000)};\n`;
+  for (const root of SOURCE_ROOTS) {
+    const fileCount = randIntRange(1, 3);
+    let guard = 0;
+    let placed = 0;
+    while (placed < fileCount && guard < 20) {
+      guard++;
+      const depth = randIntRange(0, 2);
+      const segments = [root];
+      for (let d = 0; d < depth; d++) segments.push(randomName(2, 5));
+      segments.push(`${randomName(2, 6)}.dart`);
+      const rel = segments.join('/');
+      if (tree[rel] !== undefined) continue; // skip accidental collisions
+      tree[rel] = `// ${tag} ${rel}\nvar v = ${randInt(1000000)};\n`;
+      placed++;
+    }
   }
   return tree;
 }
@@ -126,16 +140,24 @@ function buildSpec(flavor) {
     const roll = forceOwner ? 0 : Math.random();
 
     if (roll < 0.6) {
-      // Owns the selected flavor folder → contributes to lib/.
+      // Owns the selected flavor folder → contributes to lib/ AND test/. The
+      // flavor tree keys are `<root>/<rest>` (root ∈ {lib, test}), so each maps
+      // to the repo-relative target `<component>/<root>/<rest>`.
       const tree = randomFileTree(`flavor:${flavor}`);
-      const libSeed = {};
-      for (const rel of Object.keys(tree)) {
-        const target = `${name}/lib/${rel}`;
-        // Arbitrary subset: pre-create a DIFFERENT-content base file so the
-        // switch OVERWRITES it. The complement are NEW targets.
+      // Per-source-root base seeds, keyed by the <rest> under that root.
+      const seeds = { lib: {}, test: {} };
+      for (const relFromFlavor of Object.keys(tree)) {
+        // Split `<root>/<rest>`; root is the first path segment.
+        const slash = relFromFlavor.indexOf('/');
+        const root = relFromFlavor.slice(0, slash); // 'lib' | 'test'
+        const rest = relFromFlavor.slice(slash + 1);
+        const target = `${name}/${root}/${rest}`;
+        // Arbitrary subset: pre-create a DIFFERENT-content base file under the
+        // SAME source root so the switch OVERWRITES it. The complement are NEW
+        // targets (no pre-existing base file).
         if (Math.random() < 0.5) {
-          const base = `// base:${name} ${rel}\nvar base = ${randInt(1000000)};\n`;
-          libSeed[rel] = base;
+          const base = `// base:${name} ${root}/${rest}\nvar base = ${randInt(1000000)};\n`;
+          seeds[root][rest] = base;
           overwritten.add(target);
           originalBase.set(target, base);
         } else {
@@ -144,9 +166,11 @@ function buildSpec(flavor) {
       }
       components.push({
         name,
-        // Always include a placeholder so lib/ is non-empty and the component
-        // qualifies for discovery even if no base files were seeded.
-        lib: { 'placeholder.dart': '// placeholder\n', ...libSeed },
+        // Always include a lib/ placeholder so lib/ is non-empty and the
+        // component qualifies for discovery even if no base files were seeded.
+        lib: { 'placeholder.dart': '// placeholder\n', ...seeds.lib },
+        // Pre-seeded base files under the test/ Flavor_Source_Root (may be empty).
+        test: { ...seeds.test },
         flavors: { [flavor]: tree },
       });
       ownerCount++;

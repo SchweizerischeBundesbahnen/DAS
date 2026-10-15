@@ -66,6 +66,20 @@ test('usageText() documents the --restore-base and --save-to-flavor modes', () =
   assert.ok(text.includes('--save-to-flavor'), 'usage text should document --save-to-flavor');
 });
 
+test('usageText() documents that --save-to-flavor accepts a lib/ or test/ source path', () => {
+  const text = usageText();
+  // The save-to-flavor help now documents both source roots (package-root layout).
+  assert.ok(
+    text.includes('lib/ or test/'),
+    'usage text should mention a lib/ or test/ source for --save-to-flavor',
+  );
+  // And the destination mirrors the package root (keeps the lib//test/ segment).
+  assert.ok(
+    text.includes('sfera/.<flavor>/lib/src/foo.dart'),
+    'usage text should show the destination mirroring the package root',
+  );
+});
+
 test('usageText() documents the --all save-to-flavor modifier', () => {
   const text = usageText();
   assert.ok(text.includes('--all'), 'usage text should document --all');

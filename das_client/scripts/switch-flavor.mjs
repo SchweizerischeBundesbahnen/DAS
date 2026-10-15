@@ -110,12 +110,13 @@ export function usageText() {
     '  --restore-base          Restore lib/ to its base state (revert the last switch): copy',
     '                          backed-up base files back and remove newly added flavor files.',
     `  --save-to-flavor=<flavor> <file>`,
-    `                          Copy an existing lib/ file into <flavor>/ (one of: ${FLAVORS.join(', ')});`,
-    '                          the file stays in lib/. <file> is a repo-relative path like',
-    '                          sfera/lib/src/foo.dart.',
-    '  --all                   With --save-to-flavor, save every Git-changed lib/ file (working tree vs',
-    '                          HEAD, incl. untracked) into <flavor>/ instead of a single <file>; files',
-    '                          deleted in lib/ are removed from <flavor>/ if present.',
+    `                          Copy an existing lib/ or test/ file into <flavor>/ (one of: ${FLAVORS.join(', ')});`,
+    '                          the file stays in lib/ or test/. <file> is a repo-relative path like',
+    '                          sfera/lib/src/foo.dart, which maps to sfera/.<flavor>/lib/src/foo.dart',
+    '                          (the destination mirrors the package root).',
+    '  --all                   With --save-to-flavor, save every Git-changed lib/ or test/ file (working',
+    '                          tree vs HEAD, incl. untracked) into <flavor>/ instead of a single <file>;',
+    '                          files deleted in lib/ or test/ are removed from <flavor>/ if present.',
     '  --dry-run               Preview the switch: print the files that would be copied,',
     '                          deleted, and the pubspec line that would be removed,',
     '                          without touching the filesystem.',
@@ -275,6 +276,16 @@ export function parseCliArgs(argv) {
 const NON_PACKAGE_DIRS = new Set(['.kiro', '.fvm', '.dart_tool', 'build', 'scripts']);
 
 /**
+ * Recognized Flavor_Source_Roots: the only top-level directory names inside a
+ * Flavor_Folder that are copied/mapped. A Flavor_Folder is a partial mirror of
+ * the Workspace_Component root (not of `lib/` alone), and exactly these two
+ * roots are honored — see design "Source-Root Mapping (`lib/` and `test/`)".
+ * Entries outside these roots are ignored (`Req 1.6`). Kept in sync with the
+ * `(lib|test)` alternation in {@link splitSourceRoot}.
+ */
+const SOURCE_ROOTS = ['lib', 'test'];
+
+/**
  * Discover workspace component directories under `repoRoot`.
  *
  * Per the design "Component Discovery": the workspace is declared as a glob
@@ -324,23 +335,38 @@ export function discoverComponents(repoRoot) {
 }
 
 /**
- * Enumerate a component's flavor-folder files and map them to `lib/` targets.
+ * Enumerate a component's flavor-folder files beneath its recognized
+ * Flavor_Source_Roots and map them to the matching package-relative targets.
  *
- * Per the design "Copy semantics": when `<componentDir>/.<flavor>/` exists and is
- * a directory, every file beneath it (recursively) at relative path `<relpath>`
- * maps to the target `<componentDir>/lib/<relpath>`, preserving the nested
- * structure. A component without a matching flavor folder contributes nothing
- * (empty array).
+ * Per the design "Source-Root Mapping (`lib/` and `test/`)" and "Copy semantics":
+ * a Flavor_Folder is a PARTIAL MIRROR of the Workspace_Component root, not of
+ * `lib/` alone. Only the two recognized Flavor_Source_Roots ({@link SOURCE_ROOTS}
+ * — `lib` and `test`) inside `<componentDir>/.<flavor>/` are walked. For each root
+ * `<root>`, every file at `<componentDir>/.<flavor>/<root>/<rest>` maps to the
+ * target `<componentDir>/<root>/<rest>`, preserving the nested structure beneath
+ * the source root:
+ *
+ *   .<flavor>/lib/src/foo.dart       → lib/src/foo.dart
+ *   .<flavor>/test/src/foo_test.dart → test/src/foo_test.dart
+ *
+ * Any flavor-folder entry whose first path segment is NOT a Flavor_Source_Root is
+ * IGNORED (no copy entry) — files directly under `.<flavor>/` and unrecognized
+ * top-level dirs like `.<flavor>/bin/...` are naturally skipped because the walk
+ * only descends into `.<flavor>/lib` and `.<flavor>/test` (`Req 1.6`). A component
+ * whose flavor folder has neither `lib/` nor `test/` contributes nothing (empty
+ * array), the same as a component with no flavor folder at all.
  *
  * Contract: returns an array of copy entries
  *   `{ source: string, target: string }`
  * where `source` is the ABSOLUTE path to the flavor-folder file and `target` is
  * the REPO-ROOT-RELATIVE POSIX path (forward slashes) of the destination under
- * `lib/`. `repoRoot` is accepted as a parameter so the target can be made
+ * its source root. `repoRoot` is accepted as a parameter so the target can be made
  * repo-relative here — this matches what `buildManifest`/the manifest expect
  * (`files` are repo-root-relative POSIX paths), so `main` can feed the copied
  * targets straight into `copyFiles` and `buildManifest` without re-relativizing.
- * Uses synchronous fs (consistent with the rest of this module).
+ * Roots are walked in {@link SOURCE_ROOTS} order (`lib` before `test`), each
+ * descended in `fs.readdirSync` order, for deterministic output. Uses synchronous
+ * fs (consistent with the rest of this module).
  *
  * @param {string} componentDir absolute path to the component directory
  * @param {string} flavor one of {@link FLAVORS}
@@ -349,88 +375,148 @@ export function discoverComponents(repoRoot) {
  */
 export function planCopy(componentDir, flavor, repoRoot) {
   const flavorDir = path.join(componentDir, flavorDirName(flavor));
-
-  let stat;
-  try {
-    stat = fs.statSync(flavorDir);
-  } catch {
-    // Flavor folder does not exist → component contributes nothing.
-    return [];
-  }
-  if (!stat.isDirectory()) return [];
-
-  const libDir = path.join(componentDir, 'lib');
   const entries = [];
 
-  // Recursively walk the flavor folder, mapping each file to its lib/ target.
-  const walk = (currentDir) => {
+  // Recursively walk a directory, mapping each file to a target under `targetRoot`
+  // (the component's `lib/` or `test/`) at the same relative path.
+  const walk = (currentDir, srcRoot, targetRoot) => {
     const dirents = fs.readdirSync(currentDir, { withFileTypes: true });
     for (const dirent of dirents) {
       const abs = path.join(currentDir, dirent.name);
       if (dirent.isDirectory()) {
-        walk(abs);
+        walk(abs, srcRoot, targetRoot);
       } else if (dirent.isFile()) {
-        const relFromFlavor = path.relative(flavorDir, abs);
-        const targetAbs = path.join(libDir, relFromFlavor);
+        const relFromRoot = path.relative(srcRoot, abs);
+        const targetAbs = path.join(targetRoot, relFromRoot);
         const targetRel = path.relative(repoRoot, targetAbs).split(path.sep).join('/');
         entries.push({ source: abs, target: targetRel });
       }
     }
   };
-  walk(flavorDir);
+
+  // Walk ONLY the recognized Flavor_Source_Roots inside the flavor folder; any
+  // entry outside `lib/`/`test/` (including files directly under `.<flavor>/`) is
+  // ignored because it is never descended into (Req 1.6).
+  for (const root of SOURCE_ROOTS) {
+    const srcRoot = path.join(flavorDir, root);
+    let stat;
+    try {
+      stat = fs.statSync(srcRoot);
+    } catch {
+      // This source root is absent → contributes nothing.
+      continue;
+    }
+    if (!stat.isDirectory()) continue;
+
+    walk(srcRoot, srcRoot, path.join(componentDir, root));
+  }
 
   return entries;
 }
 
 /**
- * Map a `<component>/lib/<rest>` source path to its flavor-folder destination
- * `<component>/.<flavor>/<rest>` (pure, no filesystem access).
+ * Split a repo-relative path into its component, Flavor_Source_Root, and
+ * remainder iff it is a flavor-managed source path (pure, no filesystem access).
  *
- * Per the design "Save-to-Flavor Operation" (step 4) and the `deriveFlavorDest`
- * row in the Components-and-Interfaces module table: this derives the authoring
- * destination for `--save-to-flavor` by replacing the FIRST `lib/` segment that
- * directly follows the top-level component segment with `<flavor>/`, preserving
- * the remaining relative structure. The flavor is NOT validated here — the
- * caller (`saveToFlavor`, task 17.2) checks `FLAVORS` membership first.
+ * Per the design "Source-Root Mapping (`lib/` and `test/`)": a Flavor_Folder is a
+ * partial mirror of the Workspace_Component root, and exactly two top-level
+ * directory names inside it are recognized Flavor_Source_Roots — `lib` and
+ * `test`. This is the single source of truth for the "flavor-managed path shape":
+ * both `planCopy` (switch) and `deriveFlavorDest` (save) are expressed in terms of
+ * it, so the `lib/`↔`test/` symmetry cannot drift between the two directions.
  *
- * Shape contract (Req 12.2, 12.7): `file` must be a repo-relative POSIX path of
- * the form `<component>/lib/<rest>` where `<component>` is a single, non-empty
- * path segment and `<rest>` is non-empty. Backslashes are normalized to forward
- * slashes defensively before matching. A path with no component segment before
- * `lib/` (e.g. `lib/foo.dart`) or with no `/lib/` segment at all is NOT a lib
- * path.
+ * Shape contract (Req 1.6, 12.7): backslashes are normalized to forward slashes
+ * defensively, then the path is matched against `^([^/]+)/(lib|test)/(.+)$` — a
+ * single, non-empty component segment, a Flavor_Source_Root segment (`lib` or
+ * `test`), and a non-empty remainder. Anything else is `not_a_source_path`: a bare
+ * `lib/foo` (no component segment), a missing component segment, or an
+ * unrecognized second segment (anything other than `lib`/`test`).
  *
- * Return shape (discriminated union consumed by `saveToFlavor` in task 17.2):
- *   - { ok: true,  dest }                         — `dest` is the repo-relative
- *       POSIX destination `<component>/.<flavor>/<rest>`
- *   - { ok: false, reason: 'not_a_lib_path' }     — not a `<component>/lib/<rest>`
- *       path
+ * Return shape (discriminated union, matching the design's Source-Root Mapping):
+ *   - { ok: true, component, root, rest }         — `root` is `'lib'` or `'test'`
+ *   - { ok: false, reason: 'not_a_source_path' }  — not a `<component>/<root>/<rest>`
+ *       path with a recognized Flavor_Source_Root
  *
  * Examples:
- *   deriveFlavorDest('sfera/lib/src/foo.dart', 'dev')
- *     → { ok: true, dest: 'sfera/.dev/src/foo.dart' }
- *   deriveFlavorDest('sfera/foo.dart', 'dev')  → { ok: false, reason: 'not_a_lib_path' }
- *   deriveFlavorDest('lib/foo.dart', 'dev')    → { ok: false, reason: 'not_a_lib_path' }
+ *   splitSourceRoot('sfera/lib/src/foo.dart')
+ *     → { ok: true, component: 'sfera', root: 'lib', rest: 'src/foo.dart' }
+ *   splitSourceRoot('sfera/test/foo_test.dart')
+ *     → { ok: true, component: 'sfera', root: 'test', rest: 'foo_test.dart' }
+ *   splitSourceRoot('lib/foo.dart')    → { ok: false, reason: 'not_a_source_path' }
+ *   splitSourceRoot('sfera/foo.dart')  → { ok: false, reason: 'not_a_source_path' }
+ *   splitSourceRoot('sfera/bin/x.dart')→ { ok: false, reason: 'not_a_source_path' }
  *
- * @param {string} file repo-relative POSIX source path (`<component>/lib/<rest>`)
- * @param {string} flavor the flavor name (unvalidated here; see {@link FLAVORS})
- * @returns {{ok: true, dest: string} | {ok: false, reason: 'not_a_lib_path'}}
+ * @param {string} file repo-relative POSIX path (`<component>/<root>/<rest>`)
+ * @returns {{ok: true, component: string, root: 'lib'|'test', rest: string} | {ok: false, reason: 'not_a_source_path'}}
  */
-export function deriveFlavorDest(file, flavor) {
+export function splitSourceRoot(file) {
   // Normalize backslashes defensively so Windows-style inputs still match.
   const normalized = String(file).replace(/\\/g, '/');
 
-  // Match `<component>/lib/<rest>` where <component> is a single, non-empty
-  // segment (no slashes) and <rest> is non-empty. Only the first `lib/` segment
-  // directly following the top-level component is replaced.
-  const m = /^([^/]+)\/lib\/(.+)$/.exec(normalized);
+  // Match `<component>/<root>/<rest>` where <component> is a single, non-empty
+  // segment (no slashes), <root> is a recognized Flavor_Source_Root, and <rest>
+  // is non-empty.
+  const m = /^([^/]+)\/(lib|test)\/(.+)$/.exec(normalized);
   if (!m) {
-    return { ok: false, reason: 'not_a_lib_path' };
+    return { ok: false, reason: 'not_a_source_path' };
   }
 
-  const component = m[1];
-  const rest = m[2];
-  return { ok: true, dest: `${component}/${flavorDirName(flavor)}/${rest}` };
+  return { ok: true, component: m[1], root: m[2], rest: m[3] };
+}
+
+/**
+ * Map a `<component>/<root>/<rest>` source path (where `<root>` is a recognized
+ * Flavor_Source_Root, `lib` or `test`) to its flavor-folder destination
+ * `<component>/.<flavor>/<root>/<rest>` (pure, no filesystem access).
+ *
+ * Per the design "Source-Root Mapping (`lib/` and `test/`)" and "Save-to-Flavor
+ * Operation": this derives the authoring destination for `--save-to-flavor` by
+ * inserting the `.<flavor>` Flavor_Folder segment AFTER the top-level component
+ * segment while KEEPING the Flavor_Source_Root segment (`lib`/`test`), preserving
+ * the remaining relative structure. It is expressed entirely in terms of
+ * {@link splitSourceRoot}, so the flavor-managed path shape — including the
+ * `lib/`↔`test/` symmetry — has a single definition and cannot drift from the
+ * switch side (`planCopy`). The flavor is NOT validated here — the caller
+ * (`saveToFlavor`) checks `FLAVORS` membership first.
+ *
+ * Shape contract (Req 12.2, 12.7): `file` must be a repo-relative path of the
+ * form `<component>/<root>/<rest>` where `<component>` is a single, non-empty
+ * path segment, `<root>` is `lib` or `test`, and `<rest>` is non-empty.
+ * `splitSourceRoot` normalizes backslashes defensively before matching. Anything
+ * else (no component segment, an unrecognized root, a bare `lib/foo`) is NOT a
+ * source path and propagates as `{ ok: false, reason: 'not_a_source_path' }`.
+ *
+ * Return shape (discriminated union consumed by `saveToFlavor`/`saveAllToFlavor`,
+ * which only read `.ok` and `.dest`):
+ *   - { ok: true,  dest }                          — `dest` is the repo-relative
+ *       POSIX destination `<component>/.<flavor>/<root>/<rest>`
+ *   - { ok: false, reason: 'not_a_source_path' }   — not a `<component>/<root>/<rest>`
+ *       path with a recognized Flavor_Source_Root
+ *
+ * Examples:
+ *   deriveFlavorDest('sfera/lib/src/foo.dart', 'dev')
+ *     → { ok: true, dest: 'sfera/.dev/lib/src/foo.dart' }
+ *   deriveFlavorDest('sfera/test/src/foo_test.dart', 'dev')
+ *     → { ok: true, dest: 'sfera/.dev/test/src/foo_test.dart' }
+ *   deriveFlavorDest('sfera/foo.dart', 'dev')  → { ok: false, reason: 'not_a_source_path' }
+ *   deriveFlavorDest('lib/foo.dart', 'dev')    → { ok: false, reason: 'not_a_source_path' }
+ *
+ * @param {string} file repo-relative source path (`<component>/<root>/<rest>`)
+ * @param {string} flavor the flavor name (unvalidated here; see {@link FLAVORS})
+ * @returns {{ok: true, dest: string} | {ok: false, reason: 'not_a_source_path'}}
+ */
+export function deriveFlavorDest(file, flavor) {
+  // Delegate the flavor-managed path-shape detection + normalization to the
+  // single source of truth so the save side cannot drift from the switch side.
+  const split = splitSourceRoot(file);
+  if (!split.ok) {
+    return { ok: false, reason: 'not_a_source_path' };
+  }
+
+  const { component, root, rest } = split;
+  // Insert `.<flavor>` after the component segment, KEEPING the Flavor_Source_Root
+  // (`lib`/`test`): <component>/.<flavor>/<root>/<rest>.
+  return { ok: true, dest: `${component}/${flavorDirName(flavor)}/${root}/${rest}` };
 }
 
 /**
@@ -867,7 +953,7 @@ export function saveToFlavor(repoRoot, flavor, file) {
     // 2. Validate the source path shape (<component>/lib/<rest>).
     const derived = deriveFlavorDest(file, flavor);
     if (!derived.ok) {
-      console.error(`Source path is not a lib/ path of a workspace component: '${file}'`);
+      console.error(`Source path is not a lib/ or test/ path of a workspace component: '${file}'`);
       return 1;
     }
 
@@ -890,7 +976,7 @@ export function saveToFlavor(repoRoot, flavor, file) {
     const destAbs = path.resolve(repoRoot, destRel);
     const destExisted = fs.existsSync(destAbs);
 
-    // 5. mkdir -p the dest dir, then COPY the lib/ file into the flavor folder,
+    // 5. mkdir -p the dest dir, then COPY the lib/ or test/ file into the flavor folder,
     //    overwriting any existing destination. The source is left in place (Req 12.3).
     fs.mkdirSync(path.dirname(destAbs), { recursive: true });
     fs.copyFileSync(srcAbs, destAbs);
@@ -923,14 +1009,15 @@ export function saveToFlavor(repoRoot, flavor, file) {
  *   1. Defensively validate the flavor against {@link FLAVORS} (parseCliArgs also
  *      validates, but this is an exported entry point). Invalid → stderr, return 1
  *      (Req 13.6).
- *   2. Collect the Git working-tree changes via {@link gitChangedLibFiles}, passing
+ *   2. Collect the Git working-tree changes via {@link gitChangedSourceFiles}, passing
  *      through the injected `spawn` (defaulting to {@link spawnSync}) so tests can
  *      fake git. Git unavailable / not a repository → stderr, return 1, no mutation
  *      (Req 13.7).
- *   3. Keep only `<component>/lib/<rest>` paths, using `deriveFlavorDest` as the
- *      single source of truth for "is a lib path" (Req 13.2).
- *   4. No changed `lib/` files → report "No changed lib/ files to save" to stdout,
- *      return 0, copying/deleting nothing (Req 13.8).
+ *   3. Keep only `<component>/lib/<rest>` and `<component>/test/<rest>` paths, using
+ *      `deriveFlavorDest` as the single source of truth for "is a flavor-managed
+ *      path" (Req 13.2).
+ *   4. No changed `lib/` or `test/` files → report "No changed lib/ or test/ files
+ *      to save" to stdout, return 0, copying/deleting nothing (Req 13.8).
  *   5. For each change, derive its flavor destination and:
  *        - `present`: resolve the source under `lib/`; if it exists, mkdir -p the
  *          dest dir and COPY (overwrite), leaving the source in place (Req 13.3). A
@@ -965,26 +1052,27 @@ export function saveAllToFlavor(repoRoot, flavor, { spawn } = {}) {
     // 2. Collect Git working-tree changes, forwarding the injected spawn so tests
     //    can fake git. A git-unavailable / not-a-repo result is a hard error with
     //    no mutation (Req 13.7).
-    const changed = gitChangedLibFiles(repoRoot, spawn ?? spawnSync);
+    const changed = gitChangedSourceFiles(repoRoot, spawn ?? spawnSync);
     if (!changed.ok) {
       console.error('Could not determine Git state (is this a Git repository and is git installed?)');
       return 1;
     }
 
-    // 3. Keep only <component>/lib/<rest> paths, reusing deriveFlavorDest as the
-    //    single source of truth for "is a lib path" (Req 13.2). Carry the derived
-    //    destination alongside each entry so step 5 does not re-derive.
-    const libChanges = [];
+    // 3. Keep only <component>/lib/<rest> and <component>/test/<rest> paths, reusing
+    //    deriveFlavorDest as the single source of truth for "is a flavor-managed path"
+    //    (Req 13.2). Carry the derived destination alongside each entry so step 5 does
+    //    not re-derive.
+    const srcChanges = [];
     for (const entry of changed.files) {
       const d = deriveFlavorDest(entry.path, flavor);
       if (d.ok) {
-        libChanges.push({ path: entry.path, status: entry.status, dest: d.dest });
+        srcChanges.push({ path: entry.path, status: entry.status, dest: d.dest });
       }
     }
 
     // 4. Nothing to do → no mutation, exit 0 (Req 13.8).
-    if (libChanges.length === 0) {
-      console.log('No changed lib/ files to save');
+    if (srcChanges.length === 0) {
+      console.log('No changed lib/ or test/ files to save');
       return 0;
     }
 
@@ -993,7 +1081,7 @@ export function saveAllToFlavor(repoRoot, flavor, { spawn } = {}) {
     let overwritten = 0;
     let removed = 0;
 
-    for (const change of libChanges) {
+    for (const change of srcChanges) {
       const destAbs = path.resolve(repoRoot, change.dest);
 
       if (change.status === 'present') {
@@ -1024,7 +1112,7 @@ export function saveAllToFlavor(repoRoot, flavor, { spawn } = {}) {
 
     // 6. Summary → stdout, exit 0 (Req 13.1).
     console.log(
-      `Saved ${libChanges.length} changed lib/ file(s) to flavor '${flavor}': ` +
+      `Saved ${srcChanges.length} changed lib/ or test/ file(s) to flavor '${flavor}': ` +
         `${copied} copied (${overwritten} overwritten), ${removed} removed from flavor`,
     );
     return 0;
@@ -1263,10 +1351,10 @@ export function removeWorkspaceDep(pubspecText, pkg) {
 
 /**
  * Discover the set of Git-changed `lib/` files (working-tree vs HEAD) and
- * classify each as present or deleted — the Changed_Lib_Files that the
+ * classify each as present or deleted — the Changed_Source_Files that the
  * `--save-to-flavor --all` form (Req 13) saves (via `saveAllToFlavor`, task 27).
  *
- * Per the design "Save-all form → Collecting Changed_Lib_Files from Git": the
+ * Per the design "Save-all form → Collecting Changed_Source_Files from Git": the
  * full set of staged, unstaged, and untracked changes is captured with a single
  * `git status --porcelain -z` invocation (NUL-separated so paths with spaces and
  * rename records parse unambiguously). All git calls go through the injected
@@ -1300,16 +1388,20 @@ export function removeWorkspaceDep(pubspecText, pkg) {
  * changed paths; disk existence is the authoritative classifier (and the
  * de-duplication tie-breaker when a path shows up from multiple columns).
  *
- * lib/ filter (Req 13.2): only paths that qualify as `<component>/lib/<rest>`
- * are kept, using {@link deriveFlavorDest} as the single source of truth for
- * lib-path shape (same definition as the single-file save form). The flavor
- * argument is irrelevant to the filter — only the ok/not-ok result is used — so
- * `FLAVORS[0]` is passed as a placeholder.
+ * Source-root filter (Req 13.2): only paths that qualify as
+ * `<component>/lib/<rest>` or `<component>/test/<rest>` are kept, using
+ * {@link deriveFlavorDest} as the single source of truth for the flavor-managed
+ * path shape (same definition as the single-file save form). Because
+ * `deriveFlavorDest` delegates to {@link splitSourceRoot}, BOTH the `lib/` and
+ * `test/` Flavor_Source_Roots pass the filter — there is no hardcoded `lib`-only
+ * check. The flavor argument is irrelevant to the filter — only the ok/not-ok
+ * result is used — so `FLAVORS[0]` is passed as a placeholder.
  *
  * Return shape (discriminated union consumed by `saveAllToFlavor`, task 27):
  *   - { ok: true, files: Array<{ path: string, status: 'present' | 'deleted' }> }
- *       — `path` is a `repoRoot`-relative POSIX `<component>/lib/<rest>` path,
- *       de-duplicated; empty output yields `{ ok: true, files: [] }`.
+ *       — `path` is a `repoRoot`-relative POSIX `<component>/lib/<rest>` or
+ *       `<component>/test/<rest>` path, de-duplicated; empty output yields
+ *       `{ ok: true, files: [] }`.
  *   - { ok: false, reason: 'git_unavailable' } — git could not be spawned or
  *       `repoRoot` is not a Git repository (Req 13.7).
  *
@@ -1318,7 +1410,7 @@ export function removeWorkspaceDep(pubspecText, pkg) {
  *   injectable spawn function; defaults to `spawnSync`
  * @returns {{ok: true, files: Array<{path: string, status: 'present' | 'deleted'}>} | {ok: false, reason: 'git_unavailable'}}
  */
-export function gitChangedLibFiles(repoRoot, spawn = spawnSync) {
+export function gitChangedSourceFiles(repoRoot, spawn = spawnSync) {
   // 1. Resolve the Git top-level. A spawn error (git missing) or non-zero exit
   //    (not a repo) is a hard git-unavailable failure (Req 13.7).
   const topLevelResult = spawn('git', ['-C', repoRoot, 'rev-parse', '--show-toplevel'], {
@@ -1364,14 +1456,16 @@ export function gitChangedLibFiles(repoRoot, spawn = spawnSync) {
   }
 
   // 4. Relativize to repoRoot (porcelain paths are top-level-relative), filter to
-  //    <component>/lib/<rest> paths, and classify present/deleted by on-disk
-  //    existence. A Map de-duplicates paths that appear from multiple columns.
+  //    <component>/lib/<rest> and <component>/test/<rest> paths, and classify
+  //    present/deleted by on-disk existence. A Map de-duplicates paths that
+  //    appear from multiple columns.
   const flavorPlaceholder = FLAVORS[0];
   const byPath = new Map();
   for (const topRel of topLevelRelPaths) {
     const abs = path.resolve(topLevel, topRel);
     const relToRepo = path.relative(repoRoot, abs);
-    // Outside repoRoot → cannot be a <component>/lib/ path of this workspace.
+    // Outside repoRoot → cannot be a <component>/lib/ or <component>/test/ path
+    // of this workspace.
     if (relToRepo.startsWith('..') || path.isAbsolute(relToRepo)) continue;
 
     const relPosix = relToRepo.split(path.sep).join('/');

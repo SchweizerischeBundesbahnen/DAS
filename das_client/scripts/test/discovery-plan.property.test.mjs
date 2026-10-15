@@ -18,7 +18,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { FLAVORS, discoverComponents, planCopy } from '../switch-flavor.mjs';
-import { makeTempDir, buildRepo, removeTempDir } from './helpers.mjs';
+import { makeTempDir, buildRepo, removeTempDir, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 120; // >= 100 minimum per the plan.
 
@@ -68,16 +68,21 @@ function uniqueNames(count, taken) {
 }
 
 /**
- * Build a random nested tree of small files, keyed by relative POSIX path.
- * At least one file so the owning component always contributes a copy entry.
+ * Build a random nested tree of small files, keyed by flavor-folder-relative
+ * POSIX path. Every key is prefixed with a recognized Flavor_Source_Root
+ * (`lib/` or `test/`) so planCopy — which only walks `.<flavor>/lib/` and
+ * `.<flavor>/test/` — maps each `.<flavor>/<root>/<rest>` to the repo-relative
+ * target `<component>/<root>/<rest>`. At least one file so the owning component
+ * always contributes a copy entry.
  * @returns {Record<string,string>}
  */
 function randomFileTree() {
   const fileCount = randIntRange(1, 4);
   const tree = {};
   for (let i = 0; i < fileCount; i++) {
+    const root = pick(SOURCE_ROOTS);
     const depth = randIntRange(0, 2);
-    const segments = [];
+    const segments = [root];
     for (let d = 0; d < depth; d++) segments.push(randomName(2, 5));
     segments.push(`${randomName(2, 6)}.dart`);
     const rel = segments.join('/');
@@ -240,8 +245,9 @@ test('Property 1: discovery/plan selects exactly the components owning the match
         `contributing components must equal exactly the matching-flavor owners (${ctx}); got [${contributingSorted.join(', ')}]`,
       );
 
-      // Every copy target must land under <component>/lib/ for an expected
-      // owner, and never reference an excluded directory.
+      // Every copy target must land under a recognized source root
+      // (<component>/lib/ or <component>/test/) for an expected owner, and
+      // never reference an excluded directory.
       for (const entry of allTargets) {
         const [first] = entry.target.split('/');
         assert.ok(
@@ -249,8 +255,8 @@ test('Property 1: discovery/plan selects exactly the components owning the match
           `copy target '${entry.target}' must belong to an expected owner (${ctx})`,
         );
         assert.ok(
-          entry.target.startsWith(`${first}/lib/`),
-          `copy target '${entry.target}' must land under '${first}/lib/' (${ctx})`,
+          SOURCE_ROOTS.some((root) => entry.target.startsWith(`${first}/${root}/`)),
+          `copy target '${entry.target}' must land under '${first}/{${SOURCE_ROOTS.join('|')}}/' (${ctx})`,
         );
         for (const excluded of EXCLUDED_DIR_NAMES) {
           assert.ok(

@@ -84,7 +84,9 @@ test('restoreBase tolerates one missing Base_Backup_File: restores the rest, cle
         {
           name: 'sfera',
           lib: { 'a.dart': baseA, 'b.dart': baseB },
-          flavors: { dev: { 'a.dart': 'DEV A\n', 'b.dart': 'DEV B\n' } },
+          // NEW layout: flavor files live under `.<flavor>/lib/...` (the flavor
+          // folder mirrors the package root), so a switch copies them into lib/.
+          flavors: { dev: { 'lib/a.dart': 'DEV A\n', 'lib/b.dart': 'DEV B\n' } },
         },
       ],
     });
@@ -143,20 +145,22 @@ test('saveToFlavor overwrites an existing destination and reports the overwrite 
     const preExistingDest = 'OLD DESTINATION CONTENT\n';
     const flavor = 'dev';
     const srcRel = 'sfera/lib/src/foo.dart';
-    const destRel = 'sfera/.dev/src/foo.dart';
+    // NEW layout: destination keeps the `lib/` root segment after `.<flavor>`.
+    const destRel = 'sfera/.dev/lib/src/foo.dart';
 
     await buildRepo(repoRoot, {
       components: [
         {
           name: 'sfera',
           lib: { 'src/foo.dart': sourceContent },
-          // Pre-existing, DIFFERENT-content file at the flavor destination.
-          flavors: { dev: { 'src/foo.dart': preExistingDest } },
+          // Pre-existing, DIFFERENT-content file at the flavor destination
+          // (under the `lib/` root, mirroring the package root).
+          flavors: { dev: { 'lib/src/foo.dart': preExistingDest } },
         },
       ],
     });
 
-    const destAbs = path.join(repoRoot, 'sfera', '.dev', 'src', 'foo.dart');
+    const destAbs = path.join(repoRoot, 'sfera', '.dev', 'lib', 'src', 'foo.dart');
     assert.equal(
       fs.readFileSync(destAbs, 'utf8'),
       preExistingDest,
@@ -229,8 +233,9 @@ test('saveToFlavor leaves the source lib/ file in place after a successful copy 
     assert.ok(fs.existsSync(srcAbs), 'source lib/ file should still exist');
     assert.equal(fs.readFileSync(srcAbs, 'utf8'), sourceContent, 'source content unchanged');
 
-    // And the copy landed at the derived flavor destination.
-    const destAbs = path.join(repoRoot, 'sfera', '.inte', 'src', 'bar.dart');
+    // And the copy landed at the derived flavor destination (NEW layout keeps
+    // the `lib/` root segment after `.<flavor>`).
+    const destAbs = path.join(repoRoot, 'sfera', '.inte', 'lib', 'src', 'bar.dart');
     assert.equal(fs.readFileSync(destAbs, 'utf8'), sourceContent, 'copy produced at flavor dest');
   });
 });

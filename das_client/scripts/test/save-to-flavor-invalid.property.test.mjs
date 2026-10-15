@@ -171,15 +171,21 @@ test('Property 17: saveToFlavor rejects invalid input (invalid flavor / missing 
         } while (missingRest === rest);
         file = `${componentName}/lib/${missingRest}`;
       } else {
-        // (c) Valid flavor + a path that is NOT <component>/lib/<rest> (Req 12.7).
+        // (c) Valid flavor + a path that is NOT a <component>/<root>/<rest>
+        //     source path, where <root> is a recognized Flavor_Source_Root
+        //     (lib or test). A `test/` path is now ACCEPTED, so it is NOT
+        //     generated here — only genuinely non-source paths (Req 12.7).
         flavor = pick(FLAVORS);
-        const shapeKind = randInt(2);
+        const shapeKind = randInt(3);
         if (shapeKind === 0) {
-          // <comp>/foo.dart — no lib/ segment after the component.
+          // <comp>/foo.dart — no lib//test/ segment after the component.
           file = `${componentName}/${randomName(1, 8)}.dart`;
-        } else {
+        } else if (shapeKind === 1) {
           // lib/foo.dart — no component segment before lib/.
           file = `lib/${randomName(1, 8)}.dart`;
+        } else {
+          // <comp>/bin/x.dart — a second segment that is NOT a source root.
+          file = `${componentName}/bin/${randomName(1, 8)}.dart`;
         }
       }
 
@@ -196,9 +202,10 @@ test('Property 17: saveToFlavor rejects invalid input (invalid flavor / missing 
 
       // Belt-and-suspenders: the derived flavor destination for a valid-shape
       // path must not have been created for the invalid_flavor / missing_source
-      // classes (which keep the <comp>/lib/<rest> shape).
+      // classes (which keep the <comp>/lib/<rest> shape). NEW layout keeps the
+      // `lib/` root segment after `.<flavor>`.
       if (invalidClass !== 'non_lib_path') {
-        const destAbs = path.join(repoRoot, componentName, flavor, rest);
+        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, 'lib', rest);
         assert.ok(
           !fs.existsSync(destAbs),
           `no file must have been created at the flavor destination (${ctx})`,

@@ -89,7 +89,7 @@ test('--dry-run: lists would-copy/would-delete, mutates nothing (Req 1.2, 1.3, 3
         {
           name: 'sfera',
           lib: { 'src/old_a.dart': 'OLD A\n', 'src/old_b.dart': 'OLD B\n' },
-          flavors: { dev: { 'src/foo.dart': 'DEV FOO\n', 'src/bar.dart': 'DEV BAR\n' } },
+          flavors: { dev: { 'lib/src/foo.dart': 'DEV FOO\n', 'lib/src/bar.dart': 'DEV BAR\n' } },
         },
       ],
       manifest: {
@@ -135,7 +135,7 @@ test('--dry-run --remove-dep: reports removal, pubspec untouched, no spawn (Req 
   const dir = await makeTempDir();
   try {
     await buildRepo(dir, {
-      components: [{ name: 'sfera', flavors: { dev: { 'src/foo.dart': 'DEV\n' } } }],
+      components: [{ name: 'sfera', flavors: { dev: { 'lib/src/foo.dart': 'DEV\n' } } }],
     });
 
     const pubspecPath = path.join(dir, 'app', 'pubspec.yaml');

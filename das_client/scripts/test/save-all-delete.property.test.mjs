@@ -3,19 +3,20 @@
 // Property test for saveAllToFlavor deletion behavior.
 //
 // Feature: flavor-code-switching, Property 20: Save-all deletes a flavor file
-// iff the deleted lib/ path has one: for each lib/ path Git reports as deleted
-// (listed in porcelain status but absent on disk), saveAllToFlavor removes the
-// derived flavor destination <component>/<flavor>/<rest> when that destination
-// exists, and leaves the Flavor_Folder unchanged (destination still absent) when
-// it does not. Processing of the remaining deleted paths still completes, and no
-// unrelated files are created.
+// iff the deleted source path has one: for each <component>/<root>/<rest> path
+// (root ∈ {lib, test}) Git reports as deleted (listed in porcelain status but
+// absent on disk), saveAllToFlavor removes the derived flavor destination
+// <component>/.<flavor>/<root>/<rest> when that destination exists, and leaves the
+// Flavor_Folder unchanged (destination still absent) when it does not. Processing
+// of the remaining deleted paths still completes, and no unrelated files are
+// created.
 //
 // Validates: Requirements 13.4, 13.5
 //
 // The Git working-tree state is faked via an injected `spawn`, so no real Git is
 // required: `git -C <repoRoot> rev-parse --show-toplevel` returns the repoRoot,
 // and `git -C <repoRoot> status --porcelain -z` returns a NUL-separated porcelain
-// stream listing the deleted paths. gitChangedLibFiles classifies each path as
+// stream listing the deleted paths. gitChangedSourceFiles classifies each path as
 // `deleted` purely because it is listed but does NOT exist under repoRoot on disk.
 //
 // Pure Node, zero third-party dependencies. Runs under `node --test`.
@@ -26,7 +27,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { saveAllToFlavor, FLAVORS } from '../switch-flavor.mjs';
-import { makeTempDir, removeTempDir, buildRepo } from './helpers.mjs';
+import { makeTempDir, removeTempDir, buildRepo, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 120; // >= 100 minimum per the plan.
 
@@ -87,7 +88,7 @@ function withSilencedConsole(fn) {
 }
 
 /**
- * Build a fake `spawn` that answers the two git calls gitChangedLibFiles makes:
+ * Build a fake `spawn` that answers the two git calls gitChangedSourceFiles makes:
  *   - `rev-parse --show-toplevel` → the repoRoot (so top-level === repoRoot)
  *   - `status --porcelain -z`     → the given NUL-separated porcelain stream
  * Any other call returns a non-zero status so the test fails loudly if the
@@ -128,30 +129,45 @@ function listFiles(root, dir) {
   return out;
 }
 
-test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor file iff the deleted lib/ path has one", async () => {
+test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor file iff the deleted source path has one", async () => {
   for (let i = 0; i < ITERATIONS; i++) {
     const repoRoot = await makeTempDir('flavor-save-all-delete-prop-');
     try {
       const flavor = pick(FLAVORS);
       const componentName = randomName(3, 10);
 
-      // Generate a set of DELETED lib paths <component>/lib/<rest>. They are NOT
-      // created under lib/ on disk, so gitChangedLibFiles classifies them deleted.
-      const count = randIntRange(1, 6);
-      const rests = new Set();
-      while (rests.size < count) rests.add(randomRest());
-      const deletedRests = [...rests];
+      // Generate a set of DELETED source paths <component>/<root>/<rest> spread
+      // across BOTH recognized source roots (lib/ and test/). They are NOT created
+      // under <root>/ on disk, so gitChangedSourceFiles classifies them deleted.
+      // Each entry: { root, rest } with a unique `${root}/${rest}` key.
+      const deleted = []; // { root, rest }
+      const usedKeys = new Set();
+      for (const root of SOURCE_ROOTS) {
+        const count = randIntRange(1, 3);
+        let guard = 0;
+        let placed = 0;
+        while (placed < count && guard < count * 10) {
+          guard++;
+          const rest = randomRest();
+          const key = `${root}/${rest}`;
+          if (usedKeys.has(key)) continue;
+          usedKeys.add(key);
+          deleted.push({ root, rest });
+          placed++;
+        }
+      }
 
       // For an arbitrary subset, PRE-CREATE the flavor destination on disk; the
-      // complement have NO flavor file at all.
-      const flavorFiles = {}; // rest -> content, for the subset with a dest
-      for (const rest of deletedRests) {
-        if (Math.random() < 0.5) flavorFiles[rest] = randomContent();
+      // complement have NO flavor file at all. The flavor seed key is written
+      // verbatim by buildRepo, so prefix it with the source root segment.
+      const flavorFiles = {}; // `${root}/${rest}` -> content, for the subset with a dest
+      for (const d of deleted) {
+        if (Math.random() < 0.5) flavorFiles[`${d.root}/${d.rest}`] = randomContent();
       }
 
       // Build the repo. The component has a lib/ folder (so it is discoverable as
-      // a component) but none of the deleted rests exist under lib/. The subset
-      // with a flavor destination is seeded via the flavors spec.
+      // a component) but none of the deleted paths exist under lib/ or test/. The
+      // subset with a flavor destination is seeded via the flavors spec.
       await buildRepo(repoRoot, {
         components: [
           {
@@ -166,37 +182,35 @@ test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor fil
 
       // Record which flavor destinations existed before, and the complete file
       // set before, to detect accidental creation of unrelated files.
-      const destExistedBefore = new Map(); // rest -> boolean
-      const destContentBefore = new Map(); // rest -> content (when existed)
-      for (const rest of deletedRests) {
-        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
-        const existed = fs.existsSync(destAbs);
-        destExistedBefore.set(rest, existed);
-        if (existed) destContentBefore.set(rest, fs.readFileSync(destAbs, 'utf8'));
+      const destExistedBefore = new Map(); // key -> boolean
+      for (const d of deleted) {
+        const key = `${d.root}/${d.rest}`;
+        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, d.root, d.rest);
+        destExistedBefore.set(key, fs.existsSync(destAbs));
       }
       const filesBefore = new Set(listFiles(repoRoot, repoRoot));
 
       // Build the fake porcelain -z stream: one `XY<space>PATH` record per deleted
       // path, NUL-terminated. Record shape is `XY PATH` (status = first 2 chars,
-      // path begins at index 3), matching gitChangedLibFiles' parsing. Alternate
+      // path begins at index 3), matching gitChangedSourceFiles' parsing. Alternate
       // between index-deleted (`D `) and worktree-deleted (` D`) status codes.
-      const records = deletedRests.map((rest, idx) => {
+      const records = deleted.map((d, idx) => {
         const status = idx % 2 === 0 ? ' D' : 'D ';
-        return `${status} ${componentName}/lib/${rest}`;
+        return `${status} ${componentName}/${d.root}/${d.rest}`;
       });
       const porcelainZ = records.map((r) => `${r}\0`).join('');
 
       const spawn = makeFakeSpawn(repoRoot, porcelainZ);
-      const ctx = `iter=${i} flavor='${flavor}' component='${componentName}' deleted=${deletedRests.length}`;
+      const ctx = `iter=${i} flavor='${flavor}' component='${componentName}' deleted=${deleted.length}`;
 
       const code = withSilencedConsole(() => saveAllToFlavor(repoRoot, flavor, { spawn }));
       assert.equal(code, 0, `saveAllToFlavor must return 0 (${ctx})`);
 
       // Per deleted path: dest existed → now removed; dest absent → still absent.
-      for (const rest of deletedRests) {
-        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, rest);
-        const destRel = `${componentName}/.${flavor}/${rest}`;
-        if (destExistedBefore.get(rest)) {
+      for (const d of deleted) {
+        const destAbs = path.join(repoRoot, componentName, `.${flavor}`, d.root, d.rest);
+        const destRel = `${componentName}/.${flavor}/${d.root}/${d.rest}`;
+        if (destExistedBefore.get(`${d.root}/${d.rest}`)) {
           assert.ok(
             !fs.existsSync(destAbs),
             `deleted path with a flavor file must have it removed: ${destRel} (${ctx})`,
@@ -224,9 +238,9 @@ test("Feature: flavor-code-switching, Property 20: Save-all deletes a flavor fil
 
       // Exactly the pre-existing flavor destinations were removed; nothing else.
       const removedExpected = new Set(
-        deletedRests
-          .filter((rest) => destExistedBefore.get(rest))
-          .map((rest) => `${componentName}/.${flavor}/${rest}`),
+        deleted
+          .filter((d) => destExistedBefore.get(`${d.root}/${d.rest}`))
+          .map((d) => `${componentName}/.${flavor}/${d.root}/${d.rest}`),
       );
       for (const f of filesBefore) {
         if (!filesAfter.has(f)) {

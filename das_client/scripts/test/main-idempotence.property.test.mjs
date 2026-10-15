@@ -22,7 +22,7 @@ import crypto from 'node:crypto';
 import path from 'node:path';
 
 import { main, FLAVORS, MANIFEST_FILENAME } from '../switch-flavor.mjs';
-import { makeTempDir, removeTempDir, buildRepo } from './helpers.mjs';
+import { makeTempDir, removeTempDir, buildRepo, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 120; // >= 100 minimum per the plan.
 
@@ -80,18 +80,23 @@ function uniqueNames(count) {
 }
 
 /**
- * Build a random nested tree of files keyed by relative POSIX path.
- * Guarantees at least one file so the owning component contributes a copy.
+ * Build a random nested tree of files keyed by flavor-folder-relative POSIX
+ * path. Every key is prefixed with a recognized Flavor_Source_Root (`lib/` or
+ * `test/`), because a switch only copies `.<flavor>/lib/` and `.<flavor>/test/`
+ * (mapping `.<flavor>/<root>/<rest>` → `<component>/<root>/<rest>`). The dir
+ * pool mixes both roots so a fixture spreads files across them. Guarantees at
+ * least one file so the owning component contributes a copy.
  * @returns {Record<string,string>}
  */
 function randomFileTree() {
   const fileCount = randIntRange(1, 6);
   const tree = {};
-  const dirPool = [''];
+  // Each prefix starts at a source root so files always land under lib/ or test/.
+  const dirPool = SOURCE_ROOTS.map((root) => root);
   const extraDirs = randInt(3);
   for (let i = 0; i < extraDirs; i++) {
     const depth = randIntRange(1, 3);
-    const segs = [];
+    const segs = [pick(SOURCE_ROOTS)];
     for (let d = 0; d < depth; d++) segs.push(randomName(1, 6));
     dirPool.push(segs.join('/'));
   }
@@ -101,7 +106,7 @@ function randomFileTree() {
     attempts++;
     const dir = pick(dirPool);
     const fileName = `${randomName(1, 8)}.dart`;
-    const rel = dir === '' ? fileName : `${dir}/${fileName}`;
+    const rel = `${dir}/${fileName}`;
     if (Object.prototype.hasOwnProperty.call(tree, rel)) continue;
     tree[rel] = randomContent();
   }

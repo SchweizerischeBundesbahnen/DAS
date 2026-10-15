@@ -3,11 +3,17 @@
 // Property test for the switch→restore-base round-trip.
 //
 // Feature: flavor-code-switching, Property 14: Switch-then-restore round-trips
-// lib/ to the base: switching to a flavor that overwrites some base files and
-// adds others, then running restore-base, returns lib/ to its original (base)
-// state — every overwritten file restored to its original content, every new
-// file removed, every unrelated file untouched — and clears the switch
-// bookkeeping (manifest removed, Base_Backup_Directory removed).
+// to the base: switching to a flavor that overwrites some base files and adds
+// others — across BOTH source roots (lib/ AND test/) — then running
+// restore-base, returns the repository to its original (base) state — every
+// overwritten file restored to its original content, every new file removed,
+// every unrelated file untouched — and clears the switch bookkeeping (manifest
+// removed, Base_Backup_Directory removed).
+//
+// Flavor folders mirror the Workspace_Component root: a flavor file lives at
+// .<flavor>/lib/<rest> or .<flavor>/test/<rest> and maps to the repo-relative
+// target lib/<rest> / test/<rest> (planCopy walking SOURCE_ROOTS). Base backups
+// mirror those targets under .flavor-base-backup/<component>/<root>/<rest>.
 //
 // Validates: Requirements 11.1, 11.2, 11.3, 11.4, 11.6
 //
@@ -26,7 +32,7 @@ import {
   BASE_BACKUP_DIRNAME,
   MANIFEST_FILENAME,
 } from '../switch-flavor.mjs';
-import { makeTempDir, removeTempDir, buildRepo } from './helpers.mjs';
+import { makeTempDir, removeTempDir, buildRepo, SOURCE_ROOTS } from './helpers.mjs';
 
 const ITERATIONS = 150; // >= 100 minimum per the plan.
 
@@ -43,6 +49,11 @@ function randIntRange(min, max) {
 /** Pick a random element of an array. */
 function pick(arr) {
   return arr[randInt(arr.length)];
+}
+
+/** Pick a random Flavor_Source_Root ('lib' or 'test'). */
+function pickRoot() {
+  return pick(SOURCE_ROOTS);
 }
 
 /** Produce a random lowercase identifier within the given length range. */
@@ -170,38 +181,48 @@ test('Property 14: switch then restore-base round-trips lib/ to the original bas
 
       for (let c = 0; c < componentCount; c++) {
         const name = `comp_${i}_${c}_${randomName(2, 5)}`;
-        const lib = {};
+        // Per-source-root base seeds (lib/ and test/) and flavor-folder files.
+        // Base files live at <component>/<root>/<rest>; flavor files are keyed
+        // `<root>/<rest>` so buildRepo writes them verbatim under .<flavor>/ and
+        // planCopy maps them back to <component>/<root>/<rest>.
+        const seeds = { lib: {}, test: {} };
         const flavorFiles = {};
 
-        // Overwrites: base file at rel + DIFFERENT-content flavor file at rel.
+        // Overwrites: base file at <root>/<rest> + DIFFERENT-content flavor file
+        // at the same <root>/<rest>. Each file is routed to a RANDOM source root
+        // so overwrites span both lib/ and test/.
         const overwriteCount = randIntRange(0, 3);
         for (const rel of distinctRelPaths(overwriteCount, usedRelPaths)) {
+          const root = pickRoot();
           const baseContent = randomContent();
-          lib[rel] = baseContent;
-          flavorFiles[rel] = differentContent(baseContent);
-          const libRel = `${name}/lib/${rel}`;
-          trackedLibPaths.add(libRel);
-          overwriteLibPaths.push(libRel);
+          seeds[root][rel] = baseContent;
+          flavorFiles[`${root}/${rel}`] = differentContent(baseContent);
+          const target = `${name}/${root}/${rel}`;
+          trackedLibPaths.add(target);
+          overwriteLibPaths.push(target);
         }
 
-        // New files: flavor file at rel with NO base file at rel.
+        // New files: flavor file at <root>/<rest> with NO base file there.
         const newCount = randIntRange(0, 3);
         for (const rel of distinctRelPaths(newCount, usedRelPaths)) {
-          flavorFiles[rel] = randomContent();
-          const libRel = `${name}/lib/${rel}`;
-          trackedLibPaths.add(libRel);
-          newLibPaths.push(libRel);
+          const root = pickRoot();
+          flavorFiles[`${root}/${rel}`] = randomContent();
+          const target = `${name}/${root}/${rel}`;
+          trackedLibPaths.add(target);
+          newLibPaths.push(target);
         }
 
-        // Unrelated pre-existing lib files the flavor never touches.
+        // Unrelated pre-existing files (lib/ or test/) the flavor never touches.
         const unrelatedCount = randIntRange(0, 3);
         for (const rel of distinctRelPaths(unrelatedCount, usedRelPaths)) {
-          lib[rel] = randomContent();
-          trackedLibPaths.add(`${name}/lib/${rel}`);
+          const root = pickRoot();
+          seeds[root][rel] = randomContent();
+          trackedLibPaths.add(`${name}/${root}/${rel}`);
         }
 
         const spec = { name };
-        if (Object.keys(lib).length > 0) spec.lib = lib;
+        if (Object.keys(seeds.lib).length > 0) spec.lib = seeds.lib;
+        if (Object.keys(seeds.test).length > 0) spec.test = seeds.test;
         if (Object.keys(flavorFiles).length > 0) spec.flavors = { [flavor]: flavorFiles };
         components.push(spec);
       }
@@ -213,19 +234,20 @@ test('Property 14: switch then restore-base round-trips lib/ to the original bas
         const comp = components[0];
         comp.flavors = comp.flavors ?? {};
         comp.flavors[flavor] = comp.flavors[flavor] ?? {};
+        const root = pickRoot();
         const [rel] = distinctRelPaths(1, usedRelPaths);
-        const libRel = `${comp.name}/lib/${rel}`;
+        const target = `${comp.name}/${root}/${rel}`;
         if (makeOverwrite) {
           const baseContent = randomContent();
-          comp.lib = comp.lib ?? {};
-          comp.lib[rel] = baseContent;
-          comp.flavors[flavor][rel] = differentContent(baseContent);
-          overwriteLibPaths.push(libRel);
+          comp[root] = comp[root] ?? {};
+          comp[root][rel] = baseContent;
+          comp.flavors[flavor][`${root}/${rel}`] = differentContent(baseContent);
+          overwriteLibPaths.push(target);
         } else {
-          comp.flavors[flavor][rel] = randomContent();
-          newLibPaths.push(libRel);
+          comp.flavors[flavor][`${root}/${rel}`] = randomContent();
+          newLibPaths.push(target);
         }
-        trackedLibPaths.add(libRel);
+        trackedLibPaths.add(target);
       };
       if (overwriteLibPaths.length === 0) ensureFlavorTarget(true);
       if (newLibPaths.length === 0) ensureFlavorTarget(false);

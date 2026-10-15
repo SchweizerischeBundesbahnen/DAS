@@ -20,7 +20,13 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 
 import { main, FLAVORS, MANIFEST_VERSION } from '../switch-flavor.mjs';
-import { makeTempDir, removeTempDir, buildRepo, readFileOrUndefined } from './helpers.mjs';
+import {
+  makeTempDir,
+  removeTempDir,
+  buildRepo,
+  readFileOrUndefined,
+  SOURCE_ROOTS,
+} from './helpers.mjs';
 
 const ITERATIONS = 150; // >= 100 minimum per the plan.
 
@@ -57,9 +63,13 @@ function randomContent(tag = '') {
 }
 
 /**
- * Build a random nested tree of flavor-source files: POSIX relpath -> content.
- * Guarantees at least one file so the copy plan is non-empty (main exits 1 on
- * an empty plan, which is not the scenario under test here).
+ * Build a random nested tree of flavor-source files, keyed by flavor-folder-
+ * relative POSIX path. Every key is prefixed with a recognized
+ * Flavor_Source_Root (`lib/` or `test/`) so a switch copies each
+ * `.<flavor>/<root>/<rest>` to the repo-relative target
+ * `<component>/<root>/<rest>`. Guarantees at least one file so the copy plan is
+ * non-empty (main exits 1 on an empty plan, which is not the scenario under
+ * test here).
  * @returns {Record<string, string>}
  */
 function randomFlavorTree() {
@@ -68,8 +78,9 @@ function randomFlavorTree() {
   let attempts = 0;
   while (Object.keys(tree).length < fileCount && attempts < fileCount * 10) {
     attempts++;
+    const root = pick(SOURCE_ROOTS);
     const depth = randInt(3); // 0..2 nested dirs
-    const segs = [];
+    const segs = [root];
     for (let d = 0; d < depth; d++) segs.push(randomName(1, 6));
     segs.push(`${randomName(1, 8)}.dart`);
     const rel = segs.join('/');
@@ -156,7 +167,9 @@ test('Property 7: first-run/corrupt manifest copies flavor files, writes new man
           const unrelatedLib = randomUnrelatedLib();
 
           for (const [rel, content] of Object.entries(flavorTree)) {
-            expectedTargets[`${name}/lib/${rel}`] = content;
+            // `rel` already carries its source root (lib/… or test/…), so the
+            // repo-relative target is `<component>/<rel>`.
+            expectedTargets[`${name}/${rel}`] = content;
           }
           for (const rel of Object.keys(unrelatedLib)) {
             unrelatedByAbs.set(path.join(repoRoot, name, 'lib', rel), unrelatedLib[rel]);
