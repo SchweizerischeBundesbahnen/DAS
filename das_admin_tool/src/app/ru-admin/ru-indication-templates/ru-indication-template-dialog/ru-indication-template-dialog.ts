@@ -38,22 +38,22 @@ export class RuIndicationTemplateDialog {
   });
   protected readonly ruIndicationTemplateForm = form(
     this.ruIndicationTemplateModel,
-    (ruIndication) => {
-      required(ruIndication.category, {
+    (ruIndicationTemplate) => {
+      required(ruIndicationTemplate.category, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
 
-      oneLanguageRequired(ruIndication.content, {
+      oneLanguageRequired(ruIndicationTemplate.content, {
         message: $localize`:@@ru_indications_form_one_language_error:Mindestens eine Sprache muss erfasst werden`,
       });
 
-      titleRequired(ruIndication.content.de, {
+      titleRequired(ruIndicationTemplate.content.de, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
-      titleRequired(ruIndication.content.fr, {
+      titleRequired(ruIndicationTemplate.content.fr, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
-      titleRequired(ruIndication.content.it, {
+      titleRequired(ruIndicationTemplate.content.it, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
     },

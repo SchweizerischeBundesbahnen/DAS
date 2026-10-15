@@ -7,7 +7,7 @@ import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { ExternalLink } from '~ru-admin/ru-admin.api';
 import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
 import { CompaniesInput } from '~shared/components/companies-input/companies-input';
-import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 import {
   arrayRequired,
   languageRequired,
@@ -43,7 +43,7 @@ export type ExternalLinkDialogEditResult = ExternalLink | 'delete';
   styleUrl: './external-link-dialog.css',
 })
 export class ExternalLinkDialog {
-  protected readonly languageProviderService = inject(LanguageProviderService);
+  protected readonly languageService = inject(LanguageService);
 
   protected readonly dialogData =
     inject<ExternalLink>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;

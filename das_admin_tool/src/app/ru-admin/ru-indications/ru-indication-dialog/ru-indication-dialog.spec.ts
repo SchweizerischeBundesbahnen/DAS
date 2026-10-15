@@ -3,8 +3,7 @@ import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { CompanyApi } from '~shared/services/company.api';
 import { RecentCompaniesService } from '~shared/services/recent-companies.service';
 import { hasError } from '~src/testing/utils';
-import { RuIndicationDialogData } from '../ru-indication.service';
-import { RuIndicationDialog } from './ru-indication-dialog';
+import { RuIndicationDialog, RuIndicationDialogData } from './ru-indication-dialog';
 
 const mockRecentCompaniesService = { get: () => [] };
 

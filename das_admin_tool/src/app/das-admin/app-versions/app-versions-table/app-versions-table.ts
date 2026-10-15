@@ -8,7 +8,7 @@ import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom
 import { AppVersionService } from '../app-version.service';
 
 @Component({
-  selector: 'app-app-versions-table',
+  selector: 'app-versions-table',
   imports: [SbbTableModule, DatePipe, SbbToggleCheckModule, SbbMiniButton, TableBottomBar],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',

@@ -8,7 +8,7 @@ import {
   RuIndicationContentForm,
   RuIndicationContentWithCategoryData,
 } from '~ru-admin/ru-indication-content-form/ru-indication-content-form';
-import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
+import { RuIndicationDialogData } from '../ru-indication-dialog';
 
 @Component({
   selector: 'app-category-content-form',

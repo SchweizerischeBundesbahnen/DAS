@@ -8,13 +8,13 @@ import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '~ru-admin/ru-adm
 import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
 import { CompaniesInput } from '~shared/components/companies-input/companies-input';
 
-export interface RuFeatureData {
+export interface RuFeatureToggleData {
   companyCode: string;
   key: RuFeatureKey;
   enabled: boolean;
 }
 
-export type RuFeatureDialogEditResult = RuFeature | 'delete';
+export type RuFeatureToggleDialogEditResult = RuFeature | 'delete';
 
 @Component({
   selector: 'app-ru-feature-toggle-dialog',
@@ -35,15 +35,15 @@ export class RuFeatureToggleDialog {
 
   protected readonly dialogTitle: string;
 
-  protected readonly ruFeatureModel = signal<RuFeatureData>({
+  protected readonly ruFeatureToggleModel = signal<RuFeatureToggleData>({
     companyCode: '',
     key: 'WARNAPP',
     enabled: false,
   });
-  protected readonly ruFeatureForm = form(this.ruFeatureModel, (ruFeature) => {
-    required(ruFeature.companyCode);
+  protected readonly ruFeatureToggleForm = form(this.ruFeatureToggleModel, (ruFeatureToggle) => {
+    required(ruFeatureToggle.companyCode);
 
-    required(ruFeature.key);
+    required(ruFeatureToggle.key);
   });
 
   protected readonly featureKeys = RU_FEATURE_KEY_LABELS();
@@ -55,7 +55,7 @@ export class RuFeatureToggleDialog {
       : $localize`:@@ru_feature_toggles_dialog_title_create:DAS Mobile App Feature erfassen`;
 
     if (isEdit && this.dialogData) {
-      this.ruFeatureModel.update(() => ({
+      this.ruFeatureToggleModel.update(() => ({
         companyCode: this.dialogData!.companyCode,
         key: this.dialogData!.key,
         enabled: this.dialogData!.enabled,

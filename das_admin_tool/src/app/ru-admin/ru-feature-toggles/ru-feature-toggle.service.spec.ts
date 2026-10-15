@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { RecentCompaniesService } from '~shared/services/recent-companies.service';
 import { ToastService } from '~shared/services/toast.service';
 import { RuAdminApi, RuFeature, RuFeatureApiResponse } from '../ru-admin.api';
-import { RuFeatureDialogEditResult } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog';
+import { RuFeatureToggleDialogEditResult } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog';
 import { RuFeatureToggleService } from './ru-feature-toggle.service';
 
 const ruFeature: RuFeature = {
@@ -36,7 +36,7 @@ const mockRecentCompaniesService: Partial<RecentCompaniesService> = {
   save: vi.fn(),
 };
 
-function mockDialogResult(result: RuFeatureDialogEditResult | null): void {
+function mockDialogResult(result: RuFeatureToggleDialogEditResult | null): void {
   openSpy.mockReturnValue({
     afterClosed: of({ result } as SbbOverlayCloseEvent),
   });

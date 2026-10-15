@@ -13,7 +13,7 @@ import {
 import { ExternalLink } from '~ru-admin/ru-admin.api';
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
-import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 import { ExternalLinkService } from '../external-link.service';
 
 interface ExternalLinkFilter extends SbbTableFilter {
@@ -36,7 +36,7 @@ interface ExternalLinkFilter extends SbbTableFilter {
 })
 export class ExternalLinksTable {
   private readonly externalLinkService = inject(ExternalLinkService);
-  private readonly languageProviderService = inject(LanguageProviderService);
+  private readonly languageService = inject(LanguageService);
 
   protected dataSource = new SbbTableDataSource<ExternalLink, ExternalLinkFilter>();
   protected columns = ['select', 'title', 'link', 'lastModifiedAt', 'lastModifiedBy', 'action'];
@@ -45,7 +45,7 @@ export class ExternalLinksTable {
 
   protected readonly filterModel = signal({
     search: '',
-    language: this.languageProviderService.currentLanguage.path,
+    language: this.languageService.currentLanguage.path,
   });
   protected readonly filterForm = form(this.filterModel);
 

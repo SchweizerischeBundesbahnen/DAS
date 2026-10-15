@@ -16,7 +16,7 @@ import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin.ap
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
 import { CompanyApi } from '~shared/services/company.api';
-import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
 import { displayTrainNumberFilter } from '../ru-indication-dialog/train-number-input/train-number-input';
 import { RuIndicationService } from '../ru-indication.service';
@@ -49,7 +49,7 @@ export interface RuIndicationFilter extends SbbTableFilter {
 export class RuIndicationsTable {
   protected readonly companyApi = inject(CompanyApi);
   protected readonly locationApi = inject(LocationApi);
-  private readonly languageProviderService = inject(LanguageProviderService);
+  private readonly languageService = inject(LanguageService);
   private readonly ruIndicationService = inject(RuIndicationService);
 
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
@@ -86,7 +86,7 @@ export class RuIndicationsTable {
 
   protected readonly filterModel = signal({
     search: '',
-    language: this.languageProviderService.currentLanguage.path,
+    language: this.languageService.currentLanguage.path,
     category: '',
     companies: '',
     trainNumbers: '',
@@ -152,7 +152,7 @@ export class RuIndicationsTable {
 
   protected periodsValue(row: RuIndication): string {
     return row.periods
-      .map((period) => displayPeriod(period, this.languageProviderService.currentLanguage.localeId))
+      .map((period) => displayPeriod(period, this.languageService.currentLanguage.localeId))
       .join(', ');
   }
 

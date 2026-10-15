@@ -9,7 +9,7 @@ export interface Language {
 export type LanguageCode = 'de' | 'fr' | 'it';
 
 @Service()
-export class LanguageProviderService {
+export class LanguageService {
   private readonly localeId = inject(LOCALE_ID);
 
   public readonly allLanguages: Language[] = [

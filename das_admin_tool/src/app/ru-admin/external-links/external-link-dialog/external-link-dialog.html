@@ -14,7 +14,7 @@
       [field]="externalLinkForm.companies"
     />
     <sbb-tab-group>
-      @for (language of languageProviderService.allLanguages; track language.localeId) {
+      @for (language of languageService.allLanguages; track language.localeId) {
         <sbb-tab-label [iconName]="isLanguageEmpty(language.path) ? 'circle-dotted-small' : ''">{{
           language.path | uppercase
         }}</sbb-tab-label>

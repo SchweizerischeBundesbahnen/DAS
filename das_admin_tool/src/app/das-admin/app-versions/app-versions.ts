@@ -6,7 +6,7 @@ import { AppVersionService } from './app-version.service';
 import { AppVersionsTable } from './app-versions-table/app-versions-table';
 
 @Component({
-  selector: 'app-app-versions',
+  selector: 'app-versions',
   imports: [SbbTitleModule, SbbSecondaryButton, AppVersionsTable, SbbLoadingIndicatorCircleModule],
   templateUrl: './app-versions.html',
   styleUrl: './app-versions.css',

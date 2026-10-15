@@ -4,8 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '~shared/services/base-dialog.service';
 import { RuAdminApi, RuFeature } from '../ru-admin.api';
 import {
-  RuFeatureDialogEditResult,
   RuFeatureToggleDialog,
+  RuFeatureToggleDialogEditResult,
 } from './ru-feature-toggle-dialog/ru-feature-toggle-dialog';
 
 @Service()
@@ -15,7 +15,7 @@ export class RuFeatureToggleService extends BaseDialogService {
 
   async edit(ruFeature: RuFeature): Promise<void> {
     const event = await firstValueFrom(
-      this.dialogService.open<RuFeatureToggleDialog, RuFeatureDialogEditResult>(
+      this.dialogService.open<RuFeatureToggleDialog, RuFeatureToggleDialogEditResult>(
         RuFeatureToggleDialog,
         { data: ruFeature },
       ).afterClosed,

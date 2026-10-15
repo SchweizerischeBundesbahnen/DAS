@@ -1,6 +1,6 @@
 import { ErrorHandler } from '@angular/core';
 
-export class ReportToInstanaErrorHandler implements ErrorHandler {
+export class InstanaErrorHandler implements ErrorHandler {
   handleError(error: string | Error) {
     if (typeof ineum !== 'undefined') {
       ineum('reportError', error);

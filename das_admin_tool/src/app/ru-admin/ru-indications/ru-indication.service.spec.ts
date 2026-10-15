@@ -12,7 +12,8 @@ import {
   RuIndicationTemplate,
   RuIndicationTemplateApiResponse,
 } from '../ru-admin.api';
-import { RuIndicationDialogEditResult, RuIndicationService } from './ru-indication.service';
+import { RuIndicationDialogEditResult } from './ru-indication-dialog/ru-indication-dialog';
+import { RuIndicationService } from './ru-indication.service';
 
 const ruIndicationSample: RuIndication = {
   id: 1,

@@ -3,7 +3,7 @@ import { FieldTree, FormField } from '@angular/forms/signals';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbIconModule } from '@sbb-esta/lyne-angular/icon';
 import { SbbSelectModule } from '@sbb-esta/lyne-angular/select';
-import { LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageService } from '~shared/services/language.service';
 
 @Component({
   selector: 'app-table-search-header',
@@ -12,7 +12,7 @@ import { LanguageProviderService } from '~shared/services/language-provider.serv
   styleUrl: './table-search-header.css',
 })
 export class TableSearchHeader {
-  protected readonly languageProviderService = inject(LanguageProviderService);
+  protected readonly languageService = inject(LanguageService);
 
   readonly searchField = input.required<FieldTree<string>>();
   readonly languageField = input<FieldTree<string>>();

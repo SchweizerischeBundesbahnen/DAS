@@ -18,7 +18,12 @@ import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/st
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
-import { DayOfWeek, RuIndication, RuIndicationTrainNumberFilter } from '~ru-admin/ru-admin.api';
+import {
+  DayOfWeek,
+  RuIndication,
+  RuIndicationTemplate,
+  RuIndicationTrainNumberFilter,
+} from '~ru-admin/ru-admin.api';
 import {
   contentFormValue,
   createContentFormTree,
@@ -32,7 +37,6 @@ import {
   languageRequired,
   oneLanguageRequired,
 } from '~shared/utils/form-validators.util';
-import { RuIndicationDialogData } from '../ru-indication.service';
 import { CategoryContentForm } from './category-content-form/category-content-form';
 import { LocationsInput } from './locations-input/locations-input';
 import { PeriodsInput } from './periods-input/periods-input';
@@ -60,6 +64,13 @@ export interface RuIndicationData {
   scope: RuIndicationScopeData;
   periods: RuIndicationPeriodData[];
 }
+
+export interface RuIndicationDialogData {
+  ruIndication?: RuIndication;
+  templates: RuIndicationTemplate[];
+}
+
+export type RuIndicationDialogEditResult = RuIndication | 'delete';
 
 @Component({
   selector: 'app-ru-indication-dialog',

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { LocationApi } from '~ru-admin/location.api';
 import { RuIndication, RuIndicationApiResponse } from '~ru-admin/ru-admin.api';
 import { CompanyApi } from '~shared/services/company.api';
-import { LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageService } from '~shared/services/language.service';
 import { displayPeriod } from '../ru-indication-dialog/periods-input/periods-input';
 import { RuIndicationService } from '../ru-indication.service';
 import { RuIndicationFilter, RuIndicationsTable } from './ru-indications-table';
@@ -35,9 +35,9 @@ const mockRuIndicationService: Partial<RuIndicationService> = {
   deleteAll: vi.fn(() => Promise.resolve()),
 };
 
-const mockLanguageProviderService = {
+const mockLanguageService = {
   currentLanguage: { localeId: 'de-CH', path: 'de', label: 'Deutsch' },
-} satisfies Partial<LanguageProviderService>;
+} satisfies Partial<LanguageService>;
 
 const mockCompanyApi: Partial<CompanyApi> = {
   formatCompanies: () => 'SBB, BLS',
@@ -56,7 +56,7 @@ function createComponent(): RuIndicationsTable {
     providers: [
       RuIndicationsTable,
       { provide: RuIndicationService, useValue: mockRuIndicationService },
-      { provide: LanguageProviderService, useValue: mockLanguageProviderService },
+      { provide: LanguageService, useValue: mockLanguageService },
       { provide: CompanyApi, useValue: mockCompanyApi },
       { provide: LocationApi, useValue: mockLocationApi },
     ],
@@ -98,10 +98,7 @@ describe('RuIndicationsTable', () => {
 
   it('periodsValue should format periods using displayPeriod', () => {
     const comp = createComponent();
-    const expected = displayPeriod(
-      sample.periods[0],
-      mockLanguageProviderService.currentLanguage.localeId,
-    );
+    const expected = displayPeriod(sample.periods[0], mockLanguageService.currentLanguage.localeId);
     expect(comp['periodsValue'](sample)).toBe(expected);
   });
 

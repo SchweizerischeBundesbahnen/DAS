@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RuAdminApi } from './ru-admin.api';
 
-describe('DasAdminApi', () => {
+describe('RuAdminApi', () => {
   let ruAdminApi: RuAdminApi;
 
   beforeEach(() => {

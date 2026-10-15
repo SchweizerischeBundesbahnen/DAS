@@ -3,7 +3,10 @@ import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseDialogService } from '~shared/services/base-dialog.service';
 import { AppVersion, DasAdminApi } from '../das-admin.api';
-import { AppVersionDialog, VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
+import {
+  AppVersionDialog,
+  AppVersionDialogEditResult,
+} from './app-version-dialog/app-version-dialog';
 
 @Service()
 export class AppVersionService extends BaseDialogService {
@@ -12,7 +15,7 @@ export class AppVersionService extends BaseDialogService {
 
   async edit(appVersion: AppVersion) {
     const event = await firstValueFrom(
-      this.dialogService.open<AppVersionDialog, VersionDialogEditResult>(AppVersionDialog, {
+      this.dialogService.open<AppVersionDialog, AppVersionDialogEditResult>(AppVersionDialog, {
         data: appVersion,
       }).afterClosed,
     );

@@ -13,7 +13,7 @@ import {
 import { RuIndicationTemplate } from '~ru-admin/ru-admin.api';
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
-import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 import { RuIndicationTemplateService } from '../ru-indication-template.service';
 
 interface RuIndicationTemplateFilter extends SbbTableFilter {
@@ -35,7 +35,7 @@ interface RuIndicationTemplateFilter extends SbbTableFilter {
   styleUrl: './ru-indication-templates-table.css',
 })
 export class RuIndicationTemplatesTable {
-  private readonly languageProviderService = inject(LanguageProviderService);
+  private readonly languageService = inject(LanguageService);
   private readonly ruIndicationTemplateService = inject(RuIndicationTemplateService);
 
   protected dataSource = new SbbTableDataSource<RuIndicationTemplate, RuIndicationTemplateFilter>();
@@ -53,7 +53,7 @@ export class RuIndicationTemplatesTable {
 
   protected readonly filterModel = signal({
     search: '',
-    language: this.languageProviderService.currentLanguage.path,
+    language: this.languageService.currentLanguage.path,
   });
   protected readonly filterForm = form(this.filterModel);
 

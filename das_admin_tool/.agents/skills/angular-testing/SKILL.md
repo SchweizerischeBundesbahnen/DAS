@@ -69,7 +69,7 @@ import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { MyService } from './my.service';
 import { MyApi } from '../my-api';
-import { ToastService } from '~shared/toast.service';
+import { ToastService } from '~shared/services/toast.service';
 
 const mockApi: Partial<MyApi> = {
   getData: () => of({ data: [] }),

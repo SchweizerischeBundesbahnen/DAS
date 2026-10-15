@@ -51,13 +51,13 @@
     iconName="globe-small"
     id="language-menu-trigger"
     class="last-element"
-    >{{ languageProviderService.currentLanguage.label }}</sbb-header-button
+    >{{ languageService.currentLanguage.label }}</sbb-header-button
   >
   <sbb-menu trigger="language-menu-trigger">
-    @for (language of languageProviderService.allLanguages; track language.localeId) {
+    @for (language of languageService.allLanguages; track language.localeId) {
       <sbb-menu-link
         [iconName]="languageIconName(language)"
-        (click)="languageProviderService.switch(language)"
+        (click)="languageService.switch(language)"
         >{{ language.label }}</sbb-menu-link
       >
     }

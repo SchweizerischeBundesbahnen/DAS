@@ -6,7 +6,7 @@ import { SbbError, SbbFormField } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTab, SbbTabGroup, SbbTabLabel } from '@sbb-esta/lyne-angular/tabs';
 import { SbbTooltipDirective } from '@sbb-esta/lyne-angular/tooltip';
 import { RuIndicationContent, RuIndicationLanguageContent } from '~ru-admin/ru-admin.api';
-import { LanguageCode, LanguageProviderService } from '~shared/services/language-provider.service';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
 
 export interface RuIndicationLanguageContentData {
   title: string;
@@ -90,7 +90,7 @@ export function contentFormValue(
   styleUrl: './ru-indication-content-form.css',
 })
 export class RuIndicationContentForm {
-  protected readonly languageProviderService = inject(LanguageProviderService);
+  protected readonly languageService = inject(LanguageService);
 
   readonly form =
     input.required<FieldTree<RuIndicationContentWithCategoryData | RuIndicationContentData>>();

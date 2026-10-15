@@ -43,7 +43,7 @@ describe('RuFeatureToggleDialog', () => {
     const dialog = createDialog();
 
     expect(dialog['dialogData']?.id).toBeFalsy();
-    expect(dialog['ruFeatureForm']().value()).toEqual({
+    expect(dialog['ruFeatureToggleForm']().value()).toEqual({
       companyCode: '',
       key: 'WARNAPP',
       enabled: false,
@@ -54,7 +54,7 @@ describe('RuFeatureToggleDialog', () => {
     const dialog = createDialog(existingRuFeature);
 
     expect(dialog['dialogData']?.id).toBeDefined();
-    expect(dialog['ruFeatureForm']().value()).toEqual({
+    expect(dialog['ruFeatureToggleForm']().value()).toEqual({
       companyCode: '1085',
       key: 'WARNAPP',
       enabled: true,
@@ -64,16 +64,16 @@ describe('RuFeatureToggleDialog', () => {
   it('companyCode should be invalid when empty', () => {
     const dialog = createDialog();
 
-    dialog['ruFeatureForm'].companyCode().value.set('');
+    dialog['ruFeatureToggleForm'].companyCode().value.set('');
 
-    expect(hasError(dialog['ruFeatureForm'].companyCode(), 'required')).toBe(true);
+    expect(hasError(dialog['ruFeatureToggleForm'].companyCode(), 'required')).toBe(true);
   });
 
   it('companyCode should be valid when it matches a known company', () => {
     const dialog = createDialog();
 
-    dialog['ruFeatureForm'].companyCode().value.set('1085');
+    dialog['ruFeatureToggleForm'].companyCode().value.set('1085');
 
-    expect(dialog['ruFeatureForm'].companyCode().errors()).toEqual([]);
+    expect(dialog['ruFeatureToggleForm'].companyCode().errors()).toEqual([]);
   });
 });

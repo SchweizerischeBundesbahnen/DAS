@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { RecentCompaniesService } from '~shared/services/recent-companies.service';
 import { ToastService } from '~shared/services/toast.service';
 import { AppVersion, AppVersionApiResponse, DasAdminApi } from '../das-admin.api';
-import { VersionDialogEditResult } from './app-version-dialog/app-version-dialog';
+import { AppVersionDialogEditResult } from './app-version-dialog/app-version-dialog';
 import { AppVersionService } from './app-version.service';
 
 const appVersion: AppVersion = {
@@ -31,7 +31,7 @@ const openSpy = vi.fn();
 
 const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
-function mockDialogResult(result: VersionDialogEditResult) {
+function mockDialogResult(result: AppVersionDialogEditResult) {
   openSpy.mockReturnValue({
     afterClosed: of({ result } as SbbOverlayCloseEvent),
   });

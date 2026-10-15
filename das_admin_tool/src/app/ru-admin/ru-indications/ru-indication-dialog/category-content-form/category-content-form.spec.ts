@@ -2,7 +2,7 @@ import { Injector, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { form } from '@angular/forms/signals';
 import { createContentFormTree } from '~ru-admin/ru-indication-content-form/ru-indication-content-form';
-import { RuIndicationDialogData } from '~ru-admin/ru-indications/ru-indication.service';
+import { RuIndicationDialogData } from '../ru-indication-dialog';
 import { CategoryContentForm } from './category-content-form';
 
 describe('CategoryContentForm', () => {
