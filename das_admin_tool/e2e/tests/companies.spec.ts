@@ -13,8 +13,8 @@ import {
 import { CompaniesApi } from '../utils/companies-api';
 
 /**
- * Codes 0001-0099 are reserved for this test. Each run picks a random one so parallel CI runs
- * against the shared dev backend don't collide.
+ * Uses random codes in the range of 0001-0099 for parallel runs without collisions.
+ *
  */
 function randomTestCode(): string {
   return `00${String(randomInt(1, 100)).padStart(2, '0')}`;

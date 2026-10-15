@@ -197,8 +197,7 @@ async function waitForResponse(page: Page, method: 'POST' | 'PUT' | 'DELETE' | '
 
 /**
  * Waits for the backend response of a create/update/delete regardless of its status, so a failing
- * request (e.g. 409 because the entry already exists) is reported by {@link expectSuccessful}
- * instead of being ignored until the test times out.
+ * request is reported by {@link expectSuccessful} instead of being ignored until the test times out.
  */
 function waitForMutationResponse(page: Page, method: 'POST' | 'PUT' | 'DELETE') {
   return page.waitForResponse((resp) => {
