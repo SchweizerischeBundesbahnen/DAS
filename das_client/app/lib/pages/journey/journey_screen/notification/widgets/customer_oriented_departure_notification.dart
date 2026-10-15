@@ -1,8 +1,8 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_dialog.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -127,9 +127,9 @@ class _BaseNotification extends StatelessWidget {
   }
 
   Widget _departureProcessButton(BuildContext context) {
-    final viewModel = context.read<UxTestingViewModel>();
+    final ruFeatureProvider = context.read<RuFeatureProvider>();
     return FutureBuilder(
-      future: viewModel.isDepartureProcessFeatureEnabled,
+      future: ruFeatureProvider.isRuFeatureEnabled(.departureProcess),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 

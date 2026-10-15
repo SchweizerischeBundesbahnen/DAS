@@ -27,7 +27,6 @@ import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_
 import 'package:app/pages/journey/journey_screen/view_model/planned_time_delay_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
@@ -48,7 +47,6 @@ class JourneyScope extends DIScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerCustomerOrientedDepartureViewModel();
-    getIt.registerUxTestingViewModel();
     getIt.registerSferaDelayViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerPlannedTimeDelayViewModel();
@@ -299,17 +297,6 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         simTrainViewModel: DI.get(),
         journeyPositionStream: DI.get<JourneyPositionViewModel>().model,
-      ),
-      dispose: (vm) => vm.dispose(),
-    );
-  }
-
-  void registerUxTestingViewModel() {
-    registerSingleton<UxTestingViewModel>(
-      UxTestingViewModel(
-        sferaRepo: DI.get(),
-        ruFeatureProvider: DI.get(),
-        formationRepository: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

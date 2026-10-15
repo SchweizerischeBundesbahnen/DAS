@@ -12,7 +12,6 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/reauthenti
 import 'package:app/pages/journey/journey_screen/notification/widgets/replacement_series_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/suspicious_segment_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/notification_priority_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/sound/das_sounds.dart';
@@ -33,42 +32,34 @@ class NotificationSpace extends StatelessWidget {
       onData: (data) {
         _triggerWarnappNotification(context);
       },
-      child: StreamListener(
-        stream: context.read<UxTestingViewModel>().uxTestingEvents,
-        onData: (data) {
-          if (data.isWarn) {
-            _triggerWarnappNotification(context);
-          }
-        },
-        child: StreamBuilder(
-          stream: notificationPriorityVM.model,
-          initialData: notificationPriorityVM.modelValue,
-          builder: (context, asyncSnapshot) {
-            final data = asyncSnapshot.requireData;
+      child: StreamBuilder(
+        stream: notificationPriorityVM.model,
+        initialData: notificationPriorityVM.modelValue,
+        builder: (context, asyncSnapshot) {
+          final data = asyncSnapshot.requireData;
 
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
-              child: Column(
-                mainAxisSize: .min,
-                children: [
-                  const SizedBox(height: SBBSpacing.xSmall),
-                  // one slot per type in priority order: showing or hiding a notification resizes its
-                  // slot, so the other notifications slide to their new position
-                  for (final type in NotificationType.values)
-                    AnimatedNotificationVisibility(
-                      visible: data.contains(type),
-                      child: data.contains(type)
-                          ? Padding(
-                              padding: const EdgeInsets.only(bottom: SBBSpacing.xSmall),
-                              child: type.toWidget(),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                ],
-              ),
-            );
-          },
-        ),
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: JourneyOverview.horizontalPadding),
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                const SizedBox(height: SBBSpacing.xSmall),
+                // one slot per type in priority order: showing or hiding a notification resizes its
+                // slot, so the other notifications slide to their new position
+                for (final type in NotificationType.values)
+                  AnimatedNotificationVisibility(
+                    visible: data.contains(type),
+                    child: data.contains(type)
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: SBBSpacing.xSmall),
+                            child: type.toWidget(),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

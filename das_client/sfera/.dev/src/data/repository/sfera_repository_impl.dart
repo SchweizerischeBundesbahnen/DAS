@@ -1,0 +1,653 @@
+import 'dart:async';
+import 'dart:core';
+import 'dart:ui';
+
+import 'package:auth/component.dart';
+import 'package:collection/collection.dart';
+import 'package:connectivity_x/component.dart';
+import 'package:core_data/component.dart';
+import 'package:logging/logging.dart';
+import 'package:mqtt/component.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/data/api/event/journey_profile_event_handler.dart';
+import 'package:sfera/src/data/api/event/network_specific_event_handler.dart';
+import 'package:sfera/src/data/api/event/related_train_information_event_handler.dart';
+import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
+import 'package:sfera/src/data/api/task/handshake_task.dart';
+import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
+import 'package:sfera/src/data/api/task/request_local_regulations_task.dart';
+import 'package:sfera/src/data/api/task/request_related_train_information_task.dart';
+import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
+import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
+import 'package:sfera/src/data/dto/departure_dispatch_notification_event_dto.dart';
+import 'package:sfera/src/data/dto/disturbance_msg_event_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/message_header_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_message_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
+import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
+import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
+import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
+import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/model/otn_id.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:uuid/uuid.dart';
+
+final _log = Logger('SferaRepoImpl');
+const int _missingSegmentProfilesMaxRetryCount = 3;
+
+class SferaRepoImpl({
+  required final MqttService _mqttService,
+  required final SferaLocalDatabaseService _localService,
+  required final SferaAuthProvider _authProvider,
+  required final SferaLocalRepo _localRepo,
+  required final ConnectivityManager _connectivityManager,
+  required final String sferaVersion,
+  required final String deviceId,
+  required final Authenticator _authenticator,
+}) implements SferaRepository {
+  this {
+    _initialize();
+  }
+
+  StreamSubscription? _mqttStreamSubscription;
+  StreamSubscription? _connectivitySubscription;
+  StreamSubscription? _authenticatorSubscription;
+  final List<SferaTask> _tasks = [];
+  final List<SferaEventMessageHandler> _eventMessageHandlers = [];
+
+  OtnId? _otnId;
+  JourneyProfileDto? _journeyProfile;
+  final List<SegmentProfileDto> _segmentProfiles = [];
+  final List<TrainCharacteristicsDto> _trainCharacteristics = [];
+  RelatedTrainInformationDto? _relatedTrainInformation;
+  bool _hasOfflineData = false;
+
+  int _missingSpRequestRetryCount = 0;
+  int _lastMissingSegmentProfileCount = 0;
+
+  final _taskDeleteLock = Lock();
+
+  final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
+  final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
+  final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
+  final _rxWarnappEvent = BehaviorSubject<WarnappEvent?>.seeded(null);
+  final _rxDepartureDispatchNotificationEvent = BehaviorSubject<DepartureDispatchNotificationEvent?>.seeded(null);
+  final _rxDisturbanceEvent = BehaviorSubject<DisturbanceEvent?>.seeded(null);
+
+  // TODO: https://github.com/SchweizerischeBundesbahnen/DAS/issues/2755
+  // refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
+  // repository should not expose a state, should just expose data stream
+  // once first listener tunes in, connect
+  // once last listener cancels subscription, disconnect
+  // refactor with viewModel change
+  @override
+  Stream<SferaRemoteRepositoryState> get stateStream => _rxState.map((s) => s.toExternalState()).distinct();
+
+  @override
+  Stream<Journey?> get journeyStream => _rxJourney.stream;
+
+  @override
+  Stream<UxTestingEvent?> get uxTestingEventStream => _rxUxTestingEvent.stream;
+
+  @override
+  Stream<WarnappEvent?> get warnappEventStream => _rxWarnappEvent.stream;
+
+  @override
+  Stream<DisturbanceEvent?> get disturbanceEventStream => _rxDisturbanceEvent.distinct();
+
+  @override
+  Stream<DepartureDispatchNotificationEvent?> get departureDispatchNotificationEventStream =>
+      _rxDepartureDispatchNotificationEvent.stream;
+
+  @override
+  SferaError? lastError;
+
+  /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
+  /// Other tasks like loading SP, JPs and TCs are triggered on completion.
+  @override
+  Future<void> connect(TrainIdentification trainId) async {
+    final OtnId otnId = _toOtnId(trainId);
+    _log.info('Starting new connection for $otnId');
+    _otnId = otnId;
+    _tasks.clear();
+    lastError = null;
+    _rxState.add(.connecting);
+    _hasOfflineData = false;
+
+    final isConnected = await _tryMqttConnect();
+    if (!isConnected) {
+      final success = await _loadLocalJourney(otnId);
+      if (!success) {
+        _otnId = null;
+        lastError = .connectionFailed();
+        _rxState.add(.disconnected);
+      }
+    }
+  }
+
+  Future<bool> _tryMqttConnect() async {
+    final otnId = _otnId;
+    if (otnId == null) return false;
+
+    final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
+    if (isConnected) {
+      await _initiateHandshake(otnId);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> _loadLocalJourney(OtnId otnId) async {
+    final localJourney = await _localRepo.getJourney(
+      company: otnId.company,
+      trainNumber: otnId.operationalTrainNumber,
+      startDate: otnId.startDate,
+    );
+
+    if (localJourney == null || !localJourney.valid) {
+      _log.info('No valid offline Journey found');
+      return false;
+    }
+
+    _log.info('Using offline data.');
+    _rxJourney.add(localJourney);
+    _hasOfflineData = true;
+    _rxState.add(.offlineData);
+    return true;
+  }
+
+  OtnId _toOtnId(TrainIdentification trainId) {
+    final otnId = OtnId(
+      company: trainId.companyCode,
+      operationalTrainNumber: trainId.trainNumber,
+      startDate: trainId.date,
+    );
+    return otnId;
+  }
+
+  void _useOfflineDataOrDisconnect() {
+    if (_hasOfflineData) {
+      _mqttService.disconnect();
+      _rxState.add(.offlineData);
+    } else {
+      disconnect(resetError: false);
+    }
+  }
+
+  /// Sends [SessionTermination] and disconnects from SFERA broker.
+  ///
+  /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaRemoteRepositoryInternalState.connected].
+  @override
+  Future<void> disconnect({bool resetError = true}) async {
+    final otnId = _otnId;
+    if (_rxState.value == .connected && otnId != null) {
+      _log.info('Sending session termination request for $otnId...');
+      final header = messageHeader(sender: otnId.company);
+      final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
+      final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+      _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
+    }
+
+    if (resetError) {
+      lastError = null;
+    }
+
+    _mqttService.disconnect();
+    _rxJourney.add(null);
+    _rxDepartureDispatchNotificationEvent.add(null);
+    _rxUxTestingEvent.add(null);
+    _rxWarnappEvent.add(null);
+    _rxDisturbanceEvent.add(null);
+    _rxState.add(.disconnected);
+    _hasOfflineData = false;
+  }
+
+  @override
+  void dispose() {
+    _rxJourney.close();
+    _rxState.close();
+    _rxUxTestingEvent.close();
+    _rxDepartureDispatchNotificationEvent.close();
+    _mqttStreamSubscription?.cancel();
+    _mqttStreamSubscription = null;
+    _connectivitySubscription?.cancel();
+    _connectivitySubscription = null;
+    _rxWarnappEvent.close();
+    _rxDisturbanceEvent.close();
+    _authenticatorSubscription?.cancel();
+    _authenticatorSubscription = null;
+  }
+
+  @override
+  MessageHeaderDto messageHeader({required String sender}) {
+    final timestamp = Format.sferaTimestamp(DateTime.now());
+    return MessageHeaderDto.create(
+      messageId: const Uuid().v4(),
+      timestamp: timestamp,
+      sourceDevice: deviceId,
+      destinationDevice: 'TMS',
+      sender: sender,
+      recipient: '0085',
+      sferaVersion: sferaVersion,
+    );
+  }
+
+  void _initialize() {
+    _addEventMessageHandlers();
+    _mqttStreamSubscription = _mqttService.messageStream.listen(_handleMqttMessage);
+    _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
+      if (connected && _rxState.value == .offlineData) {
+        _log.info(
+          'Connectivity changed to connected=$connected while in offline mode, trying to connect to MQTT broker...',
+        );
+        _tryMqttConnect();
+      }
+    });
+    _authenticatorSubscription = _authenticator.reauthenticationRequired.listen((state) {
+      if (state == false && _rxState.value == .offlineData) {
+        _log.info(
+          'Reauthentication state changed to $state while in offline mode, trying to connect to MQTT broker...',
+        );
+        _tryMqttConnect();
+      }
+    });
+  }
+
+  void _handleMqttMessage(String xmlMessage) async {
+    final message = SferaReplyParser.parse<SferaXmlElementDto>(xmlMessage);
+    if (!message.validate()) {
+      _log.warning('Validation failed for MQTT message ${message.type} (${xmlMessage.length} chars)');
+      return;
+    }
+
+    final handled = switch (message) {
+      SferaG2bReplyMessageDto() => await _handleReplyMessage(message),
+      SferaG2bEventMessageDto() => await _handleEventMessage(message),
+      _ => false,
+    };
+    if (!handled) {
+      final description = message is SferaMessageDto ? message.logSummary : message.type;
+      _log.warning('Could not handle $description (${xmlMessage.length} chars)');
+    }
+  }
+
+  Future<bool> _handleReplyMessage(SferaG2bReplyMessageDto message) async {
+    var handled = false;
+    for (final handler in List.from(_tasks)) {
+      handled |= await handler.handleMessage(message);
+    }
+    return handled;
+  }
+
+  Future<bool> _handleEventMessage(SferaG2bEventMessageDto message) async {
+    var handled = false;
+    for (final handler in List.from(_eventMessageHandlers)) {
+      handled |= await handler.handleMessage(message);
+    }
+    return handled;
+  }
+
+  Future<void> _initiateHandshake(OtnId otnId) async {
+    _rxState.add(.handshaking);
+    final isDriver = await _authProvider.isDriver();
+
+    final handshakeTask = HandshakeTask(
+      mqttService: _mqttService,
+      sferaRepo: this,
+      otnId: otnId,
+      isDriver: isDriver,
+    );
+    _tasks.add(handshakeTask);
+    handshakeTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  void _onTaskCompleted(SferaTask task, dynamic data) async {
+    switch (task) {
+      case HandshakeTask _:
+        await _handleHandshakeTaskCompleted();
+      case RequestJourneyProfileTask _:
+        await _handleRequestJourneyProfileTaskCompleted(data);
+      case RequestSegmentProfilesTask _:
+        await _handleRequestSegmentProfilesTaskCompleted();
+      case RequestRelatedTrainInformationTask _:
+        await _handleRequestRelatedTrainInformationCompleted(data);
+      case RequestLocalRegulationsTask _:
+        _tasks.remove(task);
+        return;
+    }
+
+    _log.fine('Task $task completed');
+    var allMandatoryTasksCompleted = false;
+    await _taskDeleteLock.synchronized(() {
+      _tasks.remove(task);
+      allMandatoryTasksCompleted = _allMandatoryTasksCompleted();
+    });
+
+    if (allMandatoryTasksCompleted) {
+      switch (_rxState.value) {
+        case .loadingAdditionalData:
+          await _refreshTrainCharacteristics();
+          _updateJourney(
+            onSuccess: () {
+              _hasOfflineData = false;
+              _rxState.add(.connected);
+            },
+            onInvalid: () => _useOfflineDataOrDisconnect(),
+          );
+          break;
+        case .connected:
+          await _refreshSegmentProfiles();
+          await _refreshTrainCharacteristics();
+          _updateJourney();
+          break;
+        default:
+      }
+    }
+  }
+
+  Future<void> _handleHandshakeTaskCompleted() async {
+    _rxState.add(.loadingJourney);
+    final requestJourneyTask = RequestJourneyProfileTask(
+      mqttService: _mqttService,
+      sferaRepo: this,
+      sferaDatabaseRepository: _localService,
+      otnId: _otnId!,
+    );
+    _tasks.add(requestJourneyTask);
+    requestJourneyTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  Future<void> _handleRequestJourneyProfileTaskCompleted(dynamic data) async {
+    _rxState.add(.loadingAdditionalData);
+    final dataList = data as List;
+    _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
+    _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
+    _resetSegmentProfileRetryState();
+    _startRequestSegmentProfileTask();
+    _startRequestTrainCharacteristicsTask();
+    _startRequestRelatedTrainInformationTask();
+  }
+
+  Future<void> _handleRequestRelatedTrainInformationCompleted(dynamic data) async {
+    if (data is RelatedTrainInformationDto) {
+      _relatedTrainInformation = data;
+      _updateJourney();
+    }
+  }
+
+  /// It's possible that not all SPs are provided because of a MQTT limit.
+  /// Request missing SPs again with [RequestSegmentProfilesTask].
+  ///
+  /// After each request, check whether missing SP count has changed. If not, try at most
+  /// [_missingSegmentProfilesMaxRetryCount] until abort.
+  Future<void> _handleRequestSegmentProfilesTaskCompleted() async {
+    if (_journeyProfile == null) return;
+    await _refreshSegmentProfiles();
+
+    final missingSegmentProfileCount = _journeyProfile!.segmentProfileReferences.length - _segmentProfiles.length;
+    if (missingSegmentProfileCount == 0) {
+      _log.info('Received all segment profiles for journey profile.');
+      _resetSegmentProfileRetryState();
+      return;
+    }
+
+    _retrySegmentProfileRequests(missingSegmentProfileCount);
+  }
+
+  void _retrySegmentProfileRequests(int missingSegmentProfileCount) {
+    if (missingSegmentProfileCount == _lastMissingSegmentProfileCount) {
+      if (++_missingSpRequestRetryCount >= _missingSegmentProfilesMaxRetryCount) {
+        _log.warning(
+          'Number of missing segment profiles did not change within '
+          'last $_missingSegmentProfilesMaxRetryCount requests. Aborting retry.',
+        );
+        lastError = .invalid();
+        return;
+      }
+      _log.info(
+        'Missing segment profile count: $missingSegmentProfileCount'
+        '\n  Retry count (current / max): $_missingSpRequestRetryCount / $_missingSegmentProfilesMaxRetryCount',
+      );
+    } else {
+      _log.info(
+        'Missing segment profiles changed from: $_lastMissingSegmentProfileCount to $missingSegmentProfileCount.'
+        '\n  Resetting retries!',
+      );
+      _lastMissingSegmentProfileCount = missingSegmentProfileCount;
+      _missingSpRequestRetryCount = 0;
+    }
+    _startRequestSegmentProfileTask();
+  }
+
+  void _resetSegmentProfileRetryState() {
+    _lastMissingSegmentProfileCount = 0;
+    _missingSpRequestRetryCount = 0;
+  }
+
+  void _startRequestSegmentProfileTask() {
+    final requestSegmentProfilesTask = RequestSegmentProfilesTask(
+      sferaRepo: this,
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _localService,
+      otnId: _otnId!,
+      journeyProfile: _journeyProfile!,
+    );
+    _tasks.add(requestSegmentProfilesTask);
+    requestSegmentProfilesTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  void _startRequestTrainCharacteristicsTask() {
+    final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
+      sferaRepo: this,
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _localService,
+      otnId: _otnId!,
+      journeyProfile: _journeyProfile!,
+    );
+    _tasks.add(requestTrainCharacteristicsTask);
+    requestTrainCharacteristicsTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  void _startRequestLocalRegulationsTask() {
+    final runningTask = _tasks.whereType<RequestLocalRegulationsTask>().firstOrNull;
+    if (runningTask != null) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+
+    final requestLocalRegulationsTask = RequestLocalRegulationsTask(
+      sferaRepo: this,
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _localService,
+      otnId: _otnId!,
+      servicePoints: _rxJourney.value?.data.whereType<ServicePoint>().toList() ?? [],
+    );
+    _tasks.add(requestLocalRegulationsTask);
+    requestLocalRegulationsTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
+
+  void _startRequestRelatedTrainInformationTask() {
+    final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
+      mqttService: _mqttService,
+      sferaRepo: this,
+      otnId: _otnId!,
+    );
+    _tasks.add(requestRelatedTrainInformationTask);
+    requestRelatedTrainInformationTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  Future<void> _refreshSegmentProfiles() async {
+    if (_journeyProfile == null) return;
+
+    _segmentProfiles.clear();
+
+    for (final element in _journeyProfile!.segmentProfileReferences) {
+      final segmentProfileEntity = await _localService.findSegmentProfile(
+        element.spId,
+        element.versionMajor,
+        element.versionMinor,
+      );
+      final segmentProfile = segmentProfileEntity?.toDomain();
+      if (segmentProfile != null && segmentProfile.validate()) {
+        _segmentProfiles.add(segmentProfile);
+      } else {
+        _log.warning('Could not find and validate segment profile for ${element.spId}');
+      }
+    }
+  }
+
+  Future<void> _refreshTrainCharacteristics() async {
+    if (_journeyProfile == null) return;
+
+    _trainCharacteristics.clear();
+
+    for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
+      final trainCharacteristicsEntity = await _localService.findTrainCharacteristics(
+        element.tcId,
+        element.versionMajor,
+        element.versionMinor,
+      );
+      final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
+      if (trainCharacteristics != null && trainCharacteristics.validate()) {
+        _trainCharacteristics.add(trainCharacteristics);
+      } else {
+        _log.warning('Could not find and validate $element');
+      }
+    }
+  }
+
+  void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {
+    if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
+      _log.fine('Updating journey stream...');
+      final newJourney = SferaModelMapper.mapToJourney(
+        journeyProfile: _journeyProfile!,
+        segmentProfiles: _segmentProfiles,
+        trainCharacteristics: _trainCharacteristics,
+        relatedTrainInformation: _relatedTrainInformation,
+      );
+      if (newJourney.valid) {
+        _rxJourney.add(newJourney);
+        _log.fine('Journey updates successfully.');
+        onSuccess?.call();
+        _startRequestLocalRegulationsTask();
+      } else {
+        _log.warning('Failed to update journey as it is not valid');
+        lastError = .invalid();
+        onInvalid?.call();
+      }
+    }
+  }
+
+  void _addEventMessageHandlers() {
+    _eventMessageHandlers.add(
+      JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService, () => _journeyProfile),
+    );
+    _eventMessageHandlers.add(RelatedTrainInformationEventHandler(_onRelatedTrainInformationUpdated));
+    _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
+  }
+
+  void _onJourneyProfileUpdated(SferaEventMessageHandler _, JourneyProfileDto data) async {
+    _journeyProfile = data;
+    _resetSegmentProfileRetryState();
+    _startRequestSegmentProfileTask();
+    _startRequestTrainCharacteristicsTask();
+  }
+
+  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler _, RelatedTrainInformationDto data) async {
+    _relatedTrainInformation = data;
+    _updateJourney();
+  }
+
+  void _onNetworkSpecificEvent(SferaEventMessageHandler _, NetworkSpecificEventDto data) async {
+    if (data is UxTestingNseDto) {
+      if (data.koa != null) {
+        final event = UxTestingEvent(name: data.koa!.name, value: data.koa!.nspValue);
+        _rxUxTestingEvent.add(event);
+      }
+
+      if (data.warn != null) {
+        final event = UxTestingEvent(name: data.warn!.name, value: data.warn!.nspValue);
+        _rxUxTestingEvent.add(event);
+      }
+
+      if (data.connectivity != null) {
+        final event = UxTestingEvent(name: data.connectivity!.name, value: data.connectivity!.nspValue);
+        _rxUxTestingEvent.add(event);
+      }
+
+      if (data.formation != null) {
+        final event = UxTestingEvent(name: data.formation!.name, value: '');
+        _rxUxTestingEvent.add(event);
+      }
+    }
+
+    if (data is WarnAppMsgDto) {
+      _rxWarnappEvent.add(WarnappEvent());
+    }
+
+    if (data is DisturbanceMsgEventDto) {
+      _rxDisturbanceEvent.add(DisturbanceEvent(type: data.disturbanceMsgNsp.disturbanceMsgType.type));
+    }
+
+    if (data is DepartureDispatchNotificationEventDto) {
+      _rxDepartureDispatchNotificationEvent.add(DepartureDispatchNotificationEvent(type: data.message.unwrapped.type));
+    }
+  }
+
+  void _onTaskFailed(SferaTask task, SferaError error) async {
+    _log.severe('Task $task failed with error $error');
+    _tasks.remove(task);
+    lastError = error;
+
+    if (_rxState.value != .connected && _isMandatoryTask(task)) {
+      await _loadLocalJourney(_otnId!);
+      _useOfflineDataOrDisconnect();
+    }
+  }
+
+  bool _isMandatoryTask(SferaTask task) {
+    return task is! RequestLocalRegulationsTask && task is! RequestRelatedTrainInformationTask;
+  }
+
+  @override
+  TrainIdentification? get connectedTrain => _otnId != null
+      ? TrainIdentification(
+          companyCode: _otnId!.company,
+          trainNumber: _otnId!.operationalTrainNumber,
+          date: _otnId!.startDate,
+          operatingDay: _rxJourney.value?.metadata.trainIdentification?.operatingDay,
+        )
+      : null;
+}
+
+enum SferaRemoteRepositoryInternalState {
+  disconnected,
+  connecting,
+  handshaking,
+  loadingJourney,
+  loadingAdditionalData,
+  connected,
+  offlineData;
+
+  SferaRemoteRepositoryState toExternalState() => switch (this) {
+    .disconnected => .disconnected,
+    .offlineData => .offlineData,
+    .connecting || .handshaking || .loadingJourney || .loadingAdditionalData => .connecting,
+    .connected => .connected,
+  };
+}

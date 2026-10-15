@@ -11,8 +11,6 @@ abstract class SferaRepository._() {
 
   Stream<Journey?> get journeyStream;
 
-  Stream<UxTestingEvent?> get uxTestingEventStream;
-
   Stream<WarnappEvent?> get warnappEventStream;
 
   Stream<DisturbanceEvent?> get disturbanceEventStream;

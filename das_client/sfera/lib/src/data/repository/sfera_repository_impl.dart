@@ -33,7 +33,6 @@ import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_message_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
@@ -81,7 +80,6 @@ class SferaRepoImpl({
 
   final _rxState = BehaviorSubject<SferaRemoteRepositoryInternalState>.seeded(.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
-  final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
   final _rxWarnappEvent = BehaviorSubject<WarnappEvent?>.seeded(null);
   final _rxDepartureDispatchNotificationEvent = BehaviorSubject<DepartureDispatchNotificationEvent?>.seeded(null);
   final _rxDisturbanceEvent = BehaviorSubject<DisturbanceEvent?>.seeded(null);
@@ -97,9 +95,6 @@ class SferaRepoImpl({
 
   @override
   Stream<Journey?> get journeyStream => _rxJourney.stream;
-
-  @override
-  Stream<UxTestingEvent?> get uxTestingEventStream => _rxUxTestingEvent.stream;
 
   @override
   Stream<WarnappEvent?> get warnappEventStream => _rxWarnappEvent.stream;
@@ -208,7 +203,6 @@ class SferaRepoImpl({
     _mqttService.disconnect();
     _rxJourney.add(null);
     _rxDepartureDispatchNotificationEvent.add(null);
-    _rxUxTestingEvent.add(null);
     _rxWarnappEvent.add(null);
     _rxDisturbanceEvent.add(null);
     _rxState.add(.disconnected);
@@ -219,7 +213,6 @@ class SferaRepoImpl({
   void dispose() {
     _rxJourney.close();
     _rxState.close();
-    _rxUxTestingEvent.close();
     _rxDepartureDispatchNotificationEvent.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
@@ -574,28 +567,6 @@ class SferaRepoImpl({
   }
 
   void _onNetworkSpecificEvent(SferaEventMessageHandler _, NetworkSpecificEventDto data) async {
-    if (data is UxTestingNseDto) {
-      if (data.koa != null) {
-        final event = UxTestingEvent(name: data.koa!.name, value: data.koa!.nspValue);
-        _rxUxTestingEvent.add(event);
-      }
-
-      if (data.warn != null) {
-        final event = UxTestingEvent(name: data.warn!.name, value: data.warn!.nspValue);
-        _rxUxTestingEvent.add(event);
-      }
-
-      if (data.connectivity != null) {
-        final event = UxTestingEvent(name: data.connectivity!.name, value: data.connectivity!.nspValue);
-        _rxUxTestingEvent.add(event);
-      }
-
-      if (data.formation != null) {
-        final event = UxTestingEvent(name: data.formation!.name, value: '');
-        _rxUxTestingEvent.add(event);
-      }
-    }
-
     if (data is WarnAppMsgDto) {
       _rxWarnappEvent.add(WarnappEvent());
     }
