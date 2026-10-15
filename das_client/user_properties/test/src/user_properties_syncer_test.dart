@@ -1,6 +1,5 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http_x/component.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:user_properties/component.dart';
@@ -24,7 +23,6 @@ void main() {
   late MockLocalKeyValueStore mockLocalStore;
   late MockUserPropertiesRequest mockListRequest;
   late UserPropertiesSyncer testee;
-  late MockDeleteUserPropertyRequest mockDeleteRequest;
 
   final stationSignals = LocalKeyValueStoreKeys.showStationSignals.name;
   final decisiveGradient = LocalKeyValueStoreKeys.showDecisiveGradient.name;
@@ -160,34 +158,5 @@ void main() {
     );
     verify(okRequest.call()).called(1);
     verifyNever(mockLocalStore.setLastUserPropertiesSyncTimestamp(any));
-  });
-
-  HttpException httpException(int statusCode) => HttpException(
-    Request('DELETE', Uri.https('example.com', 'driver/v1/user-properties/key')),
-    Response('', statusCode),
-  );
-
-  setUp(() {
-    mockDeleteRequest = MockDeleteUserPropertyRequest();
-    when(mockApiService.deleteUserProperty(any)).thenReturn(mockDeleteRequest);
-  });
-
-  test('deleteRemote_whenPropertyDoesNotExistRemotely_thenTreatsNotFoundAsSuccess', () async {
-    // GIVEN
-    when(mockDeleteRequest.call()).thenAnswer((_) async => throw httpException(404));
-
-    // THEN
-    await expectLater(testee.deleteRemote(LocalKeyValueStoreKeys.tourSystem), completes);
-  });
-
-  test('deleteRemote_whenServerErrorOccurs_thenRethrows', () async {
-    // GIVEN
-    when(mockDeleteRequest.call()).thenAnswer((_) async => throw httpException(500));
-
-    // THEN
-    await expectLater(
-      testee.deleteRemote(LocalKeyValueStoreKeys.tourSystem),
-      throwsA(isA<HttpException>().having((e) => e.statusCode, 'statusCode', 500)),
-    );
   });
 }

@@ -31,17 +31,10 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
 
   @override
   Future<void> saveUserProperty(LocalKeyValueStoreKeys key, Object? value) async {
-    if (value == null) return deleteUserProperty(key);
+    if (value == null) return;
 
     await _localStore.set(key, value);
     if (_isSynced(key)) _triggerSync();
-  }
-
-  @override
-  Future<void> deleteUserProperty(LocalKeyValueStoreKeys key) async {
-    _log.fine('Deleting user property for key=$key');
-    await _localStore.delete(key);
-    if (_isSynced(key)) await _syncer.deleteRemote(key);
   }
 
   bool _isSynced(LocalKeyValueStoreKeys key) => LocalKeyValueStore.syncedKeyNames.contains(key.name);

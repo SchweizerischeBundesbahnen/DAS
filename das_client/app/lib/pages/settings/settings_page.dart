@@ -11,7 +11,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:user_properties/component.dart';
 
 @RoutePage()
 class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
@@ -26,7 +25,7 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return Provider<UserSettingsViewModel>(
       create: (_) => UserSettingsViewModel(
-        userPropertiesRepository: DI.get<UserPropertiesRepository>(),
+        userPropertiesRepository: DI.get(),
         externalLinksRepository: DI.get(),
       ),
       dispose: (_, vm) => vm.dispose(),

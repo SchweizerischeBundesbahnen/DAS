@@ -6,6 +6,4 @@ abstract class UserPropertiesApiService {
   UserPropertyRequest userProperty(String key);
 
   SaveUserPropertyRequest saveUserProperty(String key, Object? value);
-
-  DeleteUserPropertyRequest deleteUserProperty(String key);
 }

@@ -75,15 +75,6 @@ class UserPropertiesSyncer {
     await _localStore.setLastUserPropertiesSyncTimestamp(clock.now().toUtc());
   }
 
-  Future<void> deleteRemote(LocalKeyValueStoreKeys key) async {
-    try {
-      await _apiService.deleteUserProperty(key.name).call();
-    } on HttpException catch (e) {
-      if (e.statusCode == HttpStatus.notFound) return;
-      rethrow;
-    }
-  }
-
   Future<bool> _tryPush(UserPropertyModel p) async {
     try {
       await _apiService.saveUserProperty(p.key, p.value).call();

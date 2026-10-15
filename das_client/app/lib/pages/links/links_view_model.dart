@@ -33,7 +33,12 @@ class LinksViewModel({
   }
 
   void _watchLinksForCompanies(List<String> companyCodes) {
-    if (companyCodes.isEmpty) return;
+    _externalLinksSubscription?.cancel();
+
+    if (companyCodes.isEmpty) {
+      _rxExternalLinks.add(const []);
+      return;
+    }
 
     _externalLinksSubscription = _externalLinksRepository
         .watchExternalLinksByCompanies(companyCodes)

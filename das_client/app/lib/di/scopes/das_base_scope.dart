@@ -34,7 +34,6 @@ class DASBaseScope extends DIScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAppInfoAsync();
-    getIt.isReady<AppInfo>();
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
     getIt.registerSounds();

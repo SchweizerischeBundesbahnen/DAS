@@ -78,7 +78,6 @@ class JourneyTableViewModel({
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
           _personalNotesVM.personalNoteAnnotations,
-          _userPropertiesRepository.model,
           _acknowledgedModificationRepository.model,
         ]).listen(
           (data) => _handleDataChanged(

@@ -6,8 +6,6 @@ abstract interface class UserPropertiesRepository {
 
   Future<void> saveUserProperty(LocalKeyValueStoreKeys key, Object? value);
 
-  Future<void> deleteUserProperty(LocalKeyValueStoreKeys key);
-
   Future<void> clearLocalUserProperties();
 
   bool get showDecisiveGradient;

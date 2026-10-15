@@ -30,12 +30,4 @@ class UserPropertiesApiServiceImpl({
     value: value,
     headers: {UserPropertiesRequest.appVersionHeader: appVersion},
   );
-
-  @override
-  DeleteUserPropertyRequest deleteUserProperty(String key) => DeleteUserPropertyRequest(
-    httpClient: httpClient,
-    baseUrl: baseUrl,
-    key: key,
-    headers: {UserPropertiesRequest.appVersionHeader: appVersion},
-  );
 }
