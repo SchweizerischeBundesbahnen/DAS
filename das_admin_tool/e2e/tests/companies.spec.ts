@@ -10,6 +10,7 @@ import {
   selectAnyOption,
   uniqueSuffix,
 } from '../utils/admin-test-helpers';
+import { CompaniesApi } from '../utils/companies-api';
 
 /**
  * Codes 0001-0099 are reserved for this test. Each run picks a random one so parallel CI runs
@@ -25,16 +26,14 @@ test.describe('companies test', () => {
   let testCode: string;
   let testShortName: string;
   let testShortNameUpdated: string;
+  let companiesApi: CompaniesApi | undefined;
 
-  test.beforeEach(() => {
+  test.beforeEach(async ({ page }) => {
     testCode = randomTestCode();
     testShortName = `TEST_${uniqueSuffix()}`;
     testShortNameUpdated = `${testShortName}_UPDATED`;
-  });
+    companiesApi = undefined;
 
-  test('company_whenCreatedEditedAndDeleted_thenSucceeds|X3AAEqNVkEJsfnioDCRd|tests:1878', async ({
-    page,
-  }) => {
     const companiesLoaded = page.waitForResponse(
       (resp) =>
         resp.request().method() === 'GET'
@@ -42,11 +41,26 @@ test.describe('companies test', () => {
         && new URL(resp.url()).pathname.endsWith('/companies'),
     );
     await page.goto('das-admin/companies');
-    await companiesLoaded;
+    companiesApi = await CompaniesApi.fromListResponse(page, await companiesLoaded);
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('EVUs');
     // the title renders before the data arrives, wait for rows before using the table
     await expect(page.locator('tr[sbb-row]').first()).toBeVisible();
+  });
 
+  test.afterEach(async () => {
+    if (!companiesApi) {
+      return;
+    }
+    // runs also when the test failed halfway
+    const own = (await companiesApi.list()).find((company) => company.code === testCode);
+    if (own) {
+      await companiesApi.delete(own.id);
+    }
+  });
+
+  test('company_whenCreatedEditedAndDeleted_thenSucceeds|X3AAEqNVkEJsfnioDCRd|tests:1878', async ({
+    page,
+  }) => {
     const row = findRow(page, testShortName);
     const updatedRow = findRow(page, testShortNameUpdated);
 
