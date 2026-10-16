@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ExternalLinkService } from './external-link.service';
 import { ExternalLinks } from './external-links';
-import { ExternalLinksService } from './external-links.service';
 
-const mockExternalLinksService = {
+const mockExternalLinkService = {
   externalLinksResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
@@ -13,7 +13,7 @@ describe('ExternalLinks', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ExternalLinks],
-      providers: [{ provide: ExternalLinksService, useValue: mockExternalLinksService }],
+      providers: [{ provide: ExternalLinkService, useValue: mockExternalLinkService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExternalLinks);

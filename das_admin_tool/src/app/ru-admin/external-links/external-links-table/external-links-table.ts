@@ -10,11 +10,11 @@ import {
   SbbTableFilter,
   SbbTableModule,
 } from '@sbb-esta/lyne-angular/table';
-import { ExternalLink } from '~ru-admin/ru-admin-api';
-import { LanguageCode, LanguageProvider } from '~shared/language-provider';
-import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
-import { TableSearchHeader } from '~shared/table-search-header/table-search-header';
-import { ExternalLinksService } from '../external-links.service';
+import { ExternalLink } from '~ru-admin/ru-admin.api';
+import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
+import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
+import { LanguageCode, LanguageService } from '~shared/services/language.service';
+import { ExternalLinkService } from '../external-link.service';
 
 interface ExternalLinkFilter extends SbbTableFilter {
   search: string;
@@ -35,8 +35,8 @@ interface ExternalLinkFilter extends SbbTableFilter {
   styleUrl: './external-links-table.css',
 })
 export class ExternalLinksTable {
-  private readonly externalLinksService = inject(ExternalLinksService);
-  private readonly languageProvider = inject(LanguageProvider);
+  private readonly externalLinkService = inject(ExternalLinkService);
+  private readonly languageService = inject(LanguageService);
 
   protected dataSource = new SbbTableDataSource<ExternalLink, ExternalLinkFilter>();
   protected columns = ['select', 'title', 'link', 'lastModifiedAt', 'lastModifiedBy', 'action'];
@@ -45,11 +45,11 @@ export class ExternalLinksTable {
 
   protected readonly filterModel = signal({
     search: '',
-    language: this.languageProvider.currentLanguage.path,
+    language: this.languageService.currentLanguage.path,
   });
   protected readonly filterForm = form(this.filterModel);
 
-  private readonly externalLinksResource = this.externalLinksService.externalLinksResource;
+  private readonly externalLinksResource = this.externalLinkService.externalLinksResource;
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
   private readonly bottomBar = viewChild.required(TableBottomBar);
 
@@ -81,11 +81,11 @@ export class ExternalLinksTable {
   }
 
   protected async edit(externalLink: ExternalLink): Promise<void> {
-    await this.externalLinksService.edit(externalLink);
+    await this.externalLinkService.edit(externalLink);
   }
 
   protected async add(): Promise<void> {
-    await this.externalLinksService.add();
+    await this.externalLinkService.add();
   }
 
   protected isAllSelected() {
@@ -104,7 +104,7 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      await this.externalLinksService.deleteAllByIds(
+      await this.externalLinkService.deleteAllByIds(
         this.selection.selected.map((externalLink) => externalLink.id!),
       );
       this.selection.clear();

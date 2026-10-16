@@ -3,18 +3,18 @@ import { afterNextRender, Component, effect, inject, viewChild } from '@angular/
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { AppVersion } from '~app/das-admin/das-admin-api';
-import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
-import { AppVersionsService } from '../app-versions.service';
+import { AppVersion } from '~app/das-admin/das-admin.api';
+import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
+import { AppVersionService } from '../app-version.service';
 
 @Component({
-  selector: 'app-app-versions-table',
+  selector: 'app-versions-table',
   imports: [SbbTableModule, DatePipe, SbbToggleCheckModule, SbbMiniButton, TableBottomBar],
   templateUrl: './app-versions-table.html',
   styleUrl: './app-versions-table.css',
 })
 export class AppVersionsTable {
-  private readonly appVersionsService = inject(AppVersionsService);
+  private readonly appVersionService = inject(AppVersionService);
 
   protected readonly addLabel = $localize`:@@app_versions_button_create:App Version blockieren`;
 
@@ -33,8 +33,8 @@ export class AppVersionsTable {
 
   constructor() {
     effect(() => {
-      if (this.appVersionsService.appVersionsResource.hasValue()) {
-        this.dataSource.data = this.appVersionsService.appVersionsResource.value().data;
+      if (this.appVersionService.appVersionsResource.hasValue()) {
+        this.dataSource.data = this.appVersionService.appVersionsResource.value().data;
       }
     });
     afterNextRender(() => {
@@ -44,10 +44,10 @@ export class AppVersionsTable {
   }
 
   protected async edit(appVersion: AppVersion) {
-    await this.appVersionsService.edit(appVersion);
+    await this.appVersionService.edit(appVersion);
   }
 
   protected async add() {
-    await this.appVersionsService.add();
+    await this.appVersionService.add();
   }
 }

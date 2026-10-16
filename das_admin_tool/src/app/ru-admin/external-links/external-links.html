@@ -1,12 +1,12 @@
 <sbb-title i18n="@@external_links_title" level="2">Externe Absprünge</sbb-title>
-@let externalLinksResource = externalLinksService.externalLinksResource;
+@let externalLinksResource = externalLinkService.externalLinksResource;
 @if (externalLinksResource.hasValue()) {
   @if (externalLinksResource.value().data.length === 0) {
     <p i18n="@@external_links_empty_state">Noch keine externen Absprünge erfasst.</p>
     <sbb-secondary-button
       i18n="@@button_create_entry"
       iconName="plus-small"
-      (click)="externalLinksService.add()"
+      (click)="externalLinkService.add()"
       >Neuen Eintrag erfassen</sbb-secondary-button
     >
   } @else {

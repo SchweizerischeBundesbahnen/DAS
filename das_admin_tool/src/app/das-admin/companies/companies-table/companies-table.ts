@@ -2,10 +2,10 @@ import { DatePipe } from '@angular/common';
 import { afterNextRender, Component, effect, inject, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
-import { InternalCompany } from '~app/das-admin/das-admin-api';
-import { TableBottomBar } from '~shared/table-bottom-bar/table-bottom-bar';
-import { TenantService } from '../company-dialog/tenant.service';
+import { InternalCompany } from '~app/das-admin/das-admin.api';
+import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { CompanyService } from '../company.service';
+import { TenantApi } from '../tenant.api';
 
 @Component({
   selector: 'app-companies-table',
@@ -15,7 +15,7 @@ import { CompanyService } from '../company.service';
 })
 export class CompaniesTable {
   private readonly companyService = inject(CompanyService);
-  private readonly tenantService = inject(TenantService);
+  private readonly tenantApi = inject(TenantApi);
 
   protected dataSource = new SbbTableDataSource<InternalCompany>();
   protected columns = [
@@ -45,7 +45,7 @@ export class CompaniesTable {
   }
 
   protected tenant(tenantId: string) {
-    const tenant = this.tenantService.getTenant(tenantId);
+    const tenant = this.tenantApi.getTenant(tenantId);
     return tenant ? `${tenant.tenantId} - ${tenant.name}` : tenantId;
   }
 
