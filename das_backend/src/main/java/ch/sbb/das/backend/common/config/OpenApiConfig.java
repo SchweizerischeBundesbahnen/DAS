@@ -1,5 +1,7 @@
 package ch.sbb.das.backend.common.config;
 
+import ch.sbb.das.backend.common.ApiDocumentation;
+import ch.sbb.das.backend.common.RequestIdFilter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -8,15 +10,19 @@ import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -53,6 +59,27 @@ public class OpenApiConfig {
                         .addProperty("path", new StringSchema()))
 
         ).security(List.of(new SecurityRequirement().addList(OAUTH_2, List.of(scope)))).info(apiInfo());
+    }
+
+    /**
+     * Documents the optional {@link RequestIdFilter#HEADER_REQUEST_ID} on every operation, handled centrally by {@link RequestIdFilter}.
+     * <p>
+     * Always the first parameter: generated clients (see das_e2e_testsuite sortParamsByRequiredFlag=false) derive their argument order from it.
+     */
+    @Bean
+    public GlobalOperationCustomizer requestIdHeaderCustomizer() {
+        return (operation, handlerMethod) -> {
+            final List<Parameter> parameters = new ArrayList<>();
+            parameters.add(new HeaderParameter()
+                .name(RequestIdFilter.HEADER_REQUEST_ID)
+                .description(ApiDocumentation.HEADER_REQUEST_ID_DESCRIPTION)
+                .required(false)
+                .schema(new StringSchema()));
+            if (operation.getParameters() != null) {
+                parameters.addAll(operation.getParameters());
+            }
+            return operation.parameters(parameters);
+        };
     }
 
     private String getScope() {

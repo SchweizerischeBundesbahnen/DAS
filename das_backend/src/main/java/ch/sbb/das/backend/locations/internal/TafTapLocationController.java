@@ -2,8 +2,6 @@ package ch.sbb.das.backend.locations.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,10 +41,9 @@ public class TafTapLocationController {
     @ApiErrorResponses
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
         in = ParameterIn.HEADER)
-    public ResponseEntity<? extends Response> getAllLocations(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> getAllLocations() {
         List<TafTapLocation> locations = locationService.findAll();
-        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders(requestId);
+        final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "public, max-age=86400");
         return ResponseEntityFactory.createOkResponse(headers, new TafTapLocationResponse(locations));
     }

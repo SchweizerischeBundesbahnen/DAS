@@ -2,8 +2,6 @@ package ch.sbb.das.backend.companies.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.companies.Company;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,24 +47,22 @@ public class CompanyController {
     @Operation(summary = "Get all companies.", description = "Returns all companies (admin only).")
     @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllCompanies(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> getAllCompanies() {
         List<InternalCompany> companies = companyService.getAllAdminCompanies();
-        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(companies), requestId);
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(companies));
     }
 
     @GetMapping(API_COMPANIES_AUTHORIZED)
     @Operation(summary = "Get authorized companies.", description = "Returns the companies the authenticated tenant is authorized for.")
     @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAuthorizedCompanies(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
+    public ResponseEntity<? extends Response> getAuthorizedCompanies() {
         Set<CompanyCode> authorizedCodes = companyAuthorizer.authorizedCompanies();
         List<Company> companies = companyService.getAllCompanies().stream()
             .filter(company -> authorizedCodes.contains(company.code()))
             .sorted(Comparator.comparing(Company::shortName))
             .toList();
-        return ResponseEntityFactory.createOkResponse(new CompanyResponse(companies), requestId);
+        return ResponseEntityFactory.createOkResponse(new CompanyResponse(companies));
     }
 
     @GetMapping(API_COMPANIES_ID)
@@ -76,13 +71,12 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getCompanyById(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable Integer id) {
         Optional<InternalCompany> company = companyService.getById(id);
         if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()), requestId);
+            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()));
         }
-        return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+        return ResponseEntityFactory.createNotFoundResponse();
     }
 
     @PostMapping(API_COMPANIES)
@@ -90,10 +84,9 @@ public class CompanyController {
     @ApiResponse(responseCode = "201", description = "Company created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
     public ResponseEntity<? extends Response> createCompany(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestBody @Valid CompanyRequest createRequest) {
         InternalCompany company = companyService.create(createRequest);
-        return ResponseEntityFactory.createCreatedResponse(new InternalCompanyResponse(company), requestId);
+        return ResponseEntityFactory.createCreatedResponse(new InternalCompanyResponse(company));
     }
 
     @PutMapping(API_COMPANIES_ID)
@@ -102,14 +95,13 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateCompany(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable Integer id,
         @RequestBody @Valid CompanyRequest updateRequest) {
         Optional<InternalCompany> company = companyService.update(id, updateRequest);
         if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)), requestId);
+            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)));
         }
-        return ResponseEntityFactory.createNotFoundResponse(requestId, null);
+        return ResponseEntityFactory.createNotFoundResponse();
     }
 
     @DeleteMapping(API_COMPANIES_ID)
@@ -118,18 +110,16 @@ public class CompanyController {
     @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<Void> deleteCompany(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable Integer id) {
         companyService.delete(id);
-        return ResponseEntityFactory.createNoContentResponse(requestId);
+        return ResponseEntityFactory.createNoContentResponse();
     }
 
     @GetMapping(API_TENANTS)
     @Operation(summary = "Get tenants.", description = "Returns all available tenants for selection.")
     @ApiResponse(responseCode = "200", description = "Tenants found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TenantResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllTenants(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId) {
-        return ResponseEntityFactory.createOkResponse(new TenantResponse(companyService.getAllTenants()), requestId);
+    public ResponseEntity<? extends Response> getAllTenants() {
+        return ResponseEntityFactory.createOkResponse(new TenantResponse(companyService.getAllTenants()));
     }
 }

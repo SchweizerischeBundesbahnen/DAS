@@ -16,59 +16,63 @@ public class ResponseEntityFactory {
 
     public static final String TITLE_NOT_FOUND = "No results found";
 
-    public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body, String requestId) {
-        return createOkResponse(createOkHeaders(requestId), body);
+    public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body) {
+        return createOkResponse(createOkHeaders(), body);
     }
 
-    public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body, Locale locale, String requestId) {
-        return createOkResponse(createOkHeaders(locale, requestId), body);
+    public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(@NonNull R body, Locale locale) {
+        return createOkResponse(createOkHeaders(locale), body);
     }
 
     public static <R extends ApiResponse<?>> ResponseEntity<R> createOkResponse(HttpHeaders headers, @NonNull R hit) {
         return new ResponseEntity<>(hit, headers, HttpStatus.OK);
     }
 
-    public static <R extends ApiResponse<?>> ResponseEntity<R> createCreatedResponse(@NonNull R body, String requestId) {
-        return createCreatedResponse(createOkHeaders(requestId), body);
+    public static <R extends ApiResponse<?>> ResponseEntity<R> createCreatedResponse(@NonNull R body) {
+        return createCreatedResponse(createOkHeaders(), body);
     }
 
-    public static <R extends ApiResponse<?>> ResponseEntity<R> createCreatedResponse(@NonNull R body, Locale locale, String requestId) {
-        return createCreatedResponse(createOkHeaders(locale, requestId), body);
+    public static <R extends ApiResponse<?>> ResponseEntity<R> createCreatedResponse(@NonNull R body, Locale locale) {
+        return createCreatedResponse(createOkHeaders(locale), body);
     }
 
     public static <R extends ApiResponse<?>> ResponseEntity<R> createCreatedResponse(HttpHeaders headers, @NonNull R body) {
         return new ResponseEntity<>(body, headers, HttpStatus.CREATED);
     }
 
-    public static ResponseEntity<? extends Response> createNotFoundResponse(String requestId, String instance) {
-        return createNotFoundResponse(TITLE_NOT_FOUND, "Refine your query parameters.", null, requestId, instance);
+    public static ResponseEntity<? extends Response> createNotFoundResponse() {
+        return createNotFoundResponse(null);
     }
 
-    public static ResponseEntity<Problem> createNotFoundResponse(@NonNull String title, @NonNull String detail, Locale locale, String requestId, String instance) {
-        return createProblemResponse(HttpStatus.NOT_FOUND, title, detail, locale == null ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : locale.getLanguage(), requestId, instance);
+    public static ResponseEntity<? extends Response> createNotFoundResponse(String instance) {
+        return createNotFoundResponse(TITLE_NOT_FOUND, "Refine your query parameters.", null, instance);
     }
 
-    public static ResponseEntity<Void> createNoContentResponse(String requestId) {
-        return ResponseEntity.noContent().headers(createHeaders(requestId)).build();
+    public static ResponseEntity<Problem> createNotFoundResponse(@NonNull String title, @NonNull String detail, Locale locale, String instance) {
+        return createProblemResponse(HttpStatus.NOT_FOUND, title, detail, locale == null ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : locale.getLanguage(), instance);
     }
 
-    public static ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, String language, String requestId, String instance) {
+    public static ResponseEntity<Void> createNoContentResponse() {
+        return ResponseEntity.noContent().build();
+    }
+
+    public static ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, String language, String instance) {
         return new ResponseEntity<>(
             createProblem(status, title, detail, instance),
-            createProblemHeader(StringUtils.isBlank(language) ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : language, requestId),
+            createProblemHeader(StringUtils.isBlank(language) ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : language),
             status);
     }
 
-    public static HttpHeaders createOkHeaders(String requestId) {
-        return createOkHeaders(null, requestId);
+    public static HttpHeaders createOkHeaders() {
+        return createOkHeaders(null);
     }
 
-    public static HttpHeaders createOkHeaders(Locale locale, String requestId) {
-        return createHeaders(locale == null ? null : locale.getLanguage(), requestId, MediaType.APPLICATION_JSON_VALUE);
+    public static HttpHeaders createOkHeaders(Locale locale) {
+        return createHeaders(locale == null ? null : locale.getLanguage(), MediaType.APPLICATION_JSON_VALUE);
     }
 
-    private static HttpHeaders createHeaders(String language, String requestId, @NonNull String mediaType) {
-        final HttpHeaders headers = createHeaders(requestId);
+    private static HttpHeaders createHeaders(String language, @NonNull String mediaType) {
+        final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, mediaType);
         if (StringUtils.isNotBlank(language)) {
             headers.add(HttpHeaders.CONTENT_LANGUAGE, language);
@@ -76,17 +80,9 @@ public class ResponseEntityFactory {
         return headers;
     }
 
-    private static HttpHeaders createHeaders(String requestId) {
-        final HttpHeaders headers = new HttpHeaders();
-        if (StringUtils.isNotBlank(requestId)) {
-            headers.add(ApiParametersDefault.HEADER_REQUEST_ID, requestId);
-        }
-        return headers;
-    }
-
-    public static HttpHeaders createProblemHeader(String language, String requestId) {
+    public static HttpHeaders createProblemHeader(String language) {
         return createHeaders(StringUtils.isEmpty(language) ? ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT : language,
-            requestId, MediaType.APPLICATION_PROBLEM_JSON_VALUE);
+            MediaType.APPLICATION_PROBLEM_JSON_VALUE);
     }
 
     public static Problem createProblem(HttpStatusCode status, String title, String detail, String instance) {
