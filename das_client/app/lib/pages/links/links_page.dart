@@ -15,7 +15,8 @@ class LinksPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<LinksViewModel>(
-      create: (_) => LinksViewModel(externalLinksRepository: DI.get(), userSettings: DI.get(), launcher: DI.get()),
+      create: (_) =>
+          LinksViewModel(externalLinksRepository: DI.get(), userPropertiesRepository: DI.get(), launcher: DI.get()),
       dispose: (_, vm) => vm.dispose(),
       child: this,
     );
