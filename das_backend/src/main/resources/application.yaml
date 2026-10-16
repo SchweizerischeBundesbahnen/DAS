@@ -128,7 +128,7 @@ logging:
   token: ${SPLUNK_HEC_TOKEN}
 aws:
   accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
-  secretKey: ${PRELOAD_BUCKET_RW_SECRET_KEY}
+  secretKey: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
   bucketName: ${AWS_BUCKET_NAME}
 
 sfera:
@@ -144,7 +144,7 @@ preload:
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}
     accessKey: ${PRELOAD_BUCKET_R_ACCESS_KEY}
-    accessSecret: ${PRELOAD_BUCKET_R_ACCESS_SECRET}
+    accessSecret: ${PRELOAD_BUCKET_R_SECRET_KEY}
     region: ${PRELOAD_BUCKET_REGION}
 
 trainjourneyplan:
