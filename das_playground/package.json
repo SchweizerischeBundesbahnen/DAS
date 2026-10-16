@@ -47,7 +47,7 @@
     "@angular/localize": "22.2.2",
     "@eslint/js": "10.0.1",
     "@types/jasmine": "6.0.0",
-    "angular-eslint": "22.5.0",
+    "angular-eslint": "22.6.0",
     "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
     "istanbul-lib-instrument": "6.0.3",
