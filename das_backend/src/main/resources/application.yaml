@@ -1,6 +1,7 @@
 info:
   app:
     version: '@project.version@'
+
 spring:
   profiles:
     active: ${STAGE:local}
@@ -90,20 +91,26 @@ spring:
         role: ${VAULT_SA_ROLE_ID}
         kubernetes-path: ${VAULT_CLUSTERNAME}
         service-account-token-file: /var/run/secrets/openbao/token
+  jmx:
+    enabled: true
+
 management:
   endpoint:
     health:
       probes:
         enabled: true
+
 springdoc:
   swagger-ui:
     oauth:
       clientId: ${AUTH_SWAGGER_CLIENT_ID}
       scopes: api://${AUTH_SERVICE_NAME}/.default
       use-pkce-with-authorization-code-grant: true
+
 auth:
   audience:
     service-name: ${AUTH_SERVICE_NAME}
+
 endpoints:
   web:
     cors:
@@ -123,9 +130,11 @@ formation:
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 30
+
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
+
 aws:
   accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
   secretKey: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
