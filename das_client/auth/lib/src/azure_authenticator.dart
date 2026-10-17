@@ -33,10 +33,10 @@ class AzureAuthenticator({
     _log.fine('Initialize AzureAuthenticator');
     try {
       _oidcClient = await _oidcClientFactory.createClient(
-        discoveryUrl: _config.discoveryUrl,
+        tenantId: _config.tenantId,
         clientId: _config.clientId,
         redirectUrl: _config.redirectUrl,
-        postLogoutRedirectUrl: _config.postLogoutRedirectUrl,
+        keychainAccessGroup: _config.keychainAccessGroup,
       );
       _isInitialized = true;
     } catch (e, s) {
@@ -122,7 +122,7 @@ class AzureAuthenticator({
   }
 
   bool _isNetworkError(dynamic e) {
-    if (e is NetworkException) return true;
+    if (e is NoNetworkException) return true;
 
     final message = e.toString();
     if (message.contains('Connection error')) return true;
@@ -142,7 +142,10 @@ class AzureAuthenticator({
         rethrow;
       }
     }
-    final idToken = JsonWebToken.decode(oidcToken.idToken);
+
+    if (oidcToken.idToken == null) throw InvalidTokenException.missingIdToken();
+
+    final idToken = JsonWebToken.decode(oidcToken.idToken!);
     final userId = idToken.payload['preferred_username'] as String;
     final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
     final displayName = idToken.payload['name'] as String?;
@@ -228,7 +231,8 @@ class AzureAuthenticator({
 }
 
 extension _OidcTokenExtension on OidcToken {
-  String? get tenantId => JsonWebToken.decode(idToken).payload['tid'] as String?;
+  String? get tenantId => idToken == null ? null : JsonWebToken.decode(idToken!).payload['tid'] as String?;
 
-  List<String> get roles => (JsonWebToken.decode(idToken).payload['roles'] as List<dynamic>? ?? []).cast<String>();
+  List<String> get roles =>
+      idToken == null ? [] : (JsonWebToken.decode(idToken!).payload['roles'] as List<dynamic>? ?? []).cast<String>();
 }
