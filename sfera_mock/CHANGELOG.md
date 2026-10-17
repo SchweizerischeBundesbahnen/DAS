@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.22.0...sfera_mock-v0.23.0) (2026-10-17)
+
+
+### Features
+
+* request initial related train information ([#2593](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2593)) ([#2931](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2931)) ([aba7170](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aba7170a1e4de7595950b13d62b29050ead0c047))
+
 ## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.21.0...sfera_mock-v0.22.0) (2026-10-14)
 
 
