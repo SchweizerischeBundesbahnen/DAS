@@ -4,6 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,7 +57,7 @@ public class AppVersionController {
     public ResponseEntity<? extends Response> getAppVersionById(@PathVariable Integer id) {
         AppVersion version = appVersionServiceImpl.getById(id);
         if (version == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
+            throw new NotFoundException();
         }
         return ResponseEntityFactory.createOkResponse(new AppVersionResponse(version));
     }
@@ -80,7 +81,7 @@ public class AppVersionController {
     public ResponseEntity<? extends Response> updateAppVersion(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest) {
         AppVersion updatedVersion = appVersionServiceImpl.update(id, updateRequest);
         if (updatedVersion == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
+            throw new NotFoundException();
         }
         return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(updatedVersion)));
     }

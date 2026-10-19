@@ -4,6 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -76,7 +77,7 @@ public class CompanyController {
         if (company.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()));
         }
-        return ResponseEntityFactory.createNotFoundResponse();
+        throw new NotFoundException();
     }
 
     @PostMapping(API_COMPANIES)
@@ -101,7 +102,7 @@ public class CompanyController {
         if (company.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)));
         }
-        return ResponseEntityFactory.createNotFoundResponse();
+        throw new NotFoundException();
     }
 
     @DeleteMapping(API_COMPANIES_ID)

@@ -124,6 +124,9 @@ formation:
     cron: 0 0 3 * * ?  # every day at 3
     older-than-days: 30
 logging:
+  pattern:
+    # Instana trace id (put into the MDC by the Instana agent, see ProblemFactory), omitted if the log is not part of a trace
+    correlation: "%replace(traceId=%X{instana.trace.id} ){'^traceId= $', ''}"
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
 sfera:

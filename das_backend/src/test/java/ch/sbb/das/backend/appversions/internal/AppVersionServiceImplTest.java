@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.appversions.CurrentAppVersion;
-import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.error.ConflictException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
