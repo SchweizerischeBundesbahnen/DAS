@@ -162,40 +162,43 @@ const Map<TourSystem, String> _prodTourSystemUrls = {
 const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 
 const _authenticatorConfigDev = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '5467e91f-a84c-40a5-89ba-75dcefc5569c',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das.dev',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
+      scopes: ['api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigInte = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das.inte',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
+      scopes: ['api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigProd = AuthenticatorConfig(
-  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+  tenantId: 'common',
   clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
+  keychainAccessGroup: 'ch.sbb.das',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
+      scopes: ['api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
