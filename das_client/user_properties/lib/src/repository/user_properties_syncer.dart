@@ -1,7 +1,4 @@
-import 'dart:io' show HttpStatus;
-
 import 'package:clock/clock.dart';
-import 'package:http_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:user_properties/component.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';

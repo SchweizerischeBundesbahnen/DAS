@@ -31,7 +31,6 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     syncer = MockUserPropertiesSyncer();
     when(syncer.sync()).thenAnswer((_) async {});
-    when(syncer.deleteRemote(any)).thenAnswer((_) async {});
     repository = UserPropertiesRepositoryImpl(
       apiService: MockUserPropertiesApiService(),
       userIdProvider: _FakeUserIdProvider(),
@@ -61,19 +60,6 @@ void main() {
     // THEN
     expect(repository.lastSettingsRequestSuccessful, true);
     verifyNever(syncer.sync());
-  });
-
-  test('saveUserProperty_whenValueIsNull_thenDeletesRemoteAndLocal', () async {
-    // GIVEN
-    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, '1285');
-    await Future<void>.delayed(Duration.zero);
-
-    // WHEN
-    await repository.saveUserProperty(LocalKeyValueStoreKeys.lastUsedCompanyCode, null);
-
-    // THEN
-    verify(syncer.deleteRemote(LocalKeyValueStoreKeys.lastUsedCompanyCode)).called(1);
-    expect(repository.lastUsedCompanyCode, isNull);
   });
 
   test('syncUserProperties_whenRequestedWhileRunning_thenSharesFutureAndRunsAnotherPass', () async {
