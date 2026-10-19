@@ -51,8 +51,11 @@ test.describe('companies test', () => {
     if (!companiesApi) {
       return;
     }
-    // runs also when the test failed halfway
-    const own = (await companiesApi.list()).find((company) => company.code === testCode);
+    // runs also when the test failed halfway; match the short name too, if the create failed with
+    // 409 the company with this code belongs to a parallel run that picked the same code
+    const own = (await companiesApi.list()).find(
+      (company) => company.code === testCode && company.shortName.startsWith(testShortName),
+    );
     if (own) {
       await companiesApi.delete(own.id);
     }
