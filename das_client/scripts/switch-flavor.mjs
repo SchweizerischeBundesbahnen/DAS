@@ -1764,19 +1764,34 @@ export function main(argv, { repoRoot, spawn } = {}) {
     return 0;
   }
 
-  // 5. Read the prior manifest and delete only its recorded targets when VALID.
-  //    MISSING/CORRUPT skip deletion and report the skip (Req 4.3).
+  // 5. If a prior switch is active (VALID manifest), RESTORE THE BASE FIRST so the
+  //    new flavor is applied on top of the true base — not on top of the previous
+  //    flavor. This is the single safe way to switch A→B: restoring returns every
+  //    Overwrite_Entry to its backed-up base content, removes the previous flavor's
+  //    New_File_Entries, and clears the manifest + Base_Backup_Directory. Applying
+  //    B on the true base then lets copyFiles classify each target correctly
+  //    (Overwrite_Entry + fresh backup for real base files; New_File_Entry only for
+  //    genuinely new flavor files), so a later restore-base can never delete a base
+  //    file. MISSING/CORRUPT → first-run/copy-only path, no restore (Req 4.1–4.3).
+  //    A re-switch of the same flavor stays idempotent (restore-to-base then
+  //    re-apply the same files), and an A→B switch still ends with only B's targets
+  //    active and A's exclusive targets gone (Req 3.1, 3.2, 5.1, 5.2).
   const manifest = readManifest(repoRoot);
-  let deletedCount = 0;
+  let restoredPrior = false;
   if (manifest.state === 'VALID') {
-    const del = deleteTargets(repoRoot, manifest.files.map((e) => e.path));
-    deletedCount = del?.deleted.length ?? 0;
+    const rc = restoreBase(repoRoot);
+    if (rc !== 0) {
+      console.error('Failed to restore the base before switching flavors; aborting switch.');
+      return 1;
+    }
+    restoredPrior = true;
   } else {
     const reason = manifest.state === 'MISSING' ? 'no prior manifest' : 'corrupt manifest';
     console.log(`deletion skipped (${reason})`);
   }
 
-  // 6. Copy the new flavor files (overwrite allowed), collecting target paths.
+  // 6. Copy the new flavor files onto the (now restored) base, collecting target
+  //    paths. copyFiles backs up each overwritten base file and classifies targets.
   const targetPaths = copyFiles(copyPlan, repoRoot);
 
   // 7. Write a fresh manifest describing exactly this switch's targets.
@@ -1836,7 +1851,8 @@ export function main(argv, { repoRoot, spawn } = {}) {
   // 9. Print the success summary to stdout and succeed.
   console.log(
     `Switched to flavor '${args.flavor}': ${targetPaths.length} file(s) copied, ` +
-      `${deletedCount} file(s) deleted, dependency removed: ${depRemoved ? 'yes' : 'no'}`,
+      `prior flavor restored to base: ${restoredPrior ? 'yes' : 'no'}, ` +
+      `dependency removed: ${depRemoved ? 'yes' : 'no'}`,
   );
   return 0;
 }
