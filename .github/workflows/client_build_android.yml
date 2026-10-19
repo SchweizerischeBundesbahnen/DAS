@@ -29,8 +29,8 @@ jobs:
         cache: 'gradle'
         
     - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 'lts/krypton'
+      with:
+        node-version: 'lts/krypton'
 
     - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
       with:
