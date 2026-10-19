@@ -32,7 +32,7 @@
     "@angular/platform-browser": "22.2.3",
     "@angular/platform-browser-dynamic": "22.2.3",
     "@angular/router": "22.2.3",
-    "@sbb-esta/angular": "22.1.0",
+    "@sbb-esta/angular": "22.1.1",
     "angular-auth-oidc-client": "22.0.1",
     "angular-server-side-configuration": "22.0.2",
     "ngx-mqtt": "22.0.0",
