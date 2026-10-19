@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.54.0+97
+version: 0.55.0+98
 
 environment:
   sdk: ^3.13.0
