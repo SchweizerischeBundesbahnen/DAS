@@ -6,6 +6,10 @@ spring:
     active: ${STAGE:local}
   application:
     name: backend
+  task:
+    scheduling:
+      pool:
+        size: 4
   web:
     locale: en
     locale-resolver: fixed
