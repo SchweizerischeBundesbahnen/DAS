@@ -26,6 +26,10 @@ jobs:
 
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 'lts/krypton'
+
     - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
       with:
         flutter-version: '3.47.x'
@@ -97,7 +101,10 @@ jobs:
     - name: Build iOS App DEV
       env:
         BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
-      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release
+      run: |
+        node ../scripts/switch-flavor.mjs dev 
+        flutter build ipa --flavor dev -t lib/main_dev.dart --release
+        node ../scripts/switch-flavor.mjs --restore-base 
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
@@ -111,7 +118,10 @@ jobs:
     - name: Build iOS App INTE
       env:
         BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
-      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release
+      run: |
+        node ../scripts/switch-flavor.mjs inte 
+        flutter build ipa --flavor inte -t lib/main_inte.dart --release
+        node ../scripts/switch-flavor.mjs --restore-base 
       working-directory: das_client/app
 
     - name: Download Provisioning Profiles
@@ -125,5 +135,8 @@ jobs:
     - name: Build iOS App PROD
       env:
         BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
-      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release
+      run: |
+        node ../scripts/switch-flavor.mjs prod 
+        flutter build ipa --flavor prod -t lib/main_prod.dart --release
+        node ../scripts/switch-flavor.mjs --restore-base 
       working-directory: das_client/app

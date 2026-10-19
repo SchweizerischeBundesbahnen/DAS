@@ -126,7 +126,9 @@ jobs:
           echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
       - name: Build appbundle
-        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
+        run: |
+          node ../scripts/switch-flavor.mjs ${{ matrix.flavor }} 
+          flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
         working-directory: das_client/app
 
       - name: Upload App to Google Play Store
