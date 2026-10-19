@@ -1095,6 +1095,19 @@ export function saveAllToFlavor(repoRoot, flavor, { spawn } = {}) {
           }
           continue;
         }
+        // Defensive guard: only copy a REGULAR FILE. If the source is a
+        // directory or other non-file (e.g. a wholly-untracked directory record
+        // that slipped through), skip it rather than letting `copyFileSync` crash
+        // with ENOTSUP. gitChangedSourceFiles now expands directories into their
+        // files, so this is belt-and-suspenders.
+        let srcStat;
+        try {
+          srcStat = fs.statSync(srcAbs);
+        } catch {
+          srcStat = undefined;
+        }
+        if (srcStat === undefined || !srcStat.isFile()) continue;
+
         const destExisted = fs.existsSync(destAbs);
         fs.mkdirSync(path.dirname(destAbs), { recursive: true });
         fs.copyFileSync(srcAbs, destAbs); // COPY: source stays in lib/ (Req 13.3)
@@ -1458,9 +1471,57 @@ export function gitChangedSourceFiles(repoRoot, spawn = spawnSync) {
   // 4. Relativize to repoRoot (porcelain paths are top-level-relative), filter to
   //    <component>/lib/<rest> and <component>/test/<rest> paths, and classify
   //    present/deleted by on-disk existence. A Map de-duplicates paths that
-  //    appear from multiple columns.
+  //    appear from multiple columns (and files reported both individually and via
+  //    an enclosing untracked directory).
+  //
+  //    Wholly-untracked DIRECTORIES: `git status --porcelain -z` reports a fully
+  //    untracked directory as a SINGLE record ending in a trailing slash, e.g.
+  //    `?? app/lib/pages/foo/mock/` — NOT its individual files. `path.resolve`
+  //    strips the trailing slash, so such a record would otherwise be derived to a
+  //    valid `<component>/lib/<rest>` path and, because the directory exists on
+  //    disk, be classified `present` — which later makes `saveAllToFlavor` try to
+  //    `copyFileSync` a DIRECTORY (→ ENOTSUP). To avoid that, a directory record is
+  //    NOT emitted as a path; instead we recurse into it and emit each contained
+  //    regular file (re-qualified through `deriveFlavorDest`) as `present`.
   const flavorPlaceholder = FLAVORS[0];
   const byPath = new Map();
+
+  // Qualify a repo-relative POSIX path and record it with the given status.
+  const addQualified = (relPosix, status) => {
+    if (!deriveFlavorDest(relPosix, flavorPlaceholder).ok) return;
+    byPath.set(relPosix, status);
+  };
+
+  // Recursively enumerate the regular files beneath an existing directory,
+  // emitting each as a `present` entry. Only descends into real directories
+  // (lstat, so symlinked dirs are not followed → no symlink loops). Tolerant of
+  // paths vanishing mid-walk (stat race) — a missing entry is simply skipped.
+  const emitDirFiles = (dirAbs) => {
+    let dirents;
+    try {
+      dirents = fs.readdirSync(dirAbs, { withFileTypes: true });
+    } catch {
+      return; // directory vanished / unreadable → nothing to emit
+    }
+    for (const dirent of dirents) {
+      const childAbs = path.join(dirAbs, dirent.name);
+      let stat;
+      try {
+        stat = fs.lstatSync(childAbs);
+      } catch {
+        continue; // vanished between readdir and lstat → skip
+      }
+      if (stat.isDirectory()) {
+        emitDirFiles(childAbs); // real directory only (symlinks are not dirs here)
+      } else if (stat.isFile()) {
+        const childRelToRepo = path.relative(repoRoot, childAbs);
+        if (childRelToRepo.startsWith('..') || path.isAbsolute(childRelToRepo)) continue;
+        const childRelPosix = childRelToRepo.split(path.sep).join('/');
+        addQualified(childRelPosix, 'present');
+      }
+    }
+  };
+
   for (const topRel of topLevelRelPaths) {
     const abs = path.resolve(topLevel, topRel);
     const relToRepo = path.relative(repoRoot, abs);
@@ -1469,10 +1530,27 @@ export function gitChangedSourceFiles(repoRoot, spawn = spawnSync) {
     if (relToRepo.startsWith('..') || path.isAbsolute(relToRepo)) continue;
 
     const relPosix = relToRepo.split(path.sep).join('/');
-    if (!deriveFlavorDest(relPosix, flavorPlaceholder).ok) continue;
 
-    const status = fs.existsSync(abs) ? 'present' : 'deleted';
-    byPath.set(relPosix, status);
+    // Classify by on-disk existence. Stat (not just existsSync) so a directory can
+    // be expanded into its contained files rather than treated as a copyable file.
+    let stat;
+    try {
+      stat = fs.statSync(abs);
+    } catch {
+      // Not on disk (deleted, or a stat race where it vanished) → classify deleted,
+      // but only for paths that qualify as a flavor-managed source path.
+      addQualified(relPosix, 'deleted');
+      continue;
+    }
+
+    if (stat.isDirectory()) {
+      // A wholly-untracked directory record: expand into its regular files rather
+      // than emitting the directory itself.
+      emitDirFiles(abs);
+    } else if (stat.isFile()) {
+      addQualified(relPosix, 'present');
+    }
+    // Anything else (socket, fifo, …) is neither a file nor a directory → skip.
   }
 
   const files = Array.from(byPath, ([p, status]) => ({ path: p, status }));

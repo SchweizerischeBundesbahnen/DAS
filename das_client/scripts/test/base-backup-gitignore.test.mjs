@@ -8,8 +8,9 @@
 // Statically guards the Base_Backup_Directory exclusion guarantee: the
 // repo-root `.gitignore` MUST cause Git to ignore the Base_Backup_Directory
 // `.flavor-base-backup/` (and representative nested paths inside it), while
-// `.flavor-manifest.json` and representative `lib/` `.dart` target paths remain
-// NOT ignored. This is the complement of
+// representative base `lib/` `.dart` target paths remain NOT ignored (the
+// manifest is intentionally ignored under the base-state policy — see
+// gitignore-visibility.test.mjs). This is the complement of
 // `scripts/test/gitignore-visibility.test.mjs`, and together they pin the
 // `.gitignore` behavior against future edits.
 //
@@ -20,7 +21,7 @@
 //   1. AUTHORITATIVE — ask Git directly via `git check-ignore -v --no-index`.
 //      `git check-ignore` exits 0 when a path IS ignored (a match was found)
 //      and 1 when it is NOT ignored. We assert exit 0 for backup-dir paths and
-//      exit 1 for the manifest + `lib/` targets. If git is unavailable (spawn
+//      exit 1 for the base `lib/` targets. If git is unavailable (spawn
 //      ENOENT) or the workspace is not a git repo (`check-ignore` exits 128),
 //      the test SKIPs gracefully rather than failing — environment issues must
 //      not produce a false failure.
@@ -50,11 +51,13 @@ const IGNORED = [
   '.flavor-base-backup/x.dart',
 ];
 
-// Paths that MUST stay visible to Git (complement — guards Req 9.1 is not
-// broken by the backup-dir rule): the manifest at the repo root plus a
-// representative switched `lib/` target using a plain `.dart` name.
+// Paths that MUST stay visible to Git (complement — guards that the backup-dir
+// rule does not over-match the base sources): a representative base `lib/`
+// target using a plain `.dart` name. NOTE: `.flavor-manifest.json` is
+// deliberately NOT here — the base-state policy (Req 9.1) makes the manifest
+// a gitignored local-only artifact; its ignored-status is owned by
+// gitignore-visibility.test.mjs.
 const NOT_IGNORED = [
-  '.flavor-manifest.json',
   'sfera/lib/src/flavor_example.dart',
 ];
 
@@ -103,7 +106,7 @@ test('git check-ignore: .flavor-base-backup/ is ignored while manifest + lib tar
     );
   }
 
-  // Manifest + lib targets MUST NOT be ignored (exit 1 = no rule matched).
+  // Base lib/ targets MUST NOT be ignored (exit 1 = no rule matched).
   for (const candidate of NOT_IGNORED) {
     const result = checkIgnore(candidate);
 
@@ -120,7 +123,7 @@ test('git check-ignore: .flavor-base-backup/ is ignored while manifest + lib tar
     assert.equal(
       result.status,
       1,
-      `.gitignore must NOT ignore "${candidate}" (Req 9.1), but git check-ignore reported it ignored` +
+      `.gitignore must NOT ignore the base source "${candidate}" (Req 9.2), but git check-ignore reported it ignored` +
         (result.stdout ? ` via rule: ${result.stdout.trim()}` : ''),
     );
   }

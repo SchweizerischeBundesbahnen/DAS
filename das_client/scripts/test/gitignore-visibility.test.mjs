@@ -1,27 +1,31 @@
 // gitignore-visibility.test.mjs
 //
-// Git-visibility smoke test (task 12.1).
+// Git-visibility smoke test (task 12.1, revised).
 //
-// Statically guards the Git-visibility guarantee: the repo-root `.gitignore`
-// must NOT cause Git to ignore `.flavor-manifest.json` or representative `lib/`
-// `.dart` target paths produced by a flavor switch. This protects Requirement
-// 9.1 against future `.gitignore` edits.
+// Repo policy: the repository always stays on the BASE state. The active-flavor
+// manifest (`.flavor-manifest.json`) is a LOCAL-ONLY artifact and MUST be
+// ignored by Git so a switched manifest is never committed. At the same time the
+// base code under `lib/` MUST remain visible to Git (a switch overwrites `lib/`
+// with flavor code only locally; the committed tree is the base).
 //
-// _Requirements: 9.1_
+// This supersedes the earlier "manifest must be visible" guarantee: see the
+// updated Requirement 9 (Base State Is the Committed State) in requirements.md.
+//
+// _Requirements: 9.1, 9.2, 9.3_
 //
 // Two layers of assertion:
 //
 //   1. AUTHORITATIVE — ask Git directly via `git check-ignore -v --no-index`.
-//      `git check-ignore` exits 0 when a path IS ignored (a match was found)
-//      and 1 when it is NOT ignored. We assert exit code === 1 for every
-//      candidate. If git is unavailable (spawn ENOENT) or the workspace is not
-//      a git repo (`check-ignore` exits 128), the test SKIPs gracefully rather
-//      than failing — environment issues must not produce a false failure.
+//      `git check-ignore` exits 0 when a path IS ignored and 1 when it is NOT.
+//      We assert the manifest IS ignored (exit 0) and that representative `lib/`
+//      `.dart` targets are NOT ignored (exit 1). If git is unavailable (spawn
+//      ENOENT) or the workspace is not a git repo (exit 128), the test SKIPs
+//      gracefully rather than failing — environment issues must not fail CI.
 //
 //   2. ROBUST FALLBACK (always runs) — read the root `.gitignore` text and
-//      assert it contains no line that would ignore `.flavor-manifest.json`
-//      exactly (no bare `.flavor-manifest.json` entry and no root-scope
-//      `*.json` entry). This is a light assertion; layer 1 is authoritative.
+//      assert it DOES contain an entry that ignores `.flavor-manifest.json`,
+//      and contains no root-scope `*.json` sweep that would also hide unrelated
+//      JSON. This is a light assertion; layer 1 is authoritative.
 //
 // Design caveat: `.gitignore` DOES ignore generated patterns like `*.g.dart`,
 // `*.gr.dart`, `*.freezed.dart`, `*.mocks.dart`. Flavor source files are plain
@@ -42,99 +46,89 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const gitignorePath = resolve(repoRoot, '.gitignore');
 
-// Candidate paths that a flavor switch produces and that MUST stay visible to
-// Git: the manifest at the repo root, plus representative switched `lib/`
-// targets using plain `.dart` names (not generated-file patterns).
-const CANDIDATES = [
-  '.flavor-manifest.json',
+// The manifest is a local-only artifact that MUST be ignored.
+const MANIFEST = '.flavor-manifest.json';
+
+// Representative switched `lib/` targets (plain `.dart` names, not generated
+// patterns) that MUST stay visible to Git so the base tree is committable.
+const VISIBLE_TARGETS = [
   'sfera/lib/src/flavor_example.dart',
   'app/lib/flavor_example.dart',
 ];
 
-test('git check-ignore: no flavor target path is ignored by .gitignore', (t) => {
-  // Probe git availability + repo status with a representative candidate.
-  const probe = spawnSync(
+/** Run `git check-ignore` for a path; returns the spawn result. */
+function checkIgnore(candidate) {
+  return spawnSync(
     'git',
-    ['check-ignore', '-v', '--no-index', '--', CANDIDATES[0]],
+    ['check-ignore', '-v', '--no-index', '--', candidate],
     { cwd: repoRoot, encoding: 'utf8' },
   );
+}
 
-  // git binary not on PATH (ENOENT) or otherwise un-spawnable → skip.
+test('git check-ignore: the manifest is ignored, lib/ targets are not', (t) => {
+  // Probe git availability + repo status with the manifest candidate.
+  const probe = checkIgnore(MANIFEST);
+
   if (probe.error) {
     t.skip(`git is not available (${probe.error.code ?? probe.error.message}); skipping authoritative check`);
     return;
   }
-
-  // Not a git repository → check-ignore reports a fatal error with code 128.
   if (probe.status === 128) {
     t.skip('workspace is not a git repository (git check-ignore exited 128); skipping authoritative check');
     return;
   }
 
-  for (const candidate of CANDIDATES) {
-    const result = spawnSync(
-      'git',
-      ['check-ignore', '-v', '--no-index', '--', candidate],
-      { cwd: repoRoot, encoding: 'utf8' },
-    );
+  // The manifest MUST be ignored → check-ignore exits 0 (a rule matched).
+  assert.equal(
+    probe.status,
+    0,
+    `.gitignore MUST ignore "${MANIFEST}" so a switched manifest is never committed (Req 9.1)` +
+      (probe.stdout ? ` — matched rule: ${probe.stdout.trim()}` : `, but git check-ignore reported it NOT ignored`),
+  );
 
-    assert.equal(
-      result.error,
-      undefined,
-      `git check-ignore must spawn cleanly for ${candidate}`,
-    );
-
-    // Guard against a non-repo / fatal error surfacing per-candidate too.
+  // The base `lib/` targets MUST remain visible → check-ignore exits 1.
+  for (const candidate of VISIBLE_TARGETS) {
+    const result = checkIgnore(candidate);
+    assert.equal(result.error, undefined, `git check-ignore must spawn cleanly for ${candidate}`);
     assert.notEqual(
       result.status,
       128,
       `git check-ignore reported a fatal error for ${candidate}: ${result.stderr}`,
     );
-
-    // Exit 0 means a .gitignore rule matched (path IS ignored) — a failure of
-    // the Git-visibility guarantee. The matching rule is printed on stdout by
-    // the -v flag, surfaced here for actionable diagnostics.
     assert.equal(
       result.status,
       1,
-      `.gitignore must NOT ignore "${candidate}" (Req 9.1), but git check-ignore reported it ignored` +
+      `.gitignore must NOT ignore the base target "${candidate}" (Req 9.2)` +
         (result.stdout ? ` via rule: ${result.stdout.trim()}` : ''),
     );
   }
 });
 
-test('.gitignore text contains no entry that would ignore .flavor-manifest.json (fallback)', () => {
+test('.gitignore text ignores the manifest without a root-scope *.json sweep (fallback)', () => {
   const contents = readFileSync(gitignorePath, 'utf8');
 
   const lines = contents
     .split(/\r?\n/)
-    // Strip surrounding whitespace and drop comments/blank lines.
     .map((line) => line.trim())
     .filter((line) => line.length > 0 && !line.startsWith('#'));
 
-  // No bare entry matching the manifest file name exactly.
-  assert.equal(
-    lines.includes('.flavor-manifest.json'),
-    false,
-    '.gitignore must not contain an exact ".flavor-manifest.json" entry (Req 9.1)',
-  );
-  assert.equal(
-    lines.includes('/.flavor-manifest.json'),
-    false,
-    '.gitignore must not contain an exact "/.flavor-manifest.json" entry (Req 9.1)',
+  // An entry that ignores the repo-root manifest must be present (either the
+  // bare name or the root-anchored form).
+  assert.ok(
+    lines.includes('.flavor-manifest.json') || lines.includes('/.flavor-manifest.json'),
+    '.gitignore must contain a ".flavor-manifest.json" (or "/.flavor-manifest.json") entry (Req 9.1)',
   );
 
-  // No root-scope "*.json" entry, which would sweep up the manifest. A nested
-  // pattern like "foo/*.json" is scoped elsewhere and does not match the
-  // repo-root manifest, so only root-scope forms are rejected here.
+  // But NOT via a broad root-scope "*.json" sweep that would also hide unrelated
+  // JSON files.
   assert.equal(
     lines.includes('*.json'),
     false,
-    '.gitignore must not contain a root-scope "*.json" entry (Req 9.1)',
+    '.gitignore must not ignore the manifest via a broad root-scope "*.json" entry',
   );
   assert.equal(
     lines.includes('/*.json'),
     false,
-    '.gitignore must not contain a root-scope "/*.json" entry (Req 9.1)',
+    '.gitignore must not ignore the manifest via a broad root-scope "/*.json" entry',
   );
 });
