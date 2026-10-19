@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.0...backend-v0.18.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* actually use correct secrets from vault ([#2986](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2986)) ([daf05ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/daf05ff17846acdd8140cb68b260f798f997b5c9))
+
 ## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.17.0...backend-v0.18.0) (2026-10-13)
 
 
