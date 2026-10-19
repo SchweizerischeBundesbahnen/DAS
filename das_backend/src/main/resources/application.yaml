@@ -126,11 +126,6 @@ formation:
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
-aws:
-  accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
-  secretKey: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
-  bucketName: ${AWS_BUCKET_NAME}
-
 sfera:
   major-version: '4'
   version: '4.00'
@@ -140,12 +135,18 @@ sfera:
   oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
+# TODO: remove the fallbacks to the legacy env vars (AWS_BUCKET_NAME, PRELOAD_BUCKET_RW_*, PRELOAD_BUCKET_R_*) once all environments set the new ones
 preload:
   bucket:
-    bucketUrl: ${PRELOAD_BUCKET_URL}
-    accessKey: ${PRELOAD_BUCKET_R_ACCESS_KEY}
-    accessSecret: ${PRELOAD_BUCKET_R_SECRET_KEY}
+    name: ${PRELOAD_BUCKET_NAME:${AWS_BUCKET_NAME}}
+    url: ${PRELOAD_BUCKET_URL}
     region: ${PRELOAD_BUCKET_REGION}
+    read-write:
+      access-key-id: ${PRELOAD_BUCKET_READ_WRITE_ACCESS_KEY_ID:${PRELOAD_BUCKET_RW_ACCESS_KEY}}
+      secret-access-key: ${PRELOAD_BUCKET_READ_WRITE_SECRET_ACCESS_KEY:${PRELOAD_BUCKET_RW_ACCESS_SECRET}}
+    read-only:
+      access-key-id: ${PRELOAD_BUCKET_READ_ONLY_ACCESS_KEY_ID:${PRELOAD_BUCKET_R_ACCESS_KEY}}
+      secret-access-key: ${PRELOAD_BUCKET_READ_ONLY_SECRET_ACCESS_KEY:${PRELOAD_BUCKET_R_SECRET_KEY}}
 
 trainjourneyplan:
   kafka:

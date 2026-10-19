@@ -4,9 +4,11 @@ import ch.sbb.das.backend.config.ConfigService;
 import ch.sbb.das.backend.config.Logging;
 import ch.sbb.das.backend.config.Preload;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
+@EnableConfigurationProperties(PreloadBucketProperties.class)
 public class ConfigServiceImpl implements ConfigService {
 
     @Value("${logging.url}")
@@ -15,17 +17,11 @@ public class ConfigServiceImpl implements ConfigService {
     @Value("${logging.token}")
     private String token;
 
-    @Value("${preload.bucket.bucketUrl}")
-    private String bucketUrl;
+    private final PreloadBucketProperties preloadBucketProperties;
 
-    @Value("${preload.bucket.accessKey}")
-    private String accessKey;
-
-    @Value("${preload.bucket.accessSecret}")
-    private String accessSecret;
-
-    @Value("${preload.bucket.region}")
-    private String region;
+    ConfigServiceImpl(PreloadBucketProperties preloadBucketProperties) {
+        this.preloadBucketProperties = preloadBucketProperties;
+    }
 
     @Override
     public Logging getLogging() {
@@ -34,6 +30,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Preload getPreload() {
-        return new Preload(bucketUrl, accessKey, accessSecret, region);
+        PreloadBucketProperties.Credentials readOnly = preloadBucketProperties.readOnly();
+        return new Preload(preloadBucketProperties.url(), readOnly.accessKeyId(), readOnly.secretAccessKey(), preloadBucketProperties.region());
     }
 }
