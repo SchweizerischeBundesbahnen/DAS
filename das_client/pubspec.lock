@@ -1264,10 +1264,10 @@ packages:
     dependency: transitive
     description:
       name: sbb_oidc
-      sha256: "3194aa76ef2d240ef87792bf37f4fc42de5c54d9a8a6c96491733ed4ac0d1092"
+      sha256: "4d93c270742fb625429ec61a8607a10fbcb8f2b3b47c46ccecf57fde4a80dad3"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "5.1.0"
   screen_brightness:
     dependency: transitive
     description:
