@@ -14,10 +14,18 @@ class LauncherImpl({
   required final LocalKeyValueStore _userSettings,
   required final Flavor flavor,
 }) implements Launcher {
+  static const _googleChromeHttpsScheme = 'googlechromes://';
+
   static const _blsCompanyCodes = [
     '3356', // BLSC
     '2263', // BLSI
     '1163', // BLSP
+  ];
+
+  // TODO: check what the correct company codes are for SOB
+  static const _sobCompanyCodes = [
+    '9058', // SOB
+    '1234', // SOBI
   ];
 
   @override
@@ -49,10 +57,22 @@ class LauncherImpl({
   @override
   Future<bool> launchServicePointPortal(ServicePoint servicePoint) {
     final companyCodes = _userSettings.companyCodes;
-    if (companyCodes.isNotEmpty && companyCodes.every((it) => _blsCompanyCodes.contains(it))) {
-      return launch(ServicePointPortal.bls.urlFor(servicePoint));
-    } else {
-      return launch(ServicePointPortal.sbb.urlFor(servicePoint));
+
+    var servicePortalUrl = ServicePointPortal.sbb.urlFor(servicePoint);
+    if (companyCodes.containsOnly(_blsCompanyCodes)) {
+      servicePortalUrl = ServicePointPortal.bls.urlFor(servicePoint);
     }
+
+    if (companyCodes.containsOnly(_sobCompanyCodes)) {
+      servicePortalUrl = servicePortalUrl.replaceFirst('https://', _googleChromeHttpsScheme);
+    }
+
+    return launch(servicePortalUrl);
+  }
+}
+
+extension _CompanyCodesListExtension on List<String> {
+  bool containsOnly(List<String> companyCodes) {
+    return isNotEmpty && every((companyCode) => companyCodes.contains(companyCode));
   }
 }

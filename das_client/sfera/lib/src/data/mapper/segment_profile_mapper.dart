@@ -368,7 +368,7 @@ class SegmentProfileMapper._() {
       return CurvePoint(
         order: begin.order,
         kilometre: [
-          if (startKm != null) startKm,
+          ?startKm,
           if (endKm != null && endKm != startKm) endKm,
         ],
         localSpeeds: isSummarized ? _mergeSpeeds(beginsInThisSegment) : begin.localSpeeds,
