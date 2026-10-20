@@ -22,7 +22,7 @@ class LauncherImpl({
     '1163', // BLSP
   ];
 
-  // TODO: check what the correct company codes are for SOB
+  // TODO: SOB I company code is still being clarified.
   static const _sobCompanyCodes = [
     '9058', // SOB
     '1234', // SOBI
