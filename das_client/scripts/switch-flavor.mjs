@@ -1698,13 +1698,35 @@ export function main(argv, { repoRoot, spawn } = {}) {
   // 3. Discover workspace components.
   const components = discoverComponents(repoRoot);
 
-  // 4. Build the copy plan BEFORE any mutation. An empty plan means no
-  //    component owns a folder for the selected flavor → report + exit 1 with
-  //    no filesystem changes (Req 6.3, 6.4).
+  // 4. Build the copy plan BEFORE any mutation. An empty plan means NO component
+  //    owns a folder for the selected flavor. That is NOT an error: the flavor
+  //    simply uses the base code unchanged. Warn and succeed (exit 0) with no new
+  //    flavor activated (Req 1.5, 6.3). If a PRIOR flavor is active, restore the
+  //    base first so switching to a folderless flavor reverts the previous flavor
+  //    back to the base (the folderless flavor == base). In --dry-run, only
+  //    preview and make no change.
   const copyPlan = components.flatMap((c) => planCopy(c.dir, args.flavor, repoRoot));
   if (copyPlan.length === 0) {
-    console.error(`No matching flavor folder found for flavor '${args.flavor}'`);
-    return 1;
+    if (args.dryRun) {
+      console.log(
+        `[dry-run] no .${args.flavor} folder in any component; '${args.flavor}' uses the base code ` +
+          `unchanged — nothing would be switched`,
+      );
+      return 0;
+    }
+    const prior = readManifest(repoRoot);
+    if (prior.state === 'VALID') {
+      const rc = restoreBase(repoRoot);
+      if (rc !== 0) {
+        console.error('Failed to restore the base before switching flavors; aborting switch.');
+        return 1;
+      }
+    }
+    console.warn(
+      `Warning: no .${args.flavor} folder in any component; '${args.flavor}' uses the base code ` +
+        `unchanged — nothing to switch`,
+    );
+    return 0;
   }
 
   // 4b. --dry-run: run the read-only steps (discovery, planning, manifest diff,

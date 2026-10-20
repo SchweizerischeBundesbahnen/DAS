@@ -177,24 +177,25 @@ test('--dry-run --remove-dep: reports removal, pubspec untouched, no spawn (Req 
 //    the preview). (Req 1.2)
 // ---------------------------------------------------------------------------
 
-test('--dry-run: no matching flavor folder returns 1 (Req 1.2)', async () => {
+test('--dry-run: folderless flavor previews a no-op and returns 0 (Req 1.5, 6.3)', async () => {
   const dir = await makeTempDir();
   try {
-    // Components have lib/ but NO dev/ flavor folder → empty copy plan.
+    // Components have lib/ but NO dev/ flavor folder → empty copy plan. A
+    // folderless flavor is a successful no-op (the flavor uses the base code).
     await buildRepo(dir, {
       components: [{ name: 'sfera', lib: { 'a.dart': '//a\n' } }],
     });
 
     const before = snapshotTree(dir);
 
-    const { result, stderr } = captureConsole(() =>
+    const { result, stdout } = captureConsole(() =>
       main(argv('dev', '--dry-run'), { repoRoot: dir }),
     );
 
-    assert.equal(result, 1, 'an empty copy plan must exit 1 even in dry-run');
+    assert.equal(result, 0, 'a folderless flavor must exit 0 even in dry-run');
     assert.ok(
-      stderr.some((line) => /no matching flavor folder/i.test(line)),
-      `expected a "no matching flavor folder" line on stderr; got: ${JSON.stringify(stderr)}`,
+      stdout.some((line) => /\[dry-run\].*base code unchanged|nothing would be switched/i.test(line)),
+      `expected a "[dry-run] ... base code unchanged" preview; got: ${JSON.stringify(stdout)}`,
     );
 
     const after = snapshotTree(dir);

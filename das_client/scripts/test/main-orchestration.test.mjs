@@ -20,6 +20,8 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { main } from '../switch-flavor.mjs';
 import { makeTempDir, removeTempDir, buildRepo } from './helpers.mjs';
@@ -38,14 +40,19 @@ function captureConsole(fn) {
   const stderr = [];
   const origLog = console.log;
   const origError = console.error;
+  const origWarn = console.warn;
   console.log = (...args) => stdout.push(args.map((a) => String(a)).join(' '));
   console.error = (...args) => stderr.push(args.map((a) => String(a)).join(' '));
+  // Warnings are informational; capture them alongside stderr so a test can
+  // assert on a warning without treating it as the error channel.
+  console.warn = (...args) => stderr.push(args.map((a) => String(a)).join(' '));
   try {
     const result = fn();
     return { result, stdout, stderr };
   } finally {
     console.log = origLog;
     console.error = origError;
+    console.warn = origWarn;
   }
 }
 
@@ -103,10 +110,11 @@ test('CORRUPT manifest: deletion skipped, exit 0 (Req 4.3)', async () => {
 // 2. "no matching flavor folder" + non-zero exit (Req 6.3, 6.4)
 // ---------------------------------------------------------------------------
 
-test('no component owns the flavor folder: report + exit 1 (Req 6.3, 6.4)', async () => {
+test('no component owns the flavor folder: warning + exit 0, base unchanged (Req 1.5, 6.3)', async () => {
   const dir = await makeTempDir();
   try {
-    // Components have lib/ but NO dev/ flavor folder → empty copy plan.
+    // Components have lib/ but NO dev/ flavor folder → empty copy plan. This is
+    // NOT an error: the flavor uses the base code unchanged (warning, exit 0).
     await buildRepo(dir, {
       components: [
         { name: 'sfera', lib: { 'a.dart': '//a\n' } },
@@ -116,10 +124,16 @@ test('no component owns the flavor folder: report + exit 1 (Req 6.3, 6.4)', asyn
 
     const { result, stderr } = captureConsole(() => main(argv('dev'), { repoRoot: dir }));
 
-    assert.equal(result, 1, 'an empty copy plan must exit non-zero');
+    assert.equal(result, 0, 'an empty copy plan (folderless flavor) must exit 0');
     assert.ok(
-      stderr.some((line) => /no matching flavor folder/i.test(line)),
-      `expected a "no matching flavor folder" line on stderr; got: ${JSON.stringify(stderr)}`,
+      stderr.some((line) => /uses the base code unchanged|nothing to switch/i.test(line)),
+      `expected a folderless-flavor warning; got: ${JSON.stringify(stderr)}`,
+    );
+    // No manifest is written for a folderless flavor (no switch happened).
+    assert.equal(
+      fs.existsSync(path.join(dir, '.flavor-manifest.json')),
+      false,
+      'no manifest should be written when the flavor has no folder',
     );
   } finally {
     await removeTempDir(dir);
