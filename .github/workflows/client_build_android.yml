@@ -86,14 +86,14 @@ jobs:
 
     - name: Build Appbundle INTE
       run: |
-        node ../scripts/switch-flavor.mjs dev 
+        node ../scripts/switch-flavor.mjs inte 
         flutter build appbundle --flavor inte -t lib/main_inte.dart
         node ../scripts/switch-flavor.mjs --restore-base
       working-directory: das_client/app
 
     - name: Build Appbundle PROD
       run: |
-        node ../scripts/switch-flavor.mjs dev 
+        node ../scripts/switch-flavor.mjs prod 
         flutter build appbundle --flavor prod -t lib/main_prod.dart
         node ../scripts/switch-flavor.mjs --restore-base
       working-directory: das_client/app
