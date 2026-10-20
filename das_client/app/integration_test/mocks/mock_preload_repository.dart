@@ -12,6 +12,9 @@ class MockPreloadRepository implements PreloadRepository {
   void triggerPreload() {}
 
   @override
+  Future<void> stopPreload() async {}
+
+  @override
   Stream<PreloadDetails> get preloadDetails => preloadDetailsSubject.stream;
 
   @override

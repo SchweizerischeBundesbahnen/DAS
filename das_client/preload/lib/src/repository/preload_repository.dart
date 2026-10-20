@@ -6,6 +6,8 @@ abstract class PreloadRepository._() {
 
   void triggerPreload();
 
+  Future<void> stopPreload();
+
   Stream<PreloadDetails> get preloadDetails;
 
   void dispose();

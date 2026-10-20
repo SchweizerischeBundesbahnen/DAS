@@ -34,7 +34,8 @@ class PreloadRepositoryImpl({
   StreamSubscription? _databaseSubscription;
   Timer? _syncTimer;
 
-  bool _isRunning = false;
+  Future<void>? _currentRun;
+  bool _stopRequested = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
 
   @override
@@ -62,7 +63,7 @@ class PreloadRepositoryImpl({
   }
 
   @override
-  void triggerPreload() async {
+  void triggerPreload() {
     if (disablePreload) {
       _log.fine('Preload has been disabled by development flag. Cancelling...');
       return;
@@ -77,9 +78,40 @@ class PreloadRepositoryImpl({
       _log.info('Preload is already running. Skipping new preload request.');
       return;
     }
-    _updateRunning(true);
-    _log.info('Starting preload...');
+    _stopRequested = false;
+    _currentRun = _runPreload().whenComplete(() {
+      _currentRun = null;
+      _emit();
+    });
+    _emit();
+  }
 
+  @override
+  Future<void> stopPreload() async {
+    final currentRun = _currentRun;
+    if (currentRun == null) return;
+
+    _log.info('Stopping preload...');
+    _stopRequested = true;
+    _s3client?.cancelDownloads();
+    preloadZipProcessor.stop();
+    await currentRun;
+  }
+
+  S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
+
+  @override
+  void dispose() {
+    stopPreload();
+    _databaseSubscription?.cancel();
+    _rxDetails.close();
+    _disablePreload();
+  }
+
+  bool get _isRunning => _currentRun != null;
+
+  Future<void> _runPreload() async {
+    _log.info('Starting preload...');
     try {
       await _cleanup();
       await _listS3BucketAndUpdateLocalDatabase();
@@ -87,18 +119,7 @@ class PreloadRepositoryImpl({
     } catch (e, s) {
       _log.severe('Error during preload.', e, s);
     }
-
-    _log.info('Preload completed.');
-    _updateRunning(false);
-  }
-
-  S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
-
-  @override
-  void dispose() {
-    _databaseSubscription?.cancel();
-    _rxDetails.close();
-    _disablePreload();
+    _log.info(_stopRequested ? 'Preload stopped.' : 'Preload completed.');
   }
 
   Future<void> _cleanup() async {
@@ -168,13 +189,16 @@ class PreloadRepositoryImpl({
     try {
       final preloadDirectory = await preloadZipProcessor.preloadDirectory();
       for (final file in prioritizedFiles) {
+        if (_stopRequested) break;
         if (file.status == .initial || file.status == .error) {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {
             final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadDirectory);
             await Future.wait(processingFutures);
+            if (_stopRequested) break;
             processingFutures.add(_processZip(_ZipToProcess(file: file, zip: downloaded)));
           } catch (e, s) {
+            if (_stopRequested) break; // download aborted by stop, keep status to retry later
             _log.severe('Error downloading file ${file.name}.', e, s);
             await databaseService.saveS3File(file.copyWith(status: .error));
           }
@@ -190,11 +214,6 @@ class PreloadRepositoryImpl({
   Future<void> _processZip(_ZipToProcess toProcess) async {
     final result = await preloadZipProcessor.extractToLocalDatabase(toProcess.zip);
     await databaseService.saveS3File(toProcess.file.copyWith(status: result));
-  }
-
-  void _updateRunning(bool isRunning) {
-    _isRunning = isRunning;
-    _emit();
   }
 
   Future<void> _emit([List<S3File>? files]) async {

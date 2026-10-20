@@ -21,6 +21,15 @@ class S3Client({required final AwsConfiguration _configuration}) {
       );
 
   final AWSSigV4Signer _signer;
+  final Set<AWSHttpClient> _activeDownloads = {};
+
+  /// Aborts all running downloads. Aborted [downloadFile] calls throw.
+  void cancelDownloads() {
+    for (final client in _activeDownloads) {
+      client.close(force: true);
+    }
+    _activeDownloads.clear();
+  }
 
   Future<ListBucketResultDto?> listBucket() async {
     final httpClient = AWSHttpClient();
@@ -45,6 +54,7 @@ class S3Client({required final AwsConfiguration _configuration}) {
 
   Future<File> downloadFile(String key, {required Directory saveTo}) async {
     final httpClient = AWSHttpClient();
+    _activeDownloads.add(httpClient);
     try {
       final signedRequest = _getRequest(key);
       final response = await signedRequest.send(client: httpClient).response;

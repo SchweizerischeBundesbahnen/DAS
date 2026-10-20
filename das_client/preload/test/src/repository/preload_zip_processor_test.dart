@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -181,6 +182,28 @@ void main() {
     expect(status, S3FileSyncStatus.error);
     final capturesSave = verify(mockSferaLocalRepo.saveData(captureAny)).captured;
     expect(capturesSave, hasLength(1));
+  });
+
+  test('stop_whenExtractionIsRunning_interruptsAndReturnsInitial', () async {
+    // GIVEN
+    final zip = await _makeZip(List.generate(250, (_) => _testJP), saveTo: tempDir);
+    final saveStarted = Completer<void>();
+    final unblockSave = Completer<bool>();
+    when(mockSferaLocalRepo.saveData(any)).thenAnswer((_) async {
+      if (!saveStarted.isCompleted) saveStarted.complete();
+      return unblockSave.future;
+    });
+
+    // WHEN
+    final extractionFuture = testee.extractToLocalDatabase(zip);
+    await saveStarted.future;
+    testee.stop();
+    unblockSave.complete(true);
+
+    // THEN
+    final status = await extractionFuture;
+    expect(status, S3FileSyncStatus.initial);
+    verify(mockSferaLocalRepo.saveData(any)).called(1);
   });
 }
 

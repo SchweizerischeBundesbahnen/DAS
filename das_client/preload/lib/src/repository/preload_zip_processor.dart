@@ -19,16 +19,20 @@ const int _batchSize = 200;
 /// Uses background isolates with batch database inserts to prevent UI freezes.
 class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
   final Set<String> _processedFiles = {};
+  final Set<_Extraction> _activeExtractions = {};
 
   Future<S3FileSyncStatus> extractToLocalDatabase(File zip) async {
     _log.info('Start extracting file ${zip.name}');
 
+    final receivePort = ReceivePort();
+    final extraction = _Extraction(receivePort);
+    _activeExtractions.add(extraction);
     try {
-      final receivePort = ReceivePort();
-      await Isolate.spawn(
+      extraction.isolate = await Isolate.spawn(
         _zipWorker,
         _ZipWork(zip.path, receivePort.sendPort, _processedFiles.toList(growable: false)),
       );
+      if (extraction.isStopped) extraction.stop(); // stop was requested while spawning
 
       var allSuccess = true;
       await for (final message in receivePort) {
@@ -53,9 +57,10 @@ class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
         }
       }
 
-      receivePort.close();
-
-      if (allSuccess) {
+      if (extraction.isStopped) {
+        _log.info('Extraction of ${zip.name} was stopped.');
+        return .initial;
+      } else if (allSuccess) {
         _log.fine('Processed all files from ${zip.name}.');
         return .downloaded;
       } else {
@@ -66,7 +71,15 @@ class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
       _log.severe('Extract failed for file ${zip.name}.', e);
       return .error;
     } finally {
+      receivePort.close();
+      _activeExtractions.remove(extraction);
       _saveDelete(zip);
+    }
+  }
+
+  void stop() {
+    for (final extraction in _activeExtractions) {
+      extraction.stop();
     }
   }
 
@@ -99,6 +112,18 @@ class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
     } catch (e) {
       _log.severe('Failed to delete file ${zip.name}.', e);
     }
+  }
+}
+
+class _Extraction(final ReceivePort port) {
+  Isolate? isolate;
+  bool isStopped = false;
+
+  /// Kills the isolate and closes the port, which ends the `await for` loop after the current message.
+  void stop() {
+    isStopped = true;
+    isolate?.kill(priority: Isolate.immediate);
+    port.close();
   }
 }
 

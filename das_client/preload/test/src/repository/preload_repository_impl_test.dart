@@ -45,8 +45,8 @@ void main() {
     preloadDetailsRegister = [];
     databaseSubject = BehaviorSubject.seeded([]);
     when(mockDatabaseService.watchAll()).thenAnswer((_) => databaseSubject.stream);
-    when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
-    when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('test')));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) async => .downloaded);
+    when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) async => Directory('test'));
 
     testee = S3ClientOverriddenPreloadRepository(
       preloadZipProcessor: mockPreloadZipProcessor,
@@ -57,9 +57,10 @@ void main() {
     preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
   });
 
-  tearDown(() {
+  tearDown(() async {
     preloadDetailsSubscription.cancel();
     preloadDetailsRegister.clear();
+    await testee.stopPreload();
     testee.dispose();
   });
 
@@ -75,9 +76,7 @@ void main() {
   test('preloadDetails_whenAwsConfigurationUpdated_startsAndCompletesPreload', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(
-      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-    );
+    testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -105,15 +104,13 @@ void main() {
       );
       preloadDetailsSubscription.cancel();
       preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
-      when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) => Future.value(.downloaded));
+      when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) async => .downloaded);
       when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) async => {});
-      when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) => Future.value(Directory('Test')));
+      when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) async => Directory('Test'));
 
       // ACT
       fakeAsync.elapse(const Duration(seconds: 1));
-      testee.updateConfiguration(
-        AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-      );
+      testee.updateConfiguration(_createAwsConfiguration());
       fakeAsync.elapse(const Duration(seconds: 1));
 
       // VERIFY
@@ -154,9 +151,7 @@ void main() {
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(
-      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-    );
+    testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -173,9 +168,7 @@ void main() {
   test('preload_whenTriggered_callsCleanup', () async {
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(
-      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-    );
+    testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -197,28 +190,19 @@ void main() {
 
     final zip1 = File('test1.zip');
     final zip2 = File('test2.zip');
-    when(
-      mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo')),
-    ).thenThrow(Exception('Failed'));
-    when(
-      mockS3Client.downloadFile('2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo')),
-    ).thenAnswer((_) {
-      return Future.value(zip1);
-    });
-    when(
-      mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo')),
-    ).thenAnswer((_) {
-      return Future.value(zip2);
-    });
+    when(mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenThrow(Exception('Failed'));
+    when(mockS3Client.downloadFile('2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zip1);
+    when(mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zip2);
 
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zip1)).thenAnswer((_) => Future.value(.corrupted));
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zip2)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip1)).thenAnswer((_) async => .corrupted);
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zip2)).thenAnswer((_) async => .downloaded);
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(
-      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-    );
+    testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -260,29 +244,23 @@ void main() {
     final zipOtherA = File('other_a.zip');
     final zipOtherC = File('other_c.zip');
 
-    when(mockS3Client.downloadFile('Segment_2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
-      (_) => Future.value(zipSegmentB),
-    );
-    when(mockS3Client.downloadFile('Segment_2026-02-10T13-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
-      (_) => Future.value(zipSegmentD),
-    );
-    when(mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
-      (_) => Future.value(zipOtherA),
-    );
-    when(mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo'))).thenAnswer(
-      (_) => Future.value(zipOtherC),
-    );
+    when(mockS3Client.downloadFile('Segment_2026-02-10T16-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zipSegmentB);
+    when(mockS3Client.downloadFile('Segment_2026-02-10T13-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zipSegmentD);
+    when(mockS3Client.downloadFile('2026-02-10T17-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zipOtherA);
+    when(mockS3Client.downloadFile('2026-02-10T14-35-35Z.zip', saveTo: anyNamed('saveTo')))
+        .thenAnswer((_) async => zipOtherC);
 
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentB)).thenAnswer((_) => Future.value(.downloaded));
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentD)).thenAnswer((_) => Future.value(.downloaded));
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherA)).thenAnswer((_) => Future.value(.downloaded));
-    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherC)).thenAnswer((_) => Future.value(.downloaded));
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentB)).thenAnswer((_) async => .downloaded);
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipSegmentD)).thenAnswer((_) async => .downloaded);
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherA)).thenAnswer((_) async => .downloaded);
+    when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherC)).thenAnswer((_) async => .downloaded);
 
     // ACT
     await Future.delayed(const Duration(milliseconds: 1));
-    testee.updateConfiguration(
-      AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: ''),
-    );
+    testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
     // VERIFY
@@ -293,7 +271,39 @@ void main() {
     expect(captured[2], '2026-02-10T17-35-35Z.zip');
     expect(captured[3], '2026-02-10T14-35-35Z.zip');
   });
+
+  test('stopPreload_whenRunning_cancelsS3DownloadsAndStopsZipProcessor', () async {
+    // WHEN
+    final listBucketCompleter = Completer<ListBucketResultDto?>();
+    when(mockDatabaseService.findAll()).thenAnswer((_) => Future.value([]));
+    when(mockS3Client.listBucket()).thenAnswer((_) => listBucketCompleter.future);
+
+    // ACT
+    testee.updateConfiguration(_createAwsConfiguration());
+    await Future.delayed(const Duration(milliseconds: 1));
+
+    final stopFuture = testee.stopPreload();
+
+    // stopPreload should abort active work immediately and then wait for current run.
+    verify(mockS3Client.cancelDownloads()).called(1);
+    verify(mockPreloadZipProcessor.stop()).called(1);
+
+    listBucketCompleter.complete(_createMockListBucketResultDto([]));
+    await stopFuture;
+  });
+
+  test('stopPreload_whenNotRunning_doesNothing', () async {
+    // ACT
+    await testee.stopPreload();
+
+    // VERIFY
+    verifyNever(mockS3Client.cancelDownloads());
+    verifyNever(mockPreloadZipProcessor.stop());
+  });
 }
+
+AwsConfiguration _createAwsConfiguration() =>
+    AwsConfiguration(bucketUrl: 'https://www.dummy.ch', accessKey: '', accessSecret: '', region: '');
 
 MockContentsDto _createMockContentsDto({required String name, required String etag, required int size}) {
   final mock = MockContentsDto();
