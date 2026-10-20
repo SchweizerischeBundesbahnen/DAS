@@ -42,6 +42,8 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>ch.sbb.tms.iad.shasmobile</string>
+		<string>msauthv2</string>
+		<string>msauthv3</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

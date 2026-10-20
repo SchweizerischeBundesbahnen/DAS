@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.pure.js';
 import { of, throwError } from 'rxjs';
-import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { ToastService } from '~shared/toast-service';
-import { DasAdminApi, InternalCompany, InternalCompanyApiResponse } from '../das-admin-api';
+import { RecentCompaniesService } from '~shared/services/recent-companies.service';
+import { ToastService } from '~shared/services/toast.service';
+import { DasAdminApi, InternalCompany, InternalCompanyApiResponse } from '../das-admin.api';
 import { CompanyDialogEditResult } from './company-dialog/company-dialog';
 import { CompanyService } from './company.service';
 
@@ -27,7 +27,7 @@ const mockDasAdminApi: Partial<DasAdminApi> = {
 
 const mockToastService: Partial<ToastService> = { success: vi.fn(), error: vi.fn() };
 
-const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
+const mockRecentCompaniesService: Partial<RecentCompaniesService> = { save: vi.fn() };
 
 const openSpy = vi.fn();
 
@@ -38,7 +38,7 @@ function mockDialogResult(result: CompanyDialogEditResult) {
 }
 
 describe('CompanyService', () => {
-  let service: CompanyService;
+  let companyService: CompanyService;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,14 +48,14 @@ describe('CompanyService', () => {
         { provide: DasAdminApi, useValue: mockDasAdminApi },
         { provide: SbbDialogService, useValue: mockSbbDialogService },
         { provide: ToastService, useValue: mockToastService },
-        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
+        { provide: RecentCompaniesService, useValue: mockRecentCompaniesService },
       ],
     });
-    service = TestBed.inject(CompanyService);
+    companyService = TestBed.inject(CompanyService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(companyService).toBeTruthy();
   });
 
   it('edit should update company', async () => {
@@ -63,7 +63,7 @@ describe('CompanyService', () => {
     const toastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult(company);
 
-    await service.edit(company);
+    await companyService.edit(company);
 
     expect(apiSpy).toHaveBeenCalledWith(1, {
       id: 1,
@@ -79,7 +79,7 @@ describe('CompanyService', () => {
     const toastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult('delete');
 
-    await service.edit(company);
+    await companyService.edit(company);
 
     expect(apiSpy).toHaveBeenCalledWith(company.id);
     expect(toastSpy).toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe('CompanyService', () => {
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
     mockDialogResult(company);
 
-    await service.edit(company);
+    await companyService.edit(company);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -102,7 +102,7 @@ describe('CompanyService', () => {
     const toastSpy = vi.spyOn(mockToastService, 'success');
     mockDialogResult(company);
 
-    await service.add();
+    await companyService.add();
 
     expect(apiSpy).toHaveBeenCalledWith(company);
     expect(toastSpy).toHaveBeenCalled();

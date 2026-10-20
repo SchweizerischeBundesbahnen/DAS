@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { SbbDialogService } from '@sbb-esta/lyne-angular/dialog';
 import { SbbOverlayCloseEvent } from '@sbb-esta/lyne-elements/overlay.js';
 import { of, throwError } from 'rxjs';
-import { RecentCompaniesStore } from '~shared/recent-companies.store';
-import { ToastService } from '~shared/toast-service';
-import { RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse } from '../ru-admin-api';
-import { SpecialHolidayDialogEditResult } from './special-holiday-dialog/special-holiday-dialog.component';
+import { RecentCompaniesService } from '~shared/services/recent-companies.service';
+import { ToastService } from '~shared/services/toast.service';
+import { RuAdminApi, SpecialHoliday, SpecialHolidayApiResponse } from '../ru-admin.api';
+import { SpecialHolidayDialogEditResult } from './special-holiday-dialog/special-holiday-dialog';
 import { SpecialHolidayService } from './special-holiday.service';
 
 const specialHoliday: SpecialHoliday = {
@@ -33,7 +33,7 @@ const openSpy = vi.fn();
 
 const mockSbbDialogService: Partial<SbbDialogService> = { open: openSpy };
 
-const mockRecentCompaniesStore: Partial<RecentCompaniesStore> = { save: vi.fn() };
+const mockRecentCompaniesService: Partial<RecentCompaniesService> = { save: vi.fn() };
 
 function mockDialogResult(result: SpecialHolidayDialogEditResult | null): void {
   openSpy.mockReturnValue({
@@ -42,7 +42,7 @@ function mockDialogResult(result: SpecialHolidayDialogEditResult | null): void {
 }
 
 describe('SpecialHolidayService', () => {
-  let service: SpecialHolidayService;
+  let specialHolidayService: SpecialHolidayService;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -53,24 +53,24 @@ describe('SpecialHolidayService', () => {
         { provide: RuAdminApi, useValue: mockRuAdminApi },
         { provide: SbbDialogService, useValue: mockSbbDialogService },
         { provide: ToastService, useValue: mockToastService },
-        { provide: RecentCompaniesStore, useValue: mockRecentCompaniesStore },
+        { provide: RecentCompaniesService, useValue: mockRecentCompaniesService },
       ],
     });
 
-    service = TestBed.inject(SpecialHolidayService);
+    specialHolidayService = TestBed.inject(SpecialHolidayService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(specialHolidayService).toBeTruthy();
   });
 
   it('edit should update holiday', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putSpecialHoliday');
     const toastSpy = vi.spyOn(mockToastService, 'success');
-    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
+    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesService, 'save');
     mockDialogResult({ ...specialHoliday, name: 'Updated', companies: ['1085', '1087', '1090'] });
 
-    await service.edit(specialHoliday);
+    await specialHolidayService.edit(specialHoliday);
 
     expect(toastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalledWith(1, {
@@ -86,10 +86,10 @@ describe('SpecialHolidayService', () => {
   it('edit with delete should delete holiday', async () => {
     const apiDeleteSpy = vi.spyOn(mockRuAdminApi, 'deleteAllSpecialHolidays');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
-    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
+    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesService, 'save');
     mockDialogResult('delete');
 
-    await service.edit(specialHoliday);
+    await specialHolidayService.edit(specialHoliday);
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiDeleteSpy).toHaveBeenCalledWith([specialHoliday.id]);
@@ -99,10 +99,10 @@ describe('SpecialHolidayService', () => {
   it('edit with dialog close should do nothing', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'putSpecialHoliday');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
-    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
+    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesService, 'save');
     mockDialogResult(null);
 
-    await service.edit(specialHoliday);
+    await specialHolidayService.edit(specialHoliday);
 
     expect(apiSpy).not.toHaveBeenCalled();
     expect(successToastSpy).not.toHaveBeenCalled();
@@ -116,7 +116,7 @@ describe('SpecialHolidayService', () => {
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
     mockDialogResult({ ...specialHoliday, name: 'Updated' });
 
-    await service.edit(specialHoliday);
+    await specialHolidayService.edit(specialHoliday);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });
@@ -124,7 +124,7 @@ describe('SpecialHolidayService', () => {
   it('add should create holiday', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'postSpecialHoliday');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
-    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
+    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesService, 'save');
     const holidayToCreate: SpecialHoliday = {
       name: 'Nationalfeiertag',
       date: '2026-08-01',
@@ -133,7 +133,7 @@ describe('SpecialHolidayService', () => {
     };
     mockDialogResult(holidayToCreate);
 
-    await service.add();
+    await specialHolidayService.add();
 
     expect(successToastSpy).toHaveBeenCalled();
     expect(apiSpy).toHaveBeenCalledWith(holidayToCreate);
@@ -142,10 +142,10 @@ describe('SpecialHolidayService', () => {
 
   it('add with dialog close should do nothing', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'postSpecialHoliday');
-    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesStore, 'save');
+    const recentCompaniesSaveSpy = vi.spyOn(mockRecentCompaniesService, 'save');
     mockDialogResult(null);
 
-    await service.add();
+    await specialHolidayService.add();
 
     expect(apiSpy).not.toHaveBeenCalled();
     expect(recentCompaniesSaveSpy).not.toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe('SpecialHolidayService', () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'deleteAllSpecialHolidays');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
 
-    await service.deleteAll([
+    await specialHolidayService.deleteAll([
       specialHoliday,
       {
         id: 2,
@@ -176,7 +176,7 @@ describe('SpecialHolidayService', () => {
     );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
-    await service.deleteAll([specialHoliday]);
+    await specialHolidayService.deleteAll([specialHoliday]);
 
     expect(errorToastSpy).toHaveBeenCalled();
   });

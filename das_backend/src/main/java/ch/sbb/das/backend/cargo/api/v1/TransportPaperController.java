@@ -3,8 +3,6 @@ package ch.sbb.das.backend.cargo.api.v1;
 import ch.sbb.das.backend.cargo.infrastructure.TransportPaperClient;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
 import ch.sbb.das.backend.common.Problem;
 import ch.sbb.das.backend.common.ProxyClientException;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
@@ -51,7 +49,6 @@ public class TransportPaperController {
     @ApiErrorResponses
     @GetMapping(path = API_TRANSPORT_PAPERS + "/{trainPathId}/{operatingDay}")
     ResponseEntity<Void> resolveTransportPaperUrl(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @PathVariable String trainPathId,
         @PathVariable LocalDate operatingDay,

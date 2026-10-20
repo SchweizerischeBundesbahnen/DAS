@@ -68,7 +68,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             extractInstance(responseProblemDetail, request));
 
         return new ResponseEntity<>(problem,
-            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)),
+            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT),
             status);
     }
 
@@ -89,7 +89,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             extractInstance(springProblemDetail, request));
 
         return new ResponseEntity<>(problem,
-            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, request.getHeader(ApiParametersDefault.HEADER_REQUEST_ID)), finalStatus);
+            ResponseEntityFactory.createProblemHeader(ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT), finalStatus);
     }
 
     private String formatBindingError(ObjectError error) {
@@ -201,7 +201,6 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Problem> createProblemResponse(HttpStatus status, String title, String detail, Throwable internalExceptionToLog) {
         final String apiPath = INSTANCE_FALLBACK; // TODO requestContext.getApiPath();
         //final String traceId = getTraceId(); //TODO io.micrometer.tracing.Tracer -> tracer.currentTraceContext().context().traceId();
-        final String requestId = null; // TODO requestContext.getRequestId();
 
         if (status.is4xxClientError()) {
             log.info("{} title={}, detail={}, path={}", status, title, detail, apiPath, internalExceptionToLog);
@@ -209,7 +208,7 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
             // see logback.xml for other log relevant params
             log.error("{} title={}, detail={}, path={}", status, title, detail, apiPath, internalExceptionToLog);
         }
-        return ResponseEntityFactory.createProblemResponse(status, title, detail, ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, requestId, apiPath);
+        return ResponseEntityFactory.createProblemResponse(status, title, detail, ApiDocumentation.HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT, apiPath);
     }
 
     private String getMaskedDetailMessage(String about, Exception ex) {

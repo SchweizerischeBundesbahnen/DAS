@@ -17,9 +17,9 @@ import { SbbChipModule } from '@sbb-esta/lyne-angular/chip';
 import { SbbDatepickerModule } from '@sbb-esta/lyne-angular/datepicker';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
-import { DayOfWeek, RuIndicationPeriod } from '~ru-admin/ru-admin-api';
-import { LanguageProvider } from '~shared/language-provider';
-import { RuIndicationPeriodData } from '../ru-indication-dialog.component';
+import { DayOfWeek, RuIndicationPeriod } from '~ru-admin/ru-admin.api';
+import { LanguageService } from '~shared/services/language.service';
+import { RuIndicationPeriodData } from '../ru-indication-dialog';
 
 export function displayPeriod(
   period: RuIndicationPeriod | RuIndicationPeriodData,
@@ -117,7 +117,7 @@ export interface PeriodsData {
   styleUrl: './periods-input.css',
 })
 export class PeriodsInput {
-  private readonly languageProvider = inject(LanguageProvider);
+  private readonly languageService = inject(LanguageService);
 
   readonly field = input.required<FieldTree<RuIndicationPeriodData[]>>();
 
@@ -149,7 +149,7 @@ export class PeriodsInput {
   });
 
   protected readonly weekdays = weekdays();
-  private readonly localeId = this.languageProvider.currentLanguage.localeId;
+  private readonly localeId = this.languageService.currentLanguage.localeId;
 
   protected readonly displayPeriod = (period: RuIndicationPeriodData) =>
     displayPeriod(period, this.localeId);

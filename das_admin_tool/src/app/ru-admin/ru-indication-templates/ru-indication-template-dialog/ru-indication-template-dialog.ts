@@ -3,15 +3,15 @@ import { form, FormField, required } from '@angular/forms/signals';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
-import { RuIndicationTemplate } from '~ru-admin/ru-admin-api';
+import { RuIndicationTemplate } from '~ru-admin/ru-admin.api';
 import {
   contentFormValue,
   createContentFormTree,
   RuIndicationContentData,
   RuIndicationContentForm,
-} from '~ru-admin/ru-indication-content-form/ru-indication-content-form.component';
-import { BaseDialog } from '~shared/base-dialog/base-dialog.component';
-import { oneLanguageRequired, titleRequired } from '~shared/form-validators.util';
+} from '~ru-admin/ru-indication-content-form/ru-indication-content-form';
+import { BaseDialog } from '~shared/components/base-dialog/base-dialog';
+import { oneLanguageRequired, titleRequired } from '~shared/utils/form-validators.util';
 
 export interface RuIndicationTemplateData {
   category: string;
@@ -38,22 +38,22 @@ export class RuIndicationTemplateDialog {
   });
   protected readonly ruIndicationTemplateForm = form(
     this.ruIndicationTemplateModel,
-    (ruIndication) => {
-      required(ruIndication.category, {
+    (ruIndicationTemplate) => {
+      required(ruIndicationTemplate.category, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
 
-      oneLanguageRequired(ruIndication.content, {
+      oneLanguageRequired(ruIndicationTemplate.content, {
         message: $localize`:@@ru_indications_form_one_language_error:Mindestens eine Sprache muss erfasst werden`,
       });
 
-      titleRequired(ruIndication.content.de, {
+      titleRequired(ruIndicationTemplate.content.de, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
-      titleRequired(ruIndication.content.fr, {
+      titleRequired(ruIndicationTemplate.content.fr, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
-      titleRequired(ruIndication.content.it, {
+      titleRequired(ruIndicationTemplate.content.it, {
         message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
       });
     },

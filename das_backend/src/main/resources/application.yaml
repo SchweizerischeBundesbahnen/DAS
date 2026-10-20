@@ -1,6 +1,6 @@
 info:
   app:
-    version: '@project.version@'
+    version: "@project.version@"
 spring:
   profiles:
     active: ${STAGE:local}
@@ -121,31 +121,31 @@ formation:
     password: ${FORMATION_KAFKA_API_SECRET}
     topic: ${FORMATION_KAFKA_TOPIC}
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 30
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
-aws:
-  accessKey: ${PRELOAD_BUCKET_R_ACCESS_KEY}
-  secretKey: ${PRELOAD_BUCKET_R_SECRET_KEY}
-  bucketName: ${AWS_BUCKET_NAME}
-
 sfera:
-  major-version: '4'
-  version: '4.00'
-  source-device: 'BACKEND'
-  recipient: '0085'
+  major-version: "4"
+  version: "4.00"
+  source-device: "BACKEND"
+  recipient: "0085"
   broker-url: ${SFERA_BROKER_URL}
   oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
   bucket:
-    bucketUrl: ${PRELOAD_BUCKET_URL}
-    accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
-    accessSecret: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
+    name: ${PRELOAD_BUCKET_NAME}
+    url: ${PRELOAD_BUCKET_URL}
     region: ${PRELOAD_BUCKET_REGION}
+    read-write:
+      access-key-id: ${PRELOAD_BUCKET_READ_WRITE_ACCESS_KEY_ID}
+      secret-access-key: ${PRELOAD_BUCKET_READ_WRITE_SECRET_ACCESS_KEY}
+    read-only:
+      access-key-id: ${PRELOAD_BUCKET_READ_ONLY_ACCESS_KEY_ID}
+      secret-access-key: ${PRELOAD_BUCKET_READ_ONLY_SECRET_ACCESS_KEY}
 
 trainjourneyplan:
   kafka:
@@ -173,16 +173,16 @@ proxy:
 
 atlas:
   base-url: ${ATLAS_BASE_URL}
-  import-cron: 0 0 3 * * ?  # every day at 3
+  import-cron: 0 0 3 * * ? # every day at 3
 
 admin:
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 90
 
 user-activity:
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 180
 
 tour-systems:
@@ -208,5 +208,5 @@ tour-systems:
 spring:
   config:
     activate:
-      on-profile: '!local & !test'
+      on-profile: "!local & !test"
     import: vault://
