@@ -13,7 +13,7 @@ class MatchesRequest({
     required String company,
     required int operationalTrainNumber,
     required DateTime startDate,
-    required List<String> tafTapLocationReferences,
+    required Set<String> tafTapLocationReferences,
   }) async {
     final url = Uri.https(baseUrl, 'driver/v1/ruindications/matches');
     final requestBody = MatchesRequestBody(

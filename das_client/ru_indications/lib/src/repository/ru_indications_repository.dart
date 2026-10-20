@@ -9,6 +9,6 @@ abstract class RuIndicationsRepository._() {
   /// [locationReferences] consists of key: locationCode, value: order in journey
   Stream<List<RuIndication>> fetchRuIndications({
     required TrainIdentification trainIdentification,
-    required Map<String, int> locationReferences,
+    required Map<int, String> locationReferences,
   });
 }

@@ -67,7 +67,7 @@ void main() {
       when(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: sferaJourney.metadata.trainIdentification!,
-          locationReferences: const {'CH001': 1000, 'CH002': 2000},
+          locationReferences: const {1000: 'CH001', 2000: 'CH002'},
         ),
       ).thenAnswer((_) => Stream.value(ruIndications));
 
@@ -81,7 +81,7 @@ void main() {
       verify(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: sferaJourney.metadata.trainIdentification!,
-          locationReferences: const {'CH001': 1000, 'CH002': 2000},
+          locationReferences: const {1000: 'CH001', 2000: 'CH002'},
         ),
       ).called(1);
 
@@ -110,13 +110,13 @@ void main() {
       when(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: firstJourney.metadata.trainIdentification!,
-          locationReferences: const {'CH001': 1000},
+          locationReferences: const {1000: 'CH001'},
         ),
       ).thenAnswer((_) => Stream.value([const RuIndication(order: 1100, title: 'RU old', text: 'Old text')]));
       when(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: secondJourney.metadata.trainIdentification!,
-          locationReferences: const {'CH002': 1000},
+          locationReferences: const {1000: 'CH002'},
         ),
       ).thenAnswer((_) => secondJourneyController.stream);
 

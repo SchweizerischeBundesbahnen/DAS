@@ -88,7 +88,7 @@ class JourneyViewModel({
     final trainIdentification = journey?.metadata.trainIdentification;
     if (trainIdentification != null) {
       final servicePoints = journey!.data.whereType<ServicePoint>();
-      final locationReferences = {for (final it in servicePoints) it.locationCode: it.order};
+      final locationReferences = {for (final it in servicePoints) it.order: it.locationCode};
 
       _ruIndicationsSubscription?.cancel();
       _ruIndicationsSubscription = _ruIndicationsRepository
