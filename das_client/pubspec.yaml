@@ -70,9 +70,15 @@ melos:
         trap 'node scripts/switch-flavor.mjs --restore-base' EXIT
         for flavor in dev inte prod; do
           echo "==> Testing flavor: $flavor"
-          node scripts/switch-flavor.mjs "$flavor"
-          melos run test
-          node scripts/switch-flavor.mjs --restore-base
+          folders=$(find . -maxdepth 2 -type d -name ".$flavor" -not -path './.*' | wc -l | tr -d ' ')
+          if [ "$folders" -gt 0 ]; then
+            node scripts/switch-flavor.mjs "$flavor"
+            melos run test
+            node scripts/switch-flavor.mjs --restore-base
+          else
+            echo "No .$flavor folder in any component; testing base code for flavor '$flavor'"
+            melos run test
+          fi
         done
 
   command:
