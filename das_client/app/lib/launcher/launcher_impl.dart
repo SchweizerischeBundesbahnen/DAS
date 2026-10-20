@@ -14,7 +14,7 @@ class LauncherImpl({
   required final LocalKeyValueStore _userSettings,
   required final Flavor flavor,
 }) implements Launcher {
-  static const _googleChromeHttpsScheme = 'googlechromes://';
+  static const _googleChromeScheme = 'googlechromes://';
 
   static const _blsCompanyCodes = [
     '3356', // BLSC
@@ -64,7 +64,7 @@ class LauncherImpl({
     }
 
     if (companyCodes.containsOnly(_sobCompanyCodes)) {
-      servicePortalUrl = servicePortalUrl.replaceFirst('https://', _googleChromeHttpsScheme);
+      servicePortalUrl = servicePortalUrl.replaceFirst('https://', _googleChromeScheme);
     }
 
     return launch(servicePortalUrl);
