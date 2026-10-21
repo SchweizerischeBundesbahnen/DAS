@@ -17,26 +17,26 @@
                 <TP_ID_Reference TP_ID="A"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:05Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:05Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:15Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:15Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="B"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:10Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:10Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:20Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="C"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:05Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:05Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:15Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:15Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="D"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:15Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:15Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:25Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:25Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="E"/>
             </TimingPointReference>

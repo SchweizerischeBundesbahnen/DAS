@@ -86,6 +86,7 @@ class ReducedOverviewViewModel({
     relevantData = relevantData
         .hideCommunicationNetworkChangesWithSameTypeAsPreviousOrIsServicePoint()
         .hideIndicationsForHiddenServicePoint()
+        .hideJourneyAnnotationsOnSwitchbackStations(journey.metadata.switchbackStationMap)
         .combineFootNoteAndTextAnnotations()
         .sorted(
           (a1, a2) => a1.compareTo(a2),

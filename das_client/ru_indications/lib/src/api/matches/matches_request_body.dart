@@ -10,7 +10,7 @@ class MatchesRequestBody({
   required final String company,
   required final int operationalTrainNumber,
   @JsonKey(toJson: _formatDateOnly) required final DateTime startDate,
-  required final List<String> tafTapLocationReferences,
+  required final Set<String> tafTapLocationReferences,
 }) {
   factory fromJson(Map<String, dynamic> json) => _$MatchesRequestBodyFromJson(json);
 

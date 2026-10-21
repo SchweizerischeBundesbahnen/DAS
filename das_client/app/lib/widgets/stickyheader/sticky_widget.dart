@@ -81,8 +81,8 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
     return Stack(
       children: [
-        if (_stickyHeader2 != null) _stickyHeader2!,
-        if (_stickyHeader1 != null) _stickyHeader1!,
+        ?_stickyHeader2,
+        ?_stickyHeader1,
       ],
     );
   }

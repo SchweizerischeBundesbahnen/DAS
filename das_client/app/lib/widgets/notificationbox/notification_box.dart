@@ -62,7 +62,7 @@ class NotificationBox extends StatelessWidget {
               color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
             ),
             Expanded(child: Text(title, style: titleTextStyle)),
-            if (action != null) action!,
+            ?action,
           ],
         ),
         if (text != null) Text(text!, style: sbbTextStyle.lightStyle.medium),
