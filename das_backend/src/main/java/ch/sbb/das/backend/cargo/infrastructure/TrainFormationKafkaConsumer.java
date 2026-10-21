@@ -33,6 +33,11 @@ public class TrainFormationKafkaConsumer {
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (DateTimeUtil.now().toInstant().toEpochMilli() - message.timestamp()) / 1000;
         log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
+        if (message.value() == null) {
+            log.debug("Skipping tombstone kafka message partition={}, offset={}, operationalTrainNumber={}, operationalDay={}", message.partition(), message.offset(),
+                message.key().getZugnummer(), message.key().getBetriebstag());
+            return;
+        }
         try {
             Formation formation = FormationFactory.create(message);
             List<TrainFormationRunEntity> trainFormationRunEntities = trainFormationRunEntityMapper.toEntities(formation);
