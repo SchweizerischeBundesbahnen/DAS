@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:core_data/component.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 import '../app_test.dart';
 import '../integration/integration_test_app.dart';

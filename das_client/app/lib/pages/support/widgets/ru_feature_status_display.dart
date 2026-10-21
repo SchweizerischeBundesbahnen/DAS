@@ -1,10 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:settings/component.dart';
+import 'package:user_properties/component.dart';
 
 class RuFeatureStatusDisplay extends StatefulWidget {
   const RuFeatureStatusDisplay({super.key});
@@ -16,7 +16,7 @@ class RuFeatureStatusDisplay extends StatefulWidget {
 class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   static const _iconSize = 20.0;
   late final SettingsRepository _settingsRepository;
-  late final LocalKeyValueStore _localStore;
+  late final UserPropertiesRepository _userPropertiesRepository;
 
   String? _selectedCompanyCode;
 
@@ -24,8 +24,8 @@ class _RuFeatureStatusDisplayState extends State<RuFeatureStatusDisplay> {
   void initState() {
     super.initState();
     _settingsRepository = DI.get<SettingsRepository>();
-    _localStore = DI.get<LocalKeyValueStore>();
-    _selectedCompanyCode = _localStore.lastUsedCompanyCode;
+    _userPropertiesRepository = DI.get<UserPropertiesRepository>();
+    _selectedCompanyCode = _userPropertiesRepository.lastUsedCompanyCode;
   }
 
   @override

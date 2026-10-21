@@ -3,7 +3,6 @@ import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
 import 'package:app/pages/journey/view_model/model/journey_navigation_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,30 +10,31 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
+import 'package:user_properties/component.dart';
 
 import 'launcher_impl_test.mocks.dart';
 
 const _urlLauncherChannel = MethodChannel('plugins.flutter.io/url_launcher');
 
 @GenerateNiceMocks([
-  MockSpec<LocalKeyValueStore>(),
+  MockSpec<UserPropertiesRepository>(),
   MockSpec<JourneyNavigationViewModel>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late LauncherImpl testee;
-  late MockLocalKeyValueStore mockLocalKeyValueStore;
+  late MockUserPropertiesRepository mockUserPropertiesRepository;
   late List<MethodCall> methodCalls;
   late bool launchResult;
 
   setUp(() {
-    mockLocalKeyValueStore = MockLocalKeyValueStore();
+    mockUserPropertiesRepository = MockUserPropertiesRepository();
     methodCalls = <MethodCall>[];
     launchResult = true;
 
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1285']);
-    when(mockLocalKeyValueStore.tourSystem).thenReturn(.tip);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['1285']);
+    when(mockUserPropertiesRepository.tourSystem).thenReturn(.tip);
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
       _urlLauncherChannel,
@@ -47,7 +47,7 @@ void main() {
       },
     );
 
-    testee = LauncherImpl(userSettings: mockLocalKeyValueStore, flavor: Flavor.dev());
+    testee = LauncherImpl(userPropertiesRepository: mockUserPropertiesRepository, flavor: Flavor.dev());
   });
 
   tearDown(() async {
@@ -125,7 +125,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenAllRusAreBls_thenUsesBlsPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['3356', '1163']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['3356', '1163']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -137,7 +137,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenNoRuSelected_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn([]);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn([]);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
@@ -149,7 +149,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenRuSelectionIsMixedBlsAndSbb_thenUsesSbbPortal', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1163', '1285']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['1163', '1285']);
 
     final result = await testee.launchServicePointPortal(
       const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),

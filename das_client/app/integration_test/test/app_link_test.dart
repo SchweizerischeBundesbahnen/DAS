@@ -1,12 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/launcher/launcher.dart';
-import 'package:app/model/tour_system.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_identifier.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/login/widgets/login_button.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/widgets/navigation_buttons.dart';
 import 'package:app_links_x/component.dart';
 import 'package:auth/component.dart';
@@ -16,6 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 import '../app_test.dart';
 import '../auth/integration_test_authenticator.dart';
