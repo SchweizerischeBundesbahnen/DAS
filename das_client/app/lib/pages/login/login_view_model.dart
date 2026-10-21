@@ -4,6 +4,7 @@ import 'package:app/flavor.dart';
 import 'package:app/pages/login/login_model.dart';
 import 'package:auth/component.dart';
 import 'package:logging/logging.dart';
+import 'package:preload/component.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _log = Logger('LoginViewModel');
@@ -45,6 +46,7 @@ class LoginViewModel({required Flavor flavor}) {
   }
 
   void logout() {
+    DI.get<PreloadRepository>().stopPreload();
     DI.get<Authenticator>().logout();
     DI.resetToUnauthenticatedScope(useTms: modelValue.connectToTmsVad);
     _rxModel.add(LoggedOut(connectToTmsVad: modelValue.connectToTmsVad));
