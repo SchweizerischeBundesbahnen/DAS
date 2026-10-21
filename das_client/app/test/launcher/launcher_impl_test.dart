@@ -28,6 +28,14 @@ void main() {
   late List<MethodCall> methodCalls;
   late bool launchResult;
 
+  const bernServicePoint = ServicePoint(
+    name: 'Bern',
+    abbreviation: 'BERN',
+    locationCode: '8507000',
+    order: 1000,
+    kilometre: [],
+  );
+
   setUp(() {
     mockLocalKeyValueStore = MockLocalKeyValueStore();
     methodCalls = <MethodCall>[];
@@ -127,9 +135,7 @@ void main() {
   test('launchServicePointPortal_whenAllRusAreBls_thenUsesBlsPortal', () async {
     when(mockLocalKeyValueStore.companyCodes).thenReturn(['3356', '1163']);
 
-    final result = await testee.launchServicePointPortal(
-      const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
-    );
+    final result = await testee.launchServicePointPortal(bernServicePoint);
 
     expect(result, true);
     expect(_containsLaunchedUrl(methodCalls, 'bls.sharepoint.com'), true);
@@ -139,9 +145,7 @@ void main() {
   test('launchServicePointPortal_whenNoRuSelected_thenUsesSbbPortal', () async {
     when(mockLocalKeyValueStore.companyCodes).thenReturn([]);
 
-    final result = await testee.launchServicePointPortal(
-      const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
-    );
+    final result = await testee.launchServicePointPortal(bernServicePoint);
 
     expect(result, true);
     expect(_containsLaunchedUrl(methodCalls, 'sbb.sharepoint.com'), true);
@@ -151,12 +155,31 @@ void main() {
   test('launchServicePointPortal_whenRuSelectionIsMixedBlsAndSbb_thenUsesSbbPortal', () async {
     when(mockLocalKeyValueStore.companyCodes).thenReturn(['1163', '1285']);
 
-    final result = await testee.launchServicePointPortal(
-      const ServicePoint(name: 'Bern', abbreviation: 'BERN', locationCode: '8507000', order: 1000, kilometre: []),
-    );
+    final result = await testee.launchServicePointPortal(bernServicePoint);
 
     expect(result, true);
     expect(_containsLaunchedUrl(methodCalls, 'sbb.sharepoint.com'), true);
+    expect(_containsLaunchedUrl(methodCalls, 'BERN'), true);
+  });
+
+  test('launchServicePointPortal_whenAllRusAreSob_thenUsesSbbPortalWithChromePrefix', () async {
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['9058', '1234']);
+
+    final result = await testee.launchServicePointPortal(bernServicePoint);
+
+    expect(result, true);
+    expect(_containsLaunchedUrl(methodCalls, 'googlechromes://sbb.sharepoint.com'), true);
+    expect(_containsLaunchedUrl(methodCalls, 'BERN'), true);
+  });
+
+  test('launchServicePointPortal_whenRuSelectionIsMixedSobAndSbb_thenUsesSbbPortalWithoutChromePrefix', () async {
+    when(mockLocalKeyValueStore.companyCodes).thenReturn(['9058', '1285']);
+
+    final result = await testee.launchServicePointPortal(bernServicePoint);
+
+    expect(result, true);
+    expect(_containsLaunchedUrl(methodCalls, 'sbb.sharepoint.com'), true);
+    expect(_containsLaunchedUrl(methodCalls, 'googlechromes://'), false);
     expect(_containsLaunchedUrl(methodCalls, 'BERN'), true);
   });
 }
