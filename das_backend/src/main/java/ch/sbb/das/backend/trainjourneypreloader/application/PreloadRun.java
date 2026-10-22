@@ -63,33 +63,33 @@ public class PreloadRun {
      * without saving or marking anything.
      */
     public PreloadRunReport run() {
-        Instant startTime = clock.instant();
-        Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
-        Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
-        Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
-        OffsetDateTime now = OffsetDateTime.now(clock);
-        List<TrainIdentification> trainIdentifications = candidates.between(now.minusHours(hoursBeforeDeparture), now.plusHours(hoursBeforeDeparture));
+        final Instant startTime = clock.instant();
+        final Map<TrainIdentification, JourneyProfile> mapJourneyProfiles = new HashMap<>();
+        final Map<SegmentProfileIdentification, SegmentProfile> mapSegmentProfiles = new HashMap<>();
+        final Map<TrainCharacteristicsIdentification, TrainCharacteristics> mapTrainCharacteristics = new HashMap<>();
+        final OffsetDateTime now = OffsetDateTime.now(clock);
+        final List<TrainIdentification> trainIdentifications = candidates.between(now.minusHours(hoursBeforeDeparture), now.plusHours(hoursBeforeDeparture));
         journeyFetch.connect();
         int processedCount = 0;
         int unavailableCount = 0;
         int errorCount = 0;
         int timeoutCount = 0;
         StopReason stopReason = StopReason.COMPLETED;
-        for (TrainIdentification trainId : trainIdentifications) {
+        for (final TrainIdentification trainId : trainIdentifications) {
             if (Thread.currentThread().isInterrupted()) {
                 log.warn("Preload interrupted, stopping early");
                 stopReason = StopReason.INTERRUPTED;
                 break;
             }
             if (Duration.between(startTime, clock.instant()).compareTo(maxPreloadDuration) > 0) {
-                int skippedCount = trainIdentifications.size() - processedCount;
+                final int skippedCount = trainIdentifications.size() - processedCount;
                 log.warn("Preload time budget of {} exceeded after processing {} trains. {} trains skipped, will continue on next schedule.",
                     maxPreloadDuration, processedCount, skippedCount);
                 stopReason = StopReason.TIME_BUDGET_EXCEEDED;
                 break;
             }
             processedCount++;
-            PreloadResult preloadResult = journeyFetch.preload(trainId, mapSegmentProfiles);
+            final PreloadResult preloadResult = journeyFetch.preload(trainId, mapSegmentProfiles);
             switch (preloadResult) {
                 case PreloadResult.Success(var successJp, var successSps, var successTcs) -> {
                     mapJourneyProfiles.put(trainId, successJp);
