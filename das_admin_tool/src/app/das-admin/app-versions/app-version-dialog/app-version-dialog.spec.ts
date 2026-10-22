@@ -64,5 +64,4 @@ describe('normalizeVersion', () => {
   it('should strip leading zeros of each part', () => {
     expect(normalizeVersion('00.010.0007')).toBe('0.10.7');
   });
-
 });

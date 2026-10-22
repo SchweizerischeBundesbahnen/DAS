@@ -50,7 +50,6 @@ test.describe('app versions test', () => {
       (appVersion) => appVersion.version === testVersion,
     );
     if (own) await appVersionsApi.delete(own.id);
-
   });
 
   test('appVersion_whenCreatedEditedAndDeleted_thenSucceeds|2HUIAIb0FIAD3nvFwBbT|tests:1406', async ({
