@@ -34,6 +34,7 @@ import 'package:preload/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 import 'package:train_identification/component.dart';
 
 final _log = Logger('AuthenticatedScope');
@@ -136,7 +137,7 @@ extension AuthenticatedScopeExtension on GetIt {
   Future<void> registerSferaRemoteRepository() async {
     final flavor = DI.get<Flavor>();
 
-    registerSingletonAsync<SferaRepository>(
+    registerSingletonAsync<SferaFlavorRepository>(
       () async => SferaComponent.createSferaRepository(
         mqttService: DI.get(),
         sferaAuthProvider: DI.get(),
@@ -145,9 +146,13 @@ extension AuthenticatedScopeExtension on GetIt {
         deviceId: await DeviceIdInfo.getDeviceId(),
         authenticator: DI.get(),
         sferaVersion: flavor.sferaVersion,
-      ),
+      ) as SferaFlavorRepository,
       dependsOn: [MqttService],
       dispose: (repo) => repo.dispose(),
+    );
+    registerSingletonAsync<SferaRepository>(
+      () async => DI.get<SferaFlavorRepository>(),
+      dependsOn: [SferaFlavorRepository],
     );
   }
 
