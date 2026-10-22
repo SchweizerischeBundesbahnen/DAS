@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.appversions.internal;
 
 import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
+import static ch.sbb.das.backend.appversions.internal.SemanticVersion.SEM_VERSION_PATTERN;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -16,6 +17,8 @@ import ch.sbb.das.backend.common.security.UserRole;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
@@ -129,7 +132,57 @@ class AppVersionControllerTest {
                     }
                     """))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"(\\d+)\\.(\\d+)\\.(\\d+)\""));
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"" + SEM_VERSION_PATTERN + "\""));
+    }
+
+    @DisplayName("create_AppVersion_max_version_ok|rjTx8xl7NEDek0DvDGHh|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_max_version_ok() throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "99999.99999.99999",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].version").value("99999.99999.99999"));
+    }
+
+    @DisplayName("create_AppVersion_out_of_range|0LqEZXawDa9RFlZ1K0aN|tests:3024")
+    @ParameterizedTest
+    @ValueSource(strings = {"100000.0.0", "0.100000.0", "0.0.100000", "9999999999.0.0"})
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_out_of_range(String version) throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "%s",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """.formatted(version)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("create_AppVersion_leading_zeros|v8PbjFkOVxDMd9gK3S12|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_leading_zeros() throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "01.0.0",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("create_AppVersion_conflict_version|pnQ7A4qKs1NYjPWJV7sI|tests:1406")
@@ -148,6 +201,23 @@ class AppVersionControllerTest {
                     """))
             .andExpect(status().isConflict())
             .andExpect(jsonPath("$.detail").value("Version already exists"));
+    }
+
+    @DisplayName("update_AppVersion_out_of_range|aoMCJ6BLm8UfHGJvatvM|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    @Sql("classpath:createAppVersions.sql")
+    void update_AppVersion_out_of_range() throws Exception {
+        mockMvc.perform(put(API_APP_VERSIONS + "/1")
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "100000.0.0",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("update_AppVersion_ok|UCmvF6J9SNOYYQe2Ve6T|tests:1406")
