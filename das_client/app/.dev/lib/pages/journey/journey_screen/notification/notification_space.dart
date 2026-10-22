@@ -34,7 +34,7 @@ class NotificationSpace extends StatelessWidget {
         _triggerWarnappNotification(context);
       },
       child: StreamListener(
-        stream: context.read<UxTestingViewModel>().uxTestingEvents,
+        stream: DI.get<UxTestingViewModel>().uxTestingEvents,
         onData: (data) {
           if (data.isWarn) {
             _triggerWarnappNotification(context);

@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/animated_notification.dart';
 import 'package:app/pages/journey/journey_screen/view_model/customer_oriented_departure_view_model.dart';
@@ -127,7 +128,7 @@ class _BaseNotification extends StatelessWidget {
   }
 
   Widget _departureProcessButton(BuildContext context) {
-    final viewModel = context.read<UxTestingViewModel>();
+    final viewModel = DI.get<UxTestingViewModel>();
     return FutureBuilder(
       future: viewModel.isDepartureProcessFeatureEnabled,
       builder: (context, snapshot) {

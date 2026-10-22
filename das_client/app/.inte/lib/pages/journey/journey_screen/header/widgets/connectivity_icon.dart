@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
@@ -17,7 +18,7 @@ class ConnectivityIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<ConnectivityViewModel>();
-    final uxTestingVM = context.read<UxTestingViewModel>();
+    final uxTestingVM = DI.get<UxTestingViewModel>();
 
     return StreamBuilder(
       stream: Rx.combineLatest2(viewModel.model, uxTestingVM.connectivityDisplayStatus, (a, b) => (a, b)),
