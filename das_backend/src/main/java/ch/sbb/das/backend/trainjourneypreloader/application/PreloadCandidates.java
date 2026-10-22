@@ -12,7 +12,9 @@ import java.util.Set;
 public interface PreloadCandidates {
 
     /**
-     * @return train identifications starting between {@code from} and {@code to} that are not yet marked preloaded, in the order they should be fetched
+     * @param from start of the departure window
+     * @param to end of the departure window
+     * @return train identifications within the window that are not yet marked preloaded, in the order they should be fetched
      */
     List<TrainIdentification> between(OffsetDateTime from, OffsetDateTime to);
 
