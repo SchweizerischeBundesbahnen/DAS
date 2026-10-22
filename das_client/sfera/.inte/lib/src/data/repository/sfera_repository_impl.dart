@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 import 'package:sfera/src/data/api/event/journey_profile_event_handler.dart';
 import 'package:sfera/src/data/api/event/network_specific_event_handler.dart';
 import 'package:sfera/src/data/api/event/related_train_information_event_handler.dart';

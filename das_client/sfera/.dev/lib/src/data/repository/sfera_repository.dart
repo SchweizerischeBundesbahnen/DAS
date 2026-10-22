@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:core_data/component.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 
 /// Handles connection and message exchange with SFERA broker

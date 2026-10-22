@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 
 class UxTestingViewModel({
   required final SferaRepository _sferaRepo,
