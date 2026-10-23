@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.companies.internal;
 
-import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -10,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @RequiredArgsConstructor
@@ -104,7 +103,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private TenantEntity findTenantOrThrow(String tenantId) {
         return tenantRepository.findByTenantId(tenantId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tenant not found: " + tenantId));
+            .orElseThrow(() -> new BadRequestException("Tenant not found: " + tenantId));
     }
 
 }

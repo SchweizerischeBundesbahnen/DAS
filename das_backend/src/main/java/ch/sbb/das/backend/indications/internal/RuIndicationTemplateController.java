@@ -5,6 +5,7 @@ import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateResponse;
@@ -57,7 +58,7 @@ public class RuIndicationTemplateController {
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.getById(id);
         if (ruIndicationTemplate == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
+            throw new NotFoundException();
         }
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate));
     }
@@ -84,7 +85,7 @@ public class RuIndicationTemplateController {
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.update(id, updateRequest);
         if (ruIndicationTemplate == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
+            throw new NotFoundException();
         }
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate));
     }

@@ -77,7 +77,7 @@ class DepartureControllerTest {
         mvc.perform(post(API_DEPARTURES + "/confirm/m1/d1"))
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
-            .andExpect(jsonPath("$.detail").value("400: Validation error"));
+            .andExpect(jsonPath("$.detail").value("Downstream service responded with status 400."));
 
         verify(gemsRestClient).confirm("m1", "d1");
     }

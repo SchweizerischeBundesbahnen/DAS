@@ -4,6 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,9 +67,8 @@ public class PersonalNoteController {
         Optional<PersonalNote> note = personalNoteService.getByOidAndKey(oid, key);
         if (note.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note.get())));
-        } else {
-            return ResponseEntityFactory.createNotFoundResponse(API_PERSONAL_NOTES + "/" + key);
         }
+        throw new NotFoundException();
     }
 
     @PutMapping(API_PERSONAL_NOTES_KEY)

@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.trainjourneyplan;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.error.BadRequestException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -19,9 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -88,8 +87,7 @@ public class TrainIdentificationService {
             .toList();
 
         if (!outOfRange.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
+            throw new BadRequestException("startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
         }
     }
 

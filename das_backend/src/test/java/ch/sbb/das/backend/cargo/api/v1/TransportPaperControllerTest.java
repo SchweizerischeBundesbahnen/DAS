@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.cargo.infrastructure.TransportPaperClient;
-import ch.sbb.das.backend.common.ProxyClientException;
+import ch.sbb.das.backend.common.error.ProxyClientException;
 import ch.sbb.das.backend.common.security.UserRole;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +80,7 @@ class TransportPaperControllerTest {
                 .header("Accept-Language", "de-DE"))
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
-            .andExpect(jsonPath("$.detail").value("404: no paper"));
+            .andExpect(jsonPath("$.detail").value("Downstream service responded with status 404."));
 
         verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE");
     }
@@ -99,7 +99,7 @@ class TransportPaperControllerTest {
                 .header("Accept-Language", "de-DE"))
             .andExpect(status().isBadGateway())
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
-            .andExpect(jsonPath("$.detail").value("502: No response body returned from transport paper API"));
+            .andExpect(jsonPath("$.detail").value("Downstream service responded with status 502."));
 
         verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE");
     }

@@ -2,7 +2,7 @@ package ch.sbb.das.backend.appversions.internal;
 
 import ch.sbb.das.backend.appversions.AppVersionService;
 import ch.sbb.das.backend.appversions.CurrentAppVersion;
-import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import java.time.LocalDate;
 import java.util.Comparator;
