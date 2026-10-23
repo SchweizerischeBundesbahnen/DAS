@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class SferaService {
+public class SferaService implements JourneyFetch {
 
     private static final int MAX_MQTT_REPLY_TIMEOUT_MS = 5000;
     private static final int MAX_RETRIES = 3;
@@ -77,7 +77,8 @@ public class SferaService {
         this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
-    PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) {
+    @Override
+    public PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) {
         try {
             mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
@@ -194,6 +195,7 @@ public class SferaService {
         return requestSpsUntilComplete(trainId, localRegulationSpIds);
     }
 
+    @Override
     public void connect() {
         mqttClient.connect(CLIENT_ID);
     }
@@ -328,6 +330,7 @@ public class SferaService {
         }
     }
 
+    @Override
     public void disconnect() {
         mqttClient.disconnect();
     }
