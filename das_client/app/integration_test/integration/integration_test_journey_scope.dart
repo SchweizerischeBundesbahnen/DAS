@@ -13,7 +13,6 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerCustomerOrientedDepartureViewModel();
-    getIt.registerUxTestingViewModel();
     getIt.registerSferaDelayViewModel();
     getIt.registerJourneyPositionViewModel();
     getIt.registerPlannedTimeDelayViewModel();

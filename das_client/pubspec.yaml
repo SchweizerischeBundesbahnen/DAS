@@ -63,6 +63,18 @@ melos:
       packageFilters:
         dirExists: test
 
+    test-flavors:
+      description: Run the unit test suite against each flavor's activated code, always restoring the base afterwards
+      run: |
+        set -eu
+        trap 'node scripts/switch-flavor.mjs --restore-base' EXIT
+        for flavor in dev inte prod; do
+          echo "==> Testing flavor: $flavor"
+          node scripts/switch-flavor.mjs "$flavor"
+          melos run test
+          node scripts/switch-flavor.mjs --restore-base
+        done
+
   command:
     clean:
       hooks:

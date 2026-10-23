@@ -108,6 +108,17 @@ Use the following Melos command to run all component tests:
 fvm dart run melos test
 ```
 
+#### Running unit tests per flavor
+
+To run the unit test suite against each flavor's activated code, use the following command. It switches to
+each flavor (`dev`, `inte`, `prod`) in turn, runs the test suite, and always restores the base afterwards so
+the working tree is left clean, even if a flavor's tests fail. It fails fast on the first flavor whose tests
+fail.
+
+```shell
+fvm dart run melos test-flavors
+```
+
 ### Running integration tests
 
 Instrumentation tests do not use user authentication. Therefore, the credentials must be provided as
