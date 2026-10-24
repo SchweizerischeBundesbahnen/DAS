@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.22.0...sfera_mock-v0.23.0) (2026-10-24)
+
+
+### Features
+
+* request initial related train information ([#2593](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2593)) ([#2931](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2931)) ([aba7170](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aba7170a1e4de7595950b13d62b29050ead0c047))
+
+
+### Dependencies
+
+* **sfera-mock:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.1.2 ([#3033](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3033)) ([a72f6e3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a72f6e388398c0b94a8e92ab940b14e94a16e4f1))
+
 ## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.21.0...sfera_mock-v0.22.0) (2026-10-14)
 
 
