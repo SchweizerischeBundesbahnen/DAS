@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.1...backend-v0.18.2) (2026-10-24)
+
+
+### Bug Fixes
+
+* log formation tombstones at debug instead of error ([#3018](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3018)) ([80c65f4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/80c65f43ea6c527100afa2dc5a6e8667ad04bcb2))
+
+
+### Dependencies
+
+* **backend:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.1.2 ([#3031](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3031)) ([9130333](https://github.com/SchweizerischeBundesbahnen/DAS/commit/913033337494554e13be67993962263113355c3c))
+* **backend:** update dependency org.springframework.cloud:spring-cloud-starter-vault-config to v5.0.3 ([#3034](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3034)) ([c12635a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c12635ad3c6321dc651ec2cc28f327d8c60da22a))
+* **backend:** update dependency org.springframework.modulith:spring-modulith-bom to v2.1.2 ([#3035](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3035)) ([b4dffd4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b4dffd4058d558e68108f0a4b354b0f41236999c))
+
 ## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.0...backend-v0.18.1) (2026-10-19)
 
 
