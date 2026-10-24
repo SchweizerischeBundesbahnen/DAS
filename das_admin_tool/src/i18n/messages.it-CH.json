@@ -7,7 +7,7 @@
     "app_version_dialog_step_label": "Versione dell’app",
     "app_versions_form_version_label": "Versione dell’app",
     "form_field_error_required": "Il campo non può essere vuoto",
-    "app_versions_form_version_error_pattern": "Il campo deve rispettare il formato MAJOR.MINOR.PATCH",
+    "app_versions_form_version_error_pattern": "Il campo deve rispettare il formato MAJOR.MINOR.PATCH, ciascuno da 0 a 99999 (ad es. 1.2.3)",
     "app_versions_form_minimal_version_label": "Versione minima",
     "app_versions_form_minimal_version_title": "Versione minima",
     "app_versions_form_minimal_version_hint": "In questo modo vengono bloccate tutte le versioni precedenti!",

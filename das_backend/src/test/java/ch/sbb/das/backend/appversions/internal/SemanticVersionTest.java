@@ -2,6 +2,7 @@ package ch.sbb.das.backend.appversions.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,5 +35,20 @@ class SemanticVersionTest {
     @Test
     void versionWrongPattern() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new SemanticVersion("I'm invalid"));
+    }
+
+    @Test
+    void versionMaxRange() {
+        assertThatNoException().isThrownBy(() -> new SemanticVersion("99999.99999.99999"));
+    }
+
+    @Test
+    void versionOutOfRange() {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new SemanticVersion("100000.0.0"));
+    }
+
+    @Test
+    void versionLeadingZeros() {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new SemanticVersion("01.0.0"));
     }
 }

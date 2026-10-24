@@ -10,7 +10,10 @@ import org.jspecify.annotations.NonNull;
  */
 public class SemanticVersion implements Comparable<SemanticVersion> {
 
-    public static final String SEM_VERSION_PATTERN = "(\\d+)\\.(\\d+)\\.(\\d+)";
+    /**
+     * Each part ranges from 0 to 99999 without leading zeros, so equal versions are always the same string.
+     */
+    public static final String SEM_VERSION_PATTERN = "(0|[1-9]\\d{0,4})\\.(0|[1-9]\\d{0,4})\\.(0|[1-9]\\d{0,4})";
 
     private final int major;
     private final int minor;
