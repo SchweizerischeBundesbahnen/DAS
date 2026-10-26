@@ -41,7 +41,7 @@ Future<void> main() async {
       final connectivityManager = DI.get<ConnectivityManager>() as MockConnectivityManager;
       connectivityManager.lastConnectedTime = DateTime.now();
       connectivityManager.connectivitySubject.add(true);
-      connectivityManager.wifiActive = false;
+      connectivityManager.wifiActiveSubject.add(false);
 
       await loadJourney(tester, trainNumber: 'T9999M');
 
@@ -72,7 +72,7 @@ Future<void> main() async {
       await findAndDismissBottomSheet(tester);
 
       // simulate wifi active
-      connectivityManager.wifiActive = true;
+      connectivityManager.wifiActiveSubject.add(true);
       connectivityManager.connectivitySubject.add(true);
       await tester.pumpAndSettle();
 
@@ -88,7 +88,7 @@ Future<void> main() async {
 
       // simulate connectivity restored
       connectivityManager.connectivitySubject.add(true);
-      connectivityManager.wifiActive = false;
+      connectivityManager.wifiActiveSubject.add(false);
       await tester.pumpAndSettle();
 
       // should hide icon again

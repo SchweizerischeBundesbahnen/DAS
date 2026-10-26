@@ -128,7 +128,10 @@ extension BaseScopeExtension on GetIt {
 
   void registerConnectivityManager() {
     _log.fine('Register ConnectivityManager');
-    registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
+    registerSingleton<ConnectivityManager>(
+      ConnectivityComponent.connectivityManager(),
+      dispose: (manager) => manager.dispose(),
+    );
   }
 
   void registerLoginViewModel() {

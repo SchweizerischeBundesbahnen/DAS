@@ -46,7 +46,7 @@ class MqttServiceImpl({
     _client.keepAlivePeriod = _keepAlivePeriodSeconds;
     _logClientChanges();
 
-    _connectivitySubscription = _connectivityManager.onConnectivityChanged.distinct().listen((connected) {
+    _connectivitySubscription = _connectivityManager.isConnected.listen((connected) {
       if (_connected && connected) {
         _log.info('Reconnecting to MQTT broker due to connectivity change');
         _client.doAutoReconnect(force: true);

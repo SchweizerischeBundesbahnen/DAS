@@ -29,7 +29,7 @@ class RequestLocalRegulationsTask({
   late TaskCompleted<void> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
 
-  int _segementsToFetch = 0;
+  int _segmentsToFetch = 0;
 
   @override
   Future<void> execute(TaskCompleted<void> onCompleted, TaskFailed onFailed) async {
@@ -79,7 +79,7 @@ class RequestLocalRegulationsTask({
       return true;
     }
 
-    final finished = _segementsToFetch == segmentProfileCount;
+    final finished = _segmentsToFetch == segmentProfileCount;
     if (finished) {
       _taskCompletedCallback(this, null);
     } else {
@@ -97,7 +97,7 @@ class RequestLocalRegulationsTask({
       return;
     }
 
-    _segementsToFetch = missingSp.length;
+    _segmentsToFetch = missingSp.length;
 
     final List<SpRequestDto> spRequests = [];
     for (final sp in missingSp) {

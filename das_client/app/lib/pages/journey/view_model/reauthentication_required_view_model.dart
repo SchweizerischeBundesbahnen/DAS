@@ -26,7 +26,7 @@ class ReauthenticationRequiredViewModel({
       _lastReauthenticationRequiredState = state;
       _updateNotification();
     });
-    _connectivityStreamSubscription = _connectivityManager.onConnectivityChanged.listen((state) {
+    _connectivityStreamSubscription = _connectivityManager.isConnected.listen((state) {
       _lastConnectivityState = state;
       _updateNotification();
     });

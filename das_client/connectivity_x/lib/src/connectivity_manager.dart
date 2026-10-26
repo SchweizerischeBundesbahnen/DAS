@@ -1,9 +1,13 @@
 abstract class const ConnectivityManager._() {
-  Stream<bool> get onConnectivityChanged;
+  Stream<bool> get isConnected;
 
-  bool isConnected();
+  Stream<bool> get isWifiActive;
 
-  bool isWifiActive();
+  bool get isWifiActiveValue;
+
+  Stream<bool> get isNetworkRoaming;
 
   DateTime? get lastConnected;
+
+  void dispose();
 }

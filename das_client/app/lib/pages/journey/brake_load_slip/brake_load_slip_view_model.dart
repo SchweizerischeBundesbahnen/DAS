@@ -102,8 +102,8 @@ class BrakeLoadSlipViewModel({
     if (_checkForUpdates) {
       _formationUpdateTimer = Timer.periodic(_formationUpdateInterval, (_) => _checkForFormationUpdates());
     }
-    _connectivitySubscription = _connectivityManager?.onConnectivityChanged.listen((state) {
-      if (state) _checkForFormationUpdates();
+    _connectivitySubscription = _connectivityManager?.isConnected.listen((connected) {
+      if (connected) _checkForFormationUpdates();
     });
 
     Future.delayed(initialNotificationDelay).then((it) => _notifyOnUpdate = true);

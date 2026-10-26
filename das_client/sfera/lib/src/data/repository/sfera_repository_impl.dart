@@ -248,7 +248,7 @@ class SferaRepoImpl({
   void _initialize() {
     _addEventMessageHandlers();
     _mqttStreamSubscription = _mqttService.messageStream.listen(_handleMqttMessage);
-    _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
+    _connectivitySubscription = _connectivityManager.isConnected.listen((connected) {
       if (connected && _rxState.value == .offlineData) {
         _log.info(
           'Connectivity changed to connected=$connected while in offline mode, trying to connect to MQTT broker...',

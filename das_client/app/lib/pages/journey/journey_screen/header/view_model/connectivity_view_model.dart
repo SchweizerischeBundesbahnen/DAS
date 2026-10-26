@@ -26,9 +26,9 @@ class ConnectivityViewModel({required final ConnectivityManager _connectivityMan
   Timer? _timer;
 
   void _init() {
-    _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
+    _connectivitySubscription = _connectivityManager.isConnected.listen((connected) {
       if (connected) {
-        _rxModel.add(_connectivityManager.isWifiActive() ? .connectedWifi : .connected);
+        _rxModel.add(_connectivityManager.isWifiActiveValue ? .connectedWifi : .connected);
         _timer?.cancel();
       } else {
         _timer?.cancel();
