@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class StorageService {
+public class StorageService implements PreloadStore {
 
     public static final String SEGMENT_PREFIX = "Segments";
     public static final String ZIP_FILE_ENDING = ".zip";
@@ -53,6 +53,7 @@ public class StorageService {
         this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
     }
 
+    @Override
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<SegmentProfile> segmentProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
         log.info("Saving journeyProfiles={}, segmentProfiles={}, trainCharacteristics={}...", journeyProfiles.size(), segmentProfiles.size(), trainCharacteristics.size());
         try {
