@@ -41,7 +41,7 @@ void main() {
   late MockAuthenticator mockAuthenticator;
   late Subject<bool> reauthenticationRequiredSubject;
   late Subject<String> mqttSubject;
-  late Subject<bool> connectivitySubject;
+  late Subject<bool> isConnectedSubject;
 
   String loadFile(String path) {
     return File(path).readAsStringSync();
@@ -74,10 +74,10 @@ $normalizedPayload
     reauthenticationRequiredSubject = BehaviorSubject.seeded(false);
     when(mockAuthenticator.reauthenticationRequired).thenAnswer((_) => reauthenticationRequiredSubject.stream);
     mqttSubject = BehaviorSubject<String>();
-    connectivitySubject = BehaviorSubject.seeded(false);
+    isConnectedSubject = BehaviorSubject.seeded(false);
 
     when(mockMqttService.messageStream).thenAnswer((_) => mqttSubject.stream);
-    when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
+    when(mockConnectivityManager.isConnected).thenAnswer((_) => isConnectedSubject.stream);
 
     testee = SferaRepoImpl(
       mqttService: mockMqttService,
@@ -852,7 +852,7 @@ $normalizedPayload
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // Trigger reconnect
-    connectivitySubject.add(true);
+    isConnectedSubject.add(true);
 
     await Future.delayed(Duration(milliseconds: 1));
 

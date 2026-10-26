@@ -21,16 +21,16 @@ void main() {
     late MockNotificationPriorityQueueViewModel notificationViewModel;
     late MockConnectivityManager connectivityManager;
     late BehaviorSubject<bool> authenticationRequiredSubject;
-    late BehaviorSubject<bool> connectivityManagerSubject;
+    late BehaviorSubject<bool> isConnectedSubject;
 
     setUp(() {
       authenticator = MockAuthenticator();
       authenticationRequiredSubject = BehaviorSubject.seeded(false);
-      connectivityManagerSubject = BehaviorSubject.seeded(false);
+      isConnectedSubject = BehaviorSubject.seeded(false);
       when(authenticator.reauthenticationRequired).thenAnswer((_) => authenticationRequiredSubject.stream);
       notificationViewModel = MockNotificationPriorityQueueViewModel();
       connectivityManager = MockConnectivityManager();
-      when(connectivityManager.onConnectivityChanged).thenAnswer((_) => connectivityManagerSubject.stream);
+      when(connectivityManager.isConnected).thenAnswer((_) => isConnectedSubject.stream);
       testee = ReauthenticationRequiredViewModel(
         authenticator: authenticator,
         notificationViewModel: notificationViewModel,
@@ -44,7 +44,7 @@ void main() {
 
     test('model_whenReauthenticationNotRequiredAndConnected_thenDoesNotShowNotification', () async {
       // ACT
-      connectivityManagerSubject.add(true);
+      isConnectedSubject.add(true);
       await Future.delayed(Duration.zero);
 
       // EXPECT
@@ -63,7 +63,7 @@ void main() {
     test('model_whenReauthenticationRequiredAndConnected_thenShowNotification', () async {
       // ACT
       authenticationRequiredSubject.add(true);
-      connectivityManagerSubject.add(true);
+      isConnectedSubject.add(true);
       await Future.delayed(Duration.zero);
 
       // EXPECT
@@ -73,10 +73,10 @@ void main() {
     test('model_whenReauthenticationRequiredAndNoLongerConnected_thenRemoveNotification', () async {
       // ACT
       authenticationRequiredSubject.add(true);
-      connectivityManagerSubject.add(true);
+      isConnectedSubject.add(true);
       await Future.delayed(Duration.zero);
 
-      connectivityManagerSubject.add(false);
+      isConnectedSubject.add(false);
       await Future.delayed(Duration.zero);
 
       // EXPECT

@@ -60,7 +60,7 @@ void main() {
   late BehaviorSubject<JourneySettings> settingsSubject;
   late BehaviorSubject<JourneyPositionModel> positionSubject;
   late BehaviorSubject<Formation?> formationSubject;
-  late BehaviorSubject<bool> connectivitySubject;
+  late BehaviorSubject<bool> isConnectedSubject;
   late DASSounds mockDasSounds;
   late Sound mockSound;
   late MockLauncher mockLauncher;
@@ -189,12 +189,10 @@ void main() {
 
     mockJourneySettingsViewModel = MockJourneySettingsViewModel();
     journeySubject = BehaviorSubject<Journey?>();
-    settingsSubject = BehaviorSubject.seeded(
-      JourneySettings(initialBrakeSeries: brakeSeries),
-    );
+    settingsSubject = BehaviorSubject.seeded(JourneySettings(initialBrakeSeries: brakeSeries));
     positionSubject = BehaviorSubject.seeded(JourneyPositionModel());
     formationSubject = BehaviorSubject<Formation?>();
-    connectivitySubject = BehaviorSubject.seeded(true);
+    isConnectedSubject = BehaviorSubject.seeded(true);
 
     when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneySettingsViewModel.model).thenAnswer((_) => settingsSubject.stream);
@@ -207,7 +205,7 @@ void main() {
         operationalDay: trainIdentification.operatingDay!,
       ),
     ).thenAnswer((_) => formationSubject.stream);
-    when(mockConnectivityManager.onConnectivityChanged).thenAnswer((_) => connectivitySubject.stream);
+    when(mockConnectivityManager.isConnected).thenAnswer((_) => isConnectedSubject.stream);
 
     when(mockBuildContext.findAncestorWidgetOfExactType()).thenReturn(mockStackRouterScope);
     when(mockStackRouterScope.controller).thenReturn(mockStackRouter);
@@ -752,12 +750,12 @@ void main() {
 
     verifyNever(mockFormationRepository.reloadFormation(any, any, any));
 
-    connectivitySubject.add(false);
+    isConnectedSubject.add(false);
     await processStreams();
 
     verifyNever(mockFormationRepository.reloadFormation(any, any, any));
 
-    connectivitySubject.add(true);
+    isConnectedSubject.add(true);
     await processStreams();
 
     verify(mockFormationRepository.reloadFormation(any, any, any)).called(1);
