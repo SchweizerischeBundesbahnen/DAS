@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto';
 import test, { expect } from '@playwright/test';
+import { AdminApi, ApiAppVersion } from '../utils/admin-api';
 import {
   clickAddButton,
   deleteEntryViaDialog,
@@ -8,7 +9,6 @@ import {
   openEditEntryDialog,
   saveEntryDialog,
 } from '../utils/admin-test-helpers';
-import { AppVersionsApi } from '../utils/app-versions-api';
 
 /**
  * Uses the highest valid major and minor with a random patch for parallel runs without collisions.
@@ -23,7 +23,7 @@ test.describe('app versions test', () => {
   const TEST_IS_MINIMAL_UPDATED = 'Ja';
 
   let testVersion: string;
-  let appVersionsApi: AppVersionsApi | undefined;
+  let appVersionsApi: AdminApi<ApiAppVersion> | undefined;
 
   test.beforeEach(async ({ page }) => {
     testVersion = randomTestVersion();
@@ -36,10 +36,10 @@ test.describe('app versions test', () => {
         && new URL(resp.url()).pathname.endsWith('/app-versions'),
     );
     await page.goto('das-admin/app-versions');
-    appVersionsApi = await AppVersionsApi.fromListResponse(page, await appVersionsLoaded);
+    appVersionsApi = await AdminApi.fromListResponse<ApiAppVersion>(page, await appVersionsLoaded);
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Blockierte App Versionen');
-    // the title renders before the data arrives, wait for rows before using the table
-    await expect(page.locator('tr[sbb-row]').first()).toBeVisible();
+    // the title renders before the data arrives; the add button shows once loaded, also for an empty list
+    await expect(page.getByText('App Version blockieren', { exact: true })).toBeVisible();
   });
 
   test.afterEach(async () => {
