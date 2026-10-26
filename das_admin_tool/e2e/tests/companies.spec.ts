@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto';
 import test, { expect } from '@playwright/test';
+import { AdminApi, ApiCompany } from '../utils/admin-api';
 import {
   clickAddButton,
   deleteEntryViaDialog,
@@ -10,7 +11,6 @@ import {
   selectAnyOption,
   uniqueSuffix,
 } from '../utils/admin-test-helpers';
-import { CompaniesApi } from '../utils/companies-api';
 
 /**
  * Uses random codes in the range of 0001-0099 for parallel runs without collisions.
@@ -26,7 +26,7 @@ test.describe('companies test', () => {
   let testCode: string;
   let testShortName: string;
   let testShortNameUpdated: string;
-  let companiesApi: CompaniesApi | undefined;
+  let companiesApi: AdminApi<ApiCompany> | undefined;
 
   test.beforeEach(async ({ page }) => {
     testCode = randomTestCode();
@@ -41,7 +41,7 @@ test.describe('companies test', () => {
         && new URL(resp.url()).pathname.endsWith('/companies'),
     );
     await page.goto('das-admin/companies');
-    companiesApi = await CompaniesApi.fromListResponse(page, await companiesLoaded);
+    companiesApi = await AdminApi.fromListResponse<ApiCompany>(page, await companiesLoaded);
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('EVUs');
     // the title renders before the data arrives, wait for rows before using the table
     await expect(page.locator('tr[sbb-row]').first()).toBeVisible();
