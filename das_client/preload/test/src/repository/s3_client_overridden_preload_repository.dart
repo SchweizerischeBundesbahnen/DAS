@@ -1,5 +1,6 @@
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/repository/preload_repository_impl.dart';
+import 'package:connectivity_x/component.dart';
 import 'package:settings/component.dart';
 
 class S3ClientOverriddenPreloadRepository extends PreloadRepositoryImpl {
@@ -7,6 +8,7 @@ class S3ClientOverriddenPreloadRepository extends PreloadRepositoryImpl {
     required super.preloadZipProcessor,
     required super.databaseService,
     required super.sferaLocalRepo,
+    required super.connectivityManager,
     required this._s3Client,
     super.disablePreload = false,
   });

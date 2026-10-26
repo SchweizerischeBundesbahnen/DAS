@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_x/component.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -22,6 +23,7 @@ import 's3_client_overridden_preload_repository.dart';
 @GenerateNiceMocks([
   MockSpec<PreloadZipProcessor>(),
   MockSpec<PreloadLocalDatabaseService>(),
+  MockSpec<ConnectivityManager>(),
   MockSpec<S3Client>(),
   MockSpec<SferaLocalRepo>(),
   MockSpec<ListBucketResultDto>(),
@@ -33,18 +35,26 @@ void main() {
   late MockPreloadLocalDatabaseService mockDatabaseService;
   late MockSferaLocalRepo mockSferaLocalRepo;
   late MockS3Client mockS3Client;
+  late MockConnectivityManager mockConnectivityManager;
   late List<PreloadDetails> preloadDetailsRegister;
   late StreamSubscription preloadDetailsSubscription;
   late BehaviorSubject<List<S3File>> databaseSubject;
+  late BehaviorSubject<bool> isNetworkRoamingSubject;
+  late BehaviorSubject<bool> isWifiActiveSubject;
 
   setUp(() {
     mockDatabaseService = MockPreloadLocalDatabaseService();
     mockSferaLocalRepo = MockSferaLocalRepo();
     mockS3Client = MockS3Client();
     mockPreloadZipProcessor = MockPreloadZipProcessor();
+    mockConnectivityManager = MockConnectivityManager();
     preloadDetailsRegister = [];
     databaseSubject = BehaviorSubject.seeded([]);
+    isNetworkRoamingSubject = BehaviorSubject.seeded(false);
+    isWifiActiveSubject = BehaviorSubject.seeded(false);
     when(mockDatabaseService.watchAll()).thenAnswer((_) => databaseSubject.stream);
+    when(mockConnectivityManager.isNetworkRoaming).thenAnswer((_) => isNetworkRoamingSubject.stream);
+    when(mockConnectivityManager.isWifiActive).thenAnswer((_) => isWifiActiveSubject.stream);
     when(mockPreloadZipProcessor.extractToLocalDatabase(any)).thenAnswer((_) async => .downloaded);
     when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) async => Directory('test'));
 
@@ -52,6 +62,7 @@ void main() {
       preloadZipProcessor: mockPreloadZipProcessor,
       databaseService: mockDatabaseService,
       sferaLocalRepo: mockSferaLocalRepo,
+      connectivityManager: mockConnectivityManager,
       s3Client: mockS3Client,
     );
     preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
@@ -60,6 +71,8 @@ void main() {
   tearDown(() async {
     preloadDetailsSubscription.cancel();
     preloadDetailsRegister.clear();
+    await isNetworkRoamingSubject.close();
+    await isWifiActiveSubject.close();
     await testee.stopPreload();
     testee.dispose();
   });
@@ -100,6 +113,7 @@ void main() {
         preloadZipProcessor: mockPreloadZipProcessor,
         databaseService: mockDatabaseService,
         sferaLocalRepo: mockSferaLocalRepo,
+        connectivityManager: mockConnectivityManager,
         s3Client: mockS3Client,
       );
       preloadDetailsSubscription.cancel();
@@ -299,6 +313,63 @@ void main() {
     // VERIFY
     verifyNever(mockS3Client.cancelDownloads());
     verifyNever(mockPreloadZipProcessor.stop());
+  });
+
+  test('preload_whenRoamingWithoutWifi_stopsCurrentRun', () async {
+    // WHEN
+    final listBucketCompleter = Completer<ListBucketResultDto?>();
+    when(mockDatabaseService.findAll()).thenAnswer((_) => Future.value([]));
+    when(mockS3Client.listBucket()).thenAnswer((_) => listBucketCompleter.future);
+
+    // ACT
+    testee.updateConfiguration(_createAwsConfiguration());
+    await Future.delayed(const Duration(milliseconds: 1));
+    isNetworkRoamingSubject.add(true);
+    await Future.delayed(const Duration(milliseconds: 1));
+
+    // VERIFY
+    verify(mockS3Client.cancelDownloads()).called(1);
+    verify(mockPreloadZipProcessor.stop()).called(1);
+
+    listBucketCompleter.complete(_createMockListBucketResultDto([]));
+    await Future.delayed(const Duration(milliseconds: 1));
+  });
+
+  test('preload_whenReturningFromRoamingWithoutWifi_restartsAfterDelay', () {
+    // WHEN
+    when(mockDatabaseService.findAll()).thenAnswer((_) => Future.value([]));
+    when(mockS3Client.listBucket()).thenAnswer((_) async => _createMockListBucketResultDto([]));
+    preloadDetailsSubscription.cancel();
+
+    fakeAsync((fakeAsync) {
+      testee = S3ClientOverriddenPreloadRepository(
+        preloadZipProcessor: mockPreloadZipProcessor,
+        databaseService: mockDatabaseService,
+        sferaLocalRepo: mockSferaLocalRepo,
+        connectivityManager: mockConnectivityManager,
+        s3Client: mockS3Client,
+      );
+      preloadDetailsSubscription = testee.preloadDetails.listen(preloadDetailsRegister.add);
+
+      // Enter roaming without Wi-Fi.
+      isNetworkRoamingSubject.add(true);
+      fakeAsync.flushMicrotasks();
+
+      testee.updateConfiguration(_createAwsConfiguration());
+      fakeAsync.flushMicrotasks();
+      verifyNever(mockS3Client.listBucket());
+
+      // Return to normal network and verify delayed restart.
+      isNetworkRoamingSubject.add(false);
+      fakeAsync.flushMicrotasks();
+      fakeAsync.elapse(PreloadRepositoryImpl.resumePreloadDelay - const Duration(milliseconds: 1));
+      fakeAsync.flushMicrotasks();
+      verifyNever(mockS3Client.listBucket());
+
+      fakeAsync.elapse(const Duration(milliseconds: 1));
+      fakeAsync.flushMicrotasks();
+      verify(mockS3Client.listBucket()).called(1);
+    });
   });
 }
 

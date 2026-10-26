@@ -170,6 +170,7 @@ extension BaseScopeExtension on GetIt {
       PreloadComponent.createPreloadRepository(
         sferaLocalRepo: DI.get(),
         disablePreload: DI.get<Flavor>().disablePreload,
+        connectivityManager: DI.get(),
       ),
       dispose: (repo) => repo.dispose(),
     );

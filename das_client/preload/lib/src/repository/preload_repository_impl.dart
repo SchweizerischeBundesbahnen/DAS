@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:preload/src/aws/s3_client.dart';
 import 'package:preload/src/data/preload_local_database_service.dart';
@@ -18,12 +19,14 @@ final _log = Logger('PreloadRepositoryImpl');
 class PreloadRepositoryImpl({
   required final PreloadZipProcessor preloadZipProcessor,
   required final PreloadLocalDatabaseService databaseService,
+  required final ConnectivityManager connectivityManager,
   required final SferaLocalRepo sferaLocalRepo,
 
   /// added only for development purposes
   required final bool disablePreload,
 }) implements PreloadRepository {
   static const syncInterval = Duration(minutes: 5);
+  static const resumePreloadDelay = Duration(minutes: 2);
   static const segmentPrefix = 'Segment';
 
   this {
@@ -32,10 +35,13 @@ class PreloadRepositoryImpl({
 
   S3Client? _s3client;
   StreamSubscription? _databaseSubscription;
+  StreamSubscription? _connectivitySubscription;
   Timer? _syncTimer;
+  Timer? _resumeTimer;
 
   Future<void>? _currentRun;
   bool _stopRequested = false;
+  bool _isRoamingWithoutWifi = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
 
   @override
@@ -44,6 +50,11 @@ class PreloadRepositoryImpl({
   void _init() {
     _log.info('Initializing PreloadRepositoryImpl...');
     _databaseSubscription = databaseService.watchAll().listen((files) => _emit(files));
+    _connectivitySubscription = Rx.combineLatest2<bool, bool, bool>(
+      connectivityManager.isNetworkRoaming,
+      connectivityManager.isWifiActive,
+      (isNetworkRoaming, isWifiActive) => isNetworkRoaming && !isWifiActive,
+    ).listen(_onRoamingWithoutWifiChanged);
   }
 
   @override
@@ -71,6 +82,11 @@ class PreloadRepositoryImpl({
 
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
+      return;
+    }
+
+    if (_isRoamingWithoutWifi) {
+      _log.info('Roaming without Wi-Fi detected. Skipping new preload request.');
       return;
     }
 
@@ -104,6 +120,7 @@ class PreloadRepositoryImpl({
   void dispose() {
     stopPreload();
     _databaseSubscription?.cancel();
+    _connectivitySubscription?.cancel();
     _rxDetails.close();
     _disablePreload();
   }
@@ -240,6 +257,26 @@ class PreloadRepositoryImpl({
   void _disablePreload() {
     _s3client = null;
     _syncTimer?.cancel();
+    _resumeTimer?.cancel();
+  }
+
+  void _onRoamingWithoutWifiChanged(bool isRoamingWithoutWifi) {
+    if (_isRoamingWithoutWifi == isRoamingWithoutWifi) return;
+    _isRoamingWithoutWifi = isRoamingWithoutWifi;
+
+    if (isRoamingWithoutWifi) {
+      _resumeTimer?.cancel();
+      _log.info('Roaming without Wi-Fi detected. Stopping preload...');
+      stopPreload();
+      return;
+    }
+
+    _log.info('Connectivity back to normal. Scheduling preload restart in ${resumePreloadDelay.inMinutes} minutes.');
+    _resumeTimer?.cancel();
+    _resumeTimer = Timer(resumePreloadDelay, () {
+      _log.info('Restart preload delay elapsed. Triggering preload...');
+      triggerPreload();
+    });
   }
 
   void _logConfigurationIsUpdated(AwsConfiguration awsConfiguration) {

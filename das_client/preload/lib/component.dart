@@ -1,3 +1,4 @@
+import 'package:connectivity_x/component.dart';
 import 'package:preload/src/data/drift_preload_database_service.dart';
 import 'package:preload/src/repository/preload_repository.dart';
 import 'package:preload/src/repository/preload_repository_impl.dart';
@@ -11,11 +12,13 @@ export 'package:preload/src/repository/preload_repository.dart';
 class PreloadComponent._() {
   static PreloadRepository createPreloadRepository({
     required SferaLocalRepo sferaLocalRepo,
+    required ConnectivityManager connectivityManager,
     bool disablePreload = false,
   }) => PreloadRepositoryImpl(
     preloadZipProcessor: PreloadZipProcessor(sferaLocalRepo: sferaLocalRepo),
     databaseService: DriftPreloadDatabaseService.instance,
     sferaLocalRepo: sferaLocalRepo,
     disablePreload: disablePreload,
+    connectivityManager: connectivityManager,
   );
 }
