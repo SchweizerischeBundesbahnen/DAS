@@ -21,13 +21,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
-        <rest-assured.version>6.2.0</rest-assured.version>
+        <rest-assured.version>6.3.0</rest-assured.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
         <relativePath/>
     </parent>
 

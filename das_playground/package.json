@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@angular/animations": "22.2.3",
-    "@angular/cdk": "22.2.3",
+    "@angular/cdk": "22.2.4",
     "@angular/common": "22.2.3",
     "@angular/compiler": "22.2.3",
     "@angular/core": "22.2.3",
@@ -32,8 +32,8 @@
     "@angular/platform-browser": "22.2.3",
     "@angular/platform-browser-dynamic": "22.2.3",
     "@angular/router": "22.2.3",
-    "@sbb-esta/angular": "22.1.1",
-    "angular-auth-oidc-client": "22.0.1",
+    "@sbb-esta/angular": "22.2.0",
+    "angular-auth-oidc-client": "22.0.2",
     "angular-server-side-configuration": "22.0.2",
     "ngx-mqtt": "22.0.0",
     "rxjs": "7.8.2",
@@ -41,14 +41,14 @@
     "zone.js": "0.16.3"
   },
   "devDependencies": {
-    "@angular/build": "22.2.3",
-    "@angular/cli": "22.2.3",
+    "@angular/build": "22.2.4",
+    "@angular/cli": "22.2.4",
     "@angular/compiler-cli": "22.2.3",
     "@angular/localize": "22.2.3",
     "@eslint/js": "10.0.1",
     "@types/jasmine": "6.0.0",
     "angular-eslint": "22.6.0",
-    "eslint": "10.12.0",
+    "eslint": "10.13.0",
     "eslint-config-prettier": "10.1.8",
     "istanbul-lib-instrument": "6.0.3",
     "jasmine-core": "6.3.0",
@@ -60,7 +60,7 @@
     "karma-jasmine-html-reporter": "2.3.0",
     "prettier": "3.9.10",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.71.2"
+    "typescript-eslint": "8.72.0"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,

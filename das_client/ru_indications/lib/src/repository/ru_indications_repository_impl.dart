@@ -19,7 +19,7 @@ class RuIndicationsRepositoryImpl({
   @override
   Stream<List<RuIndication>> fetchRuIndications({
     required TrainIdentification trainIdentification,
-    required Map<String, int> locationReferences,
+    required Map<int, String> locationReferences,
   }) {
     final controller = StreamController<List<RuIndication>>();
 
@@ -40,7 +40,7 @@ class RuIndicationsRepositoryImpl({
   Future<void> _fetchWithRetry({
     required StreamController<List<RuIndication>> controller,
     required TrainIdentification trainIdentification,
-    required Map<String, int> locationReferences,
+    required Map<int, String> locationReferences,
   }) async {
     final company = trainIdentification.companyCode;
     final trainNumber = trainIdentification.sanitizedTrainNumber;
@@ -75,17 +75,18 @@ class RuIndicationsRepositoryImpl({
     String company,
     int trainNumber,
     DateTime startDate,
-    Map<String, int> locationReferences,
+    Map<int, String> locationReferences,
     StreamController<List<RuIndication>> controller,
   ) async {
     final response = await _apiService.matches(
       company: company,
       operationalTrainNumber: trainNumber,
       startDate: startDate,
-      tafTapLocationReferences: locationReferences.keys.toList(),
+      tafTapLocationReferences: locationReferences.values.toSet(),
     );
 
     final ruIndications = response.body.data.map((dto) => dto.toRuIndications(locationReferences)).flattened;
+
     _log.info(
       'Successfully fetched ${ruIndications.length} RU indications for $trainNumber ($company) on $startDate.',
     );

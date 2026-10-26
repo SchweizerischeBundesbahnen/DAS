@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { expect, Locator, Page, Response } from '@playwright/test';
 
 /**
  * Generic helpers for ru admin feature tests
@@ -109,13 +109,13 @@ export async function saveEntryDialog(
   row: Locator,
   options: { method: 'POST' | 'PUT'; successToast: string; dialogTitle: string },
 ) {
-  const saveResponse = waitForResponse(page, options.method);
+  const saveResponse = waitForMutationResponse(page, options.method);
   const reloadResponse = waitForResponse(page, 'GET');
   if (options.method === 'PUT') {
     await page.getByText('Weiter', { exact: true }).click();
   }
   await page.getByText('Speichern', { exact: true }).click();
-  await saveResponse;
+  await expectSuccessful(saveResponse);
   await reloadResponse;
   await expect(page.getByText(options.successToast, { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: options.dialogTitle })).not.toBeVisible();
@@ -133,12 +133,12 @@ export async function openEditEntryDialog(page: Page, row: Locator) {
 export async function deleteEntryViaDialog(page: Page, row: Locator) {
   const dialog = await openEditEntryDialog(page, row);
 
-  const deleteResponse = waitForResponse(page, 'DELETE');
+  const deleteResponse = waitForMutationResponse(page, 'DELETE');
   const reloadResponse = waitForResponse(page, 'GET');
   const deleteBtn = dialog.getByText('Eintrag löschen', { exact: true });
   await expect(deleteBtn).toBeVisible();
   await deleteBtn.click();
-  await deleteResponse;
+  await expectSuccessful(deleteResponse);
   await reloadResponse;
   await expectRowAbsent(page, row);
 }
@@ -162,10 +162,10 @@ export async function deleteEntryViaSelection(page: Page, ...rows: Locator[]) {
       await row.locator('sbb-checkbox').click();
     }
   }
-  const deleteResponse = waitForResponse(page, 'DELETE');
+  const deleteResponse = waitForMutationResponse(page, 'DELETE');
   const reloadResponse = waitForResponse(page, 'GET');
   await page.getByText('löschen').click();
-  await deleteResponse;
+  await expectSuccessful(deleteResponse);
   await reloadResponse;
   for (const row of rows) {
     await expectRowAbsent(page, row);
@@ -193,4 +193,30 @@ async function waitForResponse(page: Page, method: 'POST' | 'PUT' | 'DELETE' | '
     const req = resp.request();
     return req.method() === method && ['xhr', 'fetch'].includes(req.resourceType()) && resp.ok();
   });
+}
+
+/**
+ * Waits for the backend response of a create/update/delete regardless of its status, so a failing
+ * request is reported by {@link expectSuccessful} instead of being ignored until the test times out.
+ */
+function waitForMutationResponse(page: Page, method: 'POST' | 'PUT' | 'DELETE') {
+  return page.waitForResponse((resp) => {
+    const req = resp.request();
+    return (
+      req.method() === method
+      && ['xhr', 'fetch'].includes(req.resourceType())
+      // only backend calls, e.g. not the token refresh against the identity provider
+      && new URL(req.url()).pathname.startsWith('/admin/')
+    );
+  });
+}
+
+async function expectSuccessful(responsePromise: Promise<Response>) {
+  const response = await responsePromise;
+  if (!response.ok()) {
+    const request = response.request();
+    throw new Error(
+      `${request.method()} ${request.url()} failed with ${response.status()}: ${await response.text()}`,
+    );
+  }
 }
