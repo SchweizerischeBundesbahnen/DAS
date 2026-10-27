@@ -78,7 +78,7 @@ class PreloadZipProcessor({required final SferaLocalRepo sferaLocalRepo}) {
   }
 
   void stop() {
-    for (final extraction in _activeExtractions) {
+    for (final extraction in _activeExtractions.toList()) {
       extraction.stop();
     }
   }

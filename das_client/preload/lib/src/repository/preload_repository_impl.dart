@@ -82,7 +82,7 @@ class PreloadRepositoryImpl({
 
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
-      _currentStatus == .missingConfiguration;
+      _currentStatus = .missingConfiguration;
       return;
     }
 
@@ -108,12 +108,18 @@ class PreloadRepositoryImpl({
     final currentRun = _currentRun;
     if (currentRun == null) return;
 
-    _log.info('Stopping preload...');
-    _currentStatus = .stopping;
-    _s3client?.cancelDownloads();
-    preloadZipProcessor.stop();
-    await currentRun;
-    _emit();
+    try {
+      _log.info('Stopping preload...');
+      _currentStatus = .stopping;
+      _s3client?.cancelDownloads();
+      preloadZipProcessor.stop();
+      await currentRun;
+    } catch (e, s) {
+      _log.severe('Error while stopping preload.', e, s);
+    } finally {
+      _currentStatus = .idle;
+      _emit();
+    }
   }
 
   S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);

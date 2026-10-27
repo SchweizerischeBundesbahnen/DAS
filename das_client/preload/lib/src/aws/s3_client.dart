@@ -24,9 +24,13 @@ class S3Client({required final AwsConfiguration _configuration}) {
   final Set<AWSHttpClient> _activeDownloads = {};
 
   /// Aborts all running downloads. Aborted [downloadFile] calls throw.
-  void cancelDownloads() {
+  Future<void> cancelDownloads() async {
     for (final client in _activeDownloads) {
-      client.close(force: true);
+      try {
+        await client.close(force: true);
+      } catch (e) {
+        _log.severe('Failed to close client', e);
+      }
     }
     _activeDownloads.clear();
   }
@@ -48,7 +52,11 @@ class S3Client({required final AwsConfiguration _configuration}) {
       _log.severe('Failed to list bucket.', e);
       return null;
     } finally {
-      httpClient.close();
+      try {
+        await httpClient.close();
+      } catch (e) {
+        _log.warning('Failed to close HTTP client.', e);
+      }
     }
   }
 
@@ -61,7 +69,7 @@ class S3Client({required final AwsConfiguration _configuration}) {
 
       if (response.statusCode != HttpStatus.ok) {
         try {
-          response.body.drain();
+          await response.body.drain();
         } catch (_) {}
         throw Exception('Failed to download object with key $key. Status code: ${response.statusCode}');
       }
@@ -69,7 +77,7 @@ class S3Client({required final AwsConfiguration _configuration}) {
       final fileName = key.split('/').isNotEmpty ? key.split('/').last : key;
       final outFile = File(p.join(saveTo.path, fileName));
 
-      final sink = outFile.openWrite(mode: FileMode.writeOnly);
+      final sink = outFile.openWrite(mode: .writeOnly);
       try {
         await for (final chunk in response.body) {
           sink.add(chunk);
@@ -85,7 +93,12 @@ class S3Client({required final AwsConfiguration _configuration}) {
       _log.severe('Failed to download object with key $key.', e);
       rethrow;
     } finally {
-      httpClient.close();
+      _activeDownloads.remove(httpClient);
+      try {
+        await httpClient.close();
+      } catch (e) {
+        _log.warning('Failed to close download HTTP client for key $key.', e);
+      }
     }
   }
 
