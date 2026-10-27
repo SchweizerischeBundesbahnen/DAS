@@ -40,7 +40,7 @@ class PreloadRepositoryImpl({
   Timer? _resumeTimer;
 
   Future<void>? _currentRun;
-  bool _stopRequested = false;
+  PreloadStatus _currentStatus = .idle;
   bool _isRoamingWithoutWifi = false;
   final _rxDetails = BehaviorSubject<PreloadDetails>();
 
@@ -82,6 +82,7 @@ class PreloadRepositoryImpl({
 
     if (_s3client == null) {
       _log.warning('S3 client is not initialized. Cannot perform preload.');
+      _currentStatus == .missingConfiguration;
       return;
     }
 
@@ -90,11 +91,11 @@ class PreloadRepositoryImpl({
       return;
     }
 
-    if (_isRunning) {
+    if (_currentStatus == .running) {
       _log.info('Preload is already running. Skipping new preload request.');
       return;
     }
-    _stopRequested = false;
+
     _currentRun = _runPreload().whenComplete(() {
       _currentRun = null;
       _emit();
@@ -108,10 +109,11 @@ class PreloadRepositoryImpl({
     if (currentRun == null) return;
 
     _log.info('Stopping preload...');
-    _stopRequested = true;
+    _currentStatus = .stopping;
     _s3client?.cancelDownloads();
     preloadZipProcessor.stop();
     await currentRun;
+    _emit();
   }
 
   S3Client createS3Client(AwsConfiguration awsConfiguration) => S3Client(configuration: awsConfiguration);
@@ -125,18 +127,19 @@ class PreloadRepositoryImpl({
     _disablePreload();
   }
 
-  bool get _isRunning => _currentRun != null;
-
   Future<void> _runPreload() async {
     _log.info('Starting preload...');
+    _currentStatus = .running;
     try {
       await _cleanup();
       await _listS3BucketAndUpdateLocalDatabase();
       await _processAllFiles();
     } catch (e, s) {
       _log.severe('Error during preload.', e, s);
+    } finally {
+      _log.info(_currentStatus == .stopping ? 'Preload stopped.' : 'Preload completed.');
+      _currentStatus = .idle;
     }
-    _log.info(_stopRequested ? 'Preload stopped.' : 'Preload completed.');
   }
 
   Future<void> _cleanup() async {
@@ -206,16 +209,16 @@ class PreloadRepositoryImpl({
     try {
       final preloadDirectory = await preloadZipProcessor.preloadDirectory();
       for (final file in prioritizedFiles) {
-        if (_stopRequested) break;
+        if (_currentStatus == .stopping) break;
         if (file.status == .initial || file.status == .error) {
           _log.info('Processing file ${file.name} with status ${file.status.name}.');
           try {
             final downloaded = await _s3client!.downloadFile(file.name, saveTo: preloadDirectory);
             await Future.wait(processingFutures);
-            if (_stopRequested) break;
+            if (_currentStatus == .stopping) break;
             processingFutures.add(_processZip(_ZipToProcess(file: file, zip: downloaded)));
           } catch (e, s) {
-            if (_stopRequested) break; // download aborted by stop, keep status to retry later
+            if (_currentStatus == .stopping) break; // download aborted by stop, keep status to retry later
             _log.severe('Error downloading file ${file.name}.', e, s);
             await databaseService.saveS3File(file.copyWith(status: .error));
           }
@@ -239,14 +242,9 @@ class PreloadRepositoryImpl({
     _rxDetails.add(details);
   }
 
-  PreloadStatus _status() {
-    if (_s3client == null) return .missingConfiguration;
-    return _isRunning ? .running : .idle;
-  }
-
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
     files = files ?? await databaseService.findAll();
-    return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.getMetrics());
+    return PreloadDetails(files: files, status: _currentStatus, metrics: await sferaLocalRepo.getMetrics());
   }
 
   void _setTriggerForPeriodicPreload() {

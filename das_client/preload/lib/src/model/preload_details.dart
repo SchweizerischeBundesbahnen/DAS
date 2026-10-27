@@ -47,4 +47,4 @@ class PreloadDetails({
   }
 }
 
-enum PreloadStatus { idle, running, missingConfiguration }
+enum PreloadStatus { idle, stopping, running, missingConfiguration }

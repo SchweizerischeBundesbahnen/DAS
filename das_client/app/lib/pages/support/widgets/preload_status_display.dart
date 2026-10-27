@@ -129,7 +129,7 @@ class PreloadStatusDisplay extends StatelessWidget {
         Expanded(flex: 1, child: _legend(context)),
         Expanded(flex: 1, child: _metrics(context, preloadDetails)),
         Expanded(flex: 1, child: _status(context, preloadDetails)),
-        Expanded(flex: 1, child: _startButton(context, preloadDetails)),
+        Expanded(flex: 1, child: _startStopButton(context, preloadDetails)),
       ],
     );
   }
@@ -187,12 +187,18 @@ class PreloadStatusDisplay extends StatelessWidget {
     );
   }
 
-  Widget _startButton(BuildContext context, PreloadDetails? preloadDetails) {
+  Widget _startStopButton(BuildContext context, PreloadDetails? preloadDetails) {
+    final status = preloadDetails?.status;
     return SBBTertiaryButtonSmall(
-      labelText: context.l10n.w_preload_status_start_preload,
-      onPressed: preloadDetails?.status == PreloadStatus.idle
-          ? () => context.read<PreloadViewModel>().triggerPreload()
-          : null,
+      labelText: status == .running
+          ? context.l10n.w_preload_status_stop_preload
+          : context.l10n.w_preload_status_start_preload,
+      isLoading: status == .stopping,
+      onPressed: switch (status) {
+        .idle => context.read<PreloadViewModel>().triggerPreload,
+        .running => context.read<PreloadViewModel>().stopPreload,
+        _ => null,
+      },
     );
   }
 }
@@ -201,6 +207,7 @@ extension PreloadStatusX on PreloadStatus {
   String localizedText(BuildContext context) => switch (this) {
     .idle => context.l10n.w_preload_status_idle,
     .running => context.l10n.w_preload_status_running,
+    .stopping => context.l10n.w_preload_status_stopping,
     .missingConfiguration => context.l10n.w_preload_status_missing_configuration,
   };
 }
