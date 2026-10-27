@@ -73,7 +73,6 @@ export 'package:sfera/src/model/journey/train_series.dart';
 export 'package:sfera/src/model/journey/train_series_speed.dart';
 export 'package:sfera/src/model/journey/tram_area.dart';
 export 'package:sfera/src/model/journey/unsupervised_level_crossing_group.dart';
-export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/modification.dart';

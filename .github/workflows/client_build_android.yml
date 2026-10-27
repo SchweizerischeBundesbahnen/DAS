@@ -27,6 +27,10 @@ jobs:
         distribution: 'temurin'
         java-version: '21.0.13+9.0.LTS'
         cache: 'gradle'
+        
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 'lts/krypton'
 
     - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
       with:
@@ -74,13 +78,22 @@ jobs:
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
     - name: Build Appbundle DEV
-      run: flutter build appbundle --flavor dev -t lib/main_dev.dart
+      run: |
+        node ../scripts/switch-flavor.mjs dev 
+        flutter build appbundle --flavor dev -t lib/main_dev.dart
+        node ../scripts/switch-flavor.mjs --restore-base 
       working-directory: das_client/app
 
     - name: Build Appbundle INTE
-      run: flutter build appbundle --flavor inte -t lib/main_inte.dart
+      run: |
+        node ../scripts/switch-flavor.mjs inte 
+        flutter build appbundle --flavor inte -t lib/main_inte.dart
+        node ../scripts/switch-flavor.mjs --restore-base
       working-directory: das_client/app
 
     - name: Build Appbundle PROD
-      run: flutter build appbundle --flavor prod -t lib/main_prod.dart
+      run: |
+        node ../scripts/switch-flavor.mjs prod 
+        flutter build appbundle --flavor prod -t lib/main_prod.dart
+        node ../scripts/switch-flavor.mjs --restore-base
       working-directory: das_client/app

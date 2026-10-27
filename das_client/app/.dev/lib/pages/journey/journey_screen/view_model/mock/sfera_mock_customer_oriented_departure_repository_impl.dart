@@ -4,9 +4,10 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 
 class SferaMockCustomerOrientedDepartureRepositoryImpl({
-  required final SferaRepository _sferaRepo,
+  required final SferaFlavorRepository _sferaRepo,
   required final RuFeatureProvider _ruFeatureProvider,
 }) implements CustomerOrientedDepartureRepository {
   this {

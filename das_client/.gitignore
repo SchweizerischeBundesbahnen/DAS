@@ -62,3 +62,8 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# flavor-code-switching local-only artifacts (keep the repo on the base state;
+# the active-flavor manifest and base backup are never committed)
+/.flavor-base-backup/
+/.flavor-manifest.json

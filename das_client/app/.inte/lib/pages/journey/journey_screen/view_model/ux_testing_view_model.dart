@@ -1,0 +1,74 @@
+import 'dart:async';
+
+import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_view_model.dart';
+import 'package:app/provider/ru_feature_provider.dart';
+import 'package:collection/collection.dart';
+import 'package:formation/component.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component_flavor.dart';
+
+class UxTestingViewModel({
+  required final SferaFlavorRepository _sferaRepo,
+  required final RuFeatureProvider _ruFeatureProvider,
+  required final FormationRepository _formationRepository,
+}) {
+  this {
+    _init();
+  }
+
+  StreamSubscription? _eventSubscription;
+  StreamSubscription? _sferaStateSubscription;
+
+  final _rxUxTestingEvents = BehaviorSubject<UxTestingEvent>();
+  final _rxConnectivityDisplayStatus = BehaviorSubject<ConnectivityDisplayStatus?>.seeded(null);
+
+  Stream<ConnectivityDisplayStatus?> get connectivityDisplayStatus => _rxConnectivityDisplayStatus.stream;
+
+  Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
+
+  Future<bool> get isDepartureProcessFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(.departureProcess);
+
+  void dispose() {
+    _eventSubscription?.cancel();
+    _sferaStateSubscription?.cancel();
+  }
+
+  void _init() {
+    _eventSubscription = _sferaRepo.uxTestingEventStream.listen((data) async {
+      if (data == null) {
+        return;
+      } else if (data.isKoa) {
+        // koa events are handled by [SferaMockCustomerOrientedDepartureRepositoryImpl]
+        return;
+      } else if (data.isConnectivity) {
+        _handleConnectivityEvent(data);
+      } else if (data.isFormation) {
+        _handleFormationEvent();
+      }
+
+      _rxUxTestingEvents.add(data);
+    });
+  }
+
+  void _handleConnectivityEvent(UxTestingEvent data) =>
+      _rxConnectivityDisplayStatus.add(data.toConnectivityDisplayStatus());
+
+  void _handleFormationEvent() {
+    final connectedTrain = _sferaRepo.connectedTrain;
+    if (connectedTrain != null) {
+      _formationRepository.reloadFormation(
+        connectedTrain.trainNumber,
+        connectedTrain.companyCode,
+        connectedTrain.operatingDay ?? connectedTrain.date,
+      );
+    }
+  }
+}
+
+extension _UxTestingEventX on UxTestingEvent {
+  ConnectivityDisplayStatus? toConnectivityDisplayStatus() {
+    var valueToCheck = value;
+    if (valueToCheck == 'wifi') valueToCheck = 'connectedWifi';
+    return ConnectivityDisplayStatus.values.firstWhereOrNull((status) => status.name == valueToCheck);
+  }
+}

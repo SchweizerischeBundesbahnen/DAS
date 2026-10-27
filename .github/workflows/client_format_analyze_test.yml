@@ -32,6 +32,10 @@ jobs:
           java-version: '21.0.13+9.0.LTS'
           cache: 'gradle'
 
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 'lts/krypton'
+
       - name: Vault Secrets 🤫
         id: vault-secrets
         uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc # v4.0.0
@@ -62,6 +66,9 @@ jobs:
 
       - name: Generate sources
         run: melos generate
+
+      - name: Flutter tests with all flavors
+        run: melos test-flavors
 
       - name: Flutter tests with coverage
         run: melos coverage

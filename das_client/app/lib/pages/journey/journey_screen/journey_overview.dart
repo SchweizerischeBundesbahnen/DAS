@@ -31,7 +31,6 @@ import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_visibility_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
@@ -128,7 +127,6 @@ class _ProviderScope extends StatelessWidget {
         Provider<DepartureProcessWarningViewModel>.value(value: DI.get()),
         Provider<NotificationPriorityQueueViewModel>.value(value: DI.get()),
         Provider<CustomerOrientedDepartureViewModel>.value(value: DI.get()),
-        Provider<UxTestingViewModel>.value(value: DI.get()),
         Provider<DecisiveGradientViewModel>.value(value: DI.get()),
         Provider<ModalViewModel>.value(value: DI.get<DetailModalViewModel>()),
         Provider<DisturbanceViewModel>.value(value: DI.get()),

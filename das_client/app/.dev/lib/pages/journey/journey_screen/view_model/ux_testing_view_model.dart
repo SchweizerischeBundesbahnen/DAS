@@ -5,10 +5,10 @@ import 'package:app/provider/ru_feature_provider.dart';
 import 'package:collection/collection.dart';
 import 'package:formation/component.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sfera/component.dart';
+import 'package:sfera/component_flavor.dart';
 
 class UxTestingViewModel({
-  required final SferaRepository _sferaRepo,
+  required final SferaFlavorRepository _sferaRepo,
   required final RuFeatureProvider _ruFeatureProvider,
   required final FormationRepository _formationRepository,
 }) {
