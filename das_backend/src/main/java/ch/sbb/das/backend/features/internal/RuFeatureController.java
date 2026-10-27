@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.features.internal;
 
 import ch.sbb.das.backend.common.*;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,7 +47,7 @@ public class RuFeatureController {
         if (ruFeature.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
         }
-        return ResponseEntityFactory.createNotFoundResponse();
+        throw new NotFoundException();
     }
 
     @PostMapping(API_RU_FEATURES)
@@ -71,7 +72,7 @@ public class RuFeatureController {
         if (ruFeature.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
         }
-        return ResponseEntityFactory.createNotFoundResponse();
+        throw new NotFoundException();
     }
 
     @DeleteMapping(API_RU_FEATURES)

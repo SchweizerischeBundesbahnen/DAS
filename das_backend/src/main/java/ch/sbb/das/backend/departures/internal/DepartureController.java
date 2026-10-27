@@ -3,7 +3,7 @@ package ch.sbb.das.backend.departures.internal;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Problem;
-import ch.sbb.das.backend.common.ProxyClientException;
+import ch.sbb.das.backend.common.error.ProxyClientException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

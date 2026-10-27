@@ -4,6 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,7 +49,7 @@ public class TrainIdentificationController {
         List<CompanyMatch> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);
 
         if (companies.isEmpty()) {
-            return ResponseEntityFactory.createNotFoundResponse();
+            throw new NotFoundException();
         }
         return ResponseEntityFactory.createOkResponse(new CompanyMatchResponse(companies));
     }
