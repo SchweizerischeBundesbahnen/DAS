@@ -1,5 +1,8 @@
 name: app
 publish_to: 'none'
+# The release version is managed by release-please via ci/.release-please-manifest.json
+# and injected at build time through --build-name / --build-number in the release workflows.
+# This value is only a local/dev default and is not used for store releases.
 version: 0.56.0+99
 
 environment:

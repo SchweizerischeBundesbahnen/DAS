@@ -7,13 +7,7 @@
       "component": "das_client",
       "release-type": "simple",
       "bump-minor-pre-major": true,
-      "changelog-path": "app/CHANGELOG.md",
-      "extra-files": [
-        {
-          "type": "dart",
-          "path": "app/pubspec.yaml"
-        }
-      ]
+      "changelog-path": "app/CHANGELOG.md"
     },
     "das_backend": {
       "release-type": "maven",

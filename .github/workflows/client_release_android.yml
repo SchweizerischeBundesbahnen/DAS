@@ -5,7 +5,17 @@ name: Client Release Android
 
 on:
   workflow_call:
+    inputs:
+      version:
+        description: 'SemVer build name (e.g. 0.57.0). Falls back to the das_client version in the release-please manifest when empty.'
+        required: false
+        type: string
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'SemVer build name (e.g. 0.57.0). Falls back to the das_client version in the release-please manifest when empty.'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -125,8 +135,22 @@ jobs:
           echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
           echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
+      - name: Resolve build version
+        id: version
+        working-directory: ${{ github.workspace }}
+        run: |
+          BUILD_NAME="${{ inputs.version }}"
+          if [ -z "$BUILD_NAME" ]; then
+            BUILD_NAME=$(jq -r '."das_client"' ci/.release-please-manifest.json)
+          fi
+          echo "build_name=$BUILD_NAME" >> "$GITHUB_OUTPUT"
+          echo "Using build-name=$BUILD_NAME build-number=${{ github.run_number }}"
+
       - name: Build appbundle
-        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
+        run: >-
+          flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
+          --build-name=${{ steps.version.outputs.build_name }}
+          --build-number=${{ github.run_number }}
         working-directory: das_client/app
 
       - name: Upload App to Google Play Store
