@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* unescape after parsing nested xml  ([#3062](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3062)) ([4d1f2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d1f2a28abbcdd054a31a0cbb29c9ee3d2d5dbba))
+* unescape after parsing nested xml ([#3072](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3072)) ([9b2c9cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9b2c9cf5e9f1c4d7ae889437002bd15311ca2f0f))
+
 ## [0.56.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.55.0...das_client-v0.56.0) (2026-10-26)
 
 
