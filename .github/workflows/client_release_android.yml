@@ -128,9 +128,7 @@ jobs:
       - name: Build appbundle
         # build-name comes from app/pubspec.yaml (bumped by release-please in the release PR).
         # build-number is the monotonically increasing GitHub run number.
-        run: >-
-          flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
-          --build-number=${{ github.run_number }}
+        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --build-number=${{ github.run_number }}
         working-directory: das_client/app
 
       - name: Upload App to Google Play Store
