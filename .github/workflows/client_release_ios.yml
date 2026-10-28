@@ -151,8 +151,6 @@ jobs:
           api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
       - name: Build and Deploy iOS App
-        # build-name comes from app/pubspec.yaml (bumped by release-please in the release PR).
-        # build-number is the monotonically increasing GitHub run number.
         env:
           APPSTORE_CONNECT_KEY_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
           APPSTORE_CONNECT_ISSUER_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
