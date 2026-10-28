@@ -1,6 +1,9 @@
 name: app
 publish_to: 'none'
-version: 0.56.0+99
+# The release version (build-name) is managed by release-please: it bumps the line below
+# in the release PR via the generic updater (see ci/release-please-config.json).
+# The build-number is injected at build time via --build-number in the release workflows.
+version: 0.56.0 # x-release-please-version
 
 environment:
   sdk: ^3.13.0

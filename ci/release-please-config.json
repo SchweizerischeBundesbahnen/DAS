@@ -10,7 +10,7 @@
       "changelog-path": "app/CHANGELOG.md",
       "extra-files": [
         {
-          "type": "dart",
+          "type": "generic",
           "path": "app/pubspec.yaml"
         }
       ]
