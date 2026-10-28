@@ -85,6 +85,13 @@ jobs:
           xcode-version: ~26.6
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history required for the commit-count build number
+
+      - name: Resolve build number
+        id: build-number
+        working-directory: ${{ github.workspace }}
+        run: echo "value=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
@@ -151,14 +158,12 @@ jobs:
           api-private-key: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_PRIVATE_KEY }}
 
       - name: Build and Deploy iOS App
-        # build-name comes from app/pubspec.yaml (bumped by release-please in the release PR).
-        # build-number is the monotonically increasing GitHub run number.
         env:
           APPSTORE_CONNECT_KEY_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_KEY_ID }}
           APPSTORE_CONNECT_ISSUER_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
           BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
           flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release \
-            --build-number=${{ github.run_number }}
+            --build-number=${{ steps.build-number.outputs.value }}
           xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
         working-directory: das_client/app
