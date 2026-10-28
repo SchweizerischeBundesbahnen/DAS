@@ -317,7 +317,12 @@ class SferaReplyParser._() {
       case SferaFootNoteDto.elementType:
         return SferaFootNoteDto(attributes: attributes, children: children, value: value);
       case TextDto.elementType:
-        return TextDto(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
+        return TextDto(
+          attributes: attributes,
+          children: children,
+          value: value,
+          xmlValue: xmlElement.innerXml.unescapedString,
+        );
       case ContactListDto.elementType:
         return ContactListDto(type: type, attributes: attributes, children: children, value: value);
       case ContactDto.elementType:
