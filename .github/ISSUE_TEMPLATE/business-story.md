@@ -10,17 +10,27 @@ assignees: StephanieFrancke
 # Ausgangslage
 Als <Rolle> möchte ich <Funktion>, damit <Nutzen>.
 <Ausgangslage>
+
 # Weiterführende Links
 ...
+
 # Out of Scope
 ...
+
 # Akzeptanzkriterien
 1. 
-# Testszenarien
-## Vorbedingung:
+
+# Test Cases
+## Test Case 1
+### Beschreibung:
+...
+### Vorbedingung:
 - ...
-## Durchführung:
+### Durchführung:
+1. ...
+### Nachbedingung:
 - ...
+
 # Team Review
 - [ ] <!-- check-ba -->BA Review
 - [ ] <!-- check-dev -->DEV Review
