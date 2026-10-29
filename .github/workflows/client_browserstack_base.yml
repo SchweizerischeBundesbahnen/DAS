@@ -169,7 +169,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 'lts/krypton'
+          node-version: 'lts/lithium'
 
       - name: Generate RunnerTests
         run: node app/scripts/generate_runner_tests.mjs ${{ inputs.enable_e2e && 'e2e_test' || 'test' }}
