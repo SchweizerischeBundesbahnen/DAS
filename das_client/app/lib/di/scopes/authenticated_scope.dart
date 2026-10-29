@@ -26,7 +26,7 @@ import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:local_regulations/component.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:personal_notes/component.dart';
@@ -35,6 +35,7 @@ import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:voice_chat/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -259,6 +260,15 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
+  void registerVoiceChatRepository() {
+    registerSingletonAsync<VoiceChatRepository>(
+      () async => VoiceChatComponent.createRepository(
+        userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
+      ),
+      dispose: (repo) => repo.dispose(),
+    );
+  }
+
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
       () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
@@ -407,6 +417,14 @@ class const _SferaAuthProvider({required final Authenticator authenticator}) imp
 }
 
 class const _PersonalNoteUserIdProvider({required final Authenticator authenticator}) implements UserIdProvider {
+  @override
+  Future<String> call() async {
+    final user = await authenticator.user();
+    return user.userId;
+  }
+}
+
+class const _VoiceChatUserIdProvider({required final Authenticator authenticator}) implements UserIdProviderVoiceChat {
   @override
   Future<String> call() async {
     final user = await authenticator.user();
