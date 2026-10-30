@@ -100,6 +100,18 @@ In case of a naming conflict:
 
 ## Testing
 
+### Microphone permission
+
+The app requests microphone access after its first frame, before login. The operating system persists the user's
+choice. Once authenticated, voice chat reads the current permission into `VoiceSession.permission` and refreshes it
+when the app resumes (for example, after changing access in device settings).
+
+Selecting a journey starts a voice-chat connection to the room derived from its train number and operating date
+(`das-<trainNumber>-<yyyy-MM-dd>`), independently of loading the journey.
+
+On iOS, `NSMicrophoneUsageDescription` in `app/ios/Runner/Info.plist` declares microphone access for voice chat.
+Speech-recognition permission is not required.
+
 ### Running unit tests
 
 Use the following Melos command to run all component tests:

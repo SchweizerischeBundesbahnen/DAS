@@ -56,6 +56,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
+    getIt.registerVoiceChatRepository();
     getIt.registerSferaRemoteRepository();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
@@ -262,9 +263,13 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerVoiceChatRepository() {
     registerSingletonAsync<VoiceChatRepository>(
-      () async => VoiceChatComponent.createRepository(
-        userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
-      ),
+      () async {
+        final repository = VoiceChatComponent.createRepository(
+          userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
+        );
+        await repository.refreshMicrophonePermission();
+        return repository;
+      },
       dispose: (repo) => repo.dispose(),
     );
   }
@@ -284,13 +289,14 @@ extension AuthenticatedScopeExtension on GetIt {
         settingsRepository: DI.get(),
         trainIdentificationRepository: DI.get(),
         userSettings: DI.get(),
+        voiceChatRepository: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
 
     registerSingletonAsync<JourneySelectionViewModel>(
       factoryFunc,
-      dependsOn: [SferaRepository, JourneyNavigationViewModel],
+      dependsOn: [SferaRepository, JourneyNavigationViewModel, VoiceChatRepository],
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -428,7 +434,8 @@ class const _VoiceChatUserIdProvider({required final Authenticator authenticator
   @override
   Future<String> call() async {
     final user = await authenticator.user();
-    return user.userId;
+    final deviceId = await DeviceIdInfo.getDeviceId();
+    return '${user.userId}-$deviceId';
   }
 }
 

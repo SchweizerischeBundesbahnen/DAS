@@ -32,6 +32,8 @@ dependencies:
   meta: ^1.19.0
 
 dev_dependencies:
+  flutter:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 

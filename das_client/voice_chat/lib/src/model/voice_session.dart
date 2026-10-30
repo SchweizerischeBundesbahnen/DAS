@@ -1,9 +1,9 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:voice_chat/component.dart';
-import 'package:meta/meta.dart';
+import 'package:voice_chat/src/model/mic_permission.dart';
+import 'package:voice_chat/src/model/voice_connection_state.dart';
+import 'package:voice_chat/src/model/voice_error.dart';
+import 'package:voice_chat/src/model/voice_participant.dart';
+import 'package:voice_chat/src/model/voice_room_key.dart';
 
-@immutable
-@JsonSerializable()
 class VoiceSession {
   const VoiceSession({
     this.roomKey,
@@ -50,6 +50,7 @@ class VoiceSession {
           roomKey == other.roomKey &&
           connection == other.connection &&
           isMuted == other.isMuted &&
+          _sameParticipants(participants, other.participants) &&
           permission == other.permission &&
           error == other.error;
 
@@ -62,4 +63,13 @@ class VoiceSession {
     permission,
     error,
   );
+}
+
+bool _sameParticipants(List<VoiceParticipant> a, List<VoiceParticipant> b) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }

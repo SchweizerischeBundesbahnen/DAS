@@ -12,5 +12,9 @@ abstract class VoiceChatRepository({required UserIdProviderVoiceChat userIdProvi
 
   Future<void> disconnect();
 
+  Future<void> requestMicrophonePermission();
+
+  Future<void> refreshMicrophonePermission();
+
   void dispose();
 }
