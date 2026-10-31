@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.0...das-admin-tool-v0.7.1) (2026-10-31)
+
+
+### Bug Fixes
+
+* cap app version range to max 99999.99999.99999 ([#3024](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3024)) ([#3027](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3027)) ([5b88235](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5b8823536f9847e27f3e72f8b534947de4496296))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.6.0...das-admin-tool-v0.7.0) (2026-09-17)
 
 
