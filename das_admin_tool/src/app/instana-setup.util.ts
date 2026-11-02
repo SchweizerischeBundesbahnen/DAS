@@ -1,6 +1,12 @@
+import { signal } from '@angular/core';
 import { environment } from '~src/environments/environment';
 
+// Set when eum.min.js fails to load, e.g. blocked by an adblocker
+const instanaBlocked = signal(false);
+export const isInstanaBlocked = instanaBlocked.asReadonly();
+
 export const setupInstana = (): void => {
+  instanaBlocked.set(false);
   const instanaKey = environment.instanaKey;
   // Add ineum as noop to not have runtime errors
   if (!instanaKey) {
@@ -37,6 +43,7 @@ export const setupInstana = (): void => {
   scriptCode.crossOrigin = 'anonymous';
   scriptCode.src = 'https://eum.instana.io/1.8.1/eum.min.js';
   scriptCode.integrity = 'sha384-qFzHZ5BC7HOPEBSYkbYSv+DBWrG34P1QW9mIaCR41db6yOJNYmH4antW6KLkc6v1';
+  scriptCode.addEventListener('error', () => instanaBlocked.set(true));
 
   document.head.append(scriptCode);
   document.head.append(script);

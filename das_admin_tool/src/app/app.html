@@ -1,6 +1,6 @@
 <app-header />
 <app-icon-sidebar>
-  @if (isAdBlockerDetected()) {
+  @if (isInstanaBlocked()) {
     <sbb-notification readonly type="warn" animation="none">
       <sbb-title i18n="@@app_notification_adblocker_title">AdBlocker erkannt</sbb-title>
       <span i18n="@@app_notification_adblocker_message"
