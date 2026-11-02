@@ -22,7 +22,7 @@ export class RuIndicationTemplateService extends BaseDialogService {
     if (event.result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteAllRuIndicationTemplate([ruIndicationTemplate.id!]),
-        $localize`:@@ru_indication_templates_toast_delete_success:Der Titel & Text wurde erfolgreich gelöscht.`,
+        $localize`:@@toast_delete_success:Der Eintrag wurde erfolgreich gelöscht.`,
       );
     } else if (event.result && ruIndicationTemplate.id) {
       await this.runMutation(
@@ -49,7 +49,7 @@ export class RuIndicationTemplateService extends BaseDialogService {
   async deleteAll(ruIndicationTemplates: RuIndicationTemplate[]): Promise<boolean> {
     return this.runMutation(
       this.ruAdminApi.deleteAllRuIndicationTemplate(ruIndicationTemplates.map((n) => n.id!)),
-      $localize`:@@ru_indication_templates_toast_delete_all_success:Die Texte & Titel wurden erfolgreich gelöscht.`,
+      $localize`:@@toast_delete_all_success:Die Einträge wurden erfolgreich gelöscht.`,
     );
   }
 

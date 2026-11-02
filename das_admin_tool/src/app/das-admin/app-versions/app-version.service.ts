@@ -22,7 +22,7 @@ export class AppVersionService extends BaseDialogService {
     if (event.result === 'delete') {
       await this.runMutation(
         this.dasAdminApi.deleteAppVersion(appVersion.id!),
-        $localize`:@@app_versions_toast_delete_success:Die blockierte App Version wurde erfolgreich gelöscht.`,
+        $localize`:@@toast_delete_success:Der Eintrag wurde erfolgreich gelöscht.`,
       );
     } else if (event.result && appVersion.id) {
       await this.runMutation(
