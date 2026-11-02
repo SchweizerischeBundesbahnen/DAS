@@ -47,8 +47,8 @@ export class SpecialHolidayService extends BaseDialogService {
     }
   }
 
-  async deleteAll(holidays: SpecialHoliday[]): Promise<void> {
-    await this.runMutation(
+  async deleteAll(holidays: SpecialHoliday[]): Promise<boolean> {
+    return this.runMutation(
       this.ruAdminApi.deleteAllSpecialHolidays(holidays.map((holiday) => holiday.id!)),
       $localize`:@@toast_delete_all_success:Die Einträge wurden erfolgreich gelöscht.`,
     );

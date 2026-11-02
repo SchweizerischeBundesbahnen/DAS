@@ -18,21 +18,26 @@ export abstract class BaseDialogService {
    * @param request The observable mutation request
    * @param successMessage The message to show on success
    * @param companies Optional list of companies to save to recent store
+   * @returns true if the mutation succeeded, false if it failed (error toast already shown)
    */
   protected async runMutation(
     request: Observable<unknown>,
     successMessage: string,
     companies?: string[],
-  ): Promise<void> {
-    await firstValueFrom(request)
+  ): Promise<boolean> {
+    return firstValueFrom(request)
       .then(() => {
         if (companies && companies.length > 0) {
           this.recentCompaniesService.save(companies);
         }
         this.toastService.success(successMessage);
         this.reload();
+        return true;
       })
-      .catch((e) => this.handleApiError(e));
+      .catch((e) => {
+        this.handleApiError(e);
+        return false;
+      });
   }
 
   protected handleApiError(_: unknown) {

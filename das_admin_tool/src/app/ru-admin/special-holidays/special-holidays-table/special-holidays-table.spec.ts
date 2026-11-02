@@ -28,7 +28,7 @@ const holidays: SpecialHoliday[] = [
 const mockHolidayService = {
   edit: vi.fn(),
   add: vi.fn(),
-  deleteAll: vi.fn(() => Promise.resolve()),
+  deleteAll: vi.fn(() => Promise.resolve(true)),
   specialHolidaysResource: new Proxy({}, { get: () => vi.fn() }),
 };
 
@@ -129,17 +129,27 @@ describe('SpecialHolidaysTable', () => {
     });
 
     it('should set isDeleting flag during deletion', async () => {
-      let resolveFn: () => void;
-      mockHolidayService.deleteAll.mockReturnValue(new Promise<void>((r) => (resolveFn = r)));
+      let resolveFn: (deleted: boolean) => void;
+      mockHolidayService.deleteAll.mockReturnValue(new Promise<boolean>((r) => (resolveFn = r)));
       component['dataSource'].data = holidays;
       component['selection'].select(holidays[0]);
 
       const promise = component['deleteSelected']();
       expect(component['isDeleting']).toBe(true);
 
-      resolveFn!();
+      resolveFn!(true);
       await promise;
       expect(component['isDeleting']).toBe(false);
+    });
+
+    it('should keep the selection when the delete failed', async () => {
+      mockHolidayService.deleteAll.mockResolvedValue(false);
+      component['dataSource'].data = holidays;
+      component['selection'].select(holidays[0]);
+
+      await component['deleteSelected']();
+
+      expect(component['selection'].selected).toEqual([holidays[0]]);
     });
 
     it('should not call deleteAll when already deleting', async () => {
