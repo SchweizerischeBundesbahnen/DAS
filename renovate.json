@@ -30,6 +30,22 @@
       "minimumReleaseAge": "3 days"
     },
     {
+      "matchDepNames": [
+        "node"
+      ],
+      "groupName": "node"
+    },
+    {
+      "matchDepNames": [
+        "node"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
       "matchManagers": [
         "maven"
       ],
