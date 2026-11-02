@@ -207,6 +207,9 @@
     "audit_label_last_modified_by": "Dernière modification par",
     "audit_label_last_modified_at": "traité(e)s le",
     "companies_form_label": "ETF",
+    "confirm_delete_dialog_title": "{VAR_PLURAL, plural, =1 {Supprimer l’entrée ?} other {Supprimer les {INTERPOLATION} entrées ?}}",
+    "confirm_delete_dialog_message": "Cette action est irréversible.",
+    "confirm_delete_dialog_action_delete": "Supprimer",
     "button_delete_selected_entries": "{VAR_PLURAL, plural, =0 {Supprimer les entrées} one {Supprimer l’entrée} other {Supprimer les {INTERPOLATION} entrées}}",
     "form_field_language_label": "Langue",
     "table_search_placeholder": "Rechercher"

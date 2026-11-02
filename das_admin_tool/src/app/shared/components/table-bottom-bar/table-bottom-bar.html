@@ -11,7 +11,7 @@
         iconName="trash-small"
         [disabled]="deleteDisabled()"
         [loading]="deleting()"
-        (click)="deleteClicked.emit()"
+        (click)="delete()"
       >
         <ng-container i18n="@@button_delete_selected_entries">{selectedCount(), plural,
           =0 {Einträge löschen}

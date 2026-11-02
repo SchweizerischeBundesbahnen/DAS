@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
+import { SbbDialogRef } from '@sbb-esta/lyne-angular/dialog';
 import { CompanyApi } from '~shared/services/company.api';
+import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 import { RecentCompaniesService } from '~shared/services/recent-companies.service';
 import { hasError } from '~src/testing/utils';
 import { RuIndicationDialog, RuIndicationDialogData } from './ru-indication-dialog';
@@ -10,6 +12,9 @@ const mockRecentCompaniesService = { get: () => [] };
 const mockCompanyApi = {
   filterCompanies: vi.fn(),
 };
+
+const mockDialogRef = { close: vi.fn() };
+const mockConfirmDeleteService = { confirm: vi.fn() };
 
 const dialogData: RuIndicationDialogData = { ruIndication: undefined, templates: [] };
 
@@ -24,6 +29,8 @@ describe('RuIndicationDialog', () => {
         { provide: SBB_OVERLAY_DATA, useValue: dialogData },
         { provide: CompanyApi, useValue: mockCompanyApi },
         { provide: RecentCompaniesService, useValue: mockRecentCompaniesService },
+        { provide: SbbDialogRef, useValue: mockDialogRef },
+        { provide: ConfirmDeleteService, useValue: mockConfirmDeleteService },
       ],
     }).compileComponents();
 
@@ -34,6 +41,27 @@ describe('RuIndicationDialog', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('delete', () => {
+    beforeEach(() => vi.clearAllMocks());
+
+    it('should close the dialog with delete when confirmed', async () => {
+      mockConfirmDeleteService.confirm.mockResolvedValue(true);
+
+      await component['delete']();
+
+      expect(mockConfirmDeleteService.confirm).toHaveBeenCalledWith(1);
+      expect(mockDialogRef.close).toHaveBeenCalledWith('delete');
+    });
+
+    it('should keep the dialog open when cancelled', async () => {
+      mockConfirmDeleteService.confirm.mockResolvedValue(false);
+
+      await component['delete']();
+
+      expect(mockDialogRef.close).not.toHaveBeenCalled();
+    });
   });
 
   describe('field validation - content', () => {

@@ -207,6 +207,9 @@
     "audit_label_last_modified_by": "Ultima modifica di",
     "audit_label_last_modified_at": "Modificato il",
     "companies_form_label": "ITF",
+    "confirm_delete_dialog_title": "{VAR_PLURAL, plural, =1 {Eliminare la voce?} other {Eliminare {INTERPOLATION} voci?}}",
+    "confirm_delete_dialog_message": "Questa azione non può essere annullata.",
+    "confirm_delete_dialog_action_delete": "Elimina",
     "button_delete_selected_entries": "{VAR_PLURAL, plural, =0 {Elimina voci} one {Elimina voce} other {Elimina {INTERPOLATION} voci}}",
     "form_field_language_label": "Lingua",
     "table_search_placeholder": "Cerca"

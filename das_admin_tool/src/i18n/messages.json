@@ -208,6 +208,9 @@
     "audit_label_last_modified_by": "Zuletzt bearbeitet von",
     "audit_label_last_modified_at": "Bearbeitet am",
     "companies_form_label": "EVU",
+    "confirm_delete_dialog_title": "{VAR_PLURAL, plural, =1 {Eintrag löschen?} other {{INTERPOLATION} Einträge löschen?}}",
+    "confirm_delete_dialog_message": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirm_delete_dialog_action_delete": "Löschen",
     "button_delete_selected_entries": "{VAR_PLURAL, plural, =0 {Einträge löschen} one {Eintrag löschen} other {{INTERPOLATION} Einträge löschen}}",
     "form_field_language_label": "Sprache",
     "table_search_placeholder": "Suchen"
