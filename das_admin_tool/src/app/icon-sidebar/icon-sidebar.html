@@ -1,11 +1,6 @@
 <sbb-icon-sidebar-container>
   @if (authService.isAuthenticated()) {
     <sbb-icon-sidebar color="white">
-      <sbb-icon-sidebar-link
-        i18n-sbb-tooltip="@@sidebar_link_menu1_tooltip"
-        iconName="avatar-train-staff-das-small"
-        sbb-tooltip="Menu 1"
-      />
       @if (authService.isRuAdmin()) {
         <sbb-icon-sidebar-link
           i18n-sbb-tooltip="@@sidebar_link_admin_evu_tooltip"
