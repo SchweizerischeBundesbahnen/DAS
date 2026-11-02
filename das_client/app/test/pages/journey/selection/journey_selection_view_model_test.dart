@@ -13,6 +13,7 @@ import 'package:mockito/mockito.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:voice_chat/component.dart';
 
 import 'journey_selection_view_model_test.mocks.dart';
 
@@ -21,12 +22,14 @@ import 'journey_selection_view_model_test.mocks.dart';
   MockSpec<SettingsRepository>(),
   MockSpec<TrainIdentificationRepository>(),
   MockSpec<LocalKeyValueStore>(),
+  MockSpec<VoiceChatRepository>(),
 ])
 void main() {
   late SferaRepository mockSferaRepo;
   late MockSettingsRepository mockSettingsRepository;
   late MockTrainIdentificationRepository mockTrainIdentificationRepository;
   late MockLocalKeyValueStore mockLocalKeyValueStore;
+  late MockVoiceChatRepository mockVoiceChatRepository;
   late JourneySelectionViewModel testee;
   final List<ExtendedTrainIdentification?> callRegister = [];
   final today = DateTime.utc(2025, 1, 1);
@@ -38,12 +41,14 @@ void main() {
     mockSettingsRepository = MockSettingsRepository();
     mockTrainIdentificationRepository = MockTrainIdentificationRepository();
     mockLocalKeyValueStore = MockLocalKeyValueStore();
+    mockVoiceChatRepository = MockVoiceChatRepository();
     withClock(fixedClock, () {
       testee = JourneySelectionViewModel(
         sferaRepo: mockSferaRepo,
         settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
+        voiceChatRepository: mockVoiceChatRepository,
         onJourneySelected: (trainIdentification) async {
           callRegister.add(trainIdentification);
         },
@@ -67,6 +72,7 @@ void main() {
         settingsRepository: mockSettingsRepository,
         trainIdentificationRepository: mockTrainIdentificationRepository,
         userSettings: mockLocalKeyValueStore,
+        voiceChatRepository: mockVoiceChatRepository,
         onJourneySelected: (_) async {},
       );
     });
@@ -158,6 +164,22 @@ void main() {
 
     // EXPECT
     expect(callRegister.isEmpty, isTrue);
+    verifyNever(mockVoiceChatRepository.connect(any));
+  });
+
+  test('loadJourney_whenComplete_thenConnectsToVoiceRoomForTrainAndDate', () async {
+    // GIVEN
+    testee.updateTrainNumber('  lowercase123a  ');
+    testee.updateDate(tomorrow);
+    testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
+
+    // WHEN
+    final result = await testee.loadJourney();
+
+    // THEN
+    expect(result, isTrue);
+    final key = verify(mockVoiceChatRepository.connect(captureAny)).captured.single as VoiceRoomKey;
+    expect(key.value, 'das-LOWERCASE123A-2025-01-02');
   });
 
   test('loadJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
@@ -388,6 +410,8 @@ void main() {
 
     // EXPECT
     expect(result, isTrue);
+    final key = verify(mockVoiceChatRepository.connect(captureAny)).captured.single as VoiceRoomKey;
+    expect(key.value, 'das-789-2025-01-01');
     expect(callRegister, hasLength(1));
     expect(
       callRegister.first!.trainIdentification,

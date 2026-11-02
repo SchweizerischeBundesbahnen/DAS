@@ -1,8 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
+import 'package:voice_chat/component.dart';
 
 import '../mocks/mock_customer_oriented_departure_repository.dart';
+import '../mocks/mock_voice_chat_repository.dart';
 
 final _log = Logger('E2ETestAuthenticatedScope');
 
@@ -20,6 +22,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
+    _registerVoiceChatRepository();
     getIt.registerSferaRemoteRepository();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
@@ -50,6 +53,13 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
   void _registerMockCustomerOrientedDepartureRepository() {
     getIt.registerSingletonAsync<CustomerOrientedDepartureRepository>(
       () async => MockCustomerOrientedDepartureRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
+  }
+
+  void _registerVoiceChatRepository() {
+    getIt.registerSingletonAsync<VoiceChatRepository>(
+      () async => MockVoiceChatRepository(),
       dispose: (repo) => repo.dispose(),
     );
   }
