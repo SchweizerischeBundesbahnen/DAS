@@ -22,7 +22,7 @@ import org.springframework.web.client.RestClientResponseException;
  */
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Departure", description = "Customer oriented departure proxy.")
+@Tag(name = "Departures", description = "Customer oriented departure proxy.")
 public class DepartureController {
 
     private static final String PATH_SEGMENT_DEPARTURES = "/departures";
