@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 class SettingsApiTest extends RestAssuredCommand {
 
-    final static String ENDPOINT = "/v1/settings";
+    final static String ENDPOINT = ServiceDoc.DRIVER_API_PATH + "/settings";
 
     @Autowired
     DasBackendApi backendApi;

@@ -3,6 +3,7 @@ package ch.sbb.das.backend.restapi.e2etest.api;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
+import ch.sbb.das.backend.restclient.v1.model.Company;
 import ch.sbb.das.backend.restclient.v1.model.CurrentAppVersion;
 import ch.sbb.das.backend.restclient.v1.model.FormationResponse;
 import ch.sbb.das.backend.restclient.v1.model.Logging;
@@ -10,6 +11,7 @@ import ch.sbb.das.backend.restclient.v1.model.Preload;
 import ch.sbb.das.backend.restclient.v1.model.RuFeature;
 import ch.sbb.das.backend.restclient.v1.model.Settings;
 import ch.sbb.das.backend.restclient.v1.model.SettingsResponse;
+import ch.sbb.das.backend.restclient.v1.model.TourSystem;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,12 @@ public final class AssertionsApiClientModel {
         assertThat(settingsResponse).isNotNull();
         assertThat(settingsResponse.getData()).as(Settings.class.getSimpleName()).hasSize(1);
         final Settings settings = settingsResponse.getData().get(0);
+
+        final List<Company> companies = settings.getCompanies();
+        assertThat(companies).hasSizeGreaterThan(0);
+
+        final List<TourSystem> tourSystems = settings.getTourSystems();
+        assertThat(tourSystems).hasSizeGreaterThan(0);
 
         final List<RuFeature> ruFeatures = settings.getRuFeatures();
         if (!backendEndpoint.isLocalHost()) {
