@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.restapi.e2etest.api;
+package ch.sbb.das.backend.restapi.e2etest.api.driver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,9 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public final class AssertionsApiClientModel {
+final class AssertionsApiClientModel {
 
-    public static Settings assertSettingsResponse(SettingsResponse settingsResponse, DasBackendEndpoint backendEndpoint) {
+    static Settings assertSettingsResponse(SettingsResponse settingsResponse, DasBackendEndpoint backendEndpoint) {
         assertThat(settingsResponse).isNotNull();
         assertThat(settingsResponse.getData()).as(Settings.class.getSimpleName()).hasSize(1);
         final Settings settings = settingsResponse.getData().get(0);
@@ -58,7 +58,7 @@ public final class AssertionsApiClientModel {
         return settings;
     }
 
-    public static void assertFormationResponse(FormationResponse formationResponse) {
+    static void assertFormationResponse(FormationResponse formationResponse) {
         assertThat(formationResponse).isNotNull();
         assertThat(formationResponse.getData()).as("Formation").isNotEmpty();
         // TODO validate other values
