@@ -7,6 +7,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServiceDoc {
 
+    public static final String DRIVER_API_PATH = "/driver/v1";
+    public static final String ADMIN_API_PATH = "/admin";
+
     // DO NOT use in @Schema(allowableValues=...) but consider ApiParametersDefault.ParamAcceptLanguage
     public static final List<Locale> HEADER_ACCEPT_LANGUAGE_VALUES = List.of(Locale.GERMAN, Locale.FRENCH, Locale.ITALIAN, Locale.ENGLISH);
     /**

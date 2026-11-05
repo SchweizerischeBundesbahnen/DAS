@@ -1,14 +1,23 @@
-package ch.sbb.das.backend.restapi.e2etest.api;
+package ch.sbb.das.backend.restapi.e2etest.api.driver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
+import ch.sbb.das.backend.restapi.configuration.DasBackendEndpoint;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
 import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
+import ch.sbb.das.backend.restclient.v1.model.Company;
+import ch.sbb.das.backend.restclient.v1.model.CurrentAppVersion;
+import ch.sbb.das.backend.restclient.v1.model.Logging;
+import ch.sbb.das.backend.restclient.v1.model.Preload;
+import ch.sbb.das.backend.restclient.v1.model.RuFeature;
+import ch.sbb.das.backend.restclient.v1.model.Settings;
 import ch.sbb.das.backend.restclient.v1.model.SettingsResponse;
+import ch.sbb.das.backend.restclient.v1.model.TourSystem;
 import io.restassured.response.Response;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +32,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 class SettingsApiTest extends RestAssuredCommand {
 
-    final static String ENDPOINT = "/v1/settings";
+    final static String ENDPOINT = ServiceDoc.DRIVER_API_PATH + "/settings";
 
     @Autowired
     DasBackendApi backendApi;
@@ -46,7 +55,7 @@ class SettingsApiTest extends RestAssuredCommand {
         final SettingsResponse settingsResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, ServiceDoc.REQUEST_ID_VALUE_E2E_TEST, null);
         log.debug("{} in {}", settingsResponse, responseAsync);
 
-        AssertionsApiClientModel.assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
+        assertSettingsResponse(settingsResponse, endpointConfiguration.endpoint());
     }
 
     @DisplayName("/settings&xAppVersion=0.1.0 OK|tests: 1006,1602,713,1406")
@@ -66,5 +75,43 @@ class SettingsApiTest extends RestAssuredCommand {
         final String body = toBodyString(response);
         assertThat(body).as("requesting unknown params is non-intriguing").contains("\"logging\":{\"url\":\"");
         assertOK(response, null /*not implemented yet*/, requestId, SettingsApiTest.ENDPOINT);
+    }
+
+    private static Settings assertSettingsResponse(SettingsResponse settingsResponse, DasBackendEndpoint backendEndpoint) {
+        assertThat(settingsResponse).isNotNull();
+        assertThat(settingsResponse.getData()).as(Settings.class.getSimpleName()).hasSize(1);
+        final Settings settings = settingsResponse.getData().get(0);
+
+        final List<Company> companies = settings.getCompanies();
+        assertThat(companies).hasSizeGreaterThan(0);
+
+        final List<TourSystem> tourSystems = settings.getTourSystems();
+        assertThat(tourSystems).hasSizeGreaterThan(0);
+
+        final List<RuFeature> ruFeatures = settings.getRuFeatures();
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(ruFeatures).as("check implemented and administrated RUFeatures for env").hasSizeGreaterThanOrEqualTo(11);
+        }
+
+        final Logging logging = settings.getLogging();
+        assertThat(logging.getUrl()).isNotBlank();
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(logging.getToken()).isNotBlank();
+        }
+
+        final Preload preload = settings.getPreload();
+        assertThat(preload.getBucketUrl()).isNotBlank();
+        if (!backendEndpoint.isLocalHost()) {
+            assertThat(preload.getAccessKey()).isNotBlank();
+            assertThat(preload.getAccessKey()).isNotBlank();
+        }
+
+        final CurrentAppVersion currentAppVersion = settings.getCurrentAppVersion();
+        assertThat(currentAppVersion).isNotNull();
+        if (currentAppVersion.isExpired()) {
+            assertThat(currentAppVersion.getExpiryDate()).isNotNull();
+        }
+
+        return settings;
     }
 }

@@ -1,4 +1,4 @@
-package ch.sbb.das.backend.restapi.e2etest.api;
+package ch.sbb.das.backend.restapi.e2etest.api.driver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,6 +6,7 @@ import ch.sbb.das.backend.restapi.configuration.DasBackendApi;
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
+import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
 import ch.sbb.das.backend.restclient.v1.model.SubscribeRequest;
 import io.restassured.response.Response;
 import java.time.OffsetDateTime;
@@ -22,9 +23,9 @@ import tools.jackson.databind.json.JsonMapper;
 
 @ApiClientTestProfile
 @Slf4j
-class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
+class DeparturesApiTest extends RestAssuredCommand {
 
-    final static String ENDPOINT = "/v1/customer-oriented-departure";
+    final static String ENDPOINT = ServiceDoc.DRIVER_API_PATH + "/departures";
 
     final static JsonMapper MAPPER = new JsonMapper();
 
@@ -69,6 +70,7 @@ class CustomerOrientedDepartureApiTest extends RestAssuredCommand {
             .extract()
             .response();
 
+        //TODO debug 502 in DAS-Backend
         assertThat(response.getStatusCode()).as(toBodyString(response)).isEqualTo(HttpStatus.SC_OK);
     }
 
