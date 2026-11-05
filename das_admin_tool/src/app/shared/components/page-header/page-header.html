@@ -7,11 +7,7 @@
       >
     }
     @if (selectedCount() > 0) {
-      <sbb-transparent-button
-        iconName="trash-small"
-        [loading]="deleting()"
-        (click)="deleteClicked.emit()"
-      >
+      <sbb-transparent-button iconName="trash-small" [loading]="deleting()" (click)="delete()">
         <ng-container i18n="@@button_delete_selected_entries">{selectedCount(), plural,
           =0 {Einträge löschen}
           one {Eintrag löschen}
