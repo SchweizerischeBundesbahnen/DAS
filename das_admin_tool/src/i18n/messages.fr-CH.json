@@ -21,7 +21,6 @@
     "app_versions_table_column_expiry_date": "Valable dès le",
     "table_column_last_modified_at": "traité(e)s le",
     "table_column_last_modified_by": "Traité par",
-    "app_versions_button_create": "Bloquer la version de l’appli",
     "app_versions_title": "Versions de l’appli bloquées",
     "app_versions_empty_state": "Aucune version de l’appli bloquée saisie.",
     "app_versions_error_loading": "Erreur lors du chargement des versions de l’appli.",

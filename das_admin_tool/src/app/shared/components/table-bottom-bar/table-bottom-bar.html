@@ -1,24 +1,3 @@
 <div class="table-bottom-bar">
-  <div class="left">
-    <sbb-compact-paginator [pageSize]="PAGE_SIZE" />
-  </div>
-  <div class="right">
-    <sbb-secondary-button iconName="plus-small" (click)="addClicked.emit()">{{
-      addLabel()
-    }}</sbb-secondary-button>
-    @if (showDelete()) {
-      <sbb-transparent-button
-        iconName="trash-small"
-        [disabled]="deleteDisabled()"
-        [loading]="deleting()"
-        (click)="delete()"
-      >
-        <ng-container i18n="@@button_delete_selected_entries">{selectedCount(), plural,
-          =0 {Einträge löschen}
-          one {Eintrag löschen}
-          other {{{ selectedCount() }} Einträge löschen}
-        }</ng-container>
-      </sbb-transparent-button>
-    }
-  </div>
+  <sbb-compact-paginator [pageSize]="PAGE_SIZE" />
 </div>

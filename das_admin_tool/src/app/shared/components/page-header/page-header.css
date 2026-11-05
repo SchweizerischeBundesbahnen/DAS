@@ -1,0 +1,11 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sbb-spacing-fixed-4x);
+
+  .actions {
+    display: flex;
+    gap: var(--sbb-spacing-fixed-4x);
+  }
+}

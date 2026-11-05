@@ -1,6 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCheckbox } from '@sbb-esta/lyne-angular/checkbox';
@@ -13,6 +21,7 @@ import {
 } from '@sbb-esta/lyne-angular/table';
 import { LocationApi } from '~ru-admin/location.api';
 import { RU_INDICATION_STATUS_LABELS, RuIndication } from '~ru-admin/ru-admin.api';
+import { PageHeader } from '~shared/components/page-header/page-header';
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
 import { CompanyApi } from '~shared/services/company.api';
@@ -40,6 +49,7 @@ export interface RuIndicationFilter extends SbbTableFilter {
     FormField,
     DatePipe,
     SbbCheckbox,
+    PageHeader,
     TableBottomBar,
     TableSearchHeader,
   ],
@@ -51,6 +61,8 @@ export class RuIndicationsTable {
   protected readonly locationApi = inject(LocationApi);
   private readonly languageService = inject(LanguageService);
   private readonly ruIndicationService = inject(RuIndicationService);
+
+  readonly title = input.required<string>();
 
   protected dataSource = new SbbTableDataSource<RuIndication, RuIndicationFilter>();
   protected columns = [

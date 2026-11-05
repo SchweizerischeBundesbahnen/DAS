@@ -44,6 +44,7 @@ describe('ExternalLinksTable', () => {
 
     fixture = TestBed.createComponent(ExternalLinksTable);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('title', 'Title');
     await fixture.whenStable();
   });
 

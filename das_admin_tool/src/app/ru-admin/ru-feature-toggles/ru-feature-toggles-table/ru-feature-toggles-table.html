@@ -1,3 +1,4 @@
+<app-page-header [title]="title()" (addClicked)="add()" />
 <app-table-search-header [searchField]="filterForm.search" />
 <sbb-table-wrapper>
   <table
@@ -86,4 +87,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar [showDelete]="false" (addClicked)="add()" />
+<app-table-bottom-bar />

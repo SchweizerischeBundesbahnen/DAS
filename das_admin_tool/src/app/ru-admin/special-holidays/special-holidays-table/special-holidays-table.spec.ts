@@ -54,6 +54,7 @@ describe('SpecialHolidaysTable', () => {
 
     fixture = TestBed.createComponent(SpecialHolidaysTable);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('title', 'Title');
     await fixture.whenStable();
   });
 

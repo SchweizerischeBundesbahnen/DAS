@@ -51,6 +51,7 @@ describe('RuFeatureTogglesTable', () => {
 
     fixture = TestBed.createComponent(RuFeatureTogglesTable);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('title', 'Title');
     await fixture.whenStable();
   });
 

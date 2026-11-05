@@ -47,6 +47,7 @@ describe('RuIndicationTemplatesTable', () => {
 
     fixture = TestBed.createComponent(RuIndicationTemplatesTable);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('title', 'Title');
     await fixture.whenStable();
   });
 

@@ -1,19 +1,17 @@
-<sbb-title i18n="@@companies_title" level="2">EVUs</sbb-title>
 @let companiesResource = companyService.companiesResource;
-@if (companiesResource.hasValue()) {
-  @if (companiesResource.value().data.length === 0) {
+@if (companiesResource.hasValue() && companiesResource.value().data.length > 0) {
+  <app-companies-table [title]="title" />
+} @else {
+  <app-page-header
+    [showAdd]="companiesResource.hasValue()"
+    [title]="title"
+    (addClicked)="companyService.add()"
+  />
+  @if (companiesResource.hasValue()) {
     <p i18n="@@companies_empty_state">Noch keine EVUs erfasst.</p>
-    <sbb-secondary-button
-      i18n="@@button_create_entry"
-      iconName="plus-small"
-      (click)="companyService.add()"
-      >Neuen Eintrag erfassen</sbb-secondary-button
-    >
-  } @else {
-    <app-companies-table />
+  } @else if (companiesResource.error()) {
+    <p i18n="@@companies_error_loading">Fehler beim Laden der EVUs</p>
+  } @else if (companiesResource.isLoading()) {
+    <sbb-loading-indicator-circle />
   }
-} @else if (companiesResource.error()) {
-  <p i18n="@@companies_error_loading">Fehler beim Laden der EVUs</p>
-} @else if (companiesResource.isLoading()) {
-  <sbb-loading-indicator-circle />
 }

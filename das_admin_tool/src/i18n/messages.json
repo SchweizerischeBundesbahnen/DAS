@@ -21,7 +21,6 @@
     "app_versions_table_column_expiry_date": "Gültig ab",
     "table_column_last_modified_at": "Bearbeitet am",
     "table_column_last_modified_by": "Bearbeitet von",
-    "app_versions_button_create": "App Version blockieren",
     "app_versions_title": "Blockierte App Versionen",
     "app_versions_empty_state": "Noch keine blockierten App Versionen erfasst.",
     "app_versions_error_loading": "Fehler beim Laden der App Versionen",

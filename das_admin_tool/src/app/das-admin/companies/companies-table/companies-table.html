@@ -1,3 +1,4 @@
+<app-page-header [title]="title()" (addClicked)="add()" />
 <sbb-table-wrapper>
   <table
     class="sbb-table--striped table-truncated"
@@ -81,4 +82,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar [deleting]="isDeleting" [showDelete]="false" (addClicked)="add()" />
+<app-table-bottom-bar />

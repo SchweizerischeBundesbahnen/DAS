@@ -1,3 +1,10 @@
+<app-page-header
+  [deleting]="isDeleting"
+  [selectedCount]="selection.selected.length"
+  [title]="title()"
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
+/>
 <app-table-search-header [languageField]="filterForm.language" [searchField]="filterForm.search" />
 <sbb-table-wrapper>
   <table
@@ -86,10 +93,4 @@
   </table>
 </sbb-table-wrapper>
 
-<app-table-bottom-bar
-  [deleteDisabled]="selection.isEmpty()"
-  [deleting]="isDeleting"
-  [selectedCount]="selection.selected.length"
-  (addClicked)="add()"
-  (deleteClicked)="deleteSelected()"
-/>
+<app-table-bottom-bar />

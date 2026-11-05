@@ -1,19 +1,16 @@
-<sbb-title level="2" i18n="@@app_versions_title">Blockierte App Versionen</sbb-title>
-
-@if (appVersions.hasValue()) {
-  @if (appVersions.value().data.length === 0) {
+@if (appVersions.hasValue() && appVersions.value().data.length > 0) {
+  <app-versions-table [title]="title" />
+} @else {
+  <app-page-header
+    [showAdd]="appVersions.hasValue()"
+    [title]="title"
+    (addClicked)="appVersionService.add()"
+  />
+  @if (appVersions.hasValue()) {
     <p i18n="@@app_versions_empty_state">Noch keine blockierten App Versionen erfasst.</p>
-    <sbb-secondary-button
-      iconName="plus-small"
-      i18n="@@app_versions_button_create"
-      (click)="appVersionService.add()"
-      >App Version blockieren</sbb-secondary-button
-    >
-  } @else {
-    <app-versions-table />
+  } @else if (appVersions.error()) {
+    <p i18n="@@app_versions_error_loading">Fehler beim Laden der App Versionen</p>
+  } @else if (appVersions.isLoading()) {
+    <sbb-loading-indicator-circle />
   }
-} @else if (appVersions.error()) {
-  <p i18n="@@app_versions_error_loading">Fehler beim Laden der App Versionen</p>
-} @else if (appVersions.isLoading()) {
-  <sbb-loading-indicator-circle />
 }

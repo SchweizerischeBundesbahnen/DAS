@@ -39,7 +39,7 @@ test.describe('app versions test', () => {
     appVersionsApi = await AdminApi.fromListResponse<ApiAppVersion>(page, await appVersionsLoaded);
     await expect(page.locator('sbb-title[level="2"]')).toHaveText('Blockierte App Versionen');
     // the title renders before the data arrives; the add button shows once loaded, also for an empty list
-    await expect(page.getByText('App Version blockieren', { exact: true })).toBeVisible();
+    await expect(page.getByText('Neuen Eintrag erfassen', { exact: true })).toBeVisible();
   });
 
   test.afterEach(async () => {
@@ -59,7 +59,7 @@ test.describe('app versions test', () => {
     const updatedRow = findRow(page, testVersion, TEST_IS_MINIMAL_UPDATED);
 
     // create
-    await clickAddButton(page, 'App Version blockieren');
+    await clickAddButton(page);
 
     const dialog = await getEntryDialog(page);
 

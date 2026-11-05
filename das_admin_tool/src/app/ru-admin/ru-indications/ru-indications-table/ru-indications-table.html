@@ -1,3 +1,10 @@
+<app-page-header
+  [deleting]="isDeleting"
+  [selectedCount]="selection.selected.length"
+  [title]="title()"
+  (addClicked)="add()"
+  (deleteClicked)="deleteSelected()"
+/>
 <form>
   <app-table-search-header
     [languageField]="filterForm.language"
@@ -212,10 +219,4 @@
   </sbb-table-wrapper>
 </form>
 
-<app-table-bottom-bar
-  [deleteDisabled]="selection.isEmpty()"
-  [deleting]="isDeleting"
-  [selectedCount]="selection.selected.length"
-  (addClicked)="add()"
-  (deleteClicked)="deleteSelected()"
-/>
+<app-table-bottom-bar />

@@ -1,5 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { afterNextRender, Component, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import {
@@ -10,6 +18,7 @@ import {
 } from '@sbb-esta/lyne-angular/table';
 import { SbbToggleCheckModule } from '@sbb-esta/lyne-angular/toggle-check';
 import { RU_FEATURE_KEY_LABELS, RuFeature, RuFeatureKey } from '~ru-admin/ru-admin.api';
+import { PageHeader } from '~shared/components/page-header/page-header';
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { TableSearchHeader } from '~shared/components/table-search-header/table-search-header';
 import { CompanyApi } from '~shared/services/company.api';
@@ -26,6 +35,7 @@ interface RuFeatureFilter extends SbbTableFilter {
     SbbButtonModule,
     SbbToggleCheckModule,
     DatePipe,
+    PageHeader,
     TableBottomBar,
     TableSearchHeader,
   ],
@@ -35,6 +45,8 @@ interface RuFeatureFilter extends SbbTableFilter {
 export class RuFeatureTogglesTable {
   private readonly ruFeatureToggleService = inject(RuFeatureToggleService);
   private readonly companyApi = inject(CompanyApi);
+
+  readonly title = input.required<string>();
 
   protected dataSource = new SbbTableDataSource<RuFeature, RuFeatureFilter>();
   protected columns = [

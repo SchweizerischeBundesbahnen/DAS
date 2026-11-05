@@ -1,30 +1,14 @@
-import { Component, inject, input, output, viewChild } from '@angular/core';
-import { SbbSecondaryButton, SbbTransparentButton } from '@sbb-esta/lyne-angular/button';
+import { Component, viewChild } from '@angular/core';
 import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator';
-import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 
 @Component({
   selector: 'app-table-bottom-bar',
-  imports: [SbbCompactPaginator, SbbSecondaryButton, SbbTransparentButton],
+  imports: [SbbCompactPaginator],
   templateUrl: './table-bottom-bar.html',
   styleUrl: './table-bottom-bar.css',
 })
 export class TableBottomBar {
-  private readonly confirmDeleteService = inject(ConfirmDeleteService);
-
-  readonly showDelete = input(true);
-  readonly deleteDisabled = input(true);
-  readonly deleting = input(false);
-  readonly selectedCount = input(0);
-  readonly addLabel = input($localize`:@@button_create_entry:Neuen Eintrag erfassen`);
-  readonly addClicked = output<void>();
-  readonly deleteClicked = output<void>();
   readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
-  protected readonly PAGE_SIZE = 20;
 
-  async delete(): Promise<void> {
-    if (await this.confirmDeleteService.confirm(this.selectedCount())) {
-      this.deleteClicked.emit();
-    }
-  }
+  protected readonly PAGE_SIZE = 20;
 }

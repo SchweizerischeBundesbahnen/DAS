@@ -1,21 +1,24 @@
 import { DatePipe } from '@angular/common';
-import { afterNextRender, Component, effect, inject, viewChild } from '@angular/core';
+import { afterNextRender, Component, effect, inject, input, viewChild } from '@angular/core';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SbbSort, SbbTableDataSource, SbbTableModule } from '@sbb-esta/lyne-angular/table';
 import { InternalCompany } from '~app/das-admin/das-admin.api';
+import { PageHeader } from '~shared/components/page-header/page-header';
 import { TableBottomBar } from '~shared/components/table-bottom-bar/table-bottom-bar';
 import { CompanyService } from '../company.service';
 import { TenantApi } from '../tenant.api';
 
 @Component({
   selector: 'app-companies-table',
-  imports: [SbbTableModule, SbbMiniButton, DatePipe, TableBottomBar],
+  imports: [SbbTableModule, SbbMiniButton, DatePipe, PageHeader, TableBottomBar],
   templateUrl: './companies-table.html',
   styleUrl: './companies-table.css',
 })
 export class CompaniesTable {
   private readonly companyService = inject(CompanyService);
   private readonly tenantApi = inject(TenantApi);
+
+  readonly title = input.required<string>();
 
   protected dataSource = new SbbTableDataSource<InternalCompany>();
   protected columns = [
@@ -26,7 +29,6 @@ export class CompaniesTable {
     'lastModifiedBy',
     'action',
   ];
-  protected isDeleting = false;
 
   private readonly sort = viewChild.required<SbbSort>(SbbSort);
   private readonly bottomBar = viewChild.required(TableBottomBar);
