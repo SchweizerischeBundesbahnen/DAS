@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 class FormtionsApiTest extends RestAssuredCommand {
 
-    final static String ENDPOINT = "/driver/v1/formations";
+    final static String ENDPOINT = ServiceDoc.DRIVER_API_PATH + "/formations";
 
     @Autowired
     DasBackendApi dasBackendApi;
@@ -142,7 +142,7 @@ class FormtionsApiTest extends RestAssuredCommand {
             assertThat(ex.getStatusCode()).as("must match Problem::status").isEqualTo(HttpStatus.NOT_FOUND);
             final Problem problem = AssertionsResponse.assertClientException(ex, requestId, null);
             assertThat(problem.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-            //TODO assertThat(problem.getInstance().toString()).isEqualTo(ServiceDoc.ADMIN_API_PATH+"/formations/007/" + today + "/1033");
+            //TODO assertThat(problem.getInstance().toString()).isEqualTo(ENDPOINT + "/007/" + today + "/1033");
             assertThat(problem.getType()).isNull();
         } catch (WebClientException ex) {
             Assertions.fail("Block: " + ex.getMessage(), ex);
@@ -158,7 +158,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         final FormationResponse formationResponse = getResponseBodyOrFail(responseAsync, "de", requestId, null);
         log.debug("{} in {}", formationResponse, responseAsync);
 
-        AssertionsApiClientModel.assertFormationResponse(formationResponse);
+        assertFormationResponse(formationResponse);
     }
 
     @Disabled("TODO needs hits")
@@ -172,7 +172,7 @@ class FormtionsApiTest extends RestAssuredCommand {
         Mono<ResponseEntity<FormationResponse>> responseAsync = dasBackendApi.getFormationsApi()
             .getFormationsWithHttpInfo(requestId, operationalTrainNumber, date, company, null);
         ResponseEntity<FormationResponse> responseEntity = blockBody(responseAsync, "de", requestId, null);
-        AssertionsApiClientModel.assertFormationResponse(responseEntity.getBody());
+        assertFormationResponse(responseEntity.getBody());
         final String eTag = responseEntity.getHeaders().getETag();
         assertThat(eTag).as("Header ETag").isNotBlank();
         final String cacheControl = responseEntity.getHeaders().getCacheControl();
@@ -185,5 +185,11 @@ class FormtionsApiTest extends RestAssuredCommand {
         responseEntity = blockBody(responseAsync, "de", requestId, null);
         assertThat(responseEntity.getStatusCode()).as("caching should signal 304").isEqualTo(HttpStatus.NOT_MODIFIED);
         assertThat(responseEntity.getBody()).as("not a 'Problem', client may use its cached object instead").isNull();
+    }
+
+    private static void assertFormationResponse(FormationResponse formationResponse) {
+        assertThat(formationResponse).isNotNull();
+        assertThat(formationResponse.getData()).as("Formation").isNotEmpty();
+        // TODO validate other values
     }
 }

@@ -21,11 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestContextManager;
 import reactor.core.publisher.Mono;
 
+// Make sure tests leave no test-data traces in database!
 @ApiClientTestProfile
 @Slf4j
 class AppVersionsApiTest extends RestAssuredCommand {
 
-    final static String ENDPOINT = ServiceDoc.ADMIN_API_PATH;
+    final static String ENDPOINT = ServiceDoc.ADMIN_API_PATH + "/app-versions";
 
     @Autowired
     DasBackendApi backendApi;
@@ -63,7 +64,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
         final AppVersionResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, requestId, null);
         log.debug("{} in {}", appVersionResponse, responseAsync);
 
-        // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
+        assertAppVersionResponse(appVersionResponse);
     }
 
     @Disabled("TODO call by AdminTenant")
@@ -73,7 +74,7 @@ class AppVersionsApiTest extends RestAssuredCommand {
         final AppVersionResponse appVersionResponse = getResponseBodyOrFail(responseAsync, null /*irrelevant for API*/, requestId, null);
         log.debug("{} in {}", appVersionResponse, responseAsync);
 
-        // TODO AssertionsApiClientModel.assertAppVersionResponse(appVersionResponse, endpointConfiguration.endpoint());
+        assertAppVersionResponse(appVersionResponse);
     }
 
     @DisplayName("/app-versions missing AzureRole 'admin'|tests: 1406")
@@ -87,9 +88,14 @@ class AppVersionsApiTest extends RestAssuredCommand {
             .extract()
             .response();
 
+        // TODO check 429 after global error-handler refactoring
         assertThat(response.getStatusCode()).as("User credentials must have Admin rights").isEqualTo(HttpStatus.SC_FORBIDDEN);
         final String body = toBodyString(response);
         assertThat(body).as("no 'helpful' hints desired for hackers").contains("Access not allowed: forbidden");
         assertThat(response.getHeader(MonitoringConstants.HEADER_REQUEST_ID)).as("body block not reached").isNull();
+    }
+
+    private static void assertAppVersionResponse(AppVersionResponse appVersionResponse) {
+        // TODO validate generically
     }
 }
