@@ -44,6 +44,8 @@ class MicrophoneStatus extends StatelessWidget {
                   key: iconKey,
                   onTap: () {
                     unawaited(repository.setMuted(!session.isMuted));
+                    final preset = session.isMuted ? 'mute' : 'unmute';
+                    PulsarHapticsVoiceChat().playPreset(preset);
                   },
                 ),
         );

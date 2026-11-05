@@ -1200,18 +1200,18 @@ packages:
     dependency: transitive
     description:
       name: permission_handler
-      sha256: e6bcecadfe40df6b888141f23cbaf6ba6c3da49fb33f6ff887d060dd48544fbd
+      sha256: fe54465bcc62a4564c6e4db337bbaded6c0c0fa6e10487414436d163114784f6
       url: "https://pub.dev"
     source: hosted
-    version: "13.0.2"
+    version: "12.0.3"
   permission_handler_android:
     dependency: transitive
     description:
       name: permission_handler_android
-      sha256: baf93fbf80008c240b2cf5e6d62e9495ea7727fe327444d135c44bfff9af6b6e
+      sha256: "1e3bc410ca1bf84662104b100eb126e066cb55791b7451307f9708d4007350e6"
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.1"
+    version: "13.0.1"
   permission_handler_apple:
     dependency: transitive
     description:
@@ -1348,6 +1348,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.0"
+  pulsar_haptics:
+    dependency: transitive
+    description:
+      name: pulsar_haptics
+      sha256: a25366e036a58face923f0b491dad7c6dd19ac9e2a8bd1e6a2c174ae5448a310
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   recase:
     dependency: transitive
     description:

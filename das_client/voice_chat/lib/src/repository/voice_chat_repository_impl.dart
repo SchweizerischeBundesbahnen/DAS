@@ -64,6 +64,7 @@ class VoiceChatRepositoryImpl({
 
       await room.connect(liveKitUrl, token.jwt);
       _log.info('Connected to room ${key.value}');
+      PulsarHapticsVoiceChat().playPreset('connect');
 
       await room.localParticipant?.setMicrophoneEnabled(!_session.isMuted);
       _log.fine('Microphone enabled: ${!_session.isMuted}');
@@ -84,6 +85,7 @@ class VoiceChatRepositoryImpl({
     if (_room == null) return;
     _log.info('Leaving room ${_session.roomKey?.value}');
     await _releaseRoom();
+    PulsarHapticsVoiceChat().playPreset('disconnect');
     _emit(
       _session.copyWith(
         connection: VoiceConnectionState.disconnected,

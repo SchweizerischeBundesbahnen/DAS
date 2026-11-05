@@ -26,10 +26,11 @@ dependencies:
   #https://pub.dev/packages/livekit_client
   livekit_client: ^2.13.2
   #https://pub.dev/packages/permission_handler
-  permission_handler: ^13.0.2
+  permission_handler: ^12.0.1 #older version to match android
   #https://pub.dev/packages/dart_jsonwebtoken
   dart_jsonwebtoken: ^3.4.1
-  meta: ^1.19.0
+  #https://pub.dev/packages/pulsar_haptics
+  pulsar_haptics: ^0.1.1
 
 dev_dependencies:
   flutter:

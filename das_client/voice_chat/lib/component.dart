@@ -13,6 +13,7 @@ export 'package:voice_chat/src/model/voice_participant.dart';
 export 'package:voice_chat/src/model/voice_connection_state.dart';
 export 'package:voice_chat/src/model/mic_permission.dart';
 export 'package:voice_chat/src/model/voice_error.dart';
+export 'package:voice_chat/src/pulsar_haptics_voice_chat/pulsar_haptics_voice_chat.dart';
 
 class VoiceChatComponent._() {
   static Future<void> requestMicrophonePermission() async {
