@@ -14,6 +14,7 @@ export class PageHeader {
 
   readonly title = input.required<string>();
   readonly showAdd = input(true);
+  readonly showDelete = input(false);
   readonly selectedCount = input(0);
   readonly deleting = input(false);
   readonly addClicked = output<void>();

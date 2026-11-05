@@ -45,23 +45,32 @@ describe('PageHeader', () => {
     expect(element.querySelector('sbb-button')).toBeFalsy();
   });
 
-  it('should hide delete button without selection', () => {
+  it('should hide delete button by default', () => {
     expect(element.querySelector('sbb-transparent-button')).toBeFalsy();
   });
 
-  it('should show delete button with selected count when entries are selected', () => {
+  it('should show disabled delete button without selection', () => {
+    componentRef.setInput('showDelete', true);
+    fixture.detectChanges();
+
+    expect(element.querySelector('sbb-transparent-button')?.disabled).toBe(true);
+  });
+
+  it('should enable delete button with selected count when entries are selected', () => {
+    componentRef.setInput('showDelete', true);
     componentRef.setInput('selectedCount', 3);
     fixture.detectChanges();
 
-    expect(element.querySelector('sbb-transparent-button')?.textContent).toContain(
-      '3 Einträge löschen',
-    );
+    const deleteButton = element.querySelector('sbb-transparent-button');
+    expect(deleteButton?.disabled).toBe(false);
+    expect(deleteButton?.textContent).toContain('3 Einträge löschen');
   });
 
   describe('delete', () => {
     let spy: () => void;
 
     beforeEach(() => {
+      componentRef.setInput('showDelete', true);
       componentRef.setInput('selectedCount', 3);
       fixture.detectChanges();
       spy = vi.fn();
@@ -99,7 +108,7 @@ describe('PageHeader', () => {
   });
 
   it('should place delete button left of add button', () => {
-    componentRef.setInput('selectedCount', 1);
+    componentRef.setInput('showDelete', true);
     fixture.detectChanges();
 
     const buttons = [...element.querySelectorAll('sbb-transparent-button, sbb-button')];
@@ -124,6 +133,7 @@ describe('PageHeader', () => {
   });
 
   it('should show loading delete button while deleting', () => {
+    componentRef.setInput('showDelete', true);
     componentRef.setInput('selectedCount', 1);
     componentRef.setInput('deleting', true);
     fixture.detectChanges();
