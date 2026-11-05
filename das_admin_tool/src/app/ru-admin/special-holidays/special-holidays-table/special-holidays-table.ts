@@ -98,8 +98,8 @@ export class SpecialHolidaysTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      await this.specialHolidayService.deleteAll(this.selection.selected);
-      this.selection.clear();
+      const deleted = await this.specialHolidayService.deleteAll(this.selection.selected);
+      if (deleted) this.selection.clear();
     } finally {
       this.isDeleting = false;
     }

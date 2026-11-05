@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SbbDialogRef } from '@sbb-esta/lyne-angular/dialog';
 import { AppVersionDialog, normalizeVersion } from './app-version-dialog';
 
 describe('AppVersionDialog', () => {
@@ -8,6 +9,7 @@ describe('AppVersionDialog', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppVersionDialog],
+      providers: [{ provide: SbbDialogRef, useValue: { close: vi.fn() } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppVersionDialog);

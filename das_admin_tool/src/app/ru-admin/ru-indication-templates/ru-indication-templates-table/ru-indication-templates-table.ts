@@ -114,8 +114,8 @@ export class RuIndicationTemplatesTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      await this.ruIndicationTemplateService.deleteAll(this.selection.selected);
-      this.selection.clear();
+      const deleted = await this.ruIndicationTemplateService.deleteAll(this.selection.selected);
+      if (deleted) this.selection.clear();
     } finally {
       this.isDeleting = false;
     }

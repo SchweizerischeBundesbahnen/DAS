@@ -32,7 +32,7 @@ const mockRuIndicationService: Partial<RuIndicationService> = {
   >,
   edit: vi.fn(),
   add: vi.fn(),
-  deleteAll: vi.fn(() => Promise.resolve()),
+  deleteAll: vi.fn(() => Promise.resolve(true)),
 };
 
 const mockLanguageService = {
@@ -157,6 +157,30 @@ describe('RuIndicationsTable', () => {
         periods: '',
       };
       expect(comp['searchFilter'](filter, sample)).toBe(true);
+    });
+  });
+
+  describe('deleteSelected', () => {
+    it('should clear the selection when the delete succeeded', async () => {
+      const comp = createComponent();
+      vi.mocked(mockRuIndicationService.deleteAll!).mockResolvedValue(true);
+      comp['dataSource'].data = [sample];
+      comp['selection'].select(sample);
+
+      await comp['deleteSelected']();
+
+      expect(comp['selection'].selected).toEqual([]);
+    });
+
+    it('should keep the selection when the delete failed', async () => {
+      const comp = createComponent();
+      vi.mocked(mockRuIndicationService.deleteAll!).mockResolvedValue(false);
+      comp['dataSource'].data = [sample];
+      comp['selection'].select(sample);
+
+      await comp['deleteSelected']();
+
+      expect(comp['selection'].selected).toEqual([sample]);
     });
   });
 

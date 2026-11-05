@@ -1,6 +1,9 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 import { TableBottomBar } from './table-bottom-bar';
+
+const mockConfirmDeleteService = { confirm: vi.fn() };
 
 describe('TableBottomBar', () => {
   let component: TableBottomBar;
@@ -9,8 +12,10 @@ describe('TableBottomBar', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
+    vi.clearAllMocks();
     await TestBed.configureTestingModule({
       imports: [TableBottomBar],
+      providers: [{ provide: ConfirmDeleteService, useValue: mockConfirmDeleteService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TableBottomBar);
@@ -51,17 +56,45 @@ describe('TableBottomBar', () => {
     expect(deleteButton).toBeFalsy();
   });
 
-  it('should emit deleteClicked on delete button click', () => {
-    componentRef.setInput('deleteDisabled', false);
-    fixture.detectChanges();
+  describe('delete', () => {
+    let spy: () => void;
 
-    const spy = vi.fn();
-    component.deleteClicked.subscribe(spy);
+    beforeEach(() => {
+      componentRef.setInput('deleteDisabled', false);
+      componentRef.setInput('selectedCount', 3);
+      fixture.detectChanges();
+      spy = vi.fn();
+      component.deleteClicked.subscribe(spy);
+    });
 
-    const deleteButton = element.querySelector('sbb-transparent-button');
-    deleteButton?.click();
+    async function clickDelete() {
+      element.querySelector('sbb-transparent-button')?.click();
+      await Promise.resolve();
+    }
 
-    expect(spy).toHaveBeenCalled();
+    it('should ask for confirmation with the number of selected entries', async () => {
+      mockConfirmDeleteService.confirm.mockResolvedValue(false);
+
+      await clickDelete();
+
+      expect(mockConfirmDeleteService.confirm).toHaveBeenCalledWith(3);
+    });
+
+    it('should emit deleteClicked once when confirmed', async () => {
+      mockConfirmDeleteService.confirm.mockResolvedValue(true);
+
+      await clickDelete();
+
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not emit deleteClicked when cancelled', async () => {
+      mockConfirmDeleteService.confirm.mockResolvedValue(false);
+
+      await clickDelete();
+
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 
   it('should use custom addLabel', () => {

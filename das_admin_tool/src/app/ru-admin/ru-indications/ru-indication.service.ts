@@ -54,8 +54,8 @@ export class RuIndicationService extends BaseDialogService {
     }
   }
 
-  async deleteAll(ruIndications: RuIndication[]): Promise<void> {
-    await this.runMutation(
+  async deleteAll(ruIndications: RuIndication[]): Promise<boolean> {
+    return this.runMutation(
       this.ruAdminApi.deleteAllRuIndications(ruIndications.map((n) => n.id!)),
       $localize`:@@toast_delete_all_success:Die Einträge wurden erfolgreich gelöscht.`,
     );

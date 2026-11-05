@@ -1,6 +1,7 @@
-import { Component, input, output, viewChild } from '@angular/core';
+import { Component, inject, input, output, viewChild } from '@angular/core';
 import { SbbSecondaryButton, SbbTransparentButton } from '@sbb-esta/lyne-angular/button';
 import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator';
+import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 
 @Component({
   selector: 'app-table-bottom-bar',
@@ -9,6 +10,8 @@ import { SbbCompactPaginator } from '@sbb-esta/lyne-angular/paginator';
   styleUrl: './table-bottom-bar.css',
 })
 export class TableBottomBar {
+  private readonly confirmDeleteService = inject(ConfirmDeleteService);
+
   readonly showDelete = input(true);
   readonly deleteDisabled = input(true);
   readonly deleting = input(false);
@@ -18,4 +21,10 @@ export class TableBottomBar {
   readonly deleteClicked = output<void>();
   readonly paginator = viewChild.required<SbbCompactPaginator>(SbbCompactPaginator);
   protected readonly PAGE_SIZE = 20;
+
+  async delete(): Promise<void> {
+    if (await this.confirmDeleteService.confirm(this.selectedCount())) {
+      this.deleteClicked.emit();
+    }
+  }
 }

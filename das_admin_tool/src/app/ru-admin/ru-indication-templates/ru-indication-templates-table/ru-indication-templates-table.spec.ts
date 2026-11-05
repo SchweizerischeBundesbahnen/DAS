@@ -123,6 +123,28 @@ describe('RuIndicationTemplatesTable', () => {
     });
   });
 
+  describe('deleteSelected', () => {
+    it('should clear the selection when the delete succeeded', async () => {
+      vi.mocked(mockRuIndicationTemplateService.deleteAll).mockResolvedValue(true);
+      component['dataSource'].data = templates;
+      component['selection'].select(templates[0]);
+
+      await component['deleteSelected']();
+
+      expect(component['selection'].selected).toEqual([]);
+    });
+
+    it('should keep the selection when the delete failed', async () => {
+      vi.mocked(mockRuIndicationTemplateService.deleteAll).mockResolvedValue(false);
+      component['dataSource'].data = templates;
+      component['selection'].select(templates[0]);
+
+      await component['deleteSelected']();
+
+      expect(component['selection'].selected).toEqual([templates[0]]);
+    });
+  });
+
   describe('isAllSelected', () => {
     it('should return false when nothing is selected', () => {
       component['dataSource'].data = templates;

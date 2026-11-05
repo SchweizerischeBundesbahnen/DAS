@@ -124,11 +124,11 @@ describe('RuIndicationService', () => {
     expect(mockRecentCompaniesService.save).toHaveBeenCalledWith(['1087']);
   });
 
-  it('deleteAll should call API and show toast', async () => {
+  it('deleteAll should call API, show toast and resolve true', async () => {
     const apiSpy = vi.spyOn(mockRuAdminApi, 'deleteAllRuIndications');
     const successToastSpy = vi.spyOn(mockToastService, 'success');
 
-    await ruIndicationService.deleteAll([
+    const deleted = await ruIndicationService.deleteAll([
       {
         id: 5,
         content: {},
@@ -145,6 +145,7 @@ describe('RuIndicationService', () => {
 
     expect(apiSpy).toHaveBeenCalledWith([5, 6]);
     expect(successToastSpy).toHaveBeenCalled();
+    expect(deleted).toBe(true);
   });
 
   it('edit should show error toast when delete API fails', async () => {
@@ -191,13 +192,13 @@ describe('RuIndicationService', () => {
     expect(errorToastSpy).toHaveBeenCalled();
   });
 
-  it('deleteAll should show error toast when API fails', async () => {
+  it('deleteAll should show error toast and resolve false when API fails', async () => {
     vi.spyOn(mockRuAdminApi, 'deleteAllRuIndications').mockReturnValueOnce(
       throwError(() => new Error('API error')),
     );
     const errorToastSpy = vi.spyOn(mockToastService, 'error');
 
-    await ruIndicationService.deleteAll([
+    const deleted = await ruIndicationService.deleteAll([
       {
         id: 20,
         content: {},
@@ -207,5 +208,6 @@ describe('RuIndicationService', () => {
     ] as RuIndication[]);
 
     expect(errorToastSpy).toHaveBeenCalled();
+    expect(deleted).toBe(false);
   });
 });

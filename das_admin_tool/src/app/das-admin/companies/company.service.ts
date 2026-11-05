@@ -19,7 +19,7 @@ export class CompanyService extends BaseDialogService {
     if (result === 'delete') {
       await this.runMutation(
         this.dasAdminApi.deleteCompanyById(company.id),
-        $localize`:@@companies_toast_delete_success:Die EVU wurde erfolgreich gelöscht.`,
+        $localize`:@@toast_delete_success:Der Eintrag wurde erfolgreich gelöscht.`,
       );
     } else if (result && company.id) {
       await this.runMutation(
