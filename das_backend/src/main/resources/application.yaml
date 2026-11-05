@@ -173,6 +173,10 @@ trainjourneypreloader:
   # must be shorter than fetch-cron interval to prevent overlapping runs
   max-preload-duration: ${PRELOAD_MAX_DURATION:PT4M}
   hours-before-departure: 4
+  # a failing train waits min(base * 2^(attempts-1), max) before its next attempt; base should equal the fetch-cron interval
+  retry-backoff:
+    base: ${PRELOAD_RETRY_BACKOFF_BASE:PT5M}
+    max: ${PRELOAD_RETRY_BACKOFF_MAX:PT1H}
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
 

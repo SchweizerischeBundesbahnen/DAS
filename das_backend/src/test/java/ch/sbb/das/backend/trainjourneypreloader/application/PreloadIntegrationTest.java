@@ -268,6 +268,7 @@ class PreloadIntegrationTest {
         assertThat(result).isInstanceOf(PreloadResult.Error.class);
         PreloadResult.Error error = (PreloadResult.Error) result;
         assertThat(error.message()).isEqualTo("Handshake request G2B error: 51, 54");
+        assertThat(error.g2bCode()).isEqualTo("51, 54");
         assertThat(error.ex()).isNull();
     }
 }

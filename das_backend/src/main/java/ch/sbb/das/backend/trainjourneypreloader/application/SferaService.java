@@ -86,7 +86,7 @@ public class SferaService implements JourneyFetch {
             if (handshakeReply.getDASHandshakeAcknowledgement() == null) {
                 if (isG2bError(handshakeReply.getG2BReplyPayload())) {
                     String errors = extractG2bError(handshakeReply.getG2BReplyPayload());
-                    return terminateSessionWithResult(trainId, new PreloadResult.Error("Handshake request G2B error: " + errors));
+                    return terminateSessionWithResult(trainId, PreloadResult.Error.g2b("Handshake request G2B error: " + errors, errors));
                 }
                 return terminateSessionWithResult(trainId, new PreloadResult.Error("Handshake not acknowledged!"));
             }
@@ -94,7 +94,7 @@ public class SferaService implements JourneyFetch {
             if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles().size() != 1) {
                 if (isG2bError(jpResponse.getG2BReplyPayload())) {
                     String errors = extractG2bError(jpResponse.getG2BReplyPayload());
-                    return terminateSessionWithResult(trainId, new PreloadResult.Error("JP request G2B error: " + errors));
+                    return terminateSessionWithResult(trainId, PreloadResult.Error.g2b("JP request G2B error: " + errors, errors));
                 }
                 return terminateSessionWithResult(trainId, new PreloadResult.Error("Expected exactly one Journey Profile but was none or multiple"));
             }

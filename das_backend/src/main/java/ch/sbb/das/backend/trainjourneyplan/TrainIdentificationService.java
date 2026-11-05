@@ -37,8 +37,13 @@ public class TrainIdentificationService {
     @Value("${trainjourneypreloader.hours-before-departure}")
     private int hoursBeforeDeparture;
 
-    public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
-        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before);
+    /**
+     * @param after exclusive lower bound of the start time
+     * @param before exclusive upper bound of the start time
+     * @return all train identifications starting in between with at least one supported company, oldest start first; unsupported companies are dropped from each
+     */
+    public List<TrainIdentification> getTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
+        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before);
         return trainRunEntities.stream()
             .sorted(Comparator.comparing(TrainIdentificationEntity::getStartDateTime))
             .map(this::readEntity)
@@ -108,13 +113,6 @@ public class TrainIdentificationService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());
-    }
-
-    public int savePreloadedTrainIds(Set<Integer> trainIdentificationIds) {
-        if (trainIdentificationIds.isEmpty()) {
-            return 0;
-        }
-        return trainIdentificationRepository.updatePreloadedAtByIds(DateTimeUtil.now(), trainIdentificationIds);
     }
 }
 

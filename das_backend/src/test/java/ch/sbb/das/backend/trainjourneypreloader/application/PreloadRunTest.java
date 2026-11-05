@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
+import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadAttempt;
+import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadOutcome;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
@@ -43,6 +45,7 @@ class PreloadRunTest {
 
     private static final Duration MAX_DURATION = Duration.ofMinutes(4);
     private static final int HOURS_BEFORE_DEPARTURE = 4;
+    private static final OffsetDateTime RUN_START = OffsetDateTime.parse("2026-10-21T10:00:00+02:00");
 
     @Mock
     private PreloadCandidates candidates;
@@ -77,7 +80,7 @@ class PreloadRunTest {
     }
 
     @Test
-    void run_whenCandidateSucceeds_savesAndMarksIt() {
+    void run_whenCandidateSucceeds_savesAndRecordsTheSuccess() {
         TrainIdentification train = train(1);
         JourneyProfile jp = new JourneyProfile();
         SegmentProfile sp = segmentProfile("SP_1");
@@ -91,7 +94,7 @@ class PreloadRunTest {
         assertThat(journeyProfiles.getValue()).containsExactly(jp);
         assertThat(segmentProfiles.getValue()).containsExactly(sp);
         assertThat(trainCharacteristics.getValue()).containsExactly(tc);
-        verify(candidates).markPreloaded(Set.of(1));
+        verify(candidates).recordAttempts(RUN_START, List.of(new PreloadAttempt(1, PreloadOutcome.SUCCESS, null)));
         assertThat(report.requested()).isEqualTo(1);
         assertThat(report.succeeded()).isEqualTo(1);
         assertThat(report.stopReason()).isEqualTo(PreloadRunReport.StopReason.COMPLETED);
@@ -103,7 +106,7 @@ class PreloadRunTest {
         TrainIdentification first = train(1);
         TrainIdentification second = train(2);
         when(candidates.between(OffsetDateTime.parse("2026-10-21T06:00:00+02:00"), OffsetDateTime.parse("2026-10-21T14:00:00+02:00")))
-            .thenReturn(List.of(third, first, second));
+            .thenReturn(new PreloadCandidates.Selection(List.of(third, first, second), 0));
         when(journeyFetch.preload(any(), anyMap())).thenReturn(new PreloadResult.Unavailable());
 
         underTest.run();
@@ -115,11 +118,11 @@ class PreloadRunTest {
         inOrder.verify(journeyFetch).preload(eq(second), anyMap());
         inOrder.verify(journeyFetch).disconnect();
         inOrder.verify(store).save(any(), any(), any());
-        inOrder.verify(candidates).markPreloaded(Set.of());
+        inOrder.verify(candidates).recordAttempts(RUN_START, List.of(unavailable(3), unavailable(1), unavailable(2)));
     }
 
     @Test
-    void run_whenTimeBudgetExceeded_stopsBetweenTrainsAndReportsSkipped() {
+    void run_whenTimeBudgetExceeded_stopsBetweenTrainsAndRecordsOnlyTheAttemptedOnes() {
         TrainIdentification first = train(1);
         TrainIdentification second = train(2);
         TrainIdentification third = train(3);
@@ -135,7 +138,7 @@ class PreloadRunTest {
         assertThat(report.stopReason()).isEqualTo(PreloadRunReport.StopReason.TIME_BUDGET_EXCEEDED);
         assertThat(report.duration()).isEqualTo(Duration.ofMinutes(5));
         verify(store).save(any(), any(), any());
-        verify(candidates).markPreloaded(Set.of(1));
+        verify(candidates).recordAttempts(RUN_START, List.of(new PreloadAttempt(1, PreloadOutcome.SUCCESS, null), unavailable(2)));
     }
 
     @Test
@@ -201,7 +204,7 @@ class PreloadRunTest {
     }
 
     @Test
-    void run_marksOnlySuccessfulTrainsAndCountsEachOutcome() {
+    void run_recordsEachAttemptWithItsOutcomeAndCountsErrorsByG2bCode() {
         TrainIdentification success = train(1);
         TrainIdentification unavailable = train(2);
         TrainIdentification error = train(3);
@@ -210,21 +213,40 @@ class PreloadRunTest {
         givenCandidates(success, unavailable, error, timeout, secondError);
         givenFetchTakes(success, Duration.ofSeconds(1), new PreloadResult.Success(new JourneyProfile(), List.of(), List.of()));
         givenFetchTakes(unavailable, Duration.ofSeconds(1), new PreloadResult.Unavailable());
-        givenFetchTakes(error, Duration.ofSeconds(1), new PreloadResult.Error("JP request G2B error: 51"));
+        givenFetchTakes(error, Duration.ofSeconds(1), PreloadResult.Error.g2b("JP request G2B error: 51", "51"));
         givenFetchTakes(timeout, Duration.ofSeconds(1), new PreloadResult.Timeout("Preload timed out", new RuntimeException()));
         givenFetchTakes(secondError, Duration.ofSeconds(1), new PreloadResult.Error("Handshake not acknowledged!"));
 
         PreloadRunReport report = underTest.run();
 
-        verify(candidates).markPreloaded(Set.of(1));
-        assertThat(report).isEqualTo(new PreloadRunReport(5, 5, 1, 1, 2, 1, 0, PreloadRunReport.StopReason.COMPLETED, Duration.ofSeconds(5)));
+        verify(candidates).recordAttempts(RUN_START, List.of(
+            new PreloadAttempt(1, PreloadOutcome.SUCCESS, null),
+            unavailable(2),
+            new PreloadAttempt(3, PreloadOutcome.ERROR, "51"),
+            new PreloadAttempt(4, PreloadOutcome.TIMEOUT, null),
+            new PreloadAttempt(5, PreloadOutcome.ERROR, null)));
+        assertThat(report).isEqualTo(
+            new PreloadRunReport(5, 5, 1, 1, 2, 1, 0, 0, Map.of("51", 1), PreloadRunReport.StopReason.COMPLETED, Duration.ofSeconds(5)));
+    }
+
+    @Test
+    void run_countsEveryCodeOfAnErrorThatCameWithSeveralG2bCodes() {
+        TrainIdentification first = train(1);
+        TrainIdentification second = train(2);
+        givenCandidates(first, second);
+        when(journeyFetch.preload(eq(first), anyMap())).thenReturn(PreloadResult.Error.g2b("Handshake request G2B error: 51, 54", "51, 54"));
+        when(journeyFetch.preload(eq(second), anyMap())).thenReturn(PreloadResult.Error.g2b("JP request G2B error: 51", "51"));
+
+        PreloadRunReport report = underTest.run();
+
+        assertThat(report.errorsByG2bCode()).isEqualTo(Map.of("51", 2, "54", 1));
     }
 
     @Test
     void run_whenNoTrainSucceeds_stillSavesOnceWithNothing() {
         TrainIdentification train = train(1);
         givenCandidates(train);
-        when(journeyFetch.preload(eq(train), anyMap())).thenReturn(new PreloadResult.Error("JP request G2B error: 51"));
+        when(journeyFetch.preload(eq(train), anyMap())).thenReturn(PreloadResult.Error.g2b("JP request G2B error: 51", "51"));
 
         underTest.run();
 
@@ -232,7 +254,7 @@ class PreloadRunTest {
         assertThat(journeyProfiles.getValue()).isEmpty();
         assertThat(segmentProfiles.getValue()).isEmpty();
         assertThat(trainCharacteristics.getValue()).isEmpty();
-        verify(candidates).markPreloaded(Set.of());
+        verify(candidates).recordAttempts(RUN_START, List.of(new PreloadAttempt(1, PreloadOutcome.ERROR, "51")));
     }
 
     @Test
@@ -247,6 +269,15 @@ class PreloadRunTest {
     }
 
     @Test
+    void run_reportsTheTrainsTheCandidatesDeferred() {
+        when(candidates.between(any(), any())).thenReturn(new PreloadCandidates.Selection(List.of(), 7));
+
+        PreloadRunReport report = underTest.run();
+
+        assertThat(report.deferred()).isEqualTo(7);
+    }
+
+    @Test
     void run_whenConnectFails_abortsWithoutFetchingOrSaving() {
         givenCandidates(train(1));
         IllegalStateException failure = new IllegalStateException("MQTT connect failed");
@@ -256,11 +287,11 @@ class PreloadRunTest {
 
         verify(journeyFetch, never()).preload(any(), anyMap());
         verify(store, never()).save(any(), any(), any());
-        verify(candidates, never()).markPreloaded(any());
+        verify(candidates, never()).recordAttempts(any(), any());
     }
 
     @Test
-    void run_whenFetchThrowsAfterEarlierSuccess_abortsWithoutSavingOrMarking() {
+    void run_whenFetchThrowsAfterEarlierSuccess_abortsWithoutSavingOrRecording() {
         TrainIdentification first = train(1);
         TrainIdentification second = train(2);
         TrainIdentification third = train(3);
@@ -274,11 +305,11 @@ class PreloadRunTest {
         verify(journeyFetch, never()).preload(eq(third), anyMap());
         verify(journeyFetch, never()).disconnect();
         verify(store, never()).save(any(), any(), any());
-        verify(candidates, never()).markPreloaded(any());
+        verify(candidates, never()).recordAttempts(any(), any());
     }
 
     @Test
-    void run_whenSaveFails_abortsWithoutMarkingAnyTrain() {
+    void run_whenSaveFails_abortsWithoutRecordingAnyAttempt() {
         TrainIdentification train = train(1);
         givenCandidates(train);
         when(journeyFetch.preload(eq(train), anyMap())).thenReturn(new PreloadResult.Success(new JourneyProfile(), List.of(), List.of()));
@@ -287,11 +318,11 @@ class PreloadRunTest {
 
         assertThatThrownBy(underTest::run).isSameAs(failure);
 
-        verify(candidates, never()).markPreloaded(any());
+        verify(candidates, never()).recordAttempts(any(), any());
     }
 
     private void givenCandidates(TrainIdentification... trains) {
-        when(candidates.between(any(), any())).thenReturn(List.of(trains));
+        when(candidates.between(any(), any())).thenReturn(new PreloadCandidates.Selection(List.of(trains), 0));
     }
 
     private void givenFetchTakes(TrainIdentification train, Duration takes, PreloadResult result) {
@@ -303,6 +334,10 @@ class PreloadRunTest {
 
     private void verifySaved() {
         verify(store).save(journeyProfiles.capture(), segmentProfiles.capture(), trainCharacteristics.capture());
+    }
+
+    private static PreloadAttempt unavailable(int id) {
+        return new PreloadAttempt(id, PreloadOutcome.UNAVAILABLE, null);
     }
 
     private static TrainIdentification train(int id) {
