@@ -4,8 +4,9 @@
   [title]="title()"
   (addClicked)="add()"
   (deleteClicked)="deleteSelected()"
-/>
-<app-table-search-header [searchField]="filterForm.search" />
+>
+  <app-table-search-header [searchField]="filterForm.search" />
+</app-page-header>
 <sbb-table-wrapper>
   <table
     class="sbb-table--striped table-truncated"

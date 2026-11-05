@@ -34,6 +34,24 @@ describe('AppVersionsTable', () => {
     });
   });
 
+  describe('searchFilter', () => {
+    const audited: AppVersion = { ...appVersion, lastModifiedBy: 'admin' };
+
+    it.each([
+      { search: '', expected: true, description: 'empty search returns all' },
+      { search: '1.0.0', expected: true, description: 'matches on version' },
+      { search: '2026-12', expected: true, description: 'matches on expiry date' },
+      {
+        search: 'ADMIN',
+        expected: true,
+        description: 'matches case-insensitive on lastModifiedBy',
+      },
+      { search: 'xyz-nomatch', expected: false, description: 'returns false when no match' },
+    ])('$description (search="$search")', ({ search, expected }) => {
+      expect(createComponent()['searchFilter']({ search }, audited)).toBe(expected);
+    });
+  });
+
   describe('add', () => {
     it('should call appVersionService.add', async () => {
       const comp = createComponent();

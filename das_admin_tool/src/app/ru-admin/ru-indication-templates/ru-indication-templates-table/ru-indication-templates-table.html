@@ -4,8 +4,12 @@
   [title]="title()"
   (addClicked)="add()"
   (deleteClicked)="deleteSelected()"
-/>
-<app-table-search-header [languageField]="filterForm.language" [searchField]="filterForm.search" />
+>
+  <app-table-search-header
+    [languageField]="filterForm.language"
+    [searchField]="filterForm.search"
+  />
+</app-page-header>
 <sbb-table-wrapper>
   <table
     class="sbb-table--striped table-truncated table-uniform-2lines"

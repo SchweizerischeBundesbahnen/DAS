@@ -1,13 +1,12 @@
 .search-language-header {
   display: flex;
   gap: var(--sbb-spacing-fixed-8x);
-  padding-bottom: var(--sbb-spacing-fixed-8x);
 
   sbb-form-field:first-child {
-    flex: 6;
+    flex: 1;
   }
 
-  sbb-form-field:last-child {
-    flex: 1;
+  sbb-form-field:not(:first-child) {
+    flex: 0 0 12rem;
   }
 }

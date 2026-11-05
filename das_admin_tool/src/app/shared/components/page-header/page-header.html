@@ -1,11 +1,9 @@
-<div class="page-header">
-  <sbb-title level="2">{{ title() }}</sbb-title>
+<sbb-title level="2">{{ title() }}</sbb-title>
+<div class="toolbar">
+  <div class="search">
+    <ng-content />
+  </div>
   <div class="actions">
-    @if (showAdd()) {
-      <sbb-button i18n="@@button_create_entry" iconName="plus-small" (click)="addClicked.emit()"
-        >Neuen Eintrag erfassen</sbb-button
-      >
-    }
     @if (selectedCount() > 0) {
       <sbb-transparent-button iconName="trash-small" [loading]="deleting()" (click)="delete()">
         <ng-container i18n="@@button_delete_selected_entries">{selectedCount(), plural,
@@ -14,6 +12,11 @@
           other {{{ selectedCount() }} Einträge löschen}
         }</ng-container>
       </sbb-transparent-button>
+    }
+    @if (showAdd()) {
+      <sbb-button i18n="@@button_create_entry" iconName="plus-small" (click)="addClicked.emit()"
+        >Neuen Eintrag erfassen</sbb-button
+      >
     }
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { ComponentRef } from '@angular/core';
+import { Component, ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 import { PageHeader } from './page-header';
@@ -96,6 +96,31 @@ describe('PageHeader', () => {
 
       expect(spy).not.toHaveBeenCalled();
     });
+  });
+
+  it('should place delete button left of add button', () => {
+    componentRef.setInput('selectedCount', 1);
+    fixture.detectChanges();
+
+    const buttons = [...element.querySelectorAll('sbb-transparent-button, sbb-button')];
+    expect(buttons.map((button) => button.localName)).toEqual([
+      'sbb-transparent-button',
+      'sbb-button',
+    ]);
+  });
+
+  it('should render projected toolbar content', async () => {
+    @Component({
+      selector: 'app-host',
+      imports: [PageHeader],
+      template: `<app-page-header title="EVUs"><input class="search" /></app-page-header>`,
+    })
+    class Host {}
+
+    const hostFixture = TestBed.createComponent(Host);
+    await hostFixture.whenStable();
+
+    expect((hostFixture.nativeElement as HTMLElement).querySelector('input.search')).toBeTruthy();
   });
 
   it('should show loading delete button while deleting', () => {

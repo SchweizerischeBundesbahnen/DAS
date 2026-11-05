@@ -4,13 +4,13 @@
   [title]="title()"
   (addClicked)="add()"
   (deleteClicked)="deleteSelected()"
-/>
-<form>
+>
   <app-table-search-header
     [languageField]="filterForm.language"
     [searchField]="filterForm.search"
   />
-
+</app-page-header>
+<form>
   <sbb-table-wrapper>
     <table
       class="sbb-table--striped table-truncated table-uniform-2lines"
