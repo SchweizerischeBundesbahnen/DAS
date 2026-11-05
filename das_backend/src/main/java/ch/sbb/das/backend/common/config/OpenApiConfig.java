@@ -98,6 +98,6 @@ public class OpenApiConfig {
             .authorizationCode(new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes))
             .clientCredentials(new OAuthFlow().tokenUrl(authorizationUrl + "/token").scopes(scopes));
 
-        return new SecurityScheme().name(OAUTH_2).type(Type.OAUTH2).flows(flowAuthorizationCode);
+        return new SecurityScheme().type(Type.OAUTH2).flows(flowAuthorizationCode);
     }
 }
