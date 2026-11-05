@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,8 @@ public class TransportPaperController {
     public static final String PARAM_PASS_INDEX = "passIndex";
 
     private static final String SBB_TENANT = "sbb";
+    private static final List<String> ORCA_SUPPORTED_LANGUAGES = List.of("de", "fr", "it");
+    private static final String ORCA_DEFAULT_LANGUAGE = "de";
 
     private final TransportPaperClient transportPaperClient;
     private final CompanyAuthorizer companyAuthorizer;
@@ -49,6 +53,7 @@ public class TransportPaperController {
     @ApiErrorResponses
     @GetMapping(path = API_TRANSPORT_PAPERS + "/{trainPathId}/{operatingDay}")
     ResponseEntity<Void> resolveTransportPaperUrl(
+        @Parameter(description = "Preferred language; de, fr or it are supported, otherwise de")
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @PathVariable String trainPathId,
         @PathVariable LocalDate operatingDay,
@@ -61,10 +66,20 @@ public class TransportPaperController {
     ) {
         companyAuthorizer.requireCanAccessTenant(SBB_TENANT);
         try {
-            String downloadUrl = transportPaperClient.getDownloadUrl(trainPathId, operatingDay, countryCodeIso, locationPrimaryCode, passIndex, acceptLanguage);
+            String downloadUrl = transportPaperClient.getDownloadUrl(trainPathId, operatingDay, countryCodeIso, locationPrimaryCode, passIndex, toOrcaLanguage(acceptLanguage));
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(downloadUrl)).build();
         } catch (RestClientResponseException ex) {
             throw new ProxyClientException(ex.getStatusCode(), ex.getResponseBodyAsString());
         }
+    }
+
+    // ORCA only accepts bare languages (e.g. "de", not "de-CH" or "de_CH").
+    private static String toOrcaLanguage(String acceptLanguage) {
+        if (acceptLanguage == null) {
+            return ORCA_DEFAULT_LANGUAGE;
+        }
+        String firstLanguageRange = acceptLanguage.split(",", 2)[0].split(";", 2)[0];
+        String primaryLanguage = firstLanguageRange.split("[-_]", 2)[0].trim().toLowerCase(Locale.ROOT);
+        return ORCA_SUPPORTED_LANGUAGES.contains(primaryLanguage) ? primaryLanguage : ORCA_DEFAULT_LANGUAGE;
     }
 }

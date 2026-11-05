@@ -16,6 +16,8 @@ import ch.sbb.das.backend.common.security.UserRole;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -37,7 +39,7 @@ class TransportPaperControllerTest {
     @WithMockRole(roles = UserRole.SBB_CARGO)
     @DisplayName("resolveTransportPaperUrl_redirectsToDownstreamUrl|TcnjHbl7cP6l3Z78ibn2|tests:1619")
     void resolveTransportPaperUrl_redirectsToDownstreamUrl() throws Exception {
-        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE"))
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de"))
             .thenReturn("https://signed.example.com/file.pdf");
 
         mvc.perform(get(SAMPLE_PATH)
@@ -48,14 +50,14 @@ class TransportPaperControllerTest {
             .andExpect(status().isFound())
             .andExpect(header().string("Location", "https://signed.example.com/file.pdf"));
 
-        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE");
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de");
     }
 
     @Test
     @WithMockRole(roles = UserRole.SBB_CARGO)
     @DisplayName("resolveTransportPaperUrl_missingAcceptLanguage_redirectsToDownstreamUrl|sssdEStd4V25C7MRCowK|tests:1619")
     void resolveTransportPaperUrl_missingAcceptLanguage_redirectsToDownstreamUrl() throws Exception {
-        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, null))
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de"))
             .thenReturn("https://signed.example.com/file.pdf");
 
         mvc.perform(get(SAMPLE_PATH)
@@ -64,13 +66,44 @@ class TransportPaperControllerTest {
                 .param("passIndex", "0"))
             .andExpect(status().isFound())
             .andExpect(header().string("Location", "https://signed.example.com/file.pdf"));
+
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de");
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', textBlock = """
+        de_CH           | de
+        de-CH           | de
+        DE              | de
+        fr-CH,fr;q=0.9  | fr
+        it;q=0.8        | it
+        *               | de
+        ''              | de
+        en-US           | de
+        deu             | de
+        g               | de
+        """)
+    @WithMockRole(roles = UserRole.SBB_CARGO)
+    @DisplayName("resolveTransportPaperUrl_normalizesAcceptLanguageForOrca|Q7eOxJI6UR5n2O3QeBFp|tests:1619")
+    void resolveTransportPaperUrl_normalizesAcceptLanguageForOrca(String acceptLanguage, String expectedLanguage) throws Exception {
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, expectedLanguage))
+            .thenReturn("https://signed.example.com/file.pdf");
+
+        mvc.perform(get(SAMPLE_PATH)
+                .param("countryCodeIso", "CH")
+                .param("locationPrimaryCode", "22137")
+                .param("passIndex", "0")
+                .header("Accept-Language", acceptLanguage))
+            .andExpect(status().isFound());
+
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, expectedLanguage);
     }
 
     @Test
     @WithMockRole(roles = UserRole.SBB_CARGO)
     @DisplayName("resolveTransportPaperUrl_downstreamError_returnsBadGateway|oVNcNGHdz5TMx41g7VnS|tests:1619")
     void resolveTransportPaperUrl_downstreamError_returnsBadGateway() throws Exception {
-        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE"))
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de"))
             .thenThrow(new RestClientResponseException("Message", 404, "Not found", null, "no paper".getBytes(), null));
 
         mvc.perform(get(SAMPLE_PATH)
@@ -82,14 +115,14 @@ class TransportPaperControllerTest {
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
             .andExpect(jsonPath("$.detail").value("404: no paper"));
 
-        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE");
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de");
     }
 
     @Test
     @WithMockRole(roles = UserRole.SBB_CARGO)
     @DisplayName("resolveTransportPaperUrl_nullResponseBody_returnsBadGateway|FADx0v3EvwBeUX9SsBdK|tests:1619")
     void resolveTransportPaperUrl_nullResponseBody_returnsBadGateway() throws Exception {
-        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE"))
+        when(transportPaperClient.getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de"))
             .thenThrow(new ProxyClientException(HttpStatus.BAD_GATEWAY, "No response body returned from transport paper API"));
 
         mvc.perform(get(SAMPLE_PATH)
@@ -101,7 +134,7 @@ class TransportPaperControllerTest {
             .andExpect(jsonPath("$.title").value("Downstream Service Error"))
             .andExpect(jsonPath("$.detail").value("502: No response body returned from transport paper API"));
 
-        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de-DE");
+        verify(transportPaperClient).getDownloadUrl("33014-021", LocalDate.of(2026, 1, 30), "CH", 22137, 0, "de");
     }
 
     @Test
