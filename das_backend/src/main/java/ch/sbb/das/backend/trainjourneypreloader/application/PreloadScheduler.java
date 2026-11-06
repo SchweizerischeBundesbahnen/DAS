@@ -31,6 +31,7 @@ public class PreloadScheduler {
         PreloadRunReport report = preloadRun.run();
         log.info("Preload with {} JPs of requested {} JPs ended in {} ms (timeouts: {})", report.succeeded(), report.requested(), report.duration().toMillis(),
             report.timeouts());
+        log.info("Preload deferred {} trains by backoff; errors by G2B code: {}", report.deferred(), report.errorsByG2bCode());
 
         cleanupStorageService.deleteAllBefore(DateTimeUtil.now().minusHours(cleanUpHours));
         cleanupStorageService.cleanupSegments();
