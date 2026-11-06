@@ -1,8 +1,11 @@
-package ch.sbb.das.backend.common;
+package ch.sbb.das.backend.common.error;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 
+/**
+ * A downstream service called by the backend failed; answered by {@link GlobalExceptionHandler} with 502.
+ */
 @Getter
 public class ProxyClientException extends RuntimeException {
 

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.error.BadRequestException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -31,7 +32,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class TrainIdentificationServiceTest {
@@ -432,8 +432,8 @@ class TrainIdentificationServiceTest {
 
         // When / Then
         assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
-            .isInstanceOf(ResponseStatusException.class)
-            .extracting(ex -> ((ResponseStatusException) ex).getStatusCode())
+            .isInstanceOf(BadRequestException.class)
+            .extracting(ex -> ((BadRequestException) ex).getStatusCode())
             .isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
@@ -445,8 +445,8 @@ class TrainIdentificationServiceTest {
 
         // When / Then
         assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
-            .isInstanceOf(ResponseStatusException.class)
-            .extracting(ex -> ((ResponseStatusException) ex).getStatusCode())
+            .isInstanceOf(BadRequestException.class)
+            .extracting(ex -> ((BadRequestException) ex).getStatusCode())
             .isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

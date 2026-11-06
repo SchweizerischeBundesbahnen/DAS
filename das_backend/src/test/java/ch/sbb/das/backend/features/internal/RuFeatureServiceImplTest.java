@@ -10,7 +10,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -23,7 +24,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.server.ResponseStatusException;
 
 class RuFeatureServiceImplTest {
 
@@ -137,7 +137,7 @@ class RuFeatureServiceImplTest {
         RuFeatureRequest request = new RuFeatureRequest(new CompanyCode("ZZZZ"), RuFeatureKey.WARNAPP, true);
 
         assertThatThrownBy(() -> underTest.create(request))
-            .isInstanceOf(ResponseStatusException.class)
+            .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Company not found");
 
         verify(ruFeatureRepository, never()).save(any());
@@ -220,7 +220,7 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(existingEntity));
 
         assertThatThrownBy(() -> underTest.update(1, new RuFeatureRequest(new CompanyCode("ZZZZ"), RuFeatureKey.WARNAPP, true)))
-            .isInstanceOf(ResponseStatusException.class)
+            .isInstanceOf(BadRequestException.class)
             .hasMessageContaining("Company not found");
 
         verify(ruFeatureRepository, never()).save(any());

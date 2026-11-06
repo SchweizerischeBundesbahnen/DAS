@@ -39,20 +39,6 @@ class ResponseEntityFactoryTest {
         assertThat(responseEntity.getHeaders().containsHeader(RequestIdFilter.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
     }
 
-    @Test
-    void createNotFoundResponse() {
-        ResponseEntity<Problem> responseEntity = ResponseEntityFactory.createNotFoundResponse("notFound", "Pojo not found", null, "/nowhere");
-        assertThat(responseEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_PROBLEM_JSON);
-        assertThat(responseEntity.getHeaders().getContentLanguage().toString()).isEqualTo("en");
-        assertThat(responseEntity.getHeaders().containsHeader(RequestIdFilter.HEADER_REQUEST_ID)).as("set centrally by RequestIdFilter").isFalse();
-        assertThat(responseEntity.getBody()).isInstanceOf(Problem.class);
-        assertThat(responseEntity.getBody().getStatus()).isEqualTo(404);
-        assertThat(responseEntity.getBody().getTitle()).isEqualTo("notFound");
-        assertThat(responseEntity.getBody().getDetail()).isEqualTo("Pojo not found");
-        assertThat(responseEntity.getBody().getInstance().toString()).isEqualTo("/nowhere");
-        assertThat(responseEntity.getBody().getType()).isNull();
-    }
-
     @Data
     public static class DummyEntry {
 

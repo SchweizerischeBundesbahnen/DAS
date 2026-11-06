@@ -1,13 +1,12 @@
 package ch.sbb.das.backend.personalnotes.internal;
 
 import ch.sbb.das.backend.common.UserDataService;
+import ch.sbb.das.backend.common.error.PayloadTooLargeException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -35,8 +34,7 @@ class PersonalNoteServiceImpl implements UserDataService {
     PersonalNote save(String oid, String key, JsonNode value) {
         String serializedValue = jsonMapper.writeValueAsString(value);
         if (serializedValue.length() > MAX_VALUE_LENGTH) {
-            throw new ResponseStatusException(HttpStatus.CONTENT_TOO_LARGE,
-                "Personal note value exceeds the maximum allowed length of " + MAX_VALUE_LENGTH + " characters.");
+            throw new PayloadTooLargeException("Personal note value exceeds the maximum allowed length of " + MAX_VALUE_LENGTH + " characters.");
         }
         PersonalNoteEntity entity = personalNoteRepository.findByOidAndKey(oid, key)
             .orElseGet(() -> {
