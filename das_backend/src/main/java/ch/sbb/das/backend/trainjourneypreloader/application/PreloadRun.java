@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -118,9 +119,7 @@ public class PreloadRun {
                 case PreloadResult.Error(var message, Throwable ex, var g2bCode) -> {
                     errorCount++;
                     if (g2bCode != null) {
-                        for (String code : g2bCode.split(", ")) {
-                            errorsByG2bCode.merge(code, 1, Integer::sum);
-                        }
+                        Arrays.stream(g2bCode.split(", ")).distinct().forEach(code -> errorsByG2bCode.merge(code, 1, Integer::sum));
                     }
                     log.error("Preload for train {} failed with message: {}", trainId, message, ex);
                 }

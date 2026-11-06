@@ -243,6 +243,17 @@ class PreloadRunTest {
     }
 
     @Test
+    void run_countsACodeOnceWhenAnErrorRepeatsIt() {
+        TrainIdentification train = train(1);
+        givenCandidates(train);
+        when(journeyFetch.preload(eq(train), anyMap())).thenReturn(PreloadResult.Error.g2b("JP request G2B error: 51, 51", "51, 51"));
+
+        PreloadRunReport report = underTest.run();
+
+        assertThat(report.errorsByG2bCode()).isEqualTo(Map.of("51", 1));
+    }
+
+    @Test
     void run_whenNoTrainSucceeds_stillSavesOnceWithNothing() {
         TrainIdentification train = train(1);
         givenCandidates(train);
