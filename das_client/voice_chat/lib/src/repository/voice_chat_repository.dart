@@ -1,7 +1,9 @@
-import 'package:voice_chat/component.dart';
-import 'package:voice_chat/src/user_id_provider/user_id_provider_voice_chat.dart';
+import 'package:voice_chat/src/model/voice_room_key.dart';
+import 'package:voice_chat/src/model/voice_session.dart';
 
-abstract class VoiceChatRepository({required UserIdProviderVoiceChat userIdProvider}) {
+abstract class VoiceChatRepository {
+  bool get isEnabled;
+
   Stream<VoiceSession> get session;
 
   VoiceSession get current;

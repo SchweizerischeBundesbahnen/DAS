@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:voice_chat/component.dart';
 import 'package:voice_chat/src/mic_permission/permission_service.dart';
+import 'package:voice_chat/src/repository/voice_chat_repository_impl.dart';
+import 'package:voice_chat/src/token/dev_token_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +81,7 @@ void main() {
     // GIVEN
     permissionStatus = 1;
     await VoiceChatComponent.requestMicrophonePermission();
-    final repository = VoiceChatComponent.createRepository(userIdProvider: _UserIdProvider());
+    final repository = _createEnabledRepository();
     addTearDown(repository.dispose);
     final session = repository.session.first;
 
@@ -95,7 +97,7 @@ void main() {
   test('refreshMicrophonePermission_whenRevokedInSettings_thenUpdatesSession', () async {
     // GIVEN
     permissionStatus = 1;
-    final repository = VoiceChatComponent.createRepository(userIdProvider: _UserIdProvider());
+    final repository = _createEnabledRepository();
     addTearDown(repository.dispose);
     await repository.refreshMicrophonePermission();
     permissionStatus = 4;
@@ -109,6 +111,15 @@ void main() {
     expect((await session).permission, MicPermission.permanentlyDenied);
     expect(calls.every((call) => call.method == 'checkPermissionStatus'), isTrue);
   });
+}
+
+VoiceChatRepository _createEnabledRepository() {
+  return VoiceChatRepositoryImpl(
+    userIdProvider: _UserIdProvider(),
+    liveKitUrl: 'wss://example.invalid',
+    tokenProvider: const DevTokenProvider(apiKey: 'test-key', apiSecret: 'test-secret'),
+    permissionService: PermissionService(),
+  );
 }
 
 class _UserIdProvider implements UserIdProviderVoiceChat {

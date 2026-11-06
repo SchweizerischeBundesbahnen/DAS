@@ -23,6 +23,7 @@ void main() {
   setUp(() {
     repository = MockVoiceChatRepository();
     sessions = StreamController<VoiceSession>.broadcast();
+    when(repository.isEnabled).thenReturn(true);
     when(repository.current).thenReturn(const VoiceSession(permission: MicPermission.granted));
     when(repository.session).thenAnswer((_) => sessions.stream);
     GetIt.I.registerSingleton<VoiceChatRepository>(repository);

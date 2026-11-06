@@ -32,4 +32,7 @@ class MockVoiceChatRepository implements VoiceChatRepository {
 
   @override
   void dispose() {}
+
+  @override
+  bool get isEnabled => false;
 }

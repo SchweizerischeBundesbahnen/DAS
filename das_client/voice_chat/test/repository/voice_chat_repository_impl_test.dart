@@ -61,7 +61,7 @@ void main() {
     });
   }
 
-  test('connect_whenUrlIsEmpty_thenReportsServerUnreachableWithoutRequestingToken', () async {
+  test('connect_whenUrlIsEmpty_thenIsDisabledAndDoesNotRequestToken', () async {
     // GIVEN
     testee.dispose();
     testee = VoiceChatRepositoryImpl(
@@ -75,8 +75,9 @@ void main() {
     await testee.connect(roomKey);
 
     // THEN
-    expect(testee.current.connection, VoiceConnectionState.failed);
-    expect(testee.current.error, VoiceError.serverUnreachable);
+    expect(testee.isEnabled, isFalse);
+    expect(testee.current.connection, VoiceConnectionState.disconnected);
+    expect(testee.current.error, isNull);
     verifyZeroInteractions(tokenProvider);
   });
 

@@ -17,6 +17,8 @@ class MicrophoneStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repository = DI.get<VoiceChatRepository>();
+    if (!repository.isEnabled) return const SizedBox.shrink();
+
     return StreamBuilder<VoiceSession>(
       initialData: repository.current,
       stream: repository.session,
@@ -44,8 +46,6 @@ class MicrophoneStatus extends StatelessWidget {
                   key: iconKey,
                   onTap: () {
                     unawaited(repository.setMuted(!session.isMuted));
-                    final preset = session.isMuted ? 'mute' : 'unmute';
-                    PulsarHapticsVoiceChat().playPreset(preset);
                   },
                 ),
         );

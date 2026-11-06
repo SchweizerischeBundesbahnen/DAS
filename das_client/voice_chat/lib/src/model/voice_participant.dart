@@ -1,6 +1,6 @@
 class VoiceParticipant({
-  required String identity,
-  required bool isLocal,
-  required bool isMuted,
-  required bool isSpeaking,
+  required final String identity,
+  required final bool isLocal,
+  required final bool isMuted,
+  required final bool isSpeaking,
 });

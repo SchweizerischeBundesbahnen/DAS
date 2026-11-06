@@ -25,6 +25,9 @@ class VoiceChatRepositoryImpl({
   EventsListener<RoomEvent>? _listener;
 
   @override
+  bool get isEnabled => liveKitUrl.isNotEmpty;
+
+  @override
   Stream<VoiceSession> get session => _controller.stream;
 
   @override
@@ -32,6 +35,11 @@ class VoiceChatRepositoryImpl({
 
   @override
   Future<void> connect(VoiceRoomKey key) async {
+    if (!isEnabled) {
+      _log.info('Voice chat disabled (no LiveKit URL configured), not joining room ${key.value}');
+      return;
+    }
+
     _log.info('Connecting to room ${key.value} at $liveKitUrl');
     try {
       await disconnect();
@@ -43,12 +51,6 @@ class VoiceChatRepositoryImpl({
       if (_session.permission != MicPermission.granted) {
         _log.warning('Microphone permission is ${_session.permission}, not joining room ${key.value}');
         _fail(VoiceError.permissionDenied);
-        return;
-      }
-
-      if (liveKitUrl.isEmpty) {
-        _log.severe('LiveKit URL is empty. Was --dart-define-from-file passed?');
-        _fail(VoiceError.serverUnreachable);
         return;
       }
 
@@ -109,12 +111,17 @@ class VoiceChatRepositoryImpl({
 
   @override
   Future<void> requestMicrophonePermission() async {
+    if (!isEnabled) {
+      _log.info('Voice chat disabled (no LiveKit URL configured), skipping permission request');
+      return;
+    }
     final permission = await permissionService.requestMicrophone();
     _applyPermission(permission);
   }
 
   @override
   Future<void> refreshMicrophonePermission() async {
+    if (!isEnabled) return;
     final permission = await permissionService.microphoneStatus();
     if (permission == _session.permission) return;
     _applyPermission(permission);
@@ -131,7 +138,6 @@ class VoiceChatRepositoryImpl({
     _emit(_session.copyWith(permission: permission, clearError: clearOldError));
   }
 
-  /// Räumt den Room auf, ohne einen neuen Zustand zu emittieren.
   Future<void> _releaseRoom() async {
     final room = _room;
     _room = null;
