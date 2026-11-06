@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_expiration_guard.dart';
@@ -10,6 +12,7 @@ import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:voice_chat/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class App extends StatefulWidget {
@@ -31,12 +34,20 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     super.initState();
     _appLinkNavigator = AppLinkNavigator(appLinksManager: DI.get(), router: _appRouter)..observe();
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await VoiceChatComponent.requestMicrophonePermission();
+      if (!mounted) return;
+      unawaited(DI.getOrNull<VoiceChatRepository>()?.refreshMicrophonePermission());
+    });
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     DI.get<AppLifecycleViewModel>().updateState(state);
+    if (state == AppLifecycleState.resumed) {
+      unawaited(DI.getOrNull<VoiceChatRepository>()?.refreshMicrophonePermission());
+    }
   }
 
   @override

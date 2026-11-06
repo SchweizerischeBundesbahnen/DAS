@@ -5,7 +5,7 @@ import 'package:app/di/scopes/scopes.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 
 export 'package:app/di/scopes/scopes.dart';

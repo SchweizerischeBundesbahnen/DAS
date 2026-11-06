@@ -48,6 +48,11 @@ class const AppAssets._() {
   static const iconFixedPointRelevance = '$_iconsDir/icon_fixed_point_relevance.svg';
   static const iconFixedPointRelevanceStopOnRequest = '$_iconsDir/icon_fixed_point_relevance_stop_on_request.svg';
 
+  //Probe IPA icons:
+  static const iconMicNormal = '$_iconsDir/icon_mic_normal.svg';
+  static const iconMicMuted = '$_iconsDir/icon_mic_muted.svg';
+  static const iconMicAlert = '$_iconsDir/icon_mic_alert.svg';
+
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
   static const shapeRoundedEdgeLeftSmall = '$_othersDir/shape_rounded_edge_left_small.svg';
