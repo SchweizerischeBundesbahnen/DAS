@@ -10,6 +10,7 @@ import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadOutcome;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,20 @@ class TrainPreloadLedgerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("DELETE FROM train_identification");
+        deleteTrains();
         now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    }
+
+    /**
+     * The fixture inserts trains with fixed ids that would collide with the next {@code nextval} of a later test in the shared database; the cascade clears the ledger with them.
+     */
+    @AfterEach
+    void tearDown() {
+        deleteTrains();
+    }
+
+    private void deleteTrains() {
+        jdbcTemplate.update("DELETE FROM train_identification");
     }
 
     @DisplayName("between_returnsUpcomingTrainsSoonestFirstThenDepartedTrainsMostRecentFirst|8hTe7uvIu435y2MmjImN|tests:2660")
