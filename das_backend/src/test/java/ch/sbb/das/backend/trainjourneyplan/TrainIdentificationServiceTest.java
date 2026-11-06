@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -227,10 +228,9 @@ class TrainIdentificationServiceTest {
         when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before))
             .thenReturn(List.of(entity1, entity2));
 
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
-            .thenReturn(Optional.of(new CompanyCode("1111")));
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_B")))
-            .thenReturn(Optional.of(new CompanyCode("2222")));
+        when(companyService.getAllCompanies()).thenReturn(List.of(
+            new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A")),
+            new Company(new CompanyCode("2222"), new CompanyShortName("MOCK_B"))));
 
         // When
         List<TrainIdentification> result = underTest.getTrainIdentificationsBetween(after, before);
@@ -238,7 +238,11 @@ class TrainIdentificationServiceTest {
         // Then
         assertThat(result).hasSize(2);
         assertThat(result.get(0).operationalTrainNumber()).isEqualTo("100");
+        assertThat(result.get(0).companies()).containsExactly(new CompanyCode("2222"));
         assertThat(result.get(1).operationalTrainNumber()).isEqualTo("728");
+        assertThat(result.get(1).companies()).containsExactly(new CompanyCode("1111"));
+        // companies are resolved once per call, not once per train
+        verify(companyService, never()).findCompanyCodeByShortName(any());
     }
 
     @Test
@@ -257,8 +261,7 @@ class TrainIdentificationServiceTest {
         when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before))
             .thenReturn(List.of(entity));
 
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("UNKNOWN")))
-            .thenReturn(Optional.empty());
+        when(companyService.getAllCompanies()).thenReturn(List.of(new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A"))));
 
         // When
         List<TrainIdentification> result = underTest.getTrainIdentificationsBetween(after, before);
