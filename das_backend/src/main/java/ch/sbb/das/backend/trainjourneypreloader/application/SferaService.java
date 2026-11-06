@@ -324,6 +324,7 @@ public class SferaService implements JourneyFetch {
         if (isG2bError(g2bReplyPayload) && g2bReplyPayload.getG2BMessageResponse().getG2BErrors() != null) {
             return g2bReplyPayload.getG2BMessageResponse().getG2BErrors().stream()
                 .map(ErrorComplexType::getErrorCode)
+                .filter(Objects::nonNull) // errorCode is optional in SFERA
                 .collect(Collectors.joining(", "));
         } else {
             return "";
