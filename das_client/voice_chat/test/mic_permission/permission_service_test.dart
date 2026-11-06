@@ -15,6 +15,7 @@ void main() {
   late int permissionStatus;
 
   setUp(() {
+    VoiceChatComponent.suppressMicrophonePermissionRequest = false;
     testee = PermissionService();
     calls = [];
     permissionStatus = 0;
@@ -29,6 +30,7 @@ void main() {
   });
 
   tearDown(() {
+    VoiceChatComponent.suppressMicrophonePermissionRequest = false;
     messenger.setMockMethodCallHandler(channel, null);
   });
 
