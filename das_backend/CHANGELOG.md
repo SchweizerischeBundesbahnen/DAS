@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.3](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.2...backend-v0.18.3) (2026-11-07)
+
+
+### Bug Fixes
+
+* e2e_testsuite for latest das_backend ([#1112](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1112)) ([#3102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3102)) ([e5ed06e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5ed06ecd7b1ec9e39182f3c132686a7f460f7e0))
+
 ## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.1...backend-v0.18.2) (2026-11-05)
 
 
