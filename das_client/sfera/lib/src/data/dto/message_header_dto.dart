@@ -28,7 +28,7 @@ class MessageHeaderDto({super.type = elementType, super.attributes, super.childr
 
   String get messageId => attributes['message_ID']!;
 
-  String get correlationId => attributes['correlation_ID']!;
+  String? get correlationId => attributes['correlation_ID'];
 
   String get timestamp => attributes['timestamp']!;
 

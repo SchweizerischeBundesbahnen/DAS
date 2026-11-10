@@ -11,6 +11,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/model/otn_id.dart';
+import 'package:uuid/uuid.dart';
 
 final _log = Logger('RequestRelatedTrainInformationTask');
 
@@ -25,6 +26,8 @@ class RequestRelatedTrainInformationTask({
 
   @override
   Future<void> execute(TaskCompleted<dynamic> onCompleted, TaskFailed onFailed) async {
+    if (isCancelled) return;
+
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
@@ -38,8 +41,10 @@ class RequestRelatedTrainInformationTask({
     final relatedTrainInformationRequest = RelatedTrainInformationRequestDto.create(trainIdentification);
 
     _log.info('Sending related train information request...');
+    requestMessageId = const Uuid().v4();
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: requestMessageId);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaRepo.messageHeader(sender: otnId.company),
+      messageHeader,
       b2gRequest: B2gRequestDto.createRelatedTrainInformationRequest(relatedTrainInformationRequest),
     );
     _mqttService.publishMessage(
@@ -50,7 +55,7 @@ class RequestRelatedTrainInformationTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

@@ -11,7 +11,7 @@ mixin SferaMessageDto on SferaXmlElementDto {
   String get logSummary {
     final content = children.where((child) => child is! MessageHeaderDto).map(_describeWithChildTypes);
     return '$type{messageId: ${messageHeader.messageId}, '
-        'correlationId: ${messageHeader.attributes['correlation_ID']}, '
+        'correlationId: ${messageHeader.correlationId}, '
         'content: ${content.join(', ')}}';
   }
 
