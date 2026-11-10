@@ -12,6 +12,7 @@ import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.common.SFERA;
 import ch.sbb.das.backend.common.TelTsi;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -79,12 +80,9 @@ public class FormationController {
 
             final LocalDate today = DateTimeUtil.today();
             if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
-                return ResponseEntityFactory.createNotFoundResponse(
-                    ResponseEntityFactory.TITLE_NOT_FOUND, "operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.",
-                    null, null);
-            } else {
-                return ResponseEntityFactory.createNotFoundResponse();
+                throw new NotFoundException("operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.");
             }
+            throw new NotFoundException();
         }
 
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();

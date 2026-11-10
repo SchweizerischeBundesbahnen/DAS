@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.features.internal;
 
-import ch.sbb.das.backend.common.ConflictException;
+import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -8,9 +9,7 @@ import ch.sbb.das.backend.companies.CompanyService;
 import ch.sbb.das.backend.features.RuFeature;
 import ch.sbb.das.backend.features.RuFeatureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +89,7 @@ public class RuFeatureServiceImpl implements RuFeatureService {
             .map(Company::code)
             .anyMatch(companyCode::equals);
         if (!exists) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Company not found: " + companyCode.value());
+            throw new BadRequestException("Company not found: " + companyCode.value());
         }
     }
 }

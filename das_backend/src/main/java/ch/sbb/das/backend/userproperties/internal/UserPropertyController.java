@@ -4,6 +4,7 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,9 +67,8 @@ public class UserPropertyController {
         Optional<UserProperty> property = userPropertyService.getByOidAndKey(oid, key);
         if (property.isPresent()) {
             return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(List.of(property.get())));
-        } else {
-            return ResponseEntityFactory.createNotFoundResponse(API_USER_PROPERTIES + "/" + key);
         }
+        throw new NotFoundException();
     }
 
     @PutMapping(API_USER_PROPERTIES_KEY)
