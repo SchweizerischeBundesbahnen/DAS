@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -16,7 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -73,11 +71,8 @@ public class CompanyController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getCompanyById(
         @PathVariable Integer id) {
-        Optional<InternalCompany> company = companyService.getById(id);
-        if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()));
-        }
-        throw new NotFoundException();
+        InternalCompany company = companyService.getById(id);
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company));
     }
 
     @PostMapping(API_COMPANIES)
@@ -98,11 +93,8 @@ public class CompanyController {
     public ResponseEntity<? extends Response> updateCompany(
         @PathVariable Integer id,
         @RequestBody @Valid CompanyRequest updateRequest) {
-        Optional<InternalCompany> company = companyService.update(id, updateRequest);
-        if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)));
-        }
-        throw new NotFoundException();
+        InternalCompany company = companyService.update(id, updateRequest);
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company));
     }
 
     @DeleteMapping(API_COMPANIES_ID)
