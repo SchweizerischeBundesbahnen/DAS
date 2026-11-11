@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -15,8 +14,6 @@ import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GRequestMessage;
@@ -36,7 +33,6 @@ import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -55,10 +51,14 @@ class PreloadIntegrationTest {
     private PahoMqttClient mqttClient;
 
     @MockitoBean
-    private PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
+    private SegmentProfileStore segmentProfileStore;
 
     @Autowired
     private XmlHelper xmlHelper;
+
+    private void givenNothingPreloaded() {
+        when(segmentProfileStore.missing(any())).thenAnswer(invocation -> invocation.getArgument(0));
+    }
 
     private static String sferaReply(String filename, String correlationId) throws IOException {
         return Files.readString(Path.of("src/test/resources/trainjourneypreloader/" + filename)).replace("${correlationId}", correlationId);
@@ -81,6 +81,7 @@ class PreloadIntegrationTest {
     @DisplayName("preload_whenAllRepliesSucceed_returnsSuccess|WMdXFOxKQdnEt4vYCDHx|tests:914,1653,2271,1648")
     @Test
     void preload_whenAllRepliesSucceed_returnsSuccess() throws Exception {
+        givenNothingPreloaded();
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
         AtomicInteger publishCount = new AtomicInteger(0);
 
@@ -178,15 +179,9 @@ class PreloadIntegrationTest {
         verify(mqttClient, times(3)).publish(anyString(), anyString());
     }
 
-    @DisplayName("preload_whenReferencedSpsAlreadyPreloaded_refreshesLastSeenForSpAndItsRelatedLrSps|TuqreLlMNoUauWvKixs1|tests:1648")
+    @DisplayName("preload_whenReferencedSpsAlreadyPreloaded_asksTheStoreForTheMissingOnesAndFetchesNone|TuqreLlMNoUauWvKixs1|tests:1648")
     @Test
-    void preload_whenReferencedSpsAlreadyPreloaded_refreshesLastSeenForSpAndItsRelatedLrSps() throws Exception {
-        List<String> relatedLr = List.of("LR_1_DE_0", "LR_1_FR_0", "LR_1_IT_0", "LR_2_DE_0", "LR_2_FR_0", "LR_2_IT_0");
-        PreloadedSegmentProfileEntity preloadedSp = PreloadedSegmentProfileEntity.builder()
-            .spIdVersion("SP_1_1").fileId(1).lastSeen(OffsetDateTime.now().minusDays(10)).relatedLrSpIdVersions(relatedLr)
-            .build();
-        when(preloadedSegmentProfileRepository.findAllBySpIdVersionIn(Set.of("SP_1_1"))).thenReturn(List.of(preloadedSp));
-
+    void preload_whenReferencedSpsAlreadyPreloaded_asksTheStoreForTheMissingOnesAndFetchesNone() throws Exception {
         AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
         AtomicInteger publishCount = new AtomicInteger(0);
 
@@ -219,13 +214,7 @@ class PreloadIntegrationTest {
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
 
         verify(mqttClient, times(3)).publish(anyString(), anyString());
-
-        @SuppressWarnings("unchecked")
-        ArgumentCaptor<Set<String>> idsCaptor = ArgumentCaptor.forClass(Set.class);
-        verify(preloadedSegmentProfileRepository, atLeastOnce()).updateLastSeenBySpIdVersion(any(OffsetDateTime.class), idsCaptor.capture());
-        Set<String> allRefreshedIds = idsCaptor.getAllValues().stream().flatMap(Set::stream).collect(toSet());
-        assertThat(allRefreshedIds).containsExactlyInAnyOrder(
-            "SP_1_1", "LR_1_DE_0", "LR_1_FR_0", "LR_1_IT_0", "LR_2_DE_0", "LR_2_FR_0", "LR_2_IT_0");
+        verify(segmentProfileStore).missing(Set.of(new SegmentProfileIdentification("SP_1", "1", null, "0011", null)));
     }
 
     @DisplayName("preload_whenHandshakeErrors_throwsException|F9ehMsFKt5GgNMEYDiST|tests:914,1653,2271")

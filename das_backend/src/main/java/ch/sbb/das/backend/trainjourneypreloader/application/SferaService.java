@@ -1,6 +1,5 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
-import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadResult;
@@ -9,9 +8,7 @@ import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentificat
 import ch.sbb.das.backend.trainjourneypreloader.domain.SferaStore;
 import ch.sbb.das.backend.trainjourneypreloader.domain.TrainCharacteristicsIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.SegmentProfileMissingException;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.B2GMessageResponse.Result;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.ErrorComplexType;
@@ -23,7 +20,6 @@ import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GReques
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAG2BReplyMessage;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacteristics;
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -61,7 +57,7 @@ public class SferaService implements JourneyFetch {
     private final XmlHelper xmlHelper;
     private final ConcurrentMap<String, CompletableFuture<SFERAG2BReplyMessage>> pending = new ConcurrentHashMap<>();
     private final SferaStore sferaStore;
-    private final PreloadedSegmentProfileRepository preloadedSegmentProfileRepository;
+    private final SegmentProfileStore segmentProfileStore;
 
     @Value("${sfera.major-version}")
     private String sferaMajorVersion;
@@ -69,12 +65,12 @@ public class SferaService implements JourneyFetch {
     @Value("${sfera.topic-prefix}")
     private String topicPrefix;
 
-    public SferaService(PahoMqttClient mqttClient, SferaMessageCreator sferaMessageCreator, XmlHelper xmlHelper, PreloadedSegmentProfileRepository preloadedSegmentProfileRepository) {
+    public SferaService(PahoMqttClient mqttClient, SferaMessageCreator sferaMessageCreator, XmlHelper xmlHelper, SegmentProfileStore segmentProfileStore) {
         this.mqttClient = mqttClient;
         this.sferaMessageCreator = sferaMessageCreator;
         this.xmlHelper = xmlHelper;
         this.sferaStore = new SferaStore();
-        this.preloadedSegmentProfileRepository = preloadedSegmentProfileRepository;
+        this.segmentProfileStore = segmentProfileStore;
     }
 
     @Override
@@ -109,12 +105,11 @@ public class SferaService implements JourneyFetch {
             }
 
             Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
-            refreshLastSeenOfReferencedLocalRegulationSps(spIds);
             spIds.removeIf(segmentProfilesMap::containsKey);
 
             List<SegmentProfile> segmentProfiles;
             try {
-                segmentProfiles = requestSpsUntilComplete(trainId, spIds);
+                segmentProfiles = requestSpsUntilComplete(trainId, segmentProfileStore.missing(spIds));
             } catch (SegmentProfileMissingException e) {
                 return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
             }
@@ -157,11 +152,11 @@ public class SferaService implements JourneyFetch {
         return result;
     }
 
-    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> spIds)
+    private List<SegmentProfile> requestSpsUntilComplete(TrainIdentification trainId, Set<SegmentProfileIdentification> missing)
         throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
 
         List<SegmentProfile> allSegmentProfiles = new ArrayList<>();
-        Set<SegmentProfileIdentification> missingSps = calculateMissingSegmentProfiles(spIds);
+        Set<SegmentProfileIdentification> missingSps = new HashSet<>(missing);
 
         int lastMissingCount = missingSps.size();
         int noNewResultsCounter = 0;
@@ -192,7 +187,7 @@ public class SferaService implements JourneyFetch {
         if (localRegulationSpIds.isEmpty()) {
             return List.of();
         }
-        return requestSpsUntilComplete(trainId, localRegulationSpIds);
+        return requestSpsUntilComplete(trainId, segmentProfileStore.missing(localRegulationSpIds));
     }
 
     @Override
@@ -219,28 +214,6 @@ public class SferaService implements JourneyFetch {
                 });
         } else {
             return CompletableFuture.completedFuture(segmentProfiles);
-        }
-    }
-
-    @NotNull
-    private Set<SegmentProfileIdentification> calculateMissingSegmentProfiles(Set<SegmentProfileIdentification> spIds) {
-        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
-        Set<String> preloadedSpIdVersionSet = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream().map(PreloadedSegmentProfileEntity::getSpIdVersion)
-            .collect(Collectors.toSet());
-        preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), preloadedSpIdVersionSet);
-
-        return spIds.stream().filter(spId -> !preloadedSpIdVersionSet.contains(spId.toIdVersionString())).collect(Collectors.toSet());
-    }
-
-    private void refreshLastSeenOfReferencedLocalRegulationSps(Set<SegmentProfileIdentification> spIds) {
-        Set<String> spIdVersionSet = spIds.stream().map(SegmentProfileIdentification::toIdVersionString).collect(Collectors.toSet());
-        Set<String> relatedLrSpIdVersions = preloadedSegmentProfileRepository.findAllBySpIdVersionIn(spIdVersionSet).stream()
-            .map(PreloadedSegmentProfileEntity::getRelatedLrSpIdVersions)
-            .filter(Objects::nonNull)
-            .flatMap(List::stream)
-            .collect(Collectors.toSet());
-        if (!relatedLrSpIdVersions.isEmpty()) {
-            preloadedSegmentProfileRepository.updateLastSeenBySpIdVersion(DateTimeUtil.now(), relatedLrSpIdVersions);
         }
     }
 

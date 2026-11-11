@@ -36,6 +36,7 @@ public class PreloadRun {
     private final PreloadCandidates candidates;
     private final JourneyFetch journeyFetch;
     private final PreloadStore store;
+    private final SegmentProfileStore segmentProfileStore;
     private final Clock clock;
 
     /**
@@ -52,6 +53,7 @@ public class PreloadRun {
         PreloadCandidates candidates,
         JourneyFetch journeyFetch,
         PreloadStore store,
+        SegmentProfileStore segmentProfileStore,
         Clock clock,
         @Value("${trainjourneypreloader.hours-before-departure}") int hoursBeforeDeparture,
         @Value("${trainjourneypreloader.max-preload-duration}") Duration maxPreloadDuration
@@ -59,6 +61,7 @@ public class PreloadRun {
         this.candidates = candidates;
         this.journeyFetch = journeyFetch;
         this.store = store;
+        this.segmentProfileStore = segmentProfileStore;
         this.clock = clock;
         this.hoursBeforeDeparture = hoursBeforeDeparture;
         this.maxPreloadDuration = maxPreloadDuration;
@@ -126,7 +129,9 @@ public class PreloadRun {
             }
         }
         journeyFetch.disconnect();
-        store.save(mapJourneyProfiles.values(), mapSegmentProfiles.values(), mapTrainCharacteristics.values());
+        log.info("Saving journeyProfiles={}, segmentProfiles={}, trainCharacteristics={}...", mapJourneyProfiles.size(), mapSegmentProfiles.size(), mapTrainCharacteristics.size());
+        segmentProfileStore.save(mapSegmentProfiles.values());
+        store.save(mapJourneyProfiles.values(), mapTrainCharacteristics.values());
 
         candidates.recordAttempts(now, attempts);
 

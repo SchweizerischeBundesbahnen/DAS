@@ -57,6 +57,9 @@ class PreloadRunTest {
     private PreloadStore store;
 
     @Mock
+    private SegmentProfileStore segmentProfileStore;
+
+    @Mock
     private Clock clock;
 
     @Captor
@@ -76,7 +79,7 @@ class PreloadRunTest {
     void setUp() {
         when(clock.instant()).thenAnswer(invocation -> now);
         when(clock.getZone()).thenReturn(DateTimeUtil.SWISS_ZONE);
-        underTest = new PreloadRun(candidates, journeyFetch, store, clock, HOURS_BEFORE_DEPARTURE, MAX_DURATION);
+        underTest = new PreloadRun(candidates, journeyFetch, store, segmentProfileStore, clock, HOURS_BEFORE_DEPARTURE, MAX_DURATION);
     }
 
     @Test
@@ -111,13 +114,14 @@ class PreloadRunTest {
 
         underTest.run();
 
-        InOrder inOrder = inOrder(journeyFetch, store, candidates);
+        InOrder inOrder = inOrder(journeyFetch, segmentProfileStore, store, candidates);
         inOrder.verify(journeyFetch).connect();
         inOrder.verify(journeyFetch).preload(eq(third), anyMap());
         inOrder.verify(journeyFetch).preload(eq(first), anyMap());
         inOrder.verify(journeyFetch).preload(eq(second), anyMap());
         inOrder.verify(journeyFetch).disconnect();
-        inOrder.verify(store).save(any(), any(), any());
+        inOrder.verify(segmentProfileStore).save(any());
+        inOrder.verify(store).save(any(), any());
         inOrder.verify(candidates).recordAttempts(RUN_START, List.of(unavailable(3), unavailable(1), unavailable(2)));
     }
 
@@ -137,7 +141,7 @@ class PreloadRunTest {
         assertThat(report.skipped()).isEqualTo(2);
         assertThat(report.stopReason()).isEqualTo(PreloadRunReport.StopReason.TIME_BUDGET_EXCEEDED);
         assertThat(report.duration()).isEqualTo(Duration.ofMinutes(5));
-        verify(store).save(any(), any(), any());
+        verify(store).save(any(), any());
         verify(candidates).recordAttempts(RUN_START, List.of(new PreloadAttempt(1, PreloadOutcome.SUCCESS, null), unavailable(2)));
     }
 
@@ -175,7 +179,7 @@ class PreloadRunTest {
         verify(journeyFetch, never()).preload(eq(second), anyMap());
         assertThat(report.stopReason()).isEqualTo(PreloadRunReport.StopReason.INTERRUPTED);
         assertThat(report.skipped()).isEqualTo(1);
-        verify(store).save(any(), any(), any());
+        verify(store).save(any(), any());
     }
 
     @Test
@@ -275,7 +279,7 @@ class PreloadRunTest {
         PreloadRunReport report = underTest.run();
 
         verify(journeyFetch).connect();
-        verify(store).save(any(), any(), any());
+        verify(store).save(any(), any());
         assertThat(report.requested()).isZero();
     }
 
@@ -297,7 +301,7 @@ class PreloadRunTest {
         assertThatThrownBy(underTest::run).isSameAs(failure);
 
         verify(journeyFetch, never()).preload(any(), anyMap());
-        verify(store, never()).save(any(), any(), any());
+        verify(store, never()).save(any(), any());
         verify(candidates, never()).recordAttempts(any(), any());
     }
 
@@ -315,7 +319,7 @@ class PreloadRunTest {
 
         verify(journeyFetch, never()).preload(eq(third), anyMap());
         verify(journeyFetch, never()).disconnect();
-        verify(store, never()).save(any(), any(), any());
+        verify(store, never()).save(any(), any());
         verify(candidates, never()).recordAttempts(any(), any());
     }
 
@@ -325,7 +329,7 @@ class PreloadRunTest {
         givenCandidates(train);
         when(journeyFetch.preload(eq(train), anyMap())).thenReturn(new PreloadResult.Success(new JourneyProfile(), List.of(), List.of()));
         RuntimeException failure = new RuntimeException("Preload save failed");
-        doThrow(failure).when(store).save(any(), any(), any());
+        doThrow(failure).when(store).save(any(), any());
 
         assertThatThrownBy(underTest::run).isSameAs(failure);
 
@@ -344,7 +348,8 @@ class PreloadRunTest {
     }
 
     private void verifySaved() {
-        verify(store).save(journeyProfiles.capture(), segmentProfiles.capture(), trainCharacteristics.capture());
+        verify(segmentProfileStore).save(segmentProfiles.capture());
+        verify(store).save(journeyProfiles.capture(), trainCharacteristics.capture());
     }
 
     private static PreloadAttempt unavailable(int id) {
