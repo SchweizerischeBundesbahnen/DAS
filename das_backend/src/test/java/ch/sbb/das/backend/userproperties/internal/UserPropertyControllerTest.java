@@ -66,7 +66,8 @@ class UserPropertyControllerTest {
         mockMvc.perform(get(API_USER_PROPERTIES + "/nonexistent"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("User property with key nonexistent not found"));
     }
 
     @Test

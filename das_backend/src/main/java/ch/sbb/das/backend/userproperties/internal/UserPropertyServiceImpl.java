@@ -1,10 +1,11 @@
 package ch.sbb.das.backend.userproperties.internal;
 
 import ch.sbb.das.backend.common.UserDataService;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.common.error.PayloadTooLargeException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
@@ -12,8 +13,10 @@ import tools.jackson.databind.json.JsonMapper;
 
 @Service
 @RequiredArgsConstructor
+@NullMarked
 class UserPropertyServiceImpl implements UserDataService {
 
+    private static final String RESOURCE = "User property";
     static final int MAX_VALUE_LENGTH = 4096;
 
     private final UserPropertyRepository userPropertyRepository;
@@ -25,9 +28,13 @@ class UserPropertyServiceImpl implements UserDataService {
             .toList();
     }
 
-    Optional<UserProperty> getByOidAndKey(String oid, String key) {
+    /**
+     * @throws NotFoundException when the user has no user property under that key
+     */
+    UserProperty getByOidAndKey(String oid, String key) {
         return userPropertyRepository.findByOidAndKey(oid, key)
-            .map(this::toUserProperty);
+            .map(this::toUserProperty)
+            .orElseThrow(() -> NotFoundException.forKey(RESOURCE, key));
     }
 
     @Transactional
