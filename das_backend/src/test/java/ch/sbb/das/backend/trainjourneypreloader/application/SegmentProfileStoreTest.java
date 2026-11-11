@@ -38,7 +38,9 @@ import java.time.ZoneOffset;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -54,6 +56,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.util.unit.DataSize;
 
 @ExtendWith(MockitoExtension.class)
 class SegmentProfileStoreTest {
@@ -92,8 +95,12 @@ class SegmentProfileStoreTest {
 
     @BeforeEach
     void setUp() {
-        SegmentProfileStoreProperties properties = new SegmentProfileStoreProperties(Duration.ofDays(30), 0.5, Duration.ofHours(1), Duration.ofHours(24));
-        underTest = new SegmentProfileStore(xmlHelper, s3Service, repository, transactionManager, Clock.fixed(NOW, ZoneOffset.UTC), properties);
+        underTest = storeWithZipMaxBytes(DataSize.ofMegabytes(5));
+    }
+
+    private SegmentProfileStore storeWithZipMaxBytes(DataSize zipMaxBytes) {
+        SegmentProfileStoreProperties properties = new SegmentProfileStoreProperties(Duration.ofDays(30), 0.5, Duration.ofHours(1), Duration.ofHours(24), zipMaxBytes);
+        return new SegmentProfileStore(xmlHelper, s3Service, repository, transactionManager, Clock.fixed(NOW, ZoneOffset.UTC), properties);
     }
 
     @Test
@@ -221,6 +228,62 @@ class SegmentProfileStoreTest {
     }
 
     @Test
+    void publish_closesTheZipOnceItReachedTheSizeCapAndContinuesInTheNextOne() throws Exception {
+        underTest = storeWithZipMaxBytes(DataSize.ofBytes(450));
+        when(repository.findAllByZipKeyIsNullOrderByIdAsc()).thenReturn(List.of(bulkyPending("P1_1_0"), bulkyPending("P2_1_0"), bulkyPending("P3_1_0")));
+        when(repository.findDistinctZipKeys()).thenReturn(List.of());
+
+        int published = underTest.publish();
+
+        assertThat(published).isEqualTo(3);
+        ArgumentCaptor<String> keys = ArgumentCaptor.forClass(String.class);
+        verify(s3Service, org.mockito.Mockito.times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
+        assertThat(keys.getAllValues()).containsExactly(NEW_HOURLY_ZIP, "Segments_2026-11-11T10-30-01Z.zip");
+        assertThat(entriesOf(uploadedBytes.getAllValues().get(0)).keySet()).containsExactly("sp/SP_P1_1_0.xml", "sp/SP_P2_1_0.xml");
+        assertThat(entriesOf(uploadedBytes.getAllValues().get(1)).keySet()).containsExactly("sp/SP_P3_1_0.xml");
+        verify(repository).assignZipKey(NEW_HOURLY_ZIP, List.of("P1_1_0", "P2_1_0"));
+        verify(repository).assignZipKey("Segments_2026-11-11T10-30-01Z.zip", List.of("P3_1_0"));
+    }
+
+    @Test
+    void publish_whenTheOpenZipAlreadyReachedTheSizeCap_rollsToANewZipWithoutAppendingToIt() throws Exception {
+        underTest = storeWithZipMaxBytes(DataSize.ofBytes(100));
+        when(repository.findAllByZipKeyIsNullOrderByIdAsc()).thenReturn(List.of(pending("P1_1_0")));
+        when(repository.findDistinctZipKeys()).thenReturn(List.of(OPEN_ZIP));
+        when(s3Service.downloadZip(OPEN_ZIP)).thenReturn(Optional.of(zipOf(Map.of("sp/SP_OLD_1_0.xml", "<old/>"))));
+
+        underTest.publish();
+
+        verify(s3Service, never()).uploadZip(eq(OPEN_ZIP), any());
+        verify(s3Service).uploadZip(eq(NEW_HOURLY_ZIP), uploadedBytes.capture());
+        assertThat(entriesOf(uploadedBytes.getValue())).containsExactly(Map.entry("sp/SP_P1_1_0.xml", "<pending P1_1_0/>"));
+        verify(repository).assignZipKey(NEW_HOURLY_ZIP, List.of("P1_1_0"));
+    }
+
+    @Test
+    void compact_splitsThePackedZipOnceItReachedTheSizeCap() throws Exception {
+        underTest = storeWithZipMaxBytes(DataSize.ofBytes(450));
+        String oldHourlyZip = "Segments_2026-11-10T08-00-00Z.zip";
+        when(repository.zipStatistics(any())).thenReturn(List.of(statistics(oldHourlyZip, 4, 1)));
+        when(repository.findAllByZipKeyIn(List.of(oldHourlyZip))).thenReturn(List.of(
+            indexed("A_1_0", oldHourlyZip, NOW_UTC), indexed("B_1_0", oldHourlyZip, NOW_UTC), indexed("C_1_0", oldHourlyZip, NOW_UTC), indexed("D_1_0", oldHourlyZip, LONG_AGO)));
+        when(s3Service.downloadZip(oldHourlyZip)).thenReturn(Optional.of(zipOf(
+            Map.of("sp/SP_A_1_0.xml", bulkyXml("A"), "sp/SP_B_1_0.xml", bulkyXml("B"), "sp/SP_C_1_0.xml", bulkyXml("C"), "sp/SP_D_1_0.xml", bulkyXml("D")))));
+
+        underTest.compact();
+
+        ArgumentCaptor<String> keys = ArgumentCaptor.forClass(String.class);
+        verify(s3Service, org.mockito.Mockito.times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
+        assertThat(keys.getAllValues()).containsExactly(NEW_PACKED_ZIP, "Segments_2026-11-11T10-30-01Z-packed.zip");
+        assertThat(entriesOf(uploadedBytes.getAllValues().get(0)).keySet()).containsExactly("sp/SP_A_1_0.xml", "sp/SP_B_1_0.xml");
+        assertThat(entriesOf(uploadedBytes.getAllValues().get(1)).keySet()).containsExactly("sp/SP_C_1_0.xml");
+        verify(repository).assignZipKey(NEW_PACKED_ZIP, List.of("A_1_0", "B_1_0"));
+        verify(repository).assignZipKey("Segments_2026-11-11T10-30-01Z-packed.zip", List.of("C_1_0"));
+        verify(repository).deleteAllByZipKeyIn(List.of(oldHourlyZip));
+        verify(s3Service).deleteObjects(List.of(oldHourlyZip));
+    }
+
+    @Test
     void compact_rebuildsAFrozenZipOverTheStaleShareIntoAPackedZipWithItsLiveEntriesOnly() throws Exception {
         when(repository.zipStatistics(LONG_AGO.plusDays(10))).thenReturn(List.of(statistics(LEGACY_ZIP, 4, 3), statistics(OPEN_ZIP, 10, 0)));
         when(repository.findAllByZipKeyIn(List.of(LEGACY_ZIP))).thenReturn(List.of(
@@ -315,6 +378,17 @@ class SegmentProfileStoreTest {
 
     private ZipStatistics statistics(String zipKey, long entries, long staleEntries) {
         return projections.createProjection(ZipStatistics.class, Map.of("zipKey", zipKey, "entries", entries, "staleEntries", staleEntries));
+    }
+
+    /** A pending SP whose XML hardly compresses, so that a few of them reach a small size cap. */
+    private static PreloadedSegmentProfileEntity bulkyPending(String spIdVersion) {
+        return PreloadedSegmentProfileEntity.builder().spIdVersion(spIdVersion).pendingXml(bulkyXml(spIdVersion)).lastSeen(NOW_UTC).build();
+    }
+
+    private static String bulkyXml(String id) {
+        byte[] noise = new byte[300];
+        new Random(id.hashCode()).nextBytes(noise);
+        return "<SegmentProfile id='" + id + "'>" + Base64.getEncoder().encodeToString(noise) + "</SegmentProfile>";
     }
 
     private static PreloadedSegmentProfileEntity pending(String spIdVersion) {

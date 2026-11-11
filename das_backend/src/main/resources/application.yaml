@@ -191,6 +191,8 @@ trainjourneypreloader:
     open-zip-max-age: ${PRELOAD_SP_OPEN_ZIP_MAX_AGE:PT1H}
     # frozen hourly segment zips older than this are packed together
     pack-after: ${PRELOAD_SP_PACK_AFTER:PT24H}
+    # a segment zip is closed once it has reached this size; the next entry opens the next zip
+    zip-max-bytes: ${PRELOAD_SP_ZIP_MAX_BYTES:5MB}
 
 proxy:
   base-url: ${PROXY_BASE_URL}

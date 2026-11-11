@@ -26,9 +26,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,8 +55,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  * zip and marks them published, {@link #missing} tells which referenced SPs are neither pending nor published, and {@link #compact} evicts stale SPs.
  * <p>
  * Segment zips are immutable once frozen. There is one open hourly zip, {@code Segments_<timestamp>.zip}, named after the moment it was opened; it is appended to until it
- * is older than {@link SegmentProfileStoreProperties#openZipMaxAge()}. Compaction rewrites frozen zips into packed zips, {@code Segments_<timestamp>-packed.zip}, named
- * after the moment they were written. The legacy numbered zips, {@code Segments_<n>.zip}, are frozen too. Only hourly zips can be open, so the newest hourly zip is the
+ * is older than {@link SegmentProfileStoreProperties#openZipMaxAge()} or has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}. Compaction rewrites frozen
+ * zips into packed zips, {@code Segments_<timestamp>-packed.zip}, named after the moment they were written and capped at the same size. The legacy numbered zips, {@code Segments_<n>.zip}, are frozen too. Only hourly zips can be open, so the newest hourly zip is the
  * open one, and only hourly zips are packed by age: packed and legacy zips are rebuilt once they are mostly stale, never for their age alone.
  */
 @Slf4j
@@ -130,13 +132,14 @@ public class SegmentProfileStore {
     }
 
     /**
-     * Appends the pending SPs to the open segment zip, opening a new one when the newest hourly zip is older than {@link SegmentProfileStoreProperties#openZipMaxAge()},
-     * and marks them published once the zip is uploaded. An entry a crashed publish already left in the zip is skipped.
+     * Appends the pending SPs to the open segment zip and marks them published once the zip is uploaded. A new zip is opened when the newest hourly zip is older than
+     * {@link SegmentProfileStoreProperties#openZipMaxAge()} or has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}; a zip that reaches the size while
+     * entries are appended is closed and the remaining entries continue in the next one. An entry a crashed publish already left in the zip is skipped.
      *
      * @return the number of SPs published
      */
     public int publish() {
-        List<PreloadedSegmentProfileEntity> pending = repository.findAllByZipKeyIsNullOrderByIdAsc();
+        Deque<PreloadedSegmentProfileEntity> pending = new ArrayDeque<>(repository.findAllByZipKeyIsNullOrderByIdAsc());
         log.info("Publishing segment profiles. pending={}", pending.size());
         if (pending.isEmpty()) {
             return 0;
@@ -144,36 +147,54 @@ public class SegmentProfileStore {
         Instant now = clock.instant();
         Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
-        String zipKey = openZipKey.orElseGet(() -> newZipKey(now, "", zipKeys));
         Optional<byte[]> existing = openZipKey.flatMap(s3Service::downloadZip);
         if (openZipKey.isPresent() && existing.isEmpty()) {
-            log.warn("Open segment zip {} is missing from the bucket and is written again", zipKey);
+            log.warn("Open segment zip {} is missing from the bucket and is written again", openZipKey.get());
         }
+        if (existing.isPresent() && existing.get().length >= properties.zipMaxBytes().toBytes()) {
+            log.info("Open segment zip {} has reached {} bytes and is frozen", openZipKey.get(), existing.get().length);
+            openZipKey = Optional.empty();
+            existing = Optional.empty();
+        }
+        String zipKey = openZipKey.orElseGet(() -> newZipKey(now, "", zipKeys));
+        boolean rolled = openZipKey.isEmpty();
+        int published = 0;
         try {
-            ZipWriter zip = new ZipWriter();
-            existing.ifPresent(zip::transfer);
-            List<String> added = new ArrayList<>();
-            for (PreloadedSegmentProfileEntity entity : pending) {
-                zip.write(entryName(entity.getSpIdVersion()), entity.getPendingXml().getBytes(StandardCharsets.UTF_8));
-                added.add(entity.getSpIdVersion());
+            while (!pending.isEmpty()) {
+                ZipWriter zip = new ZipWriter();
+                existing.ifPresent(zip::transfer);
+                existing = Optional.empty();
+                List<String> added = new ArrayList<>();
+                while (!pending.isEmpty() && zip.size() < properties.zipMaxBytes().toBytes()) {
+                    PreloadedSegmentProfileEntity entity = pending.poll();
+                    zip.write(entryName(entity.getSpIdVersion()), entity.getPendingXml().getBytes(StandardCharsets.UTF_8));
+                    added.add(entity.getSpIdVersion());
+                }
+                if (!added.isEmpty()) {
+                    byte[] bytes = zip.finish();
+                    s3Service.uploadZip(zipKey, bytes);
+                    repository.assignZipKey(zipKey, added);
+                    log.info("Published segment zip. key={}, added={}, bytes={}, rolled={}", zipKey, added.size(), bytes.length, rolled);
+                    published += added.size();
+                }
+                if (!pending.isEmpty()) {
+                    zipKey = newZipKey(now, "", zipKeys);
+                    rolled = true;
+                }
             }
-            byte[] bytes = zip.finish();
-            s3Service.uploadZip(zipKey, bytes);
-            repository.assignZipKey(zipKey, added);
-            log.info("Published segment zip. key={}, added={}, bytes={}, rolled={}", zipKey, added.size(), bytes.length, openZipKey.isEmpty());
-            return added.size();
         } catch (IOException e) {
             throw new UncheckedIOException("Publishing segment profiles failed", e);
         }
+        return published;
     }
 
     /**
      * Rewrites the frozen segment zips that are over {@link SegmentProfileStoreProperties#rebuildStaleShare()} stale, and the frozen hourly zips older than
-     * {@link SegmentProfileStoreProperties#packAfter()}, into one packed zip with their live entries, then deletes their stale rows and their keys. A fully stale zip is
-     * deleted without a rewrite. The open zip is never touched, nor is a zip that is not selected. An SP is stale once no journey referenced it for
-     * {@link SegmentProfileStoreProperties#staleAfter()}.
+     * {@link SegmentProfileStoreProperties#packAfter()}, into packed zips of at most {@link SegmentProfileStoreProperties#zipMaxBytes()} with their live entries, then
+     * deletes their stale rows and their keys. A fully stale zip is deleted without a rewrite. The open zip is never touched, nor is a zip that is not selected. An SP is
+     * stale once no journey referenced it for {@link SegmentProfileStoreProperties#staleAfter()}.
      * <p>
-     * The packed zip is uploaded before the index is updated, so a crash in between leaves an unreferenced zip behind, never a missing one; the next compaction selects
+     * The packed zips are uploaded before the index is updated, so a crash in between leaves unreferenced zips behind, never missing ones; the next compaction selects
      * the same zips again.
      */
     public void compact() {
@@ -198,10 +219,9 @@ public class SegmentProfileStore {
             .filter(row -> !row.getLastSeen().isBefore(cutoff))
             .collect(Collectors.groupingBy(IndexedSegmentProfile::getZipKey, Collectors.mapping(row -> entryName(row.getSpIdVersion()), Collectors.toSet())));
 
-        String packedZipKey = newZipKey(now, PACKED_KEY_SUFFIX, zipKeys);
-        List<String> packed = new ArrayList<>();
+        Map<String, List<String>> packedIdVersionsByZip = new LinkedHashMap<>();
         try {
-            ZipWriter zip = new ZipWriter();
+            PackedZip packed = new PackedZip(newZipKey(now, PACKED_KEY_SUFFIX, zipKeys));
             for (String zipKey : selected) {
                 Set<String> liveEntryNames = liveEntryNamesByZip.getOrDefault(zipKey, Set.of());
                 if (liveEntryNames.isEmpty()) {
@@ -216,29 +236,49 @@ public class SegmentProfileStore {
                 try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(source.get()), StandardCharsets.UTF_8)) {
                     ZipEntry entry;
                     while ((entry = zis.getNextEntry()) != null) {
-                        if (liveEntryNames.contains(entry.getName())) {
-                            zip.write(entry.getName(), zis.readAllBytes());
-                            packed.add(idVersionOf(entry.getName()));
+                        if (!liveEntryNames.contains(entry.getName())) {
+                            continue;
                         }
+                        if (packed.zip.size() >= properties.zipMaxBytes().toBytes()) {
+                            packedIdVersionsByZip.put(packed.key, packed.upload());
+                            packed = new PackedZip(newZipKey(now, PACKED_KEY_SUFFIX, zipKeys));
+                        }
+                        packed.zip.write(entry.getName(), zis.readAllBytes());
+                        packed.idVersions.add(idVersionOf(entry.getName()));
                     }
                 }
             }
-            if (!packed.isEmpty()) {
-                s3Service.uploadZip(packedZipKey, zip.finish());
+            if (!packed.idVersions.isEmpty()) {
+                packedIdVersionsByZip.put(packed.key, packed.upload());
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Compacting segment zips failed", e);
         }
 
         transactionTemplate.executeWithoutResult(status -> {
-            if (!packed.isEmpty()) {
-                repository.assignZipKey(packedZipKey, packed);
-            }
+            packedIdVersionsByZip.forEach(repository::assignZipKey);
             repository.deleteAllByZipKeyIn(selected);
         });
         s3Service.deleteObjects(selected);
-        log.info("Compacted segment zips. oldKeys={}, newKey={}, live={}, deleted={}", selected, packed.isEmpty() ? null : packedZipKey, packed.size(),
-            rows.size() - packed.size());
+        int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
+        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, deleted={}", selected, packedIdVersionsByZip.keySet(), live, rows.size() - live);
+    }
+
+    /** A packed zip under construction. */
+    private final class PackedZip {
+
+        private final String key;
+        private final ZipWriter zip = new ZipWriter();
+        private final List<String> idVersions = new ArrayList<>();
+
+        private PackedZip(String key) {
+            this.key = key;
+        }
+
+        private List<String> upload() throws IOException {
+            s3Service.uploadZip(key, zip.finish());
+            return idVersions;
+        }
     }
 
     private boolean isOverStaleShare(ZipStatistics zip) {
@@ -327,6 +367,11 @@ public class SegmentProfileStore {
             } catch (IOException e) {
                 throw new UncheckedIOException("Reading the existing segment zip failed", e);
             }
+        }
+
+        /** The bytes written so far, without the central directory that {@link #finish()} appends. */
+        long size() {
+            return bytes.size();
         }
 
         void write(String name, byte[] content) throws IOException {
