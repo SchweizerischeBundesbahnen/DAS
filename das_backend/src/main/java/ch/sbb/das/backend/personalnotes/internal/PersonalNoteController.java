@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -64,11 +62,8 @@ public class PersonalNoteController {
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
-        Optional<PersonalNote> note = personalNoteService.getByOidAndKey(oid, key);
-        if (note.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note.get())));
-        }
-        throw new NotFoundException();
+        PersonalNote note = personalNoteService.getByOidAndKey(oid, key);
+        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note)));
     }
 
     @PutMapping(API_PERSONAL_NOTES_KEY)

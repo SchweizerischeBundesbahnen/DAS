@@ -65,7 +65,8 @@ class PersonalNoteControllerTest {
         mockMvc.perform(get(API_PERSONAL_NOTES + "/nonexistent"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("Personal note with key nonexistent not found"));
     }
 
     @Test
