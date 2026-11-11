@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,7 +83,9 @@ class RuFeatureControllerTest {
     @DisplayName("getRuFeatureById_notFound|iwy8Ly6HG5m7j88PZiOr|tests:712,713,723")
     void getRuFeatureById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/999"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @Test
@@ -189,7 +192,9 @@ class RuFeatureControllerTest {
                 .content("""
                     { "companyCode": "1111", "key": "WARNAPP", "enabled": true }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @Test

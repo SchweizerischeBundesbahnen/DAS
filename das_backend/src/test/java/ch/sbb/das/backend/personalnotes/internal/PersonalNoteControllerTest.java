@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,7 +63,9 @@ class PersonalNoteControllerTest {
     @DisplayName("getPersonalNoteByKey_notFound|rP3cD4eF5gH6iJ7kL8mN|tests:2256")
     void getPersonalNoteByKey_notFound() throws Exception {
         mockMvc.perform(get(API_PERSONAL_NOTES + "/nonexistent"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @Test

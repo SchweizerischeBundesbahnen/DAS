@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,6 +17,7 @@ import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -105,7 +107,9 @@ class RuIndicationTemplateControllerTest {
     @Sql("classpath:createRuIndicationTemplates.sql")
     void getRuIndicationTemplateById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("getRuIndicationTemplateById_forbidden_tenant|FxC4Sa7VXKwK2wfwtFJK|tests:1626")
@@ -302,7 +306,9 @@ class RuIndicationTemplateControllerTest {
                         "de": { "title": "Hinweis", "text": "Text DE" }
                     }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("update_RuIndicationTemplate_invalid_noLanguageContent|9tXM7W3aKxZY5Q49LfKc|tests:1626")

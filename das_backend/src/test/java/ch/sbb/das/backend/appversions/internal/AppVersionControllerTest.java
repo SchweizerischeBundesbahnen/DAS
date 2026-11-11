@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,7 +49,9 @@ class AppVersionControllerTest {
     void getAppVersionById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
         mockMvc.perform(get(API_APP_VERSIONS + "/" + nonExistingId))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("getById_AppVersion_by_id|4uKIx7BmDPkJnaGrkLUV|tests:1406")
@@ -252,6 +256,24 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
+    }
+
+    @DisplayName("update_AppVersion_notFound|SQDePN05CorUQff8VQLb|tests:2653")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void update_AppVersion_notFound() throws Exception {
+        mockMvc.perform(put(API_APP_VERSIONS + "/" + Integer.MAX_VALUE)
+                .contentType("application/json")
+                .content("""
+                        {
+                            "version": "2.5.0",
+                            "minimalVersion": true,
+                            "expiryDate": "2026-01-01"
+                        }
+                    """))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("delete_AppVersionById_ok|FzYcq8V3AfBBq1fwbNUk|tests:1406")

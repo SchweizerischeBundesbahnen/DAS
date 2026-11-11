@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -89,7 +90,9 @@ class RuIndicationControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getRuIndicationById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("create_RuIndication_ok|8pdiSMW1jq4rCP40rXAA|tests:144,1657")
@@ -332,7 +335,9 @@ class RuIndicationControllerTest {
                         ]
                     }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("deleteRuIndicationsByIds_whenValidIds_deletesSuccessfully|k3464hCjs1m5UMx0HCRc|tests:144,1657")

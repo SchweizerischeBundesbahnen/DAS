@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -180,7 +181,9 @@ class CompanyControllerTest {
                         "tenantId": "%s"
                     }
                     """.formatted(VALID_TENANT_ID)))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("updateCompany_badRequest_tenantNotFound|6LOPrO8yJszGwKfckyBo|tests:428,2121")
@@ -232,7 +235,9 @@ class CompanyControllerTest {
     @WithMockRole(roles = UserRole.ADMIN)
     void getCompanyById_notFound() throws Exception {
         mockMvc.perform(get(API_COMPANIES + "/" + Integer.MAX_VALUE))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("deleteCompany_ok|wXbjADY7k1GBgDAr1tYu|tests:428,2121")

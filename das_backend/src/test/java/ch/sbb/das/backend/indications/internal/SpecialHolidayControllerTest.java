@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -118,7 +120,9 @@ class SpecialHolidayControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getSpecialHolidayById_notFound() throws Exception {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("getSpecialHolidayById_forbidden_existingCompanyNotAuthorized|FhjaE7SGMWg7VxwRZ3t0|tests:1656")
@@ -240,7 +244,9 @@ class SpecialHolidayControllerTest {
                         "companies": ["1111"]
                     }
                     """.formatted(date)))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("update_SpecialHoliday_forbidden_existingCompanyNotAuthorized|88YRv0gVHJ0m1gBHpAaj|tests:1656")

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,7 +106,9 @@ class ExternalLinkControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getExternalLinkById_notFound() throws Exception {
         mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("getExternalLinkById_forbidden_existingCompanyNotAuthorized|neiF4fIakvVLF515eJlG|tests:246")
@@ -284,7 +287,9 @@ class ExternalLinkControllerTest {
                         "fr": { "title": "Modifié", "link": "https://bls.ch" }
                     }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"));
     }
 
     @DisplayName("updateExternalLink_invalid_noLanguageContent|y4PqMTxooaSY3qz37cD9|tests:246")
