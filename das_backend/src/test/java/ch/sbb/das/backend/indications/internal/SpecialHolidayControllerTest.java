@@ -3,6 +3,7 @@ package ch.sbb.das.backend.indications.internal;
 import static ch.sbb.das.backend.indications.internal.SpecialHolidayController.API_SPECIAL_HOLIDAYS;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
+import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
 import ch.sbb.das.backend.common.security.UserRole;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -122,17 +124,20 @@ class SpecialHolidayControllerTest {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/99"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("Special holiday with id 99 not found"));
     }
 
-    @DisplayName("getSpecialHolidayById_forbidden_existingCompanyNotAuthorized|FhjaE7SGMWg7VxwRZ3t0|tests:1656")
+    @DisplayName("getSpecialHolidayById_notFound_existingCompanyNotAuthorized|FhjaE7SGMWg7VxwRZ3t0|tests:1656,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
-    void getSpecialHolidayById_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void getSpecialHolidayById_notFound_existingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/3"))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("Special holiday with id 3 not found"));
     }
 
     @DisplayName("create_SpecialHoliday_ok|STxUli5OSwQ2yytzw5eB|tests:1656")
@@ -246,14 +251,15 @@ class SpecialHolidayControllerTest {
                     """.formatted(date)))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("Special holiday with id 99 not found"));
     }
 
-    @DisplayName("update_SpecialHoliday_forbidden_existingCompanyNotAuthorized|88YRv0gVHJ0m1gBHpAaj|tests:1656")
+    @DisplayName("update_SpecialHoliday_notFound_existingCompanyNotAuthorized|88YRv0gVHJ0m1gBHpAaj|tests:1656,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
-    void update_SpecialHoliday_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void update_SpecialHoliday_notFound_existingCompanyNotAuthorized() throws Exception {
         String date = futureDate(60);
 
         mockMvc.perform(put(API_SPECIAL_HOLIDAYS + "/3")
@@ -266,8 +272,10 @@ class SpecialHolidayControllerTest {
                         "companies": ["1111"]
                     }
                     """.formatted(date)))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("Special holiday with id 3 not found"));
     }
 
     @DisplayName("deleteSpecialHolidayBatch_ok|tBSEfIFcfR0gD4FWEPrJ|tests:1656")
@@ -289,19 +297,26 @@ class SpecialHolidayControllerTest {
             .andExpect(jsonPath("$.data", hasSize(0)));
     }
 
-    @DisplayName("deleteSpecialHolidayBatch_forbidden_existingCompanyNotAuthorized|MzBCN4teZ1RvRDBCU9th|tests:1656")
+    @DisplayName("deleteSpecialHolidayBatch_noContent_skipsExistingCompanyNotAuthorized|MzBCN4teZ1RvRDBCU9th|tests:1656,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createSpecialHolidays.sql")
-    void deleteSpecialHolidayBatch_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void deleteSpecialHolidayBatch_noContent_skipsExistingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(delete(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")
                 .content("""
                     {
-                        "ids": [1, 3]
+                        "ids": [1, 3, 99]
                     }
                     """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/1"))
+            .andExpect(status().isNotFound());
+
+        mockMvc.perform(get(API_SPECIAL_HOLIDAYS + "/3")
+                .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(3));
     }
 }

@@ -99,9 +99,20 @@ public class CompanyAuthorizer {
      * @throws AccessDeniedException when access is not granted
      */
     public void requireCanAccessTenant(String tenantName) {
-        if (!Objects.equals(requireCurrentTenant(), tenantName)) {
+        if (!canAccessTenant(tenantName)) {
             throw new AccessDeniedException("Not allowed");
         }
+    }
+
+    /**
+     * Checks whether the authenticated tenant is the provided tenant.
+     *
+     * @param tenantName tenant name to check against the authenticated tenant
+     * @return {@code true} if a tenant can be resolved and it matches; otherwise {@code false}
+     */
+    public boolean canAccessTenant(String tenantName) {
+        String currentTenantName = currentTenantName();
+        return currentTenantName != null && Objects.equals(currentTenantName, tenantName);
     }
 
     /**

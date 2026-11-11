@@ -1,16 +1,22 @@
 package ch.sbb.das.backend.indications.internal;
 
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@NullMarked
 public class RuIndicationTemplateServiceImpl {
+
+    private static final String RESOURCE = "RU indication template";
 
     private final RuIndicationTemplateRepository ruIndicationTemplateRepository;
     private final CompanyAuthorizer companyAuthorizationService;
@@ -24,12 +30,11 @@ public class RuIndicationTemplateServiceImpl {
             .toList();
     }
 
+    /**
+     * @throws NotFoundException when no RU indication template with that id exists or it belongs to another tenant
+     */
     public RuIndicationTemplate getById(Integer id) {
-        Optional<RuIndicationTemplateEntity> optionalRuIndicationTemplate = ruIndicationTemplateRepository.findById(id);
-        return optionalRuIndicationTemplate.map(entity -> {
-            companyAuthorizationService.requireCanAccessTenant(entity.getTenant());
-            return ruIndicationTemplateMapper.toResponse(entity);
-        }).orElse(null);
+        return ruIndicationTemplateMapper.toResponse(findAccessibleById(id));
     }
 
     public RuIndicationTemplate create(RuIndicationTemplateRequest createRequest) {
@@ -38,21 +43,40 @@ public class RuIndicationTemplateServiceImpl {
         return ruIndicationTemplateMapper.toResponse(ruIndicationTemplateRepository.save(entity));
     }
 
+    /**
+     * @throws NotFoundException see {@link #getById(Integer)}
+     */
     public RuIndicationTemplate update(Integer id, RuIndicationTemplateRequest updateRequest) {
-        Optional<RuIndicationTemplateEntity> optional = ruIndicationTemplateRepository.findById(id);
-        if (optional.isEmpty()) {
-            return null;
-        }
-        RuIndicationTemplateEntity old = optional.get();
-        companyAuthorizationService.requireCanAccessTenant(old.getTenant());
+        RuIndicationTemplateEntity old = findAccessibleById(id);
         RuIndicationTemplateEntity updatedEntity = ruIndicationTemplateMapper.updateEntityFromRequest(old, updateRequest, old.getTenant());
         return ruIndicationTemplateMapper.toResponse(ruIndicationTemplateRepository.save(updatedEntity));
     }
 
+    /**
+     * Deletes the accessible RU indication templates among the given ids; unknown ids and ids of other tenants' templates are skipped alike.
+     */
     public void delete(List<Integer> ids) {
-        List<Integer> distinctIds = ids.stream().distinct().toList();
-        ruIndicationTemplateRepository.findAllById(distinctIds)
-            .forEach(ruIndicationTemplate -> companyAuthorizationService.requireCanAccessTenant(ruIndicationTemplate.getTenant()));
-        ruIndicationTemplateRepository.deleteAllById(distinctIds);
+        List<Integer> accessibleIds = ruIndicationTemplateRepository.findAllById(ids.stream().distinct().toList()).stream()
+            .filter(this::canAccess)
+            .map(RuIndicationTemplateEntity::getId)
+            .toList();
+        ruIndicationTemplateRepository.deleteAllById(accessibleIds);
+    }
+
+    private RuIndicationTemplateEntity findAccessibleById(Integer id) {
+        return ruIndicationTemplateRepository.findById(id)
+            .filter(this::canAccess)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
+    }
+
+    /**
+     * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
+     */
+    private boolean canAccess(RuIndicationTemplateEntity entity) {
+        if (companyAuthorizationService.canAccessTenant(entity.getTenant())) {
+            return true;
+        }
+        log.info("{} {} belongs to another tenant, treating it as not found", RESOURCE, entity.getId());
+        return false;
     }
 }

@@ -5,7 +5,6 @@ import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.indications.internal.model.SpecialHoliday;
 import ch.sbb.das.backend.indications.internal.model.SpecialHolidayRequest;
 import ch.sbb.das.backend.indications.internal.model.SpecialHolidayResponse;
@@ -56,9 +55,6 @@ public class SpecialHolidayController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSpecialHolidayById(@PathVariable Integer id) {
         SpecialHoliday specialHoliday = specialHolidayService.getById(id);
-        if (specialHoliday == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHoliday));
     }
 
@@ -82,9 +78,6 @@ public class SpecialHolidayController {
     public ResponseEntity<? extends Response> updateSpecialHoliday(
         @PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest) {
         SpecialHoliday updatedSpecialHoliday = specialHolidayService.update(id, updateRequest);
-        if (updatedSpecialHoliday == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(updatedSpecialHoliday));
     }
 

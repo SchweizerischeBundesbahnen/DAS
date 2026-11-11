@@ -33,5 +33,18 @@ VALUES (1, 'OPERATIONS',
             ]
           }
         ]',
+        '2026-01-01 10:00:00', 'unit_test'),
+       (3, null,
+        'Hinweis 3 (fremd)', 'Text 3 DE', null, null, null, null,
+        '9999',
+        '[]',
+        'CH09999',
+        '[
+          {
+            "validFrom": "2026-01-01",
+            "validTo": "2026-12-31",
+            "weekdays": []
+          }
+        ]',
         '2026-01-01 10:00:00', 'unit_test');
 
