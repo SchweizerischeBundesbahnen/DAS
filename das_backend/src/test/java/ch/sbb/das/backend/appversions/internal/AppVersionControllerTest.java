@@ -51,7 +51,8 @@ class AppVersionControllerTest {
         mockMvc.perform(get(API_APP_VERSIONS + "/" + nonExistingId))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("App version with id " + Integer.MAX_VALUE + " not found"));
     }
 
     @DisplayName("getById_AppVersion_by_id|4uKIx7BmDPkJnaGrkLUV|tests:1406")
@@ -273,7 +274,8 @@ class AppVersionControllerTest {
                     """))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("App version with id " + Integer.MAX_VALUE + " not found"));
     }
 
     @DisplayName("delete_AppVersionById_ok|FzYcq8V3AfBBq1fwbNUk|tests:1406")
