@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.trainjourneypreloader.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.IndexedSegmentProfile;
@@ -66,8 +67,8 @@ class PreloadedSegmentProfileRepositoryIntegrationTest {
 
         assertThat(statistics).extracting(ZipStatistics::getZipKey, ZipStatistics::getEntries, ZipStatistics::getStaleEntries)
             .containsExactlyInAnyOrder(
-                org.assertj.core.groups.Tuple.tuple("Segments_1.zip", 3L, 1L),
-                org.assertj.core.groups.Tuple.tuple("Segments_2026-11-11T10-00-00Z.zip", 1L, 0L));
+                tuple("Segments_1.zip", 3L, 1L),
+                tuple("Segments_2026-11-11T10-00-00Z.zip", 1L, 0L));
         assertThat(underTest.findDistinctZipKeys()).containsExactlyInAnyOrder("Segments_1.zip", "Segments_2026-11-11T10-00-00Z.zip");
     }
 

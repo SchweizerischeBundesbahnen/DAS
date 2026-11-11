@@ -5,9 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -36,13 +38,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -240,7 +244,7 @@ class SegmentProfileStoreTest {
 
         assertThat(published).isEqualTo(3);
         ArgumentCaptor<String> keys = ArgumentCaptor.forClass(String.class);
-        verify(s3Service, org.mockito.Mockito.times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
+        verify(s3Service, times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
         assertThat(keys.getAllValues()).containsExactly(NEW_HOURLY_ZIP, "Segments_2026-11-11T10-30-01Z.zip");
         assertThat(entriesOf(uploadedBytes.getAllValues().get(0)).keySet()).containsExactly("sp/SP_P1_1_0.xml", "sp/SP_P2_1_0.xml");
         assertThat(entriesOf(uploadedBytes.getAllValues().get(1)).keySet()).containsExactly("sp/SP_P3_1_0.xml");
@@ -276,7 +280,7 @@ class SegmentProfileStoreTest {
         underTest.compact();
 
         ArgumentCaptor<String> keys = ArgumentCaptor.forClass(String.class);
-        verify(s3Service, org.mockito.Mockito.times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
+        verify(s3Service, times(2)).uploadZip(keys.capture(), uploadedBytes.capture());
         assertThat(keys.getAllValues()).containsExactly(NEW_PACKED_ZIP, "Segments_2026-11-11T10-30-01Z-packed.zip");
         assertThat(entriesOf(uploadedBytes.getAllValues().get(0)).keySet()).containsExactly("sp/SP_A_1_0.xml", "sp/SP_B_1_0.xml");
         assertThat(entriesOf(uploadedBytes.getAllValues().get(1)).keySet()).containsExactly("sp/SP_C_1_0.xml");
@@ -416,9 +420,9 @@ class SegmentProfileStoreTest {
         return new SegmentProfileIdentification(id, "1", "0", "0085", null);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> java.util.Collection<T> argThatContainsExactlyInAnyOrder(T... expected) {
-        return org.mockito.ArgumentMatchers.argThat(actual -> actual != null && actual.size() == expected.length && actual.containsAll(List.of(expected)));
+    @SafeVarargs
+    private static <T> Collection<T> argThatContainsExactlyInAnyOrder(T... expected) {
+        return argThat(actual -> actual != null && actual.size() == expected.length && actual.containsAll(List.of(expected)));
     }
 
     /** Entries of a zip in order with their content. */
@@ -436,7 +440,7 @@ class SegmentProfileStoreTest {
     private static byte[] zipOf(Map<String, String> entries) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-            for (Map.Entry<String, String> entry : new java.util.TreeMap<>(entries).entrySet()) {
+            for (Map.Entry<String, String> entry : new TreeMap<>(entries).entrySet()) {
                 zos.putNextEntry(new ZipEntry(entry.getKey()));
                 zos.write(entry.getValue().getBytes(StandardCharsets.UTF_8));
                 zos.closeEntry();
