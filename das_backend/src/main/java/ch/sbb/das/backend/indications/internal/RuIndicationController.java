@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.RuIndication;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationMatch;
@@ -49,7 +48,7 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "200", description = "RU indications found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllRuIndications() {
+    public ResponseEntity<RuIndicationResponse> getAllRuIndications() {
         List<RuIndication> ruIndications = ruIndicationService.getAll();
         return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndications));
     }
@@ -60,7 +59,7 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuIndicationById(
+    public ResponseEntity<RuIndicationResponse> getRuIndicationById(
         @PathVariable Integer id) {
         RuIndication ruIndication = ruIndicationService.getById(id);
         return ResponseEntityFactory.createOkResponse(new RuIndicationResponse(ruIndication));
@@ -85,7 +84,7 @@ public class RuIndicationController {
     @ApiResponse(responseCode = "200", description = "RU indication matches found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationMatchResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> findRuIndicationMatches(
+    public ResponseEntity<RuIndicationMatchResponse> findRuIndicationMatches(
         @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage,
         @RequestBody @Valid RuIndicationMatchesRequest filterRequest) {
         List<RuIndicationMatch> ruIndicationMatches = ruIndicationMatchService.findMatches(filterRequest, acceptLanguage);
@@ -98,7 +97,7 @@ public class RuIndicationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuIndication(
+    public ResponseEntity<RuIndicationResponse> updateRuIndication(
         @RequestBody @Valid RuIndicationRequest updateRequest,
         @PathVariable Integer id) {
         RuIndication updatedRuIndication = ruIndicationService.update(id, updateRequest);

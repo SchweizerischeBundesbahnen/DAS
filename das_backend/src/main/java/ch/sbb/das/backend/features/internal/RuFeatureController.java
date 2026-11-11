@@ -29,7 +29,7 @@ public class RuFeatureController {
     @Operation(summary = "Get all RU features.", description = "Returns all RU feature toggles visible for the authorized companies.")
     @ApiResponse(responseCode = "200", description = "RU features found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllRuFeatures() {
+    public ResponseEntity<InternalRuFeatureResponse> getAllRuFeatures() {
         List<InternalRuFeature> ruFeatures = ruFeatureService.getAllForAdmin();
         return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeatures));
     }
@@ -39,7 +39,7 @@ public class RuFeatureController {
     @ApiResponse(responseCode = "200", description = "RU feature found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuFeatureById(
+    public ResponseEntity<InternalRuFeatureResponse> getRuFeatureById(
         @PathVariable Integer id) {
         InternalRuFeature ruFeature = ruFeatureService.getById(id);
         return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature));
@@ -49,7 +49,7 @@ public class RuFeatureController {
     @Operation(summary = "Create a new RU feature.", description = "Creates a new RU feature toggle for a company.")
     @ApiResponse(responseCode = "201", description = "RU feature created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> createRuFeature(
+    public ResponseEntity<InternalRuFeatureResponse> createRuFeature(
         @RequestBody @Valid RuFeatureRequest createRequest) {
         InternalRuFeature ruFeature = ruFeatureService.create(createRequest);
         return ResponseEntityFactory.createCreatedResponse(new InternalRuFeatureResponse(ruFeature));
@@ -60,7 +60,7 @@ public class RuFeatureController {
     @ApiResponse(responseCode = "200", description = "RU feature updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuFeature(
+    public ResponseEntity<InternalRuFeatureResponse> updateRuFeature(
         @PathVariable Integer id,
         @RequestBody @Valid RuFeatureRequest updateRequest) {
         InternalRuFeature ruFeature = ruFeatureService.update(id, updateRequest);

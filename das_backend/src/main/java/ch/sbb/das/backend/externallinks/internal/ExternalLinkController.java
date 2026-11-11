@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +45,7 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "200", description = "External links found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllExternalLinks() {
+    public ResponseEntity<ExternalLinkResponse> getAllExternalLinks() {
         return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLinkService.getAll()));
     }
 
@@ -58,7 +57,7 @@ public class ExternalLinkController {
     @ApiResponse(responseCode = "200", description = "External links found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllExternalLinksByCompanies(
+    public ResponseEntity<ExternalLinkResponse> getAllExternalLinksByCompanies(
         @Parameter(description = CompanyCode.DESCRIPTION, example = "1033")
         @RequestParam
         Set<CompanyCode> companies) {
@@ -71,7 +70,7 @@ public class ExternalLinkController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getExternalLinkById(
+    public ResponseEntity<ExternalLinkResponse> getExternalLinkById(
         @PathVariable
         Integer id) {
         ExternalLink externalLink = externalLinkService.getById(id);
@@ -95,7 +94,7 @@ public class ExternalLinkController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateExternalLink(
+    public ResponseEntity<ExternalLinkResponse> updateExternalLink(
         @RequestBody @Valid
         ExternalLinkRequest updateRequest,
         @PathVariable

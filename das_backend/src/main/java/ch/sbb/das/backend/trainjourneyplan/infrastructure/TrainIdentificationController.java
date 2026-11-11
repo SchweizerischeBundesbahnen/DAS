@@ -3,7 +3,6 @@ package ch.sbb.das.backend.trainjourneyplan.infrastructure;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentificationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +41,7 @@ public class TrainIdentificationController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyMatchResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> matchCompanies(
+    public ResponseEntity<CompanyMatchResponse> matchCompanies(
         @Parameter(description = "The start date of the train journey. Can be specified multiple times. Must be within today +/- 1 day.", required = true, example = "2026-07-10") @RequestParam @NotEmpty Set<LocalDate> startDate,
         @Parameter(description = "The operational train number.", required = true) @RequestParam @NotBlank String operationalTrainNumber) {
 

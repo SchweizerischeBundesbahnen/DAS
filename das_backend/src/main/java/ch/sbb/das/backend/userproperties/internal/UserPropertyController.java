@@ -3,7 +3,6 @@ package ch.sbb.das.backend.userproperties.internal;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +44,7 @@ public class UserPropertyController {
     @ApiResponse(responseCode = "200", description = "User properties found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllUserProperties(
+    public ResponseEntity<UserPropertyResponse> getAllUserProperties(
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         List<UserProperty> properties = userPropertyService.getAllByOid(oid);
@@ -58,7 +57,7 @@ public class UserPropertyController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getUserProperty(
+    public ResponseEntity<UserPropertyResponse> getUserProperty(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
@@ -71,7 +70,7 @@ public class UserPropertyController {
     @ApiResponse(responseCode = "200", description = "User property saved.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> saveUserProperty(
+    public ResponseEntity<UserPropertyResponse> saveUserProperty(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         @RequestBody JsonNode value,
         JwtAuthenticationToken authentication) {

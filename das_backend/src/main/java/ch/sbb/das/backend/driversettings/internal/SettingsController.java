@@ -6,7 +6,6 @@ import ch.sbb.das.backend.appversions.AppVersionService;
 import ch.sbb.das.backend.appversions.CurrentAppVersion;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -49,7 +48,7 @@ public class SettingsController {
     @ApiResponse(responseCode = "200", description = "Settings relevant for DAS-Client.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SettingsResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getSettings(@RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion) {
+    public ResponseEntity<SettingsResponse> getSettings(@RequestHeader(value = "X-App-Version") @Pattern(regexp = SEM_VERSION_PATTERN) String xAppVersion) {
         List<Company> companies = companyService.getAllCompanies();
         List<TourSystem> tourSystems = tourSystemService.getAll();
         List<RuFeature> allFeatures = ruFeatureService.getAll();

@@ -3,7 +3,6 @@ package ch.sbb.das.backend.personalnotes.internal;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +44,7 @@ public class PersonalNoteController {
     @ApiResponse(responseCode = "200", description = "Personal notes found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllPersonalNotes(
+    public ResponseEntity<PersonalNoteResponse> getAllPersonalNotes(
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         List<PersonalNote> notes = personalNoteService.getAllByOid(oid);
@@ -58,7 +57,7 @@ public class PersonalNoteController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getPersonalNote(
+    public ResponseEntity<PersonalNoteResponse> getPersonalNote(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
@@ -71,7 +70,7 @@ public class PersonalNoteController {
     @ApiResponse(responseCode = "200", description = "Personal note saved.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> savePersonalNote(
+    public ResponseEntity<PersonalNoteResponse> savePersonalNote(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         @RequestBody JsonNode value,
         JwtAuthenticationToken authentication) {

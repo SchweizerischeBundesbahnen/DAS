@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.SpecialHoliday;
 import ch.sbb.das.backend.indications.internal.model.SpecialHolidayRequest;
@@ -43,7 +42,7 @@ public class SpecialHolidayController {
     @ApiResponse(responseCode = "200", description = "Special holidays found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllUpcomingSpecialHolidays() {
+    public ResponseEntity<SpecialHolidayResponse> getAllUpcomingSpecialHolidays() {
         List<SpecialHoliday> specialHolidays = specialHolidayService.getAllUpcoming();
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHolidays));
     }
@@ -54,7 +53,7 @@ public class SpecialHolidayController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getSpecialHolidayById(@PathVariable Integer id) {
+    public ResponseEntity<SpecialHolidayResponse> getSpecialHolidayById(@PathVariable Integer id) {
         SpecialHoliday specialHoliday = specialHolidayService.getById(id);
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(specialHoliday));
     }
@@ -76,7 +75,7 @@ public class SpecialHolidayController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateSpecialHoliday(
+    public ResponseEntity<SpecialHolidayResponse> updateSpecialHoliday(
         @PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest) {
         SpecialHoliday updatedSpecialHoliday = specialHolidayService.update(id, updateRequest);
         return ResponseEntityFactory.createOkResponse(new SpecialHolidayResponse(updatedSpecialHoliday));

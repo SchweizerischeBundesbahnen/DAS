@@ -4,7 +4,6 @@ import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
@@ -43,7 +42,7 @@ public class RuIndicationTemplateController {
     @ApiResponse(responseCode = "200", description = "RU indication templates found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllRuIndicationTemplates() {
+    public ResponseEntity<RuIndicationTemplateResponse> getAllRuIndicationTemplates() {
         List<RuIndicationTemplate> ruIndicationTemplates = ruIndicationTemplateService.getAll();
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplates));
     }
@@ -54,7 +53,7 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuIndicationTemplateById(
+    public ResponseEntity<RuIndicationTemplateResponse> getRuIndicationTemplateById(
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.getById(id);
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate));
@@ -77,7 +76,7 @@ public class RuIndicationTemplateController {
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuIndicationTemplate(
+    public ResponseEntity<RuIndicationTemplateResponse> updateRuIndicationTemplate(
         @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.update(id, updateRequest);
