@@ -6,7 +6,7 @@ import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Problem;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.common.SFERA;
@@ -56,8 +56,7 @@ public class FormationController {
             schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
     }, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FormationResponse.class)))
     @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content /* actually empty body/content */)
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+    @ApiNotFoundResponse
     @ApiErrorResponses
     @GetMapping(path = API_FORMATIONS)
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,

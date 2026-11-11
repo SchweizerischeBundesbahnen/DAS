@@ -2,6 +2,7 @@ package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -51,7 +52,7 @@ public class SpecialHolidayController {
     @Operation(summary = "Get special holiday by id.", description = "Returns a single special holiday by its id.")
     @ApiResponse(responseCode = "200", description = "Special holiday found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Special holiday not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getSpecialHolidayById(@PathVariable Integer id) {
         SpecialHoliday specialHoliday = specialHolidayService.getById(id);
@@ -73,7 +74,7 @@ public class SpecialHolidayController {
     @Operation(summary = "Update special holiday by id.", description = "Updates a single special holiday by its id.")
     @ApiResponse(responseCode = "200", description = "Special holiday updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SpecialHolidayResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Special holiday not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateSpecialHoliday(
         @PathVariable Integer id, @RequestBody @Valid SpecialHolidayRequest updateRequest) {

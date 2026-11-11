@@ -2,6 +2,7 @@ package ch.sbb.das.backend.externallinks.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -68,7 +69,7 @@ public class ExternalLinkController {
     @Operation(summary = "Get external link by id.", description = "Returns a single external link by its id.")
     @ApiResponse(responseCode = "200", description = "External link found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
-    @ApiResponse(responseCode = "404", description = "External link not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getExternalLinkById(
         @PathVariable
@@ -92,7 +93,7 @@ public class ExternalLinkController {
     @Operation(summary = "Update external link by id.", description = "Updates a single external link by its id.")
     @ApiResponse(responseCode = "200", description = "External link updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ExternalLinkResponse.class)))
-    @ApiResponse(responseCode = "404", description = "External link not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateExternalLink(
         @RequestBody @Valid

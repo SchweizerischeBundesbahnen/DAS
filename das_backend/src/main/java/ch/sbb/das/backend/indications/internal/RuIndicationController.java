@@ -2,6 +2,7 @@ package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -57,7 +58,7 @@ public class RuIndicationController {
     @Operation(summary = "Get RU indication by id.", description = "Returns a single RU indication by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getRuIndicationById(
         @PathVariable Integer id) {
@@ -95,7 +96,7 @@ public class RuIndicationController {
     @Operation(summary = "Update RU indication by id.", description = "Updates a single RU indication by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateRuIndication(
         @RequestBody @Valid RuIndicationRequest updateRequest,

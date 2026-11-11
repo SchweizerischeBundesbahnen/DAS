@@ -2,6 +2,7 @@ package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
@@ -51,7 +52,7 @@ public class RuIndicationTemplateController {
     @Operation(summary = "Get RU indication template by id.", description = "Returns a single RU indication template by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication template found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication template not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getRuIndicationTemplateById(
         @PathVariable Integer id) {
@@ -74,7 +75,7 @@ public class RuIndicationTemplateController {
     @Operation(summary = "Update RU indication template by id.", description = "Updates a single RU indication template by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication template updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication template not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateRuIndicationTemplate(
         @RequestBody @Valid RuIndicationTemplateRequest updateRequest,

@@ -2,6 +2,7 @@ package ch.sbb.das.backend.companies.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.companies.Company;
@@ -67,7 +68,7 @@ public class CompanyController {
     @GetMapping(API_COMPANIES_ID)
     @Operation(summary = "Get company by id.", description = "Returns a single company by its id.")
     @ApiResponse(responseCode = "200", description = "Company found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getCompanyById(
         @PathVariable Integer id) {
@@ -88,7 +89,7 @@ public class CompanyController {
     @PutMapping(API_COMPANIES_ID)
     @Operation(summary = "Update company by id.", description = "Updates a company by its id.")
     @ApiResponse(responseCode = "200", description = "Company updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateCompany(
         @PathVariable Integer id,
@@ -100,7 +101,6 @@ public class CompanyController {
     @DeleteMapping(API_COMPANIES_ID)
     @Operation(summary = "Delete company by id.", description = "Deletes a company by its id.")
     @ApiResponse(responseCode = "204", description = "Company deleted.")
-    @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<Void> deleteCompany(
         @PathVariable Integer id) {

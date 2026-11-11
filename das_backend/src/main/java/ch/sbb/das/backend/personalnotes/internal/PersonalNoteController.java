@@ -2,6 +2,7 @@ package ch.sbb.das.backend.personalnotes.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,8 +56,7 @@ public class PersonalNoteController {
     @Operation(summary = "Get a personal note by key.", description = "Returns a single note value for the authenticated user by key.")
     @ApiResponse(responseCode = "200", description = "Personal note found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ch.sbb.das.backend.common.Problem.class)))
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getPersonalNote(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,

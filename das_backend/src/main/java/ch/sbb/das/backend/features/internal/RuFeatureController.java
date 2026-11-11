@@ -37,7 +37,7 @@ public class RuFeatureController {
     @GetMapping(API_RU_FEATURES_ID)
     @Operation(summary = "Get RU feature by id.", description = "Returns a single RU feature toggle by its id.")
     @ApiResponse(responseCode = "200", description = "RU feature found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU feature not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getRuFeatureById(
         @PathVariable Integer id) {
@@ -58,7 +58,7 @@ public class RuFeatureController {
     @PutMapping(API_RU_FEATURES_ID)
     @Operation(summary = "Update RU feature by id.", description = "Updates a single RU feature toggle by its id.")
     @ApiResponse(responseCode = "200", description = "RU feature updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU feature not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
     public ResponseEntity<? extends Response> updateRuFeature(
         @PathVariable Integer id,
