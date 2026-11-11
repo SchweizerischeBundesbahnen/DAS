@@ -17,15 +17,11 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PahoMqttClient;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SFERAB2GRequestMessage;
-import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfileIdentificationComplexType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -121,7 +117,7 @@ class PreloadIntegrationTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        PreloadResult result = underTest.preload(trainId);
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
 
         PreloadResult.Success success = (PreloadResult.Success) result;
@@ -134,49 +130,6 @@ class PreloadIntegrationTest {
 
         verify(mqttClient, times(1)).unsubscribe(anyString());
         verify(mqttClient, times(5)).publish(anyString(), anyString());
-    }
-
-    @DisplayName("preload_whenSegmentProfilesAlreadyFetchedForAnotherTrain_doesNotRefetchThem|mIppuEpOztKFstIdQb4o|tests:1648")
-    @Test
-    void preload_whenSegmentProfilesAlreadyFetchedForAnotherTrain_doesNotRefetchThem() throws Exception {
-        Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap = new HashMap<>();
-        segmentProfilesMap.put(new SegmentProfileIdentification("SP_1", "1", null, "0011", null), new SegmentProfile());
-        for (String lrSpId : List.of("LR_1_DE", "LR_1_FR", "LR_1_IT", "LR_2_DE", "LR_2_FR", "LR_2_IT")) {
-            segmentProfilesMap.put(new SegmentProfileIdentification(lrSpId, "0", null, "0011", null), new SegmentProfile());
-        }
-
-        AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
-        AtomicInteger publishCount = new AtomicInteger(0);
-
-        doAnswer(invocation -> {
-            listenerRef.set(invocation.getArgument(1, IMqttMessageListener.class));
-            return null;
-        }).when(mqttClient).subscribe(anyString(), any(IMqttMessageListener.class));
-
-        doAnswer(invocation -> {
-            String publishedXml = invocation.getArgument(1, String.class);
-            Object parsed = xmlHelper.xmlToObject(publishedXml);
-            if (parsed instanceof SFERAB2GRequestMessage req) {
-                String correlationId = req.getMessageHeader().getMessageID();
-                int step = publishCount.incrementAndGet();
-                // No SP requests expected because all are already cached: HS -> JP -> TC.
-                String reply = switch (step) {
-                    case 1 -> sferaReply("hs_ack_reply.xml", correlationId);
-                    case 2 -> sferaReply("jp_reply.xml", correlationId);
-                    case 3 -> sferaReply("tc_reply.xml", correlationId);
-                    default -> throw new IllegalStateException("Unexpected publish step (no SP/LR fetch expected): " + step);
-                };
-                listenerRef.get().messageArrived("ignored", new MqttMessage(reply.getBytes()));
-            }
-            return null;
-        }).when(mqttClient).publish(anyString(), anyString());
-
-        TrainIdentification trainId = new TrainIdentification(0, "12345", OffsetDateTime.now(), Set.of(new CompanyCode("1285")));
-
-        PreloadResult result = underTest.preload(trainId, segmentProfilesMap);
-        assertThat(result).isInstanceOf(PreloadResult.Success.class);
-
-        verify(mqttClient, times(3)).publish(anyString(), anyString());
     }
 
     @DisplayName("preload_whenReferencedSpsAlreadyPreloaded_asksTheStoreForTheMissingOnesAndFetchesNone|TuqreLlMNoUauWvKixs1|tests:1648")
@@ -210,7 +163,7 @@ class PreloadIntegrationTest {
 
         TrainIdentification trainId = new TrainIdentification(0, "12345", OffsetDateTime.now(), Set.of(new CompanyCode("1285")));
 
-        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        PreloadResult result = underTest.preload(trainId);
         assertThat(result).isInstanceOf(PreloadResult.Success.class);
 
         verify(mqttClient, times(3)).publish(anyString(), anyString());
@@ -253,7 +206,7 @@ class PreloadIntegrationTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        PreloadResult result = underTest.preload(trainId);
         assertThat(result).isInstanceOf(PreloadResult.Error.class);
         PreloadResult.Error error = (PreloadResult.Error) result;
         assertThat(error.message()).isEqualTo("Handshake request G2B error: 51, 54");
@@ -297,7 +250,7 @@ class PreloadIntegrationTest {
                 OffsetDateTime.now(),
                 Set.of(new CompanyCode("1285")));
 
-        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        PreloadResult result = underTest.preload(trainId);
         assertThat(result).isInstanceOf(PreloadResult.Error.class);
         PreloadResult.Error error = (PreloadResult.Error) result;
         assertThat(error.message()).isEqualTo("Handshake request G2B error: 51");

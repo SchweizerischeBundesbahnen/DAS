@@ -182,6 +182,15 @@ trainjourneypreloader:
     max: ${PRELOAD_RETRY_BACKOFF_MAX:PT1H}
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
+  segment-profiles:
+    # a segment profile no journey in the preload window referenced for this long is stale and evicted by the next compaction
+    stale-after: ${PRELOAD_SP_STALE_AFTER:P30D}
+    # a frozen segment zip whose share of stale entries is over this is rebuilt with its live entries only
+    rebuild-stale-share: ${PRELOAD_SP_REBUILD_STALE_SHARE:0.5}
+    # the open segment zip is frozen and a new one opened once it is older than this
+    open-zip-max-age: ${PRELOAD_SP_OPEN_ZIP_MAX_AGE:PT1H}
+    # frozen hourly segment zips older than this are packed together
+    pack-after: ${PRELOAD_SP_PACK_AFTER:PT24H}
 
 proxy:
   base-url: ${PROXY_BASE_URL}

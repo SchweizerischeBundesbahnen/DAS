@@ -23,7 +23,6 @@ import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacter
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -74,7 +73,7 @@ public class SferaService implements JourneyFetch {
     }
 
     @Override
-    public PreloadResult preload(TrainIdentification trainId, Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap) {
+    public PreloadResult preload(TrainIdentification trainId) {
         try {
             mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
@@ -105,7 +104,6 @@ public class SferaService implements JourneyFetch {
             }
 
             Set<SegmentProfileIdentification> spIds = jp.getSegmentProfileReferences().stream().map(SegmentProfileIdentification::from).collect(Collectors.toSet());
-            spIds.removeIf(segmentProfilesMap::containsKey);
 
             List<SegmentProfile> segmentProfiles;
             try {
@@ -115,7 +113,7 @@ public class SferaService implements JourneyFetch {
             }
 
             try {
-                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles, segmentProfilesMap));
+                segmentProfiles.addAll(requestLocalRegulationSps(trainId, segmentProfiles));
             } catch (SegmentProfileMissingException e) {
                 return terminateSessionWithResult(trainId, new PreloadResult.Error(e.getMessage()));
             }
@@ -177,13 +175,11 @@ public class SferaService implements JourneyFetch {
         return allSegmentProfiles;
     }
 
-    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles,
-        Map<SegmentProfileIdentification, SegmentProfile> segmentProfilesMap)
+    private List<SegmentProfile> requestLocalRegulationSps(TrainIdentification trainId, List<SegmentProfile> regularSegmentProfiles)
         throws ExecutionException, InterruptedException, MqttException, SegmentProfileMissingException {
 
         Set<SegmentProfileIdentification> localRegulationSpIds = new HashSet<>();
         regularSegmentProfiles.forEach(sp -> localRegulationSpIds.addAll(LocalRegulations.extractSpIds(sp)));
-        localRegulationSpIds.removeIf(segmentProfilesMap::containsKey);
         if (localRegulationSpIds.isEmpty()) {
             return List.of();
         }
