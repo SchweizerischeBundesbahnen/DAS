@@ -4,6 +4,7 @@ import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.A
 import static ch.sbb.das.backend.externallinks.internal.ExternalLinkController.API_DRIVER_EXTERNAL_LINKS;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
+import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,14 +113,16 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.title").value("No results found"));
     }
 
-    @DisplayName("getExternalLinkById_forbidden_existingCompanyNotAuthorized|neiF4fIakvVLF515eJlG|tests:246")
+    @DisplayName("getExternalLinkById_notFound_existingCompanyNotAuthorized|neiF4fIakvVLF515eJlG|tests:246,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
-    void getExternalLinkById_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void getExternalLinkById_notFound_existingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/4"))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("External link with id 4 not found"));
     }
 
     @DisplayName("createExternalLink_ok|Z93QSSXFtXJeFDUpsS4U|tests:246")
@@ -323,11 +327,11 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> fr.title=must not be blank"));
     }
 
-    @DisplayName("updateExternalLink_forbidden_existingCompanyNotAuthorized|eHGjf7POcW3CbIXZyHbt|tests:246")
+    @DisplayName("updateExternalLink_notFound_existingCompanyNotAuthorized|eHGjf7POcW3CbIXZyHbt|tests:246,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
-    void updateExternalLink_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void updateExternalLink_notFound_existingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(put(API_ADMIN_EXTERNAL_LINKS + "/4")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -337,8 +341,10 @@ class ExternalLinkControllerTest {
                         "fr": { "title": "Modifié", "link": "https://bls.ch" }
                     }
                     """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("External link with id 4 not found"));
     }
 
     @DisplayName("deleteExternalLinkByIds_ok|NnXvwxshpTclWRhXQAR8|tests:246")
@@ -381,19 +387,26 @@ class ExternalLinkControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ids=must not be empty"));
     }
 
-    @DisplayName("deleteExternalLinkByIds_forbidden_existingCompanyNotAuthorized|laCIGDw6JmHNAwOdqr7S|tests:246")
+    @DisplayName("deleteExternalLinkByIds_noContent_skipsExistingCompanyNotAuthorized|laCIGDw6JmHNAwOdqr7S|tests:246,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createExternalLinks.sql")
-    void deleteExternalLinkByIds_forbidden_existingCompanyNotAuthorized() throws Exception {
+    void deleteExternalLinkByIds_noContent_skipsExistingCompanyNotAuthorized() throws Exception {
         mockMvc.perform(delete(API_ADMIN_EXTERNAL_LINKS)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     {
-                        "ids": [4]
+                        "ids": [1, 4, 99]
                     }
                     """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/1"))
+            .andExpect(status().isNotFound());
+
+        mockMvc.perform(get(API_ADMIN_EXTERNAL_LINKS + "/4")
+                .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(4));
     }
 }

@@ -1,17 +1,22 @@
 package ch.sbb.das.backend.externallinks.internal;
 
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@NullMarked
 public class ExternalLinkServiceImpl {
+
+    private static final String RESOURCE = "External link";
 
     private final ExternalLinkRepository externalLinkRepository;
     private final CompanyAuthorizer companyAuthorizationService;
@@ -31,14 +36,11 @@ public class ExternalLinkServiceImpl {
             .toList();
     }
 
+    /**
+     * @throws NotFoundException when no external link with that id exists or it belongs to companies the current tenant may not access
+     */
     ExternalLink getById(Integer id) {
-        return externalLinkRepository.findById(id)
-            .map(externalLink -> {
-                companyAuthorizationService.requireCanAccessCompanies(externalLink.getCompanies());
-                return externalLink;
-            })
-            .map(externalLinkMapper::toResponse)
-            .orElse(null);
+        return externalLinkMapper.toResponse(findAccessibleById(id));
     }
 
     ExternalLink create(ExternalLinkRequest externalLinkRequest) {
@@ -47,23 +49,41 @@ public class ExternalLinkServiceImpl {
         return externalLinkMapper.toResponse(externalLinkRepository.save(entity));
     }
 
+    /**
+     * @throws NotFoundException see {@link #getById(Integer)}
+     */
     ExternalLink update(Integer id, ExternalLinkRequest externalLinkRequest) {
-        Optional<ExternalLinkEntity> externalLink = externalLinkRepository.findById(id);
-        if (externalLink.isEmpty()) {
-            return null;
-        }
-        ExternalLinkEntity entity = externalLink.get();
-        companyAuthorizationService.requireCanAccessCompanies(entity.getCompanies());
+        ExternalLinkEntity entity = findAccessibleById(id);
         companyAuthorizationService.requireCanAccessCompanies(externalLinkRequest.companies());
         externalLinkMapper.updateEntityFromRequest(entity, externalLinkRequest);
         return externalLinkMapper.toResponse(externalLinkRepository.save(entity));
     }
 
+    /**
+     * Deletes the accessible external links among the given ids; unknown ids and ids of other tenants' external links are skipped alike.
+     */
     void deleteAllById(List<Integer> ids) {
-        Set<CompanyCode> companies = externalLinkRepository.findAllById(ids).stream()
-            .flatMap(externalLink -> externalLink.getCompanies().stream())
-            .collect(Collectors.toSet());
-        companyAuthorizationService.requireCanAccessCompanies(companies);
-        externalLinkRepository.deleteAllById(ids);
+        List<Integer> accessibleIds = externalLinkRepository.findAllById(ids).stream()
+            .filter(this::canAccess)
+            .map(ExternalLinkEntity::getId)
+            .toList();
+        externalLinkRepository.deleteAllById(accessibleIds);
+    }
+
+    private ExternalLinkEntity findAccessibleById(Integer id) {
+        return externalLinkRepository.findById(id)
+            .filter(this::canAccess)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
+    }
+
+    /**
+     * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
+     */
+    private boolean canAccess(ExternalLinkEntity entity) {
+        if (companyAuthorizationService.canAccessCompanies(entity.getCompanies())) {
+            return true;
+        }
+        log.info("{} {} belongs to companies outside the current tenant, treating it as not found", RESOURCE, entity.getId());
+        return false;
     }
 }

@@ -5,7 +5,6 @@ import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -75,9 +74,6 @@ public class ExternalLinkController {
         @PathVariable
         Integer id) {
         ExternalLink externalLink = externalLinkService.getById(id);
-        if (externalLink == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink));
     }
 
@@ -104,9 +100,6 @@ public class ExternalLinkController {
         @PathVariable
         Integer id) {
         ExternalLink externalLink = externalLinkService.update(id, updateRequest);
-        if (externalLink == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new ExternalLinkResponse(externalLink));
     }
 
