@@ -81,7 +81,8 @@ class TrainIdentificationControllerTest {
                 .param("operationalTrainNumber", "123"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 123 starting on " + TODAY + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_noMatchOnDate_returns404|KZgqhcdiR8MWSgn35uw5|tests:2136")
@@ -93,7 +94,8 @@ class TrainIdentificationControllerTest {
                 .param("operationalTrainNumber", "728"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 728 starting on " + TODAY.minusDays(1) + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_observerRole_isAllowed|W6VgIt7aPqcOqOrJNDHU|tests:2136")
