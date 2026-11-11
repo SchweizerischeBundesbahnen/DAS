@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.function.Predicate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -179,6 +181,41 @@ class CompanyAuthorizerTest {
         boolean result = underTest.canAccessCompanies(Set.of(COMPANY_A, COMPANY_B));
 
         assertThat(result).isFalse();
+    }
+
+    @Test
+    void companyAccessCheck_resolvesTenantOnce_forManyCompanySets() {
+        mockSecurityContxt(mockJwt());
+        Tenant tenant = tenantWithCompanies("t1", Set.of(COMPANY_A));
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenant);
+
+        Predicate<Set<CompanyCode>> canAccess = underTest.companyAccessCheck();
+
+        assertThat(canAccess.test(Set.of(COMPANY_A))).isTrue();
+        assertThat(canAccess.test(Set.of(COMPANY_B))).isFalse();
+        assertThat(canAccess.test(Set.of())).isFalse();
+        verify(companyService, times(1)).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
+    }
+
+    @Test
+    void companyAccessCheck_doesNotResolveTenant_whenNeverTested() {
+        mockSecurityContxt(mockJwt());
+
+        underTest.companyAccessCheck();
+
+        verifyNoInteractions(companyService);
+    }
+
+    @Test
+    void tenantAccessCheck_resolvesTenantOnce_forManyTenantNames() {
+        mockSecurityContxt(mockJwt());
+        when(companyService.getTenantByIssuerUri(EXAMPLE_ISSUER_URL)).thenReturn(tenantWithCompanies("t1", Set.of(COMPANY_A)));
+
+        Predicate<String> canAccess = underTest.tenantAccessCheck();
+
+        assertThat(canAccess.test("t1")).isTrue();
+        assertThat(canAccess.test("t2")).isFalse();
+        verify(companyService, times(1)).getTenantByIssuerUri(EXAMPLE_ISSUER_URL);
     }
 
     @Test

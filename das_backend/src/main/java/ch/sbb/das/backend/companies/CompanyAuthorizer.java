@@ -3,7 +3,9 @@ package ch.sbb.das.backend.companies;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,14 +47,30 @@ public class CompanyAuthorizer {
      * @return {@code true} if all requested codes are authorized; otherwise {@code false}
      */
     public boolean canAccessCompanies(Set<CompanyCode> companies) {
-        if (CollectionUtils.isEmpty(companies)) {
-            return false;
-        }
-        Set<CompanyCode> authorizedCompanies = authorizedCompanies();
-        if (authorizedCompanies.isEmpty()) {
-            return false;
-        }
-        return authorizedCompanies.containsAll(companies);
+        return companyAccessCheck().test(companies);
+    }
+
+    /**
+     * Same decision as {@link #canAccessCompanies(Set)} for many company sets at once: the authenticated tenant is resolved at most once, on the first
+     * test, instead of once per entity. Meant for one request, e.g. filtering a batch; not thread-safe.
+     *
+     * @return a check that answers {@code true} if all company codes of the tested set are authorized; otherwise {@code false}
+     */
+    public Predicate<Set<CompanyCode>> companyAccessCheck() {
+        return new Predicate<>() {
+            private Set<CompanyCode> authorizedCompanies;
+
+            @Override
+            public boolean test(Set<CompanyCode> companies) {
+                if (CollectionUtils.isEmpty(companies)) {
+                    return false;
+                }
+                if (authorizedCompanies == null) {
+                    authorizedCompanies = authorizedCompanies();
+                }
+                return !authorizedCompanies.isEmpty() && authorizedCompanies.containsAll(companies);
+            }
+        };
     }
 
     /**
@@ -111,8 +129,27 @@ public class CompanyAuthorizer {
      * @return {@code true} if a tenant can be resolved and it matches; otherwise {@code false}
      */
     public boolean canAccessTenant(String tenantName) {
-        String currentTenantName = currentTenantName();
-        return currentTenantName != null && Objects.equals(currentTenantName, tenantName);
+        return tenantAccessCheck().test(tenantName);
+    }
+
+    /**
+     * Same decision as {@link #canAccessTenant(String)} for many tenant names at once: the authenticated tenant is resolved at most once, on the first
+     * test. Meant for one request, e.g. filtering a batch; not thread-safe.
+     *
+     * @return a check that answers {@code true} if a tenant can be resolved and it matches the tested name; otherwise {@code false}
+     */
+    public Predicate<String> tenantAccessCheck() {
+        return new Predicate<>() {
+            private Optional<String> currentTenantName;
+
+            @Override
+            public boolean test(String tenantName) {
+                if (currentTenantName == null) {
+                    currentTenantName = Optional.ofNullable(currentTenantName());
+                }
+                return currentTenantName.isPresent() && Objects.equals(currentTenantName.get(), tenantName);
+            }
+        };
     }
 
     /**

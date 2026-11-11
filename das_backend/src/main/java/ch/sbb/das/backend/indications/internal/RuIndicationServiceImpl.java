@@ -8,6 +8,7 @@ import ch.sbb.das.backend.indications.internal.model.RuIndicationRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
@@ -64,8 +65,9 @@ public class RuIndicationServiceImpl {
      * Deletes the accessible RU indications among the given ids; unknown ids and ids of other tenants' RU indications are skipped alike.
      */
     public void delete(List<Integer> ids) {
+        Predicate<Set<CompanyCode>> canAccessCompanies = companyAuthorizationService.companyAccessCheck(); // resolves the tenant once for the whole batch
         List<Integer> accessibleIds = ruIndicationRepository.findAllById(ids.stream().distinct().toList()).stream()
-            .filter(this::canAccess)
+            .filter(entity -> canAccess(entity, canAccessCompanies))
             .map(RuIndicationEntity::getId)
             .toList();
         ruIndicationRepository.deleteAllById(accessibleIds);
@@ -85,7 +87,11 @@ public class RuIndicationServiceImpl {
      * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
      */
     private boolean canAccess(RuIndicationEntity entity) {
-        if (companyAuthorizationService.canAccessCompanies(entity.getCompanies())) {
+        return canAccess(entity, companyAuthorizationService::canAccessCompanies);
+    }
+
+    private boolean canAccess(RuIndicationEntity entity, Predicate<Set<CompanyCode>> canAccessCompanies) {
+        if (canAccessCompanies.test(entity.getCompanies())) {
             return true;
         }
         log.info("{} {} belongs to companies outside the current tenant, treating it as not found", RESOURCE, entity.getId());

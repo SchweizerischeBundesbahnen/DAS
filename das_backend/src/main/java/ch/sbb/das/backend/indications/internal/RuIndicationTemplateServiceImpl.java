@@ -5,6 +5,7 @@ import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import java.util.List;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
@@ -60,8 +61,9 @@ public class RuIndicationTemplateServiceImpl {
      * Deletes the accessible RU indication templates among the given ids; unknown ids and ids of other tenants' templates are skipped alike.
      */
     public void delete(List<Integer> ids) {
+        Predicate<String> canAccessTenant = companyAuthorizationService.tenantAccessCheck(); // resolves the tenant once for the whole batch
         List<Integer> accessibleIds = ruIndicationTemplateRepository.findAllById(ids.stream().distinct().toList()).stream()
-            .filter(this::canAccess)
+            .filter(entity -> canAccess(entity, canAccessTenant))
             .map(RuIndicationTemplateEntity::getId)
             .toList();
         ruIndicationTemplateRepository.deleteAllById(accessibleIds);
@@ -77,7 +79,11 @@ public class RuIndicationTemplateServiceImpl {
      * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
      */
     private boolean canAccess(RuIndicationTemplateEntity entity) {
-        if (companyAuthorizationService.canAccessTenant(entity.getTenant())) {
+        return canAccess(entity, companyAuthorizationService::canAccessTenant);
+    }
+
+    private boolean canAccess(RuIndicationTemplateEntity entity, Predicate<String> canAccessTenant) {
+        if (canAccessTenant.test(entity.getTenant())) {
             return true;
         }
         log.info("{} {} belongs to another tenant, treating it as not found", RESOURCE, entity.getId());

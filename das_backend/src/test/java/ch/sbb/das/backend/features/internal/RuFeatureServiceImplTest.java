@@ -49,6 +49,7 @@ class RuFeatureServiceImplTest {
             new Company(COMPANY_1111, new CompanyShortName("MOCK_A")),
             new Company(COMPANY_9999, new CompanyShortName("MOCK_OTHER"))));
         when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_1111))).thenReturn(true);
+        when(companyAuthorizer.companyAccessCheck()).thenReturn(companies -> companies.equals(Set.of(COMPANY_1111)));
     }
 
     private RuFeatureEntity entity(Integer id, CompanyCode companyCode, String key, boolean enabled) {
@@ -263,7 +264,6 @@ class RuFeatureServiceImplTest {
         RuFeatureEntity ownEntity = entity(1, COMPANY_1111, "WARNAPP", true);
         RuFeatureEntity otherEntity = entity(3, COMPANY_9999, "WARNAPP", true);
         when(ruFeatureRepository.findAllById(List.of(1, 3))).thenReturn(List.of(ownEntity, otherEntity));
-        when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_9999))).thenReturn(false);
 
         underTest.deleteAllByIds(List.of(1, 3));
 

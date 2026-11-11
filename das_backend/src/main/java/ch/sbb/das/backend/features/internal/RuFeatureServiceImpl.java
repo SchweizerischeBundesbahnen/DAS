@@ -11,6 +11,7 @@ import ch.sbb.das.backend.features.RuFeature;
 import ch.sbb.das.backend.features.RuFeatureService;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
@@ -83,8 +84,9 @@ public class RuFeatureServiceImpl implements RuFeatureService {
      * Deletes the accessible RU features among the given ids; unknown ids and ids of other tenants' RU features are skipped alike.
      */
     void deleteAllByIds(List<Integer> ids) {
+        Predicate<Set<CompanyCode>> canAccessCompanies = companyAuthorizer.companyAccessCheck(); // resolves the tenant once for the whole batch
         List<Integer> accessibleIds = ruFeatureRepository.findAllById(ids.stream().distinct().toList()).stream()
-            .filter(this::canAccess)
+            .filter(entity -> canAccess(entity, canAccessCompanies))
             .map(RuFeatureEntity::getId)
             .toList();
         ruFeatureRepository.deleteAllById(accessibleIds);
@@ -100,7 +102,11 @@ public class RuFeatureServiceImpl implements RuFeatureService {
      * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
      */
     private boolean canAccess(RuFeatureEntity entity) {
-        if (companyAuthorizer.canAccessCompanies(Set.of(entity.getCompanyCode()))) {
+        return canAccess(entity, companyAuthorizer::canAccessCompanies);
+    }
+
+    private boolean canAccess(RuFeatureEntity entity, Predicate<Set<CompanyCode>> canAccessCompanies) {
+        if (canAccessCompanies.test(Set.of(entity.getCompanyCode()))) {
             return true;
         }
         log.info("{} {} belongs to a company outside the current tenant, treating it as not found", RESOURCE, entity.getId());

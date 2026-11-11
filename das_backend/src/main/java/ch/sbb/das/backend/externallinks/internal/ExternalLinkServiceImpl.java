@@ -5,6 +5,7 @@ import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
@@ -67,8 +68,9 @@ public class ExternalLinkServiceImpl {
      * Deletes the accessible external links among the given ids; unknown ids and ids of other tenants' external links are skipped alike.
      */
     void deleteAllById(List<Integer> ids) {
+        Predicate<Set<CompanyCode>> canAccessCompanies = companyAuthorizationService.companyAccessCheck(); // resolves the tenant once for the whole batch
         List<Integer> accessibleIds = externalLinkRepository.findAllById(ids).stream()
-            .filter(this::canAccess)
+            .filter(entity -> canAccess(entity, canAccessCompanies))
             .map(ExternalLinkEntity::getId)
             .toList();
         externalLinkRepository.deleteAllById(accessibleIds);
@@ -84,7 +86,11 @@ public class ExternalLinkServiceImpl {
      * Existing entities of other tenants are treated like missing ones so that ids cannot be probed; the log keeps the denial visible.
      */
     private boolean canAccess(ExternalLinkEntity entity) {
-        if (companyAuthorizationService.canAccessCompanies(entity.getCompanies())) {
+        return canAccess(entity, companyAuthorizationService::canAccessCompanies);
+    }
+
+    private boolean canAccess(ExternalLinkEntity entity, Predicate<Set<CompanyCode>> canAccessCompanies) {
+        if (canAccessCompanies.test(entity.getCompanies())) {
             return true;
         }
         log.info("{} {} belongs to companies outside the current tenant, treating it as not found", RESOURCE, entity.getId());
