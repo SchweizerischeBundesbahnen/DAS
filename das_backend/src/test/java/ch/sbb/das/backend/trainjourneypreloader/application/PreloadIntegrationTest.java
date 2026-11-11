@@ -268,6 +268,51 @@ class PreloadIntegrationTest {
         assertThat(result).isInstanceOf(PreloadResult.Error.class);
         PreloadResult.Error error = (PreloadResult.Error) result;
         assertThat(error.message()).isEqualTo("Handshake request G2B error: 51, 54");
+        assertThat(error.g2bCode()).isEqualTo("51, 54");
+        assertThat(error.ex()).isNull();
+    }
+
+    @DisplayName("preload_whenHandshakeErrorsWithoutCode_leavesTheMissingCodeOut|Kq7mN2pR9sT4vW6xY8zA|tests:2660")
+    @Test
+    void preload_whenHandshakeErrorsWithoutCode_leavesTheMissingCodeOut() throws Exception {
+        AtomicReference<IMqttMessageListener> listenerRef = new AtomicReference<>();
+        AtomicReference<String> lastPublishedXml = new AtomicReference<>();
+
+        doAnswer(invocation -> {
+            IMqttMessageListener listener = invocation.getArgument(1, IMqttMessageListener.class);
+            listenerRef.set(listener);
+            return null;
+        })
+            .when(mqttClient)
+            .subscribe(anyString(), any(IMqttMessageListener.class));
+
+        doAnswer(invocation -> {
+            lastPublishedXml.set(invocation.getArgument(1, String.class));
+
+            Object parsed = xmlHelper.xmlToObject(lastPublishedXml.get());
+            if (parsed instanceof SFERAB2GRequestMessage req) {
+                String correlationId = req.getMessageHeader().getMessageID();
+                String reply = sferaReply("hs_error_uncoded.xml", correlationId);
+                listenerRef.get().messageArrived("ignored", new MqttMessage(reply.getBytes()));
+            }
+
+            return null;
+        })
+            .when(mqttClient)
+            .publish(anyString(), anyString());
+
+        TrainIdentification trainId =
+            new TrainIdentification(
+                0,
+                "12345",
+                OffsetDateTime.now(),
+                Set.of(new CompanyCode("1285")));
+
+        PreloadResult result = underTest.preload(trainId, new HashMap<>());
+        assertThat(result).isInstanceOf(PreloadResult.Error.class);
+        PreloadResult.Error error = (PreloadResult.Error) result;
+        assertThat(error.message()).isEqualTo("Handshake request G2B error: 51");
+        assertThat(error.g2bCode()).isEqualTo("51");
         assertThat(error.ex()).isNull();
     }
 }

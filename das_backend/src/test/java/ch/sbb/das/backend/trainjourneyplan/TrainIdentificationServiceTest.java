@@ -206,7 +206,7 @@ class TrainIdentificationServiceTest {
     }
 
     @Test
-    void getNewTrainIdentificationsBetween_returnsFilteredAndSortedResults() {
+    void getTrainIdentificationsBetween_returnsFilteredAndSortedResults() {
         // Given
         OffsetDateTime after = OffsetDateTime.of(2025, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime before = OffsetDateTime.of(2025, 6, 16, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -225,25 +225,28 @@ class TrainIdentificationServiceTest {
             .companies("MOCK_B")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before))
+        when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before))
             .thenReturn(List.of(entity1, entity2));
 
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
-            .thenReturn(Optional.of(new CompanyCode("1111")));
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_B")))
-            .thenReturn(Optional.of(new CompanyCode("2222")));
+        when(companyService.getAllCompanies()).thenReturn(List.of(
+            new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A")),
+            new Company(new CompanyCode("2222"), new CompanyShortName("MOCK_B"))));
 
         // When
-        List<TrainIdentification> result = underTest.getNewTrainIdentificationsBetween(after, before);
+        List<TrainIdentification> result = underTest.getTrainIdentificationsBetween(after, before);
 
         // Then
         assertThat(result).hasSize(2);
         assertThat(result.get(0).operationalTrainNumber()).isEqualTo("100");
+        assertThat(result.get(0).companies()).containsExactly(new CompanyCode("2222"));
         assertThat(result.get(1).operationalTrainNumber()).isEqualTo("728");
+        assertThat(result.get(1).companies()).containsExactly(new CompanyCode("1111"));
+        // companies are resolved once per call, not once per train
+        verify(companyService, never()).findCompanyCodeByShortName(any());
     }
 
     @Test
-    void getNewTrainIdentificationsBetween_filtersOutEntriesWithNoResolvedCompanies() {
+    void getTrainIdentificationsBetween_filtersOutEntriesWithNoResolvedCompanies() {
         // Given
         OffsetDateTime after = OffsetDateTime.of(2025, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime before = OffsetDateTime.of(2025, 6, 16, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -255,14 +258,13 @@ class TrainIdentificationServiceTest {
             .companies("UNKNOWN")
             .build();
 
-        when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before))
+        when(trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before))
             .thenReturn(List.of(entity));
 
-        when(companyService.findCompanyCodeByShortName(new CompanyShortName("UNKNOWN")))
-            .thenReturn(Optional.empty());
+        when(companyService.getAllCompanies()).thenReturn(List.of(new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A"))));
 
         // When
-        List<TrainIdentification> result = underTest.getNewTrainIdentificationsBetween(after, before);
+        List<TrainIdentification> result = underTest.getTrainIdentificationsBetween(after, before);
 
         // Then
         assertThat(result).isEmpty();
@@ -327,35 +329,6 @@ class TrainIdentificationServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).company().code()).isEqualTo(new CompanyCode("1111"));
         assertThat(result.get(0).startDate()).isEqualTo(requestedDay);
-    }
-
-    @Test
-    void savePreloadedTrainIds_updatesRepository() {
-        // Given
-        Set<Integer> ids = Set.of(1, 2, 3);
-        when(trainIdentificationRepository.updatePreloadedAtByIds(any(OffsetDateTime.class), eq(ids)))
-            .thenReturn(3);
-
-        // When
-        OffsetDateTime beforeCall = OffsetDateTime.now();
-        int result = underTest.savePreloadedTrainIds(ids);
-        OffsetDateTime afterCall = OffsetDateTime.now();
-
-        // Then
-        assertThat(result).isEqualTo(3);
-        var captor = ArgumentCaptor.forClass(OffsetDateTime.class);
-        verify(trainIdentificationRepository).updatePreloadedAtByIds(captor.capture(), eq(ids));
-        assertThat(captor.getValue()).isBetween(beforeCall, afterCall);
-    }
-
-    @Test
-    void savePreloadedTrainIds_emptySet_returnsZeroWithoutCallingRepository() {
-        // When
-        int result = underTest.savePreloadedTrainIds(Set.of());
-
-        // Then
-        assertThat(result).isZero();
-        verify(trainIdentificationRepository, never()).updatePreloadedAtByIds(any(), any());
     }
 
     @Test
