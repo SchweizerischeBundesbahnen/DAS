@@ -3,6 +3,7 @@ package ch.sbb.das.backend.cargo.application;
 import ch.sbb.das.backend.cargo.infrastructure.TrainFormationRunRepository;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyCode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -10,6 +11,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockAssert;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@NullMarked
 public class FormationService {
 
     private final TrainFormationRunRepository trainFormationRunRepository;
@@ -40,14 +43,25 @@ public class FormationService {
         trainFormationRunRepository.saveAll(trainFormationRunEntities);
     }
 
+    /**
+     * @return the formation runs of the train, ordered by position; never empty
+     * @throws NotFoundException when no formation is known for the train identifier; the detail points out that data may only exist for today
+     */
     public List<TrainFormationRunEntity> findByTrainIdentifier(String operationalTrainNumber,
         LocalDate operationalDay,
         CompanyCode company) {
-        return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(
+        List<TrainFormationRunEntity> entities = trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByPositionAsc(
             operationalTrainNumber,
             operationalDay,
             company
         );
+        if (entities.isEmpty()) {
+            if (operationalDay.equals(DateTimeUtil.today())) {
+                throw new NotFoundException();
+            }
+            throw new NotFoundException("operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.");
+        }
+        return entities;
     }
 
     @Transactional

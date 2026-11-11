@@ -6,13 +6,11 @@ import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.Problem;
 import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.common.SFERA;
 import ch.sbb.das.backend.common.TelTsi;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,7 +27,6 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,14 +73,6 @@ public class FormationController {
         @SFERA @TelTsi @RequestParam CompanyCode company) {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
-        if (CollectionUtils.isEmpty(entities)) {
-
-            final LocalDate today = DateTimeUtil.today();
-            if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
-                throw new NotFoundException("operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.");
-            }
-            throw new NotFoundException();
-        }
 
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "private");
