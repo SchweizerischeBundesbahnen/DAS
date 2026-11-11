@@ -4,6 +4,7 @@ import static ch.sbb.das.backend.features.internal.RuFeatureController.API_RU_FE
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
+import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,16 +87,20 @@ class RuFeatureControllerTest {
         mockMvc.perform(get(API_RU_FEATURES + "/999"))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU feature with id 999 not found"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
-    @DisplayName("getRuFeatureById_forbidden_otherTenant|18MbK6RxFUng6UlpHYu5|tests:712,713,723")
-    void getRuFeatureById_forbidden_otherTenant() throws Exception {
+    @DisplayName("getRuFeatureById_notFound_otherTenant|18MbK6RxFUng6UlpHYu5|tests:712,713,723,2653")
+    void getRuFeatureById_notFound_otherTenant() throws Exception {
         mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU feature with id 3 not found"));
     }
 
     @Test
@@ -194,20 +200,24 @@ class RuFeatureControllerTest {
                     """))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.title").value("No results found"));
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU feature with id 999 not found"));
     }
 
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
-    @DisplayName("updateRuFeature_forbidden_existingOtherTenant|LpwRMDeT206YC0jYOd4W|tests:712,713,723")
-    void updateRuFeature_forbidden_existingOtherTenant() throws Exception {
+    @DisplayName("updateRuFeature_notFound_existingOtherTenant|LpwRMDeT206YC0jYOd4W|tests:712,713,723,2653")
+    void updateRuFeature_notFound_existingOtherTenant() throws Exception {
         mockMvc.perform(put(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                     { "companyCode": "9999", "key": "WARNAPP", "enabled": false }
                     """))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU feature with id 3 not found"));
     }
 
     @Test
@@ -256,17 +266,22 @@ class RuFeatureControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuFeatures.sql")
-    @DisplayName("deleteRuFeaturesByIds_forbidden_mixedTenants|pwp3QP9NNryewsqwCMpA|tests:712,713,723")
-    void deleteRuFeaturesByIds_forbidden_mixedTenants() throws Exception {
+    @DisplayName("deleteRuFeaturesByIds_noContent_skipsOtherTenant|pwp3QP9NNryewsqwCMpA|tests:712,713,723,2653")
+    void deleteRuFeaturesByIds_noContent_skipsOtherTenant() throws Exception {
         mockMvc.perform(delete(API_RU_FEATURES)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                    { "ids": [1, 3] }
+                    { "ids": [1, 3, 999] }
                     """))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isNoContent());
 
         mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OWN_1))
-            .andExpect(status().isOk());
+            .andExpect(status().isNotFound());
+
+        mockMvc.perform(get(API_RU_FEATURES + "/" + FEATURE_ID_OTHER_TENANT)
+                .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(FEATURE_ID_OTHER_TENANT));
     }
 
     @Test

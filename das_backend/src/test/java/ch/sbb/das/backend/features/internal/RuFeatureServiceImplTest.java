@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.common.error.BadRequestException;
 import ch.sbb.das.backend.common.error.ConflictException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -47,6 +48,7 @@ class RuFeatureServiceImplTest {
         when(companyService.getAllCompanies()).thenReturn(List.of(
             new Company(COMPANY_1111, new CompanyShortName("MOCK_A")),
             new Company(COMPANY_9999, new CompanyShortName("MOCK_OTHER"))));
+        when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_1111))).thenReturn(true);
     }
 
     private RuFeatureEntity entity(Integer id, CompanyCode companyCode, String key, boolean enabled) {
@@ -92,26 +94,29 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.findById(1)).thenReturn(Optional.of(entity));
         when(ruFeatureMapper.toInternalRuFeature(entity)).thenReturn(expected);
 
-        Optional<InternalRuFeature> result = underTest.getById(1);
+        InternalRuFeature result = underTest.getById(1);
 
-        assertThat(result).contains(expected);
-        verify(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_1111));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
     void getById_notFound() {
         when(ruFeatureRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThat(underTest.getById(99)).isEmpty();
+        assertThatThrownBy(() -> underTest.getById(99))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("RU feature with id 99 not found");
     }
 
     @Test
-    void getById_forbidden() {
+    void getById_notFound_otherCompany() {
         RuFeatureEntity entity = entity(3, COMPANY_9999, "WARNAPP", true);
         when(ruFeatureRepository.findById(3)).thenReturn(Optional.of(entity));
-        doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_9999));
+        when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_9999))).thenReturn(false);
 
-        assertThatThrownBy(() -> underTest.getById(3)).isInstanceOf(AccessDeniedException.class);
+        assertThatThrownBy(() -> underTest.getById(3))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("RU feature with id 3 not found");
     }
 
     @Test
@@ -176,9 +181,9 @@ class RuFeatureServiceImplTest {
         when(ruFeatureRepository.save(existingEntity)).thenReturn(existingEntity);
         when(ruFeatureMapper.toInternalRuFeature(existingEntity)).thenReturn(expected);
 
-        Optional<InternalRuFeature> result = underTest.update(1, request);
+        InternalRuFeature result = underTest.update(1, request);
 
-        assertThat(result).contains(expected);
+        assertThat(result).isEqualTo(expected);
         verify(ruFeatureMapper).updateEntity(existingEntity, request);
     }
 
@@ -186,18 +191,21 @@ class RuFeatureServiceImplTest {
     void update_notFound() {
         when(ruFeatureRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThat(underTest.update(99, new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true))).isEmpty();
+        assertThatThrownBy(() -> underTest.update(99, new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true)))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("RU feature with id 99 not found");
         verify(ruFeatureRepository, never()).save(any());
     }
 
     @Test
-    void update_forbidden_existingCompanyNotAuthorized() {
+    void update_notFound_existingCompanyNotAuthorized() {
         RuFeatureEntity existingEntity = entity(3, COMPANY_9999, "WARNAPP", true);
         when(ruFeatureRepository.findById(3)).thenReturn(Optional.of(existingEntity));
-        doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_9999));
+        when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_9999))).thenReturn(false);
 
         assertThatThrownBy(() -> underTest.update(3, new RuFeatureRequest(COMPANY_9999, RuFeatureKey.WARNAPP, true)))
-            .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("RU feature with id 3 not found");
 
         verify(ruFeatureRepository, never()).save(any());
     }
@@ -247,19 +255,18 @@ class RuFeatureServiceImplTest {
 
         underTest.deleteAllByIds(List.of(1, 2));
 
-        verify(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_1111));
         verify(ruFeatureRepository).deleteAllById(List.of(1, 2));
     }
 
     @Test
-    void deleteAllByIds_forbidden_mixedCompanies() {
+    void deleteAllByIds_skipsOtherCompanies() {
         RuFeatureEntity ownEntity = entity(1, COMPANY_1111, "WARNAPP", true);
         RuFeatureEntity otherEntity = entity(3, COMPANY_9999, "WARNAPP", true);
         when(ruFeatureRepository.findAllById(List.of(1, 3))).thenReturn(List.of(ownEntity, otherEntity));
-        doThrow(new AccessDeniedException("Not allowed")).when(companyAuthorizer).requireCanAccessCompanies(Set.of(COMPANY_1111, COMPANY_9999));
+        when(companyAuthorizer.canAccessCompanies(Set.of(COMPANY_9999))).thenReturn(false);
 
-        assertThatThrownBy(() -> underTest.deleteAllByIds(List.of(1, 3))).isInstanceOf(AccessDeniedException.class);
+        underTest.deleteAllByIds(List.of(1, 3));
 
-        verify(ruFeatureRepository, never()).deleteAllById(any());
+        verify(ruFeatureRepository).deleteAllById(List.of(1));
     }
 }

@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.features.internal;
 
 import ch.sbb.das.backend.common.*;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,11 +41,8 @@ public class RuFeatureController {
     @ApiErrorResponses
     public ResponseEntity<? extends Response> getRuFeatureById(
         @PathVariable Integer id) {
-        Optional<InternalRuFeature> ruFeature = ruFeatureService.getById(id);
-        if (ruFeature.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
-        }
-        throw new NotFoundException();
+        InternalRuFeature ruFeature = ruFeatureService.getById(id);
+        return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature));
     }
 
     @PostMapping(API_RU_FEATURES)
@@ -68,11 +63,8 @@ public class RuFeatureController {
     public ResponseEntity<? extends Response> updateRuFeature(
         @PathVariable Integer id,
         @RequestBody @Valid RuFeatureRequest updateRequest) {
-        Optional<InternalRuFeature> ruFeature = ruFeatureService.update(id, updateRequest);
-        if (ruFeature.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
-        }
-        throw new NotFoundException();
+        InternalRuFeature ruFeature = ruFeatureService.update(id, updateRequest);
+        return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature));
     }
 
     @DeleteMapping(API_RU_FEATURES)
