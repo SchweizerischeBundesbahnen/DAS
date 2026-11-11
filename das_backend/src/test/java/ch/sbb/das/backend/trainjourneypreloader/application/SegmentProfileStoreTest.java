@@ -3,6 +3,7 @@ package ch.sbb.das.backend.trainjourneypreloader.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
@@ -216,15 +217,17 @@ class SegmentProfileStoreTest {
     }
 
     @Test
-    void publish_whenTheOpenZipIsMissingFromTheBucket_writesItAgainWithThePendingEntries() throws Exception {
+    void publish_whenTheOpenZipIsMissingFromTheBucket_rollsToANewZipInsteadOfWritingUnderItsKeyAgain() throws Exception {
         when(repository.findAllByZipKeyIsNullOrderByIdAsc()).thenReturn(List.of(pending("P1_1_0")));
         when(repository.findDistinctZipKeys()).thenReturn(List.of(OPEN_ZIP));
         when(s3Service.downloadZip(OPEN_ZIP)).thenReturn(Optional.empty());
 
         underTest.publish();
 
-        verify(s3Service).uploadZip(eq(OPEN_ZIP), uploadedBytes.capture());
+        verify(s3Service, never()).uploadZip(eq(OPEN_ZIP), any());
+        verify(s3Service).uploadZip(eq(NEW_HOURLY_ZIP), uploadedBytes.capture());
         assertThat(entriesOf(uploadedBytes.getValue())).containsExactly(Map.entry("sp/SP_P1_1_0.xml", "<pending P1_1_0/>"));
+        verify(repository).assignZipKey(NEW_HOURLY_ZIP, List.of("P1_1_0"));
     }
 
     @Test
@@ -344,8 +347,22 @@ class SegmentProfileStoreTest {
 
         underTest.compact();
 
-        verifyNoInteractions(s3Service);
+        verify(s3Service, never()).downloadZip(anyString());
+        verify(s3Service, never()).uploadZip(anyString(), any());
+        verify(s3Service, never()).deleteObjects(anyList());
         verify(repository, never()).findAllByZipKeyIn(anyCollection());
+        verify(repository, never()).deleteAllByZipKeyIn(anyCollection());
+    }
+
+    @Test
+    void compact_deletesTheSegmentZipsTheIndexDoesNotReferenceAndLeavesTheRunZipsAlone() {
+        String orphan = "Segments_2026-11-11T09-00-00Z.zip";
+        when(repository.zipStatistics(any())).thenReturn(List.of(statistics(OPEN_ZIP, 1, 0), statistics(LEGACY_ZIP, 10, 0)));
+        when(s3Service.listObjects()).thenReturn(List.of(OPEN_ZIP, LEGACY_ZIP, orphan, "2026-11-11T10-25-00Z.zip"));
+
+        underTest.compact();
+
+        verify(s3Service).deleteObjects(List.of(orphan));
         verify(repository, never()).deleteAllByZipKeyIn(anyCollection());
     }
 

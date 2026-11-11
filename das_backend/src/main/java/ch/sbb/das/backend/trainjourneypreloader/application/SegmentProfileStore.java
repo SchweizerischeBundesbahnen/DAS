@@ -149,7 +149,8 @@ public class SegmentProfileStore {
         Optional<String> openZipKey = openZipKey(zipKeys, now);
         Optional<byte[]> existing = openZipKey.flatMap(s3Service::downloadZip);
         if (openZipKey.isPresent() && existing.isEmpty()) {
-            log.warn("Open segment zip {} is missing from the bucket and is written again", openZipKey.get());
+            log.warn("Open segment zip {} is missing from the bucket. Its entries are fetched again when referenced", openZipKey.get());
+            openZipKey = Optional.empty();
         }
         if (existing.isPresent() && existing.get().length >= properties.zipMaxBytes().toBytes()) {
             log.info("Open segment zip {} has reached {} bytes and is frozen", openZipKey.get(), existing.get().length);
@@ -194,8 +195,8 @@ public class SegmentProfileStore {
      * deletes their stale rows and their keys. A fully stale zip is deleted without a rewrite. The open zip is never touched, nor is a zip that is not selected. An SP is
      * stale once no journey referenced it for {@link SegmentProfileStoreProperties#staleAfter()}.
      * <p>
-     * The packed zips are uploaded before the index is updated, so a crash in between leaves unreferenced zips behind, never missing ones; the next compaction selects
-     * the same zips again.
+     * Zips are uploaded before the index is updated, so a crash in between leaves an unreferenced zip behind, never a missing one. Segment zips the index does not
+     * reference are therefore deleted from the bucket at the end of every compaction.
      */
     public void compact() {
         Instant now = clock.instant();
@@ -211,12 +212,13 @@ public class SegmentProfileStore {
             .toList();
         if (selected.isEmpty()) {
             log.debug("Segment compaction skipped: no segment zip to rebuild or pack");
+            deleteUnreferencedZips(zipKeys);
             return;
         }
 
         List<IndexedSegmentProfile> rows = repository.findAllByZipKeyIn(selected);
-        Map<String, Set<String>> liveEntryNamesByZip = rows.stream()
-            .filter(row -> !row.getLastSeen().isBefore(cutoff))
+        List<IndexedSegmentProfile> liveRows = rows.stream().filter(row -> !row.getLastSeen().isBefore(cutoff)).toList();
+        Map<String, Set<String>> liveEntryNamesByZip = liveRows.stream()
             .collect(Collectors.groupingBy(IndexedSegmentProfile::getZipKey, Collectors.mapping(row -> entryName(row.getSpIdVersion()), Collectors.toSet())));
 
         Map<String, List<String>> packedIdVersionsByZip = new LinkedHashMap<>();
@@ -261,7 +263,21 @@ public class SegmentProfileStore {
         });
         s3Service.deleteObjects(selected);
         int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
-        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, deleted={}", selected, packedIdVersionsByZip.keySet(), live, rows.size() - live);
+        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, evicted={}, dropped={}", selected, packedIdVersionsByZip.keySet(), live,
+            rows.size() - liveRows.size(), liveRows.size() - live);
+        deleteUnreferencedZips(zipKeys);
+    }
+
+    /** Deletes the segment zips in the bucket that no index row references, left behind by a crash between an upload and the index update. */
+    private void deleteUnreferencedZips(Set<String> referencedZipKeys) {
+        List<String> unreferenced = s3Service.listObjects().stream()
+            .filter(key -> key.startsWith(KEY_PREFIX) && !referencedZipKeys.contains(key))
+            .sorted()
+            .toList();
+        if (!unreferenced.isEmpty()) {
+            log.warn("Deleting {} segment zips the index does not reference: {}", unreferenced.size(), unreferenced);
+            s3Service.deleteObjects(unreferenced);
+        }
     }
 
     /** A packed zip under construction. */
