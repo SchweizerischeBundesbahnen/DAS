@@ -29,6 +29,8 @@ class UserPropertyServiceImpl implements UserDataService {
     }
 
     /**
+     * Returns the user's property under the given key.
+     *
      * @throws NotFoundException when the user has no user property under that key
      */
     UserProperty getByOidAndKey(String oid, String key) {

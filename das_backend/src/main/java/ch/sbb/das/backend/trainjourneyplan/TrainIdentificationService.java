@@ -57,6 +57,8 @@ public class TrainIdentificationService {
     }
 
     /**
+     * Resolves the companies running the given train number on the given start dates.
+     *
      * @return the companies of the train identifications matching the given start dates and train number, sorted by start date then company; never empty
      * @throws BadRequestException when a start date is outside yesterday..tomorrow
      * @throws NotFoundException when no train identification departs within the candidate window on those dates

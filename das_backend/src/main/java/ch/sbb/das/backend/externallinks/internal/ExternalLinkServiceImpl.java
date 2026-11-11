@@ -37,6 +37,8 @@ public class ExternalLinkServiceImpl {
     }
 
     /**
+     * Returns the external link with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException when no external link with that id exists or it belongs to companies the current tenant may not access
      */
     ExternalLink getById(Integer id) {
@@ -50,6 +52,8 @@ public class ExternalLinkServiceImpl {
     }
 
     /**
+     * Updates the external link with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException see {@link #getById(Integer)}
      */
     ExternalLink update(Integer id, ExternalLinkRequest externalLinkRequest) {

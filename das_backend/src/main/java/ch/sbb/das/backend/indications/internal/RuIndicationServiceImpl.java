@@ -34,6 +34,8 @@ public class RuIndicationServiceImpl {
     }
 
     /**
+     * Returns the RU indication with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException when no RU indication with that id exists or it belongs to companies the current tenant may not access
      */
     public RuIndication getById(Integer id) {
@@ -47,10 +49,12 @@ public class RuIndicationServiceImpl {
     }
 
     /**
+     * Updates the RU indication with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException see {@link #getById(Integer)}
      */
     public RuIndication update(Integer id, RuIndicationRequest updateRequest) {
-        findAccessibleById(id);
+        findAccessibleById(id); // existence and access only; the mapper rebuilds the entity from the request
         companyAuthorizationService.requireCanAccessCompanies(updateRequest.scope().companies());
         RuIndicationEntity entity = ruIndicationMapper.toEntityFromRequest(id, updateRequest);
         return ruIndicationMapper.toResponse(ruIndicationRepository.save(entity));

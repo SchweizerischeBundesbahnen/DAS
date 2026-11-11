@@ -44,6 +44,8 @@ public class FormationService {
     }
 
     /**
+     * Looks up the formation runs of one train on one operational day.
+     *
      * @return the formation runs of the train, ordered by position; never empty
      * @throws NotFoundException when no formation is known for the train identifier; the detail points out that data may only exist for today
      */

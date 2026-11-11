@@ -32,6 +32,8 @@ public class SpecialHolidayServiceImpl {
     }
 
     /**
+     * Returns the special holiday with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException when no special holiday with that id exists or it belongs to companies the current tenant may not access
      */
     public SpecialHoliday getById(Integer id) {
@@ -45,6 +47,8 @@ public class SpecialHolidayServiceImpl {
     }
 
     /**
+     * Updates the special holiday with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException see {@link #getById(Integer)}
      */
     public SpecialHoliday update(Integer id, SpecialHolidayRequest updateRequest) {

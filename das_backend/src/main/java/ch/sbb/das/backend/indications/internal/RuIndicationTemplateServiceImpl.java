@@ -31,6 +31,8 @@ public class RuIndicationTemplateServiceImpl {
     }
 
     /**
+     * Returns the RU indication template with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException when no RU indication template with that id exists or it belongs to another tenant
      */
     public RuIndicationTemplate getById(Integer id) {
@@ -44,6 +46,8 @@ public class RuIndicationTemplateServiceImpl {
     }
 
     /**
+     * Updates the RU indication template with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException see {@link #getById(Integer)}
      */
     public RuIndicationTemplate update(Integer id, RuIndicationTemplateRequest updateRequest) {

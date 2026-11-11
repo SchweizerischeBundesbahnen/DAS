@@ -45,6 +45,8 @@ public class RuFeatureServiceImpl implements RuFeatureService {
     }
 
     /**
+     * Returns the RU feature with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException when no RU feature with that id exists or it belongs to a company the current tenant may not access
      */
     InternalRuFeature getById(Integer id) {
@@ -62,6 +64,8 @@ public class RuFeatureServiceImpl implements RuFeatureService {
     }
 
     /**
+     * Updates the RU feature with the given id as the current tenant sees it.
+     *
      * @throws NotFoundException see {@link #getById(Integer)}
      */
     InternalRuFeature update(Integer id, RuFeatureRequest request) {

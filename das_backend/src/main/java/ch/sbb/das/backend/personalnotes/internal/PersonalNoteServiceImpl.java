@@ -29,6 +29,8 @@ class PersonalNoteServiceImpl implements UserDataService {
     }
 
     /**
+     * Returns the user's personal note under the given key.
+     *
      * @throws NotFoundException when the user has no personal note under that key
      */
     PersonalNote getByOidAndKey(String oid, String key) {
