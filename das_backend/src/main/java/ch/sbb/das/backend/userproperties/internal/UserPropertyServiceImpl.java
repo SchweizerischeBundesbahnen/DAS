@@ -5,7 +5,6 @@ import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.common.error.PayloadTooLargeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
@@ -13,7 +12,6 @@ import tools.jackson.databind.json.JsonMapper;
 
 @Service
 @RequiredArgsConstructor
-@NullMarked
 class UserPropertyServiceImpl implements UserDataService {
 
     private static final String RESOURCE = "User property";

@@ -8,13 +8,11 @@ import java.util.List;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@NullMarked
 public class RuIndicationTemplateServiceImpl {
 
     private static final String RESOURCE = "RU indication template";

@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@NullMarked
 public class CompanyServiceImpl implements CompanyService {
 
     private static final String RESOURCE = "Company";

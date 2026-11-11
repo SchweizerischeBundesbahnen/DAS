@@ -9,12 +9,9 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
-@NullMarked
 public class AppVersionServiceImpl implements AppVersionService {
 
     private static final String RESOURCE = "App version";
@@ -26,7 +23,7 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     @Override
-    public CurrentAppVersion getCurrent(@Nullable String appVersion) {
+    public CurrentAppVersion getCurrent(String appVersion) {
         if (appVersion == null) {
             return CurrentAppVersion.DEFAULT;
         }

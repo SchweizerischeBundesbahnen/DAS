@@ -8,13 +8,11 @@ import java.util.Set;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@NullMarked
 public class ExternalLinkServiceImpl {
 
     private static final String RESOURCE = "External link";
