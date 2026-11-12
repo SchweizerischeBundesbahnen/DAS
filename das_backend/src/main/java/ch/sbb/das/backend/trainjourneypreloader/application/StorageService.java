@@ -39,6 +39,7 @@ public class StorageService implements PreloadStore {
 
     @Override
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
+        log.info("Saving journeyProfiles={}, trainCharacteristics={}...", journeyProfiles.size(), trainCharacteristics.size());
         try {
             String zipName = buildZipName();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

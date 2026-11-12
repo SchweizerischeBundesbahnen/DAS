@@ -127,8 +127,7 @@ public class PreloadRun {
             }
         }
         journeyFetch.disconnect();
-        final int publishedSegmentProfiles = segmentProfileStore.publish();
-        log.info("Saving journeyProfiles={}, segmentProfiles={}, trainCharacteristics={}...", mapJourneyProfiles.size(), publishedSegmentProfiles, mapTrainCharacteristics.size());
+        segmentProfileStore.publish();
         store.save(mapJourneyProfiles.values(), mapTrainCharacteristics.values());
 
         candidates.recordAttempts(now, attempts);
