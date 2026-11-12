@@ -1,6 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
-import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentProfileStore.SEGMENT_PREFIX;
+import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.SEGMENT_PREFIX;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.FILENAME_FORMATTER;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.ZIP_FILE_ENDING;
 
