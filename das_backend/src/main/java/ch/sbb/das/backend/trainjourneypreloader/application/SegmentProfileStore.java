@@ -14,9 +14,6 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.configuration.Seg
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.SegmentProfile;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -40,9 +37,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -230,25 +224,27 @@ public class SegmentProfileStore {
         Map<String, Set<String>> liveEntryNamesByZip = liveRows.stream()
             .collect(Collectors.groupingBy(IndexedSegmentProfile::getZipKey, Collectors.mapping(row -> entryName(row.getSpIdVersion()), Collectors.toSet())));
 
+        Map<String, List<String>> packedIdVersionsByZip = packLiveEntries(selected, liveEntryNamesByZip, now, zipKeys);
+
+        transactionTemplate.executeWithoutResult(status -> {
+            packedIdVersionsByZip.forEach(repository::assignZipKey);
+            repository.deleteAllByZipKeyIn(selected);
+        });
+        s3Service.deleteObjects(selected);
+        int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
+        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, evicted={}, dropped={}", selected, packedIdVersionsByZip.keySet(), live,
+            rows.size() - liveRows.size(), liveRows.size() - live);
+        deleteUnreferencedZips(zipKeys);
+    }
+
+    /** Writes the live entries of the selected zips into packed zips, each closed once it has reached the size, and returns the SPs of each packed zip. */
+    private Map<String, List<String>> packLiveEntries(List<String> selected, Map<String, Set<String>> liveEntryNamesByZip, Instant now, Set<String> zipKeys) {
         Map<String, List<String>> packedIdVersionsByZip = new LinkedHashMap<>();
         long zipMaxBytes = properties.zipMaxBytes().toBytes();
         PackedZip packed = new PackedZip(newPackedZipKey(now, zipKeys));
         try {
             for (String zipKey : selected) {
-                Set<String> liveEntryNames = liveEntryNamesByZip.getOrDefault(zipKey, Set.of());
-                if (liveEntryNames.isEmpty()) {
-                    continue;
-                }
-                Optional<byte[]> source = s3Service.downloadZip(zipKey);
-                if (source.isEmpty()) {
-                    log.warn("Segment zip {} is missing from the bucket. Its {} live entries are dropped from the index and fetched again when referenced", zipKey,
-                        liveEntryNames.size());
-                    continue;
-                }
-                for (ZipFileEntry entry : ZipWriter.entriesOf(source.get())) {
-                    if (!liveEntryNames.contains(entry.name())) {
-                        continue;
-                    }
+                for (ZipWriter.Entry entry : liveEntriesOf(zipKey, liveEntryNamesByZip.getOrDefault(zipKey, Set.of()))) {
                     if (packed.zip.size() >= zipMaxBytes) {
                         packedIdVersionsByZip.put(packed.key, packed.upload());
                         packed = new PackedZip(newPackedZipKey(now, zipKeys));
@@ -265,16 +261,23 @@ public class SegmentProfileStore {
         } finally {
             packed.zip.close();
         }
+        return packedIdVersionsByZip;
+    }
 
-        transactionTemplate.executeWithoutResult(status -> {
-            packedIdVersionsByZip.forEach(repository::assignZipKey);
-            repository.deleteAllByZipKeyIn(selected);
-        });
-        s3Service.deleteObjects(selected);
-        int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
-        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, evicted={}, dropped={}", selected, packedIdVersionsByZip.keySet(), live,
-            rows.size() - liveRows.size(), liveRows.size() - live);
-        deleteUnreferencedZips(zipKeys);
+    /** The entries of the zip that are live; none when the zip is missing from the bucket. */
+    private List<ZipWriter.Entry> liveEntriesOf(String zipKey, Set<String> liveEntryNames) throws IOException {
+        if (liveEntryNames.isEmpty()) {
+            return List.of();
+        }
+        Optional<byte[]> source = s3Service.downloadZip(zipKey);
+        if (source.isEmpty()) {
+            log.warn("Segment zip {} is missing from the bucket. Its {} live entries are dropped from the index and fetched again when referenced", zipKey,
+                liveEntryNames.size());
+            return List.of();
+        }
+        return ZipWriter.entriesOf(source.get()).stream()
+            .filter(entry -> liveEntryNames.contains(entry.name()))
+            .toList();
     }
 
     /** Deletes the segment zips in the bucket that no index row references, left behind by a crash between an upload and the index update. */
@@ -363,7 +366,7 @@ public class SegmentProfileStore {
         }
         try {
             return Optional.of(OffsetDateTime.parse(stamp, FILENAME_FORMATTER).toInstant());
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException _) {
             return Optional.empty();
         }
     }
@@ -385,69 +388,5 @@ public class SegmentProfileStore {
 
     private static String idVersionOf(String entryName) {
         return entryName.substring(ENTRY_PREFIX.length(), entryName.length() - ENTRY_SUFFIX.length());
-    }
-
-    /** An entry of a segment zip with its uncompressed content. */
-    private record ZipFileEntry(String name, byte[] content) {
-
-    }
-
-    /** Builds one segment zip in memory, skipping an entry name that was already written. */
-    private static final class ZipWriter implements Closeable {
-
-        private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        private final ZipOutputStream zip = new ZipOutputStream(bytes, StandardCharsets.UTF_8);
-        private final Set<String> names = new HashSet<>();
-
-        static List<ZipFileEntry> entriesOf(byte[] zipBytes) throws IOException {
-            List<ZipFileEntry> entries = new ArrayList<>();
-            try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zipBytes), StandardCharsets.UTF_8)) {
-                ZipEntry entry;
-                while ((entry = zis.getNextEntry()) != null) {
-                    entries.add(new ZipFileEntry(entry.getName(), zis.readAllBytes()));
-                }
-            }
-            return entries;
-        }
-
-        void transfer(byte[] existingZip) {
-            try {
-                for (ZipFileEntry entry : entriesOf(existingZip)) {
-                    write(entry.name(), entry.content());
-                }
-            } catch (IOException e) {
-                throw new UncheckedIOException("Reading the existing segment zip failed", e);
-            }
-        }
-
-        /** The bytes written so far, without the central directory that {@link #finish()} appends. */
-        long size() {
-            return bytes.size();
-        }
-
-        void write(String name, byte[] content) throws IOException {
-            if (!names.add(name)) {
-                log.warn("Duplicate entry {} in segment zip skipped", name);
-                return;
-            }
-            zip.putNextEntry(new ZipEntry(name));
-            zip.write(content);
-            zip.closeEntry();
-        }
-
-        byte[] finish() throws IOException {
-            zip.close();
-            return bytes.toByteArray();
-        }
-
-        /** Releases the deflater; closing a finished writer does nothing. */
-        @Override
-        public void close() {
-            try {
-                zip.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException("Closing the segment zip failed", e);
-            }
-        }
     }
 }

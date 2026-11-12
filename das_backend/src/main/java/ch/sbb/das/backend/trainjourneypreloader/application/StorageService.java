@@ -6,15 +6,11 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.OTNID;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.TrainCharacteristics;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +23,6 @@ public class StorageService implements PreloadStore {
     public static final String DIR_TC = "tc/";
     public static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssX");
 
-    private static final String DUPLICATE_ENTRY_KEY = "duplicate entry";
-
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
 
@@ -40,17 +34,10 @@ public class StorageService implements PreloadStore {
     @Override
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
         log.info("Saving journeyProfiles={}, trainCharacteristics={}...", journeyProfiles.size(), trainCharacteristics.size());
-        try {
-            String zipName = buildZipName();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-
-                writeJps(journeyProfiles, zos);
-                writeTcs(trainCharacteristics, zos);
-            }
-
-            s3Service.uploadZip(zipName, baos.toByteArray());
-
+        try (ZipWriter zip = new ZipWriter()) {
+            writeJps(journeyProfiles, zip);
+            writeTcs(trainCharacteristics, zip);
+            s3Service.uploadZip(buildZipName(), zip.finish());
         } catch (Exception e) {
             throw new RuntimeException("Preload save failed", e);
         }
@@ -60,38 +47,25 @@ public class StorageService implements PreloadStore {
         return FILENAME_FORMATTER.format(DateTimeUtil.now().toInstant().atZone(ZoneOffset.UTC)) + ZIP_FILE_ENDING;
     }
 
-    private void writeJps(Collection<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
+    private void writeJps(Collection<JourneyProfile> jps, ZipWriter zip) throws IOException {
         for (JourneyProfile jp : jps) {
             OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml", otnid.getTeltsiCompany(), otnid.getTeltsiOperationalTrainNumber(), otnid.getTeltsiStartDate(), jp.getJPVersion());
-            writeXmlEntry(zos, DIR_JP + filename, jp);
+            writeXmlEntry(zip, DIR_JP + filename, jp);
         }
     }
 
-    private void writeTcs(Collection<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
+    private void writeTcs(Collection<TrainCharacteristics> tcs, ZipWriter zip) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml", tc.getTCID(), tc.getTCVersionMajor(), tc.getTCVersionMinor());
-            writeXmlEntry(zos, DIR_TC + filename, tc);
+            writeXmlEntry(zip, DIR_TC + filename, tc);
         }
     }
 
-    private void writeXmlEntry(ZipOutputStream zos, String entryName, Object obj) throws IOException {
+    private void writeXmlEntry(ZipWriter zip, String entryName, Object obj) throws IOException {
         if (obj == null) {
             return;
         }
-        String xml = xmlHelper.toString(obj);
-        ZipEntry entry = new ZipEntry(entryName);
-        try {
-            zos.putNextEntry(entry);
-        } catch (ZipException e) {
-            if (e.getMessage().contains(DUPLICATE_ENTRY_KEY)) {
-                log.warn("Duplicate file {} in zip file skipped", entryName);
-                zos.closeEntry();
-                return;
-            }
-            throw e;
-        }
-        zos.write(xml.getBytes(StandardCharsets.UTF_8));
-        zos.closeEntry();
+        zip.write(entryName, xmlHelper.toString(obj).getBytes(StandardCharsets.UTF_8));
     }
 }
