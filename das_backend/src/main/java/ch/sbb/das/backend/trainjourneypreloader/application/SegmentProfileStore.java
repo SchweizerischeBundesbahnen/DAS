@@ -147,10 +147,10 @@ public class SegmentProfileStore {
      */
     public int publish() {
         Deque<PreloadedSegmentProfileEntity> pending = new ArrayDeque<>(repository.findAllByZipKeyIsNullOrderByIdAsc());
-        log.info("Publishing segment profiles. pending={}", pending.size());
         if (pending.isEmpty()) {
             return 0;
         }
+        log.info("Publishing segment profiles. pending={}", pending.size());
         Instant now = clock.instant();
         Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
