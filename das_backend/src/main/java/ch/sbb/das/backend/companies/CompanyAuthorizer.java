@@ -2,8 +2,6 @@ package ch.sbb.das.backend.companies;
 
 import java.net.URL;
 import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import org.springframework.security.access.AccessDeniedException;
@@ -140,14 +138,16 @@ public class CompanyAuthorizer {
      */
     public Predicate<String> tenantAccessCheck() {
         return new Predicate<>() {
-            private Optional<String> currentTenantName;
+            private boolean resolved;
+            private String currentTenantName;
 
             @Override
             public boolean test(String tenantName) {
-                if (currentTenantName == null) {
-                    currentTenantName = Optional.ofNullable(currentTenantName());
+                if (!resolved) {
+                    currentTenantName = currentTenantName();
+                    resolved = true;
                 }
-                return currentTenantName.isPresent() && Objects.equals(currentTenantName.get(), tenantName);
+                return currentTenantName != null && currentTenantName.equals(tenantName);
             }
         };
     }

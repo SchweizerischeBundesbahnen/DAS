@@ -192,7 +192,9 @@ class RuFeatureServiceImplTest {
     void update_notFound() {
         when(ruFeatureRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.update(99, new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true)))
+        RuFeatureRequest request = new RuFeatureRequest(COMPANY_1111, RuFeatureKey.WARNAPP, true);
+
+        assertThatThrownBy(() -> underTest.update(99, request))
             .isInstanceOf(NotFoundException.class)
             .hasMessage("RU feature with id 99 not found");
         verify(ruFeatureRepository, never()).save(any());
