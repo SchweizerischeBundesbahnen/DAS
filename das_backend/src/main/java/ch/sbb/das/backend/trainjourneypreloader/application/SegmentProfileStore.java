@@ -98,13 +98,17 @@ public class SegmentProfileStore {
             return Set.of();
         }
         List<KnownSegmentProfile> known = repository.findAllBySpIdVersionIn(idVersionsOf(referenced));
-        Set<String> knownIdVersions = known.stream().map(KnownSegmentProfile::getSpIdVersion).collect(Collectors.toSet());
+        Set<String> knownIdVersions = known.stream()
+            .map(KnownSegmentProfile::getSpIdVersion)
+            .collect(Collectors.toSet());
         if (!knownIdVersions.isEmpty()) {
             Set<String> alive = new HashSet<>(knownIdVersions);
             known.stream().map(KnownSegmentProfile::getRelatedLrSpIdVersions).filter(Objects::nonNull).forEach(alive::addAll);
             repository.updateLastSeenBySpIdVersion(OffsetDateTime.now(clock), alive);
         }
-        return referenced.stream().filter(id -> !knownIdVersions.contains(id.toIdVersionString())).collect(Collectors.toSet());
+        return referenced.stream()
+            .filter(id -> !knownIdVersions.contains(id.toIdVersionString()))
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -116,7 +120,9 @@ public class SegmentProfileStore {
         if (byIdVersion.isEmpty()) {
             return;
         }
-        Set<String> knownIdVersions = repository.findAllBySpIdVersionIn(byIdVersion.keySet()).stream().map(KnownSegmentProfile::getSpIdVersion).collect(Collectors.toSet());
+        Set<String> knownIdVersions = repository.findAllBySpIdVersionIn(byIdVersion.keySet()).stream()
+            .map(KnownSegmentProfile::getSpIdVersion)
+            .collect(Collectors.toSet());
         OffsetDateTime now = OffsetDateTime.now(clock);
         List<PreloadedSegmentProfileEntity> pending = byIdVersion.entrySet().stream()
             .filter(entry -> !knownIdVersions.contains(entry.getKey()))
