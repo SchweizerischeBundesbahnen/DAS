@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.2...backend-v0.19.0) (2026-11-13)
+
+
+### Features
+
+* own the segment profiles in a store with immutable hourly zips and a size cap ([#2657](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2657), [#2656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2656)) ([#3128](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3128)) ([150ebf7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/150ebf7a4024743784352c4d379ae0e0e687f062))
+* prioritise preload candidates with a train preload ledger and retry backoff ([#2660](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2660)) ([#3114](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3114)) ([af755fb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/af755fbd215d3abd878170b3383dbaca97ce1b95))
+
+
+### Bug Fixes
+
+* e2e_testsuite for latest das_backend ([#1112](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1112)) ([#3102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3102)) ([e5ed06e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5ed06ecd7b1ec9e39182f3c132686a7f460f7e0))
+
 ## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.1...backend-v0.18.2) (2026-11-05)
 
 
