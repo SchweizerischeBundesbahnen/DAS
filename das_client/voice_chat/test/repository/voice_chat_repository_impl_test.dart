@@ -95,18 +95,18 @@ void main() {
     expect(testee.current.error, VoiceError.unknown);
   });
 
-  test('requestMicrophonePermission_whenGranted_thenStoresAndPublishesPermission', () async {
+  test('init_whenPermissionIsGranted_thenStoresAndPublishesPermission', () async {
     // GIVEN
-    when(permissionService.requestMicrophone()).thenAnswer((_) async => MicPermission.granted);
+    when(permissionService.microphoneStatus()).thenAnswer((_) async => MicPermission.granted);
     final nextSession = testee.session.first;
 
     // WHEN
-    await testee.requestMicrophonePermission();
+    await testee.init();
 
     // THEN
     expect(testee.current.permission, MicPermission.granted);
     expect((await nextSession).permission, MicPermission.granted);
-    verify(permissionService.requestMicrophone()).called(1);
+    verify(permissionService.microphoneStatus()).called(1);
   });
 
   test('refreshMicrophonePermission_whenGrantedAfterDenial_thenClearsPermissionError', () async {
@@ -160,5 +160,19 @@ void main() {
     // THEN
     expect(testee.current.isMuted, isFalse);
     expect((await unmutedSession).isMuted, isFalse);
+  });
+
+  test('disconnect_whenConnectionFailedBeforeRoomCreation_thenClearsRoomAndError', () async {
+    // GIVEN
+    when(permissionService.microphoneStatus()).thenAnswer((_) async => MicPermission.denied);
+    await testee.connect(roomKey);
+
+    // WHEN
+    await testee.disconnect();
+
+    // THEN
+    expect(testee.current.roomKey, isNull);
+    expect(testee.current.connection, VoiceConnectionState.disconnected);
+    expect(testee.current.error, isNull);
   });
 }

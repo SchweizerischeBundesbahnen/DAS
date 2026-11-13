@@ -24,6 +24,8 @@ class VoiceChatRepositoryImpl({
   Room? _room;
   EventsListener<RoomEvent>? _listener;
 
+  Future<void> init() => refreshMicrophonePermission();
+
   @override
   bool get isEnabled => liveKitUrl.isNotEmpty;
 
@@ -84,15 +86,22 @@ class VoiceChatRepositoryImpl({
 
   @override
   Future<void> disconnect() async {
-    if (_room == null) return;
-    _log.info('Leaving room ${_session.roomKey?.value}');
-    await _releaseRoom();
-    PulsarHapticsVoiceChat().playPreset('disconnect');
+    if (_room != null) {
+      _log.info('Leaving room ${_session.roomKey?.value}');
+      await _releaseRoom();
+      PulsarHapticsVoiceChat().playPreset('disconnect');
+    }
+    if (_session.roomKey == null &&
+        _session.connection == VoiceConnectionState.disconnected &&
+        _session.error == null) {
+      return;
+    }
     _emit(
       _session.copyWith(
         connection: VoiceConnectionState.disconnected,
         participants: const [],
         clearRoomKey: true,
+        clearError: true,
       ),
     );
   }
@@ -107,16 +116,6 @@ class VoiceChatRepositoryImpl({
       return;
     }
     _emit(_session.copyWith(isMuted: muted));
-  }
-
-  @override
-  Future<void> requestMicrophonePermission() async {
-    if (!isEnabled) {
-      _log.info('Voice chat disabled (no LiveKit URL configured), skipping permission request');
-      return;
-    }
-    final permission = await permissionService.requestMicrophone();
-    _applyPermission(permission);
   }
 
   @override

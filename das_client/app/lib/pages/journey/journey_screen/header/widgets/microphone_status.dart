@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:app/widgets/microphone_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -33,21 +32,18 @@ class MicrophoneStatus extends StatelessWidget {
 
         return Padding(
           padding: const .only(right: 20),
-          child: hasProblem
-              ? ExclamationIconButton(
-                  icon: icon,
-                  key: iconKey,
-                  onTap: () {
-                    unawaited(_openProblemSheet(context, session));
-                  },
-                )
-              : MicrophoneIconButton(
-                  icon: icon,
-                  key: iconKey,
-                  onTap: () {
-                    unawaited(repository.setMuted(!session.isMuted));
-                  },
-                ),
+          child: MicrophoneIconButton(
+            icon: icon,
+            key: iconKey,
+            showExclamation: hasProblem,
+            onTap: () {
+              if (hasProblem) {
+                unawaited(_openProblemSheet(context, session));
+              } else {
+                unawaited(repository.setMuted(!session.isMuted));
+              }
+            },
+          ),
         );
       },
     );

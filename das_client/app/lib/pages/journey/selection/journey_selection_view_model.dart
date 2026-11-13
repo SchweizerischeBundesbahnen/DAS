@@ -14,7 +14,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
-import 'package:voice_chat/component.dart';
 
 final _log = Logger('JourneySelectionViewModel');
 
@@ -24,7 +23,6 @@ class JourneySelectionViewModel({
   required final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected,
   required final TrainIdentificationRepository _trainIdentificationRepository,
   required final LocalKeyValueStore _userSettings,
-  required final VoiceChatRepository _voiceChatRepository,
 }) {
   this {
     _emitSelectingWithDefaults();
@@ -151,9 +149,6 @@ class JourneySelectionViewModel({
       ),
     );
     _pendingDeepLinkData = null;
-    final roomKey = VoiceRoomKey.fromJourney(trainNumber: trainId.trainNumber, date: trainId.date);
-    _log.fine('Connecting voice chat to room ${roomKey.value}');
-    unawaited(_voiceChatRepository.connect(roomKey));
     return true;
   }
 
@@ -220,8 +215,6 @@ class JourneySelectionViewModel({
   }
 
   void dismissSelection() {
-    unawaited(_voiceChatRepository.disconnect());
-
     final currentState = _currentState;
     if (currentState is Loading) return;
 

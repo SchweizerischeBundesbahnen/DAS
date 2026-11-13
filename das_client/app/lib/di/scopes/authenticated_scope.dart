@@ -11,6 +11,7 @@ import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
+import 'package:app/pages/journey/view_model/voice_chat_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
@@ -73,6 +74,7 @@ class AuthenticatedScope extends DIScope {
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
+    getIt.registerVoiceChatViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();
@@ -263,13 +265,9 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerVoiceChatRepository() {
     registerSingletonAsync<VoiceChatRepository>(
-      () async {
-        final repository = VoiceChatComponent.createRepository(
-          userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
-        );
-        await repository.refreshMicrophonePermission();
-        return repository;
-      },
+      () => VoiceChatComponent.createRepository(
+        userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
+      ),
       dispose: (repo) => repo.dispose(),
     );
   }
@@ -289,15 +287,22 @@ extension AuthenticatedScopeExtension on GetIt {
         settingsRepository: DI.get(),
         trainIdentificationRepository: DI.get(),
         userSettings: DI.get(),
-        voiceChatRepository: DI.get(),
         onJourneySelected: (trainId) => DI.get<JourneyNavigationViewModel>().replaceWith([?trainId]),
       );
     }
 
     registerSingletonAsync<JourneySelectionViewModel>(
       factoryFunc,
-      dependsOn: [SferaRepository, JourneyNavigationViewModel, VoiceChatRepository],
+      dependsOn: [SferaRepository, JourneyNavigationViewModel],
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerVoiceChatViewModel() {
+    registerSingletonAsync<VoiceChatViewModel>(
+      () async => VoiceChatViewModel(repository: DI.get(), journeyViewModel: DI.get()),
+      dependsOn: [JourneyViewModel, VoiceChatRepository],
+      dispose: (vm) => vm.close(),
     );
   }
 

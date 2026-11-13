@@ -14,8 +14,6 @@ abstract class VoiceChatRepository {
 
   Future<void> disconnect();
 
-  Future<void> requestMicrophonePermission();
-
   Future<void> refreshMicrophonePermission();
 
   void dispose();

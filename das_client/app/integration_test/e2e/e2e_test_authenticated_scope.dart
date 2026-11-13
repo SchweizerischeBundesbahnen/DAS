@@ -38,6 +38,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
+    getIt.registerVoiceChatViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();

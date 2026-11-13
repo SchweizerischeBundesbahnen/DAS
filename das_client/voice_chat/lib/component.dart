@@ -32,12 +32,14 @@ class VoiceChatComponent._() {
     await PermissionService().requestMicrophone();
   }
 
-  static VoiceChatRepository createRepository({required UserIdProviderVoiceChat userIdProvider}) {
-    return VoiceChatRepositoryImpl(
+  static Future<VoiceChatRepository> createRepository({required UserIdProviderVoiceChat userIdProvider}) async {
+    final repository = VoiceChatRepositoryImpl(
       userIdProvider: userIdProvider,
       liveKitUrl: livekitUrl,
       tokenProvider: DevTokenProvider(apiKey: livekitApiKey, apiSecret: livekitApiSecret),
       permissionService: PermissionService(),
     );
+    await repository.init();
+    return repository;
   }
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/microphone_status.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:app/widgets/microphone_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,7 +71,7 @@ void main() {
 
     // THEN
     verify(repository.setMuted(false)).called(1);
-    expect(find.byType(ExclamationIconButton), findsNothing);
+    expect(tester.widget<MicrophoneIconButton>(find.byType(MicrophoneIconButton)).showExclamation, isFalse);
   });
 
   testWidgets('build_whenPermissionIsUnknown_thenShowsNormalButtonWithoutWarning', (tester) async {
@@ -84,7 +83,7 @@ void main() {
 
     // THEN
     expect(tester.widget<MicrophoneIconButton>(find.byType(MicrophoneIconButton)).icon, AppAssets.iconMicNormal);
-    expect(find.byType(ExclamationIconButton), findsNothing);
+    expect(tester.widget<MicrophoneIconButton>(find.byType(MicrophoneIconButton)).showExclamation, isFalse);
   });
 
   for (final permission in [MicPermission.denied, MicPermission.permanentlyDenied]) {
@@ -101,7 +100,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // THEN
-      expect(tester.widget<ExclamationIconButton>(find.byType(ExclamationIconButton)).icon, AppAssets.iconMicAlert);
+      final button = tester.widget<MicrophoneIconButton>(find.byType(MicrophoneIconButton));
+      expect(button.icon, AppAssets.iconMicAlert);
+      expect(button.showExclamation, isTrue);
       expect(find.text(l10n.w_microphone_status_title), findsOneWidget);
       expect(find.text(l10n.w_microphone_status_text), findsOneWidget);
       verifyNever(repository.setMuted(any));

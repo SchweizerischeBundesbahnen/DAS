@@ -16,16 +16,17 @@ class MockVoiceChatRepository implements VoiceChatRepository {
 
   @override
   Future<void> disconnect() async {
-    _session = _session.copyWith(connection: VoiceConnectionState.disconnected);
+    _session = _session.copyWith(
+      connection: VoiceConnectionState.disconnected,
+      clearRoomKey: true,
+      clearError: true,
+    );
   }
 
   @override
   Future<void> setMuted(bool muted) async {
     _session = _session.copyWith(isMuted: muted);
   }
-
-  @override
-  Future<void> requestMicrophonePermission() async {}
 
   @override
   Future<void> refreshMicrophonePermission() async {}

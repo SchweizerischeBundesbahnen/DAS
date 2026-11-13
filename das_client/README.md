@@ -106,8 +106,8 @@ The app requests microphone access after its first frame, before login. The oper
 choice. Once authenticated, voice chat reads the current permission into `VoiceSession.permission` and refreshes it
 when the app resumes (for example, after changing access in device settings).
 
-Selecting a journey starts a voice-chat connection to the room derived from its train number and operating date
-(`das-<trainNumber>-<yyyy-MM-dd>`), independently of loading the journey.
+When a journey becomes available, voice chat connects to the room derived from its train number and operating date
+(`das-<trainNumber>-<yyyy-MM-dd>`). Changing or clearing the journey switches or leaves the room.
 
 On iOS, `NSMicrophoneUsageDescription` in `app/ios/Runner/Info.plist` declares microphone access for voice chat.
 Speech-recognition permission is not required.
