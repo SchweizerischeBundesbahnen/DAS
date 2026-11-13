@@ -10,6 +10,7 @@ import ch.sbb.das.backend.companies.CompanyShortName;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.CompanyMatch;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ public class TrainIdentificationService {
 
     private final TrainIdentificationRepository trainIdentificationRepository;
     private final CompanyService companyService;
+    private final Clock clock;
 
     /**
      * A train journey is only available at TMS-VAD within this many hours around departure (shared with the preloader via {@code trainjourneypreloader.hours-before-departure}). Candidates whose
@@ -67,7 +69,7 @@ public class TrainIdentificationService {
             .orElseThrow()
             .atStartOfDay(DateTimeUtil.SWISS_ZONE)
             .toOffsetDateTime();
-        OffsetDateTime latestStartDateTime = DateTimeUtil.now().plusHours(hoursBeforeDeparture);
+        OffsetDateTime latestStartDateTime = OffsetDateTime.now(clock).plusHours(hoursBeforeDeparture);
 
         List<TrainIdentificationEntity> entities = trainIdentificationRepository
             .findAllByStartDateTimeRangeAndOperationalTrainNumber(earliestStartDateTime, latestStartDateTime, operationalTrainNumber).stream()
@@ -99,7 +101,7 @@ public class TrainIdentificationService {
     }
 
     private void validateStartDates(Set<LocalDate> startDates) {
-        LocalDate today = DateTimeUtil.today();
+        LocalDate today = LocalDate.ofInstant(clock.instant(), DateTimeUtil.SWISS_ZONE);
         LocalDate earliest = today.minusDays(1);
         LocalDate latest = today.plusDays(1);
 
