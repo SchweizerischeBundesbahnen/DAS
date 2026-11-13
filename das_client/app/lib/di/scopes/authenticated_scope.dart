@@ -11,6 +11,7 @@ import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app/pages/journey/view_model/view_mode_view_model.dart';
+import 'package:app/pages/journey/view_model/voice_chat_view_model.dart';
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/provider/ru_feature_provider.dart';
@@ -26,7 +27,7 @@ import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:local_regulations/component.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:personal_notes/component.dart';
@@ -35,6 +36,7 @@ import 'package:ru_indications/component.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:voice_chat/component.dart';
 
 final _log = Logger('AuthenticatedScope');
 
@@ -55,6 +57,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
+    getIt.registerVoiceChatRepository();
     getIt.registerSferaRemoteRepository();
     getIt.registerSettingsRepository();
     getIt.registerAppExpirationViewModel();
@@ -71,6 +74,7 @@ class AuthenticatedScope extends DIScope {
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
+    getIt.registerVoiceChatViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();
@@ -259,6 +263,15 @@ extension AuthenticatedScopeExtension on GetIt {
     );
   }
 
+  void registerVoiceChatRepository() {
+    registerSingletonAsync<VoiceChatRepository>(
+      () => VoiceChatComponent.createRepository(
+        userIdProvider: _VoiceChatUserIdProvider(authenticator: DI.get()),
+      ),
+      dispose: (repo) => repo.dispose(),
+    );
+  }
+
   void registerJourneyNavigationViewModel() {
     registerSingletonAsync<JourneyNavigationViewModel>(
       () async => JourneyNavigationViewModel(sferaRepo: DI.get(), userSettings: DI.get()),
@@ -282,6 +295,14 @@ extension AuthenticatedScopeExtension on GetIt {
       factoryFunc,
       dependsOn: [SferaRepository, JourneyNavigationViewModel],
       dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerVoiceChatViewModel() {
+    registerSingletonAsync<VoiceChatViewModel>(
+      () async => VoiceChatViewModel(repository: DI.get(), journeyViewModel: DI.get()),
+      dependsOn: [JourneyViewModel, VoiceChatRepository],
+      dispose: (vm) => vm.close(),
     );
   }
 
@@ -411,6 +432,15 @@ class const _PersonalNoteUserIdProvider({required final Authenticator authentica
   Future<String> call() async {
     final user = await authenticator.user();
     return user.userId;
+  }
+}
+
+class const _VoiceChatUserIdProvider({required final Authenticator authenticator}) implements UserIdProviderVoiceChat {
+  @override
+  Future<String> call() async {
+    final user = await authenticator.user();
+    final deviceId = await DeviceIdInfo.getDeviceId();
+    return '${user.userId}-$deviceId';
   }
 }
 

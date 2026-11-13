@@ -10,7 +10,7 @@ import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 
 final logger = Logger('main');

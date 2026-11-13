@@ -431,5 +431,12 @@
   "w_filter_bar_option_addition_speed_restrictions": "LaFa",
   "w_filter_bar_option_short_term_changes": "Kurzfristige Änderungen",
   "w_filter_bar_option_modifications": "Streckentabelle Änderungen",
-  "w_filter_bar_reset_button": "Filter zurücksetzen"
+  "w_filter_bar_reset_button": "Filter zurücksetzen",
+  "w_microphone_status_title": "Mikrofon Erlaubnis erteilen",
+  "w_microphone_status_text": "Damit Sie dem Sprachchat dieser Fahrordnung beitreten können, müssen sie in den Einstellungen für den DAS Client das Mikrofon erlauben. Damit können Sie anschliessend mit den anderen Lokführer*innen dieser Strecke sprechen.",
+  "w_microphone_status_error_title": "Sprachchat nicht verfügbar",
+  "w_microphone_status_error_server_unreachable": "Der Sprachchat-Server ist nicht erreichbar. Prüfe die Netzwerkverbindung.",
+  "w_microphone_status_error_token_invalid": "Die Anmeldung beim Sprachchat ist fehlgeschlagen.",
+  "w_microphone_status_error_duplicate_identity": "Du bist auf einem anderen Gerät im selben Sprachchat angemeldet.",
+  "w_microphone_status_error_unknown": "Beim Sprachchat ist ein unerwarteter Fehler aufgetreten."
 }

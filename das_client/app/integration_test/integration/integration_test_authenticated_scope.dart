@@ -14,6 +14,7 @@ import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:voice_chat/component.dart';
 
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_external_links_repository.dart';
@@ -24,6 +25,7 @@ import '../mocks/mock_ru_indications_repository.dart';
 import '../mocks/mock_sim_train_view_model.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../mocks/mock_warn_app_view_model.dart';
+import '../mocks/mock_voice_chat_repository.dart';
 
 final _log = Logger('IntegrationTestAuthenticatedScope');
 
@@ -41,6 +43,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerHttpClient();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
+    _registerMockVoiceChatRepository();
     getIt.registerSferaRemoteRepository();
     getIt.registerAppExpirationViewModel();
     _registerMockRuFeaturesProvider();
@@ -54,6 +57,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
 
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
+    getIt.registerVoiceChatViewModel();
     getIt.registerJourneyNavigationViewModel();
     getIt.registerJourneySelectionViewModel();
     getIt.registerNotificationPriorityViewModel();
@@ -67,6 +71,13 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerLocalRegulationHtmlGenerator();
 
     return getIt.allReady();
+  }
+
+  void _registerMockVoiceChatRepository() {
+    getIt.registerSingletonAsync<VoiceChatRepository>(
+      () async => MockVoiceChatRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 
   void _registerMockRuFeaturesProvider() {

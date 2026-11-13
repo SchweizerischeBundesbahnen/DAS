@@ -10,7 +10,7 @@ resolution: workspace
 dependencies:
   # workspaces
   http_x: 1.0.0
-  logger: 1.0.0
+  das_logger: 1.0.0
 
   # https://pub.dev/packages/uuid
   uuid: ^4.6.0

@@ -4,7 +4,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_tests;
