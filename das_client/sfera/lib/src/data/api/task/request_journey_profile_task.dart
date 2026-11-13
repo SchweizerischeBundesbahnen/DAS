@@ -12,6 +12,7 @@ import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/model/otn_id.dart';
+import 'package:uuid/uuid.dart';
 
 final _log = Logger('RequestJourneyProfileTask');
 
@@ -41,8 +42,10 @@ class RequestJourneyProfileTask({
     final trainIdentification = TrainIdentificationDto.create(otnId: otnIdDto);
     final jpRequest = JpRequestDto.create(trainIdentification);
 
+    requestMessageId = const Uuid().v4();
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: requestMessageId);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaRepo.messageHeader(sender: otnId.company),
+      messageHeader,
       b2gRequest: B2gRequestDto.createJPRequest(jpRequest),
     );
     _log.info('Sending journey profile request...');
@@ -54,9 +57,7 @@ class RequestJourneyProfileTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
@@ -96,12 +97,9 @@ class RequestJourneyProfileTask({
       await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
     }
 
-    final result = [];
-    result.addAll(payload.journeyProfiles);
-    result.addAll(payload.segmentProfiles);
-    result.addAll(payload.trainCharacteristics);
+    final result = [...payload.journeyProfiles, ...payload.segmentProfiles, ...payload.trainCharacteristics];
     if (payload.relatedTrainInformation != null) {
-      result.add(payload.relatedTrainInformation);
+      result.add(payload.relatedTrainInformation!);
     }
 
     _taskCompletedCallback(this, result);

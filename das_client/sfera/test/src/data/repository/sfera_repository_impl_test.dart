@@ -15,7 +15,9 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/repository/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/repository/sfera_repository_impl.dart';
 import 'package:uuid/uuid.dart';
+import 'package:xml/xml.dart';
 
+import '../api/task/sfera_task_test_helpers.dart';
 import 'sfera_repository_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -42,10 +44,29 @@ void main() {
   late Subject<bool> reauthenticationRequiredSubject;
   late Subject<String> mqttSubject;
   late Subject<bool> connectivitySubject;
+  late List<XmlDocument> publishedRequests;
 
-  String loadFile(String path) {
-    return File(path).readAsStringSync();
+  bool captureRequest(Invocation invocation) {
+    publishedRequests.add(XmlDocument.parse(invocation.positionalArguments[2] as String));
+    return true;
   }
+
+  void addReply(String response, String requestType) {
+    final request = publishedRequests.lastWhere((message) => message.findAllElements(requestType).isNotEmpty);
+    final requestMessageId = request.findAllElements('MessageHeader').single.getAttribute('message_ID')!;
+    final reply = SferaReplyParser.parse<SferaG2bReplyMessageDto>(response);
+    mqttSubject.add(correlateReplyMessage(reply, requestMessageId).buildDocument().toString());
+  }
+
+  void addHandshakeReply(String response) => addReply(response, 'DAS_HandshakeRequest');
+
+  void addJPReply(String response) => addReply(response, 'JP_Request');
+
+  void addRTIReply(String response) => addReply(response, 'RelatedTrainInformationRequest');
+
+  void addSPReply(String response) => addReply(response, 'SP_Request');
+
+  String loadFile(String path) => File(path).readAsStringSync();
 
   final rtiResponse = loadFile('test_resources/SFERA_G2B_Reply_RTI_request.xml');
 
@@ -65,6 +86,7 @@ $normalizedPayload
   }
 
   setUp(() {
+    publishedRequests = [];
     mockMqttService = MockMqttService();
     mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
@@ -94,7 +116,7 @@ $normalizedPayload
   test('connect_whenCalled_thenStartsConnecting', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // LATER THEN
@@ -114,13 +136,7 @@ $normalizedPayload
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('</DAS_HandshakeRequest>')),
-      ),
-    ).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('</DAS_HandshakeRequest>')))).called(1);
   });
 
   test('connect_whenMqttConnectionFails_thenPublishesDisconnected', () async {
@@ -157,7 +173,7 @@ $normalizedPayload
   test('connect_whenHandshakeSucceeds_thenStartsLoadingJourneyProfile', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // LATER THEN
@@ -175,32 +191,20 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('</DAS_HandshakeRequest>')),
-      ),
-    ).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<JP_Request>')),
-      ),
-    ).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('</DAS_HandshakeRequest>')))).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('<JP_Request>')))).called(1);
   });
 
   test('connect_whenHandshakeIsRejected_thenDisconnects', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // LATER THEN
@@ -219,19 +223,13 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('</DAS_HandshakeRequest>')),
-      ),
-    ).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('</DAS_HandshakeRequest>')))).called(1);
   });
 
   test(
@@ -239,7 +237,7 @@ $normalizedPayload
     () async {
       // GIVEN
       when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-      when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+      when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
       when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
       // LATER THEN
@@ -257,38 +255,20 @@ $normalizedPayload
       await Future.delayed(Duration(milliseconds: 1));
 
       final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-      mqttSubject.add(handshakeResponse);
+      addHandshakeReply(handshakeResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
       final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-      mqttSubject.add(jpResponse);
+      addJPReply(jpResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
       // THEN
       verify(mockMqttService.connect(any, any)).called(1);
-      verify(
-        mockMqttService.publishMessage(
-          any,
-          any,
-          argThat(contains('<SP_Request')),
-        ),
-      ).called(1);
-      verify(
-        mockMqttService.publishMessage(
-          any,
-          any,
-          argThat(contains('<TC_Request')),
-        ),
-      ).called(1);
-      verify(
-        mockMqttService.publishMessage(
-          any,
-          any,
-          argThat(contains('<RelatedTrainInformationRequest')),
-        ),
-      ).called(1);
+      verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(1);
+      verify(mockMqttService.publishMessage(any, any, argThat(contains('<TC_Request')))).called(1);
+      verify(mockMqttService.publishMessage(any, any, argThat(contains('<RelatedTrainInformationRequest')))).called(1);
     },
   );
 
@@ -300,7 +280,7 @@ $normalizedPayload
     final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
@@ -346,18 +326,18 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
-    mqttSubject.add(rtiResponse);
+    addRTIReply(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
     await Future.delayed(Duration(milliseconds: 1));
@@ -376,7 +356,7 @@ $normalizedPayload
     final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
@@ -423,18 +403,18 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
-    mqttSubject.add(rtiResponse);
+    addRTIReply(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -459,7 +439,7 @@ $normalizedPayload
       final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
 
       when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-      when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+      when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
       when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
       when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
         (_) => Future.value(
@@ -506,18 +486,18 @@ $normalizedPayload
       await Future.delayed(Duration(milliseconds: 1));
 
       final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-      mqttSubject.add(handshakeResponse);
+      addHandshakeReply(handshakeResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
       final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-      mqttSubject.add(jpResponse);
+      addJPReply(jpResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
       mqttSubject.add(spResponse);
       mqttSubject.add(tcResponse);
-      mqttSubject.add(rtiResponse);
+      addRTIReply(rtiResponse);
 
       await Future.delayed(Duration(milliseconds: 1));
 
@@ -541,7 +521,7 @@ $normalizedPayload
     final parsedTCResponse = SferaReplyParser.parse<SferaG2bReplyMessageDto>(tcResponse);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
@@ -589,18 +569,18 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
-    mqttSubject.add(rtiResponse);
+    addRTIReply(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -610,13 +590,7 @@ $normalizedPayload
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<SessionTermination')),
-      ),
-    ).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('<SessionTermination')))).called(1);
   });
 
   test('connect_whenMqttConnectionFails_thenLoadsOfflineJourney', () async {
@@ -703,7 +677,7 @@ $normalizedPayload
     final errorResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer(
@@ -760,7 +734,7 @@ $normalizedPayload
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(errorResponse);
+    addHandshakeReply(errorResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -846,9 +820,9 @@ $normalizedPayload
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(1);
     verify(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).called(1);
 
-    reset(mockMqttService);
+    clearInteractions(mockMqttService);
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // Trigger reconnect
@@ -857,17 +831,17 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
-    mqttSubject.add(rtiResponse);
+    addRTIReply(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
@@ -877,7 +851,7 @@ $normalizedPayload
   test('connect_whenOnlyPartialSegmentProfilesAreReplied_thenRetriesMaximumNumberOfTimesBeforeAborting', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
@@ -888,36 +862,30 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    reset(mockMqttService);
+    clearInteractions(mockMqttService);
 
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_1.xml');
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     await Future.delayed(Duration(milliseconds: 1));
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     await Future.delayed(Duration(milliseconds: 1));
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<SP_Request')),
-      ),
-    ).called(3);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(3);
 
     expectLater(testee.lastError, equals(SferaError.invalid()));
   });
@@ -925,7 +893,7 @@ $normalizedPayload
   test('connect_whenSubsequentReplyContainsOtherSegmentProfiles_thenResetsRetryCounter', () async {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
@@ -941,18 +909,18 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
-    mqttSubject.add(jpResponse);
+    addJPReply(jpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    reset(mockMqttService);
+    clearInteractions(mockMqttService);
 
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     when(mockLocalDatabaseRepository.findSegmentProfile('0001_1', any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
@@ -965,13 +933,13 @@ $normalizedPayload
     );
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(spResponse);
+    addSPReply(spResponse);
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(spResponse2);
+    addSPReply(spResponse2);
     when(mockLocalDatabaseRepository.findSegmentProfile('0001_2', any, any)).thenAnswer(
       (_) => Future.value(
         SegmentProfileTableData(
@@ -984,33 +952,21 @@ $normalizedPayload
     );
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(spResponse2);
+    addSPReply(spResponse2);
     await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<SP_Request')),
-      ),
-    ).called(5);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(5);
 
     expect(testee.lastError, isNull);
 
-    mqttSubject.add(spResponse2);
+    addSPReply(spResponse2);
     await Future.delayed(Duration(milliseconds: 1));
-    mqttSubject.add(spResponse2);
+    addSPReply(spResponse2);
     await Future.delayed(Duration(milliseconds: 1));
 
     // THEN
-    verify(
-      mockMqttService.publishMessage(
-        any,
-        any,
-        argThat(contains('<SP_Request')),
-      ),
-    ).called(1);
+    verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(1);
 
     expect(testee.lastError, equals(SferaError.invalid()));
   });
@@ -1107,7 +1063,7 @@ $normalizedPayload
     final tcResponse = wrapReplyMessage(tcXml);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
-    when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
+    when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
     when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
     when(mockLocalDatabaseRepository.findSegmentProfile('T26_1', '1', '0')).thenAnswer(
       (_) async => SegmentProfileTableData(
@@ -1151,17 +1107,17 @@ $normalizedPayload
     await Future.delayed(Duration(milliseconds: 1));
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    mqttSubject.add(handshakeResponse);
+    addHandshakeReply(handshakeResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    mqttSubject.add(t26JpResponse);
+    addJPReply(t26JpResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
 
     mqttSubject.add(spResponse);
     mqttSubject.add(tcResponse);
-    mqttSubject.add(rtiResponse);
+    addRTIReply(rtiResponse);
 
     await Future.delayed(Duration(milliseconds: 1));
     await Future.delayed(Duration(milliseconds: 1));

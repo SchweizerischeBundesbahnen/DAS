@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -9,11 +7,11 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/model/otn_id.dart';
 
 import 'sfera_request_journey_profile_task_test.mocks.dart';
+import 'sfera_task_test_helpers.dart';
 
 @GenerateNiceMocks([
   MockSpec<SferaRepository>(),
@@ -28,7 +26,9 @@ void main() {
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
-    when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    when(
+      mockSferaRepo.messageHeader(sender: anyNamed('sender'), messageId: anyNamed('messageId')),
+    ).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaLocalService = MockSferaLocalDatabaseService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
@@ -37,7 +37,7 @@ void main() {
   test('execute_whenRequestSegmentProfilesSuccessful_thenReturnsTrue', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     final segmentTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -57,14 +57,16 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, segmentTask.requestMessageId!),
+    );
     expect(result, true);
   });
 
   test('execute_whenRequestSegmentProfilesSuccessful_thenSavesToSferaRepository', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     final segmentTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -81,7 +83,9 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, segmentTask.requestMessageId!),
+    );
     expect(result, true);
 
     verifyNever(sferaLocalService.saveJourneyProfile(any));
@@ -91,7 +95,7 @@ void main() {
   test('execute_whenRequestSegmentProfilesWithInvalidSP_thenFailsWithInvalid', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml');
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml');
 
     final segmentTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -111,7 +115,9 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, segmentTask.requestMessageId!),
+    );
     expect(result, true);
 
     verifyNever(sferaLocalService.saveJourneyProfile(any));
@@ -121,7 +127,7 @@ void main() {
   test('execute_whenRequestSegmentProfilesWithOtherMessage_thenIsIgnored', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     final segmentTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -138,15 +144,17 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final handshakeSferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final result = await segmentTask.handleMessage(handshakeSferaG2bReplyMessage);
+    final handshakeSferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    final result = await segmentTask.handleMessage(
+      correlateReplyMessage(handshakeSferaG2bReplyMessage, segmentTask.requestMessageId!),
+    );
     expect(result, false);
   });
 
   test('execute_whenRequestSegmentProfilesIsTimedOut_thenFailsWithRequestTimeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     final spTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -177,7 +185,7 @@ void main() {
   test('execute_whenRequestSegmentProfilesFailsWithError_thenFailsWithProtocolError', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final jpRequest = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final jpRequest = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     final segmentTask = RequestSegmentProfilesTask(
       sferaRepo: mockSferaRepo,
@@ -208,11 +216,10 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
+    final result = await segmentTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, segmentTask.requestMessageId!),
+    );
     expect(result, false);
   });
 }
-
-SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
-    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());

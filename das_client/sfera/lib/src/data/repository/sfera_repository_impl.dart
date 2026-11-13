@@ -232,10 +232,10 @@ class SferaRepoImpl({
   }
 
   @override
-  MessageHeaderDto messageHeader({required String sender}) {
+  MessageHeaderDto messageHeader({required String sender, String? messageId}) {
     final timestamp = Format.sferaTimestamp(DateTime.now());
     return MessageHeaderDto.create(
-      messageId: const Uuid().v4(),
+      messageId: messageId ?? const Uuid().v4(),
       timestamp: timestamp,
       sourceDevice: deviceId,
       destinationDevice: 'TMS',

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -10,10 +8,10 @@ import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/model/otn_id.dart';
 
 import 'sfera_handshake_task_test.mocks.dart';
+import 'sfera_task_test_helpers.dart';
 
 @GenerateNiceMocks([
   MockSpec<SferaRepository>(),
@@ -26,7 +24,9 @@ void main() {
 
   setUp(() {
     mockSferaRepo = MockSferaRepository();
-    when(mockSferaRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    when(
+      mockSferaRepo.messageHeader(sender: anyNamed('sender'), messageId: anyNamed('messageId')),
+    ).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
@@ -51,8 +51,10 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    final result = await handshakeTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, handshakeTask.requestMessageId!),
+    );
     expect(result, true);
   });
 
@@ -95,8 +97,10 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
-    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
+    final result = await handshakeTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, handshakeTask.requestMessageId!),
+    );
     expect(result, true);
   });
 
@@ -117,8 +121,10 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final result = await handshakeTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, handshakeTask.requestMessageId!),
+    );
     expect(result, false);
   });
 
@@ -179,11 +185,10 @@ void main() {
       },
     );
 
-    final sferaG2bReplyMessage = _parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
-    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final sferaG2bReplyMessage = parseReplyMessage('test_resources/SFERA_G2B_ReplyMessage_Error.xml');
+    final result = await handshakeTask.handleMessage(
+      correlateReplyMessage(sferaG2bReplyMessage, handshakeTask.requestMessageId!),
+    );
     expect(result, false);
   });
 }
-
-SferaG2bReplyMessageDto _parseReplyMessage(String path) =>
-    SferaReplyParser.parse<SferaG2bReplyMessageDto>(File(path).readAsStringSync());

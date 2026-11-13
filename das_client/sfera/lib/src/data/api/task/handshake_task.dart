@@ -9,6 +9,7 @@ import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/model/otn_id.dart';
+import 'package:uuid/uuid.dart';
 
 final _log = Logger('HandshakeTask');
 
@@ -51,7 +52,8 @@ class HandshakeTask({
       statusReportsEnabled: isDriver,
     );
 
-    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company);
+    requestMessageId = const Uuid().v4();
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: requestMessageId);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
     final message = sferaB2gRequestMessage.buildDocument().toString();
     final success = _mqttService.publishMessage(otnId.company, sferaTrain, message);
@@ -62,9 +64,7 @@ class HandshakeTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
