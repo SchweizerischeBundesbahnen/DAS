@@ -18,9 +18,12 @@ import ch.sbb.das.backend.companies.CompanyShortName;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.CompanyMatch;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentificationRepository;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.entities.TrainIdentificationEntity;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,7 +31,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -37,7 +39,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 @ExtendWith(MockitoExtension.class)
 class TrainIdentificationServiceTest {
 
-    private static final LocalDate TODAY = DateTimeUtil.today();
+    private static final ZonedDateTime FIXED_NOW = ZonedDateTime.of(LocalDateTime.of(2026, 3, 10, 12, 0), DateTimeUtil.SWISS_ZONE);
+    private static final LocalDate TODAY = FIXED_NOW.toLocalDate();
     private static final LocalDate TOMORROW = TODAY.plusDays(1);
     private static final int HOURS_BEFORE_DEPARTURE = 4;
 
@@ -47,18 +50,23 @@ class TrainIdentificationServiceTest {
     @Mock
     private CompanyService companyService;
 
-    @InjectMocks
     private TrainIdentificationService underTest;
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(underTest, "hoursBeforeDeparture", HOURS_BEFORE_DEPARTURE);
+        underTest = serviceAt(FIXED_NOW);
+    }
+
+    private TrainIdentificationService serviceAt(ZonedDateTime now) {
+        TrainIdentificationService service = new TrainIdentificationService(trainIdentificationRepository, companyService, Clock.fixed(now.toInstant(), DateTimeUtil.SWISS_ZONE));
+        ReflectionTestUtils.setField(service, "hoursBeforeDeparture", HOURS_BEFORE_DEPARTURE);
+        return service;
     }
 
     @Test
     void findCompaniesByStartDatesAndTrainNumber_returnsCompaniesWithDates() {
         // Given
-        OffsetDateTime departure = DateTimeUtil.now().plusMinutes(30);
+        OffsetDateTime departure = FIXED_NOW.toOffsetDateTime().plusMinutes(30);
         LocalDate startDate = departure.atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
         Set<LocalDate> startDates = Set.of(startDate);
         String trainNumber = "728";
@@ -96,8 +104,8 @@ class TrainIdentificationServiceTest {
     @Test
     void findCompaniesByStartDatesAndTrainNumber_multipleEntitiesWithinWindow_returnsAllSorted() {
         // Given
-        OffsetDateTime departure1 = DateTimeUtil.now().plusHours(1);
-        OffsetDateTime departure2 = DateTimeUtil.now().plusHours(3);
+        OffsetDateTime departure1 = FIXED_NOW.toOffsetDateTime().plusHours(1);
+        OffsetDateTime departure2 = FIXED_NOW.toOffsetDateTime().plusHours(3);
         LocalDate startDate = departure1.atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
         Set<LocalDate> startDates = Set.of(startDate);
         String trainNumber = "728";
@@ -140,7 +148,7 @@ class TrainIdentificationServiceTest {
     @Test
     void findCompaniesByStartDatesAndTrainNumber_unknownCompany_isFiltered() {
         // Given
-        OffsetDateTime departure = DateTimeUtil.now().plusMinutes(30);
+        OffsetDateTime departure = FIXED_NOW.toOffsetDateTime().plusMinutes(30);
         LocalDate startDate = departure.atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
         Set<LocalDate> startDates = Set.of(startDate);
         String trainNumber = "728";
@@ -176,7 +184,7 @@ class TrainIdentificationServiceTest {
     @Test
     void findCompaniesByStartDatesAndTrainNumber_allCompaniesUnsupported_returnsEmpty() {
         // Given
-        OffsetDateTime departure = DateTimeUtil.now().plusMinutes(30);
+        OffsetDateTime departure = FIXED_NOW.toOffsetDateTime().plusMinutes(30);
         LocalDate startDate = departure.atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
         Set<LocalDate> startDates = Set.of(startDate);
         String trainNumber = "728";
@@ -271,7 +279,7 @@ class TrainIdentificationServiceTest {
     @Test
     void findCompaniesByStartDatesAndTrainNumber_queriesFromRequestedStartUpToLatestDeparture() {
         // Given
-        LocalDate requestedDay = DateTimeUtil.today();
+        LocalDate requestedDay = TODAY;
         Set<LocalDate> startDates = Set.of(requestedDay);
         String trainNumber = "728";
         OffsetDateTime expectedFrom = requestedDay.atStartOfDay(DateTimeUtil.SWISS_ZONE).toOffsetDateTime();
@@ -279,9 +287,7 @@ class TrainIdentificationServiceTest {
         when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber))).thenReturn(List.of());
 
         // When
-        OffsetDateTime beforeCall = DateTimeUtil.now();
         assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber)).isInstanceOf(NotFoundException.class);
-        OffsetDateTime afterCall = DateTimeUtil.now();
 
         // Then
         ArgumentCaptor<OffsetDateTime> from = ArgumentCaptor.forClass(OffsetDateTime.class);
@@ -289,13 +295,13 @@ class TrainIdentificationServiceTest {
         verify(trainIdentificationRepository).findAllByStartDateTimeRangeAndOperationalTrainNumber(from.capture(), to.capture(), eq(trainNumber));
 
         assertThat(from.getValue()).isEqualTo(expectedFrom);
-        assertThat(to.getValue()).isBetween(beforeCall.plusHours(HOURS_BEFORE_DEPARTURE), afterCall.plusHours(HOURS_BEFORE_DEPARTURE));
+        assertThat(to.getValue()).isEqualTo(OffsetDateTime.parse("2026-03-10T16:00+01:00"));
     }
 
     @Test
     void findCompaniesByStartDatesAndTrainNumber_narrowsToRequestedStartDates() {
         // Given
-        LocalDate requestedDay = DateTimeUtil.today();
+        LocalDate requestedDay = TODAY;
         LocalDate otherDay = requestedDay.plusDays(1);
         Set<LocalDate> startDates = Set.of(requestedDay);
         String trainNumber = "728";
@@ -332,7 +338,7 @@ class TrainIdentificationServiceTest {
     @Test
     void findCompaniesByStartDatesAndTrainNumber_companyResolvedButNotInGetAllCompanies_isFiltered() {
         // Given
-        OffsetDateTime departure = DateTimeUtil.now().plusMinutes(30);
+        OffsetDateTime departure = FIXED_NOW.toOffsetDateTime().plusMinutes(30);
         LocalDate startDate = departure.atZoneSameInstant(DateTimeUtil.SWISS_ZONE).toLocalDate();
         Set<LocalDate> startDates = Set.of(startDate);
         String trainNumber = "728";
@@ -410,5 +416,101 @@ class TrainIdentificationServiceTest {
             .isInstanceOf(BadRequestException.class)
             .extracting(ex -> ((BadRequestException) ex).getStatusCode())
             .isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void findCompaniesByStartDatesAndTrainNumber_lateEvening_departureAfterMidnightBelongsToNextDay() {
+        // Given
+        TrainIdentificationService lateEvening = serviceAt(TODAY.atTime(22, 30).atZone(DateTimeUtil.SWISS_ZONE));
+        String trainNumber = "728";
+
+        TrainIdentificationEntity entity = TrainIdentificationEntity.builder()
+            .id(1)
+            .operationalTrainNumber(trainNumber)
+            .startDateTime(OffsetDateTime.parse("2026-03-11T01:30+01:00"))
+            .companies("MOCK_A")
+            .build();
+
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(
+            OffsetDateTime.parse("2026-03-10T00:00+01:00"), OffsetDateTime.parse("2026-03-11T02:30+01:00"), trainNumber))
+            .thenReturn(List.of(entity));
+        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
+            .thenReturn(Optional.of(new CompanyCode("1111")));
+        when(companyService.getAllCompanies()).thenReturn(List.of(new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A"))));
+
+        // When
+        List<CompanyMatch> todayAndTomorrow = lateEvening.findCompaniesByStartDatesAndTrainNumber(Set.of(TODAY, TOMORROW), trainNumber);
+
+        // Then
+        assertThatThrownBy(() -> lateEvening.findCompaniesByStartDatesAndTrainNumber(Set.of(TODAY), trainNumber))
+            .isInstanceOf(NotFoundException.class);
+        assertThat(todayAndTomorrow).extracting(CompanyMatch::startDate).containsExactly(TOMORROW);
+    }
+
+    @Test
+    void findCompaniesByStartDatesAndTrainNumber_shortlyBeforeMidnight_acceptsYesterdayToTomorrowOnly() {
+        // Given
+        TrainIdentificationService beforeMidnight = serviceAt(TODAY.atTime(23, 45).atZone(DateTimeUtil.SWISS_ZONE));
+        String trainNumber = "728";
+
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
+            .thenReturn(List.of());
+
+        // When / Then
+        assertThatThrownBy(() -> beforeMidnight.findCompaniesByStartDatesAndTrainNumber(Set.of(LocalDate.parse("2026-03-09")), trainNumber))
+            .isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> beforeMidnight.findCompaniesByStartDatesAndTrainNumber(Set.of(LocalDate.parse("2026-03-11")), trainNumber))
+            .isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> beforeMidnight.findCompaniesByStartDatesAndTrainNumber(Set.of(LocalDate.parse("2026-03-12")), trainNumber))
+            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> beforeMidnight.findCompaniesByStartDatesAndTrainNumber(Set.of(LocalDate.parse("2026-03-08")), trainNumber))
+            .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void findCompaniesByStartDatesAndTrainNumber_shortlyAfterMidnight_findsDepartureOfYesterday() {
+        // Given
+        TrainIdentificationService afterMidnight = serviceAt(TOMORROW.atTime(0, 15).atZone(DateTimeUtil.SWISS_ZONE));
+        String trainNumber = "728";
+
+        TrainIdentificationEntity entity = TrainIdentificationEntity.builder()
+            .id(1)
+            .operationalTrainNumber(trainNumber)
+            .startDateTime(OffsetDateTime.parse("2026-03-10T23:50+01:00"))
+            .companies("MOCK_A")
+            .build();
+
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(
+            OffsetDateTime.parse("2026-03-10T00:00+01:00"), OffsetDateTime.parse("2026-03-11T04:15+01:00"), trainNumber))
+            .thenReturn(List.of(entity));
+        when(companyService.findCompanyCodeByShortName(new CompanyShortName("MOCK_A")))
+            .thenReturn(Optional.of(new CompanyCode("1111")));
+        when(companyService.getAllCompanies()).thenReturn(List.of(new Company(new CompanyCode("1111"), new CompanyShortName("MOCK_A"))));
+
+        // When
+        List<CompanyMatch> result = afterMidnight.findCompaniesByStartDatesAndTrainNumber(Set.of(TODAY), trainNumber);
+
+        // Then
+        assertThat(result).extracting(CompanyMatch::startDate).containsExactly(LocalDate.parse("2026-03-10"));
+    }
+
+    @Test
+    void findCompaniesByStartDatesAndTrainNumber_springForward_latestDepartureIsHoursBeforeDepartureInRealTime() {
+        // Given
+        TrainIdentificationService beforeSwitch = serviceAt(ZonedDateTime.of(LocalDateTime.of(2026, 3, 28, 23, 30), DateTimeUtil.SWISS_ZONE));
+        String trainNumber = "728";
+
+        when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
+            .thenReturn(List.of());
+
+        // When
+        assertThatThrownBy(() -> beforeSwitch.findCompaniesByStartDatesAndTrainNumber(Set.of(LocalDate.parse("2026-03-28")), trainNumber))
+            .isInstanceOf(NotFoundException.class);
+
+        // Then
+        ArgumentCaptor<OffsetDateTime> to = ArgumentCaptor.forClass(OffsetDateTime.class);
+        verify(trainIdentificationRepository).findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), to.capture(), eq(trainNumber));
+        // 4 real hours after 23:30 CET is 04:30 CEST, while the wall clock moved 5 hours
+        assertThat(to.getValue()).isEqualTo(OffsetDateTime.parse("2026-03-29T04:30+02:00"));
     }
 }
