@@ -1,7 +1,6 @@
 package ch.sbb.das.backend.features.internal;
 
 import ch.sbb.das.backend.common.*;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class RuFeatureController {
     @Operation(summary = "Get all RU features.", description = "Returns all RU feature toggles visible for the authorized companies.")
     @ApiResponse(responseCode = "200", description = "RU features found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllRuFeatures() {
+    public ResponseEntity<InternalRuFeatureResponse> getAllRuFeatures() {
         List<InternalRuFeature> ruFeatures = ruFeatureService.getAllForAdmin();
         return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeatures));
     }
@@ -39,22 +37,19 @@ public class RuFeatureController {
     @GetMapping(API_RU_FEATURES_ID)
     @Operation(summary = "Get RU feature by id.", description = "Returns a single RU feature toggle by its id.")
     @ApiResponse(responseCode = "200", description = "RU feature found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU feature not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuFeatureById(
+    public ResponseEntity<InternalRuFeatureResponse> getRuFeatureById(
         @PathVariable Integer id) {
-        Optional<InternalRuFeature> ruFeature = ruFeatureService.getById(id);
-        if (ruFeature.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
-        }
-        throw new NotFoundException();
+        InternalRuFeature ruFeature = ruFeatureService.getById(id);
+        return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature));
     }
 
     @PostMapping(API_RU_FEATURES)
     @Operation(summary = "Create a new RU feature.", description = "Creates a new RU feature toggle for a company.")
     @ApiResponse(responseCode = "201", description = "RU feature created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> createRuFeature(
+    public ResponseEntity<InternalRuFeatureResponse> createRuFeature(
         @RequestBody @Valid RuFeatureRequest createRequest) {
         InternalRuFeature ruFeature = ruFeatureService.create(createRequest);
         return ResponseEntityFactory.createCreatedResponse(new InternalRuFeatureResponse(ruFeature));
@@ -63,16 +58,13 @@ public class RuFeatureController {
     @PutMapping(API_RU_FEATURES_ID)
     @Operation(summary = "Update RU feature by id.", description = "Updates a single RU feature toggle by its id.")
     @ApiResponse(responseCode = "200", description = "RU feature updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalRuFeatureResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU feature not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuFeature(
+    public ResponseEntity<InternalRuFeatureResponse> updateRuFeature(
         @PathVariable Integer id,
         @RequestBody @Valid RuFeatureRequest updateRequest) {
-        Optional<InternalRuFeature> ruFeature = ruFeatureService.update(id, updateRequest);
-        if (ruFeature.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature.get()));
-        }
-        throw new NotFoundException();
+        InternalRuFeature ruFeature = ruFeatureService.update(id, updateRequest);
+        return ResponseEntityFactory.createOkResponse(new InternalRuFeatureResponse(ruFeature));
     }
 
     @DeleteMapping(API_RU_FEATURES)

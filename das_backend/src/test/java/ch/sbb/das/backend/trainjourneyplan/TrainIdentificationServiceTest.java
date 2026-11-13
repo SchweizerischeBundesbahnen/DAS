@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -197,12 +198,9 @@ class TrainIdentificationServiceTest {
 
         when(companyService.getAllCompanies()).thenReturn(List.of());
 
-        // When
-        List<CompanyMatch> result = underTest
-            .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
-
-        // Then
-        assertThat(result).isEmpty();
+        // When / Then
+        assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
+            .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -282,7 +280,7 @@ class TrainIdentificationServiceTest {
 
         // When
         OffsetDateTime beforeCall = DateTimeUtil.now();
-        underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
+        assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber)).isInstanceOf(NotFoundException.class);
         OffsetDateTime afterCall = DateTimeUtil.now();
 
         // Then
@@ -354,12 +352,9 @@ class TrainIdentificationServiceTest {
 
         when(companyService.getAllCompanies()).thenReturn(List.of());
 
-        // When
-        List<CompanyMatch> result = underTest
-            .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
-
-        // Then
-        assertThat(result).isEmpty();
+        // When / Then
+        assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
+            .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -372,12 +367,9 @@ class TrainIdentificationServiceTest {
         when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of());
 
-        // When
-        List<CompanyMatch> result = underTest
-            .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
-
-        // Then
-        assertThat(result).isEmpty();
+        // When / Then
+        assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
+            .isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -389,12 +381,9 @@ class TrainIdentificationServiceTest {
         when(trainIdentificationRepository.findAllByStartDateTimeRangeAndOperationalTrainNumber(any(), any(), eq(trainNumber)))
             .thenReturn(List.of());
 
-        // When
-        List<CompanyMatch> result = underTest
-            .findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber);
-
-        // Then
-        assertThat(result).isEmpty();
+        // When / Then
+        assertThatThrownBy(() -> underTest.findCompaniesByStartDatesAndTrainNumber(startDates, trainNumber))
+            .isInstanceOf(NotFoundException.class);
     }
 
     @Test

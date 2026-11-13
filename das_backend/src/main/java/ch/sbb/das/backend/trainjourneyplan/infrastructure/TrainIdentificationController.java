@@ -2,9 +2,8 @@ package ch.sbb.das.backend.trainjourneyplan.infrastructure;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,17 +39,13 @@ public class TrainIdentificationController {
             + "within the candidate window (a few hours before departure, configured server-side) are considered.")
     @ApiResponse(responseCode = "200", description = "Companies found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyMatchResponse.class)))
-    @ApiResponse(responseCode = "404", description = "No matching train identification within the candidate window.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> matchCompanies(
+    public ResponseEntity<CompanyMatchResponse> matchCompanies(
         @Parameter(description = "The start date of the train journey. Can be specified multiple times. Must be within today +/- 1 day.", required = true, example = "2026-07-10") @RequestParam @NotEmpty Set<LocalDate> startDate,
         @Parameter(description = "The operational train number.", required = true) @RequestParam @NotBlank String operationalTrainNumber) {
 
         List<CompanyMatch> companies = trainIdentificationService.findCompaniesByStartDatesAndTrainNumber(startDate, operationalTrainNumber);
-
-        if (companies.isEmpty()) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new CompanyMatchResponse(companies));
     }
 }

@@ -2,6 +2,7 @@ package ch.sbb.das.backend.companies.internal;
 
 import ch.sbb.das.backend.common.error.BadRequestException;
 import ch.sbb.das.backend.common.error.ConflictException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
+
+    private static final String RESOURCE = "Company";
 
     private final CompanyRepository companyRepository;
     private final TenantRepository tenantRepository;
@@ -57,9 +60,10 @@ public class CompanyServiceImpl implements CompanyService {
             .toList();
     }
 
-    Optional<InternalCompany> getById(Integer id) {
+    InternalCompany getById(Integer id) {
         return companyRepository.findById(id)
-            .map(companyMapper::toAdminCompany);
+            .map(companyMapper::toAdminCompany)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
     }
 
     InternalCompany create(CompanyRequest request) {
@@ -74,11 +78,9 @@ public class CompanyServiceImpl implements CompanyService {
         return companyMapper.toAdminCompany(companyRepository.save(entity));
     }
 
-    Optional<InternalCompany> update(Integer id, CompanyRequest request) {
-        Optional<CompanyEntity> optional = companyRepository.findById(id);
-        if (optional.isEmpty()) {
-            return Optional.empty();
-        }
+    InternalCompany update(Integer id, CompanyRequest request) {
+        CompanyEntity entity = companyRepository.findById(id)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
         TenantEntity tenant = findTenantOrThrow(request.tenantId());
         if (companyRepository.existsByCodeAndIdNot(request.code().value(), id)) {
             throw new ConflictException("Company code already exists: " + request.code().value());
@@ -86,9 +88,8 @@ public class CompanyServiceImpl implements CompanyService {
         if (companyRepository.existsByShortNameAndIdNot(request.shortName().value(), id)) {
             throw new ConflictException("Company short name already exists: " + request.shortName().value());
         }
-        CompanyEntity entity = optional.get();
         companyMapper.updateEntity(entity, request, tenant);
-        return Optional.of(companyMapper.toAdminCompany(companyRepository.save(entity)));
+        return companyMapper.toAdminCompany(companyRepository.save(entity));
     }
 
     void delete(Integer id) {

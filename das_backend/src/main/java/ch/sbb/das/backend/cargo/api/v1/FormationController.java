@@ -6,13 +6,10 @@ import ch.sbb.das.backend.cargo.application.FormationService;
 import ch.sbb.das.backend.cargo.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.DateTimeUtil;
-import ch.sbb.das.backend.common.Problem;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import ch.sbb.das.backend.common.SFERA;
 import ch.sbb.das.backend.common.TelTsi;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,7 +26,6 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,13 +55,12 @@ public class FormationController {
             schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
     }, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FormationResponse.class)))
     @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content /* actually empty body/content */)
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+    @ApiNotFoundResponse
     @ApiErrorResponses
     @GetMapping(path = API_FORMATIONS)
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
         in = ParameterIn.HEADER)
-    ResponseEntity<? extends Response> getFormations(
+    ResponseEntity<FormationResponse> getFormations(
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
         @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
 
@@ -76,14 +71,6 @@ public class FormationController {
         @SFERA @TelTsi @RequestParam CompanyCode company) {
 
         final List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
-        if (CollectionUtils.isEmpty(entities)) {
-
-            final LocalDate today = DateTimeUtil.today();
-            if (operationalDay.isBefore(today) || operationalDay.isAfter(today)) {
-                throw new NotFoundException("operationalDay='" + operationalDay + "' -> data may not be available at all if not TODAY.");
-            }
-            throw new NotFoundException();
-        }
 
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "private");

@@ -2,17 +2,19 @@ package ch.sbb.das.backend.appversions.internal;
 
 import ch.sbb.das.backend.appversions.AppVersionService;
 import ch.sbb.das.backend.appversions.CurrentAppVersion;
-import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.error.ConflictException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AppVersionServiceImpl implements AppVersionService {
+
+    private static final String RESOURCE = "App version";
 
     private final AppVersionRepository appVersionRepository;
 
@@ -47,8 +49,9 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     AppVersion getById(Integer id) {
-        Optional<AppVersion> appVersion = appVersionRepository.findById(id).map(AppVersionEntity::toAppVersion);
-        return appVersion.orElse(null);
+        return appVersionRepository.findById(id)
+            .map(AppVersionEntity::toAppVersion)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
     }
 
     AppVersion create(AppVersionRequest createRequest) {
@@ -60,14 +63,12 @@ public class AppVersionServiceImpl implements AppVersionService {
     }
 
     AppVersion update(Integer id, AppVersionRequest updateRequest) {
-        Optional<AppVersion> optional = appVersionRepository.findById(id).map(AppVersionEntity::toAppVersion);
-        if (optional.isEmpty()) {
-            return null;
-        }
+        AppVersion old = appVersionRepository.findById(id)
+            .map(AppVersionEntity::toAppVersion)
+            .orElseThrow(() -> NotFoundException.forId(RESOURCE, id));
         if (appVersionRepository.existsByVersionAndIdNot(updateRequest.version(), id)) {
             throw new ConflictException("Version already exists");
         }
-        AppVersion old = optional.get();
         AppVersion updated = new AppVersion(old.id(), updateRequest.version(), updateRequest.minimalVersion(), updateRequest.expiryDate());
         return appVersionRepository.save(AppVersionEntity.from(updated)).toAppVersion();
     }

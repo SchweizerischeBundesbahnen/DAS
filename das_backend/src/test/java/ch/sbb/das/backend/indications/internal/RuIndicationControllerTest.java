@@ -3,16 +3,19 @@ package ch.sbb.das.backend.indications.internal;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_DRIVER_RU_INDICATION_MATCHES;
 import static ch.sbb.das.backend.indications.internal.RuIndicationController.API_RU_INDICATIONS;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
+import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,7 +92,22 @@ class RuIndicationControllerTest {
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getRuIndicationById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATIONS + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication with id 99 not found"));
+    }
+
+    @DisplayName("getRuIndicationById_notFound_existingCompanyNotAuthorized|nhEy6GLLAIAwdlwDwTYc|tests:2653")
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    @Sql("classpath:createRuIndications.sql")
+    void getRuIndicationById_notFound_existingCompanyNotAuthorized() throws Exception {
+        mockMvc.perform(get(API_RU_INDICATIONS + "/3"))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication with id 3 not found"));
     }
 
     @DisplayName("create_RuIndication_ok|8pdiSMW1jq4rCP40rXAA|tests:144,1657")
@@ -332,7 +350,37 @@ class RuIndicationControllerTest {
                         ]
                     }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication with id 99 not found"));
+    }
+
+    @DisplayName("update_RuIndication_notFound_existingCompanyNotAuthorized|igJQanCYPAi8KKaPnk8P|tests:2653")
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    @Sql("classpath:createRuIndications.sql")
+    void update_RuIndication_notFound_existingCompanyNotAuthorized() throws Exception {
+        mockMvc.perform(put(API_RU_INDICATIONS + "/3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "content": {
+                            "de": { "title": "Hinweis", "text": "Text DE" }
+                        },
+                        "scope": {
+                            "companies": ["1111"],
+                            "tafTapLocationReferences": ["CH00001"]
+                        },
+                        "periods": [
+                            { "validFrom": "2026-01-01", "validTo": "2026-12-31", "weekdays": [] }
+                        ]
+                    }
+                    """))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication with id 3 not found"));
     }
 
     @DisplayName("deleteRuIndicationsByIds_whenValidIds_deletesSuccessfully|k3464hCjs1m5UMx0HCRc|tests:144,1657")
@@ -350,6 +398,27 @@ class RuIndicationControllerTest {
         mockMvc.perform(get(API_RU_INDICATIONS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data", hasSize(0)));
+    }
+
+    @DisplayName("deleteRuIndicationsByIds_noContent_skipsExistingCompanyNotAuthorized|k6FterlILkDjDrGzKdBb|tests:2653")
+    @Test
+    @WithMockRole(roles = UserRole.RU_ADMIN)
+    @Sql("classpath:createRuIndications.sql")
+    void deleteRuIndicationsByIds_noContent_skipsExistingCompanyNotAuthorized() throws Exception {
+        mockMvc.perform(delete(API_RU_INDICATIONS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    { "ids": [1, 3, 99] }
+                    """))
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_RU_INDICATIONS + "/1"))
+            .andExpect(status().isNotFound());
+
+        mockMvc.perform(get(API_RU_INDICATIONS + "/3")
+                .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(3));
     }
 
     @DisplayName("deleteByIds_invalid_emptyList|dPljk6WTsyWFvUgaPHiW|tests:144,1657")

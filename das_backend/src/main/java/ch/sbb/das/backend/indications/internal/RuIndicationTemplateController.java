@@ -2,10 +2,9 @@ package ch.sbb.das.backend.indications.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.DeleteByIdsRequest;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplate;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateRequest;
 import ch.sbb.das.backend.indications.internal.model.RuIndicationTemplateResponse;
@@ -43,7 +42,7 @@ public class RuIndicationTemplateController {
     @ApiResponse(responseCode = "200", description = "RU indication templates found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllRuIndicationTemplates() {
+    public ResponseEntity<RuIndicationTemplateResponse> getAllRuIndicationTemplates() {
         List<RuIndicationTemplate> ruIndicationTemplates = ruIndicationTemplateService.getAll();
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplates));
     }
@@ -52,14 +51,11 @@ public class RuIndicationTemplateController {
     @Operation(summary = "Get RU indication template by id.", description = "Returns a single RU indication template by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication template found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication template not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getRuIndicationTemplateById(
+    public ResponseEntity<RuIndicationTemplateResponse> getRuIndicationTemplateById(
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.getById(id);
-        if (ruIndicationTemplate == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate));
     }
 
@@ -78,15 +74,12 @@ public class RuIndicationTemplateController {
     @Operation(summary = "Update RU indication template by id.", description = "Updates a single RU indication template by its id.")
     @ApiResponse(responseCode = "200", description = "RU indication template updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RuIndicationTemplateResponse.class)))
-    @ApiResponse(responseCode = "404", description = "RU indication template not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateRuIndicationTemplate(
+    public ResponseEntity<RuIndicationTemplateResponse> updateRuIndicationTemplate(
         @RequestBody @Valid RuIndicationTemplateRequest updateRequest,
         @PathVariable Integer id) {
         RuIndicationTemplate ruIndicationTemplate = ruIndicationTemplateService.update(id, updateRequest);
-        if (ruIndicationTemplate == null) {
-            throw new NotFoundException();
-        }
         return ResponseEntityFactory.createOkResponse(new RuIndicationTemplateResponse(ruIndicationTemplate));
     }
 

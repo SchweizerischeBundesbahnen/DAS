@@ -2,9 +2,8 @@ package ch.sbb.das.backend.companies.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -16,7 +15,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -48,7 +46,7 @@ public class CompanyController {
     @Operation(summary = "Get all companies.", description = "Returns all companies (admin only).")
     @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllCompanies() {
+    public ResponseEntity<InternalCompanyResponse> getAllCompanies() {
         List<InternalCompany> companies = companyService.getAllAdminCompanies();
         return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(companies));
     }
@@ -57,7 +55,7 @@ public class CompanyController {
     @Operation(summary = "Get authorized companies.", description = "Returns the companies the authenticated tenant is authorized for.")
     @ApiResponse(responseCode = "200", description = "Companies found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CompanyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAuthorizedCompanies() {
+    public ResponseEntity<CompanyResponse> getAuthorizedCompanies() {
         Set<CompanyCode> authorizedCodes = companyAuthorizer.authorizedCompanies();
         List<Company> companies = companyService.getAllCompanies().stream()
             .filter(company -> authorizedCodes.contains(company.code()))
@@ -69,22 +67,19 @@ public class CompanyController {
     @GetMapping(API_COMPANIES_ID)
     @Operation(summary = "Get company by id.", description = "Returns a single company by its id.")
     @ApiResponse(responseCode = "200", description = "Company found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getCompanyById(
+    public ResponseEntity<InternalCompanyResponse> getCompanyById(
         @PathVariable Integer id) {
-        Optional<InternalCompany> company = companyService.getById(id);
-        if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.get()));
-        }
-        throw new NotFoundException();
+        InternalCompany company = companyService.getById(id);
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company));
     }
 
     @PostMapping(API_COMPANIES)
     @Operation(summary = "Create a new company.", description = "Creates a new company entry assigned to a tenant.")
     @ApiResponse(responseCode = "201", description = "Company created.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> createCompany(
+    public ResponseEntity<InternalCompanyResponse> createCompany(
         @RequestBody @Valid CompanyRequest createRequest) {
         InternalCompany company = companyService.create(createRequest);
         return ResponseEntityFactory.createCreatedResponse(new InternalCompanyResponse(company));
@@ -93,22 +88,18 @@ public class CompanyController {
     @PutMapping(API_COMPANIES_ID)
     @Operation(summary = "Update company by id.", description = "Updates a company by its id.")
     @ApiResponse(responseCode = "200", description = "Company updated.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InternalCompanyResponse.class)))
-    @ApiResponse(responseCode = "404", description = "Company not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateCompany(
+    public ResponseEntity<InternalCompanyResponse> updateCompany(
         @PathVariable Integer id,
         @RequestBody @Valid CompanyRequest updateRequest) {
-        Optional<InternalCompany> company = companyService.update(id, updateRequest);
-        if (company.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company.orElse(null)));
-        }
-        throw new NotFoundException();
+        InternalCompany company = companyService.update(id, updateRequest);
+        return ResponseEntityFactory.createOkResponse(new InternalCompanyResponse(company));
     }
 
     @DeleteMapping(API_COMPANIES_ID)
     @Operation(summary = "Delete company by id.", description = "Deletes a company by its id.")
     @ApiResponse(responseCode = "204", description = "Company deleted.")
-    @ApiResponse(responseCode = "404", description = "Company not found.")
     @ApiErrorResponses
     public ResponseEntity<Void> deleteCompany(
         @PathVariable Integer id) {
@@ -120,7 +111,7 @@ public class CompanyController {
     @Operation(summary = "Get tenants.", description = "Returns all available tenants for selection.")
     @ApiResponse(responseCode = "200", description = "Tenants found.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TenantResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllTenants() {
+    public ResponseEntity<TenantResponse> getAllTenants() {
         return ResponseEntityFactory.createOkResponse(new TenantResponse(companyService.getAllTenants()));
     }
 }

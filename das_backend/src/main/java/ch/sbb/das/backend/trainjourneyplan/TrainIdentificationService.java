@@ -2,6 +2,7 @@ package ch.sbb.das.backend.trainjourneyplan;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -53,6 +54,13 @@ public class TrainIdentificationService {
             .toList();
     }
 
+    /**
+     * Resolves the companies running the given train number on the given start dates.
+     *
+     * @return the companies of the train identifications matching the given start dates and train number, sorted by start date then company; never empty
+     * @throws BadRequestException when a start date is outside yesterday..tomorrow
+     * @throws NotFoundException when no train identification departs within the candidate window on those dates
+     */
     public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(Set<LocalDate> startDates, String operationalTrainNumber) {
         validateStartDates(startDates);
         OffsetDateTime earliestStartDateTime = startDates.stream().min(Comparator.naturalOrder())
@@ -70,7 +78,7 @@ public class TrainIdentificationService {
         Map<CompanyCode, Company> companiesByCode = companyService.getAllCompanies().stream()
             .collect(Collectors.toMap(Company::code, company -> company));
 
-        return entities.stream()
+        List<CompanyMatch> companyMatches = entities.stream()
             .flatMap(entity -> readCompanyCodes(entity.getCompanies()).stream()
                 .map(companiesByCode::get)
                 .filter(Objects::nonNull) // defensive: guards against timing mismatch between readCompanyCodes and getAllCompanies
@@ -78,6 +86,12 @@ public class TrainIdentificationService {
             .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
+        if (companyMatches.isEmpty()) {
+            String sortedStartDates = startDates.stream().sorted().map(LocalDate::toString).collect(Collectors.joining(", "));
+            throw new NotFoundException(
+                "No train identification for train number " + operationalTrainNumber + " starting on " + sortedStartDates + " within the candidate window");
+        }
+        return companyMatches;
     }
 
     private static LocalDate startDateOf(TrainIdentificationEntity entity) {

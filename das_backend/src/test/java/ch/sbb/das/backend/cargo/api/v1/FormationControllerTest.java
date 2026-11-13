@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
@@ -83,7 +84,10 @@ class FormationControllerTest {
     @WithMockUser(authorities = "ROLE_observer")
     void should_respond_not_found() throws Exception {
         mockMvc.perform(get(API_FORMATIONS).param("operationalTrainNumber", "30303").param("operationalDay", "2025-07-01").param("company", "1111"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("operationalDay='2025-07-01' -> data may not be available at all if not TODAY."));
     }
 
     @DisplayName("should_respond_bad_request|KrjflkScNI01jtG1nryh|tests:541")

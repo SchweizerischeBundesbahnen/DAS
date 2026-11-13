@@ -23,8 +23,21 @@ public class WithMockRoleSecurityContextFactory implements WithSecurityContextFa
     @Override
     @NonNull
     public SecurityContext createSecurityContext(@NonNull WithMockRole annotation) {
-        String tenantId = annotation.adminTenant() ? ADMIN_TENANT : OTHER_TENANT;
-        List<SimpleGrantedAuthority> authorities = Arrays.stream(annotation.roles())
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication(annotation.adminTenant(), annotation.roles()));
+        return context;
+    }
+
+    /**
+     * The same JWT authentication {@link WithMockRole} installs, for a single MockMvc request that must run as a different user than the test method, e.g.
+     * {@code .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN)))}.
+     *
+     * @param adminTenant see {@link WithMockRole#adminTenant()}
+     * @param roles see {@link WithMockRole#roles()}
+     */
+    public static Authentication authentication(boolean adminTenant, String... roles) {
+        String tenantId = adminTenant ? ADMIN_TENANT : OTHER_TENANT;
+        List<SimpleGrantedAuthority> authorities = Arrays.stream(roles)
             .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
             .toList();
 
@@ -37,11 +50,7 @@ public class WithMockRoleSecurityContextFactory implements WithSecurityContextFa
             .expiresAt(Instant.now().plusSeconds(3600))
             .build();
 
-        Authentication authentication = new JwtAuthenticationToken(jwt, authorities);
-
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
-        return context;
+        return new JwtAuthenticationToken(jwt, authorities);
     }
 }
 

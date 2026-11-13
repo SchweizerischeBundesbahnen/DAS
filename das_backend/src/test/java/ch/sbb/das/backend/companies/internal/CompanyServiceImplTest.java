@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.das.backend.common.error.ConflictException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyShortName;
@@ -283,10 +284,9 @@ class CompanyServiceImplTest {
         when(companyMapper.toAdminCompany(existingEntity)).thenReturn(expectedResult);
 
         CompanyRequest request = new CompanyRequest(new CompanyCode("8881"), new CompanyShortName("RENAMED"), VALID_TENANT_ID);
-        Optional<InternalCompany> result = underTest.update(900, request);
+        InternalCompany result = underTest.update(900, request);
 
-        assertThat(result).isPresent();
-        assertThat(result.get().shortName()).isEqualTo(new CompanyShortName("RENAMED"));
+        assertThat(result.shortName()).isEqualTo(new CompanyShortName("RENAMED"));
         verify(companyMapper).updateEntity(existingEntity, request, sbbTenant);
         verify(companyRepository).save(existingEntity);
     }
@@ -296,8 +296,10 @@ class CompanyServiceImplTest {
         when(companyRepository.findById(Integer.MAX_VALUE)).thenReturn(Optional.empty());
 
         CompanyRequest request = new CompanyRequest(new CompanyCode("XXXX"), new CompanyShortName("XXXX"), VALID_TENANT_ID);
-        Optional<InternalCompany> result = underTest.update(Integer.MAX_VALUE, request);
 
-        assertThat(result).isEmpty();
+        assertThatThrownBy(() -> underTest.update(Integer.MAX_VALUE, request))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Company with id " + Integer.MAX_VALUE + " not found");
+        verify(companyRepository, never()).save(any());
     }
 }

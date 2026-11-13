@@ -2,7 +2,6 @@ package ch.sbb.das.backend.locations.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +40,7 @@ public class TafTapLocationController {
     @ApiErrorResponses
     @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION,
         in = ParameterIn.HEADER)
-    public ResponseEntity<? extends Response> getAllLocations() {
+    public ResponseEntity<TafTapLocationResponse> getAllLocations() {
         List<TafTapLocation> locations = locationService.findAll();
         final HttpHeaders headers = ResponseEntityFactory.createOkHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "public, max-age=86400");

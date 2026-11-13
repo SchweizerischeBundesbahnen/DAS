@@ -4,6 +4,7 @@ import static ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentifica
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -77,7 +79,10 @@ class TrainIdentificationControllerTest {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .param("startDate", TODAY.toString())
                 .param("operationalTrainNumber", "123"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 123 starting on " + TODAY + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_noMatchOnDate_returns404|KZgqhcdiR8MWSgn35uw5|tests:2136")
@@ -87,7 +92,10 @@ class TrainIdentificationControllerTest {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .param("startDate", TODAY.minusDays(1).toString())
                 .param("operationalTrainNumber", "728"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 728 starting on " + TODAY.minusDays(1) + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_observerRole_isAllowed|W6VgIt7aPqcOqOrJNDHU|tests:2136")

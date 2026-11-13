@@ -2,9 +2,8 @@ package ch.sbb.das.backend.userproperties.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
-import ch.sbb.das.backend.common.error.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +44,7 @@ public class UserPropertyController {
     @ApiResponse(responseCode = "200", description = "User properties found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllUserProperties(
+    public ResponseEntity<UserPropertyResponse> getAllUserProperties(
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         List<UserProperty> properties = userPropertyService.getAllByOid(oid);
@@ -57,18 +55,14 @@ public class UserPropertyController {
     @Operation(summary = "Get a user property by key.", description = "Returns a single property value for the authenticated user by key.")
     @ApiResponse(responseCode = "200", description = "User property found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ch.sbb.das.backend.common.Problem.class)))
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getUserProperty(
+    public ResponseEntity<UserPropertyResponse> getUserProperty(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
-        Optional<UserProperty> property = userPropertyService.getByOidAndKey(oid, key);
-        if (property.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(List.of(property.get())));
-        }
-        throw new NotFoundException();
+        UserProperty property = userPropertyService.getByOidAndKey(oid, key);
+        return ResponseEntityFactory.createOkResponse(new UserPropertyResponse(List.of(property)));
     }
 
     @PutMapping(API_USER_PROPERTIES_KEY)
@@ -76,7 +70,7 @@ public class UserPropertyController {
     @ApiResponse(responseCode = "200", description = "User property saved.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserPropertyResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> saveUserProperty(
+    public ResponseEntity<UserPropertyResponse> saveUserProperty(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         @RequestBody JsonNode value,
         JwtAuthenticationToken authentication) {
