@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.1...das-admin-tool-v0.8.0) (2026-11-14)
+
+
+### Features
+
+* add confirmation dialogs before deleting entries ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([#3099](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3099)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+
+
+### Bug Fixes
+
+* failed bulk delete does not clear selection ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+* unify deletion toast body ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+
 ## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.0...das-admin-tool-v0.7.1) (2026-11-02)
 
 
