@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.56.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.1...das_client-v0.56.2) (2026-11-14)
+
+
+### Bug Fixes
+
+* send BCP 47 tag in Accept-Language header ([#3108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3108)) ([b7a0ea4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7a0ea43dcd96b2eb7155e4f5a2cb1f553888aea))
+
 ## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
 
 
