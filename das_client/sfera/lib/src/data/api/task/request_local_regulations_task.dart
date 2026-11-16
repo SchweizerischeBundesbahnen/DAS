@@ -12,7 +12,6 @@ import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/model/otn_id.dart';
-import 'package:uuid/uuid.dart';
 
 final _log = Logger('RequestLocalRegulationsTask');
 
@@ -110,8 +109,7 @@ class RequestLocalRegulationsTask({
       );
     }
 
-    requestMessageId = const Uuid().v4();
-    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: requestMessageId);
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
       messageHeader,
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),

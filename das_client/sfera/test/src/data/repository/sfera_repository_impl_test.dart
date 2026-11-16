@@ -131,8 +131,7 @@ $normalizedPayload
     // WHEN
     await testee.connect(trainId);
 
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 500));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -187,13 +186,12 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -219,13 +217,12 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -251,18 +248,17 @@ $normalizedPayload
 
       // WHEN
       await testee.connect(trainId);
-      // Wait till async tasks are finished
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
       addHandshakeReply(handshakeResponse);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
       addJPReply(jpResponse);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       // THEN
       verify(mockMqttService.connect(any, any)).called(1);
@@ -322,28 +318,26 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
     addRTIReply(rtiResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
+    verifyNever(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request'))));
+    verifyNever(mockMqttService.publishMessage(any, any, argThat(contains('<TC_Request'))));
     verify(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).called(3);
     verify(mockLocalDatabaseRepository.findTrainCharacteristics(any, any, any)).called(3);
   });
@@ -399,29 +393,26 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
     addRTIReply(rtiResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final eventMessage = loadFile('test_resources/SFERA_G2B_EventMessage_9315.xml');
     mqttSubject.add(eventMessage);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -482,29 +473,26 @@ $normalizedPayload
 
       // WHEN
       await testee.connect(trainId);
-      // Wait till async tasks are finished
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
       addHandshakeReply(handshakeResponse);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
       addJPReply(jpResponse);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
-      mqttSubject.add(spResponse);
-      mqttSubject.add(tcResponse);
       addRTIReply(rtiResponse);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       final jpEvent = loadFile('test_resources/SFERA_G2B_Event_JP_9315.xml');
       mqttSubject.add(jpEvent);
 
-      await Future.delayed(Duration(milliseconds: 1));
+      await pumpEventQueue();
 
       // THEN
       verify(mockMqttService.connect(any, any)).called(1);
@@ -565,28 +553,25 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_request_9315.xml');
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
     addRTIReply(rtiResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     testee.disconnect();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
@@ -654,8 +639,7 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -731,12 +715,11 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addHandshakeReply(errorResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -811,8 +794,7 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
@@ -828,22 +810,20 @@ $normalizedPayload
     // Trigger reconnect
     connectivitySubject.add(true);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
     addRTIReply(rtiResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     testee.dispose();
   });
@@ -859,30 +839,30 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     clearInteractions(mockMqttService);
 
     final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_1.xml');
     addSPReply(spResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
     addSPReply(spResponse);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
     addSPReply(spResponse);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
     addSPReply(spResponse);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(3);
@@ -906,17 +886,17 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
     addJPReply(jpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     clearInteractions(mockMqttService);
 
@@ -931,13 +911,13 @@ $normalizedPayload
         ),
       ),
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addSPReply(spResponse);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addSPReply(spResponse);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addSPReply(spResponse2);
     when(mockLocalDatabaseRepository.findSegmentProfile('0001_2', any, any)).thenAnswer(
@@ -950,10 +930,10 @@ $normalizedPayload
         ),
       ),
     );
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addSPReply(spResponse2);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(5);
@@ -961,9 +941,9 @@ $normalizedPayload
     expect(testee.lastError, isNull);
 
     addSPReply(spResponse2);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
     addSPReply(spResponse2);
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.publishMessage(any, any, argThat(contains('<SP_Request')))).called(1);
@@ -1032,13 +1012,12 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(trainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     reauthenticationRequiredSubject.add(true);
-    await Future.delayed(Duration.zero);
+    await pumpEventQueue();
     reauthenticationRequiredSubject.add(false);
-    await Future.delayed(Duration.zero);
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(2);
@@ -1058,9 +1037,7 @@ $normalizedPayload
     );
     final t26JpResponse = wrapReplyMessage(loadFile('test_resources/T26_local_regulations/SFERA_JP_T26.xml'));
     final spXml = loadFile('test_resources/T26_local_regulations/SFERA_SP_T26_1.xml');
-    final spResponse = wrapReplyMessage(spXml);
     final tcXml = loadFile('test_resources/T26_local_regulations/SFERA_TC_T26_1.xml');
-    final tcResponse = wrapReplyMessage(tcXml);
 
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
@@ -1103,24 +1080,20 @@ $normalizedPayload
 
     // WHEN
     await testee.connect(t26TrainId);
-    // Wait till async tasks are finished
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     addHandshakeReply(handshakeResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     addJPReply(t26JpResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
-    mqttSubject.add(spResponse);
-    mqttSubject.add(tcResponse);
     addRTIReply(rtiResponse);
 
-    await Future.delayed(Duration(milliseconds: 1));
-    await Future.delayed(Duration(milliseconds: 1));
+    await pumpEventQueue();
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);

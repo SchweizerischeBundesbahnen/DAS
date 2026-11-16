@@ -11,7 +11,6 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/model/otn_id.dart';
-import 'package:uuid/uuid.dart';
 
 final _log = Logger('RequestRelatedTrainInformationTask');
 
@@ -41,8 +40,7 @@ class RequestRelatedTrainInformationTask({
     final relatedTrainInformationRequest = RelatedTrainInformationRequestDto.create(trainIdentification);
 
     _log.info('Sending related train information request...');
-    requestMessageId = const Uuid().v4();
-    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: requestMessageId);
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
       messageHeader,
       b2gRequest: B2gRequestDto.createRelatedTrainInformationRequest(relatedTrainInformationRequest),

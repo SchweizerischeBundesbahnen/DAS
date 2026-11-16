@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:sfera/src/data/api/sfera_error.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:uuid/uuid.dart';
 
 typedef TaskFailed = void Function(SferaTask task, SferaError sferaError);
 typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
@@ -15,7 +17,10 @@ abstract class SferaTask<T>({final Duration _timeout = defaultTimeout}) {
 
   Timer? timeoutTimer;
 
+  String nextRequestMessageId() => requestMessageId = const Uuid().v4();
+
   /// The ID of the request message used to compare to [MessageHeaderDto.correlationId].
+  @visibleForTesting
   String? requestMessageId;
 
   bool _isCancelled = false;
