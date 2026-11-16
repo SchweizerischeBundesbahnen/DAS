@@ -25,22 +25,46 @@
     },
     {
       "matchDatasources": [
-        "npm"
+        "npm",
+        "github-tags"
       ],
       "minimumReleaseAge": "3 days"
     },
     {
-      "matchManagers": [
-        "maven"
+      "matchDepNames": [
+        "node"
       ],
-      "matchPackageNames": [
-        "software.amazon.awssdk:bom"
+      "groupName": "node"
+    },
+    {
+      "matchDepNames": [
+        "node"
       ],
       "matchUpdateTypes": [
         "patch"
       ],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchManagers": [
+        "maven"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
     },
     {
       "matchManagers": [

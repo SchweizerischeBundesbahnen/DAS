@@ -76,11 +76,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history required for the commit-count build number
 
-      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+      - name: Resolve build number
+        id: build-number
+        working-directory: ${{ github.workspace }}
+        run: echo "value=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
           distribution: 'temurin'
-          java-version: '21.0.12+101.0.LTS'
+          java-version: '21.0.13+9.0.LTS'
           cache: 'gradle'
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
@@ -126,7 +133,7 @@ jobs:
           echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
       - name: Build appbundle
-        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
+        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --build-number=${{ steps.build-number.outputs.value }}
         working-directory: das_client/app
 
       - name: Upload App to Google Play Store

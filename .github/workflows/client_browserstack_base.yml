@@ -35,10 +35,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
           distribution: 'temurin'
-          java-version: '21.0.12+101.0.LTS'
+          java-version: '21.0.13+9.0.LTS'
           cache: 'gradle'
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
@@ -169,7 +169,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 'lts/krypton'
+          node-version: 'lts/lithium'
 
       - name: Generate RunnerTests
         run: node app/scripts/generate_runner_tests.mjs ${{ inputs.enable_e2e && 'e2e_test' || 'test' }}
@@ -231,6 +231,12 @@ jobs:
           PACKAGE_NAME: ios-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.zip
           BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
+          # Github does not mask dart-define base64 encoded secrets reliably - Xcode logs '=' escaped as '\=', so both are masked
+          for define in "MQTT_USERNAME=$MQTT_USERNAME" "MQTT_PASSWORD=$MQTT_PASSWORD" "ACCESS_TOKEN=$ACCESS_TOKEN"; do
+            encoded=$(printf '%s' "$define" | base64 | tr -d '\n')
+            echo "::add-mask::$encoded"
+            echo "::add-mask::${encoded//=/\\=}"
+          done
           flutter build ios --flavor dev --release --no-codesign -t ${{ inputs.entrypoint }} --no-tree-shake-icons \
             --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD \
             --dart-define=ACCESS_TOKEN=$ACCESS_TOKEN

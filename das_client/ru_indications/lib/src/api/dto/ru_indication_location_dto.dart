@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:ru_indications/src/api/dto/ru_indication_content_dto.dart';
@@ -18,13 +19,9 @@ class RuIndicationLocationDto({
 }
 
 extension RuIndicationLocationDtoX on RuIndicationLocationDto {
-  Iterable<RuIndication> toRuIndications(Map<String, int> locationReferences) =>
-      ruIndicationContents.map<RuIndication?>((content) {
-        final order = locationReferences[tafTapLocationReference];
-        if (order == null) {
-          _log.warning('No order found for $tafTapLocationReference from $this');
-          return null;
-        }
-        return RuIndication(title: content.title, text: content.text, order: order);
-      }).nonNulls;
+  Iterable<RuIndication> toRuIndications(Map<int, String> locationReferences) =>
+      ruIndicationContents.map<Iterable<RuIndication>>((content) {
+        final entries = locationReferences.entries.where((it) => it.value == tafTapLocationReference);
+        return entries.map((entry) => RuIndication(title: content.title, text: content.text, order: entry.key));
+      }).flattened;
 }

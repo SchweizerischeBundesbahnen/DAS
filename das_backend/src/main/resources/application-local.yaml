@@ -47,9 +47,10 @@ trainjourneypreloader:
 
 preload:
   bucket:
-    accessKey:
-    accessSecret:
-    region:
+    region: eu-central-1
+    read-only:
+      access-key-id:
+      secret-access-key:
 
 proxy:
   basic-auth: username:password

@@ -38,9 +38,10 @@ void main() {
   const allowedRoles = [Role.observer, Role.driver];
 
   final testAuthConfig = AuthenticatorConfig(
-    discoveryUrl: 'https://discovery.url',
+    tenantId: 'common',
     clientId: 'client-id',
     redirectUrl: 'https://redirect.url',
+    keychainAccessGroup: 'test.bundle',
     tokenSpecs: TokenSpecProvider([tokenSpec]),
     trustedTenantIds: trustedTenants.values.toList(),
     allowedRoles: allowedRoles,
@@ -53,10 +54,10 @@ void main() {
 
     when(
       mockOidcClientFactory.createClient(
-        discoveryUrl: anyNamed('discoveryUrl'),
+        tenantId: anyNamed('tenantId'),
         clientId: anyNamed('clientId'),
         redirectUrl: anyNamed('redirectUrl'),
-        postLogoutRedirectUrl: anyNamed('postLogoutRedirectUrl'),
+        keychainAccessGroup: anyNamed('keychainAccessGroup'),
       ),
     ).thenAnswer((_) async => mockOidcClient);
 
@@ -205,6 +206,20 @@ void main() {
     expect(() => authenticator.login(), throwsA(isA<InvalidTokenException>()));
   });
 
+  test('login_whenTokenHasNoIdToken_thenShouldThrowInvalidTokenException', () async {
+    // GIVEN
+    final mockToken = OidcToken(accessTokenType: 'Bearer', accessToken: '');
+    when(
+      mockOidcClient.login(
+        scopes: anyNamed('scopes'),
+        prompt: anyNamed('prompt'),
+      ),
+    ).thenAnswer((_) async => mockToken);
+
+    // WHEN / THEN
+    expect(() => authenticator.login(), throwsA(isA<InvalidTokenException>()));
+  });
+
   test('token_whenWithoutAllowedRole_thenShouldThrowInvalidTokenException', () async {
     // GIVEN
     final idToken = _createIdToken(sbbTenantId, roles: [Role.admin]);
@@ -299,7 +314,7 @@ void main() {
     // GIVEN
     final idToken = _createIdToken(sbbTenantId);
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().add(const Duration(hours: 1)),
@@ -309,7 +324,7 @@ void main() {
         scopes: anyNamed('scopes'),
         prompt: anyNamed('prompt'),
       ),
-    ).thenThrow(NetworkException());
+    ).thenThrow(NoNetworkException());
     when(
       mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
     ).thenAnswer((_) async => mockToken.toJsonString());
@@ -324,7 +339,7 @@ void main() {
     // GIVEN
     final idToken = _createIdToken(sbbTenantId);
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
@@ -334,7 +349,7 @@ void main() {
         scopes: anyNamed('scopes'),
         forceRefresh: anyNamed('forceRefresh'),
       ),
-    ).thenThrow(NetworkException());
+    ).thenThrow(NoNetworkException());
 
     when(
       mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
@@ -350,7 +365,7 @@ void main() {
     // GIVEN
     final idToken = _createIdToken(sbbTenantId);
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 25)),
@@ -360,7 +375,7 @@ void main() {
         scopes: anyNamed('scopes'),
         forceRefresh: anyNamed('forceRefresh'),
       ),
-    ).thenThrow(NetworkException());
+    ).thenThrow(NoNetworkException());
 
     when(
       mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
@@ -379,7 +394,7 @@ void main() {
     authenticator.reauthenticationRequired.listen(emittedValues.add);
 
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
@@ -403,14 +418,14 @@ void main() {
     expect(emittedValues[1], isTrue);
   });
 
-  test('reauthenticationRequired_whenLoginFailedWithNetworkException_emitFalse', () async {
+  test('reauthenticationRequired_whenLoginFailedWithNoNetworkException_emitFalse', () async {
     // GIVEN
     final idToken = _createIdToken(sbbTenantId);
     final emittedValues = <bool>[];
     authenticator.reauthenticationRequired.listen(emittedValues.add);
 
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),
@@ -420,7 +435,7 @@ void main() {
         scopes: anyNamed('scopes'),
         forceRefresh: anyNamed('forceRefresh'),
       ),
-    ).thenThrow(NetworkException());
+    ).thenThrow(NoNetworkException());
 
     when(
       mockFlutterSecureStorage.read(key: TokenSpec.defaultTokenId),
@@ -440,7 +455,7 @@ void main() {
     authenticator.reauthenticationRequired.listen(emittedValues.add);
 
     final mockToken = OidcToken(
-      tokenType: 'Bearer',
+      accessTokenType: 'Bearer',
       accessToken: '',
       idToken: idToken,
       accessTokenExpirationDateTime: DateTime.now().subtract(const Duration(hours: 1)),

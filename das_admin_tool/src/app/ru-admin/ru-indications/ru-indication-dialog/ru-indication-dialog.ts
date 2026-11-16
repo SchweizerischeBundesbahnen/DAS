@@ -12,7 +12,7 @@ import { SbbActionGroupModule } from '@sbb-esta/lyne-angular/action-group';
 import { SbbAutocompleteModule } from '@sbb-esta/lyne-angular/autocomplete';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbDialogModule, SbbDialogRef } from '@sbb-esta/lyne-angular/dialog';
 import { SbbFormFieldModule } from '@sbb-esta/lyne-angular/form-field';
 import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
 import { SbbTabsModule } from '@sbb-esta/lyne-angular/tabs';
@@ -31,6 +31,7 @@ import {
 } from '~ru-admin/ru-indication-content-form/ru-indication-content-form';
 import { Audit } from '~shared/components/audit/audit';
 import { CompaniesInput } from '~shared/components/companies-input/companies-input';
+import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 import { toUtcDateOnly } from '~shared/utils/date.util';
 import {
   arrayRequired,
@@ -95,6 +96,8 @@ export type RuIndicationDialogEditResult = RuIndication | 'delete';
 })
 export class RuIndicationDialog {
   protected readonly dialogData = inject<RuIndicationDialogData>(SBB_OVERLAY_DATA);
+  private readonly dialogRef = inject(SbbDialogRef);
+  private readonly confirmDeleteService = inject(ConfirmDeleteService);
 
   protected readonly dialogTitle: string;
 
@@ -221,6 +224,12 @@ export class RuIndicationDialog {
         this.ruIndicationForm.scope.operationalTrainNumber.filters().value.set([]);
       }
     });
+  }
+
+  protected async delete(): Promise<void> {
+    if (await this.confirmDeleteService.confirm(1)) {
+      this.dialogRef.close('delete');
+    }
   }
 
   protected next() {

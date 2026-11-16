@@ -48,4 +48,12 @@ class SettingsControllerTest {
             .andExpect(jsonPath("$.data[0].currentAppVersion.expired").value(false))
             .andExpect(jsonPath("$.data[0].currentAppVersion.expiryDate").value("2026-12-31"));
     }
+
+    @DisplayName("should_reject_out_of_range_app_version|HGRdtWhfuCS3CeZF9BJU|tests:3024")
+    @Test
+    @WithMockUser(authorities = "ROLE_observer")
+    void should_reject_out_of_range_app_version() throws Exception {
+        mockMvc.perform(get(API_SETTINGS).header("X-App-Version", "9999999999.0.0"))
+            .andExpect(status().isBadRequest());
+    }
 }

@@ -1,6 +1,7 @@
 info:
   app:
-    version: '@project.version@'
+    version: "@project.version@"
+    
 spring:
   profiles:
     active: ${STAGE:local}
@@ -90,20 +91,26 @@ spring:
         role: ${VAULT_SA_ROLE_ID}
         kubernetes-path: ${VAULT_CLUSTERNAME}
         service-account-token-file: /var/run/secrets/openbao/token
+  jmx:
+    enabled: true
+
 management:
   endpoint:
     health:
       probes:
         enabled: true
+
 springdoc:
   swagger-ui:
     oauth:
       clientId: ${AUTH_SWAGGER_CLIENT_ID}
       scopes: api://${AUTH_SERVICE_NAME}/.default
       use-pkce-with-authorization-code-grant: true
+
 auth:
   audience:
     service-name: ${AUTH_SERVICE_NAME}
+
 endpoints:
   web:
     cors:
@@ -121,31 +128,36 @@ formation:
     password: ${FORMATION_KAFKA_API_SECRET}
     topic: ${FORMATION_KAFKA_TOPIC}
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 30
+
 logging:
+  pattern:
+    # Instana trace id (put into the MDC by the Instana agent, see ProblemFactory), omitted if the log is not part of a trace
+    correlation: "%replace(traceId=%X{instana.trace.id} ){'^traceId= $', ''}"
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
-aws:
-  accessKey: ${PRELOAD_BUCKET_R_ACCESS_KEY}
-  secretKey: ${PRELOAD_BUCKET_R_SECRET_KEY}
-  bucketName: ${AWS_BUCKET_NAME}
-
+  
 sfera:
-  major-version: '4'
-  version: '4.00'
-  source-device: 'BACKEND'
-  recipient: '0085'
+  major-version: "4"
+  version: "4.00"
+  source-device: "BACKEND"
+  recipient: "0085"
   broker-url: ${SFERA_BROKER_URL}
   oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
   bucket:
-    bucketUrl: ${PRELOAD_BUCKET_URL}
-    accessKey: ${PRELOAD_BUCKET_RW_ACCESS_KEY}
-    accessSecret: ${PRELOAD_BUCKET_RW_ACCESS_SECRET}
+    name: ${PRELOAD_BUCKET_NAME}
+    url: ${PRELOAD_BUCKET_URL}
     region: ${PRELOAD_BUCKET_REGION}
+    read-write:
+      access-key-id: ${PRELOAD_BUCKET_READ_WRITE_ACCESS_KEY_ID}
+      secret-access-key: ${PRELOAD_BUCKET_READ_WRITE_SECRET_ACCESS_KEY}
+    read-only:
+      access-key-id: ${PRELOAD_BUCKET_READ_ONLY_ACCESS_KEY_ID}
+      secret-access-key: ${PRELOAD_BUCKET_READ_ONLY_SECRET_ACCESS_KEY}
 
 trainjourneyplan:
   kafka:
@@ -164,8 +176,23 @@ trainjourneypreloader:
   # must be shorter than fetch-cron interval to prevent overlapping runs
   max-preload-duration: ${PRELOAD_MAX_DURATION:PT4M}
   hours-before-departure: 4
+  # a failing train waits min(base * 2^(attempts-1), max) before its next attempt; base should equal the fetch-cron interval
+  retry-backoff:
+    base: ${PRELOAD_RETRY_BACKOFF_BASE:PT5M}
+    max: ${PRELOAD_RETRY_BACKOFF_MAX:PT1H}
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
+  segment-profiles:
+    # a segment profile no journey in the preload window referenced for this long is stale and evicted by the next compaction
+    stale-after: ${PRELOAD_SP_STALE_AFTER:P30D}
+    # a frozen segment zip whose share of stale entries is over this is rebuilt with its live entries only
+    rebuild-stale-share: ${PRELOAD_SP_REBUILD_STALE_SHARE:0.5}
+    # the open segment zip is frozen and a new one opened once it is older than this
+    open-zip-max-age: ${PRELOAD_SP_OPEN_ZIP_MAX_AGE:PT1H}
+    # frozen hourly segment zips older than this are packed together
+    pack-after: ${PRELOAD_SP_PACK_AFTER:PT24H}
+    # a segment zip is closed once it has reached this size; the next entry opens the next zip
+    zip-max-bytes: ${PRELOAD_SP_ZIP_MAX_BYTES:5MB}
 
 proxy:
   base-url: ${PROXY_BASE_URL}
@@ -173,16 +200,16 @@ proxy:
 
 atlas:
   base-url: ${ATLAS_BASE_URL}
-  import-cron: 0 0 3 * * ?  # every day at 3
+  import-cron: 0 0 3 * * ? # every day at 3
 
 admin:
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 90
 
 user-activity:
   clean-up:
-    cron: 0 0 3 * * ?  # every day at 3
+    cron: 0 0 3 * * ? # every day at 3
     older-than-days: 180
 
 tour-systems:
@@ -208,5 +235,5 @@ tour-systems:
 spring:
   config:
     activate:
-      on-profile: '!local & !test'
+      on-profile: "!local & !test"
     import: vault://

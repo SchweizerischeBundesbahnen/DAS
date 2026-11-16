@@ -171,10 +171,10 @@ class SegmentProfileMapper._() {
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: kmNspRef ?? mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
-            tafTapLocation.stationSpeed?.xmlStationSpeed?.element.velocities,
+            tafTapLocation.xmlStationSpeed?.element.velocities,
           ),
           graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
-            tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
+            tafTapLocation.xmlGraduatedSpeedInfo?.element,
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint, segmentProfileReference, timingPoint.location),
@@ -368,7 +368,7 @@ class SegmentProfileMapper._() {
       return CurvePoint(
         order: begin.order,
         kilometre: [
-          if (startKm != null) startKm,
+          ?startKm,
           if (endKm != null && endKm != startKm) endKm,
         ],
         localSpeeds: isSummarized ? _mergeSpeeds(beginsInThisSegment) : begin.localSpeeds,

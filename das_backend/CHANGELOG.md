@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.2...backend-v0.19.0) (2026-11-13)
+
+
+### Features
+
+* own the segment profiles in a store with immutable hourly zips and a size cap ([#2657](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2657), [#2656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2656)) ([#3128](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3128)) ([150ebf7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/150ebf7a4024743784352c4d379ae0e0e687f062))
+* prioritise preload candidates with a train preload ledger and retry backoff ([#2660](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2660)) ([#3114](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3114)) ([af755fb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/af755fbd215d3abd878170b3383dbaca97ce1b95))
+
+
+### Bug Fixes
+
+* e2e_testsuite for latest das_backend ([#1112](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1112)) ([#3102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3102)) ([e5ed06e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5ed06ecd7b1ec9e39182f3c132686a7f460f7e0))
+
+## [0.18.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.1...backend-v0.18.2) (2026-11-05)
+
+
+### Bug Fixes
+
+* cap app version range to max 99999.99999.99999 ([#3024](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3024)) ([#3027](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3027)) ([5b88235](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5b8823536f9847e27f3e72f8b534947de4496296))
+* log formation tombstones at debug instead of error ([#3018](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3018)) ([80c65f4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/80c65f43ea6c527100afa2dc5a6e8667ad04bcb2))
+* normalize Accept-Language before calling ORCA transport paper API ([#3107](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3107)) ([e2aa56a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e2aa56a38b9d50a3257a653d909dc3bb5906d49c))
+
+
+### Dependencies
+
+* **backend:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.1.2 ([#3031](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3031)) ([9130333](https://github.com/SchweizerischeBundesbahnen/DAS/commit/913033337494554e13be67993962263113355c3c))
+* **backend:** update dependency org.springframework.cloud:spring-cloud-starter-vault-config to v5.0.3 ([#3034](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3034)) ([c12635a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c12635ad3c6321dc651ec2cc28f327d8c60da22a))
+* **backend:** update dependency org.springframework.modulith:spring-modulith-bom to v2.1.2 ([#3035](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3035)) ([b4dffd4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b4dffd4058d558e68108f0a4b354b0f41236999c))
+
+## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.0...backend-v0.18.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* actually use correct secrets from vault ([#2986](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2986)) ([daf05ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/daf05ff17846acdd8140cb68b260f798f997b5c9))
+
 ## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.17.0...backend-v0.18.0) (2026-10-13)
 
 

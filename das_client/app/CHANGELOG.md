@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* unescape after parsing nested xml  ([#3062](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3062)) ([4d1f2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d1f2a28abbcdd054a31a0cbb29c9ee3d2d5dbba))
+* unescape after parsing nested xml ([#3072](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3072)) ([9b2c9cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9b2c9cf5e9f1c4d7ae889437002bd15311ca2f0f))
+
+## [0.56.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.55.0...das_client-v0.56.0) (2026-10-26)
+
+
+### Features
+
+* use chrome for service point portal when SOB is selected ([#2496](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2496)) ([#3010](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3010)) ([c9d8f57](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c9d8f57c9cec86ddd79c354b82cf4200b879ea4a))
+
+
+### Bug Fixes
+
+* show ru indication on every station with same locationCode ([#3011](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3011)) ([a7dac88](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dac8898e29b244cdae1bbe361c5dd47783c579))
+
+## [0.55.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.54.0...das_client-v0.55.0) (2026-10-19)
+
+
+### Features
+
+* handle journey updates and overrides correctly ([#2940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2940)) ([#2961](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2961)) ([cd23f67](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd23f67c4c0e0255a0e3a39679064a43f8709b53))
+* implement switchback ([#2227](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2227)) ([#2955](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2955)) ([4723fb9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4723fb94a0439df9936033df5afcf83fbcf19e4f))
+* protection section foreground color is always black ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2920](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2920)) ([835c809](https://github.com/SchweizerischeBundesbahnen/DAS/commit/835c809219c43af0970b1ec3ac7c62ef679ed350))
+* repeated line foot notes are collapsed on second appearance ([#2219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2219)) ([#2917](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2917)) ([ee926cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ee926cf1851e11748d543ccfb176ad7dd0f47a58))
+* request initial related train information ([#2593](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2593)) ([#2931](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2931)) ([aba7170](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aba7170a1e4de7595950b13d62b29050ead0c047))
+
+
+### Bug Fixes
+
+* readable and smaller client logs ([#2580](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2580)) ([#2930](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2930)) ([4b13c2a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b13c2acca54a215019bb6e1b0a5c478a9a8cbba))
+
 ## [0.54.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.53.0...das_client-v0.54.0) (2026-10-05)
 
 

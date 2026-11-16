@@ -1,12 +1,13 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, input, signal, viewChild, viewChildren } from '@angular/core';
+import { Component, computed, inject, input, signal, viewChild, viewChildren } from '@angular/core';
 import { SbbActionGroup } from '@sbb-esta/lyne-angular/action-group';
 import { SbbButtonModule } from '@sbb-esta/lyne-angular/button';
-import { SbbDialogModule } from '@sbb-esta/lyne-angular/dialog';
+import { SbbDialogModule, SbbDialogRef } from '@sbb-esta/lyne-angular/dialog';
 import { SbbStep, SbbStepper, SbbStepperModule } from '@sbb-esta/lyne-angular/stepper';
 import { SbbTitleModule } from '@sbb-esta/lyne-angular/title';
 import { SbbStepChangeEvent } from '@sbb-esta/lyne-elements/stepper.js';
 import { Auditable } from '~shared/models/auditable.model';
+import { ConfirmDeleteService } from '~shared/services/confirm-delete.service';
 import { Audit } from '../audit/audit';
 
 @Component({
@@ -24,6 +25,9 @@ import { Audit } from '../audit/audit';
   styleUrl: './base-dialog.css',
 })
 export class BaseDialog {
+  private readonly dialogRef = inject(SbbDialogRef);
+  private readonly confirmDeleteService = inject(ConfirmDeleteService);
+
   readonly dialogTitle = input.required<string>();
   readonly stepLabel = input.required<string>();
   readonly data = input<Auditable>();
@@ -43,6 +47,12 @@ export class BaseDialog {
     return step === 0 ? this.saveDisabled() : false;
   });
   private readonly stepper = viewChild.required(SbbStepper);
+
+  async delete(): Promise<void> {
+    if (await this.confirmDeleteService.confirm(1)) {
+      this.dialogRef.close('delete');
+    }
+  }
 
   next(): void {
     this.stepper().next();

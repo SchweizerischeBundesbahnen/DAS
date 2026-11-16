@@ -22,7 +22,7 @@ export class ExternalLinkService extends BaseDialogService {
     if (result === 'delete') {
       await this.runMutation(
         this.ruAdminApi.deleteExternalLinksByIds([externalLink.id!]),
-        $localize`:@@external_links_toast_delete_success:Der externe Absprung wurde erfolgreich gelöscht.`,
+        $localize`:@@toast_delete_success:Der Eintrag wurde erfolgreich gelöscht.`,
       );
     } else if (result && externalLink.id) {
       await this.runMutation(
@@ -46,10 +46,10 @@ export class ExternalLinkService extends BaseDialogService {
     }
   }
 
-  public async deleteAllByIds(ids: number[]): Promise<void> {
-    await this.runMutation(
+  public async deleteAllByIds(ids: number[]): Promise<boolean> {
+    return this.runMutation(
       this.ruAdminApi.deleteExternalLinksByIds(ids),
-      $localize`:@@external_links_toast_delete_all_success:Die externen Absprünge wurden erfolgreich gelöscht.`,
+      $localize`:@@toast_delete_all_success:Die Einträge wurden erfolgreich gelöscht.`,
     );
   }
 

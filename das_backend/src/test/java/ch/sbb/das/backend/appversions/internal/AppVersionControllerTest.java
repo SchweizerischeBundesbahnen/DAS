@@ -1,12 +1,14 @@
 package ch.sbb.das.backend.appversions.internal;
 
 import static ch.sbb.das.backend.appversions.internal.AppVersionController.API_APP_VERSIONS;
+import static ch.sbb.das.backend.appversions.internal.SemanticVersion.SEM_VERSION_PATTERN;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,7 +18,10 @@ import ch.sbb.das.backend.common.security.UserRole;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +49,10 @@ class AppVersionControllerTest {
     void getAppVersionById_not_found() throws Exception {
         int nonExistingId = Integer.MAX_VALUE;
         mockMvc.perform(get(API_APP_VERSIONS + "/" + nonExistingId))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("App version with id " + Integer.MAX_VALUE + " not found"));
     }
 
     @DisplayName("getById_AppVersion_by_id|4uKIx7BmDPkJnaGrkLUV|tests:1406")
@@ -129,7 +137,57 @@ class AppVersionControllerTest {
                     }
                     """))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"(\\d+)\\.(\\d+)\\.(\\d+)\""));
+            .andExpect(jsonPath("$.detail").value("Invalid request content. -> version=must match \"" + SEM_VERSION_PATTERN + "\""));
+    }
+
+    @DisplayName("create_AppVersion_max_version_ok|rjTx8xl7NEDek0DvDGHh|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_max_version_ok() throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "99999.99999.99999",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.data[0].version").value("99999.99999.99999"));
+    }
+
+    @DisplayName("create_AppVersion_out_of_range|0LqEZXawDa9RFlZ1K0aN|tests:3024")
+    @ParameterizedTest
+    @ValueSource(strings = {"100000.0.0", "0.100000.0", "0.0.100000", "9999999999.0.0"})
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_out_of_range(String version) throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "%s",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """.formatted(version)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("create_AppVersion_leading_zeros|v8PbjFkOVxDMd9gK3S12|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void create_AppVersion_leading_zeros() throws Exception {
+        mockMvc.perform(post(API_APP_VERSIONS)
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "01.0.0",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("create_AppVersion_conflict_version|pnQ7A4qKs1NYjPWJV7sI|tests:1406")
@@ -148,6 +206,23 @@ class AppVersionControllerTest {
                     """))
             .andExpect(status().isConflict())
             .andExpect(jsonPath("$.detail").value("Version already exists"));
+    }
+
+    @DisplayName("update_AppVersion_out_of_range|aoMCJ6BLm8UfHGJvatvM|tests:3024")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    @Sql("classpath:createAppVersions.sql")
+    void update_AppVersion_out_of_range() throws Exception {
+        mockMvc.perform(put(API_APP_VERSIONS + "/1")
+                .contentType("application/json")
+                .content("""
+                    {
+                        "version": "100000.0.0",
+                        "minimalVersion": false,
+                        "expiryDate": null
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
     }
 
     @DisplayName("update_AppVersion_ok|UCmvF6J9SNOYYQe2Ve6T|tests:1406")
@@ -182,6 +257,25 @@ class AppVersionControllerTest {
             .andExpect(jsonPath("$.data[0].expiryDate").value("2026-01-01"))
             .andExpect(jsonPath("$.data[0].lastModifiedAt").isNotEmpty())
             .andExpect(jsonPath("$.data[0].lastModifiedBy").value("test-user"));
+    }
+
+    @DisplayName("update_AppVersion_notFound|SQDePN05CorUQff8VQLb|tests:2653")
+    @Test
+    @WithMockRole(roles = UserRole.ADMIN)
+    void update_AppVersion_notFound() throws Exception {
+        mockMvc.perform(put(API_APP_VERSIONS + "/" + Integer.MAX_VALUE)
+                .contentType("application/json")
+                .content("""
+                        {
+                            "version": "2.5.0",
+                            "minimalVersion": true,
+                            "expiryDate": "2026-01-01"
+                        }
+                    """))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("App version with id " + Integer.MAX_VALUE + " not found"));
     }
 
     @DisplayName("delete_AppVersionById_ok|FzYcq8V3AfBBq1fwbNUk|tests:1406")

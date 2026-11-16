@@ -2,8 +2,8 @@ package ch.sbb.das.backend.trainjourneypreloader.infrastructure;
 
 import java.util.List;
 import java.util.Optional;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.configuration.PreloadBucketProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -18,11 +18,11 @@ public class S3Service {
 
     private final S3Client s3Client;
 
-    @Value("${aws.bucketName}")
-    private String bucketName;
+    private final String bucketName;
 
-    public S3Service(S3Client s3Client) {
+    public S3Service(S3Client s3Client, PreloadBucketProperties preloadBucketProperties) {
         this.s3Client = s3Client;
+        this.bucketName = preloadBucketProperties.name();
     }
 
     public void uploadZip(String key, byte[] data) {

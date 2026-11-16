@@ -1,0 +1,7 @@
+sbb-dialog-content {
+  width: min(480px, 90vw);
+}
+
+p {
+  margin: 0;
+}

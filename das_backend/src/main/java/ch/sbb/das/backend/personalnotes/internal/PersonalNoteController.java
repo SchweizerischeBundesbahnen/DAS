@@ -2,9 +2,7 @@ package ch.sbb.das.backend.personalnotes.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.ApiParametersDefault;
-import ch.sbb.das.backend.common.ApiParametersDefault.ParamRequestId;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import tools.jackson.databind.JsonNode;
 
@@ -48,32 +44,25 @@ public class PersonalNoteController {
     @ApiResponse(responseCode = "200", description = "Personal notes found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllPersonalNotes(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+    public ResponseEntity<PersonalNoteResponse> getAllPersonalNotes(
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         List<PersonalNote> notes = personalNoteService.getAllByOid(oid);
-        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(notes), requestId);
+        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(notes));
     }
 
     @GetMapping(API_PERSONAL_NOTES_KEY)
     @Operation(summary = "Get a personal note by key.", description = "Returns a single note value for the authenticated user by key.")
     @ApiResponse(responseCode = "200", description = "Personal note found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
-    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404,
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ch.sbb.das.backend.common.Problem.class)))
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getPersonalNote(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+    public ResponseEntity<PersonalNoteResponse> getPersonalNote(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
-        Optional<PersonalNote> note = personalNoteService.getByOidAndKey(oid, key);
-        if (note.isPresent()) {
-            return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note.get())), requestId);
-        } else {
-            return ResponseEntityFactory.createNotFoundResponse(requestId, API_PERSONAL_NOTES + "/" + key);
-        }
+        PersonalNote note = personalNoteService.getByOidAndKey(oid, key);
+        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(note)));
     }
 
     @PutMapping(API_PERSONAL_NOTES_KEY)
@@ -81,14 +70,13 @@ public class PersonalNoteController {
     @ApiResponse(responseCode = "200", description = "Personal note saved.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PersonalNoteResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> savePersonalNote(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
+    public ResponseEntity<PersonalNoteResponse> savePersonalNote(
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         @RequestBody JsonNode value,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         PersonalNote saved = personalNoteService.save(oid, key, value);
-        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(saved)), requestId);
+        return ResponseEntityFactory.createOkResponse(new PersonalNoteResponse(List.of(saved)));
     }
 
     @DeleteMapping(API_PERSONAL_NOTES_KEY)
@@ -96,11 +84,10 @@ public class PersonalNoteController {
     @ApiResponse(responseCode = "204", description = "Personal note deleted.")
     @ApiErrorResponses
     public ResponseEntity<Void> deletePersonalNote(
-        @ParamRequestId @RequestHeader(value = ApiParametersDefault.HEADER_REQUEST_ID, required = false) String requestId,
         @PathVariable @Size(max = 64) @Pattern(regexp = KEY_PATTERN) String key,
         JwtAuthenticationToken authentication) {
         String oid = authentication.getToken().getClaimAsString(OID_CLAIM);
         personalNoteService.delete(oid, key);
-        return ResponseEntityFactory.createNoContentResponse(requestId);
+        return ResponseEntityFactory.createNoContentResponse();
     }
 }

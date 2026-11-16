@@ -229,7 +229,7 @@ void main() {
         final locations = ['Varzo', 'Domodossola (bif)', 'Domodossola (I)'];
 
         for (final location in locations) {
-          await waitUntilExists(tester, findChevronPositionAtRowWithText(location));
+          await waitUntilExists(tester, findChevronPositionAtRowWithText(location), maxWaitSeconds: 30);
         }
 
         await disconnect(tester);

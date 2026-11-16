@@ -1,6 +1,8 @@
 package ch.sbb.das.backend.trainjourneyplan;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.error.BadRequestException;
+import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.Company;
 import ch.sbb.das.backend.companies.CompanyCode;
 import ch.sbb.das.backend.companies.CompanyService;
@@ -19,9 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,16 +37,30 @@ public class TrainIdentificationService {
     @Value("${trainjourneypreloader.hours-before-departure}")
     private int hoursBeforeDeparture;
 
-    public List<TrainIdentification> getNewTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
-        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBeforeAndPreloadedAtNull(after, before);
+    /**
+     * @param after exclusive lower bound of the start time
+     * @param before exclusive upper bound of the start time
+     * @return all train identifications starting in between with at least one supported company, oldest start first; unsupported companies are dropped from each
+     */
+    public List<TrainIdentification> getTrainIdentificationsBetween(OffsetDateTime after, OffsetDateTime before) {
+        List<TrainIdentificationEntity> trainRunEntities = trainIdentificationRepository.findAllByStartDateTimeAfterAndStartDateTimeBefore(after, before);
+        Map<CompanyShortName, CompanyCode> codesByShortName = companyService.getAllCompanies().stream()
+            .collect(Collectors.toMap(Company::shortName, Company::code));
         return trainRunEntities.stream()
             .sorted(Comparator.comparing(TrainIdentificationEntity::getStartDateTime))
-            .map(this::readEntity)
+            .map(entity -> readEntity(entity, codesByShortName))
             // exclude entries where none of the companies are supported
             .filter(tid -> !tid.companies().isEmpty())
             .toList();
     }
 
+    /**
+     * Resolves the companies running the given train number on the given start dates.
+     *
+     * @return the companies of the train identifications matching the given start dates and train number, sorted by start date then company; never empty
+     * @throws BadRequestException when a start date is outside yesterday..tomorrow
+     * @throws NotFoundException when no train identification departs within the candidate window on those dates
+     */
     public List<CompanyMatch> findCompaniesByStartDatesAndTrainNumber(Set<LocalDate> startDates, String operationalTrainNumber) {
         validateStartDates(startDates);
         OffsetDateTime earliestStartDateTime = startDates.stream().min(Comparator.naturalOrder())
@@ -64,7 +78,7 @@ public class TrainIdentificationService {
         Map<CompanyCode, Company> companiesByCode = companyService.getAllCompanies().stream()
             .collect(Collectors.toMap(Company::code, company -> company));
 
-        return entities.stream()
+        List<CompanyMatch> companyMatches = entities.stream()
             .flatMap(entity -> readCompanyCodes(entity.getCompanies()).stream()
                 .map(companiesByCode::get)
                 .filter(Objects::nonNull) // defensive: guards against timing mismatch between readCompanyCodes and getAllCompanies
@@ -72,6 +86,12 @@ public class TrainIdentificationService {
             .sorted(Comparator.comparing(CompanyMatch::startDate)
                 .thenComparing(item -> item.company().shortName()))
             .toList();
+        if (companyMatches.isEmpty()) {
+            String sortedStartDates = startDates.stream().sorted().map(LocalDate::toString).collect(Collectors.joining(", "));
+            throw new NotFoundException(
+                "No train identification for train number " + operationalTrainNumber + " starting on " + sortedStartDates + " within the candidate window");
+        }
+        return companyMatches;
     }
 
     private static LocalDate startDateOf(TrainIdentificationEntity entity) {
@@ -88,14 +108,20 @@ public class TrainIdentificationService {
             .toList();
 
         if (!outOfRange.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
+            throw new BadRequestException("startDate must be within " + earliest + " and " + latest + ", but got: " + outOfRange);
         }
     }
 
-    private TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity) {
-        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime(),
-            readCompanyCodes(trainRunEntity.getCompanies()));
+    /**
+     * @param codesByShortName the supported companies, resolved once for the whole window instead of once per train
+     */
+    private static TrainIdentification readEntity(TrainIdentificationEntity trainRunEntity, Map<CompanyShortName, CompanyCode> codesByShortName) {
+        Set<CompanyCode> companies = Set.of(trainRunEntity.getCompanies().split(",")).stream()
+            .map(CompanyShortName::new)
+            .map(codesByShortName::get)
+            .filter(Objects::nonNull) // unsupported companies are silently dropped
+            .collect(Collectors.toSet());
+        return new TrainIdentification(trainRunEntity.getId(), trainRunEntity.getOperationalTrainNumber(), trainRunEntity.getStartDateTime(), companies);
     }
 
     /**
@@ -108,13 +134,6 @@ public class TrainIdentificationService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toSet());
-    }
-
-    public int savePreloadedTrainIds(Set<Integer> trainIdentificationIds) {
-        if (trainIdentificationIds.isEmpty()) {
-            return 0;
-        }
-        return trainIdentificationRepository.updatePreloadedAtByIds(DateTimeUtil.now(), trainIdentificationIds);
     }
 }
 

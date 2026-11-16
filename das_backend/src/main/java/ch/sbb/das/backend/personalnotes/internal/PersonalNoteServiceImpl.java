@@ -1,13 +1,12 @@
 package ch.sbb.das.backend.personalnotes.internal;
 
 import ch.sbb.das.backend.common.UserDataService;
+import ch.sbb.das.backend.common.error.NotFoundException;
+import ch.sbb.das.backend.common.error.PayloadTooLargeException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -15,6 +14,7 @@ import tools.jackson.databind.json.JsonMapper;
 @RequiredArgsConstructor
 class PersonalNoteServiceImpl implements UserDataService {
 
+    private static final String RESOURCE = "Personal note";
     static final int MAX_VALUE_LENGTH = 16384;
 
     private final PersonalNoteRepository personalNoteRepository;
@@ -26,17 +26,22 @@ class PersonalNoteServiceImpl implements UserDataService {
             .toList();
     }
 
-    Optional<PersonalNote> getByOidAndKey(String oid, String key) {
+    /**
+     * Returns the user's personal note under the given key.
+     *
+     * @throws NotFoundException when the user has no personal note under that key
+     */
+    PersonalNote getByOidAndKey(String oid, String key) {
         return personalNoteRepository.findByOidAndKey(oid, key)
-            .map(this::toPersonalNote);
+            .map(this::toPersonalNote)
+            .orElseThrow(() -> NotFoundException.forKey(RESOURCE, key));
     }
 
     @Transactional
     PersonalNote save(String oid, String key, JsonNode value) {
         String serializedValue = jsonMapper.writeValueAsString(value);
         if (serializedValue.length() > MAX_VALUE_LENGTH) {
-            throw new ResponseStatusException(HttpStatus.CONTENT_TOO_LARGE,
-                "Personal note value exceeds the maximum allowed length of " + MAX_VALUE_LENGTH + " characters.");
+            throw new PayloadTooLargeException("Personal note value exceeds the maximum allowed length of " + MAX_VALUE_LENGTH + " characters.");
         }
         PersonalNoteEntity entity = personalNoteRepository.findByOidAndKey(oid, key)
             .orElseGet(() -> {

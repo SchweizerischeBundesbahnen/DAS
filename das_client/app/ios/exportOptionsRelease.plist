@@ -11,7 +11,16 @@
 	<key>method</key>
 	<string>app-store-connect</string>
 	<key>signingStyle</key>
-	<string>automatic</string>
+	<string>manual</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>ch.sbb.das.dev</key>
+		<string>DAS Dev Appstore</string>
+		<key>ch.sbb.das.inte</key>
+		<string>DAS Int Appstore</string>
+		<key>ch.sbb.das</key>
+		<string>DAS Appstore</string>
+	</dict>
 	<key>stripSwiftSymbols</key>
 	<true/>
 	<key>teamID</key>

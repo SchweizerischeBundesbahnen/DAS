@@ -21,13 +21,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <springdoc-openapi-ui.version>1.8.0</springdoc-openapi-ui.version>
-        <rest-assured.version>6.1.0</rest-assured.version>
+        <rest-assured.version>6.3.0</rest-assured.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
         <relativePath/>
     </parent>
 
@@ -140,7 +140,7 @@
                             <apiPackage>ch.sbb.das.backend.restclient.v1.api</apiPackage>
                             <generateApis>true</generateApis>
                             <apisToGenerate>
-                                Settings,Formations,CustomerOrientedDeparture,AppVersions
+                                Settings,Formations,Departure,AppVersions
                             </apisToGenerate>
                             <generateApiTests>false</generateApiTests>
                             <generateApiDocumentation>false</generateApiDocumentation>

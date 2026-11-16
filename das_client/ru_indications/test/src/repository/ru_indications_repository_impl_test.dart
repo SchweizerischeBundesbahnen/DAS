@@ -24,9 +24,9 @@ void main() {
   const companyCode = '1285';
   const trainNumber = 12345;
   final startDate = DateTime(2026, 1, 15);
-  const Map<String, int> locationReferences = {
-    'CH003001': 1000,
-    'CH003002': 2000,
+  const Map<int, String> locationReferences = {
+    1000: 'CH003001',
+    2000: 'CH003002',
   };
 
   setUp(() {
@@ -46,7 +46,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
@@ -66,6 +66,72 @@ void main() {
     expect(result, equals(_expectedDomainResult()));
   });
 
+  test('fetchRuIndications_whenSameLocationReferenceAppearsMultipleTimes_thenAddsRuIndicationForEachEntry', () async {
+    // ARRANGE
+    final locationCode = 'CH99999';
+    final locationReferencesData = {
+      3000: locationCode,
+      4000: locationCode,
+    };
+    final title = 'Test Title';
+    final text = 'Test Text';
+
+    when(
+      mockMatchesRequest.call(
+        company: companyCode,
+        operationalTrainNumber: trainNumber,
+        startDate: startDate,
+        tafTapLocationReferences: locationReferencesData.values.toSet(),
+      ),
+    ).thenAnswer(
+      (_) async => MatchesResponse(
+        headers: <String, String>{},
+        body: RuIndicationMatchesResponseDto(
+          data: [
+            RuIndicationLocationDto(
+              tafTapLocationReference: locationCode,
+              ruIndicationContents: [
+                RuIndicationContentDto(
+                  title: title,
+                  text: text,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // ACT
+    final result = await testee
+        .fetchRuIndications(
+          trainIdentification: TrainIdentification(
+            companyCode: companyCode,
+            trainNumber: trainNumber.toString(),
+            date: startDate,
+          ),
+          locationReferences: {3000: locationCode, 4000: locationCode},
+        )
+        .first;
+
+    // EXPECT
+    expect(
+      result,
+      equals([
+        RuIndication(
+          order: 3000,
+          title: title,
+          text: text,
+        ),
+        RuIndication(
+          order: 4000,
+          title: title,
+          text: text,
+        ),
+      ]),
+    );
+  });
+
   test('fetchRuIndications_whenTrainNumberContainsNonDigits_thenSanitizesTrainNumber', () async {
     // ARRANGE
     const unsanitizedTrainNumber = 'T${trainNumber}M-S19';
@@ -74,7 +140,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
@@ -96,7 +162,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).called(1);
   });
@@ -109,7 +175,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: operatingDay,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
@@ -132,7 +198,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: operatingDay,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).called(1);
   });
@@ -174,7 +240,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async {
       callCount++;
@@ -211,7 +277,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async {
       callCount++;
@@ -246,7 +312,7 @@ void main() {
         company: companyCode,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
-        tafTapLocationReferences: locationReferences.keys.toList(),
+        tafTapLocationReferences: locationReferences.values.toSet(),
       ),
     ).thenAnswer((_) async {
       callCount++;

@@ -19,6 +19,6 @@ public class RequestLoggingFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         RequestLogger requestLogger = RequestLogger.from(httpServletRequest);
         filterChain.doFilter(servletRequest, servletResponse);
-        requestLogger.log(httpServletRequest, httpServletResponse.getStatus());
+        requestLogger.log(httpServletRequest, httpServletResponse);
     }
 }

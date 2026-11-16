@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SbbLink } from '@sbb-esta/lyne-angular/link';
 import { SbbNotificationModule } from '@sbb-esta/lyne-angular/notification';
@@ -7,6 +7,7 @@ import packageJson from '~package.json';
 import { AuthService } from '~shared/services/auth.service';
 import { Header } from './header/header';
 import { IconSidebar } from './icon-sidebar/icon-sidebar';
+import { isInstanaBlocked } from './instana-setup.util';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +19,7 @@ export class App implements OnInit {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
-  protected readonly isAdBlockerDetected = signal(this.isInstanaBlockedByAdBlocker);
-
-  private get isInstanaBlockedByAdBlocker(): boolean {
-    const pageLoadId = ineum('getPageLoadId');
-    return pageLoadId === undefined;
-  }
+  protected readonly isInstanaBlocked = isInstanaBlocked;
 
   ngOnInit(): void {
     ineum('meta', 'version', packageJson.version);

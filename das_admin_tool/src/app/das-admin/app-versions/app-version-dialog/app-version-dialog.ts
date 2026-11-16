@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, FormField, pattern, required } from '@angular/forms/signals';
+import { form, FormField, required, validate } from '@angular/forms/signals';
 import { SbbMiniButton } from '@sbb-esta/lyne-angular/button';
 import { SBB_OVERLAY_DATA } from '@sbb-esta/lyne-angular/core';
 import { SbbDateInputModule } from '@sbb-esta/lyne-angular/date-input';
@@ -16,6 +16,13 @@ interface AppVersionData {
   version: string;
   minimalVersion: boolean;
   expiryDate: Date | null;
+}
+
+/**
+ * Trims the version and strips leading zeros of each part, e.g. ' 01.002.3 ' becomes '1.2.3'.
+ */
+export function normalizeVersion(version: string): string {
+  return version.trim().replaceAll(/(^|\.)0+(?=\d)/g, '$1');
 }
 
 export type AppVersionDialogEditResult = AppVersion | 'delete';
@@ -40,7 +47,9 @@ export class AppVersionDialog {
   protected readonly dialogData =
     inject<AppVersion>(SBB_OVERLAY_DATA, { optional: true }) ?? undefined;
 
-  private static readonly APP_VERSION_REGEX = /^\d+\.\d+\.\d+$/;
+  // Must match SemanticVersion.SEM_VERSION_PATTERN in das_backend: 0-99999 per part, no leading zeros.
+  private static readonly APP_VERSION_REGEX =
+    /^(0|[1-9]\d{0,4})\.(0|[1-9]\d{0,4})\.(0|[1-9]\d{0,4})$/;
 
   protected readonly dialogTitle: string;
 
@@ -53,9 +62,14 @@ export class AppVersionDialog {
     required(appVersion.version, {
       message: $localize`:@@form_field_error_required:Feld darf nicht leer sein`,
     });
-    pattern(appVersion.version, AppVersionDialog.APP_VERSION_REGEX, {
-      message: $localize`:@@app_versions_form_version_error_pattern:Feld muss dem Format MAJOR.MINOR.PATCH entsprechen`,
-    });
+    validate(appVersion.version, ({ value }) =>
+      AppVersionDialog.APP_VERSION_REGEX.test(normalizeVersion(value()))
+        ? null
+        : {
+            kind: 'pattern',
+            message: $localize`:@@app_versions_form_version_error_pattern:Feld muss dem Format MAJOR.MINOR.PATCH entsprechen, jeweils 0 bis 99999 (z.B. 1.2.3)`,
+          },
+    );
   });
 
   protected minDate = new Date();
@@ -81,6 +95,7 @@ export class AppVersionDialog {
     const formValue = this.appVersionModel();
     return {
       ...formValue,
+      version: normalizeVersion(formValue.version),
       expiryDate: formValue.expiryDate ? toUtcDateOnly(formValue.expiryDate).toJSON() : undefined,
     };
   }

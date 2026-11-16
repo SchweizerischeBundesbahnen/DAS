@@ -32,11 +32,6 @@ logging:
   url: url
   token: token
 
-aws:
-  accessKey: accessKey
-  secretKey: secretKey
-  bucketName: bucketName
-
 formation:
   transport-paper:
     sbbi-base-url: https://sbbi.example.com
@@ -60,10 +55,15 @@ sfera:
 
 preload:
   bucket:
-    bucketUrl: bucketUrl
-    accessKey: accessKey
-    accessSecret: accessSecret
+    name: bucketName
+    url: bucketUrl
     region: region
+    read-write:
+      access-key-id: accessKey
+      secret-access-key: secretKey
+    read-only:
+      access-key-id: accessKey
+      secret-access-key: accessSecret
 
 trainjourneyplan:
   train-clean-up:

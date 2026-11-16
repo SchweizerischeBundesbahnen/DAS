@@ -12,7 +12,7 @@ class MockRuIndicationsRepository implements RuIndicationsRepository {
   @override
   Stream<List<RuIndication>> fetchRuIndications({
     required TrainIdentification trainIdentification,
-    required Map<String, int> locationReferences,
+    required Map<int, String> locationReferences,
   }) {
     if (!shouldReturnMockData || locationReferences.isEmpty) {
       return const Stream.empty();
@@ -20,9 +20,9 @@ class MockRuIndicationsRepository implements RuIndicationsRepository {
 
     final entries = locationReferences.entries;
     return Stream.value([
-      RuIndication(title: entries.first.key, text: _smallText, order: entries.first.value),
-      RuIndication(title: entries.first.key, text: _longTextWithLink, order: entries.first.value),
-      RuIndication(title: entries.last.key, text: _smallText, order: entries.last.value),
+      RuIndication(title: entries.first.value, text: _smallText, order: entries.first.key),
+      RuIndication(title: entries.first.value, text: _longTextWithLink, order: entries.first.key),
+      RuIndication(title: entries.last.value, text: _smallText, order: entries.last.key),
     ]);
   }
 }

@@ -9,7 +9,7 @@ mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
   T get element => _element ?? _generateElement();
 
   T _generateElement() {
-    _element = SferaReplyParser.parse<T>(attributes['value'].unescapedString!);
+    _element = SferaReplyParser.parse<T>(attributes['value']!, unescapeAttributes: true);
     return _element!;
   }
 
@@ -28,20 +28,5 @@ mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
       }
     }
     return validateIsNotNull(_element) && element.validate() && super.validate();
-  }
-}
-
-extension _XmlNullableStringExtension on String? {
-  String? get unescapedString => this?.unescapedString ?? this;
-}
-
-extension _XmlStringExtension on String {
-  String get unescapedString {
-    return replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAll('&amp;', '&')
-        .replaceAll('&apos;', "'")
-        .replaceAll('&quot;', '"')
-        .replaceAll('<br>', '<br/>');
   }
 }

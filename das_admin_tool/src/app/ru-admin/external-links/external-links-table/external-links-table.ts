@@ -104,10 +104,10 @@ export class ExternalLinksTable {
     if (this.isDeleting) return;
     this.isDeleting = true;
     try {
-      await this.externalLinkService.deleteAllByIds(
+      const deleted = await this.externalLinkService.deleteAllByIds(
         this.selection.selected.map((externalLink) => externalLink.id!),
       );
-      this.selection.clear();
+      if (deleted) this.selection.clear();
     } finally {
       this.isDeleting = false;
     }

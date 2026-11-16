@@ -106,22 +106,22 @@ import 'package:sfera/src/data/dto/virtual_balise_position_dto.dart';
 import 'package:xml/xml.dart';
 
 class SferaReplyParser._() {
-  static T parse<T extends SferaXmlElementDto>(String input) {
+  static T parse<T extends SferaXmlElementDto>(String input, {bool unescapeAttributes = false}) {
     final xmlDocument = XmlDocument.parse(input);
-    final xml = _parseXml(xmlDocument.rootElement);
+    final xml = _parseXml(xmlDocument.rootElement, unescapeAttributes);
     return xml as T;
   }
 
-  static SferaXmlElementDto _parseXml(XmlElement xmlElement) {
+  static SferaXmlElementDto _parseXml(XmlElement xmlElement, bool unescapeAttributes) {
     final attributes = <String, String>{};
     final children = <SferaXmlElementDto>[];
 
     for (final attribute in xmlElement.attributes) {
-      attributes[attribute.name.toString()] = attribute.value;
+      attributes[attribute.name.toString()] = unescapeAttributes ? attribute.value.unescapedString : attribute.value;
     }
 
     for (final childElement in xmlElement.childElements) {
-      final child = _parseXml(childElement);
+      final child = _parseXml(childElement, unescapeAttributes);
       children.add(child);
     }
 
@@ -317,7 +317,12 @@ class SferaReplyParser._() {
       case SferaFootNoteDto.elementType:
         return SferaFootNoteDto(attributes: attributes, children: children, value: value);
       case TextDto.elementType:
-        return TextDto(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
+        return TextDto(
+          attributes: attributes,
+          children: children,
+          value: value,
+          xmlValue: xmlElement.innerXml.unescapedString,
+        );
       case ContactListDto.elementType:
         return ContactListDto(type: type, attributes: attributes, children: children, value: value);
       case ContactDto.elementType:
@@ -359,5 +364,20 @@ class SferaReplyParser._() {
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }
+  }
+}
+
+extension XmlNullableStringExtension on String? {
+  String? get unescapedString => this?.unescapedString ?? this;
+}
+
+extension XmlStringExtension on String {
+  String get unescapedString {
+    return replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAll('&amp;', '&')
+        .replaceAll('&apos;', "'")
+        .replaceAll('&quot;', '"')
+        .replaceAll('<br>', '<br/>');
   }
 }
