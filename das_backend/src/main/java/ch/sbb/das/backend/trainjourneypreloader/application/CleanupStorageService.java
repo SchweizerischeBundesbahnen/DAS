@@ -26,6 +26,7 @@ public class CleanupStorageService {
 
     void deleteAllBefore(OffsetDateTime cutoffDate) {
         List<String> keysToDelete = s3Service.listObjects().stream()
+            .map(S3Service.BucketObject::key)
             .filter(k -> k != null && k.endsWith(ZIP_FILE_ENDING) && !k.contains(SEGMENT_PREFIX))
             .filter(k -> {
                 try {
