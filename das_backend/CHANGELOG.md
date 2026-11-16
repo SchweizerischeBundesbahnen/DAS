@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.19.0...backend-v0.19.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* compact segment zips once a day and fold every zip that is not full ([#2657](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2657)) ([#3136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3136)) ([f80640d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f80640d6611d7e554666d68f4eb5dad2d3499dce))
+
 ## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.18.2...backend-v0.19.0) (2026-11-13)
 
 
