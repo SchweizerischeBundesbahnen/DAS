@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,23 +16,26 @@ enum CollapsedState {
   expanded;
 
   static CollapsedState defaultOf(BaseData? data) =>
-      data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
+      data is OperationalIndication || data is RuIndication || data is PersonalNoteAnnotation
+      ? .expandedWithCollapsedContent
+      : .expanded;
 }
 
 class CollapsibleRowsViewModel({
   required Stream<JourneyPositionModel> journeyPositionStream,
+  required Stream<List<PersonalNoteAnnotation>> personalNoteAnnotationsStream,
   required final SimTrainViewModel _simTrainViewModel,
   super.journeyViewModel,
 }) extends JourneyAwareViewModel {
   this {
-    _init(journeyViewModel.journey, journeyPositionStream);
+    _init(journeyPositionStream, personalNoteAnnotationsStream);
   }
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   Set<int> _repeatedLineFootNotes = {};
 
-  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
+  StreamSubscription<(Journey?, JourneyPositionModel, List<PersonalNoteAnnotation>)>? _journeySubscription;
   StreamSubscription<bool>? _simTrainSubscription;
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
@@ -53,18 +58,19 @@ class CollapsibleRowsViewModel({
   }
 
   void _init(
-    Stream<Journey?> journeyStream,
     Stream<JourneyPositionModel> journeyPositionStream,
+    Stream<List<PersonalNoteAnnotation>> personalNoteAnnotationsStream,
   ) {
     _journeySubscription?.cancel();
     _journeySubscription =
-        CombineLatestStream.combine2(
-          journeyStream,
+        CombineLatestStream.combine3(
+          journeyViewModel.journey,
           journeyPositionStream,
-          (a, b) => (a, b),
+          personalNoteAnnotationsStream,
+          (a, b, c) => (a, b, c),
         ).listen((data) {
           if (data.$1 != null) {
-            _updatePassedAccordionRowsState(data.$1!, data.$2);
+            _updatePassedAccordionRowsState(data.$1!, data.$2, data.$3);
           }
         });
 
@@ -88,21 +94,26 @@ class CollapsibleRowsViewModel({
     _rxCollapsedRows.add(newMap);
   }
 
-  void _updatePassedAccordionRowsState(Journey journey, JourneyPositionModel journeyPosition) {
+  void _updatePassedAccordionRowsState(
+    Journey journey,
+    JourneyPositionModel journeyPosition,
+    List<PersonalNoteAnnotation> personalNoteAnnotations,
+  ) {
     final currentPosition = journeyPosition.currentPosition;
     final lastPosition = journeyPosition.lastPosition;
     if (currentPosition == lastPosition || lastPosition == null || currentPosition == null) {
       return;
     }
 
-    final fromIndex = journey.data.indexOf(lastPosition);
-    final toIndex = journey.data.indexOf(currentPosition);
+    final journeyData = [...journey.data, ...personalNoteAnnotations].sorted((a, b) => a.compareTo(b));
+    final fromIndex = journeyData.indexOf(lastPosition);
+    final toIndex = journeyData.indexOf(currentPosition);
     if (fromIndex == -1 || toIndex == -1) return;
 
     final isMovingForward = fromIndex < toIndex;
     final rangeStart = isMovingForward ? fromIndex : toIndex;
     final rangeEnd = isMovingForward ? toIndex : fromIndex;
-    final passedCollapsibleData = journey.data.sublist(rangeStart, rangeEnd).where((data) => data.isCollapsible);
+    final passedCollapsibleData = journeyData.sublist(rangeStart, rangeEnd).where((data) => data.isCollapsible);
 
     final isSimTrain = _simTrainViewModel.isSimTrainValue;
     final collapsedRows = _rxCollapsedRows.value;
@@ -115,7 +126,7 @@ class CollapsibleRowsViewModel({
         // Do not auto-collapse SIM foot notes when this is a SIM train
         if (isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
 
-        if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
+        if (journeyData.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
           newMap[data.hashCode] = .collapsed;
         }
       } else {
@@ -181,7 +192,12 @@ class CollapsibleRowsViewModel({
 }
 
 extension BaseDataX on BaseData {
-  bool get isCollapsible => this is BaseFootNote || this is OperationalIndication || this is RuIndication;
+  bool get isCollapsible =>
+      this is BaseFootNote ||
+      this is OperationalIndication ||
+      this is RuIndication ||
+      this is FootNote ||
+      this is PersonalNoteAnnotation;
 }
 
 extension CollapsedStateMapX on Map<int, CollapsedState> {

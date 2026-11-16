@@ -87,15 +87,13 @@ class BasicTextAccordion extends StatelessWidget {
       context.l10n.c_show_more,
       style: _textStyle.copyWith(
         color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
-        decoration: TextDecoration.underline,
+        decoration: .underline,
       ),
     );
   }
 
-  bool get _hasTextOverflow {
-    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.text);
-    return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
-  }
+  bool get _hasTextOverflow =>
+      TextUtil.hasTextOverflow(data.text, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
 
   Text _contentText(BuildContext context, String text, {int? maxLines}) {
     return Text.rich(
