@@ -86,7 +86,7 @@ public class TrainIdentificationBatchWriter {
         MapSqlParameterSource paramValue = new MapSqlParameterSource();
         paramValue.addValue("date", date);
         int rowsDeleted = namedParameterJdbcTemplate.update(sql, paramValue);
-        log.atInfo().addKeyValue("rows", rowsDeleted).addKeyValue("before", date).log("Old train identifications deleted");
+        log.atInfo().addKeyValue("rows", rowsDeleted).addKeyValue("olderThan", date).log("Old train identifications deleted");
     }
 
     public void deleteAll(List<Train> trains) {

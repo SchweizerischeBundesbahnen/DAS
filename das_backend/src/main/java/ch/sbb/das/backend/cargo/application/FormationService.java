@@ -71,6 +71,6 @@ public class FormationService {
         LockAssert.assertLocked();
         OffsetDateTime cleanUpBefore = DateTimeUtil.now().minusDays(cleanUpOlderThanDays);
         trainFormationRunRepository.deleteByInspectionDateTimeBefore(cleanUpBefore);
-        log.atInfo().addKeyValue("before", cleanUpBefore).log("Old formations deleted");
+        log.atInfo().addKeyValue("olderThan", cleanUpBefore).log("Old formations deleted");
     }
 }

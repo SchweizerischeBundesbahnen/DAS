@@ -10,12 +10,12 @@ import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKey
 import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.IndexedSegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.KnownSegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.ZipStatistics;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service.BucketObject;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service.BucketObject;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.configuration.SegmentProfileStoreProperties;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;

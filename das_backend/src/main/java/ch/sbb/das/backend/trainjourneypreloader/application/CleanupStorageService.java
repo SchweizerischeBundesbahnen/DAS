@@ -1,10 +1,10 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
-import ch.sbb.das.backend.common.LogKeys;
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.SEGMENT_PREFIX;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.FILENAME_FORMATTER;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.ZIP_FILE_ENDING;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;

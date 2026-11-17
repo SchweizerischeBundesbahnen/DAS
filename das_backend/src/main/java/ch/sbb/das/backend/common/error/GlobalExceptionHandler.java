@@ -116,8 +116,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<Problem> handleDataIntegrityViolation(DataIntegrityViolationException exception, HttpServletRequest request) {
         log.atInfo()
-            .setCause(exception)
             .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, HttpStatus.CONFLICT.value())
+            .addKeyValue(LogKeys.REASON, exception.getMostSpecificCause().getMessage())
             .log("Concurrent modification rejected");
         return ProblemFactory.createResponse(HttpStatus.CONFLICT, HttpStatus.CONFLICT.getReasonPhrase(), DETAIL_CONCURRENT_MODIFICATION, request);
     }

@@ -34,7 +34,7 @@ public class TrainFormationKafkaConsumer {
     @KafkaListener(topics = "${formation.kafka.topic}", groupId = "${formation.kafka.group-id}", autoStartup = "${formation.kafka.enabled:true}", containerFactory = "trainFormationListenerContainerFactory")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (DateTimeUtil.now().toInstant().toEpochMilli() - message.timestamp()) / 1000;
-        withRecord(log.atTrace(), message).addKeyValue("lagS", lagInS).log("Train formation record received");
+        withRecord(log.atTrace(), message).addKeyValue("lagSeconds", lagInS).log("Train formation record received");
         if (message.value() == null) {
             withRecord(log.atDebug(), message).log("Train formation tombstone skipped");
             return;
