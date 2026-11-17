@@ -25,10 +25,10 @@ class PersonalNotesViewModel({
 
   PersonalNote? get prioritizedNoteValue => _rxPrioritizedNote.value;
 
-  /// Personal notes for the current service point.
+  /// Personal notes for the selected service point.
   Stream<List<PersonalNote>> get servicePointNotes => _rxServicePointNotes.stream;
 
-  /// Prioritized note to be used in UI which is the single use note if multiple exist.
+  /// Prioritized note of the selected service point which is the single use note if multiple exist.
   Stream<PersonalNote?> get prioritizedNote => _rxPrioritizedNote.stream;
 
   final _rxServicePointNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
@@ -36,7 +36,6 @@ class PersonalNotesViewModel({
   final _subscriptions = <StreamSubscription>[];
 
   ServicePoint? _currentServicePoint;
-  Journey? _currentJourney;
 
   Future<void> saveNote({required String text, required bool showAsFootnote, required bool singleUse}) async {
     if (locationCode == null) {
@@ -46,7 +45,7 @@ class PersonalNotesViewModel({
 
     TrainIdentification? trainIdentification;
     if (singleUse) {
-      trainIdentification = _currentJourney?.metadata.trainIdentification;
+      trainIdentification = lastJourney?.metadata.trainIdentification;
       if (trainIdentification == null) {
         _log.warning('Called saveNote without existing train identification');
         return;
@@ -115,7 +114,7 @@ class PersonalNotesViewModel({
   void _emitServicePointNotes(List<PersonalNote> notes) {
     if (_rxServicePointNotes.isClosed) return;
 
-    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(_currentJourney)).toList();
+    final journeyRelevantNotes = notes.where((note) => note.isRelevantFor(lastJourney)).toList();
     _rxServicePointNotes.add(journeyRelevantNotes);
   }
 }

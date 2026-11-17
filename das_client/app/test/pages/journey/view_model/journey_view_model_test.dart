@@ -45,6 +45,12 @@ void main() {
       when(mockSferaJourneyViewModel.journey).thenAnswer((_) => sferaJourneySubject.stream);
       when(mockSferaJourneyViewModel.journeyValue).thenAnswer((_) => currentJourney);
       when(mockPersonalNoteRepository.observeAllNotes()).thenAnswer((_) => personalNotesSubject.stream);
+      when(
+        mockRuIndicationsRepository.fetchRuIndications(
+          trainIdentification: anyNamed('trainIdentification'),
+          locationReferences: anyNamed('locationReferences'),
+        ),
+      ).thenAnswer((_) => Stream.value(const []));
 
       testee = JourneyViewModel(
         sferaJourneyViewModel: mockSferaJourneyViewModel,
@@ -60,7 +66,7 @@ void main() {
       await personalNotesSubject.close();
     });
 
-    test('journey_whenSferaJourneyChanges_thenLoadsAndMergesRuIndications', () async {
+    test('journey_whenSferaJourneyChanges_thenMergesRuIndicationsAndPersonalNoteAnnotations', () async {
       // ARRANGE
       final sferaJourney = _journey(
         trainNumber: '12345',
@@ -82,6 +88,9 @@ void main() {
       ).thenAnswer((_) => Stream.value(ruIndications));
 
       // ACT
+      final personalNote = PersonalNote(locationCode: 'CH001', text: 'Personal note', showAsFootnote: true);
+      personalNotesSubject.add([personalNote]);
+      await processStreams();
       currentJourney = sferaJourney;
       sferaJourneySubject.add(sferaJourney);
       await processStreams();
@@ -97,11 +106,12 @@ void main() {
 
       final emittedJourney = testee.journeyValue;
       expect(emittedJourney, isNotNull);
-      expect(emittedJourney!.data.length, 4);
+      expect(emittedJourney!.data.length, 5);
       expect(emittedJourney.data[0], isA<ServicePoint>());
-      expect(emittedJourney.data[1], ruIndications[0]);
-      expect(emittedJourney.data[2], isA<ServicePoint>());
-      expect(emittedJourney.data[3], ruIndications[1]);
+      expect(emittedJourney.data[1], PersonalNoteAnnotation(text: personalNote.text, order: 1000));
+      expect(emittedJourney.data[2], ruIndications[0]);
+      expect(emittedJourney.data[3], isA<ServicePoint>());
+      expect(emittedJourney.data[4], ruIndications[1]);
     });
 
     test('journey_whenPersonalNotesChange_thenAddsRelevantFootnoteAnnotations', () async {
@@ -147,6 +157,7 @@ void main() {
           trainIdentification: otherTrainIdentification,
         ),
         PersonalNote(locationCode: 'CH004', text: 'Not a footnote', showAsFootnote: false),
+        PersonalNote(locationCode: 'CH005', text: 'Outside the journey', showAsFootnote: true),
       ]);
       await processStreams();
 
@@ -158,6 +169,164 @@ void main() {
           const PersonalNoteAnnotation(text: 'Train-specific note', order: 2000),
         ],
       );
+    });
+
+    test('personalNoteOfServicePoint_whenNotesExist_thenReturnsAllRelevantNotesAtLocation', () async {
+      // GIVEN
+      final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
+      final journey = _journey(trainNumber: '12345', servicePoints: [servicePoint]);
+      final generalNote = PersonalNote(locationCode: 'CH001', text: 'General note', showAsFootnote: false);
+      final trainNote = PersonalNote(
+        locationCode: 'CH001',
+        text: 'Train-specific note',
+        showAsFootnote: true,
+        trainIdentification: journey.metadata.trainIdentification,
+      );
+      currentJourney = journey;
+      sferaJourneySubject.add(journey);
+      personalNotesSubject.add([
+        generalNote,
+        trainNote,
+        PersonalNote(
+          locationCode: 'CH001',
+          text: 'Another train',
+          showAsFootnote: true,
+          trainIdentification: _journey(trainNumber: '54321', servicePoints: []).metadata.trainIdentification,
+        ),
+        PersonalNote(locationCode: 'CH002', text: 'Another location', showAsFootnote: true),
+      ]);
+      await processStreams();
+
+      // WHEN
+      final notes = testee.personalNoteOfServicePoint(servicePoint);
+
+      // THEN
+      expect(notes, [generalNote, trainNote]);
+      expect(testee.personalNoteOfServicePoint(_servicePoint(order: 2000, locationCode: 'CH003')), isEmpty);
+    });
+
+    test('personalNoteOfServicePoint_whenNotesChange_thenReplacesPreviousNotes', () async {
+      // GIVEN
+      final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
+      final originalNote = PersonalNote(locationCode: 'CH001', text: 'Original note', showAsFootnote: false);
+      personalNotesSubject.add([originalNote]);
+      await processStreams();
+      expect(testee.personalNoteOfServicePoint(servicePoint), [originalNote]);
+      final updatedNote = originalNote.copyWith(text: 'Updated note', showAsFootnote: true);
+
+      // WHEN
+      personalNotesSubject.add([updatedNote]);
+      await processStreams();
+
+      // THEN
+      expect(testee.personalNoteOfServicePoint(servicePoint), [updatedNote]);
+
+      // WHEN
+      personalNotesSubject.add([]);
+      await processStreams();
+
+      // THEN
+      expect(testee.personalNoteOfServicePoint(servicePoint), isEmpty);
+    });
+
+    test('journey_whenNotesAreEditedHiddenOrRemoved_thenUpdatesAnnotations', () async {
+      // GIVEN
+      final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
+      final journey = _journey(trainNumber: '12345', servicePoints: [servicePoint]);
+      final note = PersonalNote(locationCode: 'CH001', text: 'Original note', showAsFootnote: true);
+      currentJourney = journey;
+      sferaJourneySubject.add(journey);
+      personalNotesSubject.add([note]);
+      await processStreams();
+      expect(testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(), [
+        const PersonalNoteAnnotation(text: 'Original note', order: 1000),
+      ]);
+
+      // WHEN
+      personalNotesSubject.add([note.copyWith(text: 'Updated note')]);
+      await processStreams();
+
+      // THEN
+      expect(testee.journeyValue!.data, [
+        servicePoint,
+        const PersonalNoteAnnotation(text: 'Updated note', order: 1000),
+      ]);
+
+      // WHEN
+      final hiddenNote = note.copyWith(showAsFootnote: false);
+      personalNotesSubject.add([hiddenNote]);
+      await processStreams();
+
+      // THEN
+      expect(testee.journeyValue!.data, [servicePoint]);
+      expect(testee.personalNoteOfServicePoint(servicePoint), [hiddenNote]);
+
+      // WHEN
+      personalNotesSubject.add([note]);
+      await processStreams();
+      expect(testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(), hasLength(1));
+      personalNotesSubject.add([]);
+      await processStreams();
+
+      // THEN
+      expect(testee.journeyValue!.data, [servicePoint]);
+    });
+
+    test('journey_whenTrainChanges_thenReevaluatesNotesAndAnnotationOrders', () async {
+      // GIVEN
+      final firstJourney = _journey(
+        trainNumber: '100',
+        servicePoints: [
+          _servicePoint(order: 1000, locationCode: 'CH001'),
+          _servicePoint(order: 2000, locationCode: 'CH002'),
+        ],
+      );
+      final secondJourney = _journey(
+        trainNumber: '200',
+        servicePoints: [
+          _servicePoint(order: 3000, locationCode: 'CH001'),
+          _servicePoint(order: 4000, locationCode: 'CH002'),
+        ],
+      );
+      final generalNote = PersonalNote(locationCode: 'CH001', text: 'General note', showAsFootnote: true);
+      final firstTrainNote = PersonalNote(
+        locationCode: 'CH002',
+        text: 'First train',
+        showAsFootnote: true,
+        trainIdentification: firstJourney.metadata.trainIdentification,
+      );
+      final secondTrainNote = PersonalNote(
+        locationCode: 'CH002',
+        text: 'Second train',
+        showAsFootnote: true,
+        trainIdentification: secondJourney.metadata.trainIdentification,
+      );
+
+      // WHEN
+      currentJourney = firstJourney;
+      sferaJourneySubject.add(firstJourney);
+      personalNotesSubject.add([generalNote, firstTrainNote, secondTrainNote]);
+      await processStreams();
+
+      // THEN
+      expect(testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(), [
+        const PersonalNoteAnnotation(text: 'General note', order: 1000),
+        const PersonalNoteAnnotation(text: 'First train', order: 2000),
+      ]);
+      expect(testee.personalNoteOfServicePoint(firstJourney.data.whereType<ServicePoint>().last), [firstTrainNote]);
+
+      // WHEN
+      currentJourney = secondJourney;
+      sferaJourneySubject.add(secondJourney);
+      await processStreams();
+
+      // THEN
+      expect(testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(), [
+        const PersonalNoteAnnotation(text: 'General note', order: 3000),
+        const PersonalNoteAnnotation(text: 'Second train', order: 4000),
+      ]);
+      expect(testee.personalNoteOfServicePoint(secondJourney.data.whereType<ServicePoint>().first), [generalNote]);
+      expect(testee.personalNoteOfServicePoint(secondJourney.data.whereType<ServicePoint>().last), [secondTrainNote]);
     });
 
     test('journey_whenTrainChanges_thenOldRuIndicationsAreClearedImmediately', () async {

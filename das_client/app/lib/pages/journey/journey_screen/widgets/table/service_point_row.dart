@@ -15,6 +15,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/animation.dart';
@@ -148,6 +149,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       shortTermChange = shortTermChange.startData == data ? shortTermChange : null;
     }
 
+    final hasPersonalNotes = context
+        .read<JourneyViewModel>()
+        .personalNoteOfServicePoint(data)
+        .where((note) => !note.showAsFootnote)
+        .isNotEmpty;
+
     return DASTableCell(
       onTap: () {
         if (shouldOpenDetailModalOnTap) {
@@ -164,8 +171,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             name: data.betweenBrackets ? '(${data.name})' : data.name,
             foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
             isStation: data.isStation,
-            trackGroup: data.trackGroup,
+            trackGroup: 'A2',
             shortTermChange: shortTermChange,
+            hasPersonalNote: hasPersonalNotes,
             showModification: data.hasModificationUpdated && config.showModification,
           ),
           ..._stationProperties(context),

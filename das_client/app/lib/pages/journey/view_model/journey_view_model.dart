@@ -27,6 +27,10 @@ class JourneyViewModel({
 
   Journey? get journeyValue => _rxJourney.value;
 
+  List<PersonalNote> personalNoteOfServicePoint(ServicePoint servicePoint) => _allNotes
+      .where((note) => note.isRelevantFor(journeyValue) && note.locationCode == servicePoint.locationCode)
+      .toList();
+
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxFormattedTrainIdentifier = BehaviorSubject<String?>.seeded(null);
   final _ruIndications = <RuIndication>[];
