@@ -81,6 +81,7 @@
     "ru_feature_toggles_key_label_customer_oriented_departure_process": "Processus de départ orienté clientèle (KoA)",
     "ru_feature_toggles_key_label_checklist_departure_process": "Check-list du processus de départ",
     "ru_feature_toggles_key_label_display_planned_time_deviation": "Écart par rapport à l’horaire planifié",
+    "ru_feature_toggles_key_label_display_brake_load_slip_brake_details": "Détails de freinage dans le bulletin de freinage",
     "ru_admin_title": "Admin DAS ETF",
     "ru_admin_tab_ru_indications": "Remarques",
     "ru_admin_tab_ru_indication_templates": "Titre et textes",
