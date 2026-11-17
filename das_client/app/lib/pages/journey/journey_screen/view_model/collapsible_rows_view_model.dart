@@ -4,7 +4,6 @@ import 'package:app/pages/journey/journey_screen/view_model/model/journey_positi
 import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
-import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,20 +22,19 @@ enum CollapsedState {
 
 class CollapsibleRowsViewModel({
   required Stream<JourneyPositionModel> journeyPositionStream,
-  required Stream<List<PersonalNoteAnnotation>> personalNoteAnnotationsStream,
   required final SimTrainViewModel _simTrainViewModel,
   super.journeyViewModel,
 }) extends JourneyAwareViewModel {
   this {
-    _init(journeyPositionStream, personalNoteAnnotationsStream);
+    _init(journeyPositionStream);
   }
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   Set<int> _repeatedLineFootNotes = {};
 
-  StreamSubscription<(Journey?, JourneyPositionModel, List<PersonalNoteAnnotation>)>? _journeySubscription;
-  StreamSubscription<bool>? _simTrainSubscription;
+  StreamSubscription? _journeySubscription;
+  StreamSubscription? _simTrainSubscription;
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
 
@@ -57,20 +55,16 @@ class CollapsibleRowsViewModel({
     _rxCollapsedRows.add(newMap);
   }
 
-  void _init(
-    Stream<JourneyPositionModel> journeyPositionStream,
-    Stream<List<PersonalNoteAnnotation>> personalNoteAnnotationsStream,
-  ) {
+  void _init(Stream<JourneyPositionModel> journeyPositionStream) {
     _journeySubscription?.cancel();
     _journeySubscription =
-        CombineLatestStream.combine3(
+        CombineLatestStream.combine2(
           journeyViewModel.journey,
           journeyPositionStream,
-          personalNoteAnnotationsStream,
-          (a, b, c) => (a, b, c),
+          (a, b) => (a, b),
         ).listen((data) {
           if (data.$1 != null) {
-            _updatePassedAccordionRowsState(data.$1!, data.$2, data.$3);
+            _updatePassedAccordionRowsState(data.$1!, data.$2);
           }
         });
 
@@ -94,26 +88,21 @@ class CollapsibleRowsViewModel({
     _rxCollapsedRows.add(newMap);
   }
 
-  void _updatePassedAccordionRowsState(
-    Journey journey,
-    JourneyPositionModel journeyPosition,
-    List<PersonalNoteAnnotation> personalNoteAnnotations,
-  ) {
+  void _updatePassedAccordionRowsState(Journey journey, JourneyPositionModel journeyPosition) {
     final currentPosition = journeyPosition.currentPosition;
     final lastPosition = journeyPosition.lastPosition;
     if (currentPosition == lastPosition || lastPosition == null || currentPosition == null) {
       return;
     }
 
-    final journeyData = [...journey.data, ...personalNoteAnnotations].sorted((a, b) => a.compareTo(b));
-    final fromIndex = journeyData.indexOf(lastPosition);
-    final toIndex = journeyData.indexOf(currentPosition);
+    final fromIndex = journey.data.indexOf(lastPosition);
+    final toIndex = journey.data.indexOf(currentPosition);
     if (fromIndex == -1 || toIndex == -1) return;
 
     final isMovingForward = fromIndex < toIndex;
     final rangeStart = isMovingForward ? fromIndex : toIndex;
     final rangeEnd = isMovingForward ? toIndex : fromIndex;
-    final passedCollapsibleData = journeyData.sublist(rangeStart, rangeEnd).where((data) => data.isCollapsible);
+    final passedCollapsibleData = journey.data.sublist(rangeStart, rangeEnd).where((data) => data.isCollapsible);
 
     final isSimTrain = _simTrainViewModel.isSimTrainValue;
     final collapsedRows = _rxCollapsedRows.value;
@@ -126,7 +115,7 @@ class CollapsibleRowsViewModel({
         // Do not auto-collapse SIM foot notes when this is a SIM train
         if (isSimTrain && data is BaseFootNote && data.footNote.isSIM) continue;
 
-        if (journeyData.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
+        if (journey.data.lastIndexWhere((it) => it.isCollapsible && it.hashCode == data.hashCode) <= toIndex) {
           newMap[data.hashCode] = .collapsed;
         }
       } else {

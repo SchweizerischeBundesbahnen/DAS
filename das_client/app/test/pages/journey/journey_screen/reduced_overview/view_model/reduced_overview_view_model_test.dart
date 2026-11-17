@@ -316,7 +316,6 @@ CollapsibleRowsViewModel _setupCollapsibleRowsViewModel(JourneyViewModel journey
     journeyViewModel: journeyViewModel,
     simTrainViewModel: simTrainViewModel,
     journeyPositionStream: Stream.value(JourneyPositionModel()),
-    personalNoteAnnotationsStream: Stream.value(const []),
   );
 }
 

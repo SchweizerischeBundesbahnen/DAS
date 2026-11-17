@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/journey_screen/view_model/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
@@ -20,7 +19,6 @@ void main() {
   late MockSimTrainViewModel mockSimTrainViewModel;
   late BehaviorSubject<Journey?> journeySubject;
   late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
-  late BehaviorSubject<List<PersonalNoteAnnotation>> personalNoteAnnotationsSubject;
   late BehaviorSubject<bool> simTrainSubject;
 
   final footNote = FootNote(text: 'Test footnote', identifier: 'FN1');
@@ -66,7 +64,6 @@ void main() {
     when(mockJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
 
     journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
-    personalNoteAnnotationsSubject = BehaviorSubject<List<PersonalNoteAnnotation>>.seeded(const []);
 
     mockSimTrainViewModel = MockSimTrainViewModel();
     simTrainSubject = BehaviorSubject<bool>.seeded(false);
@@ -75,7 +72,6 @@ void main() {
 
     testee = CollapsibleRowsViewModel(
       journeyPositionStream: journeyPositionSubject.stream,
-      personalNoteAnnotationsStream: personalNoteAnnotationsSubject.stream,
       simTrainViewModel: mockSimTrainViewModel,
       journeyViewModel: mockJourneyViewModel,
     );
@@ -85,7 +81,6 @@ void main() {
     testee.dispose();
     journeySubject.close();
     journeyPositionSubject.close();
-    personalNoteAnnotationsSubject.close();
     simTrainSubject.close();
   });
 
@@ -212,61 +207,6 @@ void main() {
   });
 
   group('updatePassedAccordionRowsState', () {
-    final personalNote = PersonalNoteAnnotation(text: 'Personal note', order: signalBetween1And2.order);
-    final futurePersonalNote = PersonalNoteAnnotation(text: 'Future personal note', order: signal2.order);
-
-    test('updatePassedAccordionRowsState_whenPersonalNoteIsPassed_thenCollapsesOnlyPassedNote', () async {
-      // GIVEN
-      personalNoteAnnotationsSubject.add([futurePersonalNote, personalNote]);
-      await processStreams();
-      expect(testee.collapsedRowsValue.stateOf(personalNote), CollapsedState.expandedWithCollapsedContent);
-      expect(baseJourney.data, isNot(contains(personalNote)));
-
-      // WHEN
-      journeyPositionSubject.add(
-        JourneyPositionModel(lastPosition: signal1, currentPosition: signalBetween2And3),
-      );
-      await processStreams();
-
-      // THEN
-      expect(testee.collapsedRowsValue.stateOf(personalNote), CollapsedState.collapsed);
-      expect(testee.collapsedRowsValue.stateOf(futurePersonalNote), CollapsedState.expandedWithCollapsedContent);
-    });
-
-    test('updatePassedAccordionRowsState_whenMovingBackwardsPastPersonalNote_thenRestoresDefaultState', () async {
-      // GIVEN
-      personalNoteAnnotationsSubject.add([personalNote]);
-      journeyPositionSubject.add(
-        JourneyPositionModel(lastPosition: signal1, currentPosition: signalBetween2And3),
-      );
-      await processStreams();
-      expect(testee.collapsedRowsValue.stateOf(personalNote), CollapsedState.collapsed);
-
-      // WHEN
-      journeyPositionSubject.add(
-        JourneyPositionModel(lastPosition: signalBetween2And3, currentPosition: signal1),
-      );
-      await processStreams();
-
-      // THEN
-      expect(testee.collapsedRowsValue.stateOf(personalNote), CollapsedState.expandedWithCollapsedContent);
-    });
-
-    test('updatePassedAccordionRowsState_whenPersonalNotesArriveAfterPosition_thenCollapsesPassedNote', () async {
-      // GIVEN
-      journeyPositionSubject.add(
-        JourneyPositionModel(lastPosition: signal1, currentPosition: signalBetween2And3),
-      );
-      await processStreams();
-
-      // WHEN
-      personalNoteAnnotationsSubject.add([personalNote]);
-      await processStreams();
-
-      // THEN
-      expect(testee.collapsedRowsValue.stateOf(personalNote), CollapsedState.collapsed);
-    });
-
     test('updatePassedAccordionRowsState_whenPositionAdvancesPastFootNote_thenFootNoteIsCollapsed', () async {
       // ARRANGE - journey: signal1(5), footNoteData(10), indicator(15), footNoteData2(20), indicator2(25), signal2(30)
 

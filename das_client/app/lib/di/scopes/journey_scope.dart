@@ -299,7 +299,6 @@ extension JourneyScopeExtension on GetIt {
         journeyViewModel: DI.get(),
         simTrainViewModel: DI.get(),
         journeyPositionStream: DI.get<JourneyPositionViewModel>().model,
-        personalNoteAnnotationsStream: DI.get<PersonalNotesViewModel>().personalNoteAnnotations,
       ),
       dispose: (vm) => vm.dispose(),
     );
@@ -328,7 +327,6 @@ extension JourneyScopeExtension on GetIt {
         navigationVM: DI.get(),
         userSettings: DI.get(),
         acknowledgedModificationRepository: DI.get(),
-        personalNotesVM: DI.get(),
       ),
       dispose: (vm) => vm.dispose(),
     );

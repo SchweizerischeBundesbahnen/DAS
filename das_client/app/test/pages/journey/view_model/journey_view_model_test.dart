@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
@@ -18,6 +20,7 @@ import 'journey_view_model_test.mocks.dart';
   MockSpec<SettingsRepository>(),
   MockSpec<SferaJourneyViewModel>(),
   MockSpec<RuIndicationsRepository>(),
+  MockSpec<PersonalNotesRepository>(),
 ])
 void main() {
   group('JourneyViewModel', () {
@@ -25,29 +28,36 @@ void main() {
     late MockSferaJourneyViewModel mockSferaJourneyViewModel;
     late MockRuIndicationsRepository mockRuIndicationsRepository;
     late MockSettingsRepository mockSettingsRepository;
+    late MockPersonalNotesRepository mockPersonalNoteRepository;
     late BehaviorSubject<Journey?> sferaJourneySubject;
+    late BehaviorSubject<List<PersonalNote>> personalNotesSubject;
     Journey? currentJourney;
 
     setUp(() {
       mockSferaJourneyViewModel = MockSferaJourneyViewModel();
       mockRuIndicationsRepository = MockRuIndicationsRepository();
       mockSettingsRepository = MockSettingsRepository();
+      mockPersonalNoteRepository = MockPersonalNotesRepository();
       sferaJourneySubject = BehaviorSubject<Journey?>.seeded(null);
+      personalNotesSubject = BehaviorSubject<List<PersonalNote>>.seeded(const []);
       currentJourney = null;
 
       when(mockSferaJourneyViewModel.journey).thenAnswer((_) => sferaJourneySubject.stream);
       when(mockSferaJourneyViewModel.journeyValue).thenAnswer((_) => currentJourney);
+      when(mockPersonalNoteRepository.observeAllNotes()).thenAnswer((_) => personalNotesSubject.stream);
 
       testee = JourneyViewModel(
         sferaJourneyViewModel: mockSferaJourneyViewModel,
         ruIndicationsRepository: mockRuIndicationsRepository,
         settingsRepository: mockSettingsRepository,
+        personalNotesRepository: mockPersonalNoteRepository,
       );
     });
 
     tearDown(() async {
       testee.dispose();
       await sferaJourneySubject.close();
+      await personalNotesSubject.close();
     });
 
     test('journey_whenSferaJourneyChanges_thenLoadsAndMergesRuIndications', () async {
@@ -92,6 +102,62 @@ void main() {
       expect(emittedJourney.data[1], ruIndications[0]);
       expect(emittedJourney.data[2], isA<ServicePoint>());
       expect(emittedJourney.data[3], ruIndications[1]);
+    });
+
+    test('journey_whenPersonalNotesChange_thenAddsRelevantFootnoteAnnotations', () async {
+      // ARRANGE
+      final journey = _journey(
+        trainNumber: '12345',
+        servicePoints: [
+          _servicePoint(order: 1000, locationCode: 'CH001'),
+          _servicePoint(order: 2000, locationCode: 'CH002'),
+          _servicePoint(order: 3000, locationCode: 'CH003'),
+          _servicePoint(order: 4000, locationCode: 'CH004'),
+        ],
+      );
+      final otherTrainIdentification = TrainIdentification(
+        companyCode: '1285',
+        trainNumber: '54321',
+        date: DateTime(2026, 1, 1),
+        operatingDay: DateTime(2026, 1, 2),
+      );
+      when(
+        mockRuIndicationsRepository.fetchRuIndications(
+          trainIdentification: journey.metadata.trainIdentification!,
+          locationReferences: const {1000: 'CH001', 2000: 'CH002', 3000: 'CH003', 4000: 'CH004'},
+        ),
+      ).thenAnswer((_) => Stream.value(const []));
+
+      // ACT
+      currentJourney = journey;
+      sferaJourneySubject.add(journey);
+      await processStreams();
+      personalNotesSubject.add([
+        PersonalNote(locationCode: 'CH001', text: 'General note', showAsFootnote: true),
+        PersonalNote(
+          locationCode: 'CH002',
+          text: 'Train-specific note',
+          showAsFootnote: true,
+          trainIdentification: journey.metadata.trainIdentification,
+        ),
+        PersonalNote(
+          locationCode: 'CH003',
+          text: 'Note for another train',
+          showAsFootnote: true,
+          trainIdentification: otherTrainIdentification,
+        ),
+        PersonalNote(locationCode: 'CH004', text: 'Not a footnote', showAsFootnote: false),
+      ]);
+      await processStreams();
+
+      // ASSERT
+      expect(
+        testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(),
+        [
+          const PersonalNoteAnnotation(text: 'General note', order: 1000),
+          const PersonalNoteAnnotation(text: 'Train-specific note', order: 2000),
+        ],
+      );
     });
 
     test('journey_whenTrainChanges_thenOldRuIndicationsAreClearedImmediately', () async {
