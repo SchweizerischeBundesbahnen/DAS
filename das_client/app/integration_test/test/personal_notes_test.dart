@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/personal_note_dialog.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accordion.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_point_information_cell_title.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_text_field.dart';
 import 'package:app/util/format.dart';
@@ -79,6 +80,8 @@ void main() {
 
       await loadJourney(tester, trainNumber: 'T9999M', company: company);
 
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: true);
+
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
 
       // check that single use note is prioritized
@@ -95,6 +98,7 @@ void main() {
 
       // check that now the general note is shown
       _checkModalHasPersonalNoteWithText(generalNote.text);
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: true);
 
       // warn message should not be shown anymore
       expect(find.text(l10n.w_service_point_modal_personal_hidden_note_information), findsNothing);
@@ -108,6 +112,7 @@ void main() {
       // check that note is not shown anymore
       await tester.pumpAndSettle();
       _checkModalHasNoPersonalNote();
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
 
       await disconnect(tester);
     },
@@ -122,6 +127,7 @@ void main() {
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
 
       // check that no personal note exists and open create dialog
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
       _checkModalHasNoPersonalNote();
       await tapElement(tester, find.byKey(DetailTabCommunication.createPersonalNoteButtonKey));
       await _awaitAndCheckCreateDialog(tester);
@@ -135,8 +141,9 @@ void main() {
 
       _checkModalHasPersonalNoteWithText(text);
 
-      // check that foot note exists
+      // check that foot note exists without additional icon
       expect(findDASTableRowByText(text), findsOne);
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
 
       // open dialog and delete note
       await tapElement(tester, find.byKey(DetailTabCommunication.editPersonalNoteButtonKey));
@@ -163,6 +170,7 @@ void main() {
 
       // check that no personal note exists and open create dialog
       _checkModalHasNoPersonalNote();
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
       await tapElement(tester, find.byKey(DetailTabCommunication.createPersonalNoteButtonKey));
       await _awaitAndCheckCreateDialog(tester);
 
@@ -174,6 +182,7 @@ void main() {
       await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
 
       // check that now the note is shown
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: true);
       _checkModalHasPersonalNoteWithText(text);
 
       // open journey for yesterday and check that note does not exist
@@ -192,6 +201,8 @@ void main() {
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
       await loadJourney(tester, trainNumber: 'T9999M', company: companySBBP);
+
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
       _checkModalHasNoPersonalNote();
 
@@ -205,6 +216,7 @@ void main() {
       );
       await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
       _checkModalHasNoPersonalNote();
+      _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
 
       await disconnect(tester);
     },
@@ -242,6 +254,16 @@ void _checkModalHasNoPersonalNote() {
   expect(find.byKey(DetailTabCommunication.personalNoteContainerKey), findsNothing);
   expect(find.byKey(DetailTabCommunication.editPersonalNoteButtonKey), findsNothing);
   expect(find.byKey(DetailTabCommunication.createPersonalNoteButtonKey), findsOne);
+}
+
+void _checkPersonalNoteIcon(String servicePoint, {required bool iconExists}) {
+  expect(
+    find.descendant(
+      of: findDASTableRowByText(servicePoint),
+      matching: find.byKey(ServicePointInformationCellTitle.personalNoteIconKey),
+    ),
+    iconExists ? findsOne : findsNothing,
+  );
 }
 
 Future<void> _openModalByTapOnCellWithText(WidgetTester tester, String cellText) async {
