@@ -44,12 +44,24 @@ class RequestLoggingFilterIntegrationTest {
     @WithMockRole(roles = UserRole.DRIVER)
     @DisplayName("doFilter_anyRequest_logsPath|su1gce352FfEF3ZqCg7O|tests:2133")
     void doFilter_anyRequest_logsPath() throws Exception {
-        mockMvc.perform(get("/driver/v1/personal-notes"));
+        mockMvc.perform(get("/driver/v1/personal-notes?page=2"));
 
         assertThat(appender.list)
             .anySatisfy(event -> {
                 assertThat(event.getLevel()).isEqualTo(Level.INFO);
-                assertThat(event.getFormattedMessage()).contains("Request path=/driver/v1/personal-notes");
+                assertThat(event.getMessage()).isEqualTo(RequestLogger.MESSAGE);
+                assertThat(event.getMDCPropertyMap())
+                    .containsEntry(LogKeys.HTTP_REQUEST_METHOD, "GET")
+                    .containsEntry(LogKeys.URL_PATH, "/driver/v1/personal-notes");
+                assertThat(event.getKeyValuePairs())
+                    .anySatisfy(pair -> {
+                        assertThat(pair.key).isEqualTo(LogKeys.URL_QUERY);
+                        assertThat(pair.value).isEqualTo("page=2");
+                    })
+                    .anySatisfy(pair -> {
+                        assertThat(pair.key).isEqualTo(LogKeys.HTTP_RESPONSE_STATUS_CODE);
+                        assertThat(pair.value).isEqualTo(200);
+                    });
             });
     }
 
@@ -60,6 +72,6 @@ class RequestLoggingFilterIntegrationTest {
         mockMvc.perform(get("/driver/v1/personal-notes").header(RequestIdFilter.HEADER_REQUEST_ID, "log-4711"));
 
         assertThat(appender.list)
-            .anySatisfy(event -> assertThat(event.getFormattedMessage()).contains("requestId=log-4711"));
+            .anySatisfy(event -> assertThat(event.getMDCPropertyMap()).containsEntry(LogKeys.REQUEST_ID, "log-4711"));
     }
 }
