@@ -15,7 +15,11 @@ Checkout separate [CODING_STANDARDS](das_client/CODING_STANDARDS.md) in DAS-Clie
 
 ## Backend
 
-Follow the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+Checkout separate [CODING_STANDARDS](das_backend/CODING_STANDARDS.md) in DAS-Backend.
+
+## SFERA Mock
+
+Checkout separate [CODING_STANDARDS](sfera_mock/CODING_STANDARDS.md) in SFERA-Mock.
 
 ## Mock XML Files
 
