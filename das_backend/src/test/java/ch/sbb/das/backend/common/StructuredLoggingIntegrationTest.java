@@ -68,7 +68,7 @@ class StructuredLoggingIntegrationTest {
 
     @Test
     @WithMockRole(roles = UserRole.DRIVER)
-    @DisplayName("stageConfiguration_request_logsEcsJsonWithRequestContext|tests:2651")
+    @DisplayName("stageConfiguration_request_logsEcsJsonWithRequestContext|gHfacgBAdiB05aHJ0p2c|tests:2651")
     void stageConfiguration_request_logsEcsJsonWithRequestContext(CapturedOutput output) throws Exception {
         // the Instana agent puts the trace id into the MDC of the request thread
         MDC.put(ProblemFactory.MDC_INSTANA_TRACE_ID, TRACE_ID);

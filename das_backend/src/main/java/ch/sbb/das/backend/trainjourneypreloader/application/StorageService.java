@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
 import ch.sbb.das.backend.trainjourneypreloader.sfera.model.v0400.JourneyProfile;
@@ -33,11 +34,16 @@ public class StorageService implements PreloadStore {
 
     @Override
     public void save(Collection<JourneyProfile> journeyProfiles, Collection<TrainCharacteristics> trainCharacteristics) {
-        log.info("Saving journeyProfiles={}, trainCharacteristics={}...", journeyProfiles.size(), trainCharacteristics.size());
+        final String zipKey = buildZipName();
         try (ZipWriter zip = new ZipWriter()) {
             writeJps(journeyProfiles, zip);
             writeTcs(trainCharacteristics, zip);
-            s3Service.uploadZip(buildZipName(), zip.finish());
+            s3Service.uploadZip(zipKey, zip.finish());
+            log.atInfo()
+                .addKeyValue(LogKeys.ZIP_KEY, zipKey)
+                .addKeyValue("journeyProfiles", journeyProfiles.size())
+                .addKeyValue("trainCharacteristics", trainCharacteristics.size())
+                .log("Preload zip uploaded");
         } catch (Exception e) {
             throw new RuntimeException("Preload save failed", e);
         }

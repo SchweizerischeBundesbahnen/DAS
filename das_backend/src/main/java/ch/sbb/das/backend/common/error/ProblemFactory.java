@@ -84,7 +84,8 @@ public class ProblemFactory {
         try {
             return URI.create(path);
         } catch (IllegalArgumentException e) {
-            log.debug("Problem::instance omitted, request path is not a valid URI: {}", path);
+            // the path is in the MDC (RequestIdFilter)
+            log.atDebug().log("Problem instance omitted, request path is not a valid URI");
             return null;
         }
     }

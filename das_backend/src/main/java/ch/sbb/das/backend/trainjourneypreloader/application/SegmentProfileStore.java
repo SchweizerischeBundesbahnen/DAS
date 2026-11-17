@@ -7,14 +7,15 @@ import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKey
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.newHourlyZipKey;
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.newPackedZipKey;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.IndexedSegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.KnownSegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.ZipStatistics;
-import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service.BucketObject;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.configuration.SegmentProfileStoreProperties;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
@@ -141,17 +142,17 @@ public class SegmentProfileStore {
         if (pending.isEmpty()) {
             return 0;
         }
-        log.info("Publishing segment profiles. pending={}", pending.size());
+        log.atInfo().addKeyValue("pending", pending.size()).log("Segment profile publishing started");
         Instant now = clock.instant();
         Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
         Optional<byte[]> existing = openZipKey.flatMap(s3Service::downloadZip);
         if (openZipKey.isPresent() && existing.isEmpty()) {
-            log.warn("Open segment zip {} is missing from the bucket. Its entries are fetched again when referenced", openZipKey.get());
+            log.atWarn().addKeyValue(LogKeys.ZIP_KEY, openZipKey.get()).log("Open segment zip missing from bucket, entries are fetched again when referenced");
             openZipKey = Optional.empty();
         }
         if (existing.isPresent() && existing.get().length >= properties.zipMaxBytes().toBytes()) {
-            log.info("Open segment zip {} has reached {} bytes and is frozen", openZipKey.get(), existing.get().length);
+            log.atInfo().addKeyValue(LogKeys.ZIP_KEY, openZipKey.get()).addKeyValue("bytes", existing.get().length).log("Open segment zip full and frozen");
             openZipKey = Optional.empty();
             existing = Optional.empty();
         }
@@ -174,7 +175,12 @@ public class SegmentProfileStore {
                         byte[] bytes = zip.finish();
                         s3Service.uploadZip(zipKey, bytes);
                         repository.assignZipKey(zipKey, added);
-                        log.info("Published segment zip. key={}, added={}, bytes={}, rolled={}", zipKey, added.size(), bytes.length, rolled);
+                        log.atInfo()
+                            .addKeyValue(LogKeys.ZIP_KEY, zipKey)
+                            .addKeyValue("added", added.size())
+                            .addKeyValue("bytes", bytes.length)
+                            .addKeyValue("rolled", rolled)
+                            .log("Segment zip published");
                         published += added.size();
                     }
                 }
@@ -206,7 +212,7 @@ public class SegmentProfileStore {
         Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
         if (!isDailyCompactionDue(zipKeys, openZipKey, now)) {
-            log.debug("Segment compaction skipped: the oldest frozen hourly zip is younger than {}", properties.packAfter());
+            log.atDebug().addKeyValue("packAfterMs", properties.packAfter().toMillis()).log("Segment compaction skipped, oldest frozen hourly zip is too young");
             return;
         }
         Map<String, Long> bucket = s3Service.listObjects().stream().collect(Collectors.toMap(BucketObject::key, BucketObject::size, (size, _) -> size));
@@ -235,8 +241,14 @@ public class SegmentProfileStore {
         });
         s3Service.deleteObjects(selected);
         int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
-        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, evicted={}, dropped={}, durationMs={}", selected, packedIdVersionsByZip.keySet(), live,
-            rows.size() - liveRows.size(), liveRows.size() - live, Duration.ofNanos(System.nanoTime() - started).toMillis());
+        log.atInfo()
+            .addKeyValue("oldZipKeys", selected)
+            .addKeyValue("newZipKeys", packedIdVersionsByZip.keySet())
+            .addKeyValue("live", live)
+            .addKeyValue("evicted", rows.size() - liveRows.size())
+            .addKeyValue("dropped", liveRows.size() - live)
+            .addKeyValue(LogKeys.DURATION_MS, Duration.ofNanos(System.nanoTime() - started).toMillis())
+            .log("Segment zips compacted");
     }
 
     /** Writes the live entries of the selected zips into packed zips, each closed once it has reached the size, and returns the SPs of each packed zip. */
@@ -273,8 +285,10 @@ public class SegmentProfileStore {
         }
         Optional<byte[]> source = s3Service.downloadZip(zipKey);
         if (source.isEmpty()) {
-            log.warn("Segment zip {} is missing from the bucket. Its {} live entries are dropped from the index and fetched again when referenced", zipKey,
-                liveEntryNames.size());
+            log.atWarn()
+                .addKeyValue(LogKeys.ZIP_KEY, zipKey)
+                .addKeyValue("liveEntries", liveEntryNames.size())
+                .log("Segment zip missing from bucket, live entries dropped from the index and fetched again when referenced");
             return List.of();
         }
         return ZipWriter.entriesOf(source.get()).stream()
@@ -289,7 +303,7 @@ public class SegmentProfileStore {
             .sorted()
             .toList();
         if (!unreferenced.isEmpty()) {
-            log.warn("Deleting {} segment zips the index does not reference: {}", unreferenced.size(), unreferenced);
+            log.atWarn().addKeyValue("zipKeys", unreferenced).log("Unreferenced segment zips deleted");
             s3Service.deleteObjects(unreferenced);
         }
     }

@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneyplan.TrainIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.application.PreloadRunReport.StopReason;
 import ch.sbb.das.backend.trainjourneypreloader.domain.PreloadAttempt;
@@ -21,6 +22,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -88,14 +90,17 @@ public class PreloadRun {
         StopReason stopReason = StopReason.COMPLETED;
         for (final TrainIdentification trainId : trainIdentifications) {
             if (Thread.currentThread().isInterrupted()) {
-                log.warn("Preload interrupted, stopping early");
+                log.atWarn().addKeyValue("processed", processedCount).log("Preload run interrupted");
                 stopReason = StopReason.INTERRUPTED;
                 break;
             }
             if (Duration.between(startTime, clock.instant()).compareTo(maxPreloadDuration) > 0) {
                 final int skippedCount = trainIdentifications.size() - processedCount;
-                log.warn("Preload time budget of {} exceeded after processing {} trains. {} trains skipped, will continue on next schedule.",
-                    maxPreloadDuration, processedCount, skippedCount);
+                log.atWarn()
+                    .addKeyValue("timeBudgetMs", maxPreloadDuration.toMillis())
+                    .addKeyValue("processed", processedCount)
+                    .addKeyValue("skipped", skippedCount)
+                    .log("Preload time budget exceeded, remaining trains wait for the next run");
                 stopReason = StopReason.TIME_BUDGET_EXCEEDED;
                 break;
             }
@@ -107,22 +112,25 @@ public class PreloadRun {
                     mapJourneyProfiles.put(trainId, successJp);
                     segmentProfileStore.add(successSps);
                     mapTrainCharacteristics.putAll(successTcs.stream().collect(Collectors.toMap(TrainCharacteristicsIdentification::from, tc -> tc)));
-                    log.info("Preload for train {} succeeded with {} sps and {} tcs", trainId, successSps.size(), successTcs.size());
+                    withTrain(log.atInfo(), trainId)
+                        .addKeyValue("segmentProfiles", successSps.size())
+                        .addKeyValue("trainCharacteristics", successTcs.size())
+                        .log("Preload attempt succeeded");
                 }
                 case PreloadResult.Unavailable() -> {
                     unavailableCount++;
-                    log.info("Preload for train {} unavailable for now", trainId);
+                    withTrain(log.atInfo(), trainId).log("Preload attempt unavailable");
                 }
                 case PreloadResult.Timeout(var message, Throwable ex) -> {
                     timeoutCount++;
-                    log.error("Preload for train {} timed out: {}", trainId, message, ex);
+                    withTrain(log.atWarn().setCause(ex), trainId).addKeyValue(LogKeys.REASON, message).log("Preload attempt timed out");
                 }
                 case PreloadResult.Error(var message, Throwable ex, var g2bCode) -> {
                     errorCount++;
                     if (g2bCode != null) {
                         Arrays.stream(g2bCode.split(", ")).distinct().forEach(code -> errorsByG2bCode.merge(code, 1, Integer::sum));
                     }
-                    log.error("Preload for train {} failed with message: {}", trainId, message, ex);
+                    withTrain(log.atError().setCause(ex), trainId).addKeyValue(LogKeys.REASON, message).addKeyValue("g2bCode", g2bCode).log("Preload attempt failed");
                 }
             }
         }
@@ -135,5 +143,11 @@ public class PreloadRun {
         return new PreloadRunReport(trainIdentifications.size(), processedCount, mapJourneyProfiles.size(), unavailableCount, errorCount, timeoutCount,
             trainIdentifications.size() - processedCount, selection.deferred(), Collections.unmodifiableSortedMap(errorsByG2bCode), stopReason,
             Duration.between(startTime, clock.instant()));
+    }
+
+    private static LoggingEventBuilder withTrain(LoggingEventBuilder builder, TrainIdentification trainId) {
+        return builder
+            .addKeyValue(LogKeys.TRAIN_NUMBER, trainId.operationalTrainNumber())
+            .addKeyValue("startDateTime", trainId.startDateTime());
     }
 }

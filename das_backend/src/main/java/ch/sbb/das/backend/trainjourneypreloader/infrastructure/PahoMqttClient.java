@@ -77,7 +77,7 @@ public class PahoMqttClient {
         try {
             client.unsubscribe(topic);
         } catch (MqttException e) {
-            log.error("unsubscribing failed to topic: {}", topic, e);
+            log.atError().setCause(e).addKeyValue("topic", topic).log("MQTT unsubscribe failed");
         }
     }
 
@@ -103,7 +103,7 @@ public class PahoMqttClient {
                 client.close();
             }
         } catch (MqttException e) {
-            log.warn("mqtt client closing failed ", e);
+            log.atWarn().setCause(e).log("MQTT client close failed");
         } finally {
             client = null;
         }

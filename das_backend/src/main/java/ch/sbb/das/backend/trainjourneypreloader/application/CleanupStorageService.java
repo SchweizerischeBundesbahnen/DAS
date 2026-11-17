@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.trainjourneypreloader.application;
 
+import ch.sbb.das.backend.common.LogKeys;
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.SEGMENT_PREFIX;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.FILENAME_FORMATTER;
 import static ch.sbb.das.backend.trainjourneypreloader.application.StorageService.ZIP_FILE_ENDING;
@@ -34,7 +35,7 @@ public class CleanupStorageService {
                     OffsetDateTime ts = OffsetDateTime.parse(base, FILENAME_FORMATTER);
                     return ts.isBefore(cutoffDate);
                 } catch (DateTimeParseException e) {
-                    log.warn("Unexpected zip file name while preload cleanup. name={} was not deleted", k);
+                    log.atWarn().setCause(e).addKeyValue(LogKeys.ZIP_KEY, k).log("Preload zip kept by cleanup, name is not a timestamp");
                     return false;
                 }
             }).toList();
