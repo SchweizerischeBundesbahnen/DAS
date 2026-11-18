@@ -121,6 +121,10 @@ class SferaRepoImpl({
     final OtnId otnId = _toOtnId(trainId);
     _log.info('Starting new connection for $otnId');
     _otnId = otnId;
+    for (final task in _tasks) {
+      task.cancel();
+    }
+    _tasks.clear();
     lastError = null;
     _rxState.add(.connecting);
     _hasOfflineData = false;
