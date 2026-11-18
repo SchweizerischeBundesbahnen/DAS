@@ -1111,4 +1111,61 @@ $normalizedPayload
     expect(localRegulationRequest, contains('SP_ID="RL_703_DE"'));
     expect(localRegulationRequest, contains('SP_VersionMajor="0"'));
   });
+
+  test(
+    'handleEventMessage_whenJourneyUpdateEventIsReceivedWhileSegmentProfilesTaskIsRunning_thenCancelsOldTaskAndEnsuresOnlyOneActiveTask',
+    () async {
+      // GIVEN
+      when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
+      when(mockMqttService.publishMessage(any, any, any)).thenAnswer(captureRequest);
+      when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
+
+      when(mockLocalDatabaseRepository.findSegmentProfile(any, any, any)).thenAnswer((_) async => null);
+      when(mockLocalDatabaseRepository.saveSegmentProfile(any)).thenAnswer((_) async {});
+
+      // WHEN
+      await testee.connect(trainId);
+      await pumpEventQueue();
+
+      final handshakeResponse = loadFile('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+      addHandshakeReply(handshakeResponse);
+      await pumpEventQueue();
+
+      final jpResponse = loadFile('test_resources/SFERA_G2B_Reply_JP_reply_0001.xml');
+      addJPReply(jpResponse);
+      await pumpEventQueue();
+
+      clearInteractions(mockMqttService);
+
+      // Now send a journey profile update event while the first RequestSegmentProfilesTask is still running
+      final eventMessage = loadFile('test_resources/SFERA_G2B_EventMessage_9315.xml');
+      mqttSubject.add(eventMessage);
+      await pumpEventQueue();
+
+      clearInteractions(mockMqttService);
+
+      // Send partial SP responses
+      final spResponse = loadFile('test_resources/SFERA_G2B_Reply_SP_reply_0001_partial_1.xml');
+      addSPReply(spResponse);
+      await pumpEventQueue();
+      addSPReply(spResponse);
+      await pumpEventQueue();
+      addSPReply(spResponse);
+      await pumpEventQueue();
+      addSPReply(spResponse);
+      await pumpEventQueue();
+
+      // THEN: Only the single active task retried (exactly 3 times) and then aborted with invalid error.
+      // (Without cancelling old tasks, multiple tasks would alternate and loop indefinitely).
+      verify(
+        mockMqttService.publishMessage(
+          any,
+          any,
+          argThat(contains('<SP_Request')),
+        ),
+      ).called(3);
+
+      expect(testee.lastError, equals(SferaError.invalid()));
+    },
+  );
 }

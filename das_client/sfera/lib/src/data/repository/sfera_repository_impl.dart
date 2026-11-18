@@ -365,6 +365,8 @@ class SferaRepoImpl({
 
   Future<void> _handleHandshakeTaskCompleted() async {
     _rxState.add(.loadingJourney);
+
+    _cancelTasksByType<RequestJourneyProfileTask>();
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaRepo: this,
@@ -443,6 +445,8 @@ class SferaRepoImpl({
   }
 
   void _startRequestSegmentProfileTask() {
+    _cancelTasksByType<RequestSegmentProfilesTask>();
+
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -455,6 +459,8 @@ class SferaRepoImpl({
   }
 
   void _startRequestTrainCharacteristicsTask() {
+    _cancelTasksByType<RequestTrainCharacteristicsTask>();
+
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -467,11 +473,7 @@ class SferaRepoImpl({
   }
 
   void _startRequestLocalRegulationsTask() {
-    final runningTask = _tasks.whereType<RequestLocalRegulationsTask>().firstOrNull;
-    if (runningTask != null) {
-      runningTask.cancel();
-      _tasks.remove(runningTask);
-    }
+    _cancelTasksByType<RequestLocalRegulationsTask>();
 
     final requestLocalRegulationsTask = RequestLocalRegulationsTask(
       sferaRepo: this,
@@ -487,6 +489,8 @@ class SferaRepoImpl({
   bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
 
   void _startRequestRelatedTrainInformationTask() {
+    _cancelTasksByType<RequestRelatedTrainInformationTask>();
+
     final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
       mqttService: _mqttService,
       sferaRepo: this,
@@ -625,6 +629,14 @@ class SferaRepoImpl({
     if (_rxState.value != .connected && _isMandatoryTask(task)) {
       await _loadLocalJourney(_otnId!);
       _useOfflineDataOrDisconnect();
+    }
+  }
+
+  void _cancelTasksByType<T extends SferaTask>() {
+    final runningTasks = _tasks.whereType<T>().toList();
+    for (final runningTask in runningTasks) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
     }
   }
 
