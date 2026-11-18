@@ -527,7 +527,7 @@ class SferaRepoImpl({
       );
       final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
       if (trainCharacteristics != null && trainCharacteristics.validate()) {
-        _trainCharacteristics.add(trainCharacteristics);
+        temp.add(trainCharacteristics);
       } else {
         _log.warning('Could not find and validate $element');
       }
