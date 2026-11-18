@@ -323,7 +323,8 @@ void main() {
       required String content,
       String? children,
     }) {
-      final xml = '<SegmentProfile SP_ID="$spId" SP_VersionMajor="0" SP_VersionMinor="" SP_Length="1000" SP_Status="Valid">'
+      final xml =
+          '<SegmentProfile SP_ID="$spId" SP_VersionMajor="0" SP_VersionMinor="" SP_Length="1000" SP_Status="Valid">'
           '<SP_Points>'
           '<NetworkSpecificPoint location="0">'
           '<NSP_GroupName>localRegulations</NSP_GroupName>'
@@ -356,8 +357,10 @@ void main() {
         children: 'LR_other',
       );
 
-      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', '')).thenAnswer((_) async => sp1);
-      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', '')).thenAnswer((_) async => sp2);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp1);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp2);
 
       final result = await testee.retrieveLocalRegulationSections(['LR_12344-1-2', 'LR_12344-2-2']);
 
@@ -386,8 +389,10 @@ void main() {
         content: 'Content 2',
       );
 
-      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', '')).thenAnswer((_) async => sp1);
-      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', '')).thenAnswer((_) async => sp2);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp1);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp2);
 
       final result = await testee.retrieveLocalRegulationSections(['LR_12344-2-2', 'LR_12344-1-2']);
 
