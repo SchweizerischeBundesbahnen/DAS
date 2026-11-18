@@ -68,6 +68,8 @@ class RequestSegmentProfilesTask({
       }
     }
 
+    if (isCancelled) return false;
+
     if (allValid) {
       _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
     } else {

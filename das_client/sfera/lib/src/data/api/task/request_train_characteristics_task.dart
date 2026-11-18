@@ -39,6 +39,7 @@ class RequestTrainCharacteristicsTask({
 
   Future<void> requestTrainCharacteristics() async {
     final missingTrainCharacteristics = await findMissingTrainCharacteristics();
+
     if (missingTrainCharacteristics.isEmpty) {
       _log.info('No missing train characteristics found...');
       _taskCompletedCallback(this, []);

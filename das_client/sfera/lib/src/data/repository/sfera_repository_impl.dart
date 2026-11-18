@@ -121,7 +121,6 @@ class SferaRepoImpl({
     final OtnId otnId = _toOtnId(trainId);
     _log.info('Starting new connection for $otnId');
     _otnId = otnId;
-    _tasks.clear();
     lastError = null;
     _rxState.add(.connecting);
     _hasOfflineData = false;
@@ -206,6 +205,10 @@ class SferaRepoImpl({
     }
 
     _mqttService.disconnect();
+    for (final task in _tasks) {
+      task.cancel();
+    }
+    _tasks.clear();
     _rxJourney.add(null);
     _rxDepartureDispatchNotificationEvent.add(null);
     _rxUxTestingEvent.add(null);
@@ -315,6 +318,11 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
+    if (task.isCancelled) {
+      _log.fine('Task $task completed but was cancelled. Ignoring.');
+      return;
+    }
+
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -327,6 +335,11 @@ class SferaRepoImpl({
       case RequestLocalRegulationsTask _:
         _tasks.remove(task);
         return;
+    }
+
+    if (task.isCancelled) {
+      _log.fine('Task $task was cancelled during completion handler. Ignoring.');
+      return;
     }
 
     _log.fine('Task $task completed');
@@ -438,6 +451,12 @@ class SferaRepoImpl({
   }
 
   void _startRequestSegmentProfileTask() {
+    final runningTasks = _tasks.whereType<RequestSegmentProfilesTask>().toList();
+    for (final runningTask in runningTasks) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -450,6 +469,12 @@ class SferaRepoImpl({
   }
 
   void _startRequestTrainCharacteristicsTask() {
+    final runningTasks = _tasks.whereType<RequestTrainCharacteristicsTask>().toList();
+    for (final runningTask in runningTasks) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -610,6 +635,10 @@ class SferaRepoImpl({
   }
 
   void _onTaskFailed(SferaTask task, SferaError error) async {
+    if (task.isCancelled) {
+      _log.fine('Task $task failed but was cancelled. Ignoring.');
+      return;
+    }
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
     lastError = error;
