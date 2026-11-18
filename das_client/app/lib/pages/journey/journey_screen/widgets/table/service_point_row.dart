@@ -171,7 +171,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             name: data.betweenBrackets ? '(${data.name})' : data.name,
             foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
             isStation: data.isStation,
-            trackGroup: 'A2',
+            trackGroup: data.trackGroup,
             shortTermChange: shortTermChange,
             hasPersonalNote: hasPersonalNotes,
             showModification: data.hasModificationUpdated && config.showModification,

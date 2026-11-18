@@ -76,6 +76,56 @@ void main() {
     expect(result, expectedOutput);
   });
 
+  for (final entry in {
+    'LineFeed': '\n',
+    'CarriageReturn': '\r',
+    'CarriageReturnLineFeed': '\r\n',
+    'HtmlBreak': '<br>',
+    'HtmlSelfClosingBreak': '<br/>',
+    'HtmlBreakWithWhitespace': '<br />',
+  }.entries) {
+    test('replaceLineBreaks_when${entry.key}_thenJoinsNonEmptyLines', () {
+      // GIVEN
+      final input = '${entry.value}First${entry.value}${entry.value}Second${entry.value}';
+
+      // WHEN
+      final result = TextUtil.replaceLineBreaks(input);
+
+      // THEN
+      expect(result, 'First; Second');
+    });
+  }
+
+  for (final entry in {
+    'EmptyInput': (input: '', expected: ''),
+    'NoLineBreaks': (input: 'First', expected: 'First'),
+    'OnlyLineBreaks': (input: '\r\n<br>\r<br />\n', expected: ''),
+    'MixedLineBreaks': (input: '\nFirst\r\n<br>\rSecond<br />\nThird\n', expected: 'First; Second; Third'),
+    'SurroundingWhitespace': (input: ' First \n Second ', expected: ' First ;  Second '),
+  }.entries) {
+    test('replaceLineBreaks_when${entry.key}_thenReturnsExpectedText', () {
+      // GIVEN
+      final input = entry.value.input;
+
+      // WHEN
+      final result = TextUtil.replaceLineBreaks(input);
+
+      // THEN
+      expect(result, entry.value.expected);
+    });
+  }
+
+  test('replaceLineBreaks_whenCustomDelimiter_thenUsesItBetweenNonEmptyLines', () {
+    // GIVEN
+    final input = '\nFirst\n\nSecond\n';
+
+    // WHEN
+    final result = TextUtil.replaceLineBreaks(input, delimiter: ' | ');
+
+    // THEN
+    expect(result, 'First | Second');
+  });
+
   test('textUtil_parseHtmlTextWithMarkdownLinks_italic', () {
     // GIVEN
     final input = 'Renens - Lausanne <i>via saut-de-mouton</i>';

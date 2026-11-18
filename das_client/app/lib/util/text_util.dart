@@ -62,10 +62,10 @@ class TextUtil._() {
     return text;
   }
 
-  /// replaces all line breaks by given [delimiter]
+  /// Joins non-empty lines with [delimiter], ignoring empty lines.
   static String replaceLineBreaks(String input, {String delimiter = '; '}) {
     final pattern = RegExp(r'(\r\n|\r|\n|<br\s*/?>)', multiLine: true);
-    return input.replaceAll(pattern, delimiter);
+    return input.split(pattern).where((line) => line.isNotEmpty).join(delimiter);
   }
 
   static TextSpan _parseHtmlTextTagsWithMarkdownLinks(
