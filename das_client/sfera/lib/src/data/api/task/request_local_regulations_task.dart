@@ -89,6 +89,7 @@ class RequestLocalRegulationsTask({
 
   Future<void> _requestLocalRegulations() async {
     final missingSp = await _findMissingSegmentProfiles();
+    if (isCancelled) return;
     if (missingSp.isEmpty) {
       _log.info('No missing local regulations found...');
       _taskCompletedCallback(this, null);

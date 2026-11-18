@@ -121,7 +121,7 @@ class SferaRepoImpl({
     final OtnId otnId = _toOtnId(trainId);
     _log.info('Starting new connection for $otnId');
     _otnId = otnId;
-    _tasks.clear();
+    _cancelTasks();
     lastError = null;
     _rxState.add(.connecting);
     _hasOfflineData = false;
@@ -180,6 +180,7 @@ class SferaRepoImpl({
 
   void _useOfflineDataOrDisconnect() {
     if (_hasOfflineData) {
+      _cancelTasks();
       _mqttService.disconnect();
       _rxState.add(.offlineData);
     } else {
@@ -205,6 +206,7 @@ class SferaRepoImpl({
       lastError = null;
     }
 
+    _cancelTasks();
     _mqttService.disconnect();
     _rxJourney.add(null);
     _rxDepartureDispatchNotificationEvent.add(null);
@@ -217,6 +219,7 @@ class SferaRepoImpl({
 
   @override
   void dispose() {
+    _cancelTasks();
     _rxJourney.close();
     _rxState.close();
     _rxUxTestingEvent.close();
@@ -315,6 +318,8 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
+    if (task.isCancelled || !_tasks.contains(task)) return;
+
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -610,14 +615,24 @@ class SferaRepoImpl({
   }
 
   void _onTaskFailed(SferaTask task, SferaError error) async {
+    if (task.isCancelled || !_tasks.contains(task)) return;
+
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
+    task.cancel();
     lastError = error;
 
     if (_rxState.value != .connected && _isMandatoryTask(task)) {
       await _loadLocalJourney(_otnId!);
       _useOfflineDataOrDisconnect();
     }
+  }
+
+  void _cancelTasks() {
+    for (final task in _tasks) {
+      task.cancel();
+    }
+    _tasks.clear();
   }
 
   bool _isMandatoryTask(SferaTask task) {

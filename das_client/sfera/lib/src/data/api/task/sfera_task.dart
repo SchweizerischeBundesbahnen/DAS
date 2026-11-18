@@ -48,6 +48,7 @@ abstract class SferaTask<T>({final Duration _timeout = defaultTimeout}) {
   }
 
   void startTimeout(TaskFailed onFailed) {
+    if (isCancelled) return;
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
       _log.severe('Timeout reached for task $this');

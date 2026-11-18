@@ -77,6 +77,7 @@ class RequestSegmentProfilesTask({
 
   Future<void> _requestSegmentProfiles() async {
     final missingSp = await _findMissingSegmentProfiles();
+    if (isCancelled) return;
     if (missingSp.isEmpty) {
       _log.fine('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
