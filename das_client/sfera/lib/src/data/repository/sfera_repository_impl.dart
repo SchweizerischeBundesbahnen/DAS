@@ -341,11 +341,6 @@ class SferaRepoImpl({
         return;
     }
 
-    if (task.isCancelled) {
-      _log.fine('Task $task was cancelled during completion handler. Ignoring.');
-      return;
-    }
-
     _log.fine('Task $task completed');
     var allMandatoryTasksCompleted = false;
     await _taskDeleteLock.synchronized(() {
