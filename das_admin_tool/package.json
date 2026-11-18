@@ -29,7 +29,7 @@
     "@sbb-esta/lyne-angular": "22.10.1",
     "@sbb-esta/lyne-elements": "5.13.2",
     "angular-auth-oidc-client": "22.0.2",
-    "angular-server-side-configuration": "22.0.2",
+    "angular-server-side-configuration": "22.1.0",
     "rxjs": "7.8.2",
     "tslib": "2.9.1"
   },
