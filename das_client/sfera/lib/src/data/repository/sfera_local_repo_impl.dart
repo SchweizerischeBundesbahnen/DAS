@@ -177,7 +177,7 @@ class const SferaLocalRepoImpl({required final SferaLocalDatabaseService _databa
   }
 
   void _mergeSplitSections(Map<String, LocalRegulationSection> localRegulationsSections) {
-    // Local regulations with splits have following pattern: LR_<id>-<part>-<totalParts>-<language>
+    // Local regulations with splits have following pattern: LR_<id>-<part>-<totalParts>_<language>
     final splitPattern = RegExp(r'^(LR_.+)-(\d+)-(\d+)');
     final groupedSections = <String, List<({LocalRegulationSection section, int part})>>{};
 
