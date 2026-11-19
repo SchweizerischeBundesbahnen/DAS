@@ -1,5 +1,5 @@
 import 'package:core_data/component.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:settings/component.dart';
 
 abstract class SettingsRepository._() implements LogEndpoint {

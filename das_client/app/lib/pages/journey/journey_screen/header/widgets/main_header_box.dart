@@ -4,6 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/connectivity_ico
 import 'package:app/pages/journey/journey_screen/header/widgets/departure_authorization_display.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancement_button.dart';
+import 'package:app/pages/journey/journey_screen/header/widgets/microphone_status.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/next_stop.dart';
 import 'package:app/pages/journey/journey_screen/header/widgets/theme_button.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
@@ -69,6 +70,7 @@ class MainHeaderBox extends StatelessWidget {
     height: 48.0,
     child: Row(
       children: [
+        MicrophoneStatus(),
         BatteryStatus(),
         ConnectivityIcon(),
         Spacer(),

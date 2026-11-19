@@ -26,6 +26,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
+import 'package:voice_chat/component.dart';
 
 @RoutePage()
 class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
@@ -115,6 +116,7 @@ class _JourneyPageState extends State<JourneyPage> {
     final viewModeVM = DI.get<ViewModeViewModel>();
     _errorCodeSubscription = journeyVM.errorCode.listen((error) async {
       if (error != null) {
+        unawaited(DI.get<VoiceChatRepository>().disconnect());
         if (mounted) {
           context.router.replace(JourneySelectionRoute());
         }

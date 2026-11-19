@@ -16,7 +16,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/component.dart';
+import 'package:das_logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:preload/component.dart';
