@@ -40,10 +40,14 @@ class UserDataCleanUpScheduler {
 
         for (UserDataService userDataService : userDataServices) {
             int deleted = userDataService.deleteAllByOids(inactiveOids);
-            log.info("{} deleted {} records for {} inactive users", userDataService.getClass().getSimpleName(), deleted, inactiveOids.size());
+            log.atInfo()
+                .addKeyValue("service", userDataService.getClass().getSimpleName())
+                .addKeyValue("deleted", deleted)
+                .addKeyValue("inactiveUsers", inactiveOids.size())
+                .log("Inactive user data deleted");
         }
 
         userActivityRepository.deleteByOidIn(inactiveOids);
-        log.info("Removed {} activity records for inactive users", inactiveOids.size());
+        log.atInfo().addKeyValue("inactiveUsers", inactiveOids.size()).log("Inactive user activity deleted");
     }
 }

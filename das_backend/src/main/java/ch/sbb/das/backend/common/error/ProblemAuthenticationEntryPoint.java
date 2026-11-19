@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.common.error;
 
+import ch.sbb.das.backend.common.LogKeys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,7 +34,10 @@ public class ProblemAuthenticationEntryPoint implements AuthenticationEntryPoint
         // sets status (401, or 400/403 acc. to the bearer token error) and WWW-Authenticate
         delegate.commence(request, response, authException);
         final HttpStatus status = HttpStatus.valueOf(response.getStatus());
-        log.info("{} authentication failed: {}, path={}", status, authException.getMessage(), request.getRequestURI());
+        log.atInfo()
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, status.value())
+            .addKeyValue(LogKeys.REASON, authException.getMessage())
+            .log("Authentication failed");
         ProblemFactory.writeResponse(response, status, status.getReasonPhrase(), DETAIL, request, jsonMapper);
     }
 }

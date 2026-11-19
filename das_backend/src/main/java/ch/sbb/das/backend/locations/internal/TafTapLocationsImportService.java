@@ -27,12 +27,12 @@ public class TafTapLocationsImportService {
     @SchedulerLock(name = "importLocations", lockAtLeastFor = "${shedlock.lock-at-least-for:10m}")
     @Transactional
     public void importLocations() {
-        log.info("Starting scheduled location import");
+        log.atInfo().log("Location import started");
         List<TafTapLocationEntity> locations = getLocations();
         tafTapLocationRepository.deleteAllInBatch();
         tafTapLocationRepository.saveAll(locations);
         tafTapLocationRepository.flush();
-        log.info("Finished location import with {} locations", locations.size());
+        log.atInfo().addKeyValue("locations", locations.size()).log("Location import finished");
     }
 
     private List<TafTapLocationEntity> getLocations() {

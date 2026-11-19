@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.trainjourneyplan.infrastructure;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneyplan.application.model.trainidentification.OperatingPeriod;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.period.TimetablePeriodKey;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.period.TimetablePeriodValue;
@@ -57,8 +58,7 @@ public class TimetablePeriodConsumer {
     )
     public void processTimetablePeriods(List<ConsumerRecord<Bytes, Bytes>> records, Consumer<?, ?> consumer) {
 
-        log.info("received {} records",
-            records.size());
+        log.atInfo().addKeyValue("records", records.size()).log("Timetable period records received");
 
         records.forEach(message -> processTimetablePeriod(message, consumer));
     }
@@ -72,13 +72,19 @@ public class TimetablePeriodConsumer {
 
         OperatingPeriod operatingPeriod = convert(convertedRecord.value());
 
-        log.info("save timetable period {}", operatingPeriod);
         timetablePeriodRepository.add(operatingPeriod);
+        log.atInfo()
+            .addKeyValue(LogKeys.KAFKA_PARTITION, message.partition())
+            .addKeyValue(LogKeys.KAFKA_OFFSET, message.offset())
+            .addKeyValue("year", operatingPeriod.getYear())
+            .addKeyValue("startDate", operatingPeriod.getStartDate())
+            .addKeyValue("endDate", operatingPeriod.getEndDate())
+            .log("Timetable period saved");
 
         if (endOffset.isPresent() && !coordinatorStarted.get()) {
             Long currentOffset = message.offset();
             if (currentOffset.equals(endOffset.get() - 1)) {
-                log.info("All timetablePeriods read, starting processing.");
+                log.atInfo().log("Timetable periods complete, train consumption starts");
                 coordinator.startProcessing();
                 coordinatorStarted.set(true);
             }

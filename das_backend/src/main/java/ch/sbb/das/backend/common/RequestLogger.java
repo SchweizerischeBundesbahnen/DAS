@@ -2,14 +2,23 @@ package ch.sbb.das.backend.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StopWatch;
 
+/**
+ * One access line per request at its end. Method and path are already in the MDC ({@link RequestIdFilter}), so the line adds only what is known at the end.
+ */
 @Slf4j
 public class RequestLogger {
+
+    static final String MESSAGE = "Request handled";
+
+    /**
+     * Probes and actuator calls are logged at DEBUG only.
+     */
+    private static final String ACTUATOR_PATH_PREFIX = "/actuator";
 
     private final StopWatch stopWatch;
     private final Level level;
@@ -20,26 +29,20 @@ public class RequestLogger {
     }
 
     public static RequestLogger from(HttpServletRequest request) {
-        Level level = request.getRequestURI().startsWith("/actuator") ? Level.DEBUG : Level.INFO;
-        StopWatch stopWatch = new StopWatch();
+        final String path = request.getRequestURI();
+        final Level level = path.startsWith(ACTUATOR_PATH_PREFIX) ? Level.DEBUG : Level.INFO;
+        final StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         return new RequestLogger(stopWatch, level);
     }
 
     public void log(HttpServletRequest request, HttpServletResponse response) {
         stopWatch.stop();
-        String params = request.getParameterMap().entrySet().stream()
-            .map(entry -> entry.getKey() + ":" + String.join(",", entry.getValue()))
-            .collect(Collectors.joining("&"));
-
-        var loggingEventBuilder = log.atLevel(level);
-        loggingEventBuilder.log("Request path=" + request.getRequestURI() + ", " +
-            "requestId=" + response.getHeader(RequestIdFilter.HEADER_REQUEST_ID) + ", " +
-            "method=" + request.getMethod() + ", " +
-            "query=" + params + ", " +
-            "user_agent=" + request.getHeader(HttpHeaders.USER_AGENT) + ", " +
-            "responseStatusCode=" + response.getStatus() + ", " +
-            "runTimeMs=" + stopWatch.getTotalTimeMillis());
+        log.atLevel(level)
+            .addKeyValue(LogKeys.URL_QUERY, request.getQueryString())
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, response.getStatus())
+            .addKeyValue(LogKeys.USER_AGENT_ORIGINAL, request.getHeader(HttpHeaders.USER_AGENT))
+            .addKeyValue(LogKeys.DURATION_MS, stopWatch.getTotalTimeMillis())
+            .log(MESSAGE);
     }
 }
-

@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.common.error;
 
+import ch.sbb.das.backend.common.LogKeys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,7 +36,10 @@ public class ProblemAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         // sets status 403 and WWW-Authenticate
         delegate.handle(request, response, accessDeniedException);
-        log.info("{} access denied: {}, path={}", HttpStatus.FORBIDDEN, accessDeniedException.getMessage(), request.getRequestURI());
+        log.atInfo()
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, HttpStatus.FORBIDDEN.value())
+            .addKeyValue(LogKeys.REASON, accessDeniedException.getMessage())
+            .log("Access denied");
         ProblemFactory.writeResponse(response, HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.getReasonPhrase(), DETAIL, request, jsonMapper);
     }
 }
