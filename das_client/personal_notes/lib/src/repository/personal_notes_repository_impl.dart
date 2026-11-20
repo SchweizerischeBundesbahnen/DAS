@@ -63,10 +63,12 @@ class PersonalNotesRepositoryImpl({
 
   @override
   Future<void> synchronizeNotes() async {
-    if (_lastSyncDate != null && _lastSyncDate!.isSameDay(DateTime.now())) {
+    final now = DateTime.now();
+    if (_lastSyncDate != null && _lastSyncDate!.isSameDay(now)) {
       _log.fine('Sync already run today. Skipped...');
       return;
     }
+    _lastSyncDate = now;
 
     final response = await _fetchRemoteNotes();
     if (response == null) {
@@ -147,6 +149,7 @@ class PersonalNotesRepositoryImpl({
     if (_retryTimer?.isActive ?? false) return;
 
     _retryTimer = Timer(syncRetryDelay, () {
+      _lastSyncDate = null;
       _retryTimer = null;
       synchronizeNotes();
     });

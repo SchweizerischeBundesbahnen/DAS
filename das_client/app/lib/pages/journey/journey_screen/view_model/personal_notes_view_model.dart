@@ -119,7 +119,7 @@ class PersonalNotesViewModel({
   }
 }
 
-extension _PersonalNoteX on PersonalNote {
+extension PersonalNoteX on PersonalNote {
   bool isRelevantFor(Journey? journey) =>
       trainIdentification == null || trainIdentification == journey?.metadata.trainIdentification;
 }

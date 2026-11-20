@@ -171,6 +171,71 @@ void main() {
       );
     });
 
+    test('journey_whenAnnotationsAreUnchanged_thenDoesNotEmitAndStillUpdatesNotes', () async {
+      // GIVEN
+      final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
+      final journey = _journey(
+        trainNumber: '12345',
+        servicePoints: [
+          servicePoint,
+          _servicePoint(order: 2000, locationCode: 'CH002'),
+        ],
+      );
+      final note = PersonalNote(locationCode: 'CH001', text: 'Footnote', showAsFootnote: true);
+      final secondNote = PersonalNote(locationCode: 'CH002', text: 'Second footnote', showAsFootnote: true);
+      currentJourney = journey;
+      sferaJourneySubject.add(journey);
+      personalNotesSubject.add([note, secondNote]);
+      await processStreams();
+      final emittedJourneys = <Journey?>[];
+      final subscription = testee.journey.listen(emittedJourneys.add);
+      addTearDown(subscription.cancel);
+      await processStreams();
+      emittedJourneys.clear();
+
+      // WHEN
+      personalNotesSubject.add([secondNote.copyWith(), note.copyWith()]);
+      await processStreams();
+      final hiddenNote = PersonalNote(locationCode: 'CH001', text: 'Hidden note', showAsFootnote: false);
+      personalNotesSubject.add([
+        hiddenNote,
+        note,
+        secondNote,
+        PersonalNote(locationCode: 'CH003', text: 'Outside the journey', showAsFootnote: true),
+        PersonalNote(
+          locationCode: 'CH002',
+          text: 'Another train',
+          showAsFootnote: true,
+          trainIdentification: _journey(trainNumber: '54321', servicePoints: []).metadata.trainIdentification,
+        ),
+      ]);
+      await processStreams();
+
+      // THEN
+      expect(emittedJourneys, isEmpty);
+      expect(testee.personalNoteOfServicePoint(servicePoint), [hiddenNote, note]);
+    });
+
+    test('journey_whenNotesChangeWithoutJourney_thenDoesNotEmitAndStillUpdatesNotes', () async {
+      // GIVEN
+      await processStreams();
+      final emittedJourneys = <Journey?>[];
+      final subscription = testee.journey.listen(emittedJourneys.add);
+      addTearDown(subscription.cancel);
+      await processStreams();
+      emittedJourneys.clear();
+      final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
+      final note = PersonalNote(locationCode: 'CH001', text: 'Footnote', showAsFootnote: true);
+
+      // WHEN
+      personalNotesSubject.add([note]);
+      await processStreams();
+
+      // THEN
+      expect(emittedJourneys, isEmpty);
+      expect(testee.personalNoteOfServicePoint(servicePoint), [note]);
+    });
+
     test('personalNoteOfServicePoint_whenNotesExist_thenReturnsAllRelevantNotesAtLocation', () async {
       // GIVEN
       final servicePoint = _servicePoint(order: 1000, locationCode: 'CH001');
@@ -241,6 +306,11 @@ void main() {
       expect(testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(), [
         const PersonalNoteAnnotation(text: 'Original note', order: 1000),
       ]);
+      final emittedJourneys = <Journey?>[];
+      final subscription = testee.journey.listen(emittedJourneys.add);
+      addTearDown(subscription.cancel);
+      await processStreams();
+      emittedJourneys.clear();
 
       // WHEN
       personalNotesSubject.add([note.copyWith(text: 'Updated note')]);
@@ -251,6 +321,7 @@ void main() {
         servicePoint,
         const PersonalNoteAnnotation(text: 'Updated note', order: 1000),
       ]);
+      expect(emittedJourneys, hasLength(1));
 
       // WHEN
       final hiddenNote = note.copyWith(showAsFootnote: false);
@@ -260,6 +331,7 @@ void main() {
       // THEN
       expect(testee.journeyValue!.data, [servicePoint]);
       expect(testee.personalNoteOfServicePoint(servicePoint), [hiddenNote]);
+      expect(emittedJourneys, hasLength(2));
 
       // WHEN
       personalNotesSubject.add([note]);
@@ -270,6 +342,7 @@ void main() {
 
       // THEN
       expect(testee.journeyValue!.data, [servicePoint]);
+      expect(emittedJourneys, hasLength(4));
     });
 
     test('journey_whenTrainChanges_thenReevaluatesNotesAndAnnotationOrders', () async {

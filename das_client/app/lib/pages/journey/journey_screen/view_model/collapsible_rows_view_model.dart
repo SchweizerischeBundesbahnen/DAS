@@ -182,11 +182,7 @@ class CollapsibleRowsViewModel({
 
 extension BaseDataX on BaseData {
   bool get isCollapsible =>
-      this is BaseFootNote ||
-      this is OperationalIndication ||
-      this is RuIndication ||
-      this is FootNote ||
-      this is PersonalNoteAnnotation;
+      this is BaseFootNote || this is OperationalIndication || this is RuIndication || this is PersonalNoteAnnotation;
 }
 
 extension CollapsedStateMapX on Map<int, CollapsedState> {

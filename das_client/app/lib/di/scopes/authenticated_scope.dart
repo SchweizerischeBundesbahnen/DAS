@@ -293,7 +293,7 @@ extension AuthenticatedScopeExtension on GetIt {
         settingsRepository: DI.get(),
         personalNotesRepository: DI.get(),
       ),
-      dependsOn: [SferaJourneyViewModel],
+      dependsOn: [SferaJourneyViewModel, PersonalNotesRepository],
       dispose: (vm) => vm.dispose(),
     );
   }

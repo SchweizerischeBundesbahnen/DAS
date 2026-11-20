@@ -101,7 +101,8 @@ void main() {
     'NoLineBreaks': (input: 'First', expected: 'First'),
     'OnlyLineBreaks': (input: '\r\n<br>\r<br />\n', expected: ''),
     'MixedLineBreaks': (input: '\nFirst\r\n<br>\rSecond<br />\nThird\n', expected: 'First; Second; Third'),
-    'SurroundingWhitespace': (input: ' First \n Second ', expected: ' First ;  Second '),
+    'SurroundingWhitespace': (input: ' First \n Second ', expected: 'First; Second'),
+    'WhiteSpaceBetween': (input: 'First\n \nSecond', expected: 'First; Second'),
   }.entries) {
     test('replaceLineBreaks_when${entry.key}_thenReturnsExpectedText', () {
       // GIVEN

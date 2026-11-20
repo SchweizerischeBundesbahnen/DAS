@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:collection/collection.dart';
+import 'package:logging/logging.dart';
 import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneyViewModel');
 
 class JourneyViewModel({
   required final SettingsRepository _settingsRepository,
@@ -75,11 +79,20 @@ class JourneyViewModel({
 
   void _initPersonalNotesSubscription() {
     _personalNotesSubscription?.cancel();
-    _personalNotesSubscription = _personalNotesRepository.observeAllNotes().listen((notes) {
-      _allNotes.clear();
-      _allNotes.addAll(notes);
-      _emit();
-    });
+    _personalNotesSubscription = _personalNotesRepository.observeAllNotes().listen(
+      (notes) {
+        final journey = _sferaJourneyViewModel.journeyValue;
+        final previousAnnotations = _journeyRelevantPersonalNoteAnnotations(journey);
+
+        _allNotes.clear();
+        _allNotes.addAll(notes);
+
+        if (!const ListEquality().equals(previousAnnotations, _journeyRelevantPersonalNoteAnnotations(journey))) {
+          _emit();
+        }
+      },
+      onError: (e, st) => _log.severe('Error loading personal notes as journey annotations', e, st),
+    );
   }
 
   Future<void> _handleFormattedTrainIdentification(Journey? journey) async {
@@ -122,7 +135,9 @@ class JourneyViewModel({
     }
   }
 
-  List<PersonalNoteAnnotation> _journeyRelevantPersonalNoteAnnotations(Journey sferaJourney) {
+  List<PersonalNoteAnnotation> _journeyRelevantPersonalNoteAnnotations(Journey? sferaJourney) {
+    if (sferaJourney == null) return List.empty();
+
     final notesByLocationCode = <String, PersonalNote>{
       for (final note in _allNotes)
         if (note.isRelevantFor(sferaJourney)) note.locationCode: note,
@@ -161,9 +176,4 @@ class JourneyViewModel({
       _rxJourney.add(journey);
     }
   }
-}
-
-extension _PersonalNoteX on PersonalNote {
-  bool isRelevantFor(Journey? journey) =>
-      trainIdentification == null || trainIdentification == journey?.metadata.trainIdentification;
 }

@@ -32,7 +32,7 @@ class TextUtil._() {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       maxLines: maxLines,
-      textDirection: TextDirection.ltr,
+      textDirection: .ltr,
       textScaler: textScaler,
     )..layout(minWidth: 0, maxWidth: maxWidth);
     return textPainter.didExceedMaxLines;
@@ -65,7 +65,7 @@ class TextUtil._() {
   /// Joins non-empty lines with [delimiter], ignoring empty lines.
   static String replaceLineBreaks(String input, {String delimiter = '; '}) {
     final pattern = RegExp(r'(\r\n|\r|\n|<br\s*/?>)', multiLine: true);
-    return input.split(pattern).where((line) => line.isNotEmpty).join(delimiter);
+    return input.split(pattern).map((line) => line.trim()).where((line) => line.isNotEmpty).join(delimiter);
   }
 
   static TextSpan _parseHtmlTextTagsWithMarkdownLinks(

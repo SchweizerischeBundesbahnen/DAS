@@ -92,8 +92,10 @@ class BasicTextAccordion extends StatelessWidget {
     );
   }
 
-  bool get _hasTextOverflow =>
-      TextUtil.hasTextOverflow(data.text, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
+  bool get _hasTextOverflow {
+    final parsedText = TextUtil.replaceHtmlLineBreaks(data.text);
+    return TextUtil.hasTextOverflow(parsedText, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
+  }
 
   Text _contentText(BuildContext context, String text, {int? maxLines}) {
     return Text.rich(
