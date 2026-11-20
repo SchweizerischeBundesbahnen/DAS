@@ -12,21 +12,34 @@ Remarks:
 ## Roles for DAS-Client App users
 
 ### Driver
+`driver`
 de: Lokpersonal
 
 Train/engine driver with permission to perform a vehicle-journey, including staff in education.
 
 ### Observer
+`observer`
+de: Beobachter
 
 Any App user without permission to perform a vehicle-journey (for e.g. de:Fahrdienstleiter (FDL)).
 
+### SBB Cargo
+`sbb_cargo`
+de: Cargo Lokführer
+
+An SBB App user with permission to fetch transport papers.
+
 ## Roles for DAS-Admin-Tool users
 ### RU Admin
+`ru_admin`
+de: EVU Admin
 
 Administrators at a Railway Undertaking (de:EVU) managing their users/roles for DAS-Client by its
 own Authentication (and MDM) system.
 
 ### Admin
+`admin`
+de: Admin
 
 DAS Administrator with global rights for `DAS-Admin-Tool` settings.
 
