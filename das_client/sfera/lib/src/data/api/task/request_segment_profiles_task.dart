@@ -38,9 +38,7 @@ class RequestSegmentProfilesTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
@@ -79,6 +77,7 @@ class RequestSegmentProfilesTask({
 
   Future<void> _requestSegmentProfiles() async {
     final missingSp = await _findMissingSegmentProfiles();
+    if (isCancelled) return;
     if (missingSp.isEmpty) {
       _log.fine('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
@@ -97,8 +96,9 @@ class RequestSegmentProfilesTask({
       );
     }
 
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaRepo.messageHeader(sender: otnId.company),
+      messageHeader,
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),
     );
     _log.info('Sending segment profiles request...');

@@ -121,7 +121,7 @@ class SferaRepoImpl({
     final OtnId otnId = _toOtnId(trainId);
     _log.info('Starting new connection for $otnId');
     _otnId = otnId;
-    _tasks.clear();
+    _cancelTasks();
     lastError = null;
     _rxState.add(.connecting);
     _hasOfflineData = false;
@@ -180,6 +180,7 @@ class SferaRepoImpl({
 
   void _useOfflineDataOrDisconnect() {
     if (_hasOfflineData) {
+      _cancelTasks();
       _mqttService.disconnect();
       _rxState.add(.offlineData);
     } else {
@@ -205,6 +206,7 @@ class SferaRepoImpl({
       lastError = null;
     }
 
+    _cancelTasks();
     _mqttService.disconnect();
     _rxJourney.add(null);
     _rxDepartureDispatchNotificationEvent.add(null);
@@ -217,6 +219,7 @@ class SferaRepoImpl({
 
   @override
   void dispose() {
+    _cancelTasks();
     _rxJourney.close();
     _rxState.close();
     _rxUxTestingEvent.close();
@@ -232,10 +235,10 @@ class SferaRepoImpl({
   }
 
   @override
-  MessageHeaderDto messageHeader({required String sender}) {
+  MessageHeaderDto messageHeader({required String sender, String? messageId}) {
     final timestamp = Format.sferaTimestamp(DateTime.now());
     return MessageHeaderDto.create(
-      messageId: const Uuid().v4(),
+      messageId: messageId ?? const Uuid().v4(),
       timestamp: timestamp,
       sourceDevice: deviceId,
       destinationDevice: 'TMS',
@@ -315,6 +318,8 @@ class SferaRepoImpl({
   }
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
+    if (task.isCancelled || !_tasks.contains(task)) return;
+
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -360,6 +365,8 @@ class SferaRepoImpl({
 
   Future<void> _handleHandshakeTaskCompleted() async {
     _rxState.add(.loadingJourney);
+
+    _cancelTasksByType<RequestJourneyProfileTask>();
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaRepo: this,
@@ -438,6 +445,8 @@ class SferaRepoImpl({
   }
 
   void _startRequestSegmentProfileTask() {
+    _cancelTasksByType<RequestSegmentProfilesTask>();
+
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -450,6 +459,8 @@ class SferaRepoImpl({
   }
 
   void _startRequestTrainCharacteristicsTask() {
+    _cancelTasksByType<RequestTrainCharacteristicsTask>();
+
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
       sferaRepo: this,
       mqttService: _mqttService,
@@ -462,11 +473,7 @@ class SferaRepoImpl({
   }
 
   void _startRequestLocalRegulationsTask() {
-    final runningTask = _tasks.whereType<RequestLocalRegulationsTask>().firstOrNull;
-    if (runningTask != null) {
-      runningTask.cancel();
-      _tasks.remove(runningTask);
-    }
+    _cancelTasksByType<RequestLocalRegulationsTask>();
 
     final requestLocalRegulationsTask = RequestLocalRegulationsTask(
       sferaRepo: this,
@@ -482,6 +489,8 @@ class SferaRepoImpl({
   bool _allMandatoryTasksCompleted() => _tasks.where((it) => _isMandatoryTask(it)).isEmpty;
 
   void _startRequestRelatedTrainInformationTask() {
+    _cancelTasksByType<RequestRelatedTrainInformationTask>();
+
     final requestRelatedTrainInformationTask = RequestRelatedTrainInformationTask(
       mqttService: _mqttService,
       sferaRepo: this,
@@ -614,14 +623,32 @@ class SferaRepoImpl({
   }
 
   void _onTaskFailed(SferaTask task, SferaError error) async {
+    if (task.isCancelled || !_tasks.contains(task)) return;
+
     _log.severe('Task $task failed with error $error');
     _tasks.remove(task);
+    task.cancel();
     lastError = error;
 
     if (_rxState.value != .connected && _isMandatoryTask(task)) {
       await _loadLocalJourney(_otnId!);
       _useOfflineDataOrDisconnect();
     }
+  }
+
+  void _cancelTasksByType<T extends SferaTask>() {
+    final runningTasks = _tasks.whereType<T>().toList();
+    for (final runningTask in runningTasks) {
+      runningTask.cancel();
+      _tasks.remove(runningTask);
+    }
+  }
+
+  void _cancelTasks() {
+    for (final task in _tasks) {
+      task.cancel();
+    }
+    _tasks.clear();
   }
 
   bool _isMandatoryTask(SferaTask task) {
