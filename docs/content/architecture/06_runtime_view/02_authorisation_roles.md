@@ -25,7 +25,7 @@ Any App user without permission to perform a vehicle-journey (for e.g. de:Fahrdi
 
 ### SBB Cargo
 `sbb_cargo`
-de: Cargo Lokführer
+de: SBB Cargo Lokpersonal
 
 An SBB App user with permission to fetch transport papers.
 
