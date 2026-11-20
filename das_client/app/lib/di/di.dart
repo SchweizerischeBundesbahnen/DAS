@@ -70,7 +70,7 @@ class const DI._() {
 extension DiExtension on GetIt {
   void registerScopeHandler() {
     _log.fine('Register scope handler');
-    registerSingleton<ScopeHandler>(ScopeHandlerImpl());
+    registerSingleton<ScopeHandler>(ScopeHandlerImpl(), dispose: (it) => (it as ScopeHandlerImpl).dispose());
   }
 
   void registerFlavor(Flavor flavor) {
