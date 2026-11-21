@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.56.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.1...das_client-v0.56.2) (2026-11-21)
+
+
+### Bug Fixes
+
+* merge split local regulations ([#3145](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3145)) ([#3146](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3146)) ([d47736a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d47736a26339680b56f27bb296315e542beb8334))
+* prevent journey update during segment profile refresh ([#3149](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3149)) ([fa79b59](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fa79b59a3c99b82994f23e9b9d3f6c15ffea4b54))
+* send BCP 47 tag in Accept-Language header ([#3108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3108)) ([b7a0ea4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7a0ea43dcd96b2eb7155e4f5a2cb1f553888aea))
+
 ## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
 
 
