@@ -34,7 +34,7 @@
     "@angular/router": "22.2.6",
     "@sbb-esta/angular": "22.2.0",
     "angular-auth-oidc-client": "22.0.3",
-    "angular-server-side-configuration": "22.0.2",
+    "angular-server-side-configuration": "22.1.0",
     "ngx-mqtt": "22.0.0",
     "rxjs": "7.8.2",
     "tslib": "2.9.1",
