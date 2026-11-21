@@ -384,7 +384,6 @@ class SferaRepoImpl({
   Future<void> _handleRequestRelatedTrainInformationCompleted(dynamic data) async {
     if (data is RelatedTrainInformationDto) {
       _relatedTrainInformation = data;
-      _updateJourney();
     }
   }
 

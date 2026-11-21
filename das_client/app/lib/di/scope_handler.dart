@@ -15,4 +15,7 @@ abstract interface class ScopeHandler {
 
   /// Pop scopes above and including the given scope type.
   Future<bool> pop<T extends DIScope>();
+
+  /// Stream emitting when scopes change in the DI container.
+  Stream<void> get onScopeChanged;
 }

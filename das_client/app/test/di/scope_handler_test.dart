@@ -17,11 +17,11 @@ void main() {
     late DASBaseScope mockDASBaseScope;
 
     setUp(() async {
+      await GetIt.I.reset();
       testee = ScopeHandlerImpl();
       mockDASBaseScope = MockDASBaseScope();
       when(mockDASBaseScope.scopeName).thenReturn(dasBaseScopeName);
 
-      await GetIt.I.reset();
       GetIt.I.registerFlavor(Flavor.dev());
       GetIt.I.registerSingleton<DASBaseScope>(mockDASBaseScope);
     });
@@ -88,6 +88,22 @@ void main() {
 
       // ACT & EXPECT
       expect(testee.isTop<DASBaseScope>(), isFalse);
+    });
+
+    test('onScopeChanged_whenScopePushedOrPopped_thenEmits', () async {
+      when(mockDASBaseScope.push()).thenAnswer((_) async {});
+      when(mockDASBaseScope.pop()).thenAnswer((_) async => true);
+
+      var emitCount = 0;
+      final sub = testee.onScopeChanged.listen((_) => emitCount++);
+
+      await testee.push<DASBaseScope>();
+      await pumpEventQueue();
+      await testee.pop<DASBaseScope>();
+      await pumpEventQueue();
+
+      expect(emitCount, 2);
+      await sub.cancel();
     });
   });
 }

@@ -91,7 +91,7 @@ class JourneyTable extends StatelessWidget {
           builder: (context, snapshot) {
             final model = snapshot.requireData;
             return switch (model) {
-              TableLoading() => JourneyLoadingTable(columns: _generateColumns(context, null, null, null)),
+              TableLoading() => JourneyLoadingTable.withDefaults(context),
               TableLoaded() => KeyedSubtree(
                 key: loadedJourneyTableKey,
                 child: NotificationListener<UserScrollNotification>(
