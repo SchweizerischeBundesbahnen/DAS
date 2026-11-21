@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-v0.10.0...playground-v0.10.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* pull nginx base image from nginx/nginx-unprivileged ([#3190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3190)) ([9c4ddb1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9c4ddb16f3e5471dcc2c52b6702a4f2360716171))
+
 ## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-v0.9.1...playground-v0.10.0) (2026-10-13)
 
 
