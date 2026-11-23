@@ -25,7 +25,8 @@
     },
     {
       "matchDatasources": [
-        "npm"
+        "npm",
+        "github-tags"
       ],
       "minimumReleaseAge": "3 days"
     },
@@ -49,14 +50,21 @@
       "matchManagers": [
         "maven"
       ],
-      "matchPackageNames": [
-        "software.amazon.awssdk:bom"
-      ],
       "matchUpdateTypes": [
         "patch"
       ],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
     },
     {
       "matchManagers": [

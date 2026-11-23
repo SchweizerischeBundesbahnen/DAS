@@ -47,12 +47,13 @@ public class S3Service {
         }
     }
 
-    public List<String> listObjects() {
+    /** The objects in the bucket with their size in bytes. */
+    public List<BucketObject> listObjects() {
         ListObjectsV2Request listReq = ListObjectsV2Request.builder()
             .bucket(bucketName)
             .build();
 
-        return s3Client.listObjectsV2(listReq).contents().stream().map(S3Object::key).toList();
+        return s3Client.listObjectsV2(listReq).contents().stream().map(object -> new BucketObject(object.key(), object.size())).toList();
     }
 
     public void deleteObjects(List<String> keys) {
@@ -65,5 +66,10 @@ public class S3Service {
         if (!errors.isEmpty()) {
             log.warn("Failed to delete {} objects from S3 {}", errors.size(), errors.getFirst());
         }
+    }
+
+    /** An object in the bucket: its key and its size in bytes. */
+    public record BucketObject(String key, long size) {
+
     }
 }

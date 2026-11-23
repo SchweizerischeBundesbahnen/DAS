@@ -29,7 +29,7 @@ class FirebaseMessagingService({
   Stream<String?> get token => _rxToken.stream;
 
   @override
-  String? get tokenValue => _rxToken.value;
+  String? get tokenValue => _rxToken.valueOrNull;
 
   @override
   Stream<BaseMessageDto> get message => _rxMessage.stream;

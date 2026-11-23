@@ -4,7 +4,7 @@ import ch.sbb.das.backend.cargo.infrastructure.TransportPaperClient;
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
 import ch.sbb.das.backend.common.Problem;
-import ch.sbb.das.backend.common.ProxyClientException;
+import ch.sbb.das.backend.common.error.ProxyClientException;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

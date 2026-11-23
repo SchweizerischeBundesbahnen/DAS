@@ -505,6 +505,7 @@ class SferaRepoImpl({
 
     _segmentProfiles.clear();
 
+    final temp = <SegmentProfileDto>[];
     for (final element in _journeyProfile!.segmentProfileReferences) {
       final segmentProfileEntity = await _localService.findSegmentProfile(
         element.spId,
@@ -513,11 +514,12 @@ class SferaRepoImpl({
       );
       final segmentProfile = segmentProfileEntity?.toDomain();
       if (segmentProfile != null && segmentProfile.validate()) {
-        _segmentProfiles.add(segmentProfile);
+        temp.add(segmentProfile);
       } else {
         _log.warning('Could not find and validate segment profile for ${element.spId}');
       }
     }
+    _segmentProfiles.addAll(temp);
   }
 
   Future<void> _refreshTrainCharacteristics() async {
@@ -525,6 +527,7 @@ class SferaRepoImpl({
 
     _trainCharacteristics.clear();
 
+    final temp = <TrainCharacteristicsDto>[];
     for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
       final trainCharacteristicsEntity = await _localService.findTrainCharacteristics(
         element.tcId,
@@ -533,11 +536,12 @@ class SferaRepoImpl({
       );
       final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
       if (trainCharacteristics != null && trainCharacteristics.validate()) {
-        _trainCharacteristics.add(trainCharacteristics);
+        temp.add(trainCharacteristics);
       } else {
         _log.warning('Could not find and validate $element');
       }
     }
+    _trainCharacteristics.addAll(temp);
   }
 
   void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {

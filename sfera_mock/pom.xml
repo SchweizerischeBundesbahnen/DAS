@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.2</version>
+        <version>4.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
@@ -18,9 +18,9 @@
         <image.namespace>ghcr.io/schweizerischebundesbahnen</image.namespace>
         <image.version>${project.version}</image.version>
 
-        <spring-cloud.version>2025.1.4</spring-cloud.version>
+        <spring-cloud.version>2026.0.0</spring-cloud.version>
         <solace-spring-cloud-bom.version>6.1.1</solace-spring-cloud-bom.version>
-        <vault.version>5.0.3</vault.version>
+        <vault.version>5.1.0</vault.version>
     </properties>
 
     <dependencyManagement>
@@ -186,7 +186,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
                 <configuration>
                     <sources>
                         <source>${basedir}/src/main/resources/SFERA.xsd</source>
