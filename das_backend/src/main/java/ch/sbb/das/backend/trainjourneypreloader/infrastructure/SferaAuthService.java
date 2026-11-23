@@ -48,16 +48,16 @@ public class SferaAuthService {
                 .build();
             OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(request);
             if (authorizedClient == null) {
-                log.error("Failed to authorize OAuth2 client");
+                log.atError().log("SFERA OAuth2 authorization returned no client");
                 return;
             }
             this.accessToken = authorizedClient.getAccessToken();
         } catch (OAuth2AuthorizationException e) {
             // Handle different types of OAuth2 errors here (e.g., invalid credentials, etc.)
-            log.error("OAuth2 Token API authorization failed", e);
+            log.atError().setCause(e).log("SFERA OAuth2 authorization failed");
         } catch (RestClientException e) {
             // Handle connection issues, timeouts, etc.
-            log.error("Error while connecting to the OAuth2 Token API", e);
+            log.atError().setCause(e).log("SFERA OAuth2 token endpoint unreachable");
         }
     }
 }

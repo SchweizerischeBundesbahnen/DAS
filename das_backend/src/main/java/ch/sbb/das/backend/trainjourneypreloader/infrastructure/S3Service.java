@@ -64,7 +64,7 @@ public class S3Service {
             .build();
         List<S3Error> errors = s3Client.deleteObjects(delReq).errors();
         if (!errors.isEmpty()) {
-            log.warn("Failed to delete {} objects from S3 {}", errors.size(), errors.getFirst());
+            log.atWarn().addKeyValue("failed", errors.size()).addKeyValue("firstError", errors.getFirst().toString()).log("Bucket objects partially deleted");
         }
     }
 

@@ -51,7 +51,7 @@ final class ZipWriter implements Closeable {
 
     void write(String name, byte[] content) throws IOException {
         if (!names.add(name)) {
-            log.warn("Duplicate entry {} in zip skipped", name);
+            log.atWarn().addKeyValue("entryName", name).log("Duplicate zip entry skipped");
             return;
         }
         zip.putNextEntry(new ZipEntry(name));

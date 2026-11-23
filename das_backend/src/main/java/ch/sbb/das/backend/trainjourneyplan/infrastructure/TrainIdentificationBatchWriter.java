@@ -75,7 +75,7 @@ public class TrainIdentificationBatchWriter {
         }
         MapSqlParameterSource[] sqlParams = params.toArray(MapSqlParameterSource[]::new);
         int[] rowsUpdated = namedParameterJdbcTemplate.batchUpdate(sql, sqlParams);
-        log.debug("{} rows of table train updated", Arrays.stream(rowsUpdated).sum());
+        log.atDebug().addKeyValue("rows", Arrays.stream(rowsUpdated).sum()).log("Train identifications upserted");
     }
 
     public void deleteAllOlderThan(LocalDate date) {
@@ -86,7 +86,7 @@ public class TrainIdentificationBatchWriter {
         MapSqlParameterSource paramValue = new MapSqlParameterSource();
         paramValue.addValue("date", date);
         int rowsDeleted = namedParameterJdbcTemplate.update(sql, paramValue);
-        log.info("{} of old rows of train_run_dates with date < {} were deleted", rowsDeleted, date);
+        log.atInfo().addKeyValue("rows", rowsDeleted).addKeyValue("olderThan", date).log("Old train identifications deleted");
     }
 
     public void deleteAll(List<Train> trains) {
@@ -101,6 +101,6 @@ public class TrainIdentificationBatchWriter {
             return paramValues;
         }).toArray(MapSqlParameterSource[]::new);
         int[] rowsDeleted = namedParameterJdbcTemplate.batchUpdate(sql, params);
-        log.debug("{} rows of train_identification table deleted", Arrays.stream(rowsDeleted).sum());
+        log.atDebug().addKeyValue("rows", Arrays.stream(rowsDeleted).sum()).log("Train identifications deleted");
     }
 }

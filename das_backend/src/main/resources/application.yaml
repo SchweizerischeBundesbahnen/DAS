@@ -132,12 +132,17 @@ formation:
     older-than-days: 30
 
 logging:
+  # Conventions (levels, message style, keys): das_backend/CODING_STANDARDS.md
+  level:
+    root: INFO
+    ch.sbb.das.backend: INFO
   pattern:
-    # Instana trace id (put into the MDC by the Instana agent, see ProblemFactory), omitted if the log is not part of a trace
-    correlation: "%replace(traceId=%X{instana.trace.id} ){'^traceId= $', ''}"
+    # text output (local profile and tests): Spring Boot's default plus the key-value pairs and the MDC; stages use the structured block below instead
+    console: "%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %kvp %X%n%wEx"
+  # Splunk HEC settings handed out to the DAS client (ConfigServiceImpl), not backend logging
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
-  
+
 sfera:
   major-version: "4"
   version: "4.00"
@@ -237,3 +242,29 @@ spring:
     activate:
       on-profile: "!local & !test"
     import: vault://
+
+---
+# Structured logging for Splunk on every stage: one ECS JSON object per line (UTC timestamps), MDC entries and key-value pairs as fields.
+# The test profile switches the console back to text (application-test.yaml), the local profile keeps the text pattern above.
+spring:
+  config:
+    activate:
+      on-profile: "!local"
+logging:
+  structured:
+    format:
+      console: ecs
+    ecs:
+      service:
+        # service.name comes from spring.application.name, service.version from the jar manifest (Implementation-Version)
+        environment: ${STAGE}
+    json:
+      # ecs.version and process.pid carry no information for us
+      exclude: ecs,process.pid
+      rename:
+        # the Instana agent's MDC key instana.trace.id becomes the Splunk field mdc.instana.trace.id (SBB convention, see ProblemFactory)
+        instana: mdc.instana
+      stacktrace:
+        root: first
+        include-common-frames: false
+        max-length: 16384

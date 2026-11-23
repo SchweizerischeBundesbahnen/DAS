@@ -144,7 +144,7 @@ public class SferaService implements JourneyFetch {
             // todo send when vad has implemented
             // sendRequest(trainId, sferaMessageCreator.createSessionTermination(trainId)).get();
         } catch (Exception e) {
-            log.warn("Failed to terminate session for train {}: {}", trainId, e.getMessage());
+            log.atWarn().setCause(e).log("SFERA session termination failed");
         }
         mqttClient.unsubscribe(createTopic(G2B, trainId));
         return result;

@@ -31,6 +31,10 @@ auth:
 logging:
   url: url
   token: token
+  structured:
+    format:
+      # tests log as text; StructuredLoggingIntegrationTest re-enables the stage format
+      console: ""
 
 formation:
   transport-paper:

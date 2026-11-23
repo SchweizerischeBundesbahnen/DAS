@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.common.error;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.common.Problem;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -74,7 +75,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return toObject(createUnexpectedErrorResponse(status, ex, toServletRequest(request), response.getHeaders()));
         }
 
-        log.info("{} title={}, detail={}, path={}", status, title, detail, toServletRequest(request).getRequestURI());
+        log.atInfo()
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, status.value())
+            .addKeyValue(LogKeys.PROBLEM_TITLE, title)
+            .addKeyValue(LogKeys.PROBLEM_DETAIL, detail)
+            .log("Request rejected");
         return toObject(ProblemFactory.createResponse(status, StringUtils.defaultIfBlank(title, status.getReasonPhrase()), detail, toServletRequest(request),
             response.getHeaders()));
     }
@@ -110,13 +115,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<Problem> handleDataIntegrityViolation(DataIntegrityViolationException exception, HttpServletRequest request) {
-        log.info("{} data integrity violation, path={}", HttpStatus.CONFLICT, request.getRequestURI(), exception);
+        log.atInfo()
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, HttpStatus.CONFLICT.value())
+            .addKeyValue(LogKeys.REASON, exception.getMostSpecificCause().getMessage())
+            .log("Concurrent modification rejected");
         return ProblemFactory.createResponse(HttpStatus.CONFLICT, HttpStatus.CONFLICT.getReasonPhrase(), DETAIL_CONCURRENT_MODIFICATION, request);
     }
 
     @ExceptionHandler(ProxyClientException.class)
     ResponseEntity<Problem> handleProxyClientError(ProxyClientException exception, HttpServletRequest request) {
-        log.warn("Proxy service returned {} with message: {}, path={}", exception.getStatusCode(), exception.getProxyErrorMessage(), request.getRequestURI(), exception);
+        log.atWarn()
+            .setCause(exception)
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, HttpStatus.BAD_GATEWAY.value())
+            .addKeyValue(LogKeys.DOWNSTREAM_STATUS_CODE, exception.getStatusCode().value())
+            .log("Downstream service failed");
         return ProblemFactory.createResponse(HttpStatus.BAD_GATEWAY, TITLE_DOWNSTREAM_ERROR,
             "Downstream service responded with status " + exception.getStatusCode().value() + ".", request);
     }
@@ -134,15 +146,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *     logs</a>
      */
     private ResponseEntity<Problem> createUnexpectedErrorResponse(HttpStatus status, Exception exception, HttpServletRequest request, HttpHeaders headers) {
-        // see logback config for other log relevant params (like the Instana traceId)
-        log.error("{} unexpected error, path={}", status, request.getRequestURI(), exception);
+        // request id, method, path and the Instana trace id are in the MDC (RequestIdFilter, Instana agent)
+        log.atError()
+            .setCause(exception)
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, status.value())
+            .log("Request failed unexpectedly");
         return ProblemFactory.createResponse(status, status.getReasonPhrase(), DETAIL_UNEXPECTED_ERROR, request, headers);
     }
 
     private static HttpStatus resolve(HttpStatusCode statusCode) {
         final HttpStatus status = HttpStatus.resolve(statusCode.value());
         if (status == null) {
-            log.warn("Developer fault - HttpStatus unknown: {}", statusCode.value());
+            log.atWarn().addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, statusCode.value()).log("Unknown HTTP status answered as 500");
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return status;
