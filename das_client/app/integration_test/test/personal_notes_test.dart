@@ -24,6 +24,7 @@ void main() {
     await IntegrationTestApp.start(tester);
     await loadJourney(tester, trainNumber: 'T9999M');
 
+    _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
     await _openModalByTapOnCellWithText(tester, '(Bahnhof A)');
 
     // check that no personal note exists and open create dialog
@@ -38,6 +39,7 @@ void main() {
 
     await waitUntilNotExists(tester, find.byKey(PersonalNoteDialog.dialogKey));
     _checkModalHasPersonalNoteWithText(text);
+    _checkPersonalNoteIcon('(Bahnhof A)', iconExists: true);
 
     await disconnect(tester);
   });
@@ -113,6 +115,33 @@ void main() {
       await tester.pumpAndSettle();
       _checkModalHasNoPersonalNote();
       _checkPersonalNoteIcon('(Bahnhof A)', iconExists: false);
+
+      await disconnect(tester);
+    },
+  );
+
+  testWidgets(
+    'personalNotes_whenMultipleFootnotesAtSameLocation_thenShowsAllInJourneyTable|m3P8kQ2vZ7cN1xR5aH6D|tests:1009',
+    (tester) async {
+      await IntegrationTestApp.start(tester);
+
+      final firstNote = PersonalNote(
+        locationCode: 'CH09991',
+        text: 'First footnote at Bahnhof A',
+        showAsFootnote: true,
+      );
+      final secondNote = PersonalNote(
+        locationCode: 'CH09991',
+        text: 'Second footnote at Bahnhof A',
+        showAsFootnote: true,
+      );
+      final personalNotesRepository = DI.get<PersonalNotesRepository>() as MockPersonalNotesRepository;
+      personalNotesRepository.initializeWith([firstNote, secondNote]);
+
+      await loadJourney(tester, trainNumber: 'T9999M');
+
+      expect(findDASTableRowByText(firstNote.text), findsOneWidget);
+      expect(findDASTableRowByText(secondNote.text), findsOneWidget);
 
       await disconnect(tester);
     },

@@ -102,6 +102,69 @@ void main() {
     await GetIt.I.reset();
   });
 
+  test('personalNotes_whenNotesStored_thenEmitsJourneyRelevantNotes', () async {
+    // GIVEN
+    final generalNote = _personalNote(locationCode: servicePointA.locationCode, text: 'General', showAsFootnote: false);
+    final trainNote = _personalNote(
+      locationCode: servicePointB.locationCode,
+      text: 'Train',
+      showAsFootnote: true,
+      trainIdentification: trainIdentification,
+    );
+    final otherTrainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Other train',
+      showAsFootnote: false,
+      trainIdentification: otherTrainIdentification,
+    );
+    await emitJourney(_journey(data: [servicePointA, servicePointB], currentTrainIdentification: trainIdentification));
+
+    // WHEN
+    await storeNotes([generalNote, trainNote, otherTrainNote]);
+
+    // THEN
+    expect(testee.personalNotesValue, orderedEquals([generalNote, trainNote]));
+  });
+
+  test('personalNotes_whenTrainChanges_thenReevaluatesRelevantNotes', () async {
+    // GIVEN
+    final generalNote = _personalNote(locationCode: servicePointA.locationCode, text: 'General', showAsFootnote: false);
+    final trainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Train',
+      showAsFootnote: false,
+      trainIdentification: trainIdentification,
+    );
+    final otherTrainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Other train',
+      showAsFootnote: false,
+      trainIdentification: otherTrainIdentification,
+    );
+    await storeNotes([generalNote, trainNote, otherTrainNote]);
+    await emitJourney(_journey(data: [servicePointA], currentTrainIdentification: trainIdentification));
+    expect(testee.personalNotesValue, orderedEquals([generalNote, trainNote]));
+
+    // WHEN
+    await emitJourney(_journey(data: [servicePointA], currentTrainIdentification: otherTrainIdentification));
+
+    // THEN
+    expect(testee.personalNotesValue, orderedEquals([generalNote, otherTrainNote]));
+  });
+
+  test('personalNotes_whenNotesDeleted_thenEmitsEmptyList', () async {
+    // GIVEN
+    final note = _personalNote(locationCode: servicePointA.locationCode, text: 'Note', showAsFootnote: false);
+    await storeNotes([note]);
+    expect(testee.personalNotesValue, orderedEquals([note]));
+
+    // WHEN
+    await storeNotes([]);
+
+    // THEN
+    expect(testee.personalNotesValue, isEmpty);
+  });
+
   test('locationCode_whenServicePointChanges_thenLoadsPersonalNoteForCurrentLocation', () async {
     // GIVEN
     final note = _personalNote(locationCode: servicePointA.locationCode, text: 'My note', showAsFootnote: false);

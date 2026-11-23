@@ -17,14 +17,14 @@ class ServicePointInformationCellTitle extends StatelessWidget {
     required this.trackGroup,
     required this.shortTermChange,
     super.key,
-    this.hasPersonalNote = false,
+    this.showPersonalNoteIcon = false,
     this.showModification = false,
   });
 
   final String name;
   final Color? foregroundColor;
   final bool isStation;
-  final bool hasPersonalNote;
+  final bool showPersonalNoteIcon;
   final String? trackGroup;
   final ShortTermChange? shortTermChange;
   final bool showModification;
@@ -69,7 +69,7 @@ class ServicePointInformationCellTitle extends StatelessWidget {
   }
 
   Widget? _additionalInformation() {
-    if (trackGroup == null && !hasPersonalNote) return null;
+    if (trackGroup == null && !showPersonalNoteIcon) return null;
 
     return Row(
       mainAxisSize: .min,
@@ -79,7 +79,7 @@ class ServicePointInformationCellTitle extends StatelessWidget {
             padding: const .only(left: SBBSpacing.xSmall),
             child: Text(trackGroup!),
           ),
-        if (hasPersonalNote) Icon(key: personalNoteIconKey, SBBIcons.paper_clip_small, color: foregroundColor),
+        if (showPersonalNoteIcon) Icon(key: personalNoteIconKey, SBBIcons.paper_clip_small, color: foregroundColor),
       ],
     );
   }

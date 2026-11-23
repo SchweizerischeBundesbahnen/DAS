@@ -31,10 +31,6 @@ class JourneyViewModel({
 
   Journey? get journeyValue => _rxJourney.value;
 
-  List<PersonalNote> personalNoteOfServicePoint(ServicePoint servicePoint) => _allNotes
-      .where((note) => note.isRelevantFor(journeyValue) && note.locationCode == servicePoint.locationCode)
-      .toList();
-
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxFormattedTrainIdentifier = BehaviorSubject<String?>.seeded(null);
   final _ruIndications = <RuIndication>[];
@@ -138,18 +134,24 @@ class JourneyViewModel({
   List<PersonalNoteAnnotation> _journeyRelevantPersonalNoteAnnotations(Journey? sferaJourney) {
     if (sferaJourney == null) return List.empty();
 
-    final notesByLocationCode = <String, PersonalNote>{
-      for (final note in _allNotes)
-        if (note.isRelevantFor(sferaJourney)) note.locationCode: note,
-    };
+    final notesByLocationCode = <String, List<PersonalNote>>{};
+    for (final note in _allNotes) {
+      if (note.isRelevantFor(sferaJourney)) {
+        notesByLocationCode.putIfAbsent(note.locationCode, () => []).add(note);
+      }
+    }
 
     final annotations = <PersonalNoteAnnotation>[];
     final servicePoints = sferaJourney.journeyPoints.whereType<ServicePoint>().toList(growable: false);
     for (final servicePoint in servicePoints) {
-      final note = notesByLocationCode[servicePoint.locationCode];
-      if (note == null || !note.showAsFootnote) continue;
+      final notes = notesByLocationCode[servicePoint.locationCode];
+      if (notes == null) continue;
 
-      annotations.add(PersonalNoteAnnotation(text: note.text, order: servicePoint.order));
+      for (final note in notes) {
+        if (note.showAsFootnote) {
+          annotations.add(PersonalNoteAnnotation(text: note.text, order: servicePoint.order));
+        }
+      }
     }
 
     return annotations;

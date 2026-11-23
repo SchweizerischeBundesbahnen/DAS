@@ -25,12 +25,18 @@ class PersonalNotesViewModel({
 
   PersonalNote? get prioritizedNoteValue => _rxPrioritizedNote.value;
 
+  /// Personal notes relevant for the current journey.
+  Stream<List<PersonalNote>> get personalNotes => _rxPersonalNotes.stream;
+
+  List<PersonalNote> get personalNotesValue => _rxPersonalNotes.value;
+
   /// Personal notes for the selected service point.
   Stream<List<PersonalNote>> get servicePointNotes => _rxServicePointNotes.stream;
 
   /// Prioritized note of the selected service point which is the single use note if multiple exist.
   Stream<PersonalNote?> get prioritizedNote => _rxPrioritizedNote.stream;
 
+  final _rxPersonalNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
   final _rxServicePointNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
   final _rxPrioritizedNote = BehaviorSubject<PersonalNote?>.seeded(null);
   final _subscriptions = <StreamSubscription>[];
@@ -85,12 +91,26 @@ class PersonalNotesViewModel({
       subscription.cancel();
     }
 
+    _rxPersonalNotes.close();
     _rxServicePointNotes.close();
     _rxPrioritizedNote.close();
     super.dispose();
   }
 
   void _init() {
+    final personalNotesSubscription =
+        Rx.combineLatest2(
+          _personalNotesRepository.observeAllNotes(),
+          journeyViewModel.journey.distinct(
+            (previous, next) => previous?.metadata.trainIdentification == next?.metadata.trainIdentification,
+          ),
+          (notes, journey) => notes.where((note) => note.isRelevantFor(journey)).toList(),
+        ).listen(
+          _rxPersonalNotes.add,
+          onError: (e, st) => _log.severe('Error loading personal notes of journey', e, st),
+        );
+    _subscriptions.add(personalNotesSubscription);
+
     final servicePointNotesSubscription = _servicePointModalViewModel.servicePoint
         .doOnData((servicePoint) => _currentServicePoint = servicePoint)
         .switchMap((servicePoint) => _personalNotesRepository.observeNotes(servicePoint.locationCode))
