@@ -67,8 +67,7 @@
     "esbuild@0.28.2": true,
     "esbuild@0.28.1": true,
     "fsevents@2.3.3": true,
-    "lmdb@3.5.6": true,
-    "lmdb@3.5.4": true,
+    "lmdb": false,
     "msgpackr-extract@3.0.4": true
   }
 }
