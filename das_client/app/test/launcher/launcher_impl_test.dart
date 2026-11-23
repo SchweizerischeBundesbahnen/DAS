@@ -163,7 +163,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenAllRusAreSob_thenUsesSbbPortalWithChromePrefix', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['9058', '1234']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['9058', '1234']);
 
     final result = await testee.launchServicePointPortal(bernServicePoint);
 
@@ -173,7 +173,7 @@ void main() {
   });
 
   test('launchServicePointPortal_whenRuSelectionIsMixedSobAndSbb_thenUsesSbbPortalWithoutChromePrefix', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['9058', '1285']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['9058', '1285']);
 
     final result = await testee.launchServicePointPortal(bernServicePoint);
 

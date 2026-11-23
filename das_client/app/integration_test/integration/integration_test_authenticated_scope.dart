@@ -15,6 +15,7 @@ import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 import '../mocks/mock_customer_oriented_departure_repository.dart';
 import '../mocks/mock_external_links_repository.dart';
@@ -25,6 +26,7 @@ import '../mocks/mock_ru_feature_provider.dart';
 import '../mocks/mock_ru_indications_repository.dart';
 import '../mocks/mock_sim_train_view_model.dart';
 import '../mocks/mock_train_identification_repository.dart';
+import '../mocks/mock_user_properties_repository.dart';
 import '../mocks/mock_warn_app_view_model.dart';
 
 final _log = Logger('IntegrationTestAuthenticatedScope');
@@ -41,7 +43,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
-    getIt.registerUserPropertiesRepository();
+    _registerMockUserPropertiesRepository();
     _registerMockLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
@@ -71,6 +73,13 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerLocalRegulationHtmlGenerator();
 
     return getIt.allReady();
+  }
+
+  void _registerMockUserPropertiesRepository() {
+    getIt.registerSingleton<UserPropertiesRepository>(
+      MockUserPropertiesRepository(),
+      dispose: (repo) => repo.dispose(),
+    );
   }
 
   void _registerMockLauncher() {

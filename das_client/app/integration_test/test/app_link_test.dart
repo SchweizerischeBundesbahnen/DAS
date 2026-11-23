@@ -21,7 +21,6 @@ import '../auth/integration_test_authenticator.dart';
 import '../integration/integration_test_app.dart';
 import '../mocks/mock_app_links_manager.dart';
 import '../mocks/mock_launcher.dart';
-import '../mocks/mock_local_key_value_store.dart';
 import '../mocks/mock_train_identification_repository.dart';
 import '../util/test_utils.dart';
 
@@ -251,8 +250,7 @@ void main() {
 
         await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
 
-        final userSettings = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
-        userSettings.set(.tourSystem, TourSystem.tip.name);
+        DI.get<UserPropertiesRepository>().saveUserProperty(.tourSystem, TourSystem.tip.name);
 
         await tapElement(tester, find.text(l10n.p_journey_overview_tour_button_text));
 

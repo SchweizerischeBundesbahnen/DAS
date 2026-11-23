@@ -259,8 +259,7 @@ void main() {
       final trainIdentificationRepository =
           DI.get<TrainIdentificationRepository>() as MockTrainIdentificationRepository;
 
-      final userSettings = DI.get<LocalKeyValueStore>();
-      userSettings.set(.lastUsedCompanyCode, '1285');
+      DI.get<UserPropertiesRepository>().saveUserProperty(.lastUsedCompanyCode, '1285');
 
       trainIdentificationRepository.companyMatchData = {
         CompanyMatch(companyCode: '1285', startDate: DateTime.now()),

@@ -10,7 +10,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:user_properties/component.dart';
 
 import '../integration/integration_test_app.dart';
-import '../mocks/mock_local_key_value_store.dart';
 import '../util/test_time_constants.dart';
 import '../util/test_utils.dart';
 
@@ -165,8 +164,7 @@ void main() {
         final timeConstants = DI.get<TimeConstants>() as TestTimeConstants;
         timeConstants.chevronAnimationDurationValue = Duration(seconds: 3);
 
-        final localStore = DI.get<LocalKeyValueStore>() as MockLocalKeyValueStore;
-        localStore.set(.showStationSignals, false);
+        DI.get<UserPropertiesRepository>().saveUserProperty(.showStationSignals, false);
 
         await loadJourney(tester, trainNumber: 'T9999M');
 
