@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 export 'package:app/i18n/gen/app_localizations.dart';
 export 'package:app/i18n/src/build_context_x.dart';
 
-final localizationDelegates = <LocalizationsDelegate<dynamic>>[
+const localizationDelegates = <LocalizationsDelegate<dynamic>>[
   AppLocalizations.delegate,
   ...GlobalMaterialLocalizations.delegates,
 ];
