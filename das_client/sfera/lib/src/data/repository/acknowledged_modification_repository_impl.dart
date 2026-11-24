@@ -35,7 +35,12 @@ class AcknowledgedModificationRepositoryImpl({
     if (_lastCleanupDate == null || !_lastCleanupDate!.isSameDay(now)) {
       _lastCleanupDate = now;
       final cutoffDate = now.subtract(const Duration(days: JourneyPoint.showModificationDays));
-      await _databaseService.deleteExpiredModification(cutoffDate);
+      try {
+        await _databaseService.deleteExpiredModification(cutoffDate);
+      } catch (e) {
+        _lastCleanupDate = null;
+        rethrow;
+      }
     }
   }
 

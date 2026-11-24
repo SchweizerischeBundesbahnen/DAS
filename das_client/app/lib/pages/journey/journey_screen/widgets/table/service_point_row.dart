@@ -8,6 +8,7 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_advancement_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/journey_table_view_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/service_point_information_cell_title.dart';
@@ -28,6 +29,7 @@ import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:personal_notes/component.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -148,6 +150,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       shortTermChange = shortTermChange.startData == data ? shortTermChange : null;
     }
 
+    final personalNotesViewModel = context.read<PersonalNotesViewModel>();
     return DASTableCell(
       onTap: () {
         if (shouldOpenDetailModalOnTap) {
@@ -160,13 +163,23 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         mainAxisSize: .min,
         crossAxisAlignment: .start,
         children: [
-          ServicePointInformationCellTitle(
-            name: data.betweenBrackets ? '(${data.name})' : data.name,
-            foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
-            isStation: data.isStation,
-            trackGroup: data.trackGroup,
-            shortTermChange: shortTermChange,
-            showModification: data.hasModificationUpdated && config.showModification,
+          StreamBuilder<List<PersonalNote>>(
+            stream: personalNotesViewModel.personalNotes,
+            initialData: personalNotesViewModel.personalNotesValue,
+            builder: (context, snapshot) {
+              final hasPersonalNotesWithoutFootNote = (snapshot.data ?? const []).any(
+                (note) => note.locationCode == data.locationCode && !note.showAsFootnote,
+              );
+              return ServicePointInformationCellTitle(
+                name: data.betweenBrackets ? '(${data.name})' : data.name,
+                foregroundColor: _isNextStop && highlightNextStop ? SBBColors.white : null,
+                isStation: data.isStation,
+                trackGroup: data.trackGroup,
+                shortTermChange: shortTermChange,
+                showPersonalNoteIcon: hasPersonalNotesWithoutFootNote,
+                showModification: data.hasModificationUpdated && config.showModification,
+              );
+            },
           ),
           ..._stationProperties(context),
         ],
