@@ -113,13 +113,13 @@ void main() {
       /// closed segments means they have start and end location (regardless whether they're unknown)
       group('closed segments', () {
         test('whenSegmentsDoNotOverlap_returnTwoSegments', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(1050.0);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -140,7 +140,7 @@ void main() {
         });
 
         test('whenSegmentsWithDifferentValuesDoOverlap_returnTwoSegments', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
           when(mockAdvisedSpeedA1.speed).thenReturn('80');
@@ -148,7 +148,7 @@ void main() {
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -170,13 +170,13 @@ void main() {
         });
 
         test('whenSegmentsWithSameValuesDoOverlap_returnSingleSegment', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3000.0);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -191,13 +191,13 @@ void main() {
         });
 
         test('whenSegmentAContainsSegmentB_returnSingleSegment', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(1001.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(2950.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -212,13 +212,13 @@ void main() {
         });
 
         test('whenSegmentsContainWithUnknownLocationCloseToLastSP_returnSingleSegmentEndingOnLastSP', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3001.0);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(1001.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(2999.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -242,36 +242,36 @@ void main() {
       group('open segments', () {
         /// 1. not well formed
         test('whenHasOnlyEndAndNoStart_thenReturnsEmpty', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
         });
 
         test('whenHasOnlyStartAndNoEnd_thenReturnsEmpty', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(1000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
         });
 
         test('whenHasOnlyWholeSP_thenReturnsEmpty', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startEndQualifier).thenReturn(.wholeSp);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
         });
 
         /// 2. well formed
         test('whenOneSegmentStartsOtherSegmentEnds_thenReturnsCorrectSegment', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -286,11 +286,11 @@ void main() {
         });
 
         test('whenOneSegmentStartsOtherSegmentEndsUnknown_thenReturnsCorrectSegment', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3010.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, segmentProfiles, journey),
             orderedEquals([
@@ -320,13 +320,13 @@ void main() {
       });
 
       test('whenDoNotOverlap_returnTwoSegments', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintA1.endLocation).thenReturn(2950.0);
         when(mockTemporaryConstraintB1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintB1.endLocation).thenReturn(1050.0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, segmentProfiles, journey),
           orderedEquals([
@@ -347,11 +347,11 @@ void main() {
       });
 
       test('whenOneStartsInFirstSegmentOtherEndsInNext_returnOneSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintB1.endLocation).thenReturn(1050.0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, segmentProfiles, journey),
           orderedEquals([
@@ -388,7 +388,7 @@ void main() {
       });
 
       test('whenDoNotOverlap_returnThreeSegments', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintA1.endLocation).thenReturn(1050.0);
         when(mockTemporaryConstraintB1.startLocation).thenReturn(950.0);
@@ -396,7 +396,7 @@ void main() {
         when(mockTemporaryConstraintC1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, segmentProfiles, journey),
           orderedEquals([
@@ -423,31 +423,31 @@ void main() {
       });
 
       test('whenOneStartsInFirstSegmentOtherEndsInLastSegment_thenSkip', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([]);
         when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
       });
 
       test('whenOneStartsInFirstSegmentOtherIsWholeSP_thenSkip', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(.wholeSp);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
       });
 
       test('whenOneStartsInFirstSegmentOtherIsWholeSPAndHasEndInLast_thenReturnCorrectSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
         when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(.wholeSp);
         when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, segmentProfiles, journey),
           orderedEquals([

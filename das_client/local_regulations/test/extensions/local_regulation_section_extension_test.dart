@@ -4,14 +4,14 @@ import 'package:sfera/component.dart';
 
 void main() {
   test('toHtml_whenWithAbbreviation_thenRowTemplate', () {
-    // ARRANGE
+    // GIVEN
     final section = LocalRegulationSection(
       id: '1',
       title: 'R Profil EBV O2',
       content: '<div>This is a text</div>',
     );
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = section.toHtml();
     expectIgnoreNewLines(html, '''
       <div class="base-row">
@@ -24,14 +24,14 @@ void main() {
       ''');
   });
   test('toHtml_whenWithAbbreviationNoContent_thenRowTemplateWithoutContent', () {
-    // ARRANGE
+    // GIVEN
     final section = LocalRegulationSection(
       id: '1',
       title: 'R Profil EBV O2',
       content: null,
     );
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = section.toHtml();
     expectIgnoreNewLines(html, '''
       <div class="base-row">
@@ -43,14 +43,14 @@ void main() {
       ''');
   });
   test('toHtml_whenWithoutAbbreviation_thenStandardTemplate', () {
-    // ARRANGE
+    // GIVEN
     final section = LocalRegulationSection(
       id: '1',
       title: 'ZUE Zürich',
       content: '<div>This is a text</div>',
     );
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = section.toHtml();
     expectIgnoreNewLines(html, '''
       <h3>ZUE Zürich</h3>
@@ -58,28 +58,28 @@ void main() {
       ''');
   });
   test('toHtml_whenWithoutAbbreviationAndContent_thenStandardTemplateWithoutContent', () {
-    // ARRANGE
+    // GIVEN
     final section = LocalRegulationSection(
       id: '1',
       title: 'ZUE Zürich',
       content: null,
     );
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = section.toHtml();
     expectIgnoreNewLines(html, '''
       <h3>ZUE Zürich</h3>
       ''');
   });
   test('toHtml_whenWithoutTitleAndContent_thenEmptyString', () {
-    // ARRANGE
+    // GIVEN
     final section = LocalRegulationSection(
       id: '1',
       title: null,
       content: null,
     );
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = section.toHtml();
     expectIgnoreNewLines(html, '');
   });

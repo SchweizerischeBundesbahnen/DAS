@@ -74,25 +74,25 @@ void main() {
 
     group('expect empty journey position model', () {
       test('modelValue_whenNoJourney_thenIsEmpty', () {
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel()));
         expect(emitRegister, hasLength(0));
       });
 
       test('currentPosition_whenEmptyJourneyAndNoSignaledPosition_thenIsEmpty', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(Journey(metadata: Metadata(), data: []));
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel()));
         expect(emitRegister, hasLength(0));
       });
 
       test('currentPosition_whenEmptyJourneyAndSignaledPosition_thenIsEmpty', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -103,13 +103,13 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel()));
         expect(emitRegister, hasLength(0));
       });
 
       test('currentPosition_whenSignaledPositionBeforeFirstPoint_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -120,7 +120,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel()));
         expect(emitRegister, hasLength(0));
       });
@@ -128,13 +128,13 @@ void main() {
 
     group('currentPosition calculation', () {
       test('currentPosition_whenNoSignaledPositionAndNoManualPosition_thenIsFirst', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(Journey(metadata: Metadata(), data: [zeroSignal]));
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         final expectedModel = JourneyPositionModel(currentPosition: zeroSignal);
         expect(testee.modelValue, equals(expectedModel));
         expect(emitRegister, hasLength(1));
@@ -142,7 +142,7 @@ void main() {
       });
 
       test('currentPosition_whenSignaledPositionOnSignal_thenReturnsSignal', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -153,13 +153,13 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: tenSignal)));
         expect(emitRegister, hasLength(1));
       });
 
       test('currentPosition_whenJourneyUpdatedWithDifferentPointSameOrder_thenReturnsDifferentPoint', () {
-        // ARRANGE
+        // GIVEN
         final aJourney = Journey(
           metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
           data: [tenSignal],
@@ -175,7 +175,7 @@ void main() {
           testAsync.flushMicrotasks();
         });
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           emitRegister,
           orderedEquals([
@@ -186,7 +186,7 @@ void main() {
       });
 
       test('currentPosition_whenSignaledPositionAfterPoint_thenReturnsPointBefore', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -197,13 +197,13 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: tenSignal)));
         expect(emitRegister, hasLength(1));
       });
 
       test('currentPosition_whenSignalAndServicePointOnSameOrder_thenPrefersSignal', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -215,7 +215,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(emitRegister, hasLength(1));
       });
@@ -240,7 +240,7 @@ void main() {
     /// signal instead.
     group('timed service point advancements', () {
       test('currentPosition_whenSPWithoutArrivalTime_thenReturnsPointBeforeSPAndDoesNotTimeAdvance', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 16, kilometre: []);
         testAsync.run((_) {
           rxMockPunctuality.add(
@@ -258,7 +258,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.modelValue,
           equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
@@ -267,7 +267,7 @@ void main() {
       });
 
       test('currentPosition_whenSPWithOperationalArrivalTimeAndNoDelay_thenSetsToSPAfterOperationalTimeReached', () {
-        // ARRANGE - passenger train: VPro speed and PüA reports are available
+        // GIVEN - passenger train: VPro speed and PüA reports are available
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -318,7 +318,7 @@ void main() {
       });
 
       test('currentPosition_whenArrivalTimeOffTenSecondBoundary_thenDoesNotAdvanceEarly', () {
-        // ARRANGE - guards against flooring the arrival time to whole ten seconds of the wall clock
+        // GIVEN - guards against flooring the arrival time to whole ten seconds of the wall clock
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -362,7 +362,7 @@ void main() {
       test(
         'currentPosition_whenSPWithOperationalArrivalTimeAndPositiveDelay_thenReturnsSPAfterOperationalTimeMinusDelay',
         () {
-          // ARRANGE - passenger train: VPro speed and PüA reports are available
+          // GIVEN - passenger train: VPro speed and PüA reports are available
           final now = DateTime(1970);
           final clock = Clock(() => now);
 
@@ -424,7 +424,7 @@ void main() {
       );
 
       test('currentPosition_whenSPWithOperationalArrivalTimeAndNegativeDelay_thenCurrentPositionIsDirectlySP', () {
-        // ARRANGE - passenger train: VPro speed and PüA reports are available
+        // GIVEN - passenger train: VPro speed and PüA reports are available
         final now = DateTime(1970);
         final clock = Clock(() => now);
 
@@ -473,7 +473,7 @@ void main() {
       });
 
       test('currentPosition_whenSPWithoutCalculatedSpeed_thenAdvancesByOperationalTimeWithoutDelay', () {
-        // ARRANGE - cargo/empty material/short-term journey: operational forecast times exist, but never VPro or PüA.
+        // GIVEN - cargo/empty material/short-term journey: operational forecast times exist, but never VPro or PüA.
         // A visible delay (e.g. left over from a diverted passenger train) must be ignored for such SPs.
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -503,7 +503,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT - the operational arrival time is used, not the planned one
+        // WHEN & THEN - the operational arrival time is used, not the planned one
         testAsync.elapse(Duration(seconds: 35));
         testAsync.flushMicrotasks();
         expect(testee.modelValue.currentPosition, equals(tenSignal));
@@ -516,7 +516,7 @@ void main() {
       });
 
       test('currentPosition_whenSPWithoutCalculatedSpeedAndOnlyPlannedArrivalTime_thenAdvancesByPlannedTime', () {
-        // ARRANGE - edge case: journey starting abroad or cargo/empty material started >4h early has only planned
+        // GIVEN - edge case: journey starting abroad or cargo/empty material started >4h early has only planned
         // times (no operational times, no VPro, no PüA) until the first CH signal is passed
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -540,17 +540,17 @@ void main() {
         testAsync.flushMicrotasks();
         expect(testee.modelValue.currentPosition, equals(tenSignal));
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: 31));
         testAsync.flushMicrotasks();
 
-        // EXPECT - advanced by planned time as fallback
+        // THEN - advanced by planned time as fallback
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(emitRegister, hasLength(2));
       });
 
       test('currentPosition_whenSPWithCalculatedSpeedAndNoPunctuality_thenDoesNotAdvance', () {
-        // ARRANGE - passenger train whose PüA has not (yet) been received: punctuality stays hidden although the SP
+        // GIVEN - passenger train whose PüA has not (yet) been received: punctuality stays hidden although the SP
         // has a calculated (VPro) speed, so the advancement waits for the next signal
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -577,17 +577,17 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: 120));
         testAsync.flushMicrotasks();
 
-        // EXPECT - no advancement without visible punctuality
+        // THEN - no advancement without visible punctuality
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(emitRegister, hasLength(1));
       });
 
       test('currentPosition_whenSPWithCalculatedSpeedAndStalePunctuality_thenDoesNotAdvance', () {
-        // ARRANGE - passenger train whose PüA reports stopped coming in: with a VPro speed the advancement waits for
+        // GIVEN - passenger train whose PüA reports stopped coming in: with a VPro speed the advancement waits for
         // the next signal instead of using the outdated delay
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -620,17 +620,17 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: 120));
         testAsync.flushMicrotasks();
 
-        // EXPECT - no advancement with stale punctuality
+        // THEN - no advancement with stale punctuality
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(emitRegister, hasLength(1));
       });
 
       test('currentPosition_whenDivertedPassengerTrain_thenAppliesDelayOnlyOnSPsWithCalculatedSpeed', () {
-        // ARRANGE - diverted passenger train: the diverted section behaves like cargo (SP a without VPro/PüA),
+        // GIVEN - diverted passenger train: the diverted section behaves like cargo (SP a without VPro/PüA),
         // the rest like a passenger train (SP b with VPro and PüA)
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -677,7 +677,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT - SP a is reached by operational time, the delay is ignored on the diverted section
+        // WHEN & THEN - SP a is reached by operational time, the delay is ignored on the diverted section
         testAsync.elapse(Duration(seconds: 51));
         testAsync.flushMicrotasks();
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
@@ -709,7 +709,7 @@ void main() {
       });
 
       test('currentPosition_whenSignalBetweenPositionAndNextSP_thenDoesNotAdvance', () {
-        // ARRANGE - a signal before the next service point cancels the time-based advancement
+        // GIVEN - a signal before the next service point cancels the time-based advancement
         const fifteenSignal = Signal(order: 15, kilometre: []);
         final aServicePoint = ServicePoint(
           name: 'a',
@@ -739,17 +739,17 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: 120));
         testAsync.flushMicrotasks();
 
-        // EXPECT - still on the point before the signal
+        // THEN - still on the point before the signal
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(emitRegister, hasLength(1));
       });
 
       test('currentPosition_whenOnServicePoint_thenDoesNotAdvanceToNextSPByTime', () {
-        // ARRANGE - time-based advancement only starts from the last signal before a service point
+        // GIVEN - time-based advancement only starts from the last signal before a service point
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
         final bServicePoint = ServicePoint(
           name: 'b',
@@ -779,11 +779,11 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: 120));
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(emitRegister, hasLength(1));
       });
@@ -805,7 +805,7 @@ void main() {
         );
         final journeyData = [zeroSignal, tenSignal, fifteenSignal, aServicePoint, twentySignal];
 
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockPunctuality.add(
             DelayModel.visible(
@@ -825,7 +825,7 @@ void main() {
         testAsync.flushMicrotasks();
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
 
-        // ACT
+        // WHEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -839,7 +839,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(testee.modelValue.lastPosition, equals(aServicePoint));
       });
@@ -855,7 +855,7 @@ void main() {
         );
         final journeyData = [zeroSignal, tenSignal, twentySignal, aServicePoint];
 
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -871,7 +871,7 @@ void main() {
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(testee.modelValue.isManualPosition, isTrue);
 
-        // ACT
+        // WHEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -882,13 +882,13 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(testee.modelValue.isManualPosition, isFalse);
       });
 
       test('currentPosition_whenJourneyUpdateWithUnchangedSignaledPosition_thenKeepsManualPosition', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -912,7 +912,7 @@ void main() {
         });
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
 
-        // ACT
+        // WHEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -923,7 +923,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(testee.modelValue.isManualPosition, isTrue);
       });
@@ -931,7 +931,7 @@ void main() {
 
     group('lastPosition calculation', () {
       test('lastPosition_whenJourneyUpdatedWithSameCurrentPosition_thenReturnsLastPosition', () {
-        // ARRANGE
+        // GIVEN
         final aJourney = Journey(
           metadata: Metadata(signaledPosition: SignaledPosition(order: 10)),
           data: [tenSignal],
@@ -943,7 +943,7 @@ void main() {
           testAsync.flushMicrotasks();
         });
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: tenSignal, lastPosition: null)));
         expect(emitRegister, hasLength(1));
         expect(
@@ -955,7 +955,7 @@ void main() {
       });
 
       test('lastPosition_whenJourneyUpdatedWithDifferentCurrentPosition_thenReturnsCorrectLastPosition', () {
-        // ARRANGE
+        // GIVEN
         final aJourney = Journey(
           metadata: Metadata(),
           data: [zeroSignal],
@@ -971,7 +971,7 @@ void main() {
           testAsync.flushMicrotasks();
         });
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(emitRegister, hasLength(2));
         expect(
           emitRegister,
@@ -985,7 +985,7 @@ void main() {
       test(
         'lastPosition_whenJourneyUpdatedWithDifferentValuesAndCurrentPosition_thenReturnsCorrectLastPosition',
         () {
-          // ARRANGE
+          // GIVEN
           final aJourney = Journey(
             metadata: Metadata(),
             data: [zeroSignal],
@@ -1001,7 +1001,7 @@ void main() {
             testAsync.flushMicrotasks();
           });
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             emitRegister,
             orderedEquals([
@@ -1015,7 +1015,7 @@ void main() {
 
     group('previous and next service point', () {
       test('previousServicePoint_whenNoServicePoints_isNull', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -1026,12 +1026,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousServicePoint, isNull);
       });
 
       test('previousServicePoint_whenNoServicePointBeforeCurrentPosition_isNull', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -1043,12 +1043,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousServicePoint, isNull);
       });
 
       test('previousServicePoint_whenCurrentPositionIsServicePoint_thenIsThisServicePoint', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -1060,12 +1060,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousServicePoint, equals(aServicePoint));
       });
 
       test('previousServicePoint_whenCurrentPositionIsAfterServicePoint_thenIsThisServicePoint', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 10, kilometre: []);
         final bServicePoint = ServicePoint(name: 'b', abbreviation: '', locationCode: '', order: 15, kilometre: []);
         testAsync.run((_) {
@@ -1078,12 +1078,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousServicePoint, equals(bServicePoint));
       });
 
       test('nextServicePoint_whenHasNoServicePoints_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -1094,12 +1094,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextServicePoint, isNull);
       });
 
       test('nextServicePoint_whenIsOnServicePointAndNoOther_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -1111,12 +1111,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextServicePoint, isNull);
       });
 
       test('nextServicePoint_whenIsOnServicePointAndHasOther_thenIsOther', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
         final bServicePoint = ServicePoint(name: 'b', abbreviation: '', locationCode: '', order: 25, kilometre: []);
         testAsync.run((_) {
@@ -1129,14 +1129,14 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextServicePoint, equals(bServicePoint));
       });
     });
 
     group('previous and next stop', () {
       test('previousStop_whenHasNoServicePoints_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -1147,12 +1147,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, isNull);
       });
 
       test('previousStop_whenIsOnServicePointThatIsNoStop_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -1164,12 +1164,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, isNull);
       });
 
       test('previousStop_whenIsOnServicePointThatIsStopAndNoOther_thenIsThisServicePoint', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1188,12 +1188,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, equals(aServicePoint));
       });
 
       test('previousStop_whenIsOnServicePointAndFutureOtherThatIsStop_thenIsCurrentOne', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1220,12 +1220,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, equals(aServicePoint));
       });
 
       test('previousStop_whenIsOnServicePointAndHasPastOtherThatIsStop_thenIsCurrentOne', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1252,12 +1252,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, equals(bServicePoint));
       });
 
       test('nextStop_whenHasNoServicePoints_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((_) {
           rxMockJourney.add(
             Journey(
@@ -1268,12 +1268,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextStop, isNull);
       });
 
       test('nextStop_whenIsOnServicePointAndNoOther_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(name: 'a', abbreviation: '', locationCode: '', order: 20, kilometre: []);
         testAsync.run((_) {
           rxMockJourney.add(
@@ -1285,12 +1285,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextStop, isNull);
       });
 
       test('nextStop_whenIsOnServicePointAndHasOtherThatIsNoStop_thenIsNull', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1310,12 +1310,12 @@ void main() {
           testAsync.flushMicrotasks();
         });
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextStop, isNull);
       });
 
       test('nextStop_whenIsOnServicePointAndHasOtherThatIsStop_thenIsOther', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1342,12 +1342,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextStop, equals(bServicePoint));
       });
 
       test('nextStop_whenSwitchbackStation_thenSkipsDepartureStation', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1396,12 +1396,12 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.nextStop, equals(cServicePoint));
       });
 
       test('previousStop_whenSwitchbackStation_thenSkipsDepartureStation', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1450,14 +1450,14 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(testee.modelValue.previousStop, equals(aServicePoint));
       });
     });
 
     group('manual position', () {
       test('setManualPosition_whenHasNoSignaledPosition_thenMovesCurrentAndLastPosition', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1486,21 +1486,21 @@ void main() {
         expect(testee.modelValue.currentPosition, equals(zeroSignal));
         expect(testee.modelValue.isManualPosition, isFalse);
 
-        // ACT
+        // WHEN
         testAsync.run((async) {
           journeySettingsViewModel.updateJourneyAdvancement(Manual());
           testee.setManualPosition(aServicePoint);
           async.flushMicrotasks();
         });
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(testee.modelValue.lastPosition, equals(zeroSignal));
         expect(testee.modelValue.isManualPosition, isTrue);
       });
 
       test('setManualPosition_whenHasSignaledPosition_thenMovesToNewPosition', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1529,21 +1529,21 @@ void main() {
         expect(testee.modelValue.currentPosition, equals(bServicePoint));
         expect(testee.modelValue.isManualPosition, isFalse);
 
-        // ACT
+        // WHEN
         testAsync.run((async) {
           journeySettingsViewModel.updateJourneyAdvancement(Manual());
           testee.setManualPosition(aServicePoint);
           async.flushMicrotasks();
         });
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(testee.modelValue.lastPosition, equals(bServicePoint));
         expect(testee.modelValue.isManualPosition, isTrue);
       });
 
       test('setManualPosition_whenIsGivenNullPosition_thenMovesToSignaledPosition', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1582,7 +1582,7 @@ void main() {
         expect(testee.modelValue.lastPosition, equals(bServicePoint));
         expect(testee.modelValue.isManualPosition, isTrue);
 
-        // ACT
+        // WHEN
         testAsync.run((_) {
           testee.setManualPosition(null);
           testAsync.flushMicrotasks();
@@ -1594,7 +1594,7 @@ void main() {
       });
 
       test('currentPosition_afterSetManualPositionThenJourneyUpdate_movesToJourneyUpdatePosition', () {
-        // ARRANGE
+        // GIVEN
         final aServicePoint = ServicePoint(
           name: 'a',
           abbreviation: '',
@@ -1626,7 +1626,7 @@ void main() {
         expect(testee.modelValue.currentPosition, equals(aServicePoint));
         expect(testee.modelValue.isManualPosition, isTrue);
 
-        // ACT
+        // WHEN
         testAsync.run((_) {
           journeySettingsViewModel.updateJourneyAdvancement(Automatic());
           rxMockJourney.add(
@@ -1638,7 +1638,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(bServicePoint));
         expect(testee.modelValue.isManualPosition, isFalse);
       });
@@ -1648,7 +1648,7 @@ void main() {
       test(
         'setManualPosition_whenSPHasArrivalTimeAndNextSPHasArrivalTime_thenAutoAdvancesToNextSPAfterTimer',
         () {
-          // ARRANGE
+          // GIVEN
           // clock is at DateTime(1970) == T=0
           // arrivalTime of A = T - 10s, so timeSinceArrival = 10s
           // nextArrivalTime of B = T + 30s
@@ -1692,11 +1692,11 @@ void main() {
           expect(testee.modelValue.isManualPosition, isTrue);
           emitRegister.clear();
 
-          // ACT – elapse past the 40 s timer
+          // WHEN – elapse past the 40 s timer
           testAsync.elapse(Duration(seconds: 41));
           testAsync.flushMicrotasks();
 
-          // EXPECT
+          // THEN
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
           expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(1));
@@ -1707,7 +1707,7 @@ void main() {
       test(
         'setManualPosition_whenSPHasNoArrivalTime_thenDoesNotAutoAdvance',
         () {
-          // ARRANGE – A has no arrival time → no timer is set
+          // GIVEN – A has no arrival time → no timer is set
           final aServicePoint = ServicePoint(
             name: 'a',
             abbreviation: '',
@@ -1742,11 +1742,11 @@ void main() {
           });
           emitRegister.clear();
 
-          // ACT
+          // WHEN
           testAsync.elapse(Duration(seconds: 100));
           testAsync.flushMicrotasks();
 
-          // EXPECT – still on A
+          // THEN – still on A
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
           expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
@@ -1756,7 +1756,7 @@ void main() {
       test(
         'setManualPosition_whenCalledAgainBeforeTimerExpires_thenOldTimerIsCancelledAndPositionDoesNotChange',
         () {
-          // ARRANGE
+          // GIVEN
           // A → B timer would fire after 40 s
           // After setting B as position, A→B timer is cancelled; B has no C arrival time so no new timer
           final aServicePoint = ServicePoint(
@@ -1812,11 +1812,11 @@ void main() {
           expect(testee.modelValue.isManualPosition, isTrue);
           emitRegister.clear();
 
-          // ACT – advance past where A→B timer would have fired
+          // WHEN – advance past where A→B timer would have fired
           testAsync.elapse(Duration(seconds: 50));
           testAsync.flushMicrotasks();
 
-          // EXPECT – position remains B (old timer did not fire)
+          // THEN – position remains B (old timer did not fire)
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
           expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
@@ -1826,7 +1826,7 @@ void main() {
       test(
         'setManualPosition_whenTimerFiresButModeIsNoLongerManual_thenDoesNotAutoAdvance',
         () {
-          // ARRANGE
+          // GIVEN
           final aServicePoint = ServicePoint(
             name: 'a',
             abbreviation: '',
@@ -1872,11 +1872,11 @@ void main() {
           });
           emitRegister.clear();
 
-          // ACT – let the timer fire
+          // WHEN – let the timer fire
           testAsync.elapse(Duration(seconds: 41));
           testAsync.flushMicrotasks();
 
-          // EXPECT – guard `isInManualCycle` prevented the advancement
+          // THEN – guard `isInManualCycle` prevented the advancement
           expect(testee.modelValue.currentPosition, isNot(equals(bServicePoint)));
           expect(testee.modelValue.isManualPosition, isTrue);
           expect(emitRegister, hasLength(0));
@@ -1886,7 +1886,7 @@ void main() {
       test(
         'setManualPosition_whenTimerAdvances_thenContinuesAdvancingWithSameTimeDifference',
         () {
-          // ARRANGE
+          // GIVEN
           // arrivalTime of A = T - 10s, so timeSinceArrival = 10s
           // arrivalTime of B = T + 30s => advancement to B after 40s
           // arrivalTime of C = T + 60s => advancement to C 30s after B (time difference of 10s is kept)
@@ -1938,7 +1938,7 @@ void main() {
           });
           expect(testee.modelValue.currentPosition, equals(aServicePoint));
 
-          // ACT & EXPECT – advances to B after 40s
+          // WHEN & THEN – advances to B after 40s
           testAsync.elapse(Duration(seconds: 41));
           testAsync.flushMicrotasks();
           expect(testee.modelValue.currentPosition, equals(bServicePoint));
@@ -1959,7 +1959,7 @@ void main() {
 
     group('timed route advancement (Iselle -> Domodossola)', () {
       test('handleTimedRoute_whenInTimedRouteWithPlannedArrivalTime_thenAdvancesToNextServicePointAfterTimer', () {
-        // ARRANGE - Set up timed route: Iselle (CH01952) -> Varzo (CH01951)
+        // GIVEN - Set up timed route: Iselle (CH01952) -> Varzo (CH01951)
         final point1 = ServicePoint(
           name: 'Iselle',
           abbreviation: 'ISL',
@@ -2000,11 +2000,11 @@ void main() {
         expect(emitRegister, hasLength(1));
         emitRegister.clear();
 
-        // ACT - Elapse time until service point should be reached
+        // WHEN - Elapse time until service point should be reached
         testAsync.elapse(Duration(seconds: 41));
         testAsync.flushMicrotasks();
 
-        // EXPECT - Position should now be at the next timed service point
+        // THEN - Position should now be at the next timed service point
         expect(
           testee.modelValue.currentPosition,
           equals(point2),
@@ -2025,7 +2025,7 @@ void main() {
       });
 
       test('handleTimedRoute_whenInSecondTimedRoute_thenAdvancesToCorrectServicePoint', () {
-        // ARRANGE - Set up second timed route: Pino Confine (CH15419) -> PINT (CH05862)
+        // GIVEN - Set up second timed route: Pino Confine (CH15419) -> PINT (CH05862)
         final point1 = ServicePoint(
           name: 'Pino Confine',
           abbreviation: 'PIN',
@@ -2058,11 +2058,11 @@ void main() {
         expect(testee.modelValue.isManualPosition, isFalse);
         emitRegister.clear();
 
-        // ACT - Elapse time until service point should be reached
+        // WHEN - Elapse time until service point should be reached
         testAsync.elapse(Duration(seconds: 36));
         testAsync.flushMicrotasks();
 
-        // EXPECT - Position should advance to second timed service point
+        // THEN - Position should advance to second timed service point
         expect(
           testee.modelValue.currentPosition,
           equals(point2),
@@ -2071,7 +2071,7 @@ void main() {
       });
 
       test('handleTimedRoute_whenTimedPointReachedWithNegativeTime_thenAdvancesImmediately', () {
-        // ARRANGE - Create a timed route where the service point should already be reached
+        // GIVEN - Create a timed route where the service point should already be reached
         final point1 = ServicePoint(
           name: 'Iselle',
           abbreviation: 'ISL',
@@ -2100,7 +2100,7 @@ void main() {
         });
         testAsync.flushMicrotasks();
 
-        // EXPECT - Position is set to service point immediately
+        // THEN - Position is set to service point immediately
         expect(
           testee.modelValue.currentPosition,
           equals(point2),
@@ -2137,55 +2137,55 @@ void main() {
       }
 
       test('isTrainInMotion_whenNoPositionReported_thenIsFalse', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney();
 
-        // EXPECT - position defaults to the first journey point, the train has not departed yet
+        // THEN - position defaults to the first journey point, the train has not departed yet
         expect(testee.modelValue.currentPosition, equals(firstServicePoint));
         expect(testee.modelValue.isTrainInMotion, isFalse);
       });
 
       test('isTrainInMotion_whenOnFirstServicePoint_thenIsFalse', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney(signaledOrder: 5);
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(firstServicePoint));
         expect(testee.modelValue.isTrainInMotion, isFalse);
       });
 
       test('isTrainInMotion_whenBetweenFirstAndLastServicePoint_thenIsTrue', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney(signaledOrder: 10);
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(testee.modelValue.isTrainInMotion, isTrue);
       });
 
       test('isTrainInMotion_whenOnIntermediateServicePoint_thenIsTrue', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney(signaledOrder: 15);
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(middleServicePoint));
         expect(testee.modelValue.isTrainInMotion, isTrue);
       });
 
       test('isTrainInMotion_whenOnLastServicePoint_thenIsFalse', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney(signaledOrder: 25);
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(lastServicePoint));
         expect(testee.modelValue.isTrainInMotion, isFalse);
       });
 
       test('isTrainInMotion_whenJourneyHasNoServicePoints_thenIsFalse', () {
-        // ARRANGE & ACT
+        // GIVEN & WHEN
         addJourney(signaledOrder: 10, data: [zeroSignal, tenSignal, twentySignal]);
 
-        // EXPECT
+        // THEN
         expect(testee.modelValue.currentPosition, equals(tenSignal));
         expect(testee.modelValue.isTrainInMotion, isFalse);
       });

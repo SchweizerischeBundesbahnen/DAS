@@ -23,13 +23,13 @@ void main() {
     );
 
     test('fromVelocities_whenVelocityHasSpeed_thenReturnTrainSeriesSpeed', () {
-      // ARRANGE
+      // GIVEN
       final velocity = VelocityDto(attributes: {'trainSeries': 'A', 'speed': '50', 'reduced': 'false'});
 
-      // ACT
+      // WHEN
       final result = SpeedMapper.fromVelocities([velocity]);
 
-      // EXPECT
+      // THEN
       expect(result, isNotEmpty);
       expect(result?.first.trainSeries, TrainSeries.A);
       expect((result?.first.speed as SingleSpeed).value, '50');
@@ -37,15 +37,15 @@ void main() {
     });
 
     test('fromVelocities_whenVelocityHasSpeedAndBrakeSeries_thenReturnTrainSeriesSpeedWithBrakeSeries', () {
-      // ARRANGE
+      // GIVEN
       final velocity = VelocityDto(
         attributes: {'trainSeries': 'A', 'brakeSeries': '1', 'speed': '50', 'reduced': 'false'},
       );
 
-      // ACT
+      // WHEN
       final result = SpeedMapper.fromVelocities([velocity]);
 
-      // EXPECT
+      // THEN
       expect(result, isNotEmpty);
       expect(result?.first.trainSeries, TrainSeries.A);
       expect(result?.first.brakedWeightPercentage, 1);
@@ -54,10 +54,10 @@ void main() {
     });
 
     test('fromVelocities_whenVelocityHasNoSpeed_thenReturnEmptyList', () {
-      // ARRANGE
+      // GIVEN
       final velocity = VelocityDto(attributes: {'trainSeries': 'A', 'reduced': 'false'});
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(SpeedMapper.fromVelocities([velocity]), isEmpty);
     });
 
@@ -85,7 +85,7 @@ void main() {
     );
 
     test('fromGraduatedSpeedInfo_whenGraduatedSpeedInfoHasEntities_thenReturnTrainSeriesSpeedList', () {
-      // ARRANGE
+      // GIVEN
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(
         children: [
           GraduatedSpeedInfoEntriesDto(
@@ -96,10 +96,10 @@ void main() {
         ],
       );
 
-      // ACT
+      // WHEN
       final result = SpeedMapper.fromGraduatedSpeedInfo(graduatedSpeedInfo);
 
-      // EXPECT
+      // THEN
       expect(result, isNotEmpty);
       expect(result?.length, 2);
       expect(result?.first.trainSeries, TrainSeries.A);
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('fromGraduatedSpeedInfo_whenEntityHasText_thenReturnTrainSeriesSpeedWithText', () {
-      // ARRANGE
+      // GIVEN
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(
         children: [
           GraduatedSpeedInfoEntriesDto(
@@ -120,16 +120,16 @@ void main() {
         ],
       );
 
-      // ACT
+      // WHEN
       final result = SpeedMapper.fromGraduatedSpeedInfo(graduatedSpeedInfo);
 
-      // EXPECT
+      // THEN
       expect(result, isNotEmpty);
       expect(result?.first.text, 'Some Text');
     });
 
     test('fromGraduatedSpeedInfo_whenEntityHasNoSpeed_thenReturnEmptyList', () {
-      // ARRANGE
+      // GIVEN
       final graduatedSpeedInfo = GraduatedSpeedInfoDto(
         children: [
           GraduatedSpeedInfoEntriesDto(
@@ -138,7 +138,7 @@ void main() {
         ],
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(SpeedMapper.fromGraduatedSpeedInfo(graduatedSpeedInfo), isEmpty);
     });
 
@@ -153,29 +153,29 @@ void main() {
     );
 
     test('fromVProDataNsp_whenParameterIsNotNewSpeedNetworkSpecificParameterDto_thenReturnNull', () {
-      // ARRANGE
+      // GIVEN
       final vProDataNsp = VProDataNspDto(
         children: [JpContextInformationNspDto(type: 'SomeOtherType')],
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(SpeedMapper.fromVProDataNsp(vProDataNsp), isNull);
     });
 
     test(
       'fromJourneyProfileContextInfoNsp_whenParameterIsNewSpeedNetworkSpecificParameterDto_thenReturnSingleSpeed',
       () {
-        // ARRANGE
+        // GIVEN
         final vProDataNsp = VProDataNspDto(
           children: [
             NewSpeedNetworkSpecificParameterDto(attributes: {'name': 'newSpeed', 'value': '50'}),
           ],
         );
 
-        // ACT
+        // WHEN
         final result = SpeedMapper.fromVProDataNsp(vProDataNsp);
 
-        // EXPECT
+        // THEN
         expect(result, isNotNull);
         expect((result as SingleSpeed).value, '50');
       },

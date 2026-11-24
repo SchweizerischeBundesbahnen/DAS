@@ -41,32 +41,32 @@ void main() {
     });
 
     test('toString_whenCalled_thenReturnsFormattedString', () {
-      // ARRANGE
+      // GIVEN
       final speed = Speed.parse('90-80');
       final expectedString =
           'GraduatedSpeed{speeds: '
           '[SingleSpeed{value: 90, isSquared: false, isCircled: false}, '
           'SingleSpeed{value: 80, isSquared: false, isCircled: false}]}';
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(speed.toString(), equals(expectedString));
     });
 
     test('equality_whenEqual_shouldReturnTrue', () {
-      // ARRANGE
+      // GIVEN
       final a = Speed.parse('120-60');
       final b = Speed.parse('120-60');
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a, equals(b));
     });
 
     test('equality_whenNotEqual_shouldReturnFalse', () {
-      // ARRANGE
+      // GIVEN
       final a = Speed.parse('120-80');
       final b = Speed.parse('120-60');
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a == b, isFalse);
     });
   });

@@ -39,10 +39,10 @@ void main() {
       mockHttpClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((_) => Future.value(Response('', HttpStatus.notFound)));
 
-    // ACT
+    // WHEN
     final result = await testee.formation(operationalTrainNumber, company, operationalDay, null).call();
 
-    // VERIFY
+    // THEN
     expect(result.body, isNull);
   });
 
@@ -66,10 +66,10 @@ void main() {
       mockHttpClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((_) => Future.value(Response(jsonEncode(formationReponseDto), HttpStatus.ok)));
 
-    // ACT
+    // WHEN
     final result = await testee.formation(operationalTrainNumber, company, operationalDay, null).call();
 
-    // VERIFY
+    // THEN
     expect(result.body, isNotNull);
     expect(result.body, formationReponseDto);
   });
@@ -84,7 +84,7 @@ void main() {
       mockHttpClient.get(any, headers: anyNamed('headers')),
     ).thenAnswer((_) => Future.value(Response('', HttpStatus.badRequest, request: Request('get', Uri.parse(baseUrl)))));
 
-    // ACT & VERIFY
+    // WHEN & THEN
     expect(
       () async => await testee.formation(operationalTrainNumber, company, operationalDay, null).call(),
       throwsA(isA<HttpException>()),
@@ -108,7 +108,7 @@ void main() {
 
     final result = await testee.formation(operationalTrainNumber, company, operationalDay, etag).call();
 
-    // VERIFY
+    // THEN
     expect(result.etag, etag);
     final captured = verify(
       mockHttpClient.get(captureAny, headers: captureAnyNamed('headers')),
@@ -133,10 +133,10 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     final result = await testee.transportPaper(relativeUrl).call();
 
-    // VERIFY
+    // THEN
     expect(result.headers['location'], location);
     final captured = verify(mockHttpClient.send(captureAny)).captured.single as Request;
     expect(captured.url, Uri.parse('https://$baseUrl$relativeUrl'));
@@ -156,7 +156,7 @@ void main() {
       ),
     );
 
-    // ACT & VERIFY
+    // WHEN & THEN
     expect(
       () async => await testee.transportPaper(relativeUrl).call(),
       throwsA(isA<HttpException>()),

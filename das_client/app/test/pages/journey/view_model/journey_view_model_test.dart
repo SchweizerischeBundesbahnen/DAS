@@ -51,7 +51,7 @@ void main() {
     });
 
     test('journey_whenSferaJourneyChanges_thenLoadsAndMergesRuIndications', () async {
-      // ARRANGE
+      // GIVEN
       final sferaJourney = _journey(
         trainNumber: '12345',
         servicePoints: [
@@ -71,13 +71,13 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(ruIndications));
 
-      // ACT
+      // WHEN
       currentJourney = sferaJourney;
       sferaJourneySubject.add(sferaJourney);
       await processStreams();
       await processStreams();
 
-      // EXPECT
+      // THEN
       verify(
         mockRuIndicationsRepository.fetchRuIndications(
           trainIdentification: sferaJourney.metadata.trainIdentification!,
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('journey_whenTrainChanges_thenOldRuIndicationsAreClearedImmediately', () async {
-      // ARRANGE
+      // GIVEN
       final firstJourney = _journey(
         trainNumber: '100',
         servicePoints: [_servicePoint(order: 1000, locationCode: 'CH001')],
@@ -120,7 +120,7 @@ void main() {
         ),
       ).thenAnswer((_) => secondJourneyController.stream);
 
-      // ACT
+      // WHEN
       currentJourney = firstJourney;
       sferaJourneySubject.add(firstJourney);
       await processStreams();
@@ -132,7 +132,7 @@ void main() {
       sferaJourneySubject.add(secondJourney);
       await processStreams();
 
-      // EXPECT
+      // THEN
       final journeyAfterTrainChange = testee.journeyValue;
       expect(journeyAfterTrainChange, isNotNull);
       expect(journeyAfterTrainChange!.data.whereType<RuIndication>(), isEmpty);

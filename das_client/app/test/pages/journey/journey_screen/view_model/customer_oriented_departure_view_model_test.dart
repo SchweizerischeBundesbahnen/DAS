@@ -118,23 +118,23 @@ void main() {
     });
 
     test('onResumed_requestsLatestStatus', () {
-      // ACT
+      // WHEN
       testAsync.run((_) => rxOnResumed.add(null));
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       verify(mockRepository.requestLatestStatus()).called(1);
     });
 
     test('status_whenWaitAndFeatureEnabled_emitsAndInsertsNotificationWithoutSound', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: initialTrainNumber, status: .wait);
         return rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       });
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .wait]));
       verifyInOrder([
         mockNotificationViewModel.remove(type: .customerOrientedDeparture),
@@ -143,14 +143,14 @@ void main() {
     });
 
     test('status_whenReadyAndFeatureEnabled_emitsAndInsertsNotificationWithSound', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: initialTrainNumber, status: .ready);
         return rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       });
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .ready]));
       verifyInOrder([
         mockNotificationViewModel.remove(type: .customerOrientedDeparture),
@@ -159,7 +159,7 @@ void main() {
     });
 
     test('status_whenDepartureAndFeatureEnabled_emitsAndOnlyRemovesNotification', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         final customerOrientedDeparture = CustomerOrientedDeparture(
           trainNumber: initialTrainNumber,
@@ -169,7 +169,7 @@ void main() {
       });
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure, .departure]));
       verify(mockNotificationViewModel.remove(type: .customerOrientedDeparture)).called(1);
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
@@ -181,28 +181,28 @@ void main() {
         mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.customerOrientedDeparture),
       ).thenAnswer((_) => Future.value(false));
 
-      // ACT
+      // WHEN
       testAsync.run((_) {
         final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: initialTrainNumber, status: .call);
         return rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       });
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure])); // initial value
       verify(mockNotificationViewModel.remove(type: .customerOrientedDeparture)).called(1);
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
     });
 
     test('status_whenStatusForOtherTrain_doesNotEmitOrInsertNotification', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         final customerOrientedDeparture = CustomerOrientedDeparture(trainNumber: '1234', status: .call);
         return rxCustomerOrientedDeparture.add(customerOrientedDeparture);
       });
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       expect(statusRegister, orderedEquals(<CustomerOrientedDepartureStatus>[.departure])); // initial value
       verifyNever(mockNotificationViewModel.remove(type: .customerOrientedDeparture));
       verifyNever(mockNotificationViewModel.insert(type: .customerOrientedDeparture, callback: anyNamed('callback')));
@@ -217,11 +217,11 @@ void main() {
         companyCode: '1285',
       );
 
-      // ACT
+      // WHEN
       testAsync.run((_) => rxJourney.add(journey));
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       verify(
         mockRepository.subscribe(
           evu: 'SBBP',
@@ -236,11 +236,11 @@ void main() {
       // WHEN
       final journey = _createJourney(trainNumber: '9999', hasTrainId: false);
 
-      // ACT
+      // WHEN
       testAsync.run((_) => rxJourney.add(journey));
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       verifyNever(
         mockRepository.subscribe(
           evu: anyNamed('evu'),
@@ -256,11 +256,11 @@ void main() {
       when(mockAuthenticator.user()).thenAnswer((_) => Future.value(User(userId: 'userId', roles: [Role.observer])));
       final journey = _createJourney(trainNumber: '4444');
 
-      // ACT
+      // WHEN
       testAsync.run((_) => rxJourney.add(journey));
       processStreams(fakeAsync: testAsync);
 
-      // VERIFY
+      // THEN
       verify(
         mockRepository.subscribe(
           evu: anyNamed('evu'),

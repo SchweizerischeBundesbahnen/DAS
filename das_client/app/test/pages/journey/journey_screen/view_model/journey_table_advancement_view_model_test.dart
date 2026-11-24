@@ -95,18 +95,18 @@ void main() {
   });
 
   test('toggleAdvancementMode_whenAutomatic_thenEmitsPausedWithNextAutomatic', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleAdvancementMode();
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Paused(next: Automatic())]));
   });
 
   test('toggleAdvancementMode_whenAutomaticAndTwice_thenEmitsPausedAndAutomatic', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleAdvancementMode();
       processStreams(fakeAsync: testAsync);
@@ -114,37 +114,37 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Paused(next: Automatic()), Automatic()]));
   });
 
   test('toggleAdvancementMode_whenInManual_thenEmitsPausedWithNextManual', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
     });
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleAdvancementMode();
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Paused(next: Manual())]));
   });
 
   test('toggleAdvancementMode_whenManualAndTwice_thenEmitsPausedAndManual', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
       modelRegister.clear();
     });
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleAdvancementMode();
       processStreams(fakeAsync: testAsync);
@@ -152,12 +152,12 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Paused(next: Manual()), Manual()]));
   });
 
   test('toggleAdvancementMode_whenPausedAndInManual_thenScrolls', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       testee.setAdvancementModeToManual();
@@ -166,19 +166,19 @@ void main() {
       reset(mockScrollController);
     });
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleAdvancementMode(); // toggle to Manual
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Manual(), Paused(next: Manual()), Manual()]));
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
   });
 
   test('setAdvancementModeToManual_whenPaused_thenEmitsPausedWithNextManualAndDoesNotScroll', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       testee.toggleAdvancementMode(); // toggle to Paused
       processStreams(fakeAsync: testAsync);
@@ -186,19 +186,19 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.setAdvancementModeToManual();
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Paused(next: Automatic()), Paused(next: Manual())]));
     verifyZeroInteractions(mockScrollController);
   });
 
   test('setAdvancementModeToManual_whenAutomatic_thenEmitsManualAndDoesScroll', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
@@ -206,56 +206,56 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     expect(modelRegister, orderedEquals([Manual()]));
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(2);
   });
 
   test('journeyUpdate_whenCurrentPositionNull_thenDoesNotEmitAndDoesNotScroll', () {
-    // EXPECT
+    // THEN
     processStreams(fakeAsync: testAsync);
     verifyZeroInteractions(mockScrollController);
     expect(modelRegister, isEmpty);
   });
 
   test('journeyUpdate_whenCurrentPositionIsJourneyStart_thenDoesNotEmitAndDoesNotScroll', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: journeyStart));
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verifyZeroInteractions(mockScrollController);
     expect(modelRegister, isEmpty);
   });
 
   test('journeyUpdate_whenCurrentPositionIsBeforeFirstServicePoint_thenDoesNotEmitAndDoesNotScroll', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: secondSignal));
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verifyZeroInteractions(mockScrollController);
     expect(modelRegister, isEmpty);
   });
 
   test('journeyUpdate_whenCurrentPositionIsBehindFirstServicePoint_thenScrolls', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
     expect(modelRegister, isEmpty);
   });
 
   test('journeyUpdate_whenIsInPausedManualAndSignaledPositionChanges_thenEmitsPausedWithAutomatic', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
@@ -267,7 +267,7 @@ void main() {
     reset(mockScrollController);
     final thirdSignal = baseJourney.data[3] as JourneyPoint;
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       journeySubject.add(
         Journey(
@@ -283,13 +283,13 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     verifyZeroInteractions(mockScrollController);
     expect(modelRegister, orderedEquals([Manual(), Paused(next: Manual()), Paused(next: Automatic())]));
   });
 
   test('journeyUpdate_whenIsInManualAndSignaledPositionChanges_thenEmitsAutomatic', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       processStreams(fakeAsync: testAsync);
@@ -299,7 +299,7 @@ void main() {
     reset(mockScrollController);
     final thirdSignal = baseJourney.data[3] as JourneyPoint;
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       journeySubject.add(
         Journey(
@@ -312,13 +312,13 @@ void main() {
       processStreams(fakeAsync: testAsync);
     });
 
-    // EXPECT
+    // THEN
     verify(mockScrollController.scrollToJourneyPoint(thirdSignal)).called(1);
     expect(modelRegister, orderedEquals([Manual(), Automatic()]));
   });
 
   test('brakeSeriesChange_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       testee.toggleAdvancementMode();
@@ -326,36 +326,36 @@ void main() {
     processStreams(fakeAsync: testAsync);
     reset(mockScrollController);
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150));
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verifyZeroInteractions(mockScrollController);
   });
 
   test('brakeSeriesChange_whenHasCurrentPosition_thenDoesScroll', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
     });
     processStreams(fakeAsync: testAsync);
     reset(mockScrollController);
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       journeySettingsViewModel.updateBrakeSeries(BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150));
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
   });
 
   test('detailModelCloses_whenHasCurrentPositionButPaused_thenDoesNotScroll', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       openModalTypeSubject.add(DetailModalType.servicePointModal);
@@ -364,18 +364,18 @@ void main() {
     processStreams(fakeAsync: testAsync);
     reset(mockScrollController);
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       openModalTypeSubject.add(null);
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verifyZeroInteractions(mockScrollController);
   });
 
   test('detailModelCloses_whenHasCurrentPosition_thenDoesScroll', () {
-    // ARRANGE
+    // GIVEN
     testAsync.run((_) {
       chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
       openModalTypeSubject.add(DetailModalType.servicePointModal);
@@ -383,13 +383,13 @@ void main() {
     processStreams(fakeAsync: testAsync);
     reset(mockScrollController);
 
-    // ACT
+    // WHEN
     testAsync.run((_) {
       openModalTypeSubject.add(null);
     });
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
   });
 
@@ -397,63 +397,63 @@ void main() {
   /// This causes the idle time scrolling to be activated.
   group('tests for idle time scrolling', () {
     test('automaticIdleScrollingAfterTimeout_whenPaused_doesNotScroll', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.toggleAdvancementMode(); // to PAUSED
         processStreams(fakeAsync: testAsync);
       });
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
         async.elapse(const Duration(seconds: 11));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verifyZeroInteractions(mockScrollController);
     });
 
     test('automaticIdleScrollingAfterTimeout_whenOutsideOfAutomaticScrollingZone_doesNotScroll', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
         processStreams(fakeAsync: testAsync);
       });
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
         async.elapse(const Duration(seconds: 11));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verifyZeroInteractions(mockScrollController);
     });
 
     test('automaticIdleScrollingAfterTimeout_whenAutomaticAndInScrollingZone_doesScroll', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         processStreams(fakeAsync: testAsync);
       });
       reset(mockScrollController);
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
         async.elapse(const Duration(seconds: 11));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
     });
 
     test('automaticIdleScrollingAfterTimeout_whenManualAndInScrollingZone_doesScroll', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.setAdvancementModeToManual(); // MANUAL
@@ -461,38 +461,38 @@ void main() {
       });
       reset(mockScrollController);
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
         async.elapse(const Duration(seconds: 11));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
     });
 
     test('automaticIdleScrollingAfterTimeout_whenJourneyUpdateInIdleScrollTiming_doesNOTScroll', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         processStreams(fakeAsync: testAsync);
       });
       reset(mockScrollController);
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.resetIdleScrollTimer();
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verifyZeroInteractions(mockScrollController);
     });
 
     test('automaticIdleScrollingAfterTimeout_whenAdvancementModeToggledToAutomatic_doesScrollOnceAndCancelsTimer', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         chevronPositionSubject.add(ChevronPositionModel(currentPosition: firstServicePoint));
         testee.toggleAdvancementMode(); // PAUSED
@@ -501,14 +501,14 @@ void main() {
       });
       reset(mockScrollController);
 
-      // ACT
+      // WHEN
       testAsync.run((async) {
         testee.toggleAdvancementMode();
         async.elapse(const Duration(seconds: 11));
         processStreams(fakeAsync: testAsync);
       });
 
-      // EXPECT
+      // THEN
       verify(mockScrollController.scrollToJourneyPoint(firstServicePoint)).called(1);
     });
   });

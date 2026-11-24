@@ -48,14 +48,14 @@ void main() {
   });
 
   test('login_whenAuthenticationSuccessful_thenEmitsLoadingAndLoggedIn', () async {
-    // ARRANGE
+    // GIVEN
     when(mockAuthenticator.login(tokenId: anyNamed('tokenId'))).thenAnswer((_) => Future.value(MockOidcToken()));
 
-    // ACT
+    // WHEN
     await testee.login();
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
@@ -68,15 +68,15 @@ void main() {
   });
 
   test('login_whenAuthenticationThrows_thenEmitsLoadingAndError', () async {
-    // ARRANGE
+    // GIVEN
     final argumentError = ArgumentError();
     when(mockAuthenticator.login(tokenId: anyNamed('tokenId'))).thenThrow(argumentError);
 
-    // ACT
+    // WHEN
     await testee.login();
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(3));
     expect(
       emitRegister,
@@ -89,21 +89,21 @@ void main() {
   });
 
   test('setConnectToTmsVad_whenIsTrueAndUpdatedWithTrue_thenDoesNothing', () async {
-    // ACT
+    // WHEN
     testee.setConnectToTmsVad(true);
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(1));
     expect(emitRegister.first, equals(LoggedOut(connectToTmsVad: true)));
   });
 
   test('setConnectToTmsVad_whenIsTrueAndUpdatedWithFalse_thenEmitsWithFalse', () async {
-    // ACT
+    // WHEN
     testee.setConnectToTmsVad(false);
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(2));
     expect(emitRegister, orderedEquals([LoggedOut(connectToTmsVad: true), LoggedOut(connectToTmsVad: false)]));
   });

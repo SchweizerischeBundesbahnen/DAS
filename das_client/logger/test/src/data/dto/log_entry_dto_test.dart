@@ -17,19 +17,19 @@ void main() {
   });
 
   test('returns compact JSON string by default', () {
-    // arrange
+    // GIVEN
     const expectedEncodedString =
         '{"time":1624046400.0,"event":"A test log message","source":"das-client","fields":{"key1":"value1","key2":2,"level":"info"}}';
 
-    // act
+    // WHEN
     final actual = testee.toJsonString();
 
-    // expect
+    // THEN
     expect(actual, equals(expectedEncodedString));
   });
 
   test('returns pretty printed JSON string when pretty is true', () {
-    // arrange
+    // GIVEN
     final expectedDecodedMap = {
       'time': 1624046400.0,
       'event': 'A test log message',
@@ -40,7 +40,7 @@ void main() {
     final prettyEncoder = JsonEncoder.withIndent(SplunkLogEntryDto.jsonIndent);
     final expectedPrettyString = prettyEncoder.convert(expectedDecodedMap);
 
-    // Act: Get JSON string with pretty printing.
+    // WHEN: Get JSON string with pretty printing.
     final actual = testee.toJsonString(pretty: true);
 
     // Assert: Decode both JSON strings and compare maps.
