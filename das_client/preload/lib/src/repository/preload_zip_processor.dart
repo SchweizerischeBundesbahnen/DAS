@@ -125,7 +125,7 @@ void _zipWorker(_ZipWork work) async {
 
   try {
     final input = InputFileStream(work.zipPath);
-    final archive = ZipDecoder().decodeStream(input, verify: false);
+    final archive = ZipDecoder().decodeStream(input, verify: false, throwOnError: true);
 
     final batchFiles = <String>[];
     final batch = <SferaXmlElementDto>[];

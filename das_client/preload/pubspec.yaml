@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.13.0
+  sdk: ^3.14.0
 
 resolution: workspace
 
@@ -21,13 +21,13 @@ dependencies:
   # https://pub.dev/packages/xml
   xml: ^6.6.1
   # https://pub.dev/packages/drift
-  drift: ^2.35.2
+  drift: ^2.35.4
   # https://pub.dev/packages/drift_flutter
   drift_flutter: ^0.3.1
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/archive
-  archive: ^4.5.2
+  archive: ^4.7.1
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/intl
@@ -46,7 +46,7 @@ dev_dependencies:
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^6.0.0
   # https://pub.dev/packages/drift_dev
-  drift_dev: ^2.35.1
+  drift_dev: ^2.35.3
   # https://pub.dev/packages/mockito
   mockito: ^5.8.1
   # https://pub.dev/packages/fake_async
