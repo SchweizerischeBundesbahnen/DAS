@@ -115,7 +115,7 @@ void main() {
     });
 
     test('journey_whenPersonalNotesChange_thenAddsRelevantFootnoteAnnotations', () async {
-      // ARRANGE
+      // GIVEN
       final journey = _journey(
         trainNumber: '12345',
         servicePoints: [
@@ -138,7 +138,7 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(const []));
 
-      // ACT
+      // WHEN
       currentJourney = journey;
       sferaJourneySubject.add(journey);
       await processStreams();
@@ -162,7 +162,7 @@ void main() {
       ]);
       await processStreams();
 
-      // ASSERT
+      // THEN
       expect(
         testee.journeyValue!.data.whereType<PersonalNoteAnnotation>(),
         unorderedEquals([

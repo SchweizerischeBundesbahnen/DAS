@@ -70,6 +70,29 @@ class PersonalNotesRepositoryImpl({
     }
     _lastSyncDate = now;
 
+    try {
+      await _syncNotes();
+    } catch (e, st) {
+      _log.severe('Sync failed. Start retry timer...', e, st);
+      _lastSyncDate = null;
+      _scheduleRetry();
+    }
+  }
+
+  @visibleForTesting
+  Future<void> cleanUpSingleUseNotes() async {
+    final userId = await _userIdProvider();
+    final cutoffDate = DateTime.now().subtract(_singleUseNotesRetention);
+    final notesToDelete = (await _databaseService.findAllNotes(userId: userId, includeDeleted: true)).where(
+      (note) => note.trainIdentification != null && note.trainIdentification!.date.isBefore(cutoffDate),
+    );
+
+    for (final note in notesToDelete) {
+      await _databaseService.deleteNote(userId: userId, note: note);
+    }
+  }
+
+  Future<void> _syncNotes() async {
     final response = await _fetchRemoteNotes();
     if (response == null) {
       _scheduleRetry();
@@ -121,19 +144,6 @@ class PersonalNotesRepositoryImpl({
     }
 
     if (!syncSucceeded) _scheduleRetry();
-  }
-
-  @visibleForTesting
-  Future<void> cleanUpSingleUseNotes() async {
-    final userId = await _userIdProvider();
-    final cutoffDate = DateTime.now().subtract(_singleUseNotesRetention);
-    final notesToDelete = (await _databaseService.findAllNotes(userId: userId, includeDeleted: true)).where(
-      (note) => note.trainIdentification != null && note.trainIdentification!.date.isBefore(cutoffDate),
-    );
-
-    for (final note in notesToDelete) {
-      await _databaseService.deleteNote(userId: userId, note: note);
-    }
   }
 
   Future<PersonalNotesListResponse?> _fetchRemoteNotes() async {
