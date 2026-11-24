@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/detail_modal/service_point_modal/service_point_modal_view_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:core_data/component.dart';
@@ -29,8 +28,6 @@ void main() {
 
   late BehaviorSubject<Journey?> rxJourney;
   late BehaviorSubject<ServicePoint> rxServicePoint;
-  late List<List<PersonalNoteAnnotation>> annotationRegister;
-  late StreamSubscription<List<PersonalNoteAnnotation>> annotationSubscription;
   late List<List<PersonalNote>> servicePointNotesRegister;
   late StreamSubscription<List<PersonalNote>> servicePointNotesSubscription;
   late BehaviorSubject<List<PersonalNote>> rxStoredNotes;
@@ -48,8 +45,6 @@ void main() {
 
   final servicePointA = _servicePoint(locationCode: 'CH001', order: 10);
   final servicePointB = _servicePoint(locationCode: 'CH002', order: 20);
-  final servicePointC = _servicePoint(locationCode: 'CH003', order: 30);
-  final servicePointD = _servicePoint(locationCode: 'CH004', order: 40);
 
   Future<void> emitJourney(Journey? journey) async {
     rxJourney.add(journey);
@@ -73,7 +68,6 @@ void main() {
     rxJourney = BehaviorSubject<Journey?>.seeded(null);
     rxServicePoint = BehaviorSubject<ServicePoint>();
     rxStoredNotes = BehaviorSubject<List<PersonalNote>>.seeded(const []);
-    annotationRegister = [];
     servicePointNotesRegister = [];
 
     when(mockJourneyViewModel.journey).thenAnswer((_) => rxJourney.stream);
@@ -96,18 +90,79 @@ void main() {
       personalNotesRepository: mockPersonalNotesRepository,
       servicePointModalViewModel: mockServicePointModalViewModel,
     );
-    annotationSubscription = testee.personalNoteAnnotations.listen(annotationRegister.add);
     servicePointNotesSubscription = testee.servicePointNotes.listen(servicePointNotesRegister.add);
   });
 
   tearDown(() async {
-    await annotationSubscription.cancel();
     await servicePointNotesSubscription.cancel();
     testee.dispose();
     await rxJourney.close();
     await rxServicePoint.close();
     await rxStoredNotes.close();
     await GetIt.I.reset();
+  });
+
+  test('personalNotes_whenNotesStored_thenEmitsJourneyRelevantNotes', () async {
+    // GIVEN
+    final generalNote = _personalNote(locationCode: servicePointA.locationCode, text: 'General', showAsFootnote: false);
+    final trainNote = _personalNote(
+      locationCode: servicePointB.locationCode,
+      text: 'Train',
+      showAsFootnote: true,
+      trainIdentification: trainIdentification,
+    );
+    final otherTrainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Other train',
+      showAsFootnote: false,
+      trainIdentification: otherTrainIdentification,
+    );
+    await emitJourney(_journey(data: [servicePointA, servicePointB], currentTrainIdentification: trainIdentification));
+
+    // WHEN
+    await storeNotes([generalNote, trainNote, otherTrainNote]);
+
+    // THEN
+    expect(testee.personalNotesValue, orderedEquals([generalNote, trainNote]));
+  });
+
+  test('personalNotes_whenTrainChanges_thenReevaluatesRelevantNotes', () async {
+    // GIVEN
+    final generalNote = _personalNote(locationCode: servicePointA.locationCode, text: 'General', showAsFootnote: false);
+    final trainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Train',
+      showAsFootnote: false,
+      trainIdentification: trainIdentification,
+    );
+    final otherTrainNote = _personalNote(
+      locationCode: servicePointA.locationCode,
+      text: 'Other train',
+      showAsFootnote: false,
+      trainIdentification: otherTrainIdentification,
+    );
+    await storeNotes([generalNote, trainNote, otherTrainNote]);
+    await emitJourney(_journey(data: [servicePointA], currentTrainIdentification: trainIdentification));
+    expect(testee.personalNotesValue, orderedEquals([generalNote, trainNote]));
+
+    // WHEN
+    await emitJourney(_journey(data: [servicePointA], currentTrainIdentification: otherTrainIdentification));
+
+    // THEN
+    expect(testee.personalNotesValue, orderedEquals([generalNote, otherTrainNote]));
+  });
+
+  test('personalNotes_whenNotesDeleted_thenEmitsEmptyList', () async {
+    // GIVEN
+    final note = _personalNote(locationCode: servicePointA.locationCode, text: 'Note', showAsFootnote: false);
+    await storeNotes([note]);
+    expect(testee.personalNotesValue, orderedEquals([note]));
+
+    // WHEN
+    await storeNotes([]);
+
+    // THEN
+    expect(testee.personalNotesValue, isEmpty);
   });
 
   test('locationCode_whenServicePointChanges_thenLoadsPersonalNoteForCurrentLocation', () async {
@@ -226,24 +281,6 @@ void main() {
     verifyNever(mockPersonalNotesRepository.saveNote(any));
   });
 
-  test('saveNote_whenSavedNoteShouldBeShownAsFootnote_thenUpdatesAnnotations', () async {
-    // GIVEN
-    await emitJourney(_journey(data: [servicePointA]));
-    await emitServicePoint(servicePointA);
-    expect(annotationRegister.last, isEmpty);
-
-    // WHEN
-    await testee.saveNote(text: 'Footnote', showAsFootnote: true, singleUse: false);
-    await processStreams();
-
-    // THEN
-    expect(
-      annotationRegister.last,
-      orderedEquals([PersonalNoteAnnotation(text: 'Footnote', order: servicePointA.order)]),
-    );
-    verify(mockPersonalNotesRepository.observeAllNotes()).called(1);
-  });
-
   test('saveNote_whenRepositoryThrows_thenRethrows', () async {
     // GIVEN
     when(mockPersonalNotesRepository.saveNote(any)).thenThrow(Exception('failed'));
@@ -272,23 +309,6 @@ void main() {
     expect(testee.prioritizedNoteValue, isNull);
   });
 
-  test('deleteNote_whenDeletedNoteIsFootnote_thenUpdatesAnnotations', () async {
-    // GIVEN
-    final noteOnA = _personalNote(locationCode: servicePointA.locationCode, text: 'Footnote', showAsFootnote: true);
-    await storeNotes([noteOnA]);
-    await emitJourney(_journey(data: [servicePointA]));
-    await emitServicePoint(servicePointA);
-    expect(annotationRegister.last, isNotEmpty);
-
-    // WHEN
-    await testee.deleteNote(noteOnA);
-    await processStreams();
-
-    // THEN
-    expect(annotationRegister.last, isEmpty);
-    expect(testee.prioritizedNoteValue, isNull);
-  });
-
   test('deleteNote_whenRepositoryThrows_thenRethrows', () async {
     // GIVEN
     final note = _personalNote(locationCode: servicePointA.locationCode, text: 'Note', showAsFootnote: false);
@@ -296,117 +316,6 @@ void main() {
 
     // WHEN & THEN
     await expectLater(testee.deleteNote(note), throwsException);
-  });
-
-  test('personalNoteAnnotations_whenJourneyBecomesNull_thenClearsAnnotations', () async {
-    // GIVEN
-    await storeNotes([_personalNote(locationCode: servicePointA.locationCode, text: 'Footnote', showAsFootnote: true)]);
-    await emitJourney(_journey(data: [servicePointA]));
-    expect(annotationRegister.last, isNotEmpty);
-
-    // WHEN
-    await emitJourney(null);
-
-    // THEN
-    expect(annotationRegister.last, isEmpty);
-  });
-
-  test('personalNoteAnnotations_whenPersonalNotesAsFootNotes_thenEmitsAsAnnotations', () async {
-    // GIVEN
-    await storeNotes([
-      _personalNote(
-        locationCode: servicePointA.locationCode,
-        text: 'A footnote',
-        showAsFootnote: true,
-        trainIdentification: trainIdentification,
-      ),
-      _personalNote(locationCode: servicePointB.locationCode, text: 'B footnote', showAsFootnote: true),
-      _personalNote(
-        locationCode: servicePointC.locationCode,
-        text: 'C hidden',
-        showAsFootnote: false,
-        trainIdentification: trainIdentification,
-      ),
-      _personalNote(
-        locationCode: servicePointD.locationCode,
-        text: 'D other train',
-        showAsFootnote: true,
-        trainIdentification: otherTrainIdentification,
-      ),
-      _personalNote(locationCode: 'Other Location', text: 'Unknown', showAsFootnote: true),
-    ]);
-
-    // WHEN
-    await emitJourney(
-      _journey(
-        currentTrainIdentification: trainIdentification,
-        data: [servicePointA, servicePointB, servicePointC, servicePointD],
-      ),
-    );
-
-    // THEN
-    expect(
-      annotationRegister.last,
-      orderedEquals([
-        PersonalNoteAnnotation(text: 'A footnote', order: servicePointA.order),
-        PersonalNoteAnnotation(text: 'B footnote', order: servicePointB.order),
-      ]),
-    );
-  });
-
-  test('personalNoteAnnotations_whenStoredNotesChange_thenEmitsUpdatedAnnotations', () async {
-    // GIVEN
-    await emitJourney(_journey(data: [servicePointA, servicePointB]));
-    expect(annotationRegister.last, isEmpty);
-
-    // WHEN
-    await storeNotes([
-      _personalNote(locationCode: servicePointB.locationCode, text: 'B footnote', showAsFootnote: true),
-    ]);
-
-    // THEN
-    expect(
-      annotationRegister.last,
-      orderedEquals([PersonalNoteAnnotation(text: 'B footnote', order: servicePointB.order)]),
-    );
-    verify(mockPersonalNotesRepository.observeAllNotes()).called(1);
-  });
-
-  test('personalNoteAnnotations_whenJourneyUpdatesWithChangedServicePoints_thenUpdatesAnnotations', () async {
-    // GIVEN
-    await storeNotes([
-      _personalNote(locationCode: servicePointA.locationCode, text: 'A footnote', showAsFootnote: true),
-      _personalNote(locationCode: servicePointC.locationCode, text: 'C footnote', showAsFootnote: true),
-    ]);
-    await emitJourney(_journey(currentTrainIdentification: trainIdentification, data: [servicePointA, servicePointB]));
-    expect(
-      annotationRegister.last,
-      orderedEquals([PersonalNoteAnnotation(text: 'A footnote', order: servicePointA.order)]),
-    );
-
-    // WHEN
-    await emitJourney(_journey(currentTrainIdentification: trainIdentification, data: [servicePointC, servicePointB]));
-
-    // THEN
-    expect(
-      annotationRegister.last,
-      orderedEquals([PersonalNoteAnnotation(text: 'C footnote', order: servicePointC.order)]),
-    );
-  });
-
-  test('personalNoteAnnotations_whenJourneyUpdatesWithEquivalentServicePoints_thenDoesNotEmitAnnotations', () async {
-    // GIVEN
-    await emitJourney(_journey(data: [servicePointA, servicePointB]));
-    final emissionCount = annotationRegister.length;
-    final equivalentServicePointA = _servicePoint(locationCode: servicePointA.locationCode, order: servicePointA.order);
-    final equivalentServicePointB = _servicePoint(locationCode: servicePointB.locationCode, order: servicePointB.order);
-
-    // WHEN
-    await emitJourney(_journey(data: [equivalentServicePointA, equivalentServicePointB]));
-
-    // THEN
-    expect(annotationRegister.length, emissionCount);
-    expect(annotationRegister.last, isEmpty);
   });
 
   test('saveNote_whenMultipleNotesAtServicePoint_thenAppendsNoteToList', () async {
