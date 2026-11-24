@@ -90,7 +90,7 @@ void main() {
       // check if warnapp is enabled
       expect(warappRepo.isEnabled, true);
 
-      // WHENivate maneuver mode
+      // activate maneuver mode
       await openExtendedMenu(tester);
       expect(find.byKey(SBBPopover.closeButtonKey), findsAny);
       await tapElement(tester, find.byKey(ExtendedMenu.maneuverModeMenuItemKey));
