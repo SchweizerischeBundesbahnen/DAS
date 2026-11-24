@@ -49,6 +49,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app requires access to the location to detect departures and stops</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Das Mikrofon wird für den Sprachchat mit anderen Lokführer*innen derselben Fahrordnung verwendet.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>This app requires access to the motion sensors to detect departures and stops</string>
 	<key>UIApplicationSceneManifest</key>
