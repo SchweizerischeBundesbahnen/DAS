@@ -51,7 +51,7 @@ class HandshakeTask({
       statusReportsEnabled: isDriver,
     );
 
-    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company);
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
     final message = sferaB2gRequestMessage.buildDocument().toString();
     final success = _mqttService.publishMessage(otnId.company, sferaTrain, message);
@@ -62,9 +62,7 @@ class HandshakeTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

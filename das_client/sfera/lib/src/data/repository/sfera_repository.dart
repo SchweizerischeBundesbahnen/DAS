@@ -31,5 +31,5 @@ abstract class SferaRepository._() {
 
   void dispose();
 
-  MessageHeaderDto messageHeader({required String sender});
+  MessageHeaderDto messageHeader({required String sender, String? messageId});
 }

@@ -193,11 +193,30 @@ void main() {
       final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       await tapElement(tester, primaryButton);
 
-      // general error code for sfera protocol errors
-      expect(find.text('${l10n.c_error_code}: ${ProtocolErrors().code}'), findsOneWidget);
+      // depending on which error of T34 is processed first, it displays another error.
+      // T34 has an missing SP and TC
 
-      // specific error code expected from SFERA response without additional info
-      expect(find.text('${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}'), findsOneWidget);
+      final expectedErrorDescription = {
+        '${l10n.c_error_code} 50: ${l10n.c_error_sfera_no_additional_info}',
+        l10n.c_error_sfera_invalid,
+      };
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is Text && widget.data?.split('\n').any(expectedErrorDescription.contains) == true,
+        ),
+        findsWidgets,
+      );
+
+      final expectedErrorCode = {
+        '${l10n.c_error_code}: ${ProtocolErrors().code}',
+        '${l10n.c_error_code}: 1000',
+      };
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is Text && widget.data?.split('\n').any(expectedErrorCode.contains) == true,
+        ),
+        findsWidgets,
+      );
     });
 
     testWidgets('trainSearch_whenMultipleCompanyMatches_thenShowsSelection|edyQLmRIb617kcxR5XXN|tests:702,703', (
