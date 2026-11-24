@@ -242,7 +242,7 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     const Offset(0, -50),
     maxIteration: 100,
   );
-  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
+  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration + Duration(milliseconds: 200));
 }
 
 Finder findChevronPositionAtRowWithText(String text) {
