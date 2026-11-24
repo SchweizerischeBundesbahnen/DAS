@@ -55,7 +55,7 @@ class SelectCompanyInput extends StatelessWidget {
                 child: SBBDecoratedText(
                   onTap: companies.isNotEmpty ? () => _onTap(context, companies) : null,
                   decoration: SBBDecoration(
-                    style: SBBDecorationStyle(borderType: .standalone),
+                    style: SBBDecorationStyle(borderType: borderType),
                     labelText: isModalVersion ? null : context.l10n.p_train_selection_company_description,
                     placeholderText: isModalVersion ? context.l10n.p_train_selection_company_description : null,
                     trailing: companies.isEmpty ? SBBLoadingIndicator.tiny() : null,
