@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/time_cell_b
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';

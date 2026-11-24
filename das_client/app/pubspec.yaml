@@ -36,6 +36,13 @@ dependencies:
   core_data: 1.0.0
   personal_notes: 1.0.0
 
+  # https://pub.dev/packages/sbb_design_system_mobile
+  sbb_design_system_mobile: ^6.0.0
+  # https://pub.dev/packages/material_ui
+  material_ui: ^1.11.1
+  # https://pub.dev/packages/cupertino_ui
+  cupertino_ui: ^1.1.7
+
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.8.1
   # https://pub.dev/packages/android_id
@@ -66,9 +73,6 @@ dependencies:
   provider: ^6.1.5+1
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
-
-  # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.2.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.7.1
   # https://pub.dev/packages/wakelock_plus

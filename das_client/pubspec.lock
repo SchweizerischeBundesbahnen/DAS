@@ -309,10 +309,10 @@ packages:
     dependency: transitive
     description:
       name: cli_launcher
-      sha256: d2dd1baf7ae4ff1550e731dcb8fe669a5c652903e833f75359c178222c44214e
+      sha256: ff37bcc6d5fa25ab7ddcf255a60900b28e4e1712d34495e5f7952e0982933913
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.4"
+    version: "0.3.4+1"
   cli_util:
     dependency: transitive
     description:
@@ -397,10 +397,10 @@ packages:
     dependency: transitive
     description:
       name: cupertino_ui
-      sha256: ea0b8170b40a86262b2fc21ac0625303f52df209dbf6fccc2b98b27eff44f6ce
+      sha256: c3eaf7f5bdfee36deb0b14a4cbf7602f1b6b8d8b8576b81f38fc08c25881c94c
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.7"
   dart_style:
     dependency: transitive
     description:
@@ -968,10 +968,10 @@ packages:
     dependency: transitive
     description:
       name: material_ui
-      sha256: "98ab9eda579ecae623e4b376c603035c5def78ce706f735f30bd632af5814695"
+      sha256: a6b19012df437a356cbc01f8ea22a105e07194c47c9a6009da0032a0ce35c4ab
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.0"
+    version: "1.11.1"
   melos:
     dependency: "direct dev"
     description:
@@ -1264,10 +1264,10 @@ packages:
     dependency: transitive
     description:
       name: sbb_design_system_mobile
-      sha256: c6b94d12257c63d1756f1299e0fd78e2acf5fe50c9902e05aadabac508b91868
+      sha256: f2fed8b6d7c0b38cecf5eb8da3bb951cecdef22e55b2d5018208c85d52729959
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.0"
+    version: "6.0.0"
   sbb_oidc:
     dependency: transitive
     description:

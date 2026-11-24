@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/detail_modal/brake_load_slip_mo
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

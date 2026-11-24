@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:personal_notes/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -132,7 +132,7 @@ class _PersonalNoteDialogState extends State<PersonalNoteDialog> {
 
   Widget _textArea() => SBBTextInputBoxed(
     key: PersonalNoteDialog.textAreaKey,
-    decoration: SBBInputDecoration(
+    decoration: SBBDecoration(
       labelText: context.l10n.w_personal_note_dialog_textfield_label,
       errorText: _validationError,
     ),

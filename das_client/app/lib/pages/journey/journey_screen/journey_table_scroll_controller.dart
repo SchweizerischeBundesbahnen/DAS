@@ -5,7 +5,7 @@ import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 

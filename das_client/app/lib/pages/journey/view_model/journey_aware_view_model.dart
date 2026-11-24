@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sfera/component.dart';
 
 abstract class JourneyAwareViewModel({JourneyViewModel? journeyViewModel}) {

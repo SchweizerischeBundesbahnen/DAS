@@ -8,7 +8,7 @@ import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Sticky Widget.
 ///

@@ -14,7 +14,7 @@ import 'package:app/widgets/table/row/das_table_row.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// [DASTable] provides a the basic structure for a train journey table.

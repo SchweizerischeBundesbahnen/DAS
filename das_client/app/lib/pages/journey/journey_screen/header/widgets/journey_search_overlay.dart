@@ -8,7 +8,7 @@ import 'package:app/pages/journey/selection/widgets/journey_train_number_input.d
 import 'package:app/pages/journey/widgets/close_journey_dialog.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

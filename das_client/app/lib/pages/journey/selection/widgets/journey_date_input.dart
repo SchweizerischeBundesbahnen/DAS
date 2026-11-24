@@ -2,7 +2,7 @@ import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_field_bottom_modal.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_field_overlay.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 class JourneyDateInput extends StatelessWidget {

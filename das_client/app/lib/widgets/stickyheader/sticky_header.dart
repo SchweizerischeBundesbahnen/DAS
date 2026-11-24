@@ -7,7 +7,7 @@
 import 'package:app/widgets/stickyheader/sticky_widget.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 typedef StickyWidgetBuilder = Widget Function(BuildContext context, int index);
 

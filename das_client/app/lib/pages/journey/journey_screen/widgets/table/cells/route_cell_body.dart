@@ -5,7 +5,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 typedef ShortTermChangeRouteCellData = ({bool drawMiddle, bool drawStart, bool drawEnd});

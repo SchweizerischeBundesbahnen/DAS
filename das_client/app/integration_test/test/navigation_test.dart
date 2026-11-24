@@ -2,7 +2,7 @@ import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/support/support_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';

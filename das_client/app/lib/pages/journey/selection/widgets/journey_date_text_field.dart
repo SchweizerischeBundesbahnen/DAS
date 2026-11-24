@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/util/format.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class JourneyDateTextField extends StatelessWidget {
@@ -17,8 +17,8 @@ class JourneyDateTextField extends StatelessWidget {
       child: SBBDecoratedText(
         onTap: onTap,
         value: Format.date(date),
-        decoration: SBBInputDecoration(
-          borderType: .standalone,
+        decoration: SBBDecoration(
+          style: SBBDecorationStyle(borderType: .standalone),
           labelText: isModalVersion ? null : context.l10n.p_train_selection_date_description,
           placeholderText: isModalVersion ? context.l10n.p_train_selection_date_description : null,
         ),

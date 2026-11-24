@@ -1,15 +1,12 @@
 import 'package:app/i18n/gen/app_localizations.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 
 export 'package:app/i18n/gen/app_localizations.dart';
 export 'package:app/i18n/src/build_context_x.dart';
 
-const localizationDelegates = <LocalizationsDelegate<dynamic>>[
+final localizationDelegates = <LocalizationsDelegate<dynamic>>[
   AppLocalizations.delegate,
-  GlobalMaterialLocalizations.delegate,
-  GlobalWidgetsLocalizations.delegate,
-  GlobalCupertinoLocalizations.delegate,
+  ...GlobalMaterialLocalizations.delegates,
 ];
 
 const supportedLocales = [

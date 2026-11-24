@@ -59,6 +59,7 @@ class FirebaseMessagingService({
   }
 
   Future<void> _initRxToken() async {
+    // TODO: Migrate to Installation IDs: https://github.com/SchweizerischeBundesbahnen/DAS/issues/3219
     final token = await _firebaseMessaging.getToken();
     _rxToken.add(token);
 

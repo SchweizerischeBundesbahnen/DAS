@@ -6,7 +6,7 @@ import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_text_field.dart';
 import 'package:app/util/format.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:personal_notes/component.dart';
 

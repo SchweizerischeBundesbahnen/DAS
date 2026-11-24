@@ -1,7 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_screen/header/view_model/departure_authorization_view_model.dart';
 import 'package:app/util/text_util.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

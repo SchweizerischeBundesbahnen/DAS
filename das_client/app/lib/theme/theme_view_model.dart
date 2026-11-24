@@ -1,5 +1,5 @@
 import 'package:app/theme/theme_util.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ThemeViewModel {

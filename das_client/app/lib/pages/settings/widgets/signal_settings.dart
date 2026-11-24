@@ -2,7 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/pages/settings/view_model/model/user_settings_model.dart';
 import 'package:app/pages/settings/view_model/user_settings_view_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

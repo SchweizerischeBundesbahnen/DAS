@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/extended_menu.da
 import 'package:app/pages/journey/journey_screen/reduced_overview/widgets/reduced_journey_table.dart';
 import 'package:app/widgets/modification_icon.dart';
 import 'package:app/widgets/table/das_table.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
