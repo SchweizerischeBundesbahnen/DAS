@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.23.0...sfera_mock-v0.23.1) (2026-11-24)
+
+
+### Bug Fixes
+
+* standardise backend logging as ECS JSON for Splunk ([#2651](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2651)) ([#3139](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3139)) ([6a17704](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6a17704bc665948ebeb920fa826932cebb535e53))
+
 ## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.22.0...sfera_mock-v0.23.0) (2026-11-02)
 
 
