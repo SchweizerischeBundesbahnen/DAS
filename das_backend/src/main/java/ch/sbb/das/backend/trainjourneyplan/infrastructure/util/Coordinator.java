@@ -16,7 +16,7 @@ public class Coordinator {
     }
 
     public void startProcessing() {
-        log.info("Start consuming train identifications");
+        log.atInfo().log("Train identification consumer started");
         MessageListenerContainer listener = registry.getListenerContainer("consumeTrains");
         if (listener != null && !listener.isRunning()) {
             listener.start();

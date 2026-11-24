@@ -16,8 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.security.UserRole;
-import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ class SpecialHolidayControllerTest {
     private MockMvc mockMvc;
 
     private static String futureDate(int daysInFuture) {
-        return LocalDate.now().plusDays(daysInFuture).toString();
+        return DateTimeUtil.today().plusDays(daysInFuture).toString();
     }
 
     @DisplayName("getAllUpcomingSpecialHolidays_ok|7K687S61yarfE6ltlOSZ|tests:1656")
@@ -76,7 +76,7 @@ class SpecialHolidayControllerTest {
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     void getAllUpcomingSpecialHolidays_includesTodayBoundary() throws Exception {
-        String today = LocalDate.now().toString();
+        String today = DateTimeUtil.today().toString();
 
         mockMvc.perform(post(API_SPECIAL_HOLIDAYS)
                 .contentType("application/json")

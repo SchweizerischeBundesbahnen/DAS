@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * Echoes the consumer given {@link #HEADER_REQUEST_ID} on every response (success, {@link Problem}, security rejections), so controllers do not have to wire it
- * manually.
+ * manually, and puts the request context ({@link LogKeys#REQUEST_ID} if given, {@link LogKeys#HTTP_REQUEST_METHOD}, {@link LogKeys#URL_PATH}) into the {@link MDC}
+ * for every log line of the request.
  * <p>
  * Runs before Spring Security and sets the header before the response is committed.
  * <p>
@@ -21,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * <p>
  * Unlike {@link RequestLoggingFilter} this is not a {@code @WebFilter}: filters picked up by {@code @ServletComponentScan} ignore {@link Order} and are registered with
  * {@link Ordered#LOWEST_PRECEDENCE}, i.e. after Spring Security, which writes 401/403 itself without ever reaching them. {@link RequestLogger} relies on this order too, since it
- * logs the value from the response header set here.
+ * logs within the MDC scope set here.
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -48,7 +50,18 @@ public class RequestIdFilter extends OncePerRequestFilter {
         if (requestId != null) {
             response.setHeader(HEADER_REQUEST_ID, requestId);
         }
-        filterChain.doFilter(request, response);
+        try {
+            if (requestId != null) {
+                MDC.put(LogKeys.REQUEST_ID, requestId);
+            }
+            MDC.put(LogKeys.HTTP_REQUEST_METHOD, request.getMethod());
+            MDC.put(LogKeys.URL_PATH, request.getRequestURI());
+            filterChain.doFilter(request, response);
+        } finally {
+            MDC.remove(LogKeys.REQUEST_ID);
+            MDC.remove(LogKeys.HTTP_REQUEST_METHOD);
+            MDC.remove(LogKeys.URL_PATH);
+        }
     }
 
     /**

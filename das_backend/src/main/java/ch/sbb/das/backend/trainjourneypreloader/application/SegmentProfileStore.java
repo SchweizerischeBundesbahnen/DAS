@@ -7,6 +7,7 @@ import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKey
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.newHourlyZipKey;
 import static ch.sbb.das.backend.trainjourneypreloader.application.SegmentZipKeys.newPackedZipKey;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneypreloader.domain.LocalRegulations;
 import ch.sbb.das.backend.trainjourneypreloader.domain.SegmentProfileIdentification;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository;
@@ -14,6 +15,7 @@ import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentP
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.KnownSegmentProfile;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.PreloadedSegmentProfileRepository.ZipStatistics;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service;
+import ch.sbb.das.backend.trainjourneypreloader.infrastructure.S3Service.BucketObject;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.configuration.SegmentProfileStoreProperties;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.model.entities.PreloadedSegmentProfileEntity;
 import ch.sbb.das.backend.trainjourneypreloader.infrastructure.xml.XmlHelper;
@@ -28,6 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -50,9 +53,11 @@ import org.springframework.transaction.support.TransactionTemplate;
  * zip and marks them published, {@link #missing} tells which referenced SPs are neither pending nor published, and {@link #compact} evicts stale SPs.
  * <p>
  * Segment zips are immutable once frozen. There is one open hourly zip, {@code Segments_<timestamp>.zip}, named after the moment it was opened; it is appended to until it
- * is older than {@link SegmentProfileStoreProperties#openZipMaxAge()} or has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}. Compaction rewrites frozen
- * zips into packed zips, {@code Segments_<timestamp>-packed.zip}, named after the moment they were written and capped at the same size. The legacy numbered zips, {@code Segments_<n>.zip}, are frozen too. Only hourly zips can be open, so the newest hourly zip is the
- * open one, and only hourly zips are packed by age: packed and legacy zips are rebuilt once they are mostly stale, never for their age alone.
+ * is older than {@link SegmentProfileStoreProperties#openZipMaxAge()} or is full, i.e. has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}. Only hourly zips can
+ * be open, so the newest hourly zip is the open one. The daily compaction rewrites the frozen hourly zips, the packed zips that are not full and the mostly stale zips into
+ * packed zips, {@code Segments_<timestamp>-packed.zip}, named after the moment they were written and closed once full. The legacy numbered zips, {@code Segments_<n>.zip},
+ * are treated like packed zips. Between two daily compactions the bucket therefore holds at most a day of hourly zips, one packed zip that is not full yet and otherwise
+ * only full packed zips.
  */
 @Slf4j
 @Service
@@ -137,17 +142,17 @@ public class SegmentProfileStore {
         if (pending.isEmpty()) {
             return 0;
         }
-        log.info("Publishing segment profiles. pending={}", pending.size());
+        log.atInfo().addKeyValue("pending", pending.size()).log("Segment profile publishing started");
         Instant now = clock.instant();
         Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
         Optional<byte[]> existing = openZipKey.flatMap(s3Service::downloadZip);
         if (openZipKey.isPresent() && existing.isEmpty()) {
-            log.warn("Open segment zip {} is missing from the bucket. Its entries are fetched again when referenced", openZipKey.get());
+            log.atWarn().addKeyValue(LogKeys.ZIP_KEY, openZipKey.get()).log("Open segment zip missing from bucket, entries are fetched again when referenced");
             openZipKey = Optional.empty();
         }
         if (existing.isPresent() && existing.get().length >= properties.zipMaxBytes().toBytes()) {
-            log.info("Open segment zip {} has reached {} bytes and is frozen", openZipKey.get(), existing.get().length);
+            log.atInfo().addKeyValue(LogKeys.ZIP_KEY, openZipKey.get()).addKeyValue("bytes", existing.get().length).log("Open segment zip full and frozen");
             openZipKey = Optional.empty();
             existing = Optional.empty();
         }
@@ -170,7 +175,12 @@ public class SegmentProfileStore {
                         byte[] bytes = zip.finish();
                         s3Service.uploadZip(zipKey, bytes);
                         repository.assignZipKey(zipKey, added);
-                        log.info("Published segment zip. key={}, added={}, bytes={}, rolled={}", zipKey, added.size(), bytes.length, rolled);
+                        log.atInfo()
+                            .addKeyValue(LogKeys.ZIP_KEY, zipKey)
+                            .addKeyValue("added", added.size())
+                            .addKeyValue("bytes", bytes.length)
+                            .addKeyValue("rolled", rolled)
+                            .log("Segment zip published");
                         published += added.size();
                     }
                 }
@@ -186,29 +196,35 @@ public class SegmentProfileStore {
     }
 
     /**
-     * Rewrites the frozen segment zips that are over {@link SegmentProfileStoreProperties#rebuildStaleShare()} stale, and the frozen hourly zips older than
-     * {@link SegmentProfileStoreProperties#packAfter()}, into packed zips with their live entries, each closed once it has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}, then
-     * deletes their stale rows and their keys. A fully stale zip is deleted without a rewrite. The open zip is never touched, nor is a zip that is not selected. An SP is
-     * stale once no journey referenced it for {@link SegmentProfileStoreProperties#staleAfter()}.
+     * Runs the daily compaction once the oldest frozen hourly zip is older than {@link SegmentProfileStoreProperties#packAfter()}; until then this does nothing. The daily
+     * compaction rewrites every frozen hourly zip, every other zip that is not full and every zip over {@link SegmentProfileStoreProperties#rebuildStaleShare()} stale into
+     * packed zips with their live entries, each closed once it has reached {@link SegmentProfileStoreProperties#zipMaxBytes()}, then deletes their stale rows and their keys. A
+     * fully stale zip is deleted without a rewrite. The open zip is never touched. An SP is stale once no journey referenced it for
+     * {@link SegmentProfileStoreProperties#staleAfter()}. Whether a zip is full is read from the bucket listing; a zip the listing lacks counts as not full, so it is folded,
+     * and its rows are dropped if the download misses it too.
      * <p>
      * Zips are uploaded before the index is updated, so a crash in between leaves an unreferenced zip behind, never a missing one. Segment zips the index does not
-     * reference are therefore deleted from the bucket at the end of every compaction.
+     * reference are therefore deleted from the bucket at the start of every daily compaction.
      */
     public void compact() {
+        long started = System.nanoTime();
         Instant now = clock.instant();
-        OffsetDateTime cutoff = OffsetDateTime.ofInstant(now.minus(properties.staleAfter()), clock.getZone());
-        List<ZipStatistics> statistics = repository.zipStatistics(cutoff);
-        Set<String> zipKeys = statistics.stream().map(ZipStatistics::getZipKey).collect(Collectors.toCollection(HashSet::new));
+        Set<String> zipKeys = new HashSet<>(repository.findDistinctZipKeys());
         Optional<String> openZipKey = openZipKey(zipKeys, now);
-        List<String> selected = statistics.stream()
+        if (!isDailyCompactionDue(zipKeys, openZipKey, now)) {
+            log.atDebug().addKeyValue("packAfterMs", properties.packAfter().toMillis()).log("Segment compaction skipped, oldest frozen hourly zip is too young");
+            return;
+        }
+        Map<String, Long> bucket = s3Service.listObjects().stream().collect(Collectors.toMap(BucketObject::key, BucketObject::size, (size, _) -> size));
+        deleteUnreferencedZips(bucket.keySet(), zipKeys);
+        OffsetDateTime cutoff = OffsetDateTime.ofInstant(now.minus(properties.staleAfter()), clock.getZone());
+        List<String> selected = repository.zipStatistics(cutoff).stream()
             .filter(zip -> !openZipKey.equals(Optional.of(zip.getZipKey())))
-            .filter(zip -> isOverStaleShare(zip) || isHourlyZipOlderThan(zip.getZipKey(), properties.packAfter(), now))
+            .filter(zip -> isHourlyZip(zip.getZipKey()) || !isFull(zip.getZipKey(), bucket) || isOverStaleShare(zip))
             .map(ZipStatistics::getZipKey)
             .sorted()
             .toList();
         if (selected.isEmpty()) {
-            log.debug("Segment compaction skipped: no segment zip to rebuild or pack");
-            deleteUnreferencedZips(zipKeys);
             return;
         }
 
@@ -225,9 +241,14 @@ public class SegmentProfileStore {
         });
         s3Service.deleteObjects(selected);
         int live = packedIdVersionsByZip.values().stream().mapToInt(List::size).sum();
-        log.info("Compacted segment zips. oldKeys={}, newKeys={}, live={}, evicted={}, dropped={}", selected, packedIdVersionsByZip.keySet(), live,
-            rows.size() - liveRows.size(), liveRows.size() - live);
-        deleteUnreferencedZips(zipKeys);
+        log.atInfo()
+            .addKeyValue("oldZipKeys", selected)
+            .addKeyValue("newZipKeys", packedIdVersionsByZip.keySet())
+            .addKeyValue("live", live)
+            .addKeyValue("evicted", rows.size() - liveRows.size())
+            .addKeyValue("dropped", liveRows.size() - live)
+            .addKeyValue(LogKeys.DURATION_MS, Duration.ofNanos(System.nanoTime() - started).toMillis())
+            .log("Segment zips compacted");
     }
 
     /** Writes the live entries of the selected zips into packed zips, each closed once it has reached the size, and returns the SPs of each packed zip. */
@@ -264,8 +285,10 @@ public class SegmentProfileStore {
         }
         Optional<byte[]> source = s3Service.downloadZip(zipKey);
         if (source.isEmpty()) {
-            log.warn("Segment zip {} is missing from the bucket. Its {} live entries are dropped from the index and fetched again when referenced", zipKey,
-                liveEntryNames.size());
+            log.atWarn()
+                .addKeyValue(LogKeys.ZIP_KEY, zipKey)
+                .addKeyValue("liveEntries", liveEntryNames.size())
+                .log("Segment zip missing from bucket, live entries dropped from the index and fetched again when referenced");
             return List.of();
         }
         return ZipWriter.entriesOf(source.get()).stream()
@@ -273,14 +296,14 @@ public class SegmentProfileStore {
             .toList();
     }
 
-    /** Deletes the segment zips in the bucket that no index row references, left behind by a crash between an upload and the index update. */
-    private void deleteUnreferencedZips(Set<String> referencedZipKeys) {
-        List<String> unreferenced = s3Service.listObjects().stream()
+    /** Deletes the listed segment zips that no index row references, left behind by a crash between an upload and the index update. */
+    private void deleteUnreferencedZips(Set<String> listedKeys, Set<String> referencedZipKeys) {
+        List<String> unreferenced = listedKeys.stream()
             .filter(key -> isSegmentZip(key) && !referencedZipKeys.contains(key))
             .sorted()
             .toList();
         if (!unreferenced.isEmpty()) {
-            log.warn("Deleting {} segment zips the index does not reference: {}", unreferenced.size(), unreferenced);
+            log.atWarn().addKeyValue("zipKeys", unreferenced).log("Unreferenced segment zips deleted");
             s3Service.deleteObjects(unreferenced);
         }
     }
@@ -308,8 +331,22 @@ public class SegmentProfileStore {
         return zip.getEntries() > 0 && (double) zip.getStaleEntries() / zip.getEntries() > properties.rebuildStaleShare();
     }
 
-    private static boolean isHourlyZipOlderThan(String zipKey, Duration age, Instant now) {
-        return hourlyZipOpenedAt(zipKey).map(openedAt -> openedAt.plus(age).isBefore(now)).orElse(false);
+    /** The daily compaction is due once the oldest frozen hourly zip is older than the pack age. */
+    private boolean isDailyCompactionDue(Set<String> zipKeys, Optional<String> openZipKey, Instant now) {
+        return zipKeys.stream()
+            .filter(zipKey -> !openZipKey.equals(Optional.of(zipKey)))
+            .flatMap(zipKey -> hourlyZipOpenedAt(zipKey).stream())
+            .min(Comparator.naturalOrder())
+            .map(oldest -> oldest.plus(properties.packAfter()).isBefore(now))
+            .orElse(false);
+    }
+
+    private static boolean isHourlyZip(String zipKey) {
+        return hourlyZipOpenedAt(zipKey).isPresent();
+    }
+
+    private boolean isFull(String zipKey, Map<String, Long> bucket) {
+        return bucket.getOrDefault(zipKey, 0L) >= properties.zipMaxBytes().toBytes();
     }
 
     /** The newest hourly zip, if it is not older than the max age. Packed and legacy zips are never open. */

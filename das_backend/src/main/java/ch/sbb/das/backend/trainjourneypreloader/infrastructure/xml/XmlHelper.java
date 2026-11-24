@@ -24,7 +24,7 @@ public class XmlHelper {
             jaxb2Marshaller.marshal(object, streamResult);
             return streamResult.getWriter().toString();
         } catch (Exception e) {
-            log.warn("marshalling of {} failed", object.getClass(), e);
+            log.atWarn().setCause(e).addKeyValue("type", object.getClass().getName()).log("XML marshalling failed");
             return object.toString();
         }
     }

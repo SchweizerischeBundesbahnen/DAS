@@ -26,10 +26,10 @@ jobs:
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: 'temurin'
-          java-version: '21.0.13+9.0.LTS'
+          java-version: '21.0.13+100000002.0.LTS'
           cache: 'gradle'
 
       - name: Vault Secrets 🤫
@@ -67,7 +67,7 @@ jobs:
         run: melos coverage
 
       - name: Sonar scan
-        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5
+        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
         env:
           SONAR_TOKEN: ${{ steps.vault-secrets.outputs.SONAR_TOKEN }}
         with:

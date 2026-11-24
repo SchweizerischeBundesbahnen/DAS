@@ -10,7 +10,7 @@
     "build:ngssc": "ng run playground:ngsscbuild:production"
   },
   "name": "playground",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "private": true,
   "files": [
     "dist/*"
@@ -23,31 +23,31 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@angular/animations": "22.2.6",
-    "@angular/cdk": "22.2.7",
-    "@angular/common": "22.2.6",
-    "@angular/compiler": "22.2.6",
-    "@angular/core": "22.2.6",
-    "@angular/forms": "22.2.6",
-    "@angular/platform-browser": "22.2.6",
-    "@angular/platform-browser-dynamic": "22.2.6",
-    "@angular/router": "22.2.6",
+    "@angular/animations": "22.3.0",
+    "@angular/cdk": "22.3.0",
+    "@angular/common": "22.3.0",
+    "@angular/compiler": "22.3.0",
+    "@angular/core": "22.3.0",
+    "@angular/forms": "22.3.0",
+    "@angular/platform-browser": "22.3.0",
+    "@angular/platform-browser-dynamic": "22.3.0",
+    "@angular/router": "22.3.0",
     "@sbb-esta/angular": "22.2.0",
-    "angular-auth-oidc-client": "22.0.2",
-    "angular-server-side-configuration": "22.0.2",
+    "angular-auth-oidc-client": "22.0.3",
+    "angular-server-side-configuration": "22.1.1",
     "ngx-mqtt": "22.0.0",
     "rxjs": "7.8.2",
     "tslib": "2.9.1",
     "zone.js": "0.16.3"
   },
   "devDependencies": {
-    "@angular/build": "22.2.7",
-    "@angular/cli": "22.2.7",
-    "@angular/compiler-cli": "22.2.6",
-    "@angular/localize": "22.2.6",
+    "@angular/build": "22.3.0",
+    "@angular/cli": "22.3.0",
+    "@angular/compiler-cli": "22.3.0",
+    "@angular/localize": "22.3.0",
     "@eslint/js": "10.0.1",
     "@types/jasmine": "6.0.0",
-    "angular-eslint": "22.6.0",
+    "angular-eslint": "22.8.0",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
     "istanbul-lib-instrument": "6.0.3",
@@ -67,8 +67,7 @@
     "esbuild@0.28.2": true,
     "esbuild@0.28.1": true,
     "fsevents@2.3.3": true,
-    "lmdb@3.5.6": true,
-    "lmdb@3.5.4": true,
+    "lmdb": false,
     "msgpackr-extract@3.0.4": true
   }
 }
