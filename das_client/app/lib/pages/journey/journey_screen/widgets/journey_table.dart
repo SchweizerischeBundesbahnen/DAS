@@ -63,7 +63,7 @@ import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/row/das_table_row_builder.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

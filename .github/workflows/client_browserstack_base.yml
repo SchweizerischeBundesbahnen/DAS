@@ -43,7 +43,7 @@ jobs:
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
-          flutter-version: '3.47.x'
+          flutter-version: '3.50.x'
           cache: true
 
       - name: Extract branch name
@@ -54,7 +54,7 @@ jobs:
       - name: Setup melos
         uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
         with:
-          melos-version: '^7.4.0'
+          melos-version: '^8.10.1'
           run-bootstrap: 'false'
 
       - name: Get dependencies
@@ -72,10 +72,6 @@ jobs:
           roleId: ${{ secrets.VAULT_ROLE_ID }}
           secretId: ${{ secrets.VAULT_SECRET_ID }}
           secrets: |
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE_PASSWORD ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_ALIAS ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_PASSWORD ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile CLIENT_SECRET_OBSERVER_DEV ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
@@ -98,19 +94,15 @@ jobs:
           echo "::add-mask::$ACCESS_TOKEN"
           echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
-      - name: Prepare Android Secrets
-        env:
-          ANDROID_KEYSTORE_STRING: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE }}
-          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ steps.vault-secrets.outputs.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEY_PASSWORD }}
+      - name: Prepare Android debug signing
+        shell: bash
         run: |
-          echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
-          echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
-          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+          debug_keystore="$RUNNER_TEMP/browserstack-debug.keystore"
+          keytool -genkeypair -keystore "$debug_keystore" -storetype JKS \
+            -storepass android -keypass android -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US" -noprompt
+          echo "ANDROID_DEBUG_KEYSTORE=$debug_keystore" >> "$GITHUB_ENV"
 
       - name: Build apk for testing
         shell: bash
@@ -132,7 +124,7 @@ jobs:
           TEST_APK_DIR: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug
           TEST_APK_NAME: ${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
         run: |
-          ./gradlew app:assembleAndroidTest
+          ./gradlew :app:assembleDevDebugAndroidTest
           cp "$TEST_APK_DIR/app-dev-debug-androidTest.apk" "$TEST_APK_DIR/$TEST_APK_NAME"
         working-directory: das_client/app/android
 
@@ -176,13 +168,13 @@ jobs:
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
-          flutter-version: '3.47.x'
+          flutter-version: '3.50.x'
           cache: true
 
       - name: Setup melos
         uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
         with:
-          melos-version: '^7.4.0'
+          melos-version: '^8.10.1'
           run-bootstrap: 'false'
 
       - name: Get dependencies

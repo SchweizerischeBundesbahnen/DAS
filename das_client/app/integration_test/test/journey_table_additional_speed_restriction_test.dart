@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/additional_speed_
 import 'package:app/theme/das_colors.dart';
 import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/table/das_table.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../integration/integration_test_app.dart';

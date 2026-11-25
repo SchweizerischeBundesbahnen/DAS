@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/basic_text_accord
 import 'package:app/pages/journey/journey_screen/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BasicTextAccordionRow extends WidgetRowBuilder<JourneyAnnotation> {

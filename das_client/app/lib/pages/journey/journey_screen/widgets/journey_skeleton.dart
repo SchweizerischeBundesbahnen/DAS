@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/journey_overview.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/loading_table.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/extended_header_container.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

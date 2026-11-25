@@ -8,7 +8,7 @@ import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_
 import 'package:app/pages/journey/journey_screen/widgets/communication_network_icon.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:personal_notes/component.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

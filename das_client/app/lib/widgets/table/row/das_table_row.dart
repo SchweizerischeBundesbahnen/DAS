@@ -2,7 +2,7 @@ import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Represents a row in the [DASTable].
 sealed class DASTableRow {

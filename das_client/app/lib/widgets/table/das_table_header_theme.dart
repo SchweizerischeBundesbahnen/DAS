@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Contains the theme data for styling the header row of the [DASTable].
 @immutable

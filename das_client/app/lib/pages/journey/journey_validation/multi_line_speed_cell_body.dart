@@ -4,7 +4,7 @@ import 'package:app/pages/journey/view_model/model/resolved_train_series_speed.d
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/row/das_row_controller_wrapper.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
 

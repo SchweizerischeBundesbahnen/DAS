@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// Widget that is provided by [ErrorWidget.builder] and displayed when an unexpected error happened during build time.

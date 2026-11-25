@@ -6,7 +6,7 @@ import 'package:app/widgets/company_selection/select_company_input_view_model.da
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -28,7 +28,7 @@ class SelectCompanyInput extends StatelessWidget {
   final bool isModalVersion;
   final bool multiSelect;
   final bool addClearButton;
-  final SBBInputBorderType borderType;
+  final SBBDecorationBorderType borderType;
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,8 @@ class SelectCompanyInput extends StatelessWidget {
               Expanded(
                 child: SBBDecoratedText(
                   onTap: companies.isNotEmpty ? () => _onTap(context, companies) : null,
-                  decoration: SBBInputDecoration(
-                    borderType: borderType,
+                  decoration: SBBDecoration(
+                    style: SBBDecorationStyle(borderType: borderType),
                     labelText: isModalVersion ? null : context.l10n.p_train_selection_company_description,
                     placeholderText: isModalVersion ? context.l10n.p_train_selection_company_description : null,
                     trailing: companies.isEmpty ? SBBLoadingIndicator.tiny() : null,

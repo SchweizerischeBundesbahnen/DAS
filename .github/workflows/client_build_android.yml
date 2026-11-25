@@ -30,13 +30,13 @@ jobs:
 
     - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
       with:
-        flutter-version: '3.47.x'
+        flutter-version: '3.50.x'
         cache: true
 
     - name: Setup melos
       uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
       with:
-        melos-version: '^7.4.0'
+        melos-version: '^8.10.1'
         run-bootstrap: 'false'
 
     - name: Get dependencies

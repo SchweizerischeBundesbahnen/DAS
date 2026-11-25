@@ -1,6 +1,6 @@
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/row/das_row_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class DASRowControllerWrapper extends StatefulWidget {
   const DASRowControllerWrapper({

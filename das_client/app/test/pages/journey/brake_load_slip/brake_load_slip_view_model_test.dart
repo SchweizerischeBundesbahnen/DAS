@@ -14,7 +14,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:core_data/component.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formation/component.dart';
 import 'package:get_it/get_it.dart';

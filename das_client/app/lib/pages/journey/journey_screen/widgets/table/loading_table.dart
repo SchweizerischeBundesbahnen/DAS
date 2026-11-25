@@ -7,7 +7,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/column_definition
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sfera/component.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

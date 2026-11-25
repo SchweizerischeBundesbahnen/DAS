@@ -27,7 +27,7 @@ import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/row/das_table_row_decoration.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:personal_notes/component.dart';
 import 'package:provider/provider.dart';

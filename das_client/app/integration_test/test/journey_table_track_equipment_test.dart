@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_screen/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../integration/integration_test_app.dart';
