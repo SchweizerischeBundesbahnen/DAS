@@ -250,7 +250,12 @@ class PreloadRepositoryImpl({
 
   Future<PreloadDetails> _gatherDetails(List<S3File>? files) async {
     files = files ?? await databaseService.findAll();
-    return PreloadDetails(files: files, status: _currentStatus, metrics: await sferaLocalRepo.getMetrics());
+    return PreloadDetails(files: files, status: _status(), metrics: await sferaLocalRepo.getMetrics());
+  }
+
+  PreloadStatus _status() {
+    if (_s3client == null) return .missingConfiguration;
+    return _currentStatus;
   }
 
   void _setTriggerForPeriodicPreload() {

@@ -27,17 +27,17 @@ void main() {
     mockConnectivity = MockConnectivity();
     mockNetworkRoamingService = MockNetworkRoamingService();
     mockConnectionCheckService = MockConnectionCheckService();
-    testee = ConnectivityManagerImpl(
-      connectivity: mockConnectivity,
-      networkRoamingService: mockNetworkRoamingService,
-      connectionCheckService: mockConnectionCheckService,
-    );
-
     connectivityController = StreamController<List<ConnectivityResult>>.broadcast();
 
     when(mockConnectivity.onConnectivityChanged).thenAnswer((_) => connectivityController.stream);
     when(mockNetworkRoamingService.isNetworkRoaming()).thenAnswer((_) async => false);
     when(mockConnectionCheckService.hasInternetConnection()).thenAnswer((_) async => true);
+
+    testee = ConnectivityManagerImpl(
+      connectivity: mockConnectivity,
+      networkRoamingService: mockNetworkRoamingService,
+      connectionCheckService: mockConnectionCheckService,
+    );
   });
 
   tearDown(() async {
@@ -55,7 +55,14 @@ void main() {
   });
 
   test('timer_whenPeriodicTimerTicks_thenRechecksConnectivityState', () {
+    testee.dispose();
     fakeAsync((async) {
+      testee = ConnectivityManagerImpl(
+        connectivity: mockConnectivity,
+        networkRoamingService: mockNetworkRoamingService,
+        connectionCheckService: mockConnectionCheckService,
+      );
+
       // GIVEN WHEN
       async.elapse(ConnectivityManagerImpl.connectivityCheckInterval);
       async.flushMicrotasks();
