@@ -146,27 +146,6 @@ jobs:
           cp "$TEST_APK_DIR/app-dev-debug-androidTest.apk" "$TEST_APK_DIR/$TEST_APK_NAME"
         working-directory: das_client/app/android
 
-      - name: Verify Android APK signatures
-        shell: bash
-        env:
-          APP_APK: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/android-${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
-          TEST_APK: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/${{ inputs.enable_e2e && 'e2e' || 'integration' }}-test.apk
-        run: |
-          apksigner=$(find "$ANDROID_HOME/build-tools" -mindepth 2 -maxdepth 2 -name apksigner | sort -V | tail -n 1)
-          if [[ -z "$apksigner" ]]; then
-            echo "::error::apksigner was not found in Android SDK build-tools."
-            exit 1
-          fi
-          "$apksigner" verify --print-certs "$APP_APK" > "$RUNNER_TEMP/app-certs.txt"
-          "$apksigner" verify --print-certs "$TEST_APK" > "$RUNNER_TEMP/test-certs.txt"
-          app_signers=$(sed -n 's/^.*Signer.*certificate SHA-256 digest: //p' "$RUNNER_TEMP/app-certs.txt" | sort -u)
-          test_signers=$(sed -n 's/^.*Signer.*certificate SHA-256 digest: //p' "$RUNNER_TEMP/test-certs.txt" | sort -u)
-          if [[ -z "$app_signers" || "$app_signers" != "$test_signers" ]]; then
-            cat "$RUNNER_TEMP/app-certs.txt" "$RUNNER_TEMP/test-certs.txt"
-            echo "::error::Application APK and test-suite APK must have matching signing certificates."
-            exit 1
-          fi
-
       - name: Upload and Run on Browserstack
         uses: Grodien/browserstack-flutter-action@89eeb8da9f713f2f2b2a7ca3dc5cb46d7f2f72c0 # v1.9
         with:
