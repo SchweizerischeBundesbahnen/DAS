@@ -72,10 +72,6 @@ jobs:
           roleId: ${{ secrets.VAULT_ROLE_ID }}
           secretId: ${{ secrets.VAULT_SECRET_ID }}
           secrets: |
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEYSTORE_PASSWORD ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_ALIAS ;
-            kv/data/DSO-BPS/driver-advisory-system/ci/mobile ANDROID_KEY_PASSWORD ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile CLIENT_SECRET_OBSERVER_DEV ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_USERNAME ;
             kv/data/DSO-BPS/driver-advisory-system/ci/mobile MOCK_BROKER_MQTT_PASSWORD ;
@@ -97,20 +93,6 @@ jobs:
           jq -er .access_token) || ACCESS_TOKEN=""
           echo "::add-mask::$ACCESS_TOKEN"
           echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
-
-      - name: Prepare Android Secrets
-        env:
-          ANDROID_KEYSTORE_STRING: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE }}
-          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ steps.vault-secrets.outputs.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ steps.vault-secrets.outputs.ANDROID_KEY_PASSWORD }}
-        run: |
-          echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
-          echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
-          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
       - name: Prepare Android debug signing
         shell: bash
