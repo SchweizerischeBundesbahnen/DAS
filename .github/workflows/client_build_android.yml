@@ -36,7 +36,7 @@ jobs:
     - name: Setup melos
       uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
       with:
-        melos-version: '^7.4.0'
+        melos-version: '^8.10.1'
         run-bootstrap: 'false'
 
     - name: Get dependencies
