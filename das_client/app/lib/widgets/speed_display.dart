@@ -1,7 +1,7 @@
 import 'package:app/widgets/das_badge_overlay.dart';
 import 'package:app/widgets/das_circle_badge.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 

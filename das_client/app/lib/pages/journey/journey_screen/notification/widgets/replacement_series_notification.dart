@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/animated_n
 import 'package:app/pages/journey/journey_screen/view_model/model/replacement_series_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/replacement_series_view_model.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 class ReplacementSeriesNotification extends StatelessWidget {

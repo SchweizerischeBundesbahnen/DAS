@@ -17,77 +17,93 @@ void main() {
     late DASBaseScope mockDASBaseScope;
 
     setUp(() async {
+      await GetIt.I.reset();
       testee = ScopeHandlerImpl();
       mockDASBaseScope = MockDASBaseScope();
       when(mockDASBaseScope.scopeName).thenReturn(dasBaseScopeName);
 
-      await GetIt.I.reset();
       GetIt.I.registerFlavor(Flavor.dev());
       GetIt.I.registerSingleton<DASBaseScope>(mockDASBaseScope);
     });
 
     test('push_whenInvalidScope_thenThrows', () {
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(() => testee.push<DIScope>(), throwsA(isA<UnimplementedError>()));
     });
 
     test('push_whenBaseScopePushed_thenCallsPush', () async {
-      // ARRANGE
+      // GIVEN
       when(mockDASBaseScope.push()).thenAnswer((_) async {});
-      // ACT
+      // WHEN
       await testee.push<DASBaseScope>();
-      // EXPECT
+      // THEN
       verify(mockDASBaseScope.push()).called(1);
     });
 
     test('pop_whenBaseScopePopped_thenCallsPop', () async {
-      // ARRANGE
+      // GIVEN
       when(mockDASBaseScope.pop()).thenAnswer((_) async => true);
-      // ACT
+      // WHEN
       final result = await testee.pop<DASBaseScope>();
-      // EXPECT
+      // THEN
       verify(mockDASBaseScope.pop()).called(1);
       expect(result, isTrue);
     });
 
     test('popAbove_whenBaseScopePoppedAbove_thenCallsPopAbove', () async {
-      // ARRANGE
+      // GIVEN
       when(mockDASBaseScope.popAbove()).thenAnswer((_) async => true);
-      // ACT
+      // WHEN
       final result = await testee.popAbove<DASBaseScope>();
-      // EXPECT
+      // THEN
       verify(mockDASBaseScope.popAbove()).called(1);
       expect(result, isTrue);
     });
 
     test('isInStack_whenBaseScopeIsInGetItAndNameReturned_thenReturnsTrue', () async {
-      // ARRANGE
+      // GIVEN
       GetIt.I.pushNewScope(scopeName: dasBaseScopeName);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.isInStack<DASBaseScope>(), isTrue);
     });
 
     test('isInStack_whenBaseScopeIsNotInGetIt_thenReturnsFalse', () async {
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.isInStack<DASBaseScope>(), isFalse);
     });
 
     test('isTop_whenBaseScopeIsTop_thenReturnsTrue', () async {
-      // ARRANGE
+      // GIVEN
       GetIt.I.pushNewScope(scopeName: dasBaseScopeName);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.isTop<DASBaseScope>(), isTrue);
     });
 
     test('isTop_whenBaseScopeIsNotTop_thenReturnsFalse', () async {
-      // ARRANGE
+      // GIVEN
       GetIt.I.pushNewScope(scopeName: dasBaseScopeName);
       GetIt.I.pushNewScope(scopeName: 'AnotherScope');
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.isTop<DASBaseScope>(), isFalse);
+    });
+
+    test('onScopeChanged_whenScopePushedOrPopped_thenEmits', () async {
+      when(mockDASBaseScope.push()).thenAnswer((_) async {});
+      when(mockDASBaseScope.pop()).thenAnswer((_) async => true);
+
+      var emitCount = 0;
+      final sub = testee.onScopeChanged.listen((_) => emitCount++);
+
+      await testee.push<DASBaseScope>();
+      await pumpEventQueue();
+      await testee.pop<DASBaseScope>();
+      await pumpEventQueue();
+
+      expect(emitCount, 2);
+      await sub.cancel();
     });
   });
 }

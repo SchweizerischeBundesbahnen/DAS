@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/notification/widgets/animated_n
 import 'package:app/pages/journey/view_model/warn_app_view_model.dart';
 import 'package:app/widgets/das_icons.dart';
 import 'package:app/widgets/notificationbox/notification_box.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

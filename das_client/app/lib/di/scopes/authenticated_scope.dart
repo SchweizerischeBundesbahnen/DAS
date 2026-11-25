@@ -7,6 +7,7 @@ import 'package:app/pages/journey/journey_validation/multi_brake_series_selectio
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/view_model/app_expiration_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_scope_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_settings_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
@@ -69,6 +70,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerAcknowledgedModificationRepository();
     getIt.registerAppSyncHandler();
 
+    getIt.registerJourneyScopeViewModel();
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();
@@ -291,8 +293,9 @@ extension AuthenticatedScopeExtension on GetIt {
         sferaJourneyViewModel: DI.get(),
         ruIndicationsRepository: DI.get(),
         settingsRepository: DI.get(),
+        personalNotesRepository: DI.get(),
       ),
-      dependsOn: [SferaJourneyViewModel],
+      dependsOn: [SferaJourneyViewModel, PersonalNotesRepository],
       dispose: (vm) => vm.dispose(),
     );
   }
@@ -335,6 +338,13 @@ extension AuthenticatedScopeExtension on GetIt {
         RuFeatureProvider,
         NotificationPriorityQueueViewModel,
       ],
+      dispose: (vm) => vm.dispose(),
+    );
+  }
+
+  void registerJourneyScopeViewModel() {
+    registerSingleton<JourneyScopeViewModel>(
+      JourneyScopeViewModel(scopeHandler: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }

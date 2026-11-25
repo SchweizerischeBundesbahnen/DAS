@@ -1,3 +1,3 @@
 # DAS E2E Testsuite
 
-Java / Maven integration and e2e tests validating the DAS backend API contract.
+Java / Maven integration and e2e tests validating the DAS-Backend API contract.

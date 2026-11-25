@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
 import 'package:app/pages/journey/journey_screen/view_model/sim_train_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
 import 'package:core_data/component.dart';
@@ -14,7 +15,9 @@ enum CollapsedState {
   expanded;
 
   static CollapsedState defaultOf(BaseData? data) =>
-      data is OperationalIndication || data is RuIndication ? .expandedWithCollapsedContent : .expanded;
+      data is OperationalIndication || data is RuIndication || data is PersonalNoteAnnotation
+      ? .expandedWithCollapsedContent
+      : .expanded;
 }
 
 class CollapsibleRowsViewModel({
@@ -23,15 +26,15 @@ class CollapsibleRowsViewModel({
   super.journeyViewModel,
 }) extends JourneyAwareViewModel {
   this {
-    _init(journeyViewModel.journey, journeyPositionStream);
+    _init(journeyPositionStream);
   }
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   Set<int> _repeatedLineFootNotes = {};
 
-  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
-  StreamSubscription<bool>? _simTrainSubscription;
+  StreamSubscription? _journeySubscription;
+  StreamSubscription? _simTrainSubscription;
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
 
@@ -52,14 +55,11 @@ class CollapsibleRowsViewModel({
     _rxCollapsedRows.add(newMap);
   }
 
-  void _init(
-    Stream<Journey?> journeyStream,
-    Stream<JourneyPositionModel> journeyPositionStream,
-  ) {
+  void _init(Stream<JourneyPositionModel> journeyPositionStream) {
     _journeySubscription?.cancel();
     _journeySubscription =
         CombineLatestStream.combine2(
-          journeyStream,
+          journeyViewModel.journey,
           journeyPositionStream,
           (a, b) => (a, b),
         ).listen((data) {
@@ -181,7 +181,8 @@ class CollapsibleRowsViewModel({
 }
 
 extension BaseDataX on BaseData {
-  bool get isCollapsible => this is BaseFootNote || this is OperationalIndication || this is RuIndication;
+  bool get isCollapsible =>
+      this is BaseFootNote || this is OperationalIndication || this is RuIndication || this is PersonalNoteAnnotation;
 }
 
 extension CollapsedStateMapX on Map<int, CollapsedState> {

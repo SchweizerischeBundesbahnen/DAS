@@ -37,7 +37,7 @@ void main() {
   });
 
   test('sendLogs_whenCalledWithSuccess_makesPostAndHasExpectedHeaders', () async {
-    // ARRANGE
+    // GIVEN
     final logEntries = _createDummyLogEntries();
     final mockFile = MockFile();
     when(mockFile.readAsStringSync()).thenAnswer((_) => logEntries.toJsonString());
@@ -59,10 +59,10 @@ void main() {
       ),
     ).thenAnswer((inv) async => successResponse(Request('post', inv.positionalArguments[0])));
 
-    // ACT
+    // WHEN
     final response = await testee.sendLogs(mockFile);
 
-    // EXPECT
+    // THEN
     expect(response.headers, equals(expectedHeaders));
 
     final expectedUrl = Uri.parse(mockUrl);
@@ -76,11 +76,11 @@ void main() {
   });
 
   test('sendLogs_whenResponseIsBadRequest_shouldThrowPermanentWithHttpExceptionCause', () async {
-    // ARRANGE
+    // GIVEN
     final mockFile = _mockLogFile();
     _stubPostWithStatus(mockClient, 400);
 
-    // ACT & EXPECT
+    // WHEN & THEN
     try {
       await testee.sendLogs(mockFile);
       fail('Expected a PermanentSendLogsException to be thrown.');
@@ -92,28 +92,28 @@ void main() {
 
   for (final statusCode in [400, 404, 413]) {
     test('sendLogs_whenResponseIs${statusCode}_shouldThrowPermanentSendLogsException', () async {
-      // ARRANGE
+      // GIVEN
       final mockFile = _mockLogFile();
       _stubPostWithStatus(mockClient, statusCode);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(() => testee.sendLogs(mockFile), throwsA(isA<PermanentSendLogsException>()));
     });
   }
 
   for (final statusCode in [401, 403, 408, 429, 500, 503]) {
     test('sendLogs_whenResponseIs${statusCode}_shouldThrowTransientSendLogsException', () async {
-      // ARRANGE
+      // GIVEN
       final mockFile = _mockLogFile();
       _stubPostWithStatus(mockClient, statusCode);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
     });
   }
 
   test('sendLogs_whenPostThrows_shouldThrowTransientSendLogsException', () async {
-    // ARRANGE
+    // GIVEN
     final mockFile = _mockLogFile();
     when(
       mockClient.post(
@@ -123,16 +123,16 @@ void main() {
       ),
     ).thenThrow(const SocketException('no connection'));
 
-    // ACT & EXPECT
+    // WHEN & THEN
     expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
   });
 
   test('sendLogs_whenEndpointNotConfigured_shouldThrowTransientSendLogsException', () async {
-    // ARRANGE
+    // GIVEN
     final mockFile = _mockLogFile();
     GetIt.I.unregister<LogEndpoint>();
 
-    // ACT & EXPECT
+    // WHEN & THEN
     expect(() => testee.sendLogs(mockFile), throwsA(isA<TransientSendLogsException>()));
     verifyNever(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
   });

@@ -46,10 +46,10 @@ void main() {
     });
 
     test('initialize_whenCreated_thenClearsStorageAndReadsInitialToken', () async {
-      // ACT
+      // WHEN
       await _drainAsyncWork();
 
-      // VERIFY
+      // THEN
       verify(mockLocalMessageStorage.clear()).called(1);
       verify(mockFirebaseMessaging.getToken()).called(1);
       expect(testee.tokenValue, initialToken);
@@ -61,11 +61,11 @@ void main() {
       final emittedTokens = <String?>[];
       final subscription = testee.token.listen(emittedTokens.add);
 
-      // ACT
+      // WHEN
       rxToken.add('refreshed-token');
       await _drainAsyncWork();
 
-      // VERIFY
+      // THEN
       expect(testee.tokenValue, 'refreshed-token');
       expect(emittedTokens, contains('refreshed-token'));
       await subscription.cancel();
@@ -90,11 +90,11 @@ void main() {
       final emittedMessages = <BaseMessageDto>[];
       final subscription = testee.message.listen(emittedMessages.add);
 
-      // ACT
+      // WHEN
       await testee.replayMessages();
       await _drainAsyncWork();
 
-      // VERIFY
+      // THEN
       verify(mockLocalMessageStorage.getLatestMessages()).called(1);
       verify(mockLocalMessageStorage.clear()).called(1);
       expect(emittedMessages, hasLength(2));

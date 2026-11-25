@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* unescape after parsing nested xml  ([#3062](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3062)) ([4d1f2a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d1f2a28abbcdd054a31a0cbb29c9ee3d2d5dbba))
+* unescape after parsing nested xml ([#3072](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3072)) ([9b2c9cf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9b2c9cf5e9f1c4d7ae889437002bd15311ca2f0f))
+
+## [0.56.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.55.0...das_client-v0.56.0) (2026-10-26)
+
+
+### Features
+
+* use chrome for service point portal when SOB is selected ([#2496](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2496)) ([#3010](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3010)) ([c9d8f57](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c9d8f57c9cec86ddd79c354b82cf4200b879ea4a))
+
+
+### Bug Fixes
+
+* show ru indication on every station with same locationCode ([#3011](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3011)) ([a7dac88](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dac8898e29b244cdae1bbe361c5dd47783c579))
+
 ## [0.55.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.54.0...das_client-v0.55.0) (2026-10-19)
 
 

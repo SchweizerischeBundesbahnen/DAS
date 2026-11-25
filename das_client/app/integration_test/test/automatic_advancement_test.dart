@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/journey_advancem
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/route_chevron.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../integration/integration_test_app.dart';

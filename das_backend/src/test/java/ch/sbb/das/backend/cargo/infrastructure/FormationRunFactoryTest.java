@@ -39,8 +39,11 @@ class FormationRunFactoryTest {
         formationRun.setEndLocationUic(new LocationUic(null, 80, 78261));
         formationRun.setSmsEvu("2357");
         formationRun.setTrainSequence("TC");
+        MaxUphillDownhillGradients maxUphillDownhillGradients = new MaxUphillDownhillGradients();
+        maxUphillDownhillGradients.setMaxDownhillGradientInPermille(96);
+        maxUphillDownhillGradients.setMaxUphillGradientInPermille(67);
         formationRun.setConsolidatedBrakingInformation(new ConsolidatedBrakingInformation(true, 34, 65, false, 45,
-            new MaxUphillDownhillGradients(96, 67),
+            maxUphillDownhillGradients,
             "32.4", "RC", 12));
 
         FormationRun expectedFormationRun = FormationRun.builder()

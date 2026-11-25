@@ -20,6 +20,8 @@ import static ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentifica
 import static ch.sbb.das.backend.userproperties.internal.UserPropertyController.API_USER_PROPERTIES;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import ch.sbb.das.backend.common.error.ProblemAccessDeniedHandler;
+import ch.sbb.das.backend.common.error.ProblemAuthenticationEntryPoint;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Production security.
+ * <p>
+ * Rejections are answered with a {@link ch.sbb.das.backend.common.Problem} body and the RFC 6750 {@code WWW-Authenticate} header.
  *
  * @see JWTConfig
  */
@@ -43,7 +47,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter, ProblemAuthenticationEntryPoint authenticationEntryPoint,
+        ProblemAccessDeniedHandler accessDeniedHandler) {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
@@ -61,8 +66,14 @@ public class WebSecurityConfig {
             )
             .csrf(AbstractHttpConfigurer::disable)
             .cors(withDefaults())
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+            )
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
             );
         return http.build();
     }

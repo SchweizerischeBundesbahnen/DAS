@@ -132,9 +132,17 @@ formation:
     older-than-days: 30
 
 logging:
+  # Conventions (levels, message style, keys): das_backend/CODING_STANDARDS.md
+  level:
+    root: INFO
+    ch.sbb.das.backend: INFO
+  pattern:
+    # text output (local profile and tests): Spring Boot's default plus the key-value pairs and the MDC; stages use the structured block below instead
+    console: "%clr(%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %kvp %X%n%wEx"
+  # Splunk HEC settings handed out to the DAS client (ConfigServiceImpl), not backend logging
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
-  
+
 sfera:
   major-version: "4"
   version: "4.00"
@@ -173,8 +181,23 @@ trainjourneypreloader:
   # must be shorter than fetch-cron interval to prevent overlapping runs
   max-preload-duration: ${PRELOAD_MAX_DURATION:PT4M}
   hours-before-departure: 4
+  # a failing train waits min(base * 2^(attempts-1), max) before its next attempt; base should equal the fetch-cron interval
+  retry-backoff:
+    base: ${PRELOAD_RETRY_BACKOFF_BASE:PT5M}
+    max: ${PRELOAD_RETRY_BACKOFF_MAX:PT1H}
   storage-clean-up:
     hours: ${PRELOAD_CLEANUP_HOURS}
+  segment-profiles:
+    # a segment profile no journey in the preload window referenced for this long is stale and evicted by the next compaction
+    stale-after: ${PRELOAD_SP_STALE_AFTER:P30D}
+    # a full segment zip whose share of stale entries is over this is rebuilt by the daily compaction with its live entries only
+    rebuild-stale-share: ${PRELOAD_SP_REBUILD_STALE_SHARE:0.5}
+    # the open segment zip is frozen and a new one opened once it is older than this
+    open-zip-max-age: ${PRELOAD_SP_OPEN_ZIP_MAX_AGE:PT1H}
+    # the daily compaction runs once the oldest frozen hourly segment zip is older than this
+    pack-after: ${PRELOAD_SP_PACK_AFTER:PT24H}
+    # a segment zip is full and closed once it has reached this size; the daily compaction folds every frozen zip that is not full
+    zip-max-bytes: ${PRELOAD_SP_ZIP_MAX_BYTES:5MB}
 
 proxy:
   base-url: ${PROXY_BASE_URL}
@@ -219,3 +242,29 @@ spring:
     activate:
       on-profile: "!local & !test"
     import: vault://
+
+---
+# Structured logging for Splunk on every stage: one ECS JSON object per line (UTC timestamps), MDC entries and key-value pairs as fields.
+# The test profile switches the console back to text (application-test.yaml), the local profile keeps the text pattern above.
+spring:
+  config:
+    activate:
+      on-profile: "!local"
+logging:
+  structured:
+    format:
+      console: ecs
+    ecs:
+      service:
+        # service.name comes from spring.application.name, service.version from the jar manifest (Implementation-Version)
+        environment: ${STAGE}
+    json:
+      # ecs.version and process.pid carry no information for us
+      exclude: ecs,process.pid
+      rename:
+        # the Instana agent's MDC key instana.trace.id becomes the Splunk field mdc.instana.trace.id (SBB convention, see ProblemFactory)
+        instana: mdc.instana
+      stacktrace:
+        root: first
+        include-common-frames: false
+        max-length: 16384

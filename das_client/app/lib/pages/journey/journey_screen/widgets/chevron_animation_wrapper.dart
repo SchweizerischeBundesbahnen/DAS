@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/journey_screen/chevron_animation_controller.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ChevronAnimationWrapper extends StatefulWidget {
   const ChevronAnimationWrapper({

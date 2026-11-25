@@ -1,11 +1,11 @@
-package ch.sbb.das.backend.restapi.e2etest.api;
+package ch.sbb.das.backend.restapi.e2etest.api.driver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.das.backend.restapi.configuration.DasBackendEndpointConfiguration;
 import ch.sbb.das.backend.restapi.e2etest.configuration.ApiClientTestProfile;
 import ch.sbb.das.backend.restapi.e2etest.helper.RestAssuredCommand;
-import ch.sbb.das.backend.restapi.monitoring.MonitoringConstants;
+import ch.sbb.das.backend.restapi.e2etest.helper.ServiceDoc;
 import ch.sbb.das.backend.restclient.v1.model.Problem;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContextManager;
 
 /**
- * Testing {@link Problem} returned by DAS-Backend RestControllers or TopLevelHandler.
+ * Testing {@link Problem} returned by DAS-Backend specific RestControllers or global Error-Handler.
  */
 @ApiClientTestProfile
 @Slf4j
@@ -37,7 +37,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
     @DisplayName("APIM access by BAD JWT|tests: 361")
     @Test
     void checkAuthorization_badNonJWT() {
-        final Response response = createRequestWithHeader("de", getRequestId(), SSO_BEARER_TOKEN_PREFIX + (MonitoringConstants.TESTMARKER_BAD + "JWT").toLowerCase())
+        final Response response = createRequestWithHeader("de", getRequestId(), SSO_BEARER_TOKEN_PREFIX + (ServiceDoc.TEST_MARKER_BAD + "JWT").toLowerCase())
             .get(getUrl(SettingsApiTest.ENDPOINT))
             .then()
             .extract()
@@ -54,7 +54,7 @@ public class ProblemHandlingTest extends RestAssuredCommand {
     @DisplayName("APIM endpoint FORBIDDEN|tests: 361")
     @Test
     void endpoint_nonExisting() {
-        final String endpointBad = "/v1/" + (MonitoringConstants.TESTMARKER_BAD + "API").toLowerCase();
+        final String endpointBad = ServiceDoc.DRIVER_API_PATH + "/" + (ServiceDoc.TEST_MARKER_BAD + "API").toLowerCase();
 
         final Response response = createRequestWithHeader("fr", getRequestId())
             .param("dummy", "VALUE")

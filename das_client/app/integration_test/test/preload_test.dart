@@ -3,7 +3,7 @@ import 'package:app/pages/support/widgets/preload_status_display.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mqtt/component.dart';
 import 'package:preload/component.dart';

@@ -3,7 +3,7 @@ package ch.sbb.das.backend.cargo.infrastructure;
 import static org.springframework.security.oauth2.client.web.ClientAttributes.clientRegistrationId;
 
 import ch.sbb.das.backend.cargo.infrastructure.model.TransportPaperLinkResponse;
-import ch.sbb.das.backend.common.ProxyClientException;
+import ch.sbb.das.backend.common.error.ProxyClientException;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;

@@ -2,7 +2,7 @@ package ch.sbb.das.backend.appversions.internal;
 
 import ch.sbb.das.backend.common.ApiDocumentation;
 import ch.sbb.das.backend.common.ApiErrorResponses;
-import ch.sbb.das.backend.common.Response;
+import ch.sbb.das.backend.common.ApiNotFoundResponse;
 import ch.sbb.das.backend.common.ResponseEntityFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,7 +42,7 @@ public class AppVersionController {
     @ApiResponse(responseCode = "200", description = "App versions resp. its managed state.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAllAppVersions() {
+    public ResponseEntity<AppVersionResponse> getAllAppVersions() {
         List<AppVersion> versions = appVersionServiceImpl.getAll();
         return ResponseEntityFactory.createOkResponse(new AppVersionResponse(versions));
     }
@@ -51,13 +51,10 @@ public class AppVersionController {
     @Operation(summary = "Get app version by id.", description = "Returns a single app version by its id.")
     @ApiResponse(responseCode = "200", description = "App version found.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
-    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> getAppVersionById(@PathVariable Integer id) {
+    public ResponseEntity<AppVersionResponse> getAppVersionById(@PathVariable Integer id) {
         AppVersion version = appVersionServiceImpl.getById(id);
-        if (version == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
-        }
         return ResponseEntityFactory.createOkResponse(new AppVersionResponse(version));
     }
 
@@ -75,13 +72,10 @@ public class AppVersionController {
     @Operation(summary = "Update app version by id.", description = "Updates a single app version by its id.")
     @ApiResponse(responseCode = "200", description = "App version updated.",
         content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AppVersionResponse.class)))
-    @ApiResponse(responseCode = "404", description = "App version not found.")
+    @ApiNotFoundResponse
     @ApiErrorResponses
-    public ResponseEntity<? extends Response> updateAppVersion(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest) {
+    public ResponseEntity<AppVersionResponse> updateAppVersion(@PathVariable Integer id, @RequestBody @Valid AppVersionRequest updateRequest) {
         AppVersion updatedVersion = appVersionServiceImpl.update(id, updateRequest);
-        if (updatedVersion == null) {
-            return ResponseEntityFactory.createNotFoundResponse();
-        }
         return ResponseEntityFactory.createOkResponse(new AppVersionResponse(List.of(updatedVersion)));
     }
 

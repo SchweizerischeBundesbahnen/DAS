@@ -16,6 +16,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Index row of a Segment Profile the preloader holds. Published rows name the segment zip that carries the SP; pending rows have no zip key yet and keep the XML until it is
+ * published.
+ */
 @Entity
 @Table(name = "preloaded_segment_profile")
 @Getter
@@ -34,7 +38,9 @@ public class PreloadedSegmentProfileEntity {
 
     private OffsetDateTime lastSeen;
 
-    private Integer fileId;
+    private String zipKey;
+
+    private String pendingXml;
 
     @Convert(converter = StringListConverter.class)
     private List<String> relatedLrSpIdVersions;

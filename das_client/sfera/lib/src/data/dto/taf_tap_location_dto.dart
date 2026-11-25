@@ -14,6 +14,8 @@ import 'package:sfera/src/data/dto/station_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_ident_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_route_table_data_nsp_dto.dart';
+import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
+import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
 
 class TafTapLocationDto({super.type = elementType, super.attributes, super.children, super.value})
     extends SferaSegmentXmlElementDto {
@@ -28,7 +30,11 @@ class TafTapLocationDto({super.type = elementType, super.attributes, super.child
 
   Iterable<TafTapLocationNspDto> get nsps => children.whereType<TafTapLocationNspDto>();
 
-  StationSpeedNspDto? get stationSpeed => children.whereType<StationSpeedNspDto>().firstOrNull;
+  XmlStationSpeedDto? get xmlStationSpeed =>
+      children.whereType<StationSpeedNspDto>().map((it) => it.xmlStationSpeed).nonNulls.firstOrNull;
+
+  XmlGraduatedSpeedInfoDto? get xmlGraduatedSpeedInfo =>
+      children.whereType<StationSpeedNspDto>().map((it) => it.xmlGraduatedSpeedInfo).nonNulls.firstOrNull;
 
   Iterable<LocalRegulationTafTapLocationNspDto> get localRegulations =>
       children.whereType<LocalRegulationTafTapLocationNspDto>();

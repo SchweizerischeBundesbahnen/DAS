@@ -33,6 +33,7 @@ class E2ETestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerPersonalNotesRepository();
     getIt.registerAcknowledgedModificationRepository();
 
+    getIt.registerJourneyScopeViewModel();
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();

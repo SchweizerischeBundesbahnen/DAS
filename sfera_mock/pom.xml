@@ -4,12 +4,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.2</version>
+        <version>4.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
     <artifactId>sfera_mock</artifactId>
-    <version>0.22.1-SNAPSHOT</version>
+    <version>0.23.2-SNAPSHOT</version>
     <name>sfera_mock</name>
     <description>Backend to mock SFERA messages for end-to-end tests</description>
     <properties>
@@ -18,9 +18,9 @@
         <image.namespace>ghcr.io/schweizerischebundesbahnen</image.namespace>
         <image.version>${project.version}</image.version>
 
-        <spring-cloud.version>2025.1.4</spring-cloud.version>
-        <solace-spring-cloud-bom.version>6.1.1</solace-spring-cloud-bom.version>
-        <vault.version>5.0.3</vault.version>
+        <spring-cloud.version>2026.0.0</spring-cloud.version>
+        <solace-spring-cloud-bom.version>6.2.0</solace-spring-cloud-bom.version>
+        <vault.version>5.1.0</vault.version>
     </properties>
 
     <dependencyManagement>
@@ -186,7 +186,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
                 <configuration>
                     <sources>
                         <source>${basedir}/src/main/resources/SFERA.xsd</source>

@@ -128,7 +128,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
+                List<TrainIdentification> trainIds = trainIdentificationService.getTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).hasSize(1);
                 TrainIdentification trainId = trainIds.getFirst();
                 assertThat(trainId.startDateTime().atZoneSameInstant(SWISS_ZONE).toLocalDate()).isEqualTo(startDate);
@@ -142,7 +142,7 @@ class TrainIdentificationIntegrationTest {
         // Then
         waitAtMost(10, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainIdentification> trainIds = trainIdentificationService.getNewTrainIdentificationsBetween(after, before);
+                List<TrainIdentification> trainIds = trainIdentificationService.getTrainIdentificationsBetween(after, before);
                 assertThat(trainIds).isEmpty();
             });
     }

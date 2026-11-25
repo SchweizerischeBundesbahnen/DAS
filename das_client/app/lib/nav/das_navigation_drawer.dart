@@ -8,7 +8,7 @@ import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/device_id_text.dart';
 import 'package:app/widgets/mqtt_broker_text.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class const DASNavigationDrawer({super.key}) extends StatelessWidget {

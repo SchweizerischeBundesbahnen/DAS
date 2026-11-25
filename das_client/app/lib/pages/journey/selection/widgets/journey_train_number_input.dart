@@ -3,7 +3,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -49,8 +49,8 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
     return Padding(
       padding: widget.isModalVersion ? .zero : _inputPadding,
       child: SBBTextInput(
-        decoration: SBBInputDecoration(
-          borderType: .standalone,
+        decoration: SBBDecoration(
+          style: SBBDecorationStyle(borderType: .standalone),
           labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_trainnumber_description,
           placeholderText: widget.isModalVersion ? context.l10n.p_train_selection_trainnumber_description : null,
         ),

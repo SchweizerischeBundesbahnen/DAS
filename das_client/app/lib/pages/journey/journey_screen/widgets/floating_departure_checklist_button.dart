@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/view_model/checklist_departure_
 import 'package:app/pages/journey/journey_screen/view_model/model/checklist_departure_process_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/departure_process_dialog.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

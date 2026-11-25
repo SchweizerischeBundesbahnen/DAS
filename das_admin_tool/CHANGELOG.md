@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.8.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.8.0...das-admin-tool-v0.8.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* pull nginx base image from nginx/nginx-unprivileged ([#3190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3190)) ([9c4ddb1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9c4ddb16f3e5471dcc2c52b6702a4f2360716171))
+
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.1...das-admin-tool-v0.8.0) (2026-11-17)
+
+
+### Features
+
+* add confirmation dialogs before deleting entries ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([#3099](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3099)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+* update translations ([#2764](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2764)) ([#3142](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3142)) ([61f03fe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61f03fe9d58478286f06cd8ca4487fd9d6abf4df))
+
+
+### Bug Fixes
+
+* failed bulk delete does not clear selection ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+* unify deletion toast body ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.0...das-admin-tool-v0.7.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **admin-tool:** remove unused Menu 1 sidebar link ([#3092](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3092)) ([7eb4b23](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7eb4b237ff2c85bca2a732151fcae268b5faddff))
+* **admin-tool:** show adblocker banner only when Instana script fails to load ([#3090](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3090)) ([74edcc1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/74edcc132510c1114a230ca60661d6ebbc25ae55))
+* cap app version range to max 99999.99999.99999 ([#3024](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3024)) ([#3027](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3027)) ([5b88235](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5b8823536f9847e27f3e72f8b534947de4496296))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.6.0...das-admin-tool-v0.7.0) (2026-09-17)
 
 

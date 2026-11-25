@@ -60,3 +60,13 @@ sbb-dialog-content {
 sbb-dialog {
   --sbb-dialog-inset: 0;
 }
+
+// Destructive action button (e.g. confirm delete); the off-brand theme has no red primary.
+.button-danger {
+  --sbb-button-color-default-border: var(--sbb-color-red);
+  --sbb-button-color-default-text: var(--sbb-color-red);
+  --sbb-button-color-hover-border: var(--sbb-color-red125);
+  --sbb-button-color-hover-text: var(--sbb-color-red125);
+  --sbb-button-color-active-border: var(--sbb-color-red150);
+  --sbb-button-color-active-text: var(--sbb-color-red150);
+}

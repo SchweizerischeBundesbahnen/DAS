@@ -72,29 +72,29 @@ void main() {
   );
 
   test('modelValue_whenJourneyUpdateWithNull_thenStaysHiddenAndNeverEmits', () async {
-    // ARRANGE
+    // GIVEN
     expect(emitRegister.first, equals(testHiddenModel));
     emitRegister.clear();
 
-    // ACT
+    // WHEN
     testAsync.run((_) => rxMockJourney.add(null));
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(0));
     expect(testee.modelValue, equals(testHiddenModel));
   });
 
   test('model_whenJourneyUpdateWithoutDelay_thenStaysHiddenAndNeverEmits', () async {
-    // ARRANGE
+    // GIVEN
     expect(emitRegister.first, equals(testHiddenModel));
     emitRegister.clear();
 
-    // ACT
+    // WHEN
     testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
     processStreams(fakeAsync: testAsync);
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(0));
     expect(testee.modelValue, equals(testHiddenModel));
   });
@@ -113,24 +113,24 @@ void main() {
     );
 
     test('model_whenJourneyIsUpdatedWithNoDelay_thenGoesHidden', () {
-      // ARRANGE
+      // GIVEN
       expect(emitRegister.first, equals(testVisibleModel));
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testAsync.run((_) => rxMockJourney.add(journeyWithoutDelay));
       processStreams(fakeAsync: testAsync);
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(testee.modelValue, equals(testHiddenModel));
     });
 
     test('model_whenJourneyIsNotUpdatedForStaleTime_emitsStale', () {
-      // ACT
+      // WHEN
       testAsync.elapse(Duration(seconds: timeConstants.punctualityStaleSeconds + 1));
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(
         emitRegister,
@@ -140,10 +140,10 @@ void main() {
     });
 
     test('model_whenJourneyIsNotUpdatedForDisappearTime_emitsStaleThenHidden', () {
-      // ACT
+      // WHEN
       testAsync.elapse(Duration(seconds: timeConstants.punctualityDisappearSeconds + 1));
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(3));
       expect(
         emitRegister,

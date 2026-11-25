@@ -51,11 +51,11 @@ void main() {
     test('model_whenJourneyNull_thenAllValuesNull', () => expect(testee.modelValue, isNull));
 
     test('model_whenNoPosition_thenReturnsWithFirstServicePoint', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(_mockJourney);
       await _streamProcessing();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister.last,
         equals(DepartureAuthorizationModel(servicePoint: _stopA)),
@@ -63,7 +63,7 @@ void main() {
     });
 
     test('model_whenPositionOnServicePointStop_thenReturnsCurrentStop', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(_mockJourney);
       rxMockJourneyPosition.add(
         JourneyPositionModel(
@@ -74,7 +74,7 @@ void main() {
       );
       await _streamProcessing();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister.last,
         equals(DepartureAuthorizationModel(servicePoint: _stopB)),
@@ -82,7 +82,7 @@ void main() {
     });
 
     test('model_whenPositionOnServicePointWithoutStop_thenReturnsNextStop', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(_mockJourney);
       rxMockJourneyPosition.add(
         JourneyPositionModel(
@@ -93,7 +93,7 @@ void main() {
       );
       await _streamProcessing();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister.last,
         equals(DepartureAuthorizationModel(servicePoint: _stopD)),
@@ -101,7 +101,7 @@ void main() {
     });
 
     test('model_whenPositionOnFirstNonIntermediateSignalAfterStop_thenReturnsNextStop', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(_mockJourney);
       rxMockJourneyPosition.add(
         JourneyPositionModel(
@@ -112,7 +112,7 @@ void main() {
       );
       await _streamProcessing();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister.last,
         equals(DepartureAuthorizationModel(servicePoint: _stopB)),
@@ -120,7 +120,7 @@ void main() {
     });
 
     test('model_whenPositionOnIntermediateSignalAfterStop_thenReturnsCurrentStop', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(_mockJourney);
       rxMockJourneyPosition.add(
         JourneyPositionModel(
@@ -131,7 +131,7 @@ void main() {
       );
       await _streamProcessing();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister.last,
         equals(DepartureAuthorizationModel(servicePoint: _stopD)),

@@ -6,7 +6,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/foot_note_accordi
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
@@ -207,7 +207,7 @@ void main() {
   });
 
   testWidgets('simFootNote_whenNonSimTrain_thenSimFootNoteIsCollapsed|GnYPge8jjpnKHq6CbSm1|tests:1126', (tester) async {
-    // ARRANGE - mock non-SIM train
+    // GIVEN - mock non-SIM train
     await IntegrationTestApp.start(tester);
 
     final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
@@ -218,7 +218,7 @@ void main() {
     // scroll to the SIM foot note
     await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
 
-    // EXPECT - SIM foot note accordion is collapsed
+    // THEN - SIM foot note accordion is collapsed
     final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
     _checkCollapsibleRow(isCollapsed: true, collapsibleRow: simFootNoteAccordion);
 
@@ -228,7 +228,7 @@ void main() {
   testWidgets(
     'simFootNote_whenSimTrain_thenSimFootNoteIsExpandedAndNotCollapsedWhenPassed|wGzkdPjTfFUKkJKNw92k|tests:1126',
     (tester) async {
-      // ARRANGE - mock SIM train
+      // GIVEN - mock SIM train
       await IntegrationTestApp.start(tester);
 
       final simTrainVM = DI.get<SimTrainViewModel>() as MockSimTrainViewModel;
@@ -240,17 +240,17 @@ void main() {
       // scroll to the SIM foot note
       await dragUntilTextInStickyHeader(tester, 'Reichenbach im Kandertal');
 
-      // EXPECT - SIM foot note is expanded
+      // THEN - SIM foot note is expanded
       final simFootNoteAccordion = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
       _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordion);
 
-      // ACT - wait for automatic position advancement to reach Kandergrund
+      // WHEN - wait for automatic position advancement to reach Kandergrund
       await waitUntilExists(tester, findChevronPositionAtRowWithText('Kandergrund'));
       await stopAutomaticAdvancement(tester);
       final scrollableFinder = find.byType(AnimatedList);
       await tester.dragUntilVisible(findDASTableRowByText('P111'), scrollableFinder, const Offset(0, 100));
 
-      // EXPECT - SIM foot note must still be expanded (not auto-collapsed)
+      // THEN - SIM foot note must still be expanded (not auto-collapsed)
       final simFootNoteAccordionAfterPass = _findDASTableAccordionByContainsText(l10n.c_radn_sim, FootNoteAccordion);
       _checkCollapsibleRow(isCollapsed: false, collapsibleRow: simFootNoteAccordionAfterPass);
 

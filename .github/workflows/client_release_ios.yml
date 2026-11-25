@@ -30,13 +30,13 @@ jobs:
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
-          flutter-version: '3.47.x'
+          flutter-version: '3.50.x'
           cache: true
 
       - name: Setup melos
         uses: bluefireteam/melos-action@b79b63bcd183f823740a7976cbdb4b0fc95a0eb8 # v3.10.0
         with:
-          melos-version: '^7.4.0'
+          melos-version: '^8.10.1'
           run-bootstrap: 'false'
 
       - name: Get dependencies
@@ -85,10 +85,17 @@ jobs:
           xcode-version: ~26.6
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history required for the commit-count build number
+
+      - name: Resolve build number
+        id: build-number
+        working-directory: ${{ github.workspace }}
+        run: echo "value=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
-          flutter-version: '3.47.x'
+          flutter-version: '3.50.x'
           cache: true
 
       - name: Get dependencies
@@ -143,7 +150,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Download Provisioning Profiles
-        uses: apple-actions/download-provisioning-profiles@230860ab5f632551a5f9a5e1d98a774485463888 # v7.0.0
+        uses: apple-actions/download-provisioning-profiles@233aa54e59082c0e8a8cf8b0b02c72dea2422ef9 # v7.1.0
         with:
           bundle-id: ${{ matrix.bundle-id }}
           issuer-id: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
@@ -156,6 +163,7 @@ jobs:
           APPSTORE_CONNECT_ISSUER_ID: ${{ steps.vault-secrets.outputs.APPSTORE_CONNECT_ISSUER_ID }}
           BYPASS_PERMISSION_LOCATION_ALWAYS: '1'
         run: |
-          flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release
+          flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release \
+            --build-number=${{ steps.build-number.outputs.value }}
           xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
         working-directory: das_client/app

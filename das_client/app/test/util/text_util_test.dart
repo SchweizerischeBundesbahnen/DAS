@@ -1,6 +1,6 @@
 import 'package:app/util/text_util.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -74,6 +74,57 @@ void main() {
 
     // THEN
     expect(result, expectedOutput);
+  });
+
+  for (final entry in {
+    'LineFeed': '\n',
+    'CarriageReturn': '\r',
+    'CarriageReturnLineFeed': '\r\n',
+    'HtmlBreak': '<br>',
+    'HtmlSelfClosingBreak': '<br/>',
+    'HtmlBreakWithWhitespace': '<br />',
+  }.entries) {
+    test('replaceLineBreaks_when${entry.key}_thenJoinsNonEmptyLines', () {
+      // GIVEN
+      final input = '${entry.value}First${entry.value}${entry.value}Second${entry.value}';
+
+      // WHEN
+      final result = TextUtil.replaceLineBreaks(input);
+
+      // THEN
+      expect(result, 'First; Second');
+    });
+  }
+
+  for (final entry in {
+    'EmptyInput': (input: '', expected: ''),
+    'NoLineBreaks': (input: 'First', expected: 'First'),
+    'OnlyLineBreaks': (input: '\r\n<br>\r<br />\n', expected: ''),
+    'MixedLineBreaks': (input: '\nFirst\r\n<br>\rSecond<br />\nThird\n', expected: 'First; Second; Third'),
+    'SurroundingWhitespace': (input: ' First \n Second ', expected: 'First; Second'),
+    'WhiteSpaceBetween': (input: 'First\n \nSecond', expected: 'First; Second'),
+  }.entries) {
+    test('replaceLineBreaks_when${entry.key}_thenReturnsExpectedText', () {
+      // GIVEN
+      final input = entry.value.input;
+
+      // WHEN
+      final result = TextUtil.replaceLineBreaks(input);
+
+      // THEN
+      expect(result, entry.value.expected);
+    });
+  }
+
+  test('replaceLineBreaks_whenCustomDelimiter_thenUsesItBetweenNonEmptyLines', () {
+    // GIVEN
+    final input = '\nFirst\n\nSecond\n';
+
+    // WHEN
+    final result = TextUtil.replaceLineBreaks(input, delimiter: ' | ');
+
+    // THEN
+    expect(result, 'First | Second');
   });
 
   test('textUtil_parseHtmlTextWithMarkdownLinks_italic', () {

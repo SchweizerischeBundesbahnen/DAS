@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/config/track_equi
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell_style.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
   static const Key conventionalExtendedSpeedBorderKey = Key('conventionalExtendedSpeedBorder');

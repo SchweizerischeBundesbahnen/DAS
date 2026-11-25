@@ -2,7 +2,7 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/row/das_table_row.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Holds the colors and text style of a data cell in the [DASTable].
 ///

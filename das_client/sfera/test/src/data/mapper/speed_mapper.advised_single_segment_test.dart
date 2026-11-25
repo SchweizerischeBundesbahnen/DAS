@@ -54,10 +54,10 @@ void main() {
 
     group('tests when inputs are empty', () {
       test('whenNoProfileReferences_thenIsEmpty', () {
-        // ARRANGE
+        // GIVEN
         when(mockJourneyProfile.segmentProfileReferences).thenReturn(List.empty());
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -65,11 +65,11 @@ void main() {
       });
 
       test('whenNoAdvisedSpeedTemporaryConstraints_thenIsEmpty', () {
-        // ARRANGE
+        // GIVEN
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn(List.empty());
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -84,10 +84,10 @@ void main() {
       });
 
       test('whenNoAdvisedSpeedInTempConstraint_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(null); // explicit even though this is default
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -95,12 +95,12 @@ void main() {
       });
 
       test('whenSameStartAndEndLocation_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -108,12 +108,12 @@ void main() {
       });
 
       test('whenEndLocationBeforeStartLocation_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(10);
         when(mockTemporaryConstraint.endLocation).thenReturn(0);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -121,11 +121,11 @@ void main() {
       });
 
       test('whenNoSpeedNorDeltaSpeed_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -133,14 +133,14 @@ void main() {
       });
 
       test('whenHasSpeedButUnknownReasonCode_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         when(mockAdvisedSpeed.speed).thenReturn('80');
         when(mockAdvisedSpeed.reasonCode).thenReturn(.nationalUse10);
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -148,13 +148,13 @@ void main() {
       });
 
       test('whenHasSpeedButEmptyReasonCode_thenSkipsParsing', () {
-        // ARRANGE
+        // GIVEN
         when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         when(mockAdvisedSpeed.speed).thenReturn('80');
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
           isEmpty,
@@ -173,9 +173,9 @@ void main() {
       });
 
       test('whenHasNoSpeed_thenIsVelocityMaxAdvisedSpeedSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockAdvisedSpeed.deltaSpeed).thenReturn('IrrelevantValue');
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], twoSignalJourney),
           orderedEquals([
@@ -190,11 +190,11 @@ void main() {
       });
 
       test('whenHasSpeedAndFollowTrainReasonCode_thenIsFollowTrainAdvisedSpeedSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockAdvisedSpeed.speed).thenReturn('90');
         when(mockAdvisedSpeed.reasonCode).thenReturn(.followTrain);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], twoSignalJourney),
           orderedEquals([
@@ -210,11 +210,11 @@ void main() {
       });
 
       test('whenHasSpeedAndTrainFollowing_thenIsTrainFollowingAdvisedSpeedSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockAdvisedSpeed.speed).thenReturn('90');
         when(mockAdvisedSpeed.reasonCode).thenReturn(.trainFollowing);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], twoSignalJourney),
           orderedEquals([
@@ -230,11 +230,11 @@ void main() {
       });
 
       test('whenHasSpeedAndFixedTime_thenIsFixedTimeAdvisedSpeedSegment', () {
-        // ARRANGE
+        // GIVEN
         when(mockAdvisedSpeed.speed).thenReturn('90');
         when(mockAdvisedSpeed.reasonCode).thenReturn(.advisedSpeedFixedTime);
 
-        // ACT & EXPECT
+        // WHEN & THEN
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], twoSignalJourney),
           orderedEquals([
@@ -274,20 +274,20 @@ void main() {
 
       group('Invalid start / end location -> AdvisedSpeed is skipped', () {
         test('whenStartOnLastSignal_thenEndCannotBeDeterminedAndIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(5050.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(_veryLargeDouble);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         test('whenEndOnFirstSignal_thenStartCannotBeDeterminedAndIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(940.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(950.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
       });
@@ -310,12 +310,12 @@ void main() {
       group('One location is known', () {
         /// start known on first signal
         test('whenEndCloseFirstSP_thenIsBetweenFirstSignalAndFirstSP', () {
-          // ARRANGE
+          // GIVEN
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(999.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -330,12 +330,12 @@ void main() {
         });
 
         test('whenEndCloseSecondSP_thenIsBetweenFirstSignalAndSecondSP', () {
-          // ARRANGE
+          // GIVEN
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(3001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -350,12 +350,12 @@ void main() {
         });
 
         test('whenEndMidwayAdjacentSP_thenIsBetweenFirstSignalAndClosestSignal', () {
-          // ARRANGE
+          // GIVEN
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(2000);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -370,12 +370,12 @@ void main() {
         });
 
         test('whenEndMidwayNonAdjacentSPs_thenIsBetweenFirstSignalAndClosestSignal', () {
-          // ARRANGE
+          // GIVEN
           final firstSignalOrder = journey.first.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(4000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -391,11 +391,11 @@ void main() {
 
         /// end is known on last service point
         test('whenStartCloseAdjacentSP_thenIsBetweenSecondSPAndLastSP', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -410,11 +410,11 @@ void main() {
         });
 
         test('whenStartCloseNonAdjacentSP_thenIsBetweenFirstSPAndLastSP', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -429,11 +429,11 @@ void main() {
         });
 
         test('whenStartMidwayBetweenAdjacentSPs_thenIsBetweenClosestSignalAndLastSP', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(4000.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -448,11 +448,11 @@ void main() {
         });
 
         test('whenStartMidwayBetweenNonAdjacentSPs_thenIsBetweenFirstClosestSignalAndLastSP', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(2000.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -468,12 +468,12 @@ void main() {
 
         // one test for end not being on a SP
         test('whenEndOnLastSignalAndStartCloseSecondSP_thenIsBetweenSecondSPAndLastSignal', () {
-          // ARRANGE
+          // GIVEN
           final lastSignalOrder = journey.last.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(2990.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5050.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -488,12 +488,12 @@ void main() {
         });
 
         test('whenEndOnLastSignalAndStartMidwayBetweenSignalAndSP_thenIsBetweenSignalAndLastSignal', () {
-          // ARRANGE
+          // GIVEN
           final lastSignalOrder = journey.last.order;
           when(mockTemporaryConstraint.startLocation).thenReturn(2975.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5050.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -509,32 +509,32 @@ void main() {
 
         /// close to same service point
         test('whenStartFirstSPAndEndCloseFirstSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           final firstServicePointLocation = 1000.0;
           when(mockTemporaryConstraint.startLocation).thenReturn(firstServicePointLocation);
           when(mockTemporaryConstraint.endLocation).thenReturn(firstServicePointLocation + 10);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         test('whenEndSecondSPAndStartCloseSecondSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           final midServicePoint = 3000.0;
           when(mockTemporaryConstraint.startLocation).thenReturn(midServicePoint - 10);
           when(mockTemporaryConstraint.endLocation).thenReturn(midServicePoint);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         test('whenEndLastSPAndStartCloseLastSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           final lastServicePointLocation = 5000.0;
           when(mockTemporaryConstraint.startLocation).thenReturn(lastServicePointLocation - 10);
           when(mockTemporaryConstraint.endLocation).thenReturn(lastServicePointLocation);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
       });
@@ -545,39 +545,39 @@ void main() {
       group('Both locations unknown', () {
         /// 1. Same Service point
         test('whenCloseFirstSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(1001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         test('whenCloseLastSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(4999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         test('whenCloseToSecondSP_thenIsSkipped', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(3001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
         /// 2. Different Service points
         test('whenStartCloseToFirstSPAndEndCloseSecondSP_thenIsBetweenFirstSPAndSecondSP (1 - 2)', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(1001.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(2999.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -592,11 +592,11 @@ void main() {
         });
 
         test('whenStartCloseToSecondSPAndEndCloseSecondSP_thenIsBetweenSecondSPAndLastSP (2 - 3)', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -611,12 +611,12 @@ void main() {
         });
 
         test('whenStartCloseToFirstSPAndEndCloseLastSP_thenIsBetweenFirstSPAndLastSP (1 - 3)', () {
-          // ARRANGE
+          // GIVEN
           final servicePoints = journey.whereType<ServicePoint>().toList();
           when(mockTemporaryConstraint.startLocation).thenReturn(1001.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([
@@ -632,11 +632,11 @@ void main() {
 
         /// 3. Midway Service points
         test('whenStartMidwayInBetweenFirstTwoAndEndMidwayInBetweenLatterTwo_thenIsBetweenCorrespondingSignals', () {
-          // ARRANGE
+          // GIVEN
           when(mockTemporaryConstraint.startLocation).thenReturn(2000);
           when(mockTemporaryConstraint.endLocation).thenReturn(4000);
 
-          // ACT & EXPECT
+          // WHEN & THEN
           expect(
             testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
             orderedEquals([

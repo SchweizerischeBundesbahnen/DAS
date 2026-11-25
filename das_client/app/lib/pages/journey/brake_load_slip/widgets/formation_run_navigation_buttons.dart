@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dart';
 import 'package:app/widgets/navigation_buttons.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:formation/component.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';

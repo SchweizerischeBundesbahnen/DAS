@@ -5,7 +5,7 @@ import 'package:sfera/component.dart';
 void main() {
   group('DepartureAuthenticationModel', () {
     test('departureAuthText_whenNoDepartureAuthorization_thenReturnsNull', () {
-      // ARRANGE
+      // GIVEN
       final testee = DepartureAuthorizationModel(
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
@@ -17,12 +17,12 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.departureAuthText, isNull);
     });
 
     test('departureAuthText_whenNoDepartureAuthorizationText_thenReturnsNull', () {
-      // ARRANGE
+      // GIVEN
       final testee = DepartureAuthorizationModel(
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
@@ -36,12 +36,12 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.departureAuthText, isNull);
     });
 
     test('departureAuthText_whenGivenDepartureAuthorizationText_thenReturnsTextWithServicePoint', () {
-      // ARRANGE
+      // GIVEN
       final testee = DepartureAuthorizationModel(
         servicePoint: ServicePoint(
           name: 'Servicepoint A',
@@ -56,7 +56,7 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.departureAuthText, '(SA) sms 2-4');
     });
   });

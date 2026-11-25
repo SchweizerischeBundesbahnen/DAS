@@ -45,160 +45,160 @@ void main() {
 
   group('isSimTrain', () {
     test('isSimTrain_whenTrainNumberInRange43400to43799_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('43500'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberInRange63400to63799_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('63600'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberAt43400Boundary_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('43400'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberAt43799Boundary_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('43799'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberAt63400Boundary_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('63400'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberAt63799Boundary_thenReturnsTrue', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('63799'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenTrainNumberOutsideRanges_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('12345'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenTrainNumberBetweenRanges_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('50000'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenNonNumericTrainNumber_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('ABC123'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenTrainNumberWithPrefix_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('T43500'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenNoTrainIdentification_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(createJourney(null));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenNullJourney_thenReturnsFalse', () async {
-      // ACT
+      // WHEN
       journeySubject.add(null);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenJourneyChangesFromSimToNonSim_thenEmitsFalse', () async {
-      // ARRANGE
+      // GIVEN
       journeySubject.add(createJourney('43500'));
       await processStreams();
       expect(testee.isSimTrainValue, isTrue);
 
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('12345'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
 
     test('isSimTrain_whenJourneyChangesFromNonSimToSim_thenEmitsTrue', () async {
-      // ARRANGE
+      // GIVEN
       journeySubject.add(createJourney('12345'));
       await processStreams();
       expect(testee.isSimTrainValue, isFalse);
 
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('63500'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isTrue);
     });
 
     test('isSimTrain_whenChanged_thenEmitsOnStream', () async {
-      // ARRANGE
+      // GIVEN
       final emittedValues = <bool>[];
       final subscription = testee.isSimTrain.listen(emittedValues.add);
       await processStreams();
       emittedValues.clear();
 
-      // ACT
+      // WHEN
       journeySubject.add(createJourney('43500'));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emittedValues, [isTrue]);
 
       await subscription.cancel();
     });
 
     test('isSimTrain_whenInitialized_thenDefaultsToFalse', () {
-      // EXPECT
+      // THEN
       expect(testee.isSimTrainValue, isFalse);
     });
   });

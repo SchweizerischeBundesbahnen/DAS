@@ -28,26 +28,26 @@ void main() {
   });
 
   test('toggleValidationMode_whenModeToggled_thenIsTrue', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleValidationMode();
     });
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     expect(testee.validationModeValue, isTrue);
     expect(validationModeRegister, hasLength(1));
   });
 
   test('toggleValidationMode_whenModeToggledTwice_thenIsFalse', () {
-    // ACT
+    // WHEN
     testAsync.run((_) {
       testee.toggleValidationMode();
       testee.toggleValidationMode();
     });
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     expect(testee.validationModeValue, isFalse);
     expect(validationModeRegister, hasLength(2));
   });

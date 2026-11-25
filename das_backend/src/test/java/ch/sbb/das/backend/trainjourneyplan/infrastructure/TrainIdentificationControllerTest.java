@@ -4,6 +4,7 @@ import static ch.sbb.das.backend.trainjourneyplan.infrastructure.TrainIdentifica
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,10 +12,17 @@ import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.security.UserRole;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,8 +30,20 @@ import org.springframework.test.web.servlet.MockMvc;
 @Sql({"classpath:createCompaniesAndTenants.sql", "classpath:createTrainIdentifications.sql"})
 class TrainIdentificationControllerTest {
 
-    private static final LocalDate TODAY = DateTimeUtil.today();
+    // createTrainIdentifications.sql places its departures relative to this instant
+    private static final ZonedDateTime FIXED_NOW = ZonedDateTime.of(LocalDateTime.of(2026, 3, 10, 12, 0), DateTimeUtil.SWISS_ZONE);
+    private static final LocalDate TODAY = FIXED_NOW.toLocalDate();
     private static final LocalDate TOMORROW = TODAY.plusDays(1);
+
+    @TestConfiguration
+    static class FixedClockConfiguration {
+
+        @Bean
+        @Primary
+        Clock fixedClock() {
+            return Clock.fixed(FIXED_NOW.toInstant(), DateTimeUtil.SWISS_ZONE);
+        }
+    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -77,7 +97,10 @@ class TrainIdentificationControllerTest {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .param("startDate", TODAY.toString())
                 .param("operationalTrainNumber", "123"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 123 starting on " + TODAY + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_noMatchOnDate_returns404|KZgqhcdiR8MWSgn35uw5|tests:2136")
@@ -87,7 +110,10 @@ class TrainIdentificationControllerTest {
         mockMvc.perform(get(API_DRIVER_TRAIN_IDENTIFICATION_COMPANIES)
                 .param("startDate", TODAY.minusDays(1).toString())
                 .param("operationalTrainNumber", "728"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("No train identification for train number 728 starting on " + TODAY.minusDays(1) + " within the candidate window"));
     }
 
     @DisplayName("getCompanies_observerRole_isAllowed|W6VgIt7aPqcOqOrJNDHU|tests:2136")

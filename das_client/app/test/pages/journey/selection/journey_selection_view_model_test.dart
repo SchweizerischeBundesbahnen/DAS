@@ -57,7 +57,7 @@ void main() {
   });
 
   test('modelValue_whenInstantiated_thenIsSelectingWithDefaults', () {
-    // ARRANGE
+    // GIVEN
     final newYears1970 = DateTime.utc(1970);
     final clock = Clock.fixed(newYears1970);
     withClock(clock, () {
@@ -70,10 +70,10 @@ void main() {
         onJourneySelected: (_) async {},
       );
     });
-    // ACT
+    // WHEN
     final state = testee.modelValue;
 
-    // EXPECT
+    // THEN
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
     expect(selecting.trainNumber, isNull);
@@ -87,10 +87,10 @@ void main() {
   });
 
   test('updateTrainNumber_whenEmpty_thenFormIsNotCompleted', () {
-    // ACT
+    // WHEN
     testee.updateTrainNumber('');
 
-    // EXPECT
+    // THEN
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
@@ -99,10 +99,10 @@ void main() {
   });
 
   test('updateTrainNumber_whenFilled_thenIsInputCompleteTrue', () {
-    // ACT
+    // WHEN
     testee.updateTrainNumber('1234');
 
-    // EXPECT
+    // THEN
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
@@ -111,13 +111,13 @@ void main() {
   });
 
   test('updateDate_whenDateIsAvailable_thenUpdatesDate', () {
-    // ARRANGE
+    // GIVEN
     final newDate = DateTime.utc(2024, 12, 31);
 
-    // ACT
+    // WHEN
     testee.updateDate(newDate);
 
-    // EXPECT
+    // THEN
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
@@ -125,13 +125,13 @@ void main() {
   });
 
   test('updateDate_whenDateIsNotAvailable_thenDoesNothing', () {
-    // ARRANGE
+    // GIVEN
     final unavailableDate = DateTime.utc(2025, 6, 7);
 
-    // ACT
+    // WHEN
     testee.updateDate(unavailableDate);
 
-    // EXPECT
+    // THEN
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
@@ -139,13 +139,13 @@ void main() {
   });
 
   test('updateCompanies_whenCalled_thenUpdatesCompanies', () {
-    // ARRANGE
+    // GIVEN
     final newCompany = Company(code: '1163', shortName: 'BLSP');
 
-    // ACT
+    // WHEN
     testee.updateCompanies([newCompany]);
 
-    // EXPECT
+    // THEN
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
@@ -153,15 +153,15 @@ void main() {
   });
 
   test('loadJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
-    // ACT
+    // WHEN
     testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(callRegister.isEmpty, isTrue);
   });
 
   test('loadJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
@@ -170,16 +170,16 @@ void main() {
       date: fixedClock.now(),
     );
 
-    // ACT
+    // WHEN
     testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(callRegister, hasLength(1));
     expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('  123  ');
     testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
@@ -188,16 +188,16 @@ void main() {
       date: fixedClock.now(),
     );
 
-    // ACT
+    // WHEN
     testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(callRegister, hasLength(1));
     expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('lowercase123a');
     testee.updateCompanies([Company(code: '1285', shortName: 'SBBP')]);
     final aTrainId = TrainIdentification(
@@ -206,16 +206,16 @@ void main() {
       date: fixedClock.now(),
     );
 
-    // ACT
+    // WHEN
     testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(callRegister, hasLength(1));
     expect(callRegister.first!.trainIdentification, equals(aTrainId));
   });
 
   test('loadJourney_whenNoRu_thenEmitsLoadingCompanyMatches', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     final searchCompleter = Completer<Set<CompanyMatch>>();
     when(
@@ -224,10 +224,10 @@ void main() {
       ),
     ).thenAnswer((_) => searchCompleter.future);
 
-    // ACT
+    // WHEN
     final loadFuture = testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, isA<LoadingCompanyMatches>());
     final state = testee.modelValue as LoadingCompanyMatches;
     expect(state.trainNumber, '123');
@@ -238,7 +238,7 @@ void main() {
   });
 
   test('loadJourney_whenMultipleMatchesForDay_thenEmitsSelectingCompanyMatch', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
@@ -248,10 +248,10 @@ void main() {
       },
     );
 
-    // ACT
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
     expect(testee.modelValue, isA<SelectingCompanyMatch>());
     final state = testee.modelValue as SelectingCompanyMatch;
@@ -267,7 +267,7 @@ void main() {
   });
 
   test('loadJourney_whenMatchesForSelectedDay_thenOnlyShowExactDayMatches', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
@@ -278,10 +278,10 @@ void main() {
       },
     );
 
-    // ACT
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
     expect(testee.modelValue, isA<SelectingCompanyMatch>());
     final state = testee.modelValue as SelectingCompanyMatch;
@@ -297,7 +297,7 @@ void main() {
   });
 
   test('loadJourney_whenNoMatchesForSelectedDay_thenShowOtherDayMatches', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
@@ -306,10 +306,10 @@ void main() {
       },
     );
 
-    // ACT
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
     expect(testee.modelValue, isA<SelectingCompanyMatch>());
     final state = testee.modelValue as SelectingCompanyMatch;
@@ -324,7 +324,7 @@ void main() {
   });
 
   test('loadJourney_whenMultipleMatchesForDayAndLastUsedFound_thenLoadsJourneyDirectly', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('123');
     when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn('1163');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '123')).thenAnswer(
@@ -334,11 +334,11 @@ void main() {
       },
     );
 
-    // ACT
-    // ACT
+    // WHEN
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
@@ -348,7 +348,7 @@ void main() {
   });
 
   test('loadJourney_whenExactlyOneMatchForDay_thenLoadsJourneyDirectly', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('456');
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '456')).thenAnswer(
       (_) async => {
@@ -356,10 +356,10 @@ void main() {
       },
     );
 
-    // ACT
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
@@ -369,7 +369,7 @@ void main() {
   });
 
   test('loadJourney_whenSelectingCompanyMatchAndSelectionSet_thenLoadsSelectedTrain', () async {
-    // ARRANGE
+    // GIVEN
     testee.updateTrainNumber('789');
     when(mockLocalKeyValueStore.lastUsedCompanyCode).thenReturn(null);
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '789')).thenAnswer(
@@ -383,10 +383,10 @@ void main() {
     final selected = CompanyMatch(companyCode: '1163', startDate: today);
     testee.updateSelectedCompanyMatch(selected);
 
-    // ACT
+    // WHEN
     final result = await testee.loadJourney();
 
-    // EXPECT
+    // THEN
     expect(result, isTrue);
     expect(callRegister, hasLength(1));
     expect(
@@ -396,7 +396,7 @@ void main() {
   });
 
   test('handleDeepLink_whenMatchFound_thenForwardsLinkDataAndClearsPendingData', () async {
-    // ARRANGE
+    // GIVEN
     when(mockTrainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '321')).thenAnswer(
       (_) async => {
         CompanyMatch(companyCode: '1285', startDate: today),
@@ -411,11 +411,11 @@ void main() {
       returnUrl: 'https://return.example',
     );
 
-    // ACT
+    // WHEN
     testee.handleDeepLink(linkData);
     await Future.delayed(Duration.zero);
 
-    // EXPECT
+    // THEN
     expect(callRegister, hasLength(1));
     final deepLinkSelection = callRegister.first!;
     expect(

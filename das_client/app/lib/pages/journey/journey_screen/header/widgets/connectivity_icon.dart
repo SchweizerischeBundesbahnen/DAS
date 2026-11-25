@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/header/view_model/connectivity_
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/exclamation_icon_button.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

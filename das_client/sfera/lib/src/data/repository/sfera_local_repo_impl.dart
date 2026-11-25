@@ -171,7 +171,45 @@ class const SferaLocalRepoImpl({required final SferaLocalDatabaseService _databa
       }
     }
 
+    _mergeSplitSections(localRegulationsSections);
+
     return localRegulationsSections;
+  }
+
+  void _mergeSplitSections(Map<String, LocalRegulationSection> localRegulationsSections) {
+    // Local regulations with splits have following pattern: LR_<id>-<part>-<totalParts>_<language>
+    final splitPattern = RegExp(r'^(LR_.+)-(\d+)-(\d+)');
+    final groupedSections = <String, List<({LocalRegulationSection section, int part})>>{};
+
+    for (final section in localRegulationsSections.values) {
+      final match = splitPattern.firstMatch(section.id);
+      if (match != null) {
+        final baseId = match.group(1)!;
+        final part = int.tryParse(match.group(2)!) ?? 0;
+        groupedSections.putIfAbsent(baseId, () => []).add((section: section, part: part));
+      }
+    }
+
+    for (final group in groupedSections.values) {
+      if (group.length <= 1) continue;
+
+      group.sort((a, b) => a.part.compareTo(b.part));
+      final first = group.first.section;
+      final combinedContent = group.every((item) => item.section.content == null)
+          ? null
+          : group.map((item) => item.section.content ?? '').join();
+
+      localRegulationsSections[first.id] = LocalRegulationSection(
+        id: first.id,
+        title: first.title,
+        content: combinedContent,
+        children: first.children,
+      );
+
+      for (var i = 1; i < group.length; i++) {
+        localRegulationsSections.remove(group[i].section.id);
+      }
+    }
   }
 }
 

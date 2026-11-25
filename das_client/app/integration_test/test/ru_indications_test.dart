@@ -12,11 +12,11 @@ void main() {
   testWidgets('ruIndications_whenShouldReturnMockData_thenIndicationsAreShown|yeJd2tuqjOWvKQcf7RYC|tests:700', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
-    // ACT
+    // WHEN
     await loadJourney(tester, trainNumber: 'T22M');
 
     // ASSERT - short mock text is visible in an expanded IndicationAccordion
@@ -40,11 +40,11 @@ void main() {
   testWidgets('ruIndications_whenLongTextWithLink_thenShowMoreIsVisible|giYge5R7YPQAhT07DGhw|tests:700', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
-    // ACT
+    // WHEN
     await loadJourney(tester, trainNumber: 'T22M');
 
     // ASSERT - long text accordion shows "show more" button and collapsed content
@@ -72,11 +72,11 @@ void main() {
   testWidgets('ruIndications_whenLongTextWithMarkdownLink_thenLinkLabelIsRendered|guPrxy8BQyidLcGugxU0|tests:700', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     await IntegrationTestApp.start(tester);
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
 
-    // ACT
+    // WHEN
     await loadJourney(tester, trainNumber: 'T22M');
 
     // expand the long text accordion to see full text
@@ -100,11 +100,11 @@ void main() {
   testWidgets('ruIndications_whenLongTextExpanded_thenFullContentIsVisible|R66dkeS5LMwlWiwhEvsv|tests:700', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     await IntegrationTestApp.start(tester);
 
     (DI.get<RuIndicationsRepository>() as MockRuIndicationsRepository).shouldReturnMockData = true;
-    // ACT
+    // WHEN
     await loadJourney(tester, trainNumber: 'T22M');
 
     // expand long text

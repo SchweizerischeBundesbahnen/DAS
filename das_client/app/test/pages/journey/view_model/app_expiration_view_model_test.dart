@@ -258,7 +258,7 @@ void main() {
       verify(mockSettingsRepository.loadSettings()).called(2);
       clearInteractions(mockSettingsRepository);
 
-      // ACT – call again before throttle expires
+      // WHEN – call again before throttle expires
       async.elapse(Duration(milliseconds: AppExpirationViewModel.throttleDuration.inMilliseconds ~/ 2));
       testee.checkIsAppExpired();
       testee.checkIsAppExpired();
@@ -281,7 +281,7 @@ void main() {
       verify(mockSettingsRepository.loadSettings()).called(2);
       clearInteractions(mockSettingsRepository);
 
-      // ACT – wait for throttle to expire, then call again
+      // WHEN – wait for throttle to expire, then call again
       async.elapse(AppExpirationViewModel.throttleDuration + const Duration(milliseconds: 100));
       testee.checkIsAppExpired();
       async.flushMicrotasks();

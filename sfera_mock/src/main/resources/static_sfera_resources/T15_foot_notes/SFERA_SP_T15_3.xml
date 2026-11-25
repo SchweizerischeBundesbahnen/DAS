@@ -39,7 +39,7 @@
                 <NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;Das ist &lt;b&gt;fett &lt;i&gt;und kursiv&lt;/i&gt;&lt;/b&gt; &lt;br&gt;und das ist &lt;br/&gt;&lt;i&gt;noch kursiv&lt;/i&gt;.&lt;/text&gt;
+						&lt;text&gt;Das ist &amp;lt;b&amp;gt;fett &amp;lt;i&amp;gt;und kursiv&amp;lt;/i&amp;gt;&amp;lt;/b&amp;gt; &amp;lt;br&amp;gt;und das ist &amp;lt;br/&amp;gt;&amp;lt;i&amp;gt;noch kursiv&amp;lt;/i&amp;gt;.&lt;/text&gt;
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				"/>

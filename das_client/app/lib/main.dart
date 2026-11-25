@@ -8,7 +8,7 @@ import 'package:app/util/device_id_info.dart';
 import 'package:app/widgets/global_error_widget.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';

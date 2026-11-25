@@ -78,21 +78,21 @@ void main() {
   });
 
   test('preloadDetails_whenInitializedWithoutAwsConfiguration_emitsMissingConfiguration', () async {
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     expect(preloadDetailsRegister, hasLength(1));
     expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
   });
 
   test('preloadDetails_whenAwsConfigurationUpdated_startsAndCompletesPreload', () async {
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     expect(preloadDetailsRegister, hasLength(3));
     expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
     expect(preloadDetailsRegister[1].status, PreloadStatus.running);
@@ -122,12 +122,12 @@ void main() {
       when(mockPreloadZipProcessor.cleanup()).thenAnswer((_) async => {});
       when(mockPreloadZipProcessor.preloadDirectory()).thenAnswer((_) async => Directory('Test'));
 
-      // ACT
+      // WHEN
       fakeAsync.elapse(const Duration(seconds: 1));
       testee.updateConfiguration(_createAwsConfiguration());
       fakeAsync.elapse(const Duration(seconds: 1));
 
-      // VERIFY
+      // THEN
       expect(preloadDetailsRegister, hasLength(3));
       expect(preloadDetailsRegister[0].status, PreloadStatus.missingConfiguration);
       expect(preloadDetailsRegister[1].status, PreloadStatus.running);
@@ -163,12 +163,12 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     verify(mockS3Client.listBucket()).called(1);
     final captured = verify(mockDatabaseService.saveS3File(captureAny)).captured;
     expect(captured, hasLength(2));
@@ -180,12 +180,12 @@ void main() {
   });
 
   test('preload_whenTriggered_callsCleanup', () async {
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     verify(mockSferaLocalRepo.cleanup()).called(1);
     verify(mockPreloadZipProcessor.cleanup()).called(1);
   });
@@ -214,12 +214,12 @@ void main() {
     when(mockPreloadZipProcessor.extractToLocalDatabase(zip1)).thenAnswer((_) async => .corrupted);
     when(mockPreloadZipProcessor.extractToLocalDatabase(zip2)).thenAnswer((_) async => .downloaded);
 
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     final captured = verify(mockS3Client.downloadFile(captureAny, saveTo: anyNamed('saveTo'))).captured;
     expect(captured, hasLength(3));
     expect(captured[0], '2026-02-10T17-35-35Z.zip');
@@ -272,12 +272,12 @@ void main() {
     when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherA)).thenAnswer((_) async => .downloaded);
     when(mockPreloadZipProcessor.extractToLocalDatabase(zipOtherC)).thenAnswer((_) async => .downloaded);
 
-    // ACT
+    // WHEN
     await Future.delayed(const Duration(milliseconds: 1));
     testee.updateConfiguration(_createAwsConfiguration());
     await Future.delayed(const Duration(milliseconds: 1));
 
-    // VERIFY
+    // THEN
     final captured = verify(mockS3Client.downloadFile(captureAny, saveTo: anyNamed('saveTo'))).captured;
     expect(captured, hasLength(4));
     expect(captured[0], 'Segment_2026-02-10T16-35-35Z.zip');

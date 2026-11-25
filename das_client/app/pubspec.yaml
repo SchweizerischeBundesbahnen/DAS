@@ -1,9 +1,12 @@
 name: app
 publish_to: 'none'
-version: 0.55.0+98
+# The release version (build-name) is managed by release-please: it bumps the line below
+# in the release PR via the generic updater (see ci/release-please-config.json).
+# The build-number is injected at build time via --build-number in the release workflows.
+version: 0.56.1 # x-release-please-version
 
 environment:
-  sdk: ^3.13.0
+  sdk: ^3.14.0
 
 resolution: workspace
 
@@ -33,10 +36,17 @@ dependencies:
   core_data: 1.0.0
   personal_notes: 1.0.0
 
+  # https://pub.dev/packages/sbb_design_system_mobile
+  sbb_design_system_mobile: ^6.0.0
+  # https://pub.dev/packages/material_ui
+  material_ui: ^1.11.1
+  # https://pub.dev/packages/cupertino_ui
+  cupertino_ui: ^1.1.7
+
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.8.1
   # https://pub.dev/packages/android_id
-  android_id: ^0.6.0
+  android_id: ^1.0.0
   # https://pub.dev/packages/auto_route
   auto_route: ^11.2.0
   # https://pub.dev/packages/battery_plus
@@ -52,7 +62,7 @@ dependencies:
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/flutter_svg
-  flutter_svg: ^2.3.0
+  flutter_svg: ^2.5.0
   # https://pub.dev/packages/get_it
   get_it: ^9.3.0
   # https://pub.dev/packages/intl
@@ -63,13 +73,10 @@ dependencies:
   provider: ^6.1.5+1
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
-
-  # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^5.2.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.7.1
   # https://pub.dev/packages/wakelock_plus
-  wakelock_plus: ^1.7.0
+  wakelock_plus: ^1.8.0
   # https://pub.dev/packages/screen_brightness/
   screen_brightness: ^2.1.11
   # https://pub.dev/packages/android_intent_plus

@@ -15,7 +15,7 @@ import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -242,7 +242,7 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     const Offset(0, -50),
     maxIteration: 100,
   );
-  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
+  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration + Duration(milliseconds: 200));
 }
 
 Finder findChevronPositionAtRowWithText(String text) {

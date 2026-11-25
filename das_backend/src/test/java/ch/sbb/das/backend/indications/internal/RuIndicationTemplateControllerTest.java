@@ -2,20 +2,24 @@ package ch.sbb.das.backend.indications.internal;
 
 import static ch.sbb.das.backend.indications.internal.RuIndicationTemplateController.API_RU_INDICATION_TEMPLATES;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
+import ch.sbb.das.backend.WithMockRoleSecurityContextFactory;
 import ch.sbb.das.backend.common.security.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
@@ -105,17 +109,22 @@ class RuIndicationTemplateControllerTest {
     @Sql("classpath:createRuIndicationTemplates.sql")
     void getRuIndicationTemplateById_notFound() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/99"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication template with id 99 not found"));
     }
 
-    @DisplayName("getRuIndicationTemplateById_forbidden_tenant|FxC4Sa7VXKwK2wfwtFJK|tests:1626")
+    @DisplayName("getRuIndicationTemplateById_notFound_otherTenant|FxC4Sa7VXKwK2wfwtFJK|tests:1626,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void getRuIndicationTemplateById_forbidden_tenant() throws Exception {
+    void getRuIndicationTemplateById_notFound_otherTenant() throws Exception {
         mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/4"))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication template with id 4 not found"));
     }
 
     @DisplayName("create_RuIndicationTemplate_ok_allLanguages|HMtS3Zr1gSw0xf82qtYT|tests:1626")
@@ -302,7 +311,10 @@ class RuIndicationTemplateControllerTest {
                         "de": { "title": "Hinweis", "text": "Text DE" }
                     }
                     """))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication template with id 99 not found"));
     }
 
     @DisplayName("update_RuIndicationTemplate_invalid_noLanguageContent|9tXM7W3aKxZY5Q49LfKc|tests:1626")
@@ -336,11 +348,11 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> fr.title=must not be blank"));
     }
 
-    @DisplayName("update_RuIndicationTemplate_forbidden_whenExistingTenantDoesNotMatch|gta8uR49DNBJrEdMJ931|tests:1626")
+    @DisplayName("update_RuIndicationTemplate_notFound_whenExistingTenantDoesNotMatch|gta8uR49DNBJrEdMJ931|tests:1626,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void update_RuIndicationTemplate_forbidden_whenExistingTenantDoesNotMatch() throws Exception {
+    void update_RuIndicationTemplate_notFound_whenExistingTenantDoesNotMatch() throws Exception {
         mockMvc.perform(put(API_RU_INDICATION_TEMPLATES + "/4")
                 .contentType("application/json")
                 .content("""
@@ -349,8 +361,10 @@ class RuIndicationTemplateControllerTest {
                         "de": { "title": "Geändert", "text": "Neuer Text DE" }
                     }
                     """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("No results found"))
+            .andExpect(jsonPath("$.detail").value("RU indication template with id 4 not found"));
     }
 
     @DisplayName("deleteRuIndicationTemplateByIds_ok|8yyIhBMnWVklay7PLETi|tests:1626")
@@ -395,19 +409,26 @@ class RuIndicationTemplateControllerTest {
             .andExpect(jsonPath("$.detail").value("Invalid request content. -> ids=must not be empty"));
     }
 
-    @DisplayName("deleteRuIndicationTemplateByIds_forbidden_whenTemplateBelongsToOtherTenant|YxAE5jxFzSu3JBNcdHZU|tests:1626")
+    @DisplayName("deleteRuIndicationTemplateByIds_noContent_skipsTemplateOfOtherTenant|YxAE5jxFzSu3JBNcdHZU|tests:1626,2653")
     @Test
     @WithMockRole(roles = UserRole.RU_ADMIN)
     @Sql("classpath:createRuIndicationTemplates.sql")
-    void deleteRuIndicationTemplateByIds_forbidden_whenTemplateBelongsToOtherTenant() throws Exception {
+    void deleteRuIndicationTemplateByIds_noContent_skipsTemplateOfOtherTenant() throws Exception {
         mockMvc.perform(delete(API_RU_INDICATION_TEMPLATES)
                 .contentType("application/json")
                 .content("""
                     {
-                        "ids": [2, 4]
+                        "ids": [2, 4, 99]
                     }
                     """))
-            .andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.detail").value("Not allowed!"));
+            .andExpect(status().isNoContent());
+
+        mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/2"))
+            .andExpect(status().isNotFound());
+
+        mockMvc.perform(get(API_RU_INDICATION_TEMPLATES + "/4")
+                .with(authentication(WithMockRoleSecurityContextFactory.authentication(false, UserRole.RU_ADMIN))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(4));
     }
 }

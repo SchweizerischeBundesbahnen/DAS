@@ -80,37 +80,37 @@ void main() {
     });
 
     test('whenHasNoEventAndNoPosition_doesNotEmitAndPlaySound', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: null));
         eventSubject.add(null);
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(streamRegister, [null]);
       verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenHasNoEventButPosition_doesNotEmitAndPlaySound', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: baseJourney.data[1] as JourneyPoint));
         eventSubject.add(null);
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(streamRegister, [null]);
       verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenEventAndPosition_doesNotEmitAndPlaySound', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: baseJourney.data[1] as JourneyPoint));
         eventSubject.add(
@@ -118,16 +118,16 @@ void main() {
         );
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(streamRegister, [null]);
       verifyNever(mockNotificationViewModel.insert(type: anyNamed('type'), callback: anyNamed('callback')));
     });
 
     test('whenEventsAndNoPosition_doesEmitAndPlaySound', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: null));
         eventSubject.add(
@@ -138,10 +138,10 @@ void main() {
         );
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(
         streamRegister,
         orderedEquals([
@@ -154,7 +154,7 @@ void main() {
     });
 
     test('whenEventOfSameTypeAndNoPosition_doesEmitAndPlaySoundOnce', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: null));
         eventSubject.add(
@@ -165,10 +165,10 @@ void main() {
         );
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(
         streamRegister,
         orderedEquals([null, DepartureDispatchNotificationType.prepareForDepartureShort]),
@@ -177,7 +177,7 @@ void main() {
     });
 
     test('whenEventsAfterPosition_doesEmitAndPlaySoundOnlyBeforePositionUpdate', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeyPositionSubject.add(JourneyPositionModel(lastPosition: null));
         _processStreamInFakeAsync(testAsync);
@@ -201,10 +201,10 @@ void main() {
         _processStreamInFakeAsync(testAsync);
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(
         streamRegister,
         orderedEquals([

@@ -34,13 +34,15 @@ import 'package:app/pages/journey/journey_screen/view_model/tour_system_link_vis
 import 'package:app/pages/journey/journey_screen/view_model/ux_testing_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/floating_departure_checklist_button.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/journey_screen/widgets/journey_skeleton.dart';
 import 'package:app/pages/journey/journey_screen/widgets/journey_table.dart';
 import 'package:app/pages/journey/journey_validation/multi_line_speed_view_model.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/disturbance_view_model.dart';
+import 'package:app/pages/journey/view_model/journey_scope_view_model.dart';
 import 'package:app/pages/journey/view_model/reauthentication_required_view_model.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -51,18 +53,30 @@ class JourneyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _ProviderScope(
-      builder: (context) {
-        final detailModalController = context.read<ModalViewModel>().controller;
-        return Listener(
-          onPointerDown: (_) => detailModalController?.resetAutomaticClose(),
-          onPointerUp: (_) => detailModalController?.resetAutomaticClose(),
-          child: Row(
-            children: [
-              Expanded(child: _content(context)),
-              DetailModalSheet(),
-            ],
-          ),
+    final journeyScopeViewModel = DI.get<JourneyScopeViewModel>();
+
+    return StreamBuilder<bool>(
+      stream: journeyScopeViewModel.isJourneyScopeActive,
+      initialData: journeyScopeViewModel.isJourneyScopeActiveValue,
+      builder: (context, snapshot) {
+        if (snapshot.data != true) {
+          return const JourneySkeleton();
+        }
+
+        return _ProviderScope(
+          builder: (context) {
+            final detailModalController = context.read<ModalViewModel>().controller;
+            return Listener(
+              onPointerDown: (_) => detailModalController?.resetAutomaticClose(),
+              onPointerUp: (_) => detailModalController?.resetAutomaticClose(),
+              child: Row(
+                children: [
+                  Expanded(child: _content(context)),
+                  DetailModalSheet(),
+                ],
+              ),
+            );
+          },
         );
       },
     );

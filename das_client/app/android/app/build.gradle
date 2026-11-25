@@ -77,6 +77,12 @@ android {
     }
 
     signingConfigs {
+        debug {
+            def debugKeystore = System.getenv("ANDROID_DEBUG_KEYSTORE")
+            if (debugKeystore) {
+                storeFile = file(debugKeystore)
+            }
+        }
         release {
             storeFile = file(System.getenv("ANDROID_KEYSTORE") ?: ANDROID_KEYSTORE)
             storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ANDROID_KEYSTORE_PASSWORD

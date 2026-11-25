@@ -47,6 +47,28 @@ describe('ExternalLinksTable', () => {
     await fixture.whenStable();
   });
 
+  describe('deleteSelected', () => {
+    it('should clear the selection when the delete succeeded', async () => {
+      vi.mocked(mockExternalLinkService.deleteAllByIds!).mockResolvedValue(true);
+      component['dataSource'].data = externalLinks;
+      component['selection'].select(externalLinks[0]);
+
+      await component['deleteSelected']();
+
+      expect(component['selection'].selected).toEqual([]);
+    });
+
+    it('should keep the selection when the delete failed', async () => {
+      vi.mocked(mockExternalLinkService.deleteAllByIds!).mockResolvedValue(false);
+      component['dataSource'].data = externalLinks;
+      component['selection'].select(externalLinks[0]);
+
+      await component['deleteSelected']();
+
+      expect(component['selection'].selected).toEqual([externalLinks[0]]);
+    });
+  });
+
   describe('isAllSelected', () => {
     it('should return false when nothing is selected', () => {
       component['dataSource'].data = externalLinks;

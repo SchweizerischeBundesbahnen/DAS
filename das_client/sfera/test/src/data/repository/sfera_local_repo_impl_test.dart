@@ -1,3 +1,4 @@
+import 'package:core_data/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
@@ -313,5 +314,115 @@ void main() {
     verify(mockLocalDatabaseRepository.saveBulkTrainCharacteristics(any)).called(1);
     verify(mockLocalDatabaseRepository.saveBulkSegmentProfiles(any)).called(1);
     verify(mockLocalDatabaseRepository.saveBulkJourneyProfiles(any)).called(1);
+  });
+
+  group('retrieveLocalRegulationSections', () {
+    SegmentProfileTableData createLocalRegulationSp({
+      required String spId,
+      required String title,
+      required String content,
+      String? children,
+    }) {
+      final xml =
+          '<SegmentProfile SP_ID="$spId" SP_VersionMajor="0" SP_VersionMinor="" SP_Length="1000" SP_Status="Valid">'
+          '<SP_Points>'
+          '<NetworkSpecificPoint location="0">'
+          '<NSP_GroupName>localRegulations</NSP_GroupName>'
+          '<NetworkSpecificParameter name="title" value="$title"/>'
+          '<NetworkSpecificParameter name="content" value="$content"/>'
+          '${children != null ? '<NetworkSpecificParameter name="children" value="$children"/>' : ''}'
+          '</NetworkSpecificPoint>'
+          '</SP_Points>'
+          '</SegmentProfile>';
+      return SegmentProfileTableData(
+        spId: spId,
+        majorVersion: '0',
+        minorVersion: '',
+        xmlData: xml,
+      );
+    }
+
+    test('whenSectionsAreSplit_thenCombinesContentAndUsesIdTitleChildrenFromFirst', () async {
+      final locale = AppLocale.resolvedLocale();
+      final sp1 = createLocalRegulationSp(
+        spId: 'LR_12344-1-2_$locale',
+        title: 'Title Part 1',
+        content: '<p>Content 1</p>',
+        children: 'LR_child1;LR_child2',
+      );
+      final sp2 = createLocalRegulationSp(
+        spId: 'LR_12344-2-2_$locale',
+        title: 'Title Part 2',
+        content: '<p>Content 2</p>',
+        children: 'LR_other',
+      );
+
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp1);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp2);
+
+      final result = await testee.retrieveLocalRegulationSections(['LR_12344-1-2', 'LR_12344-2-2']);
+
+      expect(result, hasLength(1));
+      expect(result.containsKey('LR_12344-1-2'), isTrue);
+      expect(result.containsKey('LR_12344-2-2'), isFalse);
+
+      final merged = result['LR_12344-1-2']!;
+      expect(merged.id, 'LR_12344-1-2');
+      expect(merged.title, 'Title Part 1');
+      expect(merged.children, 'LR_child1;LR_child2');
+      expect(merged.content, '<p>Content 1</p><p>Content 2</p>');
+    });
+
+    test('whenSplitSectionsAreInReverseOrder_thenSortsByPartAndCombinesCorrectly', () async {
+      final locale = AppLocale.resolvedLocale();
+      final sp1 = createLocalRegulationSp(
+        spId: 'LR_12344-1-2_$locale',
+        title: 'Title Part 1',
+        content: 'Content 1 ',
+        children: 'LR_child1',
+      );
+      final sp2 = createLocalRegulationSp(
+        spId: 'LR_12344-2-2_$locale',
+        title: 'Title Part 2',
+        content: 'Content 2',
+      );
+
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-1-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp1);
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344-2-2_$locale', '0', ''))
+          .thenAnswer((_) async => sp2);
+
+      final result = await testee.retrieveLocalRegulationSections(['LR_12344-2-2', 'LR_12344-1-2']);
+
+      expect(result, hasLength(1));
+      final merged = result['LR_12344-1-2']!;
+      expect(merged.id, 'LR_12344-1-2');
+      expect(merged.title, 'Title Part 1');
+      expect(merged.children, 'LR_child1');
+      expect(merged.content, 'Content 1 Content 2');
+    });
+
+    test('whenSectionsAreNotSplit_thenKeepsThemAsIs', () async {
+      final locale = AppLocale.resolvedLocale();
+      final sp = createLocalRegulationSp(
+        spId: 'LR_12344_$locale',
+        title: 'Single Title',
+        content: 'Single Content',
+        children: 'LR_sub',
+      );
+
+      when(mockLocalDatabaseRepository.findSegmentProfile('LR_12344_$locale', '0', '')).thenAnswer((_) async => sp);
+
+      final result = await testee.retrieveLocalRegulationSections(['LR_12344']);
+
+      expect(result, hasLength(1));
+      final section = result['LR_12344']!;
+      expect(section.id, 'LR_12344');
+      expect(section.title, 'Single Title');
+      expect(section.content, 'Single Content');
+      expect(section.children, 'LR_sub');
+    });
   });
 }

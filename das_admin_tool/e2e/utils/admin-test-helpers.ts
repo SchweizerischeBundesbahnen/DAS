@@ -130,6 +130,12 @@ export async function openEditEntryDialog(page: Page, row: Locator) {
   return await getEntryDialog(page);
 }
 
+async function confirmDelete(page: Page) {
+  const confirmBtn = page.getByText('Löschen', { exact: true });
+  await expect(confirmBtn).toBeVisible();
+  await confirmBtn.click();
+}
+
 export async function deleteEntryViaDialog(page: Page, row: Locator) {
   const dialog = await openEditEntryDialog(page, row);
 
@@ -138,6 +144,7 @@ export async function deleteEntryViaDialog(page: Page, row: Locator) {
   const deleteBtn = dialog.getByText('Eintrag löschen', { exact: true });
   await expect(deleteBtn).toBeVisible();
   await deleteBtn.click();
+  await confirmDelete(page);
   await expectSuccessful(deleteResponse);
   await reloadResponse;
   await expectRowAbsent(page, row);
@@ -165,6 +172,7 @@ export async function deleteEntryViaSelection(page: Page, ...rows: Locator[]) {
   const deleteResponse = waitForMutationResponse(page, 'DELETE');
   const reloadResponse = waitForResponse(page, 'GET');
   await page.getByText('löschen').click();
+  await confirmDelete(page);
   await expectSuccessful(deleteResponse);
   await reloadResponse;
   for (const row of rows) {

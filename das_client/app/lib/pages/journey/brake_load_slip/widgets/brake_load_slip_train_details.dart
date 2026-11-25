@@ -3,7 +3,7 @@ import 'package:app/pages/journey/brake_load_slip/brake_load_slip_view_model.dar
 import 'package:app/pages/journey/brake_load_slip/widgets/brake_load_slip_train_details_table.dart';
 import 'package:app/widgets/key_value_table.dart';
 import 'package:app/widgets/key_value_table_data_row.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:formation/component.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

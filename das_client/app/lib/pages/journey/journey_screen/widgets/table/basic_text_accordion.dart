@@ -10,7 +10,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:ru_indications/component.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -87,14 +87,14 @@ class BasicTextAccordion extends StatelessWidget {
       context.l10n.c_show_more,
       style: _textStyle.copyWith(
         color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
-        decoration: TextDecoration.underline,
+        decoration: .underline,
       ),
     );
   }
 
   bool get _hasTextOverflow {
-    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.text);
-    return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
+    final parsedText = TextUtil.replaceHtmlLineBreaks(data.text);
+    return TextUtil.hasTextOverflow(parsedText, _accordionContentWidth(leftPadding: leftPadding), _textStyle);
   }
 
   Text _contentText(BuildContext context, String text, {int? maxLines}) {

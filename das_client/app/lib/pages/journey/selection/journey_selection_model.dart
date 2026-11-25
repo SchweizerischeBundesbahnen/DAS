@@ -2,7 +2,7 @@ import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Represents the state of the journey selection process.
 sealed class const JourneySelectionModel._() {

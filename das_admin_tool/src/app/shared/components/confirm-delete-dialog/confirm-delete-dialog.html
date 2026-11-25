@@ -1,0 +1,22 @@
+<sbb-dialog-title i18n="@@confirm_delete_dialog_title">{count, plural,
+  =1 {Eintrag löschen?}
+  other {{{ count }} Einträge löschen?}
+}</sbb-dialog-title>
+<sbb-dialog-close-button />
+<sbb-dialog-content>
+  <p i18n="@@confirm_delete_dialog_message">Diese Aktion kann nicht rückgängig gemacht werden.</p>
+</sbb-dialog-content>
+<sbb-dialog-actions
+  class="sbb-align-group-stretch sbb-orientation-vertical sbb-orientation-horizontal-from-large"
+>
+  <sbb-secondary-button
+    class="button-danger"
+    i18n="@@confirm_delete_dialog_action_delete"
+    iconName="trash-small"
+    sbb-dialog-close="confirm"
+    >Löschen</sbb-secondary-button
+  >
+  <sbb-button i18n="@@dialog_action_cancel" sbb-focus-initial sbb-dialog-close
+    >Abbrechen</sbb-button
+  >
+</sbb-dialog-actions>

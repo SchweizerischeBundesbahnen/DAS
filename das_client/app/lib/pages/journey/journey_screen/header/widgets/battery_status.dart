@@ -5,7 +5,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/exclamation_icon_button.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
