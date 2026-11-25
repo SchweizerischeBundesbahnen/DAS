@@ -1,11 +1,16 @@
 package ch.sbb.das.backend.locations.internal;
 
-import static ch.sbb.das.backend.locations.internal.RestClientConfig.OAUTH2_CLIENT_REGISTRATION_ID;
 import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.downstream.Downstream;
+import ch.sbb.das.backend.common.downstream.DownstreamCalls;
+import ch.sbb.das.backend.common.downstream.DownstreamRestClients;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -19,10 +24,21 @@ public class ServicePointApiClient {
 
     // API maximum
     public static final int MAX_PAGE_SIZE = 2000;
+    private static final String OAUTH2_CLIENT_REGISTRATION_ID = "atlas";
     private final RestClient restClient;
+    private final DownstreamCalls downstreamCalls;
 
-    public ServicePointApiClient(RestClient.Builder builder) {
-        this.restClient = builder.build();
+    public ServicePointApiClient(
+        DownstreamRestClients downstreamRestClients,
+        DownstreamCalls downstreamCalls,
+        OAuth2AuthorizedClientManager authorizedClientManager,
+        @Value("${atlas.base-url}") String baseUrl
+    ) {
+        this.restClient = downstreamRestClients.builder(Downstream.ATLAS)
+            .baseUrl(baseUrl)
+            .requestInterceptor(new OAuth2ClientHttpRequestInterceptor(authorizedClientManager))
+            .build();
+        this.downstreamCalls = downstreamCalls;
     }
 
     public List<ServicePoint> getAll() {
@@ -44,7 +60,7 @@ public class ServicePointApiClient {
     }
 
     private ServicePointResponse getServicePointsPaginated(int page) {
-        return restClient.get()
+        return downstreamCalls.call(Downstream.ATLAS, "getServicePoints", () -> restClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/service-point-directory/v1/service-points")
                 .queryParam("statusRestrictions", "VALIDATED")
@@ -56,6 +72,6 @@ public class ServicePointApiClient {
             )
             .attributes(clientRegistrationId(OAUTH2_CLIENT_REGISTRATION_ID))
             .retrieve()
-            .body(ServicePointResponse.class);
+            .body(ServicePointResponse.class));
     }
 }

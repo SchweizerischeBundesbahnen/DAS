@@ -34,6 +34,8 @@ public class DepartureController {
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "502", description = ApiDocumentation.STATUS_502,
         content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+    @ApiResponse(responseCode = "504", description = ApiDocumentation.STATUS_504,
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
     @ApiErrorResponses
     public ResponseEntity<?> subscribe(
         @RequestBody SubscribeRequest request) {
@@ -47,6 +49,8 @@ public class DepartureController {
     @PostMapping(API_DEPARTURES + "/confirm/{messageId}/{deviceId}")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "502", description = ApiDocumentation.STATUS_502,
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+    @ApiResponse(responseCode = "504", description = ApiDocumentation.STATUS_504,
         content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
     @ApiErrorResponses
     public ResponseEntity<?> confirm(

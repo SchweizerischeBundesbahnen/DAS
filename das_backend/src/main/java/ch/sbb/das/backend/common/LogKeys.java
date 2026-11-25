@@ -27,6 +27,9 @@ public class LogKeys {
     public static final String KAFKA_PARTITION = "kafka.partition";
     public static final String KAFKA_OFFSET = "kafka.offset";
     public static final String DOWNSTREAM_STATUS_CODE = "downstreamStatusCode";
+    public static final String DOWNSTREAM = "downstream";
+    public static final String OPERATION = "operation";
+    public static final String ATTEMPT = "attempt";
     public static final String PROBLEM_TITLE = "problemTitle";
     public static final String PROBLEM_DETAIL = "problemDetail";
     public static final String REASON = "reason";

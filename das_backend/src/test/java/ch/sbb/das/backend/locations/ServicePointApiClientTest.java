@@ -5,6 +5,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.downstream.DownstreamConfiguration;
 import ch.sbb.das.backend.locations.internal.ServicePoint;
 import ch.sbb.das.backend.locations.internal.ServicePointApiClient;
 import ch.sbb.das.backend.locations.internal.ServicePointResponse;
@@ -14,12 +15,19 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.restclient.test.autoconfigure.RestClientTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.client.MockRestServiceServer;
 import tools.jackson.databind.json.JsonMapper;
 
-@RestClientTest(ServicePointApiClient.class)
+@RestClientTest(components = ServicePointApiClient.class, properties = "atlas.base-url=")
+@Import(DownstreamConfiguration.class)
 class ServicePointApiClientTest {
+
+    @MockitoBean
+    private OAuth2AuthorizedClientManager authorizedClientManager;
 
     @Autowired
     private MockRestServiceServer server;

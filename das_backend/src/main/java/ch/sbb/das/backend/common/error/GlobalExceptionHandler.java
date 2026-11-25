@@ -134,6 +134,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
+     * Each failed attempt is already logged by {@link ch.sbb.das.backend.common.downstream.DownstreamCalls}.
+     */
+    @ExceptionHandler(DownstreamCallException.class)
+    ResponseEntity<Problem> handleDownstreamCallError(DownstreamCallException exception, HttpServletRequest request) {
+        log.atWarn()
+            .setCause(exception)
+            .addKeyValue(LogKeys.HTTP_RESPONSE_STATUS_CODE, exception.getStatus().value())
+            .addKeyValue(LogKeys.DOWNSTREAM, exception.getDownstream())
+            .log("Downstream service failed");
+        return ProblemFactory.createResponse(exception.getStatus(), TITLE_DOWNSTREAM_ERROR, exception.getDetail(), request);
+    }
+
+    /**
      * Any other failure, like a {@link NullPointerException} or a DB problem.
      */
     @ExceptionHandler(Exception.class)

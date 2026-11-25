@@ -17,6 +17,7 @@ public final class ApiDocumentation {
     public static final String STATUS_404 = "No entity/resource found";
     public static final String STATUS_500 = "Internal server error";
     public static final String STATUS_502 = "Bad gateway";
+    public static final String STATUS_504 = "Gateway timeout";
 
     public static final String HEADER_CACHE_CONTROL = HttpHeaders.CACHE_CONTROL;
     public static final String HEADER_CACHE_ETAG = HttpHeaders.ETAG;
