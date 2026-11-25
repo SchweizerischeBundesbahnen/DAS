@@ -97,7 +97,7 @@ void main() {
   });
 
   test('subscribe_whenTokenAvailable_thenCallsRegisterRequest', () async {
-    // ACT
+    // WHEN
     final result = await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
@@ -105,7 +105,7 @@ void main() {
       isDriver: true,
     );
 
-    // VERIFY
+    // THEN
     expect(result, isTrue);
     verify(
       mockSubscribeRequest.call(
@@ -124,7 +124,7 @@ void main() {
     // GIVEN
     when(mockMessagingService.tokenValue).thenReturn(null);
 
-    // ACT
+    // WHEN
     final result = await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
@@ -132,7 +132,7 @@ void main() {
       isDriver: true,
     );
 
-    // VERIFY
+    // THEN
     expect(result, isFalse);
     verifyNever(mockApiService.subscribe);
   });
@@ -142,7 +142,7 @@ void main() {
     final pastJourneyEndTime = DateTime.now().subtract(const Duration(hours: 4));
     final defaultExpireAt = DateTime.now().add(CustomerOrientedDepartureRepositoryImpl.defaultExpireAtDuration);
 
-    // ACT
+    // WHEN
     final result = await testee.subscribe(
       evu: '1080',
       trainNumber: 'RE1234',
@@ -150,7 +150,7 @@ void main() {
       isDriver: true,
     );
 
-    // VERIFY
+    // THEN
     expect(result, isTrue);
     final verification = verify(
       mockSubscribeRequest.call(
@@ -183,7 +183,7 @@ void main() {
     );
     when(mockMessagingService.tokenValue).thenReturn('new-token');
 
-    // ACT
+    // WHEN
     final result = await testee.subscribe(
       evu: '1180',
       trainNumber: 'RB77',
@@ -191,7 +191,7 @@ void main() {
       isDriver: false,
     );
 
-    // VERIFY
+    // THEN
     expect(result, isTrue);
     verifyInOrder([
       mockUnsubscribeRequest.call(
@@ -225,12 +225,12 @@ void main() {
       isDriver: true,
     );
 
-    // ACT
+    // WHEN
     when(mockMessagingService.tokenValue).thenReturn('refreshed-token');
     rxToken.add('refreshed-token');
     await Future.delayed(Duration.zero);
 
-    // VERIFY
+    // THEN
     verifyNever(
       mockSubscribeRequest.call(
         evu: '1080',
@@ -257,7 +257,7 @@ void main() {
 
   test('subscribe_whenNoConfirmation_thenRetriesWithExponentialBackoff', () {
     fakeAsync((async) {
-      // ACT
+      // WHEN
       testee.subscribe(
         evu: '1080',
         trainNumber: 'RE1234',
@@ -266,7 +266,7 @@ void main() {
       );
       async.flushMicrotasks();
 
-      // VERIFY
+      // THEN
 
       final firstCall = verify(
         mockSubscribeRequest.call(
@@ -322,7 +322,7 @@ void main() {
 
   test('subscribe_whenConfirmationReceived_thenStopsRetrying', () {
     fakeAsync((async) {
-      // ACT
+      // WHEN
       testee.subscribe(
         evu: '1080',
         trainNumber: 'RE1234',
@@ -331,7 +331,7 @@ void main() {
       );
       async.flushMicrotasks();
 
-      // VERIFY
+      // THEN
 
       final initialSubscribeCall = verify(
         mockSubscribeRequest.call(
@@ -378,10 +378,10 @@ void main() {
   });
 
   test('unsubscribe_whenNoPendingSubscription_thenReturnsTrueAndSkipsRequest', () async {
-    // ACT
+    // WHEN
     final result = await testee.unsubscribe();
 
-    // VERIFY
+    // THEN
     expect(result, isTrue);
     verifyNever(
       mockUnsubscribeRequest.call(
@@ -407,10 +407,10 @@ void main() {
       isDriver: true,
     );
 
-    // ACT
+    // WHEN
     final result = await testee.unsubscribe();
 
-    // VERIFY
+    // THEN
     expect(result, isFalse);
     verifyNever(mockApiService.subscribe);
   });
@@ -440,10 +440,10 @@ void main() {
       ),
     ).thenThrow(Exception('network error'));
 
-    // ACT
+    // WHEN
     final result = await testee.unsubscribe();
 
-    // VERIFY
+    // THEN
     expect(result, isFalse);
     verify(
       mockUnsubscribeRequest.call(
@@ -463,14 +463,14 @@ void main() {
     final emittedStatuses = <CustomerOrientedDeparture>[];
     final subscription = testee.customerOrientedDeparture.listen(emittedStatuses.add);
 
-    // ACT
+    // WHEN
     rxMessage
       ..add(_createTrainStatusMessage(trainNumber: '1', status: 'READY', messageId: 'message-1'))
       ..add(_createTrainStatusMessage(trainNumber: '2', status: 'abcd', messageId: 'message-2')) // should be ignored
       ..add(_createTrainStatusMessage(trainNumber: '3', status: 'departure', messageId: 'message-3'));
     await Future.delayed(Duration.zero);
 
-    // VERIFY
+    // THEN
     expect(
       emittedStatuses,
       equals([
@@ -496,10 +496,10 @@ void main() {
   });
 
   test('requestLatestStatus_thenCallsReplayMessages', () async {
-    // ACT
+    // WHEN
     testee.requestLatestStatus();
 
-    // VERIFY
+    // THEN
     verify(mockMessagingService.replayMessages()).called(1);
   });
 }

@@ -147,29 +147,29 @@ void main() {
   });
 
   test('model_whenCurrentPositionIsNotAServicePoint_thenStaysHiddenAndDoesNotEmit', () {
-    // ARRANGE
+    // GIVEN
     expect(emitRegister.first, isNull);
     emitRegister.clear();
 
-    // ACT
+    // WHEN
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aSignal)));
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(0));
     expect(testee.modelValue, isNull);
   });
 
   test('model_whenPositionOnFirstServicePoint_thenStaysHiddenAndDoesNotEmit', () {
-    // ARRANGE
+    // GIVEN
     expect(emitRegister.first, isNull);
     emitRegister.clear();
 
-    // ACT
+    // WHEN
     testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointA)));
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     expect(emitRegister, hasLength(0));
     expect(testee.modelValue, isNull);
   });
@@ -184,14 +184,14 @@ void main() {
     });
 
     test('model_whenRuFeatureIsDisabled_thenEmitsNothing', () {
-      // ARRANGE
+      // GIVEN
       when(
         mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation),
       ).thenAnswer((_) async => false);
       testAsync.run((_) => rxMockJourney.add(Journey(metadata: Metadata(), data: [])));
       testAsync.flushMicrotasks();
 
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run(
         (_) => rxMockJourneyPosition.add(
@@ -200,13 +200,13 @@ void main() {
       );
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(0));
       expect(testee.modelValue, isNull);
     });
 
     test('model_whenPositionAdvancesThroughMultipleServicePoints_thenRecalculatesEachTime', () {
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run(
         (_) => rxMockJourneyPosition.add(
@@ -231,7 +231,7 @@ void main() {
       );
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         emitRegister,
         orderedEquals([
@@ -243,13 +243,13 @@ void main() {
     });
 
     test('model_whenCurrentPositionAndLastPositionAreEqual_thenDoesNotRecalculate', () {
-      // ARRANGE
+      // GIVEN
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
       testAsync.flushMicrotasks();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 5)); // now: 20:35
       testAsync.run(
         (_) => rxMockJourneyPosition.add(
@@ -258,12 +258,12 @@ void main() {
       );
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(0));
     });
 
     test('model_whenMultipleServicePointsProcessedForSameJourney_thenNeverChecksFeature', () {
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
       testAsync.flushMicrotasks();
@@ -278,24 +278,24 @@ void main() {
     test(
       'model_whenRuFeatureFlagChangesWithoutJourneyUpdate_thenKeepsUsingPreviouslyResolvedValue',
       () {
-        // ARRANGE: the feature was already resolved as enabled once for this journey in setUp.
+        // GIVEN: the feature was already resolved as enabled once for this journey in setUp.
         when(
           mockRuFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.plannedTimeDeviation),
         ).thenAnswer((_) async => false);
 
-        // ACT: no journey update happens here, so the cached (enabled) value should still be used.
+        // WHEN: no journey update happens here, so the cached (enabled) value should still be used.
         testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
         testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)));
         testAsync.flushMicrotasks();
 
-        // EXPECT
+        // THEN
         expect(emitRegister, hasLength(1));
         expect(emitRegister.first, equals(const Duration(minutes: -10)));
       },
     );
 
     test('model_whenServicePointHasNoPlannedTime_thenDoesNotEmit', () {
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 30)); // now: 20:30
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)),
@@ -306,20 +306,20 @@ void main() {
       testAsync.run((_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointWithoutTimes)));
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(0));
       expect(testee.modelValue, isNull);
     });
 
     test('model_whenServicePointHasNoPlannedTimeAfterFullServicePoint_thenDoesNotEmitAnyMore', () {
-      // ACT
+      // WHEN
       testAsync.elapse(const Duration(minutes: 30));
       testAsync.run(
         (_) => rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: servicePointB)),
       );
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(testee.modelValue, const Duration(minutes: -10));
     });

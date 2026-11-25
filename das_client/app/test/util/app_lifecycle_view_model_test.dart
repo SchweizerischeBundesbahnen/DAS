@@ -28,22 +28,22 @@ void main() {
   });
 
   test('state_whenUpdated_thenEmitsDistinctValues', () async {
-    // ACT
+    // WHEN
     testee.updateState(.resumed);
     testee.updateState(.resumed);
     testee.updateState(.inactive);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(stateEmittedValues, equals([AppLifecycleState.resumed, AppLifecycleState.inactive]));
   });
 
   test('onResumed_whenResumedWithoutPreviousState_thenEmitsNothing', () async {
-    // ACT
+    // WHEN
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, isEmpty);
   });
 
@@ -52,50 +52,50 @@ void main() {
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, hasLength(1));
   });
 
   test('onResumed_whenResumedAfterHidden_thenEmitsEvent', () async {
-    // ACT
+    // WHEN
     testee.updateState(.hidden);
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, hasLength(1));
   });
 
   test('onResumed_whenResumedAfterDetached_thenEmitsEvent', () async {
-    // ACT
+    // WHEN
     testee.updateState(.detached);
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, hasLength(1));
   });
 
   test('onResumed_whenResumedTwiceAfterSingleBackground_thenEmitsOnce', () async {
-    // ACT
+    // WHEN
     testee.updateState(.paused);
     testee.updateState(.resumed);
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, hasLength(1));
   });
 
   test('onResumed_whenBackgroundedTwice_thenEmitsTwice', () async {
-    // ACT
+    // WHEN
     testee.updateState(.paused);
     testee.updateState(.resumed);
     testee.updateState(.hidden);
     testee.updateState(.resumed);
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(onResumedEmittedValues, hasLength(2));
   });
 }

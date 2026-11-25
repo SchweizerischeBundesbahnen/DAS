@@ -43,14 +43,14 @@ void main() {
     final company = '1285';
     final operationalDay = DateTime.now();
 
-    // ACT
+    // WHEN
     testee.watchFormation(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
       operationalDay: operationalDay,
     );
 
-    // VERIFY
+    // THEN
     verify(
       mockDatabaseService.watchFormation(operationalTrainNumber, company, operationalDay),
     ).called(1);
@@ -83,7 +83,7 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     testee.watchFormation(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
@@ -92,7 +92,7 @@ void main() {
 
     await Future.delayed(Duration.zero);
 
-    // VERIFY
+    // THEN
     verify(
       mockDatabaseService.saveFormation(any),
     ).called(1);
@@ -107,7 +107,7 @@ void main() {
     final company = '1285';
     final operationalDay = DateTime.now();
 
-    // ACT
+    // WHEN
     when(
       mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).thenAnswer((_) => mockFormationRequest);
@@ -123,7 +123,7 @@ void main() {
       ),
     );
 
-    // VERIFY
+    // THEN
     testee.watchFormation(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
@@ -146,7 +146,7 @@ void main() {
     final company = '1285';
     final operationalDay = DateTime.now();
 
-    // ACT
+    // WHEN
     when(
       mockApiService.formation(operationalTrainNumber, company, operationalDay, any),
     ).thenAnswer((_) => mockFormationRequest);
@@ -162,7 +162,7 @@ void main() {
       ),
     );
 
-    // VERIFY
+    // THEN
     testee.watchFormation(
       operationalTrainNumber: operationalTrainNumber,
       company: company,
@@ -182,10 +182,10 @@ void main() {
     const url = '/transport/paper/123';
     final transportPaperLink = TransportPaperLink(url: url, type: .url);
 
-    // ACT
+    // WHEN
     final result = await testee.resolveTransportPaperLink(transportPaperLink);
 
-    // VERIFY
+    // THEN
     expect(result, url);
     verifyNever(mockApiService.transportPaper(any));
   });
@@ -205,10 +205,10 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     final result = await testee.resolveTransportPaperLink(transportPaperLink);
 
-    // VERIFY
+    // THEN
     expect(result, location);
     verify(mockApiService.transportPaper(url)).called(1);
     verify(mockTransportPaperRequest.call()).called(1);
@@ -222,10 +222,10 @@ void main() {
     when(mockApiService.transportPaper(url)).thenReturn(mockTransportPaperRequest);
     when(mockTransportPaperRequest.call()).thenThrow(Exception('network error'));
 
-    // ACT
+    // WHEN
     final result = await testee.resolveTransportPaperLink(transportPaperLink);
 
-    // VERIFY
+    // THEN
     expect(result, isNull);
     verify(mockApiService.transportPaper(url)).called(1);
     verify(mockTransportPaperRequest.call()).called(1);

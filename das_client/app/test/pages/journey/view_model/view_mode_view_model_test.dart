@@ -33,62 +33,62 @@ void main() {
     });
 
     test('initialState_whenInstantiated_thenIsTrue', () {
-      // EXPECT
+      // THEN
       expect(testee.isZenViewModeValue, isTrue);
     });
 
     test('isZenViewMode_whenInstantiated_thenEmitsTrue', () {
-      // EXPECT
+      // THEN
       expect(emitRegister.first, isTrue);
     });
 
     test('updateZenViewMode_whenCalledWithPausedState_thenSetsFalse', () async {
-      // ARRANGE
+      // GIVEN
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
 
-      // ACT
+      // WHEN
       testee.updateZenViewMode(pausedState);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isZenViewModeValue, isFalse);
       expect(emitRegister.last, isFalse);
     });
 
     test('updateZenViewMode_whenCalledWithAutomaticState_thenSetsTrue', () async {
-      // ARRANGE
+      // GIVEN
       final automaticState = Automatic();
 
-      // ACT
+      // WHEN
       testee.updateZenViewMode(automaticState);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isZenViewModeValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
     test('updateZenViewMode_whenCalledWithManualState_thenSetsTrue', () async {
-      // ARRANGE
+      // GIVEN
       final manualState = Manual();
 
-      // ACT
+      // WHEN
       testee.updateZenViewMode(manualState);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.isZenViewModeValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
     test('updateZenViewMode_whenCalledMultipleTimes_thenEmitsForEachUpdate', () async {
-      // ARRANGE
+      // GIVEN
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
       final automaticState = Automatic();
 
-      // ACT
+      // WHEN
       testee.updateZenViewMode(pausedState);
       await processStreams();
       testee.updateZenViewMode(automaticState);
@@ -96,7 +96,7 @@ void main() {
       testee.updateZenViewMode(pausedState);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.length, 3);
       expect(emitRegister[0], isFalse);
       expect(emitRegister[1], isTrue);
@@ -104,17 +104,17 @@ void main() {
     });
 
     test('updateZenViewMode_whenCalledWithSameStateTwice_thenOnlyEmitsOnce', () async {
-      // ARRANGE
+      // GIVEN
       emitRegister.clear();
       final pausedState = Paused(next: Automatic());
 
-      // ACT
+      // WHEN
       testee.updateZenViewMode(pausedState);
       await processStreams();
       testee.updateZenViewMode(pausedState);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.length, 1);
       expect(emitRegister[0], isFalse);
     });

@@ -42,18 +42,18 @@ void main() {
   );
 
   test('formationRunChange_whenFormationRunsIdentical_thenHasNoChange', () async {
-    // ACT
+    // WHEN
     final testee = FormationRunChange(formationRun: formationRun, previousFormationRun: formationRun);
 
-    // VERIFY
+    // THEN
     expect(testee.changesCount, 0);
   });
 
   test('formationRunChange_whenPreviousFormationRunsIsNull_thenHasNoChange', () async {
-    // ACT
+    // WHEN
     final testee = FormationRunChange(formationRun: formationRun, previousFormationRun: null);
 
-    // VERIFY
+    // THEN
     expect(testee.changesCount, 0);
   });
 
@@ -98,10 +98,10 @@ void main() {
       europeanVehicleNumberLast: 'CH0987654321',
     );
 
-    // ACT
+    // WHEN
     final testee = FormationRunChange(formationRun: formationRun, previousFormationRun: prevFormationRun);
 
-    // VERIFY
+    // THEN
     expect(testee.changesCount, 10);
     expect(testee.hasChanged(.additionalTractions), isTrue);
     expect(testee.hasChanged(.brakedWeightPercentage), isTrue);
@@ -122,7 +122,7 @@ void main() {
   test('formationRunChange_whenAllFieldsAreDifferent_thenHasAllChanges', () async {
     final now = DateTime.now();
 
-    // ACT
+    // WHEN
     final testee = FormationRunChange(
       formationRun: FormationRun(
         inspectionDateTime: now,
@@ -199,7 +199,7 @@ void main() {
       ),
     );
 
-    // VERIFY
+    // THEN
     expect(testee.changesCount, 38);
     for (final field in FormationRunFields.values) {
       expect(testee.hasChanged(field), isTrue);
@@ -236,10 +236,10 @@ void main() {
       gradientDownhillMaxInPermille: 25,
     );
 
-    // ACT
+    // WHEN
     final testee = FormationRunChange(formationRun: formationRun, previousFormationRun: prevFormationRun);
 
-    // VERIFY
+    // THEN
     expect(testee.hasChanged(.inspectionDateTime), isTrue);
     expect(testee.hasInspectionDateChanged(), isTrue);
   });
@@ -305,10 +305,10 @@ void main() {
       gradientDownhillMaxInPermille: 25,
     );
 
-    // ACT
+    // WHEN
     final testee = FormationRunChange(formationRun: currentFormationRun, previousFormationRun: prevFormationRun);
 
-    // VERIFY
+    // THEN
     expect(testee.hasChanged(.inspectionDateTime), isTrue);
     expect(testee.hasInspectionDateChanged(), isFalse);
   });

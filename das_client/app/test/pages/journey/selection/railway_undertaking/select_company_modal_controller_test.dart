@@ -44,7 +44,7 @@ void main() {
     });
 
     test('filteredCompanies_whenInstantiated_thenIsEmittedWithAllCompaniesSortedCorrectly', () async {
-      // ACT
+      // WHEN
       testee = SelectCompanyModalController(
         availableCompanies: _availableCompanies,
         initialCompanyCodes: [_sbbP.code],
@@ -53,158 +53,158 @@ void main() {
       testee.filteredCompanies.listen(emitRegister.add);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, orderedEquals(_sortedCompanyValues()));
     });
 
     test('filterValue_whenFilterChanged_thenIsNewFilter', () {
-      // ACT
+      // WHEN
       testee.textEditingController.text = 'sob';
 
-      // EXPECT
+      // THEN
       expect(testee.filterValue, equals('sob'));
     });
 
     test('filteredCompanies_whenFilterChanged_thenIsEmittedWithCompaniesFilteredCorrectly', () async {
-      // ARRANGE
+      // GIVEN
       testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testee.textEditingController.text = 'sb';
       await processStreams();
 
-      // EXPECT
+      // THEN
       // the selected company is ordered 0th even though not lexicographically the 0th element
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, orderedEquals(<Company>[_sbbCH, _sbbCInt, _sbbD, _sbbI, _sbbP]));
     });
 
     test('filteredCompanies_whenFilterIsWeird_thenIsEmittedEmpty', () async {
-      // ACT
+      // WHEN
       testee.textEditingController.text = '#21';
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, isEmpty);
     });
 
     test('filteredCompanies_whenSelectionChanged_thenIsEmittedOnceWithAllCompaniesSortedCorrectly', () async {
-      // ARRANGE
+      // GIVEN
       testee.textEditingController.text = 'sb';
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, orderedEquals(_sortedCompanyValues(selectedCompanyCode: _sbbCH.code)));
     });
 
     test('filteredCompanies_whenFilterChangedAfterSelectionChanged_thenIsStillEmitted', () async {
-      // ARRANGE
+      // GIVEN
       testee.selectedCompanyCodes = [_sbbCH.code];
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testee.textEditingController.text = 'sob';
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, orderedEquals(<Company>[_sob]));
     });
 
     test('filterValue_whenSelectionChanged_thenIsCleared', () {
-      // ARRANGE
+      // GIVEN
       testee.textEditingController.text = 'sb';
 
-      // ACT
+      // WHEN
       testee.selectedCompanyCodes = [_sbbCH.code];
 
-      // EXPECT
+      // THEN
       expect(testee.filterValue, isEmpty);
       expect(testee.textEditingController.text, isEmpty);
     });
 
     test('filterValue_whenCompanyToggled_thenIsCleared', () {
-      // ARRANGE
+      // GIVEN
       testee.textEditingController.text = 'sb';
 
-      // ACT
+      // WHEN
       testee.toggleCompany(_sob.code, isSelected: true);
 
-      // EXPECT
+      // THEN
       expect(testee.filterValue, isEmpty);
       expect(testee.textEditingController.text, isEmpty);
     });
 
     test('selectedCompanyCodes_whenCompanyToggled_thenContainsOnlyTheSelectedCompanies', () {
-      // ACT
+      // WHEN
       testee.toggleCompany(_sob.code, isSelected: true);
 
-      // EXPECT
+      // THEN
       expect(testee.selectedCompanyCodes, orderedEquals([_sbbP.code, _sob.code]));
 
-      // ACT
+      // WHEN
       testee.toggleCompany(_sbbP.code, isSelected: false);
 
-      // EXPECT
+      // THEN
       expect(testee.selectedCompanyCodes, orderedEquals([_sob.code]));
     });
 
     test('filteredCompanies_whenAvailableCompaniesChanged_thenIsEmittedWithNewCompanies', () async {
-      // ARRANGE
+      // GIVEN
       testee.textEditingController.text = 'sb';
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       testee.availableCompanies = [_sob, _blsC];
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.single, orderedEquals(<Company>[_blsC, _sob]));
     });
 
     test('onCompaniesUpdated_whenFilterChanged_thenIsNotCalled', () {
-      // ACT
+      // WHEN
       testee.textEditingController.text = 'sob';
 
-      // EXPECT
+      // THEN
       verifyNever(mockOnCompaniesUpdated(any));
     });
 
     test('onCompaniesUpdated_whenSelectionChanged_thenIsNotCalled', () {
-      // ACT
+      // WHEN
       testee.selectedCompanyCodes = [_sob.code];
       testee.toggleCompany(_blsC.code, isSelected: true);
 
-      // EXPECT
+      // THEN
       verifyNever(mockOnCompaniesUpdated(any));
     });
 
     test('onCompaniesUpdated_whenSelectionConfirmed_thenIsCalledWithSelectedCompanies', () {
-      // ARRANGE
+      // GIVEN
       testee.selectedCompanyCodes = [_sob.code];
 
-      // ACT
+      // WHEN
       testee.confirmSelection();
 
-      // EXPECT
+      // THEN
       verify(mockOnCompaniesUpdated([_sob])).called(1);
     });
 
     test('selectedCompanyCodes_whenInitialListIsModified_thenIsNotAffected', () {
-      // ARRANGE
+      // GIVEN
       final initialCompanyCodes = [_sbbP.code];
       testee = SelectCompanyModalController(
         availableCompanies: _availableCompanies,
@@ -212,10 +212,10 @@ void main() {
         onCompaniesUpdated: mockOnCompaniesUpdated.call,
       );
 
-      // ACT
+      // WHEN
       initialCompanyCodes.add(_sob.code);
 
-      // EXPECT
+      // THEN
       expect(testee.selectedCompanyCodes, orderedEquals([_sbbP.code]));
     });
   });

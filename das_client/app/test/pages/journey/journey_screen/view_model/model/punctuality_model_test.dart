@@ -57,63 +57,63 @@ void main() {
 
     group('equality', () {
       test('visible_whenComparedToIdenticalVisible_thenIsEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.visible(delay: tenSecondLate);
         final model2 = DelayModel.visible(delay: tenSecondLate);
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isTrue);
         expect(model1.hashCode == model2.hashCode, isTrue);
       });
 
       test('visible_whenComparedToDifferentVisible_thenIsNotEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.visible(delay: tenSecondLate);
         final model2 = DelayModel.visible(delay: tenSecondEarly);
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isFalse);
         expect(model1.hashCode == model2.hashCode, isFalse);
       });
 
       test('stale_whenComparedToIdenticalStale_thenIsEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.stale(delay: tenSecondLate);
         final model2 = DelayModel.stale(delay: tenSecondLate);
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isTrue);
         expect(model1.hashCode == model2.hashCode, isTrue);
       });
 
       test('stale_whenComparedToDifferentStale_thenIsNotEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.stale(delay: tenSecondLate);
         final model2 = DelayModel.stale(delay: tenSecondEarly);
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isFalse);
         expect(model1.hashCode == model2.hashCode, isFalse);
       });
 
       test('hidden_whenComparedToAnotherHidden_thenIsEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.hidden();
         final model2 = DelayModel.hidden();
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isTrue);
         expect(model1.hashCode == model2.hashCode, isTrue);
       });
 
       test('differentTypes_whenCompared_thenAreNotEqual', () {
-        // ARRANGE
+        // GIVEN
         final visible = DelayModel.visible(delay: tenSecondLate);
         final stale = DelayModel.stale(delay: tenSecondLate);
         final hidden = DelayModel.hidden();
         final plannedTimeDeviation = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
 
-        // EXPECT
+        // THEN
         expect(visible == stale, isFalse);
         expect(visible == hidden, isFalse);
         expect(stale == hidden, isFalse);
@@ -122,21 +122,21 @@ void main() {
       });
 
       test('plannedTimeDeviation_whenComparedToIdentical_thenIsEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
         final model2 = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isTrue);
         expect(model1.hashCode == model2.hashCode, isTrue);
       });
 
       test('plannedTimeDeviation_whenComparedToDifferent_thenIsNotEqual', () {
-        // ARRANGE
+        // GIVEN
         final model1 = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: 10));
         final model2 = DelayModel.plannedTimeDeviation(deviation: const Duration(minutes: -10));
 
-        // EXPECT
+        // THEN
         expect(model1 == model2, isFalse);
         expect(model1.hashCode == model2.hashCode, isFalse);
       });

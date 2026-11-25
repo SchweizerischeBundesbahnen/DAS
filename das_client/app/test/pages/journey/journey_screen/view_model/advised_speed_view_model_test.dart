@@ -97,16 +97,16 @@ void main() {
     });
 
     test('whenHasNoAdvisedSpeedSegment_doesEmitDefaultInactive', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         journeySubject.add(baseJourney);
         journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
       });
 
-      // ACT
+      // WHEN
       _processStreamInFakeAsync(testAsync);
 
-      // EXPECT
+      // THEN
       expect(modelRegister, orderedEquals([AdvisedSpeedModel.inactive()]));
       verifyNever(mockNotificationViewModel.insert(type: anyNamed('type')));
     });
@@ -129,24 +129,24 @@ void main() {
       });
 
       test('whenIsOutsideOfAdvisedSpeedSegment_isInactiveDoesNotEmit', () {
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT
+        // THEN
         expect(modelRegister, orderedEquals([AdvisedSpeedModel.inactive()]));
       });
 
       test('whenEntersAdvisedSpeedSegment_isActiveWithCorrectSegmentAndSoundPlayed', () {
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT & VERIFY
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -159,19 +159,19 @@ void main() {
       });
 
       test('whenExitsAdvisedSpeedSegment_isEndAndSoundPlayed', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[6] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -185,7 +185,7 @@ void main() {
       });
 
       test('whenExitsAdvisedSpeedSegmentAndTimerReached_isInactive', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
@@ -193,10 +193,10 @@ void main() {
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.elapse(Duration(seconds: timeConstants.advisedSpeedEndDisplaySeconds));
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -211,19 +211,19 @@ void main() {
       });
 
       test('whenWithinAdvisedSegmentAndJourneyUpdateReceivedWithNoSegments_thenIsCancelledAndSoundPlayed', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeySubject.add(baseJourney);
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -237,7 +237,7 @@ void main() {
       });
 
       test('whenWithinAdvisedSegmentAndJourneyUpdateReceivedWithOtherSegments_thenIsCancelledAndSoundPlayed', () {
-        // ARRANGE
+        // GIVEN
         final otherAdvisedSegment = VelocityMaxAdvisedSpeedSegment(
           startOrder: 30,
           endOrder: 31,
@@ -252,13 +252,13 @@ void main() {
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeySubject.add(updatedJourney);
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -272,20 +272,20 @@ void main() {
       });
 
       test('whenCancelledAndTimerReached_thenEmitsInactiveState', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeySubject.add(baseJourney);
           _processStreamInFakeAsync(testAsync);
         });
         testAsync.elapse(Duration(seconds: timeConstants.advisedSpeedEndDisplaySeconds));
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -321,7 +321,7 @@ void main() {
       });
 
       test('whenEntersAdvisedSpeedSegmentWithLineSpeed_isActiveWithCorrectModelAndSoundPlayed', () {
-        // ARRANGE
+        // GIVEN
         final lineSpeed = SingleSpeed(value: '90');
         when(mockLineSpeedViewModel.getResolvedSpeedForOrder(baseJourney.data[1].order)).thenReturn(
           ResolvedTrainSeriesSpeed(
@@ -330,13 +330,13 @@ void main() {
           ),
         );
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT & VERIFY
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -349,7 +349,7 @@ void main() {
       });
 
       test('whenLineSpeedAppliesWithinSegment_isActiveWithCorrectModelAndDoesNotPlaySound', () {
-        // ARRANGE
+        // GIVEN
         final lineSpeed = SingleSpeed(value: '90');
         final lowerLineSpeed = SingleSpeed(value: '80');
         when(mockLineSpeedViewModel.getResolvedSpeedForOrder(baseJourney.data[1].order)).thenReturn(
@@ -365,7 +365,7 @@ void main() {
           ),
         );
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[1] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
@@ -376,7 +376,7 @@ void main() {
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT & VERIFY
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -415,7 +415,7 @@ void main() {
       });
 
       test('whenLeftFirstSegmentAndEntersNext_isActiveWithCorrectSegmentAndDoesNotGoInactiveAfterTimer', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           // enter first
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[2] as JourneyPoint));
@@ -425,7 +425,7 @@ void main() {
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           // enter second
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[5] as JourneyPoint));
@@ -433,7 +433,7 @@ void main() {
         });
         testAsync.elapse(Duration(seconds: timeConstants.advisedSpeedEndDisplaySeconds));
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([
@@ -473,21 +473,21 @@ void main() {
       });
 
       test('whenLeftFirstSegmentAndEntersNext_doesEmitOnlyNewActiveAndPlaysOnlyStartSound', () {
-        // ARRANGE
+        // GIVEN
         testAsync.run((testAsync) {
           // enter first
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[2] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // ACT
+        // WHEN
         testAsync.run((testAsync) {
           // leave first & enter second
           journeyPositionSubject.add(JourneyPositionModel(currentPosition: baseJourney.data[3] as JourneyPoint));
           _processStreamInFakeAsync(testAsync);
         });
 
-        // EXPECT
+        // THEN
         expect(
           modelRegister,
           orderedEquals([

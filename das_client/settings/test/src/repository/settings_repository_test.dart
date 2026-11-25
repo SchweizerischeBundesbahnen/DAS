@@ -92,32 +92,32 @@ void main() {
   }
 
   test('whenInitialized_triesLoadingSettingsAndSilentsHttpException', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(1);
     verifyZeroInteractions(settingsDatabaseService);
   });
 
   test('whenInitialized_RetriesAfterErrorWithDelay', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
     testAsync.elapse(SettingsRepositoryImpl.retryDelay + Duration(milliseconds: 100));
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(2);
     verifyZeroInteractions(settingsDatabaseService);
   });
 
   test('whenEmptyResponse_RetriesWithDelay', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(
         SettingsResponse(
@@ -127,30 +127,30 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
     testAsync.elapse(SettingsRepositoryImpl.retryDelay + Duration(milliseconds: 100));
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(2);
     verifyZeroInteractions(settingsDatabaseService);
   });
 
   test('whenInitialized_MultipleErrorsRetryMultipleTimes', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
     testAsync.elapse((SettingsRepositoryImpl.retryDelay * 3) + Duration(milliseconds: 100));
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(4);
     verifyZeroInteractions(settingsDatabaseService);
   });
 
   test('whenSuccessAfterError_stopsRetrying', () async {
-    // ARRANGE
+    // GIVEN
     var callCount = 0;
     when(apiService.settings).thenAnswer((_) {
       callCount++;
@@ -159,70 +159,70 @@ void main() {
     });
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT
+    // WHEN
     await initTestee();
     testAsync.elapse(SettingsRepositoryImpl.retryDelay * 2 + Duration(milliseconds: 100));
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(2);
   });
 
   test('whenSettingsLoadedSuccessfully_savesRuFeaturesToDatabase', () async {
-    // ARRANGE
+    // GIVEN
     final ruFeatures = [
       RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true),
     ];
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(ruFeatures: ruFeatures)));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     verify(settingsDatabaseService.replaceAllRuFeatures(ruFeatures)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_callsAwsCredentialsChanged', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(
         buildSettingsResponse(bucketUrl: 'https://new-bucket.com', accessKey: 'key', accessSecret: 'secret'),
       ),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     verify(mockCallbacks.awsCredentialsChanged(any)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_savesCompaniesToDatabase', () async {
-    // ARRANGE
+    // GIVEN
     final companies = [
       CompanyDto(code: '1285', shortName: 'SBBP'),
       CompanyDto(code: '3356', shortName: 'BLSC'),
     ];
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(companies: companies)));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     verify(settingsDatabaseService.replaceAllCompanies(companies)).called(1);
   });
 
   test('whenSettingsLoadedSuccessfully_awsCredentialsChangedCalledWithCorrectValues', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(
         buildSettingsResponse(bucketUrl: 'https://my-bucket.com', accessKey: 'myKey', accessSecret: 'mySecret'),
       ),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     final capturedConfig = verify(mockCallbacks.awsCredentialsChanged(captureAny)).captured.single as AwsConfiguration;
     expect(capturedConfig.bucketUrl, 'https://my-bucket.com');
     expect(capturedConfig.accessKey, 'myKey');
@@ -230,25 +230,25 @@ void main() {
   });
 
   test('whenSettingsLoadedTwiceWithSamePreload_awsCredentialsChangedCalledOnlyOnce', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT
+    // WHEN
     await initTestee();
     await testee.loadSettings();
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     verify(mockCallbacks.awsCredentialsChanged(any)).called(1);
   });
 
   test('whenPreloadChangesOnSecondLoad_callsAwsCredentialsChangedAgain', () async {
-    // ARRANGE
+    // GIVEN
     when(
       mockSettingsRequest.call(),
     ).thenAnswer((_) => Future.value(buildSettingsResponse(bucketUrl: 'https://bucket1.com')));
 
-    // ACT
+    // WHEN
     await initTestee();
 
     when(
@@ -256,33 +256,33 @@ void main() {
     ).thenAnswer((_) => Future.value(buildSettingsResponse(bucketUrl: 'https://bucket2.com')));
     await testee.loadSettings();
 
-    // EXPECT
+    // THEN
     verify(mockCallbacks.awsCredentialsChanged(any)).called(2);
   });
 
   test('whenNoAwsCredentialsCallback_doesNotThrowOnSuccessfulLoad', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT & EXPECT – should not throw
+    // WHEN & THEN – should not throw
     await initTestee(withAwsCallback: false);
     expect(await testee.loadSettings(), isTrue);
   });
 
   test('whenSettingsLoadedSuccessfully_loadSettingsReturnsTrue', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT
+    // WHEN
     await initTestee();
     final result = await testee.loadSettings();
 
-    // EXPECT
+    // THEN
     expect(result, isTrue);
   });
 
   test('whenLoadSettingsCalledWhileLoadInProgress_sharesRequest', () async {
-    // ARRANGE
+    // GIVEN
     final results = <bool>[];
     fakeAsync((fakeAsync) {
       final completer = Completer<SettingsResponse>();
@@ -294,21 +294,21 @@ void main() {
       );
       fakeAsync.flushMicrotasks();
 
-      // ACT
+      // WHEN
       testee.loadSettings().then(results.add);
       testee.loadSettings().then(results.add);
       completer.complete(buildSettingsResponse());
       fakeAsync.flushMicrotasks();
     });
 
-    // EXPECT
+    // THEN
     expect(results, [true, true]);
     verify(apiService.settings).called(1);
     verify(mockSettingsRequest.call()).called(1);
   });
 
   test('whenLoadSettingsCalledWhileLoadInProgressAndFails_allCallersReceiveFalse', () async {
-    // ARRANGE
+    // GIVEN
     final results = <bool>[];
     fakeAsync((fakeAsync) {
       final completer = Completer<SettingsResponse>();
@@ -320,45 +320,45 @@ void main() {
       );
       fakeAsync.flushMicrotasks();
 
-      // ACT
+      // WHEN
       testee.loadSettings().then(results.add);
       testee.loadSettings().then(results.add);
       completer.completeError(HttpException('Exception'));
       fakeAsync.flushMicrotasks();
     });
 
-    // EXPECT
+    // THEN
     expect(results, [false, false]);
     verify(apiService.settings).called(1);
   });
 
   test('whenLoadSettingsCalledAfterPreviousLoadCompleted_triggersNewRequest', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT
+    // WHEN
     await initTestee();
     await testee.loadSettings();
 
-    // EXPECT
+    // THEN
     verify(apiService.settings).called(2);
     verify(mockSettingsRequest.call()).called(2);
   });
 
   test('whenSettingsFetchFails_loadSettingsReturnsFalse', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
     final result = await testee.loadSettings();
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
   });
 
   test('whenEmptyResponse_loadSettingsReturnsFalse', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(
         SettingsResponse(
@@ -368,124 +368,124 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
     final result = await testee.loadSettings();
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
   });
 
   test('beforeSettingsLoaded_loggingTokenIsNull', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.loggingToken, isNull);
   });
 
   test('beforeSettingsLoaded_loggingUrlIsNull', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.loggingUrl, isNull);
   });
 
   test('whenSettingsLoadedSuccessfully_loggingTokenIsAvailable', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(buildSettingsResponse(loggingToken: 'my-logging-token')),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.loggingToken, 'my-logging-token');
   });
 
   test('whenSettingsLoadedSuccessfully_loggingUrlIsAvailable', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(buildSettingsResponse(loggingUrl: 'https://logs.example.com')),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.loggingUrl, 'https://logs.example.com');
   });
 
   test('whenRuFeatureIsEnabled_isRuFeatureEnabledReturnsTrue', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(settingsDatabaseService.findRuFeature('SBB', RuFeatureKeys.warnapp)).thenAnswer(
       (_) => Future.value(RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: true)),
     );
 
-    // ACT
+    // WHEN
     final result = await testee.isRuFeatureEnabled(RuFeatureKeys.warnapp, 'SBB');
 
-    // EXPECT
+    // THEN
     expect(result, isTrue);
   });
 
   test('whenRuFeatureIsDisabled_isRuFeatureEnabledReturnsFalse', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(settingsDatabaseService.findRuFeature('SBB', RuFeatureKeys.warnapp)).thenAnswer(
       (_) => Future.value(RuFeatureDto(companyCode: 'SBB', key: RuFeatureKeys.warnapp.key, enabled: false)),
     );
 
-    // ACT
+    // WHEN
     final result = await testee.isRuFeatureEnabled(RuFeatureKeys.warnapp, 'SBB');
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
   });
 
   test('whenRuFeatureNotFound_isRuFeatureEnabledReturnsFalse', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(
       settingsDatabaseService.findRuFeature('UNKNOWN', RuFeatureKeys.customerOrientedDeparture),
     ).thenAnswer((_) => Future.value(null));
 
-    // ACT
+    // WHEN
     final result = await testee.isRuFeatureEnabled(RuFeatureKeys.customerOrientedDeparture, 'UNKNOWN');
 
-    // EXPECT
+    // THEN
     expect(result, isFalse);
   });
 
   test('whenRuFeatureChecked_queriesDatabaseWithCorrectArguments', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(
       settingsDatabaseService.findRuFeature('OBB', RuFeatureKeys.departureProcess),
     ).thenAnswer((_) => Future.value(null));
 
-    // ACT
+    // WHEN
     await testee.isRuFeatureEnabled(RuFeatureKeys.departureProcess, 'OBB');
 
-    // EXPECT
+    // THEN
     verify(settingsDatabaseService.findRuFeature('OBB', RuFeatureKeys.departureProcess)).called(1);
   });
 
   test('whenLoadCompanies_returnsAllCompaniesFromDatabase', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
     await initTestee();
     when(settingsDatabaseService.findAllCompanies()).thenAnswer(
@@ -495,10 +495,10 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     final result = await testee.getCompanies();
 
-    // EXPECT
+    // THEN
     expect(result, [
       Company(code: '1285', shortName: 'SBBP'),
       Company(code: '3356', shortName: 'BLSC'),
@@ -506,85 +506,85 @@ void main() {
   });
 
   test('beforeSettingsLoaded_appVersionExpirationIsNull', () async {
-    // ARRANGE
+    // GIVEN
     when(apiService.settings).thenAnswer((_) => throw HttpException('Exception'));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration, isNull);
   });
 
   test('whenSettingsLoadedSuccessfully_appVersionExpirationIsNotNull', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse()));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration, isNotNull);
     expect(testee.appVersionExpiration, isA<AppVersionExpiration>());
   });
 
   test('whenSettingsLoadedWithExpiredVersion_appVersionExpirationReturnsExpiredTrue', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(appVersionExpired: true)));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration!.expired, isTrue);
   });
 
   test('whenSettingsLoadedWithExpiredVersion_awsCallbackCalledWithNull', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(appVersionExpired: true)));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     verify(mockCallbacks.awsCredentialsChanged(null)).called(1);
   });
 
   test('whenSettingsLoadedWithNonExpiredVersion_appVersionExpirationReturnsExpiredFalse', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer((_) => Future.value(buildSettingsResponse(appVersionExpired: false)));
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration!.expired, isFalse);
   });
 
   test('whenSettingsLoadedWithExpiryDate_appVersionExpirationReturnsCorrectExpiryDate', () async {
-    // ARRANGE
+    // GIVEN
     final expiryDate = DateTime(2026, 12, 31);
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(buildSettingsResponse(appVersionExpired: false, appVersionExpiryDate: expiryDate)),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration!.expiryDate, expiryDate);
   });
 
   test('whenSettingsLoadedWithNoExpiryDate_appVersionExpirationHasNullExpiryDate', () async {
-    // ARRANGE
+    // GIVEN
     when(mockSettingsRequest.call()).thenAnswer(
       (_) => Future.value(buildSettingsResponse(appVersionExpired: false, appVersionExpiryDate: null)),
     );
 
-    // ACT
+    // WHEN
     await initTestee();
 
-    // EXPECT
+    // THEN
     expect(testee.appVersionExpiration!.expiryDate, isNull);
   });
 }

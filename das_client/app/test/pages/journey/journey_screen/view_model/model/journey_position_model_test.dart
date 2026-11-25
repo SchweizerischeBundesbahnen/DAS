@@ -5,38 +5,38 @@ import 'package:sfera/component.dart';
 void main() {
   group('JourneyPositionModel', () {
     test('equality_whenObjectDiffers_thenIsFalse', () {
-      // ARRANGE
+      // GIVEN
       final a = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
       final b = JourneyPositionModel();
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a, isNot(equals(b)));
     });
 
     test('equality_whenObjectsAreEqual_thenIsTrue', () {
-      // ARRANGE
+      // GIVEN
       final a = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
       final b = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a, equals(b));
     });
 
     test('hashCode_whenObjectsAreEqual_thenHashIsEqual', () {
-      // ARRANGE
+      // GIVEN
       final a = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
       final b = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a.hashCode, equals(b.hashCode));
     });
 
     test('hashCode_whenObjectsAreDifferent_thenHashIsDifferent', () {
-      // ARRANGE
+      // GIVEN
       final a = JourneyPositionModel(currentPosition: Signal(order: 0, kilometre: []));
       final b = JourneyPositionModel();
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a.hashCode, isNot(equals(b.hashCode)));
     });
   });

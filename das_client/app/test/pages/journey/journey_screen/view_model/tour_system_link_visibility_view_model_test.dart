@@ -71,7 +71,7 @@ void main() {
     });
 
     test('initialState_whenInstantiated_thenIsFalse', () async {
-      // EXPECT
+      // THEN
       expect(testee.modelValue, isFalse);
 
       await processStreams();
@@ -80,33 +80,33 @@ void main() {
     });
 
     test('model_whenJourneyTableAdvancementPaused_thenIsTrue', () async {
-      // ARRANGE
+      // GIVEN
       await processStreams();
 
-      // ACT
+      // WHEN
       journeySettingsViewModel.updateJourneyAdvancement(Paused(next: Automatic()));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.modelValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
     test('model_whenPositionIsLastServicePoint_thenIsTrue', () async {
-      // ARRANGE
+      // GIVEN
       await processStreams();
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().last));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.modelValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
 
     test('model_whenDepartureTimeOfFirstServicePointIsInTheFuture_thenIsTrue', () async {
-      // ARRANGE
+      // GIVEN
       final departureJourney = Journey(
         metadata: Metadata(),
         data: [
@@ -125,14 +125,14 @@ void main() {
         ],
       );
 
-      // ACT
+      // WHEN
       journeySubject.add(departureJourney);
       journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(
         JourneyPositionModel(currentPosition: departureJourney.data.whereType<JourneyPoint>().first),
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.modelValue, isTrue);
       expect(emitRegister.last, isTrue);
     });
@@ -149,7 +149,7 @@ void main() {
         testee.model.listen(emitRegister.add);
         fakeAsync.elapse(Duration(milliseconds: 0));
 
-        // ARRANGE
+        // GIVEN
         final departureJourney = Journey(
           metadata: Metadata(),
           data: [
@@ -168,7 +168,7 @@ void main() {
           ],
         );
 
-        // ACT
+        // WHEN
         journeySubject.add(departureJourney);
         journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(
           JourneyPositionModel(currentPosition: departureJourney.data.whereType<JourneyPoint>().first),
@@ -176,7 +176,7 @@ void main() {
         fakeAsync.elapse(Duration(milliseconds: 0));
         fakeAsync.elapse(Duration(milliseconds: 1500));
 
-        // EXPECT
+        // THEN
         expect(emitRegister, hasLength(3));
         expect(emitRegister[0], isFalse);
         expect(emitRegister[1], isTrue);

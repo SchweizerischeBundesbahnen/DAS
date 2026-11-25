@@ -64,7 +64,7 @@ void main() {
   });
 
   test('initialState_whenJourneyWithoutBrakeSeriesData_thenHasNoBrakeSeriesData', () {
-    // ACT
+    // WHEN
     testAsync.run(
       (_) => journeySubject.add(
         Journey(
@@ -75,7 +75,7 @@ void main() {
     );
     testAsync.flushMicrotasks();
 
-    // EXPECT
+    // THEN
     expect(testee.brakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
     expect(testee.editingBrakeSeriesModelValue, equals(MultiBrakeSeriesSelectionModel()));
     // swallowed by distinct
@@ -129,7 +129,7 @@ void main() {
     });
 
     test('initialState_whenNoBrakeSeriesSelected_thenAllAllowed', () {
-      // EXPECT
+      // THEN
       final expectedModel = MultiBrakeSeriesSelectionModel(
         selectedBrakeSeries: [],
         allowedBrakeSeries: {a100, a200, n100, n90, d100, d200, r100, r50},
@@ -142,13 +142,13 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenToggled_thenOnlyEditingModelChangesWithCorrectTrainSeries', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(d100);
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         editingBrakeSeriesRegister.last,
         equals(
@@ -175,13 +175,13 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenRBrakeSeriesToggled_thenOnlyRAllowed', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(r50);
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         editingBrakeSeriesRegister.last,
         equals(
@@ -196,14 +196,14 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenSelectedThenDeselected_thenEmitsCorrectly', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(r50);
         testee.toggleBrakeSeriesSelection(r50);
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         editingBrakeSeriesRegister.last,
         equals(
@@ -218,7 +218,7 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenMultipleSelected_thenEmitsInCorrectOrder', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(d100);
         testee.toggleBrakeSeriesSelection(a100);
@@ -226,7 +226,7 @@ void main() {
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         editingBrakeSeriesRegister.last,
         equals(
@@ -242,13 +242,13 @@ void main() {
 
     test('toggleBrakeSeriesSelection_whenNonAvailableBrakeSeries_thenRejectsSilently', () {
       final r40 = BrakeSeries(trainSeries: .R, brakedWeightPercentage: 40);
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(r40);
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         testee.editingBrakeSeriesModelValue,
         equals(
@@ -263,7 +263,7 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenInvalidCombination_thenRejectsSilently', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testAsync.flushMicrotasks();
@@ -272,7 +272,7 @@ void main() {
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         testee.editingBrakeSeriesModelValue,
         equals(
@@ -287,19 +287,19 @@ void main() {
     });
 
     test('startBrakeSeriesEditing_whenCalled_thenResetsEditingModelToSaved', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(d100);
       });
       testAsync.flushMicrotasks();
 
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.startBrakeSeriesEditing();
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(
         testee.editingBrakeSeriesModelValue,
         equals(
@@ -313,19 +313,19 @@ void main() {
     });
 
     test('saveBrakeSeriesSelection_whenCalled_thenSavedModelMatchesEditingModel', () {
-      // ARRANGE
+      // GIVEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(d100);
       });
       testAsync.flushMicrotasks();
 
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.saveBrakeSeriesSelection();
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       final expectedModel = MultiBrakeSeriesSelectionModel(
         selectedBrakeSeries: [d100],
         allowedBrakeSeries: {a100, a200, d100, d200},
@@ -350,7 +350,7 @@ void main() {
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, isEmpty);
       expect(testee.brakeSeriesModelValue.selectedBrakeSeries, isEmpty);
     });
@@ -384,7 +384,7 @@ void main() {
     });
 
     test('toggleBrakeSeriesSelection_whenTenSelected_thenAllTenAreSelected', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testee.toggleBrakeSeriesSelection(a200);
@@ -399,13 +399,13 @@ void main() {
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(testee.editingBrakeSeriesModelValue.selectedBrakeSeries, hasLength(10));
       expect(editingBrakeSeriesRegister, hasLength(10));
     });
 
     test('toggleBrakeSeriesSelection_whenTenSelected_thenNoOtherAvailable', () {
-      // ACT
+      // WHEN
       testAsync.run((_) {
         testee.toggleBrakeSeriesSelection(a100);
         testee.toggleBrakeSeriesSelection(a200);
@@ -422,7 +422,7 @@ void main() {
       });
       testAsync.flushMicrotasks();
 
-      // EXPECT
+      // THEN
       expect(testee.editingBrakeSeriesModelValue.allowedBrakeSeries, {
         a100,
         a200,

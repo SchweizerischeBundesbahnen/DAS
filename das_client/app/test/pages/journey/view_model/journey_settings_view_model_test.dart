@@ -47,36 +47,36 @@ void main() {
   test('constructor_whenCalled_buildsSubscription', () => expect(rxMockJourney.hasListener, isTrue));
 
   test('updateBrakeSeries_whenCalled_emitsCorrectBrakeSeries', () {
-    // ARRANGE
+    // GIVEN
     final aBrakeSeries = BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 100);
-    // ACT
+    // WHEN
     testee.updateBrakeSeries(aBrakeSeries);
     processStreams();
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(JourneySettings(selectedBrakeSeries: aBrakeSeries)));
     expect(emitRegister, hasLength(1));
   });
 
   test('updateExpandedGroups_whenCalled_emitsCorrectExpandedGroups', () {
-    // ARRANGE
+    // GIVEN
     final aExpandedGroups = const [1, 2];
 
-    // ACT
+    // WHEN
     testee.updateExpandedGroups(aExpandedGroups);
     processStreams();
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(JourneySettings(expandedGroups: aExpandedGroups)));
     expect(emitRegister, hasLength(1));
     expect(onBrakeSeriesUpdatedCalled, isFalse);
   });
 
   test('dispose_whenCalled_cancelsSubscription', () {
-    // ACT
+    // WHEN
     testee.dispose();
     processStreams();
 
-    // EXPECT
+    // THEN
     expect(rxMockJourney.hasListener, isFalse);
   });
 }

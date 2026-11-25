@@ -86,47 +86,47 @@ void main() {
 
   group('toggleRow', () {
     test('toggleRow_whenBaseFootNoteIsExpanded_thenCollapsesIt', () async {
-      // ARRANGE
+      // GIVEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
 
-      // ACT
+      // WHEN
       testee.toggleRow(footNoteData);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
     });
 
     test('toggleRow_whenBaseFootNoteIsCollapsed_thenExpandsIt', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(footNoteData);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
 
-      // ACT
+      // WHEN
       testee.toggleRow(footNoteData);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
     });
 
     test('toggleRow_whenOperationalIndicationDefault_thenIsExpandedWithCollapsedContent', () async {
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
     });
 
     test(
       'toggleRow_whenOperationalIndicationIsExpandedWithCollapsedContentAndContentExpandable_thenExpands',
       () async {
-        // ARRANGE
+        // GIVEN
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
 
-        // ACT
+        // WHEN
         testee.toggleRow(indicator, isContentExpandable: true);
         await processStreams();
 
-        // EXPECT
+        // THEN
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expanded);
       },
     );
@@ -134,71 +134,71 @@ void main() {
     test(
       'toggleRow_whenOperationalIndicationIsExpandedWithCollapsedContentAndContentNotExpandable_thenCollapses',
       () async {
-        // ARRANGE
+        // GIVEN
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
 
-        // ACT
+        // WHEN
         testee.toggleRow(indicator, isContentExpandable: false);
         await processStreams();
 
-        // EXPECT
+        // THEN
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
       },
     );
 
     test('toggleRow_whenOperationalIndicationIsExpanded_thenCollapses', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(indicator, isContentExpandable: true);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expanded);
 
-      // ACT
+      // WHEN
       testee.toggleRow(indicator, isContentExpandable: true);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
     });
 
     test('toggleRow_whenOperationalIndicationIsCollapsed_thenExpandsToExpandedWithCollapsedContent', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(indicator);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
 
-      // ACT
+      // WHEN
       testee.toggleRow(indicator);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
     });
 
     test('toggleRow_whenTogglingOneRow_thenOtherRowsAreUnaffected', () async {
-      // ARRANGE
+      // GIVEN
       final initialStateIndicator = testee.collapsedRowsValue.stateOf(indicator);
 
-      // ACT
+      // WHEN
       testee.toggleRow(footNoteData);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(indicator), initialStateIndicator);
     });
 
     test('toggleRow_whenToggled_thenEmitsNewStateOnStream', () async {
-      // ARRANGE
+      // GIVEN
       final emittedStates = <Map<int, CollapsedState>>[];
       final subscription = testee.collapsedRows.listen(emittedStates.add);
       await processStreams(); // flush the initial seeded value
       emittedStates.clear();
 
-      // ACT
+      // WHEN
       testee.toggleRow(footNoteData);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emittedStates.length, 1);
       expect(emittedStates.first.stateOf(footNoteData), CollapsedState.collapsed);
 
@@ -208,9 +208,9 @@ void main() {
 
   group('updatePassedAccordionRowsState', () {
     test('updatePassedAccordionRowsState_whenPositionAdvancesPastFootNote_thenFootNoteIsCollapsed', () async {
-      // ARRANGE - journey: signal1(5), footNoteData(10), indicator(15), footNoteData2(20), indicator2(25), signal2(30)
+      // GIVEN - journey: signal1(5), footNoteData(10), indicator(15), footNoteData2(20), indicator2(25), signal2(30)
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -219,16 +219,16 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
     });
 
     test(
       'updatePassedAccordionRowsState_whenPositionAdvancesPastOperationalIndication_thenIndicatorIsCollapsed',
       () async {
-        // ARRANGE
+        // GIVEN
 
-        // ACT
+        // WHEN
         journeyPositionSubject.add(
           JourneyPositionModel(
             lastPosition: signal1,
@@ -237,7 +237,7 @@ void main() {
         );
         await processStreams();
 
-        // EXPECT
+        // THEN
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
       },
     );
@@ -245,9 +245,9 @@ void main() {
     test(
       'updatePassedAccordionRowsState_whenPositionAdvancesOverMultipleCollapsibles_thenAllPassedAreCollapsed',
       () async {
-        // ARRANGE
+        // GIVEN
 
-        // ACT
+        // WHEN
         journeyPositionSubject.add(
           JourneyPositionModel(
             lastPosition: signal1,
@@ -256,7 +256,7 @@ void main() {
         );
         await processStreams();
 
-        // EXPECT
+        // THEN
         expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
         expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
         expect(testee.collapsedRowsValue.stateOf(footNoteData2), CollapsedState.collapsed);
@@ -265,7 +265,7 @@ void main() {
     );
 
     test('updatePassedAccordionRowsState_whenPositionMovesBackwards_thenPassedRowsAreExpandedAgain', () async {
-      // ARRANGE - collapse rows while moving forward first
+      // GIVEN - collapse rows while moving forward first
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -276,7 +276,7 @@ void main() {
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.collapsed);
 
-      // ACT - move backwards over the same rows
+      // WHEN - move backwards over the same rows
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signalBetween2And3,
@@ -285,17 +285,17 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT - collapsed rows are re-opened to their default state
+      // THEN - collapsed rows are re-opened to their default state
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
     });
 
     test('updatePassedAccordionRowsState_whenMovingBackwardsOnNonSimTrain_thenSimFootNoteStaysCollapsed', () async {
-      // ARRANGE - non-SIM state keeps SIM foot note collapsed
+      // GIVEN - non-SIM state keeps SIM foot note collapsed
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
 
-      // ACT - move backwards over the SIM foot note row
+      // WHEN - move backwards over the SIM foot note row
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signalBetween1And2,
@@ -304,15 +304,15 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
     });
 
     test('updatePassedAccordionRowsState_whenCurrentSameAsLast_thenNothingChanges', () async {
-      // ARRANGE
+      // GIVEN
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -321,15 +321,15 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue, initialState);
     });
 
     test('updatePassedAccordionRowsState_whenLastPositionIsNull_thenNothingChanges', () async {
-      // ARRANGE
+      // GIVEN
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: null,
@@ -338,15 +338,15 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue, initialState);
     });
 
     test('updatePassedAccordionRowsState_whenCurrentPositionIsNull_thenNothingChanges', () async {
-      // ARRANGE
+      // GIVEN
       final initialState = Map<int, CollapsedState>.from(testee.collapsedRowsValue);
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -355,17 +355,17 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue, initialState);
     });
 
     test('updatePassedAccordionRowsState_whenRowAlreadyCollapsed_thenRemainsCollapsed', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(footNoteData);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -374,14 +374,14 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.collapsed);
     });
 
     test('updatePassedAccordionRowsState_whenFutureCollapsiblesNotYetPassed_thenTheyAreNotCollapsed', () async {
-      // ARRANGE
+      // GIVEN
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -390,7 +390,7 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(indicator), CollapsedState.expandedWithCollapsedContent);
       expect(testee.collapsedRowsValue.stateOf(footNoteData2), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(indicator2), CollapsedState.expandedWithCollapsedContent);
@@ -399,67 +399,67 @@ void main() {
 
   group('simTrain', () {
     test('simTrain_whenSimTrainViewModelReturnsTrue_thenSimFootNotesAreExpanded', () async {
-      // ACT - emit true on stream
+      // WHEN - emit true on stream
       simTrainSubject.add(true);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
     });
 
     test('simTrain_whenSimTrainViewModelReturnsFalse_thenSimFootNotesAreCollapsed', () async {
-      // ACT - emit false on stream
+      // WHEN - emit false on stream
       simTrainSubject.add(false);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
     });
 
     test('simTrain_whenSimTrainChangesFromFalseToTrue_thenSimFootNotesAreExpanded', () async {
-      // ARRANGE - start with non-SIM
+      // GIVEN - start with non-SIM
       simTrainSubject.add(false);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
 
-      // ACT - change to SIM
+      // WHEN - change to SIM
       simTrainSubject.add(true);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
     });
 
     test('simTrain_whenSimTrainChangesFromTrueToFalse_thenSimFootNotesAreCollapsed', () async {
-      // ARRANGE - start with SIM
+      // GIVEN - start with SIM
       simTrainSubject.add(true);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
 
-      // ACT - change to non-SIM
+      // WHEN - change to non-SIM
       simTrainSubject.add(false);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
     });
 
     test('simTrain_whenSimTrain_thenNonSimFootNotesAreUnaffected', () async {
-      // ARRANGE
+      // GIVEN
       simTrainSubject.add(true);
       await processStreams();
 
-      // EXPECT - regular footnotes should remain in their default state
+      // THEN - regular footnotes should remain in their default state
       expect(testee.collapsedRowsValue.stateOf(footNoteData), CollapsedState.expanded);
     });
 
     test('simTrain_whenSimTrainAndPositionPassesSimFootNote_thenSimFootNoteIsNotCollapsed', () async {
-      // ARRANGE - SIM train
+      // GIVEN - SIM train
       simTrainSubject.add(true);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
 
-      // ACT - advance position past simFootNoteData(8) and footNoteData(10)
+      // WHEN - advance position past simFootNoteData(8) and footNoteData(10)
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -468,16 +468,16 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT - SIM foot note must NOT be auto-collapsed
+      // THEN - SIM foot note must NOT be auto-collapsed
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
     });
 
     test('simTrain_whenNoSimTrainAndPositionPassesSimFootNote_thenSimFootNoteRemainsCollapsed', () async {
-      // ARRANGE - non-SIM train (default is false)
+      // GIVEN - non-SIM train (default is false)
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
 
-      // ACT - advance position
+      // WHEN - advance position
       journeyPositionSubject.add(
         JourneyPositionModel(
           lastPosition: signal1,
@@ -486,12 +486,12 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.collapsed);
     });
 
     test('simTrain_whenStreamEmitsMultipleTimes_thenStateUpdatesAccordingly', () async {
-      // ACT & EXPECT - toggle between states
+      // WHEN & THEN - toggle between states
       simTrainSubject.add(true);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(simFootNoteData), CollapsedState.expanded);
@@ -561,65 +561,65 @@ void main() {
     });
 
     test('collapsedRows_whenLineFootNoteIsRepeated_thenFirstIsExpandedAndRepetitionsAreCollapsed', () {
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(lineA3), CollapsedState.collapsed);
     });
 
     test('collapsedRows_whenLineFootNoteFirstAppearsMidJourney_thenFirstIsExpandedAndRepetitionIsCollapsed', () {
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineB1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(lineB2), CollapsedState.collapsed);
     });
 
     test('collapsedRows_whenLineFootNoteHasNoIdentifier_thenAllAreExpanded', () {
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineWithoutId1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(lineWithoutId2), CollapsedState.expanded);
     });
 
     test('collapsedRows_whenNoSimTrain_thenRepeatedSimLineFootNoteIsCollapsed', () {
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simLine1), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(simLine2), CollapsedState.collapsed);
     });
 
     test('collapsedRows_whenSimTrain_thenRepeatedSimLineFootNoteIsExpanded', () async {
-      // ACT
+      // WHEN
       simTrainSubject.add(true);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simLine1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(simLine2), CollapsedState.expanded);
     });
 
     test('toggleRow_whenRepeatedLineFootNoteIsCollapsed_thenExpandsIt', () async {
-      // ACT
+      // WHEN
       testee.toggleRow(lineA2);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
     });
 
     test('toggleRow_whenRepeatedLineFootNoteIsExpanded_thenCollapsesIt', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(lineA2);
       await processStreams();
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
 
-      // ACT
+      // WHEN
       testee.toggleRow(lineA2);
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
     });
 
     test('updatePassedAccordionRowsState_whenMovingBackwards_thenLineFootNotesAreResetToTheirDefault', () async {
-      // ARRANGE - collapse all line foot notes while moving forward
+      // GIVEN - collapse all line foot notes while moving forward
       testee.toggleRow(lineA2);
       await processStreams();
       journeyPositionSubject.add(JourneyPositionModel(lastPosition: lineSignal1, currentPosition: lineSignal5));
@@ -627,11 +627,11 @@ void main() {
       expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
 
-      // ACT
+      // WHEN
       journeyPositionSubject.add(JourneyPositionModel(lastPosition: lineSignal5, currentPosition: lineSignal1));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
       expect(testee.collapsedRowsValue.stateOf(lineA3), CollapsedState.collapsed);
@@ -641,50 +641,50 @@ void main() {
     });
 
     test('onJourneyUpdated_whenRepeatedLineFootNoteWasToggled_thenKeepsToggledState', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(lineA2);
       await processStreams();
 
-      // ACT
+      // WHEN
       journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data]));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.expanded);
     });
 
     test('onJourneyUpdated_whenNewRepetitionOfLineFootNoteIsAdded_thenNewRepetitionIsCollapsed', () async {
-      // ARRANGE
+      // GIVEN
       final lineA4 = LineFootNote(order: 190, footNote: lineFootNoteA, locationName: 'Kandersteg');
 
-      // ACT
+      // WHEN
       journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data, lineA4]));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA4), CollapsedState.collapsed);
     });
 
     test('onJourneyUpdated_whenSimTrainAndNewRepetitionOfSimLineFootNoteIsAdded_thenNewRepetitionIsExpanded', () async {
-      // ARRANGE
+      // GIVEN
       simTrainSubject.add(true);
       await processStreams();
       final simLine3 = LineFootNote(order: 190, footNote: simLineFootNote, locationName: 'Kandersteg');
 
-      // ACT
+      // WHEN
       journeySubject.add(Journey(metadata: lineFootNoteMetadata, data: [...lineFootNoteJourney.data, simLine3]));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(simLine3), CollapsedState.expanded);
     });
 
     test('onJourneyChanged_whenNewTrainIsLoaded_thenRepeatedLineFootNotesAreCollapsedAgain', () async {
-      // ARRANGE
+      // GIVEN
       testee.toggleRow(lineA2);
       await processStreams();
 
-      // ACT
+      // WHEN
       journeySubject.add(
         Journey(
           metadata: Metadata(
@@ -699,7 +699,7 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(testee.collapsedRowsValue.stateOf(lineA1), CollapsedState.expanded);
       expect(testee.collapsedRowsValue.stateOf(lineA2), CollapsedState.collapsed);
     });

@@ -234,7 +234,7 @@ void main() {
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     verify(
       mockFormationRepository.watchFormation(
         operationalTrainNumber: trainIdentification.trainNumber,
@@ -252,7 +252,7 @@ void main() {
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(
       testee.formation,
       emits(formation),
@@ -270,7 +270,7 @@ void main() {
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(
       testee.formation,
       emits(formation),
@@ -283,7 +283,7 @@ void main() {
   });
 
   test('model_whenPositionUpdates_emitsCorrectFormationRun', () async {
-    // EXPECT LATER
+    // THEN LATER
     expectLater(
       testee.formation,
       emitsInOrder([null, formation]),
@@ -298,7 +298,7 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -407,7 +407,7 @@ void main() {
   });
 
   test('model_whenUsingNavigationButtons_emitCorrectFormationRun', () async {
-    // EXPECT LATER
+    // THEN LATER
     expectLater(
       testee.formationRun,
       emitsInOrder([
@@ -419,7 +419,7 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -435,7 +435,7 @@ void main() {
   });
 
   test('resolveStationName_whenStationFound_returnsServicePointName', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -454,7 +454,7 @@ void main() {
   test('resolveStationName_whenStationUnkown_returnsTafTapLocationCode', () async {
     final unknownTafTapCode = 'CH99999';
 
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -467,7 +467,7 @@ void main() {
   });
 
   test('isJourneyAndActiveFormationRunBrakeSeriesDifferent_whenBrakeSeriesIsSame_returnsFalse', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -480,7 +480,7 @@ void main() {
   });
 
   test('isJourneyAndActiveFormationRunBrakeSeriesDifferent_whenBrakeSeriesIsDifferent_returnsTrue', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
     final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
@@ -495,7 +495,7 @@ void main() {
   });
 
   test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsSame_returnsFalse', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -508,7 +508,7 @@ void main() {
   });
 
   test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsDifferentButNotPresent_returnsFalse', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -526,7 +526,7 @@ void main() {
   });
 
   test('canApplyActiveFormationRunBrakeSeriesToJourney_whenBrakeSeriesIsDifferentAndPresent_returnsTrue', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -544,7 +544,7 @@ void main() {
   });
 
   test('updateJourneyBrakeSeriesFromActiveFormationRun_updatesJourneyViewModelBrakeSeries', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
     final position = JourneyPositionModel(currentPosition: journey.data.whereType<ServicePoint>().elementAt(1));
@@ -567,7 +567,7 @@ void main() {
   });
 
   test('open_whenOpenIsCalled_opensFullscreenOrModal', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -598,35 +598,35 @@ void main() {
   });
 
   test('showTransportPaperButton_whenTransportPaperLinkIsMissing_returnsFalse', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(testee.showTransportPaperButton(), isFalse);
   });
 
   test('showTransportPaperButton_whenTransportPaperLinkExists_returnsTrue', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formationWithTransportPaper);
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(testee.showTransportPaperButton(), isTrue);
   });
 
   test('openTransportPaper_whenTransportPaperLinkIsMissing_returnsFalse', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
     await processStreams();
 
-    // VERIFY
+    // THEN
     expect(await testee.openTransportPaper(), isFalse);
     verifyNever(mockFormationRepository.resolveTransportPaperLink(any));
     verifyNever(mockLauncher.launch(any));
@@ -641,7 +641,7 @@ void main() {
     );
     when(mockLauncher.launch(resolvedUrl)).thenAnswer((_) => Future.value(true));
 
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formationWithTransportPaper);
 
@@ -649,7 +649,7 @@ void main() {
 
     final result = await testee.openTransportPaper();
 
-    // VERIFY
+    // THEN
     expect(result, isTrue);
     verify(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).called(1);
     verify(mockLauncher.launch(resolvedUrl)).called(1);
@@ -659,7 +659,7 @@ void main() {
     // GIVEN
     when(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).thenAnswer((_) => Future.value(null));
 
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formationWithTransportPaper);
 
@@ -667,14 +667,14 @@ void main() {
 
     final result = await testee.openTransportPaper();
 
-    // VERIFY
+    // THEN
     expect(result, isFalse);
     verify(mockFormationRepository.resolveTransportPaperLink(transportPaperLink)).called(1);
     verifyNever(mockLauncher.launch(any));
   });
 
   test('model_whenFormationChangesBeforeNotificationDelay_emitsFormationChangedWithoutSound', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 
@@ -699,7 +699,7 @@ void main() {
   });
 
   test('model_whenFormationChangesAfterNotificationDelay_emitsFormationChangedAndPlaysSound', () async {
-    // ACT
+    // WHEN
     journeySubject.add(journey);
     formationSubject.add(formation);
 

@@ -61,17 +61,17 @@ void main() {
     test('model_whenJourneyNull_thenAllValuesNull', () => expect(testee.modelValue, equals(RadioChannelModel())));
 
     test('model_whenJourneyWithLastServicePoint_thenLastServicePointIsEqual', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: zeroOrderServicePoint));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(lastServicePoint: zeroOrderServicePoint)));
     });
 
     test('model_whenJourneyWithSingleRadioContactListAndCurrentPositionIsNull_thenHasNoRadioContactList', () async {
-      // ARRANGE
+      // GIVEN
       final aRadioContactList = RadioContactList(
         order: 0,
         endOrder: 0,
@@ -80,13 +80,13 @@ void main() {
       rxMockJourney.add(mockJourney(radioContacts: [aRadioContactList]));
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.last, equals(RadioChannelModel()));
     });
 
     test('model_whenJourneyWithSingleRadioContactListAndCurrentPositionBefore_thenHasNoRadioContactList', () async {
-      // ARRANGE
+      // GIVEN
       final aRadioContactList = RadioContactList(
         order: 10,
         endOrder: 0,
@@ -100,13 +100,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.last, equals(RadioChannelModel()));
     });
 
     test('model_whenJourneyWithSingleRadioContactListAndCurrentPositionAfterOrEqual_thenHasRadioContactList', () async {
-      // ARRANGE
+      // GIVEN
       final aRadioContactList = RadioContactList(
         order: 5,
         endOrder: 0,
@@ -120,13 +120,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(radioContacts: aRadioContactList)));
     });
 
     test('model_whenJourneyWithTwoRadioContactListsAndCurrentPosition_thenMatchingRadioContactList', () async {
-      // ARRANGE
+      // GIVEN
       final aRadioContactList = RadioContactList(
         order: 5,
         endOrder: 0,
@@ -145,13 +145,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(radioContacts: bRadioContactList)));
     });
 
     test('model_whenJourneyWithCommunicationNetworkAndNoCurrentPosition_thenHasNoCommuncationNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
@@ -161,13 +161,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.last, equals(RadioChannelModel()));
     });
 
     test('model_whenJourneyWithCommunicationNetworkAndCurrentPositionBefore_thenHasNoNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 5, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
@@ -178,13 +178,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(1));
       expect(emitRegister.last, equals(RadioChannelModel()));
     });
 
     test('model_whenJourneyWithCommunicationNetworkAndCurrentPositionAfterOrEqual_thenHasNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 15, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
@@ -199,13 +199,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
 
     test('model_whenJourneyWithTwoCommunicationNetworksAndCurrentPosition_thenHasNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 20, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
@@ -225,13 +225,13 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(emitRegister.last, equals(RadioChannelModel(networkType: .gsmP)));
     });
 
     test('model_whenJourneyWithEntrySignalAndNonServicePointFollowingJourneyPoint_thenHasCorrectNetwork', () async {
-      // ARRANGE
+      // GIVEN
       const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
       const blocker = Signal(order: 19, kilometre: [0.0], functions: [.block]);
 
@@ -257,7 +257,7 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(
         emitRegister.last,
@@ -266,7 +266,7 @@ void main() {
     });
 
     test('model_whenJourneyWithEntrySignalAndServicePointWithoutChangesFollowing_thenHasCurrentNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: entrySignal));
       rxMockJourney.add(
@@ -283,7 +283,7 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(
         emitRegister.last,
@@ -292,7 +292,7 @@ void main() {
     });
 
     test('model_whenJourneyWithEntrySignalAndServicePointWithChanges_thenHasNextNetworkType', () async {
-      // ARRANGE
+      // GIVEN
       const entrySignal = Signal(order: 18, kilometre: [0.0], functions: [.entry]);
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: entrySignal));
       rxMockJourney.add(
@@ -315,7 +315,7 @@ void main() {
       );
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister, hasLength(2));
       expect(
         emitRegister.last,

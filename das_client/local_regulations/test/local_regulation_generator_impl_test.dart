@@ -4,7 +4,7 @@ import 'package:sfera/component.dart';
 
 void main() {
   test('generate_expectReplacedHtmlAndCss', () {
-    // ARRANGE
+    // GIVEN
     final testee = LocalRegulationHtmlGeneratorImpl();
     final sections = {
       '1': LocalRegulationSection(
@@ -20,7 +20,7 @@ void main() {
       ),
     };
 
-    // ACT & EXPECT
+    // WHEN & THEN
     final html = testee.generate(sectionMap: sections, rootId: '1');
     expect(html.contains(htmlTemplateString), isFalse);
     expect(html.contains(cssTemplateString), isFalse);
