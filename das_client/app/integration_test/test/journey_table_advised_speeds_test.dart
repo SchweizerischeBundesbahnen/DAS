@@ -2,7 +2,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_head
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification.dart';
 import 'package:app/pages/journey/journey_screen/notification/widgets/advised_speed_notification_hints.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/cells/advised_speed_cell_body.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
+import 'package:app/pages/journey/journey_screen/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -78,6 +78,7 @@ void main() {
     await IntegrationTestApp.start(tester);
 
     await loadJourney(tester, trainNumber: 'T24');
+    await stopAutomaticAdvancement(tester);
 
     // Check that first row displayed advised speed
     final advisedSpeedStartRow = findDASTableRowByText('A236');
@@ -89,6 +90,8 @@ void main() {
     expect(_findNonEmptyAdvisedSpeedCellOf(geneveRow), findsOne);
     _findTextWithin(geneveRow, '80');
 
+    await dragUntilTextInStickyHeader(tester, 'Coppet');
+
     final advisedSpeedDistStartRow = findDASTableRowByText('A136');
     final distSpeedCell = find.descendant(
       of: advisedSpeedDistStartRow,
@@ -96,24 +99,22 @@ void main() {
     );
     await waitUntilExists(tester, distSpeedCell);
 
+    // Do not display zero speed
+    final advisedSpeedCellWithZeroSpeed = _findAdvisedSpeedCellOf(advisedSpeedDistStartRow, '0');
+    expect(advisedSpeedCellWithZeroSpeed, findsNothing);
+
     await dragUntilTextInStickyHeader(tester, 'Gland');
 
     // Check that advised speed end displayed calculated speed on signal row
     final advisedSpeedEndRow = findDASTableRowByText('A653');
     await waitUntilExists(tester, _findAdvisedSpeedCellOf(advisedSpeedEndRow, '80'));
 
-    // Do not display zero speed
-    final advisedSpeedCellWithZeroSpeed = _findAdvisedSpeedCellOf(advisedSpeedDistStartRow, '0');
-    expect(advisedSpeedCellWithZeroSpeed, findsNothing);
-
-    final allamanStickyHeaderRow = find.descendant(
-      of: find.byKey(StickyHeader.headerKey),
-      matching: find.text('Allaman'),
-    );
-    await waitUntilExists(tester, allamanStickyHeaderRow, maxWaitSeconds: 30);
+    await dragUntilTextInStickyHeader(tester, 'Allaman');
 
     // check that advised speed is lowered to line speed in table
     final allamanRow = findDASTableRowByText('Allaman');
+    await waitUntilExists(tester, _findNonEmptyAdvisedSpeedCellOf(allamanRow));
+    expect(_findAdvisedSpeedCellOf(allamanRow, '80'), findsOne);
     expect(_findAdvisedSpeedCellOf(allamanRow, '120'), findsNothing);
 
     // Check that advisedSpeed end displayed calculated speed on signal row
@@ -145,7 +146,10 @@ Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
 
 Finder _findAdvisedSpeedCellOf(Finder baseFinder, String speed) {
   return find.descendant(
-    of: baseFinder,
-    matching: find.textContaining(speed),
+    of: find.descendant(
+      of: baseFinder,
+      matching: find.byWidgetPredicate((widget) => widget is AdvisedSpeedCellBody || widget is CalculatedSpeedCellBody),
+    ),
+    matching: find.text(speed),
   );
 }
