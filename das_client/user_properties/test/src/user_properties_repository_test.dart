@@ -20,6 +20,7 @@ class _FakeUserIdProvider implements UserIdProviderProperties {
 @GenerateNiceMocks([
   MockSpec<UserPropertiesApiService>(),
   MockSpec<UserPropertiesSyncer>(),
+  MockSpec<LocalKeyValueStore>(),
 ])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -38,9 +39,7 @@ void main() {
     );
   });
 
-  tearDown(() {
-    repository.dispose();
-  });
+  tearDown(() async => repository.dispose());
 
   test('saveUserProperty_whenKeyIsSynced_thenSavesLocallyAndTriggersSync', () async {
     // WHEN
@@ -117,6 +116,95 @@ void main() {
       // THEN
       expect(calls, 1);
     });
+  });
+
+  test('clearLocalUserProperties_whenSyncIsRunning_thenWaitsBeforeClearing', () async {
+    // GIVEN
+    final store = LocalKeyValueStore(userIdProvider: _FakeUserIdProvider());
+    await repository.dispose();
+    final syncStarted = Completer<void>();
+    final finishSync = Completer<void>();
+    when(syncer.sync()).thenAnswer((_) async {
+      syncStarted.complete();
+      await finishSync.future;
+      await store.set(LocalKeyValueStoreKeys.showStationSignals, false);
+      await store.setLastUserPropertiesSyncTimestamp(DateTime.utc(2026));
+    });
+    repository = UserPropertiesRepositoryImpl(
+      apiService: MockUserPropertiesApiService(),
+      userIdProvider: _FakeUserIdProvider(),
+      localStore: store,
+      syncer: syncer,
+    );
+    final sync = repository.syncUserProperties();
+    await syncStarted.future;
+
+    // WHEN
+    var cleared = false;
+    final clear = repository.clearLocalUserProperties().then((_) => cleared = true);
+    await Future<void>.delayed(Duration.zero);
+    expect(cleared, false);
+    await expectLater(repository.syncUserProperties(), throwsStateError);
+    await expectLater(repository.saveUserProperty(LocalKeyValueStoreKeys.tourSystem, 'tip'), throwsStateError);
+    finishSync.complete();
+    await sync;
+    await clear;
+
+    // THEN
+    expect(repository.showStationSignals, true);
+    expect(repository.lastUserPropertiesSyncTimestamp, isNull);
+    verify(syncer.sync()).called(1);
+  });
+
+  test('clearLocalUserProperties_whenSaveIsRunning_thenWaitsBeforeClearing', () async {
+    // GIVEN
+    final store = MockLocalKeyValueStore();
+    final saveStarted = Completer<void>();
+    final finishSave = Completer<void>();
+    when(store.set(any, any)).thenAnswer((_) {
+      saveStarted.complete();
+      return finishSave.future;
+    });
+    when(store.clearUserProperties()).thenAnswer((_) async {});
+    await repository.dispose();
+    repository = UserPropertiesRepositoryImpl(
+      apiService: MockUserPropertiesApiService(),
+      userIdProvider: _FakeUserIdProvider(),
+      localStore: store,
+      syncer: syncer,
+    );
+    final save = repository.saveUserProperty(LocalKeyValueStoreKeys.showStationSignals, false);
+    await saveStarted.future;
+
+    // WHEN
+    final clear = repository.clearLocalUserProperties();
+    await Future<void>.delayed(Duration.zero);
+    verifyNever(store.clearUserProperties());
+    finishSave.complete();
+    await save;
+    await clear;
+
+    // THEN
+    verify(store.clearUserProperties()).called(1);
+    verifyNever(syncer.sync());
+  });
+
+  test('clearLocalUserProperties_whenRunningSyncFails_thenStillClears', () async {
+    // GIVEN
+    final syncCompleter = Completer<void>();
+    when(syncer.sync()).thenAnswer((_) => syncCompleter.future);
+    final sync = repository.syncUserProperties();
+    final failedSync = expectLater(sync, throwsException);
+
+    // WHEN
+    final clear = repository.clearLocalUserProperties();
+    syncCompleter.completeError(Exception('sync failed'));
+    await failedSync;
+    await clear;
+
+    // THEN
+    expect(repository.lastUserPropertiesSyncTimestamp, isNull);
+    await expectLater(repository.syncUserProperties(), throwsStateError);
   });
 
   test('tourSystem_whenStoredNameIsUnknown_thenReturnsNull', () async {

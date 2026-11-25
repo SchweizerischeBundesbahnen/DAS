@@ -97,6 +97,40 @@ void main() {
     verifyNever(mockApiService.saveUserProperty(any, any));
   });
 
+  test('sync_whenBackendTimestampIsNewer_thenPullsDecodedRemoteValue', () async {
+    // GIVEN
+    givenLocal([model(stationSignals, 100, value: true)]);
+    final remote = UserPropertyDto.fromJson({
+      'key': stationSignals,
+      'value': false,
+      'lastModifiedAt': '1970-01-01T00:00:00.200Z',
+    });
+    givenRemote([remote]);
+
+    // WHEN
+    await testee.sync();
+
+    // THEN
+    final pulled = verify(mockLocalStore.put(captureAny)).captured.single as UserPropertyModel;
+    expect(pulled.value, false);
+    expect(pulled.lastUpdated, DateTime.fromMillisecondsSinceEpoch(200, isUtc: true));
+    verifyNever(mockApiService.saveUserProperty(any, any));
+  });
+
+  test('sync_whenRemoteTimestampIsMissing_thenDoesNotOverwriteRemote', () async {
+    // GIVEN
+    givenLocal([model(stationSignals, 100)]);
+    givenRemote([
+      UserPropertyDto.fromJson({'key': stationSignals, 'value': false}),
+    ]);
+
+    // WHEN / THEN
+    await expectLater(testee.sync(), throwsFormatException);
+    verifyNever(mockApiService.saveUserProperty(any, any));
+    verifyNever(mockLocalStore.put(any));
+    verifyNever(mockLocalStore.setLastUserPropertiesSyncTimestamp(any));
+  });
+
   test('sync_whenLocalIsNewer_thenPushesLocalValueToRemote', () async {
     // GIVEN
     givenSaveRequest(stationSignals);

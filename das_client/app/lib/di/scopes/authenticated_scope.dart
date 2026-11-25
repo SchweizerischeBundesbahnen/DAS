@@ -102,8 +102,11 @@ extension AuthenticatedScopeExtension on GetIt {
         userIdProvider: _PropsUserIdProvider(authenticator: DI.get()),
       ),
       dispose: (repo) async {
-        await repo.clearLocalUserProperties();
-        repo.dispose();
+        try {
+          await repo.clearLocalUserProperties();
+        } finally {
+          await repo.dispose();
+        }
       },
     );
   }

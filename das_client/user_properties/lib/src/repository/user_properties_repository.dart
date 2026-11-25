@@ -30,5 +30,5 @@ abstract interface class UserPropertiesRepository {
 
   Stream<LocalKeyValueStoreKeys?> get model;
 
-  void dispose();
+  Future<void> dispose();
 }

@@ -84,9 +84,15 @@ class UserPropertiesSyncer {
 
   Future<List<UserPropertyModel>> _fetchRemote() async {
     final response = await _apiService.userProperties().call();
-    return response.body.data
+    final properties = response.body.data
         .map((dto) => dto.toModel())
         .where((p) => LocalKeyValueStore.syncedKeyNames.contains(p.key))
         .toList(growable: false);
+    for (final property in properties) {
+      if (property.lastUpdated == null) {
+        throw FormatException('Missing lastModifiedAt for user property ${property.key}');
+      }
+    }
+    return properties;
   }
 }

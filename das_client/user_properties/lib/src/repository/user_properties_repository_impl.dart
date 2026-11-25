@@ -28,26 +28,37 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
   var _syncRequested = false;
   Timer? _retryTimer;
   var _disposed = false;
+  final _pendingSaves = <Completer<void>>{};
+  Future<void>? _stopping;
+  Future<void>? _disposing;
 
   @override
   Future<void> saveUserProperty(LocalKeyValueStoreKeys key, Object? value) async {
+    if (_disposed) throw StateError('User properties repository is closed');
     if (value == null) return;
 
-    await _localStore.set(key, value);
-    if (_isSynced(key)) _triggerSync();
+    final pending = Completer<void>();
+    _pendingSaves.add(pending);
+    try {
+      await _localStore.set(key, value);
+      if (_isSynced(key) && !_disposed) _triggerSync();
+    } finally {
+      _pendingSaves.remove(pending);
+      pending.complete();
+    }
   }
 
   bool _isSynced(LocalKeyValueStoreKeys key) => LocalKeyValueStore.syncedKeyNames.contains(key.name);
 
   @override
   Future<void> clearLocalUserProperties() async {
-    _cancelRetry();
+    await _stop();
     await _localStore.clearUserProperties();
   }
 
   @override
   Future<void> syncUserProperties() {
-    if (_disposed) return Future.value();
+    if (_disposed) return Future.error(StateError('User properties repository is closed'));
 
     _syncRequested = true;
     return _runningSync ??= _syncUntilSettled();
@@ -104,7 +115,7 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
       }
       _cancelRetry();
     } on Exception catch (e, s) {
-      _log.warning('Syncing user properties failed. Scheduling retry.', e, s);
+      _log.warning('Syncing user properties failed.', e, s);
       _scheduleRetry();
       rethrow;
     } finally {
@@ -130,9 +141,27 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
     _retryTimer = null;
   }
 
-  @override
-  void dispose() {
+  Future<void> _stop() => _stopping ??= _stopWork();
+
+  Future<void> _stopWork() async {
     _disposed = true;
     _cancelRetry();
+    final runningSync = _runningSync;
+    if (runningSync != null) {
+      try {
+        await runningSync;
+      } catch (e, s) {
+        _log.warning('Sync failed while stopping user properties repository.', e, s);
+      }
+    }
+    await Future.wait(_pendingSaves.map((pending) => pending.future).toList());
+  }
+
+  @override
+  Future<void> dispose() => _disposing ??= _dispose();
+
+  Future<void> _dispose() async {
+    await _stop();
+    _localStore.dispose();
   }
 }

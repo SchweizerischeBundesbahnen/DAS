@@ -62,5 +62,5 @@ class MockUserPropertiesRepository implements UserPropertiesRepository {
   DateTime? get lastUserPropertiesSyncTimestamp => DateTime.tryParse(_get(.lastUserPropertiesSyncTimestamp, ''));
 
   @override
-  void dispose() => _rxModel.close();
+  Future<void> dispose() => _rxModel.close();
 }
