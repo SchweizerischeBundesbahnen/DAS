@@ -22,8 +22,8 @@ import org.springframework.http.HttpStatus;
  *     502</li>
  *     <li>any other failure, like an error status of the downstream, is thrown as is</li>
  * </ul>
- * Uses the {@link RetryTemplate} of Spring Framework instead of {@link org.springframework.resilience.annotation.Retryable}: only its {@link RetryListener}
- * knows the attempt number.
+ * Uses the {@link RetryTemplate} of Spring Framework instead of {@link org.springframework.resilience.annotation.Retryable}, because only its
+ * {@link RetryListener} knows the attempt number.
  */
 @Slf4j
 public class DownstreamCalls {
@@ -39,6 +39,8 @@ public class DownstreamCalls {
     }
 
     /**
+     * Runs the call and retries it on a transient failure.
+     *
      * @param operation logged with each failed attempt, like {@code subscribe}
      * @param call      the whole HTTP exchange, repeated on each attempt
      */

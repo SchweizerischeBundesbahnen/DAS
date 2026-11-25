@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClientResponseException;
 /**
  * Classifies the failure of a downstream call by its cause chain.
  *
- * @param token  the Entra ID token call failed (Spring Security wraps its failures into an {@link OAuth2AuthorizationException})
+ * @param token  the Entra ID token call failed, Spring Security wraps its failures into an {@link OAuth2AuthorizationException}
  * @param status of the downstream response, only for {@link Kind#RESPONSE_STATUS}
  * @param reason for the log, never contains a response body
  */

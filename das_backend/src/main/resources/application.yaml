@@ -223,7 +223,7 @@ downstream:
         max-retries: ${GEMS_MAX_RETRIES:2}
         delay: ${GEMS_RETRY_DELAY:PT0.5S}
         multiplier: ${GEMS_RETRY_MULTIPLIER:2}
-        read-timeout-retried: false
+        read-timeout-retried: ${GEMS_RETRY_READ_TIMEOUT:false}
     orca:
       connect-timeout: ${ORCA_CONNECT_TIMEOUT:PT5S}
       read-timeout: ${ORCA_READ_TIMEOUT:PT10S}
@@ -231,7 +231,7 @@ downstream:
         max-retries: ${ORCA_MAX_RETRIES:2}
         delay: ${ORCA_RETRY_DELAY:PT0.5S}
         multiplier: ${ORCA_RETRY_MULTIPLIER:2}
-        read-timeout-retried: false
+        read-timeout-retried: ${ORCA_RETRY_READ_TIMEOUT:false}
     # per page of the nightly location import
     atlas:
       connect-timeout: ${ATLAS_CONNECT_TIMEOUT:PT5S}
@@ -240,14 +240,14 @@ downstream:
         max-retries: ${ATLAS_MAX_RETRIES:3}
         delay: ${ATLAS_RETRY_DELAY:PT2S}
         multiplier: ${ATLAS_RETRY_MULTIPLIER:2}
-        read-timeout-retried: true
-    # only the token call, it uses downstream.oauth2-token
+        read-timeout-retried: ${ATLAS_RETRY_READ_TIMEOUT:true}
+    # only the token call, with the timeouts of downstream.oauth2-token
     sfera:
       retry:
         max-retries: ${SFERA_TOKEN_MAX_RETRIES:2}
         delay: ${SFERA_TOKEN_RETRY_DELAY:PT0.5S}
         multiplier: ${SFERA_TOKEN_RETRY_MULTIPLIER:2}
-        read-timeout-retried: false
+        read-timeout-retried: ${SFERA_TOKEN_RETRY_READ_TIMEOUT:false}
 
 admin:
   clean-up:

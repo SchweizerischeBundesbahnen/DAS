@@ -44,11 +44,12 @@ waiting. A timeout or a refused connection reached the caller as a generic 500, 
 Alternative 3, together with timeouts on every downstream call.
 
 * Every downstream service has a connect and a read timeout: 5 s and 10 s, and 60 s read timeout for an atlas page. The default comes from
-  `spring.http.clients`, `downstream.*` in `application.yaml` sets the value per downstream service.
+  `spring.http.clients`. The block `downstream.*` in `application.yaml` sets the value per downstream service.
 * `DownstreamCalls` retries connection failures, connect timeouts and the status codes 502, 503 and 504. It never retries a 4xx or a 500.
 * A call a user waits on is retried twice, after 500 ms and 1 s. It does not retry a read timeout, because the downstream may have processed the request and
   a second read timeout would exceed the 30 s of APIM. The worst case is three connect timeouts plus the backoff, about 16.5 s.
 * An atlas page is retried three times, after 2 s, 4 s and 8 s, also after a read timeout.
+* A retry repeats the whole call, including the token call made by its OAuth2 interceptor. An atlas token call therefore gets the atlas retries.
 * The built-in retries of Apache HttpClient are disabled, so `DownstreamCalls` is the only place that retries.
 * Each failed attempt is logged once at WARN with the downstream name, the operation, the attempt number, the duration and the reason.
 * After the last attempt a timeout becomes a 504 and a connection failure or a failed token call a 502, both as `Problem` with the title

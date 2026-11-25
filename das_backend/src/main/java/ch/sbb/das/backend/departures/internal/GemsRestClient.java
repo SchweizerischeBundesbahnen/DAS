@@ -34,7 +34,7 @@ public class GemsRestClient {
         this.downstreamCalls = downstreamCalls;
     }
 
-    // a retry may subscribe or confirm twice, GEMS accepts that (DAS-Client resends a subscription with the same messageId until it is confirmed)
+    // A retry may subscribe or confirm twice. GEMS accepts that, because DAS-Client resends a subscription with the same messageId until it is confirmed.
     public ResponseEntity<?> subscribe(SubscribeRequest request) {
         return downstreamCalls.call(Downstream.GEMS, "subscribe", () -> restClient.post()
             .uri("/rest/das/subscribe")
