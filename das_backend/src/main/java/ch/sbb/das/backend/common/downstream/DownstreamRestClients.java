@@ -63,7 +63,7 @@ public class DownstreamRestClients {
 
     /**
      * Spring Cloud Vault puts Apache HttpClient on the classpath, so Spring Boot uses it. Apache HttpClient repeats a 503 and an idempotent request after an
-     * I/O error once by itself, without logging. {@link DownstreamCalls} retries instead.
+     * I/O error once by itself, without logging. {@link DownstreamCallHandler} retries instead.
      */
     private static ClientHttpRequestFactoryBuilder<?> withoutAutomaticRetries(ClientHttpRequestFactoryBuilder<?> requestFactoryBuilder) {
         if (requestFactoryBuilder instanceof HttpComponentsClientHttpRequestFactoryBuilder httpComponents) {

@@ -4,7 +4,7 @@ import static org.springframework.security.oauth2.client.web.client.RequestAttri
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.downstream.Downstream;
-import ch.sbb.das.backend.common.downstream.DownstreamCalls;
+import ch.sbb.das.backend.common.downstream.DownstreamCallHandler;
 import ch.sbb.das.backend.common.downstream.DownstreamRestClients;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +26,11 @@ public class ServicePointApiClient {
     public static final int MAX_PAGE_SIZE = 2000;
     private static final String OAUTH2_CLIENT_REGISTRATION_ID = "atlas";
     private final RestClient restClient;
-    private final DownstreamCalls downstreamCalls;
+    private final DownstreamCallHandler downstreamCallHandler;
 
     public ServicePointApiClient(
         DownstreamRestClients downstreamRestClients,
-        DownstreamCalls downstreamCalls,
+        DownstreamCallHandler downstreamCallHandler,
         OAuth2AuthorizedClientManager authorizedClientManager,
         @Value("${atlas.base-url}") String baseUrl
     ) {
@@ -38,7 +38,7 @@ public class ServicePointApiClient {
             .baseUrl(baseUrl)
             .requestInterceptor(new OAuth2ClientHttpRequestInterceptor(authorizedClientManager))
             .build();
-        this.downstreamCalls = downstreamCalls;
+        this.downstreamCallHandler = downstreamCallHandler;
     }
 
     public List<ServicePoint> getAll() {
@@ -60,7 +60,7 @@ public class ServicePointApiClient {
     }
 
     private ServicePointResponse getServicePointsPaginated(int page) {
-        return downstreamCalls.call(Downstream.ATLAS, "getServicePoints", () -> restClient.get()
+        return downstreamCallHandler.call(Downstream.ATLAS, "getServicePoints", () -> restClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/service-point-directory/v1/service-points")
                 .queryParam("statusRestrictions", "VALIDATED")

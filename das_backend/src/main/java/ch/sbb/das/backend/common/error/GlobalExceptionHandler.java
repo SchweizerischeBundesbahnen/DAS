@@ -134,7 +134,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Each failed attempt is already logged by {@link ch.sbb.das.backend.common.downstream.DownstreamCalls}.
+     * Each failed attempt is already logged by {@link ch.sbb.das.backend.common.downstream.DownstreamCallHandler}.
      */
     @ExceptionHandler(DownstreamCallException.class)
     ResponseEntity<Problem> handleDownstreamCallError(DownstreamCallException exception, HttpServletRequest request) {

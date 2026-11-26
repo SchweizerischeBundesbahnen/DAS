@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties(DownstreamProperties.class)
-@Import({DownstreamRestClients.class, DownstreamCalls.class})
+@Import({DownstreamRestClients.class, DownstreamCallHandler.class})
 public class DownstreamConfiguration {
 
 }

@@ -2,6 +2,7 @@ package ch.sbb.das.backend.common.downstream;
 
 import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.common.error.DownstreamCallException;
+import java.time.Duration;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -24,9 +25,11 @@ import org.springframework.http.HttpStatus;
  * </ul>
  * Uses the {@link RetryTemplate} of Spring Framework instead of {@link org.springframework.resilience.annotation.Retryable}, because only its
  * {@link RetryListener} knows the attempt number.
+ *
+ * @see "docs/content/architecture/09_design_decisions/downstream_resilience_adr.md"
  */
 @Slf4j
-public class DownstreamCalls {
+public class DownstreamCallHandler {
 
     static final String DETAIL_TIMEOUT = "Downstream service did not respond in time.";
     static final String DETAIL_CONNECTION = "Downstream service could not be reached.";
@@ -34,7 +37,7 @@ public class DownstreamCalls {
 
     private final Map<Downstream, RetryTemplate> retryTemplates = new EnumMap<>(Downstream.class);
 
-    public DownstreamCalls(DownstreamProperties properties) {
+    public DownstreamCallHandler(DownstreamProperties properties) {
         properties.clients().forEach((downstream, client) -> retryTemplates.put(downstream, createRetryTemplate(client.retry())));
     }
 
@@ -77,6 +80,7 @@ public class DownstreamCalls {
             .delay(retry.delay())
             .multiplier(retry.multiplier())
             .predicate(failure -> DownstreamFailure.of(failure).isRetryable(retry))
+            .timeout(retry.timeout() != null ? retry.timeout() : Duration.ZERO)
             .build());
         retryTemplate.setRetryListener(new AttemptLogger());
         return retryTemplate;

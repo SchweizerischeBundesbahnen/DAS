@@ -42,8 +42,10 @@ public record DownstreamProperties(Timeouts oauth2Token, Map<Downstream, Client>
      * @param delay              before the first retry
      * @param multiplier         applied to the delay before each further retry
      * @param readTimeoutRetried whether a read timeout is retried; false where a user waits, the downstream may have processed the request anyway
+     * @param timeout            no retry starts once the attempts and delays would exceed it; empty for no limit. A running attempt is bounded by its
+     *                           connect and read timeouts only.
      */
-    public record Retry(long maxRetries, Duration delay, double multiplier, boolean readTimeoutRetried) {
+    public record Retry(long maxRetries, Duration delay, double multiplier, boolean readTimeoutRetried, Duration timeout) {
 
     }
 }

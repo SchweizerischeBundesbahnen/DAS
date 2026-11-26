@@ -2,7 +2,7 @@ package ch.sbb.das.backend.trainjourneypreloader.infrastructure;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.downstream.Downstream;
-import ch.sbb.das.backend.common.downstream.DownstreamCalls;
+import ch.sbb.das.backend.common.downstream.DownstreamCallHandler;
 import ch.sbb.das.backend.common.error.DownstreamCallException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
@@ -18,13 +18,13 @@ public class SferaAuthService {
     public static final String REGISTRATION_ID = "azure";
     public static final int TOKEN_REFRESH_MARGIN_SECONDS = 30;
     private final OAuth2AuthorizedClientManager authorizedClientManager;
-    private final DownstreamCalls downstreamCalls;
+    private final DownstreamCallHandler downstreamCallHandler;
 
     private OAuth2AccessToken accessToken;
 
-    public SferaAuthService(OAuth2AuthorizedClientManager authorizedClientManager, DownstreamCalls downstreamCalls) {
+    public SferaAuthService(OAuth2AuthorizedClientManager authorizedClientManager, DownstreamCallHandler downstreamCallHandler) {
         this.authorizedClientManager = authorizedClientManager;
-        this.downstreamCalls = downstreamCalls;
+        this.downstreamCallHandler = downstreamCallHandler;
     }
 
     private static boolean isTokenValid(OAuth2AccessToken token) {
@@ -49,7 +49,7 @@ public class SferaAuthService {
                 .withClientRegistrationId(REGISTRATION_ID)
                 .principal(REGISTRATION_ID)
                 .build();
-            OAuth2AuthorizedClient authorizedClient = downstreamCalls.call(Downstream.SFERA, "authorize", () -> authorizedClientManager.authorize(request));
+            OAuth2AuthorizedClient authorizedClient = downstreamCallHandler.call(Downstream.SFERA, "authorize", () -> authorizedClientManager.authorize(request));
             if (authorizedClient == null) {
                 log.atError().log("SFERA OAuth2 authorization returned no client");
                 return;
