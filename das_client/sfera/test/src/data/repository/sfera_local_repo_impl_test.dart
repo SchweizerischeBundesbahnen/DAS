@@ -56,7 +56,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        version: '1',
+        version: 1,
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
@@ -118,7 +118,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        version: '1',
+        version: 1,
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,
@@ -205,7 +205,7 @@ void main() {
 
     subject.add(
       JourneyProfileTableData(
-        version: '1',
+        version: 1,
         company: company,
         operationalTrainNumber: trainNumber,
         startDate: startDate,

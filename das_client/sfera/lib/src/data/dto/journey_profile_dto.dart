@@ -5,19 +5,20 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
+import 'package:sfera/src/data/parser/parse_utils.dart';
 
 class JourneyProfileDto({super.type = elementType, super.attributes, super.children, super.value})
     extends SferaXmlElementDto {
   static const String elementType = 'JourneyProfile';
 
   factory create({
-    required String version,
+    required int version,
     required TrainIdentificationDto trainIdentification,
     required List<SegmentProfileReferenceDto> segmentProfileReferences,
     required GeneralJpInformationDto? generalJpInformation,
   }) {
     final request = JourneyProfileDto();
-    request.attributes['JP_Version'] = version;
+    request.attributes['JP_Version'] = version.toString();
     request.attributes['JP_Status'] = JpStatusDto.valid.xmlValue;
     request.children.add(trainIdentification);
     request.children.addAll(segmentProfileReferences);
@@ -27,7 +28,7 @@ class JourneyProfileDto({super.type = elementType, super.attributes, super.child
     return request;
   }
 
-  String get version => attributes['JP_Version']!;
+  int get version => ParseUtils.tryParseInt(attributes['JP_Version']) ?? 0;
 
   TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
 

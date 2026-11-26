@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
@@ -40,6 +41,9 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
     return _instance!;
   }
 
+  @visibleForTesting
+  DriftSferaLocalDatabaseService.forTesting(super.executor);
+
   DriftSferaLocalDatabaseService._() : super(_openConnection());
 
   static QueryExecutor _openConnection() => LazyDatabase(() async {
@@ -56,7 +60,7 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
   });
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -72,6 +76,15 @@ class DriftSferaLocalDatabaseService extends _$DriftSferaLocalDatabaseService im
       if (from < 3) {
         await m.drop(journeyProfileTable);
         await m.create(journeyProfileTable);
+      } else if (from < 5) {
+        await m.alterTable(
+          TableMigration(
+            journeyProfileTable,
+            columnTransformer: {
+              journeyProfileTable.version: journeyProfileTable.version.cast<int>(),
+            },
+          ),
+        );
       }
 
       if (from < 4) {

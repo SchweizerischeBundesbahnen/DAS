@@ -6,7 +6,7 @@ import 'package:sfera/src/data/local/drift_sfera_local_database_service.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 class JourneyProfileTable extends Table {
-  TextColumn get version => text()();
+  IntColumn get version => integer()();
 
   TextColumn get company => text()();
 
