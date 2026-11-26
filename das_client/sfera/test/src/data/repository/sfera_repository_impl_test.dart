@@ -611,7 +611,7 @@ $normalizedPayload
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          version: '1',
+          version: 1,
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
@@ -687,7 +687,7 @@ $normalizedPayload
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          version: '1',
+          version: 1,
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
@@ -763,7 +763,7 @@ $normalizedPayload
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          version: '1',
+          version: 1,
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),
@@ -984,7 +984,7 @@ $normalizedPayload
     when(mockLocalDatabaseRepository.findJourneyProfile(any, any, any)).thenAnswer(
       (_) => Future.value(
         JourneyProfileTableData(
-          version: '1',
+          version: 1,
           company: '1085',
           operationalTrainNumber: '123',
           xmlData: parsedJPResponse.payload!.journeyProfiles.first.toString(),

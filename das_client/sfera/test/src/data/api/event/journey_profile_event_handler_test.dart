@@ -179,7 +179,7 @@ void main() {
       // THEN
       expect(result, isTrue);
       final captured = verify(mockDatabaseService.saveJourneyProfile(captureAny)).captured.single as JourneyProfileDto;
-      expect(captured.version, '2');
+      expect(captured.version, 2);
       expect(
         captured.segmentProfileReferences.map((it) => it.spId).toList(),
         ['SP1', 'SP2', 'SP4'],
