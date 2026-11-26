@@ -32,16 +32,11 @@ the brake sheet. The client shows the current position, punctuality and the driv
 TMS-VAD. It warns the driver before a closed signal.
 
 The DAS client exchanges journey profiles, segment profiles and train characteristics with TMS-VAD
-over SFERA on MQTT. The DAS backend preloads segment profiles and train characteristics, so the
-client can open journeys on a weak connection.
+over SFERA on MQTT. The DAS backend fetches segment profiles and train characteristics from TMS-VAD
+in advance. The client stores them locally for offline use.
 
-Users log in with their company account. Each user has one of four roles: driver, observer, admin
-or RU admin. RU admins use the DAS admin tool to manage RU-specific notes, links, features and
-supported app versions.
-
-If DAS fails, drivers use a PDF timetable that the DAS backend generates in advance from NeTS,
-eRADN and atlas data. For driver training, the DAS client runs against the simulator, with the
-SFERA mock in place of TMS-VAD.
+The DAS admin tool is a web application. RUs use it to manage RU-specific notes, links, features
+and supported app versions.
 
 ## Next
 
