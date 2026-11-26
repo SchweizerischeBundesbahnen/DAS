@@ -85,7 +85,7 @@ void main() {
   });
 
   test('observe_whenKnownCompanyAndJourneyRouteInactive_thenNavigatesToJourneyRoute', () async {
-    // ARRANGE
+    // GIVEN
     router.activeRoutes[JourneyRoute.name] = false;
 
     final linkData = TrainJourneyLinkData(
@@ -98,12 +98,12 @@ void main() {
     );
     final journeyIntent = TrainJourneyIntent(appLink: Uri.parse('das://journey'), journeys: [linkData]);
 
-    // ACT
+    // WHEN
     testee.observe();
     intentController.add(journeyIntent);
     await Future<void>.delayed(const Duration(milliseconds: 10));
 
-    // EXPECT
+    // THEN
     expect(router.replacedRoutes, hasLength(1));
     final route = router.replacedRoutes.single as JourneyRoute;
     final args = route.args;
@@ -127,7 +127,7 @@ void main() {
   });
 
   test('observe_whenKnownCompanyAndJourneyRouteActive_thenReplacesJourneyNavigationStack', () async {
-    // ARRANGE
+    // GIVEN
     router.activeRoutes[JourneyRoute.name] = true;
 
     final linkData = TrainJourneyLinkData(
@@ -136,12 +136,12 @@ void main() {
       startDate: DateTime.utc(2026, 7, 20),
     );
 
-    // ACT
+    // WHEN
     testee.observe();
     intentController.add(TrainJourneyIntent(appLink: Uri.parse('das://journey'), journeys: [linkData]));
     await Future.delayed(Duration.zero);
 
-    // EXPECT
+    // THEN
     final captured =
         verify(journeyNavigationViewModel.replaceWith(captureAny)).captured.single
             as Iterable<ExtendedTrainIdentification>;
@@ -153,7 +153,7 @@ void main() {
   });
 
   test('observe_whenCompanyCannotBeResolved_thenNavigatesToSelectionAndForwardsDeepLink', () async {
-    // ARRANGE
+    // GIVEN
     router.activeRoutes[JourneySelectionRoute.name] = false;
     when(mockUserPropertiesRepository.lastUsedCompanyCode).thenReturn(null);
     when(trainIdentificationRepository.findTrainIdentifications(operationalTrainNumber: '777')).thenAnswer(
@@ -166,12 +166,12 @@ void main() {
       startDate: DateTime.utc(2026, 7, 23),
     );
 
-    // ACT
+    // WHEN
     testee.observe();
     intentController.add(TrainJourneyIntent(appLink: Uri.parse('das://journey'), journeys: [linkData]));
     await Future.delayed(Duration.zero);
 
-    // EXPECT
+    // THEN
     expect(router.replacedRoutes, hasLength(1));
     expect(router.replacedRoutes.single, isA<JourneySelectionRoute>());
     verify(journeySelectionViewModel.handleDeepLink(linkData)).called(1);

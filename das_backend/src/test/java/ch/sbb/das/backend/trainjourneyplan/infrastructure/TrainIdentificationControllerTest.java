@@ -12,10 +12,16 @@ import ch.sbb.das.backend.IntegrationTest;
 import ch.sbb.das.backend.WithMockRole;
 import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.common.security.UserRole;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,8 +30,20 @@ import org.springframework.test.web.servlet.MockMvc;
 @Sql({"classpath:createCompaniesAndTenants.sql", "classpath:createTrainIdentifications.sql"})
 class TrainIdentificationControllerTest {
 
-    private static final LocalDate TODAY = DateTimeUtil.today();
+    // createTrainIdentifications.sql places its departures relative to this instant
+    private static final ZonedDateTime FIXED_NOW = ZonedDateTime.of(LocalDateTime.of(2026, 3, 10, 12, 0), DateTimeUtil.SWISS_ZONE);
+    private static final LocalDate TODAY = FIXED_NOW.toLocalDate();
     private static final LocalDate TOMORROW = TODAY.plusDays(1);
+
+    @TestConfiguration
+    static class FixedClockConfiguration {
+
+        @Bean
+        @Primary
+        Clock fixedClock() {
+            return Clock.fixed(FIXED_NOW.toInstant(), DateTimeUtil.SWISS_ZONE);
+        }
+    }
 
     @Autowired
     private MockMvc mockMvc;

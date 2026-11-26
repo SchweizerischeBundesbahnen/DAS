@@ -35,9 +35,9 @@ class IntegrationTestJourneyScope extends JourneyScope {
     getIt.registerBrakeLoadSlipViewModel();
     // gets registered inside authenticated scope in tests to access before loading journey
     // getIt.registerSimTrainViewModel();
-    getIt.registerCollapsibleRowsViewModel();
     getIt.registerServicePointModalViewModel();
     getIt.registerPersonalNotesViewModel();
+    getIt.registerCollapsibleRowsViewModel();
     getIt.registerJourneyTableViewModel();
     getIt.registerJourneyTableAdvancementViewModel();
     getIt.registerJourneyFilterViewModel();

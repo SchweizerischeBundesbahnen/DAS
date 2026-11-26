@@ -56,7 +56,7 @@ void main() {
   });
 
   test('writeLog_whenCalledOnce_shouldWriteJsonToFileWithoutComma', () async {
-    // act
+    // WHEN
     await testee.writeLog(simpleLogFile);
 
     final cacheFile = _currentCacheFile(logDir);
@@ -67,7 +67,7 @@ void main() {
   });
 
   test('writeLog_whenCalledTwiceWithSimpleFile_shouldAppendToPrevious', () async {
-    // act
+    // WHEN
     await testee.writeLog(simpleLogFile);
     await testee.writeLog(simpleLogFile);
 
@@ -79,7 +79,7 @@ void main() {
   });
 
   test('writeLog_whenSingleLargeLogEntry_shouldWriteSingleFile', () async {
-    // act
+    // WHEN
     await testee.writeLog(twentyKiloBytesLog);
 
     // assert
@@ -93,7 +93,7 @@ void main() {
   });
 
   test('writeLog_whenLogSizeTooLarge_shouldWriteToNewFileAndHaveCompletedLog', () async {
-    // act
+    // WHEN
     await testee.writeLog(twentyKiloBytesLog);
     await testee.writeLog(twentyKiloBytesLog);
 
@@ -101,73 +101,73 @@ void main() {
   });
 
   test('hasCompletedLogFiles_whenNoWrite_shouldBeFalse', () async {
-    // act + expect
+    // WHEN + expect
     expect(await testee.hasCompletedLogFiles, false);
   });
 
   test('hasCompletedLogFiles_whenSingleSimpleLogEntryWritten_shouldBeFalse', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(simpleLogFile);
 
-    // act + expect
+    // WHEN + expect
     expect(await testee.hasCompletedLogFiles, false);
   });
 
   test('hasCompletedLogFiles_whenSimpleAndLargeLogEntryWritten_shouldBeFalse', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(simpleLogFile);
     await testee.writeLog(twentyKiloBytesLog);
 
-    // act + expect
+    // WHEN + expect
     expect(await testee.hasCompletedLogFiles, false);
   });
 
   test('hasCompletedLogFiles_whenTwoLargeLogEntryWritten_shouldBeTrue', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(twentyKiloBytesLog);
     await testee.writeLog(twentyKiloBytesLog);
 
-    // act + expect
+    // WHEN + expect
     expect(await testee.hasCompletedLogFiles, true);
   });
 
   test('completedLogFiles_whenNoneWritten_shouldBeEmpty', () async {
-    // act + expect
+    // WHEN + expect
     expect((await testee.completedLogFiles).isEmpty, true);
   });
 
   test('completedLogFiles_whenSimpleLogWritten_shouldBeEmpty', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(simpleLogFile);
 
-    // act + expect
+    // WHEN + expect
     expect((await testee.completedLogFiles).isEmpty, true);
   });
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveLengthOne', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(twentyKiloBytesLog);
     await testee.writeLog(twentyKiloBytesLog);
 
-    // act + expect
+    // WHEN + expect
     expect((await testee.completedLogFiles).length, 1);
   });
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveContentFromLargeLogEntry', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(twentyKiloBytesLog);
     await testee.writeLog(twentyKiloBytesLog);
 
-    // act
+    // WHEN
     final actual = await testee.completedLogFiles;
 
-    // expect
+    // THEN
     final actualLogEntry = actual.first.readAsStringSync();
     expect(actualLogEntry, twentyKiloBytesLog.toJsonString());
   });
 
   test('deleteLogFile_whenFileGiven_shouldDeleteIt', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(twentyKiloBytesLog);
     await testee.writeLog(twentyKiloBytesLog);
     // check whether two files exist (one completed)
@@ -176,40 +176,40 @@ void main() {
     final files = await testee.completedLogFiles;
     final file = files.first;
 
-    // act
+    // WHEN
     await testee.deleteLogFile(file);
 
-    // expect
+    // THEN
     expect(logDir.listSync().length, equals(1));
   });
 
   test('completeCurrentFile_whenNoLogsWritten_shouldNotCreateCompletedFile', () async {
-    // act
+    // WHEN
     await testee.completeCurrentFile();
 
-    // expect
+    // THEN
     expect(await testee.hasCompletedLogFiles, false);
     expect((await testee.completedLogFiles).isEmpty, true);
   });
 
   test('completeCurrentFile_whenCalledTwice_shouldOnlyCompleteOnce', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(simpleLogFile);
 
-    // act
+    // WHEN
     await testee.completeCurrentFile();
     await testee.completeCurrentFile();
 
-    // expect
+    // THEN
     expect((await testee.completedLogFiles).length, 1);
     expect((await testee.completedLogFiles).first.readAsStringSync(), simpleLogFile.toJsonString());
   });
 
   test('writeLog_whenFirstLogExceedsMaxFileSize_shouldNotCompleteEmptyFile', () async {
-    // act
+    // WHEN
     await testee.writeLog(largerThanMaxFileSizeLog);
 
-    // expect
+    // THEN
     expect(await testee.hasCompletedLogFiles, false);
     expect(logDir.listSync().length, equals(1));
 
@@ -218,13 +218,13 @@ void main() {
   });
 
   test('writeLog_whenLogWrittenAfterOversizedLog_shouldCompleteFileContainingOversizedLog', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(largerThanMaxFileSizeLog);
 
-    // act
+    // WHEN
     await testee.writeLog(simpleLogFile);
 
-    // expect
+    // THEN
     final completedFiles = await testee.completedLogFiles;
     expect(completedFiles.length, 1);
     expect(completedFiles.first.readAsStringSync(), largerThanMaxFileSizeLog.toJsonString());
@@ -234,15 +234,15 @@ void main() {
   });
 
   test('completeCurrentFile_whenHasWrite_shouldRenameFile', () async {
-    // arrange
+    // GIVEN
     await testee.writeLog(simpleLogFile);
     // check whether one file exist (one completed)
     expect(logDir.listSync().length, equals(1));
 
-    // act
+    // WHEN
     await testee.completeCurrentFile();
 
-    // expect
+    // THEN
     expect(logDir.listSync().length, equals(1));
     expect(_currentCacheFile(logDir).existsSync(), false);
   });

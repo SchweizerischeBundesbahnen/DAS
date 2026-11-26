@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.8.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.8.0...das-admin-tool-v0.8.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* pull nginx base image from nginx/nginx-unprivileged ([#3190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3190)) ([9c4ddb1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9c4ddb16f3e5471dcc2c52b6702a4f2360716171))
+
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.1...das-admin-tool-v0.8.0) (2026-11-17)
+
+
+### Features
+
+* add confirmation dialogs before deleting entries ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([#3099](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3099)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+* update translations ([#2764](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2764)) ([#3142](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3142)) ([61f03fe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61f03fe9d58478286f06cd8ca4487fd9d6abf4df))
+
+
+### Bug Fixes
+
+* failed bulk delete does not clear selection ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+* unify deletion toast body ([#3093](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3093)) ([d482439](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d482439edbb260ef27188735d727aa306105e2d6))
+
 ## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das-admin-tool-v0.7.0...das-admin-tool-v0.7.1) (2026-11-02)
 
 

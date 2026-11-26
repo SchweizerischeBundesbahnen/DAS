@@ -5,7 +5,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cell_row_builder.
 import 'package:app/pages/journey/journey_screen/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/signal_row.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -69,49 +69,49 @@ void main() {
   });
 
   testWidgets('scrollToJourneyPoint_whenEmptyRenderedRows_thenDoesNothing', (tester) async {
-    // ARRANGE
+    // GIVEN
     testee.updateRenderedRows([]);
 
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(journeyData[2]);
     await _flushPostFrameCallback(tester); // flush postFrameCallback
 
-    // EXPECT
+    // THEN
     verifyNever(mockScrollController.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
   testWidgets('scrollToJourneyPoint_whenNotAttachedToScrollView_thenDoesNothing', (tester) async {
-    // ARRANGE
+    // GIVEN
     when(mockScrollController.positions).thenReturn([]);
 
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(journeyData[2]);
     await _flushPostFrameCallback(tester);
 
-    // EXPECT
+    // THEN
     verifyNever(mockScrollController.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
     verifyNever(mockScrollController.position);
   });
 
   testWidgets('scrollToJourneyPoint_whenTargetNotInRenderedRows_thenDoesNothing', (tester) async {
-    // ARRANGE
+    // GIVEN
     final target = Signal(order: 200_000, kilometre: []);
 
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(target);
     await _flushPostFrameCallback(tester);
 
-    // EXPECT
+    // THEN
     verifyNever(mockScrollController.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
     verifyNever(mockScrollController.position);
   });
 
   testWidgets('scrollToJourneyPoint_whenCalledWithThirdPoint_thenScrollsToCorrectElementOffset', (tester) async {
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(journeyData[2]);
     await _flushPostFrameCallback(tester);
 
-    // EXPECT
+    // THEN
     // journeyData[2] is at global Y = 2 * rowHeight = 88.
     // distanceFromListTop = 88 − (−40) − 40 = 88.
     // stickyHeight = 0. target = 0 + 88 − 0 = 88 = rowHeight * 2.
@@ -127,7 +127,7 @@ void main() {
   testWidgets('scrollToJourneyPoint_whenHasStickyHeaderAndTargetInFirstBlock_thenScrollsToCorrectElementOffset', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     final signal = Signal(order: 100, kilometre: []);
     final targetSignal = Signal(order: 300, kilometre: []);
     final servicePoint = ServicePoint(order: 0, abbreviation: '', locationCode: '', kilometre: [], name: '');
@@ -151,11 +151,11 @@ void main() {
     when(mockScrollPosition.maxScrollExtent).thenReturn(rowHeight * 10);
     testee.updateRenderedRows(rows);
 
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(targetSignal);
     await _flushPostFrameCallback(tester);
 
-    // EXPECT
+    // THEN
     // targetSignal global Y = spHeight + rowHeight = 64 + 44 = 108.
     // distanceFromListTop = 108 − (−40) − 40 = 108.
     // stickyHeight: servicePoint[0] is first sticky → stickyHeaderHeights[first] = spHeight = 64.
@@ -173,7 +173,7 @@ void main() {
   testWidgets('scrollToJourneyPoint_whenHasStickyHeaderAndTargetInSecondBlock_thenScrollsToCorrectElementOffset', (
     tester,
   ) async {
-    // ARRANGE
+    // GIVEN
     final signal = Signal(order: 100, kilometre: []);
     final targetSignal = Signal(order: 300, kilometre: []);
     final servicePoint = ServicePoint(order: 0, abbreviation: '', locationCode: '', kilometre: [], name: '');
@@ -197,11 +197,11 @@ void main() {
     when(mockScrollPosition.maxScrollExtent).thenReturn(rowHeight * 10);
     testee.updateRenderedRows(rows);
 
-    // ACT
+    // WHEN
     testee.scrollToJourneyPoint(targetSignal);
     await _flushPostFrameCallback(tester);
 
-    // EXPECT
+    // THEN
     // targetSignal global Y = spHeight*2 + rowHeight*3 = 128 + 132 = 260.
     // distanceFromListTop = 260 − (−40) − 40 = 260.
     // stickyHeight: servicePoint[0] → first=64; servicePoint[4] → first=64 (reset second).

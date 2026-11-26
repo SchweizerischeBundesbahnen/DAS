@@ -43,35 +43,35 @@ void main() {
     });
 
     test('model_whenReauthenticationNotRequiredAndConnected_thenDoesNotShowNotification', () async {
-      // ACT
+      // WHEN
       connectivityManagerSubject.add(true);
       await Future.delayed(Duration.zero);
 
-      // EXPECT
+      // THEN
       verifyNever(notificationViewModel.insert(type: .reauthenticationRequired));
     });
 
     test('model_whenReauthenticationRequiredAndNotConnected_thenDoesNotShowNotification', () async {
-      // ACT
+      // WHEN
       authenticationRequiredSubject.add(true);
       await Future.delayed(Duration.zero);
 
-      // EXPECT
+      // THEN
       verifyNever(notificationViewModel.insert(type: .reauthenticationRequired));
     });
 
     test('model_whenReauthenticationRequiredAndConnected_thenShowNotification', () async {
-      // ACT
+      // WHEN
       authenticationRequiredSubject.add(true);
       connectivityManagerSubject.add(true);
       await Future.delayed(Duration.zero);
 
-      // EXPECT
+      // THEN
       verify(notificationViewModel.insert(type: .reauthenticationRequired)).called(1);
     });
 
     test('model_whenReauthenticationRequiredAndNoLongerConnected_thenRemoveNotification', () async {
-      // ACT
+      // WHEN
       authenticationRequiredSubject.add(true);
       connectivityManagerSubject.add(true);
       await Future.delayed(Duration.zero);
@@ -79,7 +79,7 @@ void main() {
       connectivityManagerSubject.add(false);
       await Future.delayed(Duration.zero);
 
-      // EXPECT
+      // THEN
       verify(notificationViewModel.insert(type: .reauthenticationRequired)).called(1);
       verify(notificationViewModel.remove(type: .reauthenticationRequired)).called(4);
     });

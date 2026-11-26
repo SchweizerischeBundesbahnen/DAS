@@ -13,12 +13,13 @@ class AppSyncHandler({
   required final AppLifecycleViewModel _appLifecycleVM,
 }) {
   this {
+    _synchronize();
     _onResumedSubscription = _appLifecycleVM.onResumed.listen((_) => _synchronize());
   }
 
   StreamSubscription<void>? _onResumedSubscription;
 
-  Future<void> _synchronize() async {
+  void _synchronize() {
     _log.fine('Synchronizing app...');
     _acknowledgedModificationRepository.deleteExpiredModifications();
     _personalNotesRepository.synchronizeNotes();

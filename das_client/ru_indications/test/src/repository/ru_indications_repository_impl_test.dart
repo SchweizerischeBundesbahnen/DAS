@@ -40,7 +40,7 @@ void main() {
   });
 
   test('fetchRuIndications_whenApiCallSucceeds_thenReturnsMappedDomainModels', () async {
-    // ARRANGE
+    // GIVEN
     when(
       mockMatchesRequest.call(
         company: companyCode,
@@ -50,7 +50,7 @@ void main() {
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
-    // ACT
+    // WHEN
     final result = await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -62,12 +62,12 @@ void main() {
         )
         .first;
 
-    // EXPECT
+    // THEN
     expect(result, equals(_expectedDomainResult()));
   });
 
   test('fetchRuIndications_whenSameLocationReferenceAppearsMultipleTimes_thenAddsRuIndicationForEachEntry', () async {
-    // ARRANGE
+    // GIVEN
     final locationCode = 'CH99999';
     final locationReferencesData = {
       3000: locationCode,
@@ -102,7 +102,7 @@ void main() {
       ),
     );
 
-    // ACT
+    // WHEN
     final result = await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -114,7 +114,7 @@ void main() {
         )
         .first;
 
-    // EXPECT
+    // THEN
     expect(
       result,
       equals([
@@ -133,7 +133,7 @@ void main() {
   });
 
   test('fetchRuIndications_whenTrainNumberContainsNonDigits_thenSanitizesTrainNumber', () async {
-    // ARRANGE
+    // GIVEN
     const unsanitizedTrainNumber = 'T${trainNumber}M-S19';
     when(
       mockMatchesRequest.call(
@@ -144,7 +144,7 @@ void main() {
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
-    // ACT
+    // WHEN
     await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -156,7 +156,7 @@ void main() {
         )
         .first;
 
-    // EXPECT
+    // THEN
     verify(
       mockMatchesRequest.call(
         company: companyCode,
@@ -168,7 +168,7 @@ void main() {
   });
 
   test('fetchRuIndications_whenOperatingDayIsSet_thenUsesOperatingDayInsteadOfDate', () async {
-    // ARRANGE
+    // GIVEN
     final operatingDay = DateTime(2026, 1, 16, 13, 37);
     when(
       mockMatchesRequest.call(
@@ -179,7 +179,7 @@ void main() {
       ),
     ).thenAnswer((_) async => MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto()));
 
-    // ACT
+    // WHEN
     await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -192,7 +192,7 @@ void main() {
         )
         .first;
 
-    // EXPECT
+    // THEN
     verify(
       mockMatchesRequest.call(
         company: companyCode,
@@ -204,10 +204,10 @@ void main() {
   });
 
   test('fetchRuIndications_whenTrainNumberHasNoDigits_thenThrowsFormatException', () async {
-    // ARRANGE
+    // GIVEN
     const invalidTrainNumber = 'IC-ABCD';
 
-    // ACT & EXPECT
+    // WHEN & THEN
     await expectLater(
       () => testee
           .fetchRuIndications(
@@ -233,7 +233,7 @@ void main() {
   });
 
   test('fetchRuIndications_whenApiCallThrows_thenRetriesIndefinitely', () async {
-    // ARRANGE
+    // GIVEN
     var callCount = 0;
     when(
       mockMatchesRequest.call(
@@ -247,7 +247,7 @@ void main() {
       throw Exception('Failed');
     });
 
-    // ACT - Subscribe to the stream but don't complete (it retries indefinitely)
+    // WHEN - Subscribe to the stream but don't complete (it retries indefinitely)
     final subscription = testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -262,7 +262,7 @@ void main() {
     // Wait for multiple retries to happen
     await Future<void>.delayed(const Duration(milliseconds: 50));
 
-    // EXPECT - Should have been called multiple times due to retries
+    // THEN - Should have been called multiple times due to retries
     expect(callCount, greaterThan(1));
 
     // Cancel subscription - this stops retrying via onCancel
@@ -270,7 +270,7 @@ void main() {
   });
 
   test('fetchRuIndications_whenApiFailsFirstTimeThenSucceeds_thenReturnsDataAfterRetry', () async {
-    // ARRANGE
+    // GIVEN
     var callCount = 0;
     when(
       mockMatchesRequest.call(
@@ -287,7 +287,7 @@ void main() {
       return MatchesResponse(headers: <String, String>{}, body: _matchesResponseDto());
     });
 
-    // ACT
+    // WHEN
     final result = await testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -299,13 +299,13 @@ void main() {
         )
         .first;
 
-    // EXPECT
+    // THEN
     expect(callCount, 2);
     expect(result, equals(_expectedDomainResult()));
   });
 
   test('fetchRuIndications_whenSubscriberCancels_thenRetryStops', () async {
-    // ARRANGE
+    // GIVEN
     var callCount = 0;
     when(
       mockMatchesRequest.call(
@@ -319,7 +319,7 @@ void main() {
       throw Exception('Failed');
     });
 
-    // ACT - Subscribe then cancel
+    // WHEN - Subscribe then cancel
     final subscription = testee
         .fetchRuIndications(
           trainIdentification: TrainIdentification(
@@ -338,7 +338,7 @@ void main() {
     // Wait to confirm no more retries happen after cancel
     await Future<void>.delayed(const Duration(milliseconds: 30));
 
-    // EXPECT - no further calls after cancel
+    // THEN - no further calls after cancel
     expect(callCount, equals(countAtCancel));
   });
 }

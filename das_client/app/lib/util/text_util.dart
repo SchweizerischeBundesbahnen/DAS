@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -32,7 +32,7 @@ class TextUtil._() {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       maxLines: maxLines,
-      textDirection: TextDirection.ltr,
+      textDirection: .ltr,
       textScaler: textScaler,
     )..layout(minWidth: 0, maxWidth: maxWidth);
     return textPainter.didExceedMaxLines;
@@ -62,10 +62,10 @@ class TextUtil._() {
     return text;
   }
 
-  /// replaces all line breaks by given [delimiter]
+  /// Joins non-empty lines with [delimiter], ignoring empty lines.
   static String replaceLineBreaks(String input, {String delimiter = '; '}) {
     final pattern = RegExp(r'(\r\n|\r|\n|<br\s*/?>)', multiLine: true);
-    return input.replaceAll(pattern, delimiter);
+    return input.split(pattern).map((line) => line.trim()).where((line) => line.isNotEmpty).join(delimiter);
   }
 
   static TextSpan _parseHtmlTextTagsWithMarkdownLinks(

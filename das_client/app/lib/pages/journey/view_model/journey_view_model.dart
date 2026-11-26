@@ -1,16 +1,23 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
+import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:collection/collection.dart';
+import 'package:logging/logging.dart';
+import 'package:personal_notes/component.dart';
 import 'package:ru_indications/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
+final _log = Logger('JourneyViewModel');
+
 class JourneyViewModel({
   required final SettingsRepository _settingsRepository,
   required final SferaJourneyViewModel _sferaJourneyViewModel,
   required final RuIndicationsRepository _ruIndicationsRepository,
+  required final PersonalNotesRepository _personalNotesRepository,
 }) {
   this {
     _init();
@@ -19,6 +26,7 @@ class JourneyViewModel({
   Stream<Journey?> get journey => _rxJourney.stream;
 
   Stream<String?> get formattedTrainIdentifier => _rxFormattedTrainIdentifier.stream;
+
   String? get formattedTrainIdentifierValue => _rxFormattedTrainIdentifier.value;
 
   Journey? get journeyValue => _rxJourney.value;
@@ -26,19 +34,23 @@ class JourneyViewModel({
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxFormattedTrainIdentifier = BehaviorSubject<String?>.seeded(null);
   final _ruIndications = <RuIndication>[];
+  final _allNotes = <PersonalNote>[];
 
   StreamSubscription? _journeySubscription;
-  StreamSubscription<List<RuIndication>>? _ruIndicationsSubscription;
+  StreamSubscription? _ruIndicationsSubscription;
+  StreamSubscription? _personalNotesSubscription;
 
   void dispose() {
     _rxJourney.close();
     _rxFormattedTrainIdentifier.close();
     _journeySubscription?.cancel();
     _ruIndicationsSubscription?.cancel();
+    _personalNotesSubscription?.cancel();
   }
 
   void _init() {
     _initJourneySubscription();
+    _initPersonalNotesSubscription();
   }
 
   void _initJourneySubscription() {
@@ -59,6 +71,24 @@ class JourneyViewModel({
     if (_shouldLoadRuIndications(journey, lastJourney)) {
       _loadRuIndications(journey);
     }
+  }
+
+  void _initPersonalNotesSubscription() {
+    _personalNotesSubscription?.cancel();
+    _personalNotesSubscription = _personalNotesRepository.observeAllNotes().listen(
+      (notes) {
+        final journey = _sferaJourneyViewModel.journeyValue;
+        final previousAnnotations = _journeyRelevantPersonalNoteAnnotations(journey);
+
+        _allNotes.clear();
+        _allNotes.addAll(notes);
+
+        if (!const ListEquality().equals(previousAnnotations, _journeyRelevantPersonalNoteAnnotations(journey))) {
+          _emit();
+        }
+      },
+      onError: (e, st) => _log.severe('Error loading personal notes as journey annotations', e, st),
+    );
   }
 
   Future<void> _handleFormattedTrainIdentification(Journey? journey) async {
@@ -92,10 +122,7 @@ class JourneyViewModel({
 
       _ruIndicationsSubscription?.cancel();
       _ruIndicationsSubscription = _ruIndicationsRepository
-          .fetchRuIndications(
-            trainIdentification: trainIdentification,
-            locationReferences: locationReferences,
-          )
+          .fetchRuIndications(trainIdentification: trainIdentification, locationReferences: locationReferences)
           .listen((ruIndications) {
             _ruIndications.clear();
             _ruIndications.addAll(ruIndications);
@@ -104,12 +131,43 @@ class JourneyViewModel({
     }
   }
 
+  List<PersonalNoteAnnotation> _journeyRelevantPersonalNoteAnnotations(Journey? sferaJourney) {
+    if (sferaJourney == null) return List.empty();
+
+    final notesByLocationCode = <String, List<PersonalNote>>{};
+    for (final note in _allNotes) {
+      if (note.isRelevantFor(sferaJourney)) {
+        notesByLocationCode.putIfAbsent(note.locationCode, () => []).add(note);
+      }
+    }
+
+    final annotations = <PersonalNoteAnnotation>[];
+    final servicePoints = sferaJourney.journeyPoints.whereType<ServicePoint>().toList(growable: false);
+    for (final servicePoint in servicePoints) {
+      final notes = notesByLocationCode[servicePoint.locationCode];
+      if (notes == null) continue;
+
+      for (final note in notes) {
+        if (note.showAsFootnote) {
+          annotations.add(PersonalNoteAnnotation(text: note.text, order: servicePoint.order));
+        }
+      }
+    }
+
+    return annotations;
+  }
+
   void _emit([Journey? sferaJourney]) {
     final journey = sferaJourney ?? _sferaJourneyViewModel.journeyValue;
     if (journey == null) {
       _emitValue(null);
     } else {
-      final mergedData = [...journey.data, ..._ruIndications].sorted((a1, a2) => a1.compareTo(a2));
+      final mergedData = [
+        ...journey.data,
+        ..._ruIndications,
+        ..._journeyRelevantPersonalNoteAnnotations(journey),
+      ].sorted((a1, a2) => a1.compareTo(a2));
+
       final mergedJourney = Journey(metadata: journey.metadata, data: mergedData, valid: journey.valid);
       _emitValue(mergedJourney);
     }

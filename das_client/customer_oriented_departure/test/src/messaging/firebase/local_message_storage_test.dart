@@ -16,11 +16,11 @@ void main() {
     // GIVEN
     final message = BaseMessageDto(messageId: 'message-1');
 
-    // ACT
+    // WHEN
     await testee.addMessage(message);
     final storedMessages = await testee.getLatestMessages();
 
-    // VERIFY
+    // THEN
     expect(storedMessages, hasLength(1));
     expect(storedMessages.single, isA<BaseMessageDto>());
     expect(storedMessages.single.messageId, 'message-1');
@@ -40,10 +40,10 @@ void main() {
     );
     await testee.addMessage(message3);
 
-    // ACT
+    // WHEN
     final storedMessages = await testee.getLatestMessages();
 
-    // VERIFY
+    // THEN
     expect(storedMessages, hasLength(3));
 
     expect(storedMessages[0], isA<BaseMessageDto>());
@@ -64,11 +64,11 @@ void main() {
     // GIVEN
     await testee.addMessage(BaseMessageDto(messageId: 'message-1'));
 
-    // ACT
+    // WHEN
     await testee.clear();
     final storedMessages = await testee.getLatestMessages();
 
-    // VERIFY
+    // THEN
     expect(storedMessages, isEmpty);
   });
 }

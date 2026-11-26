@@ -60,49 +60,49 @@ void main() {
     });
 
     test('isIllegal_whenXX_thenTrue', () {
-      // ACT
+      // WHEN
       final actual = Speed.parse('XX');
 
-      // EXPECT
+      // THEN
       expect(actual, isA<SingleSpeed>());
       actual as SingleSpeed;
       expect(actual.isIllegal, isTrue);
     });
 
     test('isIllegal_whenNotXX_thenFalse', () {
-      // ACT
+      // WHEN
       final actual = Speed.parse('[45]');
 
-      // EXPECT
+      // THEN
       expect(actual, isA<SingleSpeed>());
       actual as SingleSpeed;
       expect(actual.isIllegal, isFalse);
     });
 
     test('toString_whenCalled_thenReturnsFormattedString', () {
-      // ARRANGE
+      // GIVEN
       final speed = SingleSpeed(value: '120', isSquared: true, isCircled: false);
       final expectedString = 'SingleSpeed{value: 120, isSquared: true, isCircled: false}';
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(speed.toString(), equals(expectedString));
     });
 
     test('equality_whenEqual_shouldReturnTrue', () {
-      // ARRANGE
+      // GIVEN
       final a = SingleSpeed(value: '120', isSquared: true, isCircled: false);
       final b = SingleSpeed(value: '120', isSquared: true, isCircled: false);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a, equals(b));
     });
 
     test('equality_whenNotEqual_shouldReturnFalse', () {
-      // ARRANGE
+      // GIVEN
       final a = SingleSpeed(value: '120', isSquared: true, isCircled: false);
       final b = SingleSpeed(value: '80', isSquared: false, isCircled: false);
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(a == b, isFalse);
     });
   });

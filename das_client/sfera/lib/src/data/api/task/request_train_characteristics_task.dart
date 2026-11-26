@@ -39,6 +39,7 @@ class RequestTrainCharacteristicsTask({
 
   Future<void> requestTrainCharacteristics() async {
     final missingTrainCharacteristics = await findMissingTrainCharacteristics();
+    if (isCancelled) return;
     if (missingTrainCharacteristics.isEmpty) {
       _log.info('No missing train characteristics found...');
       _taskCompletedCallback(this, []);
@@ -57,8 +58,9 @@ class RequestTrainCharacteristicsTask({
       );
     }
 
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaRepo.messageHeader(sender: otnId.company),
+      messageHeader,
       b2gRequest: B2gRequestDto.createTCRequest(tcRequests),
     );
     _log.info('Sending train characteristics request...');
@@ -89,9 +91,7 @@ class RequestTrainCharacteristicsTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');

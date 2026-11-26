@@ -3,7 +3,7 @@ import 'package:app/pages/journey/journey_screen/widgets/table/cells/show_speed_
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfera/component.dart';
 

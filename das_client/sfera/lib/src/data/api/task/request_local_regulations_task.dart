@@ -42,9 +42,7 @@ class RequestLocalRegulationsTask({
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
-    if (isCancelled) return false;
-
+  Future<bool> handleReplyMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.hasErrors) {
       final errors = replyMessage.payload!.messageResponse!.errors;
       _log.info('Received reply with errors $errors');
@@ -91,6 +89,7 @@ class RequestLocalRegulationsTask({
 
   Future<void> _requestLocalRegulations() async {
     final missingSp = await _findMissingSegmentProfiles();
+    if (isCancelled) return;
     if (missingSp.isEmpty) {
       _log.info('No missing local regulations found...');
       _taskCompletedCallback(this, null);
@@ -111,8 +110,9 @@ class RequestLocalRegulationsTask({
       );
     }
 
+    final messageHeader = _sferaRepo.messageHeader(sender: otnId.company, messageId: nextRequestMessageId());
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-      _sferaRepo.messageHeader(sender: otnId.company),
+      messageHeader,
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),
     );
     _log.info('Sending local regulations segment profiles request...');

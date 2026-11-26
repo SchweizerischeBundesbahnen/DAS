@@ -9,7 +9,7 @@ import 'package:app/pages/journey/view_model/sfera_journey_view_model.dart';
 import 'package:app_links_x/component.dart';
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:train_identification/component.dart';

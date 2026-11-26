@@ -81,6 +81,7 @@
     "ru_feature_toggles_key_label_customer_oriented_departure_process": "Processo di partenza orientato alle esigenze della clientela (KoA)",
     "ru_feature_toggles_key_label_checklist_departure_process": "Checklist processo di partenza",
     "ru_feature_toggles_key_label_display_planned_time_deviation": "Scostamento rispetto al tempo previsto",
+    "ru_feature_toggles_key_label_display_brake_load_slip_brake_details": "Dettagli della frenatura nel bollettino di frenatura",
     "ru_admin_title": "Admin ITF DAS",
     "ru_admin_tab_ru_indications": "Note",
     "ru_admin_tab_ru_indication_templates": "Titolo e testi",

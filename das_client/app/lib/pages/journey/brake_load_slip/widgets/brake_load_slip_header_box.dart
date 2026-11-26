@@ -4,7 +4,7 @@ import 'package:app/theme/das_colors.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formation/component.dart';
 import 'package:intl/intl.dart';

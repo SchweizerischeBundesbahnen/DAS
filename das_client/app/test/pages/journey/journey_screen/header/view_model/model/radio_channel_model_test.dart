@@ -5,7 +5,7 @@ import 'package:sfera/component.dart';
 void main() {
   group('RadioChannelModel', () {
     test('mainContactsIdentifier_whenMainContactsNotEmpty_thenReturnsConcatenatedIdentifiers', () {
-      // ARRANGE
+      // GIVEN
       final testee = RadioChannelModel(
         radioContacts: RadioContactList(
           contacts: [
@@ -18,12 +18,12 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.mainContactsIdentifier, '123 456');
     });
 
     test('mainContactsIdentifier_whenSingleMainContact_thenReturnsSingleIdentifier', () {
-      // ARRANGE
+      // GIVEN
       final testee = RadioChannelModel(
         radioContacts: RadioContactList(
           contacts: [
@@ -34,7 +34,7 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.mainContactsIdentifier, '123');
     });
 
@@ -44,7 +44,7 @@ void main() {
     );
 
     test('showDotIndicator_whenMainContactsMoreThanOne_thenReturnsTrue', () {
-      // ARRANGE
+      // GIVEN
       final testee = RadioChannelModel(
         radioContacts: RadioContactList(
           contacts: [
@@ -56,12 +56,12 @@ void main() {
         ),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testee.showDotIndicator, true);
     });
 
     test('showDotIndicator_whenSelectiveContactsNotEmpty_thenReturnsTrue', () {
-      // ARRANGE
+      // GIVEN
       final testee = RadioChannelModel(
         radioContacts: RadioContactList(
           contacts: [
@@ -72,15 +72,15 @@ void main() {
         ),
       );
 
-      // ACT
+      // WHEN
       final showDot = testee.showDotIndicator;
 
-      // EXPECT
+      // THEN
       expect(showDot, true);
     });
 
     test('showDotIndicator_whenOneMainContactsAndSelectiveContactsEmpty_thenReturnsFalse', () {
-      // ARRANGE
+      // GIVEN
       final testee = RadioChannelModel(
         radioContacts: RadioContactList(
           contacts: [
@@ -91,15 +91,15 @@ void main() {
         ),
       );
 
-      // ACT
+      // WHEN
       final showDot = testee.showDotIndicator;
 
-      // EXPECT
+      // THEN
       expect(showDot, false);
     });
 
     test('equality_whenPropertiesAreEqual_thenObjectsAreEqual', () {
-      // ARRANGE
+      // GIVEN
       final model1 = RadioChannelModel(
         networkType: .gsmR,
         lastServicePoint: null,
@@ -111,12 +111,12 @@ void main() {
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(model1 == model2, true);
     });
 
     test('equality_whenPropertiesAreDifferent_thenObjectsAreNotEqual', () {
-      // ARRANGE
+      // GIVEN
       final model1 = RadioChannelModel(
         networkType: .gsmR,
         lastServicePoint: null,
@@ -128,12 +128,12 @@ void main() {
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(model1 == model2, false);
     });
 
     test('hashCode_whenPropertiesAreEqual_thenHashCodesAreEqual', () {
-      // ARRANGE
+      // GIVEN
       final model1 = RadioChannelModel(
         networkType: .gsmR,
         lastServicePoint: null,
@@ -145,7 +145,7 @@ void main() {
         radioContacts: RadioContactList(contacts: [MainContact(contactIdentifier: '123')], order: 0, endOrder: 0),
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(model1.hashCode, model2.hashCode);
     });
   });

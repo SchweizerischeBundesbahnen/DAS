@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sfera/component.dart';
 
 class ChevronAnimationController with ChangeNotifier {

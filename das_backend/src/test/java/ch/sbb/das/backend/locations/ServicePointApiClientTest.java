@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import ch.sbb.das.backend.common.DateTimeUtil;
 import ch.sbb.das.backend.locations.internal.ServicePoint;
 import ch.sbb.das.backend.locations.internal.ServicePointApiClient;
 import ch.sbb.das.backend.locations.internal.ServicePointResponse;
@@ -63,7 +64,7 @@ class ServicePointApiClientTest {
     }
 
     private String uri(int page, int size) {
-        LocalDate today = LocalDate.now();
+        LocalDate today = DateTimeUtil.today();
         return String.format(
             "/service-point-directory/v1/service-points?statusRestrictions=VALIDATED&countries=SWITZERLAND&countries=ITALY&countries=FRANCE&countries=GERMANY&countries=AUSTRIA&validToFromDate=%s&page=%s&size=%s",
             today, page, size);

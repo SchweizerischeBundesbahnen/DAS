@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class const DeviceScreen._() {
   /// Returns screen height in logical pixels (dp)

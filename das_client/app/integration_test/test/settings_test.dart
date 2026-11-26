@@ -1,7 +1,7 @@
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_input.dart';
 import 'package:app/widgets/company_selection/widgets/select_company_modal.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 

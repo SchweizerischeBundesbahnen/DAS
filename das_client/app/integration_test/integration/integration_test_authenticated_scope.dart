@@ -58,6 +58,7 @@ class IntegrationTestAuthenticatedScope extends AuthenticatedScope {
     getIt.registerAcknowledgedModificationRepository();
     _registerPersonalNotesRepository();
 
+    getIt.registerJourneyScopeViewModel();
     getIt.registerSferaJourneyViewModel();
     getIt.registerJourneyViewModel();
     getIt.registerJourneyNavigationViewModel();

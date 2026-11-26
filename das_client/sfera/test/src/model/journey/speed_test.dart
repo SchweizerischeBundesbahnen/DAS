@@ -54,10 +54,10 @@ void main() {
     );
 
     test('isValid_whenInvalidFormat_thenReturnsFalse', () {
-      // ARRANGE
+      // GIVEN
       const inputs = ['5a0', '', '(50)', '80/70/60', '80//60', '80 // 60'];
 
-      // ACT & EXPECT
+      // WHEN & THEN
       for (final input in inputs) {
         expect(Speed.isValid(input), isFalse, reason: 'Should be invalid: $input');
       }
@@ -69,30 +69,30 @@ void main() {
     );
 
     test('parse_whenSingleSpeedFormat_thenReturnsSingleSpeedType', () {
-      // ARRANGE
+      // GIVEN
       const inputs = ['80', '[90]', '{100}', 'XX', '[XX]', '{XX}', '{XX }'];
 
-      // ACT & EXPECT
+      // WHEN & THEN
       for (final input in inputs) {
         expect(Speed.parse(input), isA<SingleSpeed>());
       }
     });
 
     test('parse_whenGraduatedSpeedFormat_thenReturnsGraduatedSpeedType', () {
-      // ARRANGE
+      // GIVEN
       const inputs = ['80-70', '80-[70]-60', '{80}-XX-40', '{80}- XX- 40'];
 
-      // ACT & EXPECT
+      // WHEN & THEN
       for (final input in inputs) {
         expect(Speed.parse(input), isA<GraduatedSpeed>());
       }
     });
 
     test('parse_whenIncomingOutgoingFormat_thenReturnsIncomingOutgoingSpeedType', () {
-      // ARRANGE
+      // GIVEN
       const inputs = ['80/70', '80-70/60', '80/60-50', '80 /60- 50'];
 
-      // ACT & EXPECT
+      // WHEN & THEN
       for (final input in inputs) {
         expect(Speed.parse(input), isA<IncomingOutgoingSpeed>());
       }

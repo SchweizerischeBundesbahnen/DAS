@@ -7,8 +7,6 @@ import 'package:app/pages/journey/journey_screen/view_model/journey_position_vie
 import 'package:app/pages/journey/journey_screen/view_model/model/chevron_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_position_model.dart';
 import 'package:app/pages/journey/journey_screen/view_model/model/journey_table_model.dart';
-import 'package:app/pages/journey/journey_screen/view_model/personal_note_annotation.dart';
-import 'package:app/pages/journey/journey_screen/view_model/personal_notes_view_model.dart';
 import 'package:app/pages/journey/journey_screen/widgets/table/combined_foot_note_and_text_annotations.dart';
 import 'package:app/pages/journey/view_model/decisive_gradient_view_model.dart';
 import 'package:app/pages/journey/view_model/journey_aware_view_model.dart';
@@ -33,7 +31,6 @@ class JourneyTableViewModel({
   required final DetailModalViewModel _detailModalVM,
   required final DecisiveGradientViewModel _decisiveGradientVM,
   required final JourneyNavigationViewModel _navigationVM,
-  required final PersonalNotesViewModel _personalNotesVM,
   required final AcknowledgedModificationRepository _acknowledgedModificationRepository,
   required final UserPropertiesRepository _userPropertiesRepository,
 }) extends JourneyAwareViewModel {
@@ -77,7 +74,6 @@ class JourneyTableViewModel({
           _detailModalVM.openModalType,
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
-          _personalNotesVM.personalNoteAnnotations,
           _acknowledgedModificationRepository.model,
         ]).listen(
           (data) => _handleDataChanged(
@@ -88,8 +84,7 @@ class JourneyTableViewModel({
             detailModalType: data[4] as DetailModalType?,
             showDecisiveGradient: data[5] as bool,
             navigationModel: data[6] as JourneyNavigationModel?,
-            personalNoteAnnotations: data[7] as List<PersonalNoteAnnotation>,
-            acknowledgedModifications: data[8] as Set<Modification>,
+            acknowledgedModifications: data[7] as Set<Modification>,
           ),
         );
   }
@@ -107,7 +102,6 @@ class JourneyTableViewModel({
     required JourneyPositionModel position,
     required bool showDecisiveGradient,
     required Set<Modification> acknowledgedModifications,
-    required List<PersonalNoteAnnotation> personalNoteAnnotations,
     JourneyNavigationModel? navigationModel,
     DetailModalType? detailModalType,
     Journey? journey,
@@ -117,9 +111,7 @@ class JourneyTableViewModel({
       return;
     }
 
-    final journeyData = [...journey.data, ...personalNoteAnnotations];
-
-    final rowData = journeyData
+    final rowData = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, settings))
         .addSwitchbackRows(journey.metadata.switchbackStationMap)
         .hideJourneyAnnotationsOnSwitchbackStations(journey.metadata.switchbackStationMap)

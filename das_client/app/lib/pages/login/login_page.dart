@@ -7,7 +7,7 @@ import 'package:app/pages/login/login_view_model.dart';
 import 'package:app/pages/login/widgets/draggable_bottom_sheet.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()

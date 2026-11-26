@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.indications.internal;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.common.error.NotFoundException;
 import ch.sbb.das.backend.companies.CompanyAuthorizer;
 import ch.sbb.das.backend.companies.CompanyCode;
@@ -92,7 +93,7 @@ public class RuIndicationServiceImpl {
         if (canAccessCompanies.test(entity.getCompanies())) {
             return true;
         }
-        log.info("{} {} belongs to companies outside the current tenant, treating it as not found", RESOURCE, entity.getId());
+        log.atInfo().addKeyValue(LogKeys.RESOURCE, RESOURCE).addKeyValue(LogKeys.RESOURCE_ID, entity.getId()).log("Resource of another tenant treated as not found");
         return false;
     }
 }

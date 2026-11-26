@@ -4,7 +4,7 @@ import 'package:app/pages/journey/journey_screen/header/widgets/chronograph_head
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/time_constants.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

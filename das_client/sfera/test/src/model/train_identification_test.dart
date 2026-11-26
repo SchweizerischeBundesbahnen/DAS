@@ -14,7 +14,7 @@ void main() {
     });
 
     test('equals_whenSameProperties_thenReturnsTrue', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -26,12 +26,12 @@ void main() {
         date: now,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA == testeeB, isTrue);
     });
 
     test('equals_whenDifferentRu_thenReturnsFalse', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -43,12 +43,12 @@ void main() {
         date: now,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA == testeeB, isFalse);
     });
 
     test('equals_whenDifferentTrainNumber_thenReturnsFalse', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -60,12 +60,12 @@ void main() {
         date: now,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA == testeeB, isFalse);
     });
 
     test('equals_whenDifferentDay_thenReturnsFalse', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -77,12 +77,12 @@ void main() {
         date: tomorrow,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA == testeeB, isFalse);
     });
 
     test('equals_whenOnSameDay_thenReturnsTrue', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -94,12 +94,12 @@ void main() {
         date: inFiveHours,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA == testeeB, isTrue);
     });
 
     test('hashCode_whenSameProperties_thenReturnsSameHashCode', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -111,12 +111,12 @@ void main() {
         date: now,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA.hashCode, equals(testeeB.hashCode));
     });
 
     test('hashCode_whenDifferentProperties_thenReturnsDifferentHashCode', () {
-      // ARRANGE
+      // GIVEN
       final testeeA = TrainIdentification(
         companyCode: '1285',
         trainNumber: '1234',
@@ -128,7 +128,7 @@ void main() {
         date: now,
       );
 
-      // ACT & EXPECT
+      // WHEN & THEN
       expect(testeeA.hashCode == testeeB.hashCode, isFalse);
     });
   });

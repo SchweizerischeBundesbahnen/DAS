@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.13.0
+  sdk: ^3.14.0
 
 resolution: workspace
 
@@ -13,7 +13,7 @@ dependencies:
   # https://pub.dev/packages/sensors_plus
   sensors_plus: ^7.1.1
   # https://pub.dev/packages/geolocator
-  geolocator: ^14.1.1
+  geolocator: ^14.1.2
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/path_provider
@@ -23,7 +23,7 @@ dependencies:
 
 # TODO: Remove when updating geolocator with new geolocator_apple version
 dependencies_override:
-  geolocator_apple: 2.3.15
+  geolocator_apple: ^2.4.3
 
 
 dev_dependencies:

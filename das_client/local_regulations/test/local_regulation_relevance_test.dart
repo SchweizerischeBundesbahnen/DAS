@@ -16,7 +16,7 @@ void main() {
   });
 
   test('from_whenEmpty_thenReturnNull', () {
-    // ACT & EXPECT
+    // WHEN & THEN
     final result = LocalRegulationRelevance.from('');
     expect(result, isNull);
   });
@@ -31,20 +31,20 @@ void main() {
 }
 
 void _checkAbbreviationAtStart(String abbreviation, LocalRegulationRelevance? expected) {
-  // ARRANGE
+  // GIVEN
   final text = '$abbreviation Test Text';
 
-  // ACT & EXPECT
+  // WHEN & THEN
   final result = LocalRegulationRelevance.from(text);
   expect(result, expected);
 }
 
 void _checkAbbreviationNotAtStart(String abbreviation) {
-  // ARRANGE
+  // GIVEN
   final abbreviationBetween = 'Test $abbreviation Text';
   final abbreviationAtEnd = 'Test Text $abbreviation';
 
-  // ACT & EXPECT
+  // WHEN & THEN
   expect(LocalRegulationRelevance.from(abbreviationBetween), isNull);
   expect(LocalRegulationRelevance.from(abbreviationAtEnd), isNull);
 }

@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:core_data/component.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 

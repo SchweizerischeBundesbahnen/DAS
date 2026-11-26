@@ -45,10 +45,10 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
@@ -61,42 +61,42 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed);
     testee.insert(type: .advisedSpeed);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
   test('callback_whenSingleItemInsertedWithCallback_thenCallbackIsCalled', () {
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
 
-    // EXPECT
+    // THEN
     expect(mockCallback.callCounter, equals(1));
   });
 
   test('callback_whenSingleItemWithCallbackInsertedTwice_thenCallbackIsCalledTwice', () {
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
 
-    // EXPECT
+    // THEN
     expect(mockCallback.callCounter, equals(2));
   });
 
   test('callback_whenSingleItemInsertedWithAndWithoutCallback_thenCallbackIsCalledOnce', () {
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
     testee.insert(type: .advisedSpeed);
 
-    // EXPECT
+    // THEN
     expect(mockCallback.callCounter, equals(1));
   });
 
   test('modelValue_whenSingleStreamAdded_thenEmitsCorrectlyDependingOnStream', () async {
-    // ARRANGE
+    // GIVEN
     expectLater(
       testee.model,
       emitsInOrder([
@@ -107,16 +107,16 @@ void main() {
     final controller = BehaviorSubject<bool>.seeded(false);
     testee.addStream(type: .advisedSpeed, stream: controller.stream);
 
-    // ACT
+    // WHEN
     controller.add(true);
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
   test('modelValue_whenSingleStreamAddedThenRemoved_thenEmitsCorrectlyDependingOnStream', () async {
-    // ARRANGE
+    // GIVEN
     expectLater(
       testee.model,
       emitsInOrder([
@@ -128,22 +128,22 @@ void main() {
     final controller = BehaviorSubject<bool>.seeded(false);
     testee.addStream(type: .advisedSpeed, stream: controller.stream);
 
-    // ARRANGE
+    // GIVEN
     controller.add(true);
     await processStreams();
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
 
-    // ACT
+    // WHEN
     testee.removeStream(type: .advisedSpeed);
     controller.add(true);
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(List.empty()));
   });
 
   test('modelValue_whenTwoStreamsAdded_thenEmitsCorrectlyDependingOnStreams', () async {
-    // ARRANGE
+    // GIVEN
     expectLater(
       testee.model,
       emitsInOrder([
@@ -158,14 +158,14 @@ void main() {
     testee.addStream(type: .advisedSpeed, stream: controller.stream);
     testee.addStream(type: .disturbance, stream: controller2.stream);
 
-    // ACT
+    // WHEN
     controller.add(true);
     controller2.add(true);
 
     controller.add(false);
     await processStreams();
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.disturbance]));
   });
 
@@ -179,20 +179,20 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed);
     testee.insert(type: .departureDispatch);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed, .departureDispatch]));
   });
 
   test('callback_whenTwoItemsInsertedWithCallbacks_thenCallbacksAreAllCalled', () {
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
     testee.insert(type: .departureDispatch, callback: mockCallback2.call);
 
-    // EXPECT
+    // THEN
     expect(mockCallback.callCounter, equals(1));
     expect(mockCallback2.callCounter, equals(1));
   });
@@ -208,12 +208,12 @@ void main() {
       ]),
     );
 
-    // ACT
+    // WHEN
     testee.insert(type: .advisedSpeed);
     testee.insert(type: .departureDispatch);
     testee.insert(type: .illegalSegmentNoReplacement);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.illegalSegmentNoReplacement, .advisedSpeed]));
   });
 
@@ -227,13 +227,13 @@ void main() {
       ]),
     );
 
-    // ARRANGE
+    // GIVEN
     testee.insert(type: .advisedSpeed);
 
-    // ACT
+    // WHEN
     testee.remove(type: .advisedSpeed);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(List.empty()));
   });
 
@@ -247,14 +247,14 @@ void main() {
       ]),
     );
 
-    // ARRANGE
+    // GIVEN
     testee.insert(type: .advisedSpeed);
 
-    // ACT
+    // WHEN
     testee.remove(type: .advisedSpeed);
     testee.remove(type: .advisedSpeed);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(List.empty()));
   });
 
@@ -269,14 +269,14 @@ void main() {
       ]),
     );
 
-    // ARRANGE
+    // GIVEN
     testee.insert(type: .advisedSpeed);
     testee.insert(type: .departureDispatch);
 
-    // ACT
+    // WHEN
     testee.remove(type: .departureDispatch);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed]));
   });
 
@@ -292,20 +292,20 @@ void main() {
       ]),
     );
 
-    // ARRANGE
+    // GIVEN
     testee.insert(type: .advisedSpeed);
     testee.insert(type: .departureDispatch);
     testee.insert(type: .illegalSegmentNoReplacement);
 
-    // ACT
+    // WHEN
     testee.remove(type: .illegalSegmentNoReplacement);
 
-    // EXPECT
+    // THEN
     expect(testee.modelValue, equals(<NotificationType>[.advisedSpeed, .departureDispatch]));
   });
 
   test('callback_whenThreeItemsInsertedAndRemovedInSpecialOrder_thenCallbacksAreAllCalledCorrectly', () {
-    // ARRANGE
+    // GIVEN
     testee.insert(type: .advisedSpeed, callback: mockCallback.call);
     testee.insert(type: .illegalSegmentNoReplacement);
     testee.insert(type: .departureDispatch, callback: mockCallback2.call);
@@ -313,10 +313,10 @@ void main() {
     // should not call since low priority
     expect(mockCallback2.callCounter, equals(0));
 
-    // ACT
+    // WHEN
     testee.remove(type: .illegalSegmentNoReplacement);
 
-    // EXPECT
+    // THEN
     expect(mockCallback.callCounter, equals(1));
     // called after removing highest priority
     expect(mockCallback2.callCounter, equals(1));

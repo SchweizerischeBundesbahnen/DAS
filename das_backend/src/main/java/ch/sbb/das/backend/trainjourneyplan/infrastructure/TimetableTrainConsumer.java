@@ -1,6 +1,7 @@
 package ch.sbb.das.backend.trainjourneyplan.infrastructure;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.trainjourneyplan.application.TimetableService;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.train.TimetableTrainKey;
 import ch.sbb.das.backend.trainjourneyplan.infrastructure.model.train.TimetableTrainValue;
@@ -52,10 +53,11 @@ public class TimetableTrainConsumer {
         List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> filteredTrains = filterAndDeserialize(recordsWithVtSuffix);
         List<ConsumerRecord<TimetableTrainKey, TimetableTrainValue>> distinctRecords = ListUtil.removeDuplicatesKeepLast(filteredTrains, this::getTrassendIdAndFahrplanPeriode);
 
-        log.debug("{} records with {} valid trains, last offset: {}",
-            records.size(),
-            recordsWithVtSuffix.size(),
-            records.isEmpty() ? "n/a" : records.getLast().offset());
+        log.atDebug()
+            .addKeyValue("records", records.size())
+            .addKeyValue("validTrains", recordsWithVtSuffix.size())
+            .addKeyValue(LogKeys.KAFKA_OFFSET, records.isEmpty() ? null : records.getLast().offset())
+            .log("Timetable train batch received");
         timetableService.deleteOrSaveTrains(distinctRecords);
     }
 

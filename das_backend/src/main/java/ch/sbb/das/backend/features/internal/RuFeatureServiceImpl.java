@@ -1,5 +1,6 @@
 package ch.sbb.das.backend.features.internal;
 
+import ch.sbb.das.backend.common.LogKeys;
 import ch.sbb.das.backend.common.error.BadRequestException;
 import ch.sbb.das.backend.common.error.ConflictException;
 import ch.sbb.das.backend.common.error.NotFoundException;
@@ -107,7 +108,7 @@ public class RuFeatureServiceImpl implements RuFeatureService {
         if (canAccessCompanies.test(Set.of(entity.getCompanyCode()))) {
             return true;
         }
-        log.info("{} {} belongs to a company outside the current tenant, treating it as not found", RESOURCE, entity.getId());
+        log.atInfo().addKeyValue(LogKeys.RESOURCE, RESOURCE).addKeyValue(LogKeys.RESOURCE_ID, entity.getId()).log("Resource of another tenant treated as not found");
         return false;
     }
 

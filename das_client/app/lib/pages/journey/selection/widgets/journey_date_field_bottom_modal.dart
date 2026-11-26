@@ -2,7 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_text_field.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// In the JourneyPage, show a bottom modal sheet.

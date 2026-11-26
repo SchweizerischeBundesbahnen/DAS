@@ -82,10 +82,10 @@ void main() {
     });
 
     test('push_whenNewJourneyAdded_thenUpdatesModel', () async {
-      // ACT
+      // WHEN
       await testee.push(trainId1);
 
-      // EXPECT
+      // THEN
       final model = testee.modelValue!;
       expect(model.trainIdentification, trainId1);
       expect(model.currentIndex, 0);
@@ -93,13 +93,13 @@ void main() {
     });
 
     test('push_whenSecondNewJourneyAdded_thenUpdatesModel', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
 
-      // ACT
+      // WHEN
       await testee.push(trainId2);
 
-      // EXPECT
+      // THEN
       final model = testee.modelValue!;
       expect(model.trainIdentification, trainId2);
       expect(model.currentIndex, 1);
@@ -107,14 +107,14 @@ void main() {
     });
 
     test('push_whenSameJourneyAddedTwice_thenDoesNotChangeModelOrLength', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       final model1 = testee.modelValue;
 
-      // ACT
+      // WHEN
       await testee.push(trainId1);
 
-      // EXPECT
+      // THEN
       final model2 = testee.modelValue;
       expect(model2, model1);
       expect(model2!.trainIdentification, trainId1);
@@ -123,51 +123,51 @@ void main() {
     });
 
     test('push_whenNewJourneyAddedAfterInit_thenCallsConnectInRepoButNotDisconnect', () async {
-      // ACT
+      // WHEN
       await testee.push(trainId1);
 
-      // EXPECT
+      // THEN
       verify(mockSferaRepo.connect(any)).called(1);
       verifyNever(mockSferaRepo.disconnect());
     });
 
     test('push_whenSameJourneyAdded_thenDoesNotCallConnectInRepoTwice', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       reset(mockSferaRepo);
 
-      // ACT
+      // WHEN
       await testee.push(trainId1);
 
-      // EXPECT
+      // THEN
       verifyNever(mockSferaRepo.connect(any));
       verifyNever(mockSferaRepo.disconnect());
     });
 
     test('push_whenNewJourneyAdded_thenCallsDisconnectAndConnectInRepo', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       reset(mockSferaRepo);
 
-      // ACT
+      // WHEN
       await testee.push(trainId2);
 
-      // EXPECT
+      // THEN
       verify(mockSferaRepo.connect(trainId2.trainIdentification)).called(1);
       verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('next_whenCalled_thenMovesToNextJourney', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
       await testee.push(trainId2); // set current to trainId2
 
-      // ACT
+      // WHEN
       await testee.next();
 
-      // EXPECT
+      // THEN
       final model = testee.modelValue!;
       expect(model.trainIdentification, trainId3);
       expect(model.currentIndex, 2);
@@ -175,33 +175,33 @@ void main() {
     });
 
     test('next_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
       await testee.push(trainId2); // set current to trainId2
       reset(mockSferaRepo);
 
-      // ACT
+      // WHEN
       await testee.next();
 
-      // EXPECT
+      // THEN
       verify(mockSferaRepo.connect(any)).called(1);
       verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('next_whenAtEnd_thenDoesNotChangeModel', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
       await testee.push(trainId3); // set current to last
       final modelBefore = testee.modelValue;
 
-      // ACT
+      // WHEN
       await testee.next();
 
-      // EXPECT
+      // THEN
       final modelAfter = testee.modelValue;
       expect(modelAfter, modelBefore);
       expect(modelAfter!.trainIdentification, trainId3);
@@ -210,16 +210,16 @@ void main() {
     });
 
     test('previous_whenCalled_thenMovesToPreviousJourney', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
       await testee.push(trainId2); // set current to trainId2
 
-      // ACT
+      // WHEN
       await testee.previous();
 
-      // EXPECT
+      // THEN
       final model = testee.modelValue!;
       expect(model.trainIdentification, trainId1);
       expect(model.currentIndex, 0);
@@ -227,30 +227,30 @@ void main() {
     });
 
     test('previous_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
       await testee.push(trainId2); // set current to trainId2
       reset(mockSferaRepo);
 
-      // ACT
+      // WHEN
       await testee.previous();
 
-      // EXPECT
+      // THEN
       verify(mockSferaRepo.connect(any)).called(1);
       verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('previous_whenAtStart_thenDoesNotChangeModel', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       final modelBefore = testee.modelValue;
 
-      // ACT
+      // WHEN
       await testee.previous();
 
-      // EXPECT
+      // THEN
       final modelAfter = testee.modelValue;
       expect(modelAfter, modelBefore);
       expect(modelAfter!.trainIdentification, trainId1);
@@ -259,24 +259,24 @@ void main() {
     });
 
     test('dispose_whenCalled_thenClearsJourneysAndClosesStream', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
 
-      // ACT
+      // WHEN
       testee.dispose();
 
-      // EXPECT
+      // THEN
       expect(() => testee.modelValue, returnsNormally);
       verify(mockSferaRepo.disconnect()).called(1);
     });
     test('model_stream_whenSferaRemoteRepoDisconnectsWithError_thenEmitsNullOnce', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await processStreams();
       emitRegister.clear();
       when(mockSferaRepo.lastError).thenReturn(RequestTimeout());
 
-      // ACT
+      // WHEN
       mockStream.add(.disconnected);
       await processStreams();
 
@@ -286,59 +286,59 @@ void main() {
     });
 
     test('model_stream_whenPushCalledMultipleTimesWithSameTrainId_thenEmitsOnce', () async {
-      // ACT
+      // WHEN
       await testee.push(trainId1);
       await testee.push(trainId1);
       await testee.push(trainId1);
 
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.where((e) => e != null).length, 1);
     });
 
     test('model_stream_whenPushDifferentTrainIds_thenEmitsForEach', () async {
-      // ACT
+      // WHEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await testee.push(trainId3);
 
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.where((e) => e != null).length, 3);
     });
 
     test('model_stream_whenNextOrPreviousCalledAtBounds_thenDoesNotEmit', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       await testee.previous(); // at start, should not emit
       await testee.next(); // at end, should not emit
 
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.where((e) => e != null).length, 0);
     });
 
     test('model_stream_whenNextAndPreviousCalledWithinBounds_thenEmits', () async {
-      // ARRANGE
+      // GIVEN
       await testee.push(trainId1);
       await testee.push(trainId2);
       await processStreams();
       emitRegister.clear();
 
-      // ACT
+      // WHEN
       await testee.previous(); // should emit (move to trainId1)
       await testee.next(); // should emit (move to trainId2)
 
       await processStreams();
 
-      // EXPECT
+      // THEN
       expect(emitRegister.where((e) => e != null).length, 2);
     });
 
@@ -347,7 +347,7 @@ void main() {
       await testee.push(trainId2);
       await processStreams();
 
-      // EXPECT
+      // THEN
       verify(mockScopeHandler.push<JourneyScope>()).called(2);
       verify(mockScopeHandler.pop<JourneyScope>()).called(2);
     });
@@ -356,7 +356,7 @@ void main() {
       await testee.replaceWith([trainId1]);
       await processStreams();
 
-      // EXPECT
+      // THEN
       verify(mockScopeHandler.push<JourneyScope>()).called(1);
       verify(mockScopeHandler.pop<JourneyScope>()).called(1);
     });
@@ -365,7 +365,7 @@ void main() {
       await testee.replaceWith([trainId1]);
       await processStreams();
 
-      // EXPECT
+      // THEN
       verify(
         mockUserPropertiesRepository.saveUserProperty(
           LocalKeyValueStoreKeys.lastUsedCompanyCode,
