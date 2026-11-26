@@ -11,7 +11,7 @@ import '../mocks/mock_settings_repository.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  /*testWidgets('settings_whenOpened_thenShowsHeaderInformation|asZ1tS4kU7Nf5OXr8iPr|tests:427', (tester) async {
+  testWidgets('settings_whenOpened_thenShowsHeaderInformation|asZ1tS4kU7Nf5OXr8iPr|tests:427', (tester) async {
     await IntegrationTestApp.start(tester);
     await openDrawer(tester);
     await tapElement(tester, find.text(l10n.w_navigation_drawer_settings_title));
@@ -173,7 +173,7 @@ void main() {
     await waitUntilExists(tester, find.text(l10n.p_journey_table_kilometre_label));
 
     await disconnect(tester);
-  });*/
+  });
 
   testWidgets('settings_whenStationSignalHidden_thenHidesCorrectSignals|wfJtznpIEKWtPVmb9Rw0|tests:811', (
     tester,
