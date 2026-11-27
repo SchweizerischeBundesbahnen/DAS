@@ -6,7 +6,7 @@ part 'user_property_model.g.dart';
 class UserPropertyModel({
   required final String key,
   required final DateTime? lastUpdated,
-  required final Object? value, //todo potentially dynamic instead of object...
+  required final Object? value,
 }) {
   factory UserPropertyModel.fromJson(Map<String, dynamic> json) {
     return _$UserPropertyModelFromJson(json);
