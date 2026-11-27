@@ -2,6 +2,38 @@
 
 # Driver Advisory System
 
+The Driver Advisory System (DAS) shows engine drivers all required and supporting information for safe train operation. It integrates a wide range of data sources to present ideal driving profiles for each journey.
+
+This repository covers the onboard part of the driver advisory system as specified in the normative context - see [Normative Scope](#normative-scope) below.
+
+The system is initially dedicated to railway undertakings operating within Switzerland and its border regions.
+
+## Structure
+
+This is a monorepository with the following applications.
+
+### DAS-Client
+
+[das_client](das_client/README.md) is the tablet app for Android and iOS that shows train drivers the journey data they need while driving. This is the core of the onboard system.
+
+### DAS-Backend
+
+[das_backend](das_backend/README.md) is a server application that gives the DAS-Client data SFERA does not cover, such as additional cargo data, and serves the configuration and master data that administrators maintain in the DAS Admin application.
+
+### DAS Admin
+
+[das_admin_tool](das_admin_tool/README.md) is a supportive web application in which administrators maintain configuration and master data, such as settings per railway undertaking.
+
+### Test and demo tools
+
+#### SFERA-Mock
+
+[sfera_mock](sfera_mock/README.md) is a test and demo server that imitates TMS-VAD, the infrastructure manager's DAS-TS, and answers SFERA requests from the DAS-Client and DAS-Playground over MQTT.
+
+#### DAS-Playground
+
+[das_playground](das_playground/README.md) is a test and debug web application that shows the SFERA messages in the SFERA-Mock queues and sends messages to it.
+ 
 ## Normative scope
 
 This project covers mainly the **DAS On-Board** (aka **DAS**, **DAS OB**) railway undertaking (RU)
@@ -9,69 +41,14 @@ component (see [mobile App](#Mobile-App)) according
 to [UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices),
 also
 see [high-level system architecture](./docs/content/architecture/05_building_block_view/01_whitebox_view.md).
+SFERA Protocol is used for some international compatibility, but may also contain country
+specific extensions (NSPs).
 
 Out of Scope:
 
 * The Traffic Management System **IM DAS-TS** (aka IM DAS-Trackside) is not part of this project.
 * Operating aspects to national data-sources involved (for e.g. the Swiss IM DAS-TS instance
   TMS-VAD).
-
-## Introduction
-
-Driver Advisory System (DAS) is an innovative tool designed to assist train drivers in the delivery
-of efficient and punctual train services. By integrating a wide range of data sources, including
-live positioning, infrastructure characteristics, and real-time transport plans, the system
-calculatesand presents the ideal driving profile for each journey.
-
-RUs and countries might have its own additional legal requirements and specialities, therefore this
-repository is initially dedicated to RUs of Switzerland covering encompassing aspects necessary for
-implementation and integration.
-
-SFERA Protocol is used for some international compatibility, but may also contain country
-specific extensions (NSPs).
-
-## Structure
-
-This repository is structured into several key modules, each dedicated to a specific aspect of the
-system.
-
-### Mobile App (aka **DAS-Client** within this project)
-
-- [das_client](das_client/README.md)
-    - [Dart](https://dart.dev/)
-    - [Flutter](https://flutter.dev/)
-
-### Backend (aka **DAS-Backend** within this project)
-
-- [das_backend](das_backend/README.md)
-    - [Java](https://www.java.com/de/), [openJDK](https://openjdk.org/)
-    - [Spring Framework](https://spring.io/projects/spring-framework)
-      with [Spring Boot](https://spring.io/projects/spring-boot)
-
-![business_context.drawio.svg](docs/content/architecture/03_context/business_context.drawio.svg)
-
-### Admin-Tool (aka **DAS-Admin-Tool** within this project)
-
-- [das_admin_tool](das_admin_tool/README.md)
-    - [TypeScript](https://www.typescriptlang.org/)
-    - [Angular](https://angular.io/)
-
-### Tools
-
-#### SFERA-Mock
-
-Mock IM DAS-TS
-
-- [sfera_mock](sfera_mock/README.md)
-    - [Java](https://www.java.com/)
-    - [Spring Framework](https://spring.io/projects/spring-framework)
-      with [Spring Boot](https://spring.io/projects/spring-boot)
-
-#### Playground (aka **DAS-Playground** within this project)
-
-- [das_playground](das_playground/README.md)
-    - [TypeScript](https://www.typescriptlang.org/)
-    - [Angular](https://angular.io/)
 
 ## Getting-Started
 
