@@ -7,22 +7,36 @@ cascade:
 
 DRAFT
 
-## What is "Driver Advisory System (DAS)"?
+## What is the Driver Advisory System (DAS)?
 
-* DAS is a comprehensive assistance system for locomotive personnel (i.e. engine drivers), who need
-  up-to-date and precise information for their task of running a train. The assistance system
-  processes and displays the necessary data in an optimal and consistent manner in order to ensure
-  robust, stable and safe railway operations.
-* DAS is based on the SFERA
-  standard [UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices)
-  and can therefore be used by railway undertakings (RU) running
-  on rail networks where infrastructure managers (IM) provide information through SFERA.
-  * _The DAS constantly recalculates conflict-free and energy-optimised driving-profile from real-time information about a train's path, infrastructure constraints, timing targets, etc._
+DAS shows engine drivers the timetable and driving information for their train on a tablet. It
+does not replace the driver machine interface (DMI) or line-side signals.
 
-## Why is it called DAS?
+DAS implements the SFERA
+standard [UIC IRS 90940:Ed3](https://uic.org/com/enews/article/3rd-edition-of-the-sfera-protocol-available-now-including-all-on-board-devices).
+Railway undertakings (RU) can use it on networks where the infrastructure manager (IM) provides
+journey data through SFERA. In Switzerland, the IM system is TMS-VAD. TMS-VAD computes the driving
+advice, and DAS displays it unchanged.
 
-Driver Advisory System (DAS), is the official naming used by the UIC. Yes, we have been that
-creative ...
+## Name
+
+Driver Advisory System is the term that UIC IRS 90940 uses. SFERA divides a DAS into an on-board
+part, DAS-OB, and a trackside part, DAS-TS. This project builds the on-board part for railway
+undertakings.
+
+## Functional requirements
+
+The DAS client shows the journey for a train number and date. This includes operational points,
+speeds per train and brake series, slow zones, curves, level crossings, radio channels, notes and
+the brake sheet. The client shows the current position, punctuality and the driving advice from
+TMS-VAD. It warns the driver before a closed signal.
+
+The DAS client exchanges journey profiles, segment profiles and train characteristics with TMS-VAD
+over SFERA on MQTT. The DAS backend fetches segment profiles and train characteristics from TMS-VAD
+in advance. The client stores them locally for offline use.
+
+The DAS admin tool is a web application. RUs use it to manage RU-specific notes, links, features
+and supported app versions.
 
 ## Next
 
