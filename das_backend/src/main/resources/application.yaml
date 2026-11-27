@@ -13,6 +13,10 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  http:
+    clients:
+      connect-timeout: ${HTTP_CLIENTS_CONNECT_TIMEOUT:PT5S}
+      read-timeout: ${HTTP_CLIENTS_READ_TIMEOUT:PT10S}
   security:
     oauth2:
       resourceserver:
@@ -206,6 +210,46 @@ proxy:
 atlas:
   base-url: ${ATLAS_BASE_URL}
   import-cron: 0 0 3 * * ? # every day at 3
+
+downstream:
+  oauth2-token:
+    connect-timeout: ${OAUTH2_TOKEN_CONNECT_TIMEOUT:PT5S}
+    read-timeout: ${OAUTH2_TOKEN_READ_TIMEOUT:PT10S}
+  clients:
+    gems:
+      connect-timeout: ${GEMS_CONNECT_TIMEOUT:PT5S}
+      read-timeout: ${GEMS_READ_TIMEOUT:PT10S}
+      retry:
+        max-retries: ${GEMS_MAX_RETRIES:2}
+        delay: ${GEMS_RETRY_DELAY:PT0.5S}
+        multiplier: ${GEMS_RETRY_MULTIPLIER:2}
+        read-timeout-retried: ${GEMS_RETRY_READ_TIMEOUT:false}
+        timeout: ${GEMS_RETRY_TIMEOUT:PT15S}
+    orca:
+      connect-timeout: ${ORCA_CONNECT_TIMEOUT:PT5S}
+      read-timeout: ${ORCA_READ_TIMEOUT:PT10S}
+      retry:
+        max-retries: ${ORCA_MAX_RETRIES:2}
+        delay: ${ORCA_RETRY_DELAY:PT0.5S}
+        multiplier: ${ORCA_RETRY_MULTIPLIER:2}
+        read-timeout-retried: ${ORCA_RETRY_READ_TIMEOUT:false}
+        timeout: ${ORCA_RETRY_TIMEOUT:PT15S}
+    # per page of the nightly location import
+    atlas:
+      connect-timeout: ${ATLAS_CONNECT_TIMEOUT:PT5S}
+      read-timeout: ${ATLAS_READ_TIMEOUT:PT30S}
+      retry:
+        max-retries: ${ATLAS_MAX_RETRIES:3}
+        delay: ${ATLAS_RETRY_DELAY:PT2S}
+        multiplier: ${ATLAS_RETRY_MULTIPLIER:2}
+        read-timeout-retried: ${ATLAS_RETRY_READ_TIMEOUT:true}
+    # only the token call, with the timeouts of downstream.oauth2-token
+    sfera:
+      retry:
+        max-retries: ${SFERA_TOKEN_MAX_RETRIES:2}
+        delay: ${SFERA_TOKEN_RETRY_DELAY:PT0.5S}
+        multiplier: ${SFERA_TOKEN_RETRY_MULTIPLIER:2}
+        read-timeout-retried: ${SFERA_TOKEN_RETRY_READ_TIMEOUT:false}
 
 admin:
   clean-up:

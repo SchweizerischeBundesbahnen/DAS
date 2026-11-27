@@ -50,6 +50,8 @@ public class TransportPaperController {
     @ApiResponse(responseCode = "302", description = "Redirect to downstream pre-signed transport paper URL")
     @ApiResponse(responseCode = "502", description = ApiDocumentation.STATUS_502,
         content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+    @ApiResponse(responseCode = "504", description = ApiDocumentation.STATUS_504,
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
     @ApiErrorResponses
     @GetMapping(path = API_TRANSPORT_PAPERS + "/{trainPathId}/{operatingDay}")
     ResponseEntity<Void> resolveTransportPaperUrl(

@@ -49,7 +49,7 @@ Shared keys are constants in `LogKeys`. ECS names where ECS has one, camelCase d
 | `url.query`                 | access line                        | raw query string                                 |
 | `http.response.status_code` | access line, error handlers        | status as number                                 |
 | `user_agent.original`       | access line                        | `User-Agent` header                              |
-| `durationMs`                | access line, jobs                  | elapsed milliseconds (not ECS `event.duration`)  |
+| `durationMs`                | access line, jobs, `DownstreamCallHandler` | elapsed milliseconds (not ECS `event.duration`)  |
 | `mdc.instana.trace.id`      | MDC, Instana agent                 | trace id, correlates with `Problem.traceId`      |
 | `trainNumber`               | preload attempt, Kafka record      | operational train number                         |
 | `operationalDay`            | Kafka record                       | `LocalDate`                                      |
@@ -57,6 +57,8 @@ Shared keys are constants in `LogKeys`. ECS names where ECS has one, camelCase d
 | `kafka.offset`              | Kafka consumers                    | offset                                           |
 | `zipKey`                    | preload bucket                     | object key of a zip                              |
 | `downstreamStatusCode`      | 502 handler                        | status of the downstream service                 |
+| `downstream`                | `DownstreamCallHandler`, 504 and 502 handler | log name, e.g. `orca-token`              |
+| `operation`, `attempt`      | `DownstreamCallHandler`            | e.g. `getTransportPaperLink`, `2`                |
 | `problemTitle`, `problemDetail` | 4xx handler                    | title and detail of the `Problem` response       |
 | `reason`                    | rejections, skipped work           | free text, e.g. the exception message            |
 | `resource`, `resourceId`    | tenant checks                      | resource type and id treated as not found        |
@@ -66,7 +68,8 @@ Line-local keys (counts such as `requested`, `processed`, `rows`) are camelCase 
 ### Exceptions
 
 Whenever a throwable is in hand at WARN or ERROR, pass it with `setCause`, never only its message. An exception is logged once, at the boundary that handles
-it (exception handler, scheduler, consumer); no log-and-rethrow. 4xx lines carry no stack trace.
+it (exception handler, scheduler, consumer); no log-and-rethrow. 4xx lines carry no stack trace. A failed attempt of a downstream call (`DownstreamCallHandler`)
+logs a `reason` without stack trace. The handler of the final failure logs the throwable.
 
 ### Privacy
 

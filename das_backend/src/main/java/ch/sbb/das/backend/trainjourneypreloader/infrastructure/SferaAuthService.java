@@ -1,14 +1,15 @@
 package ch.sbb.das.backend.trainjourneypreloader.infrastructure;
 
 import ch.sbb.das.backend.common.DateTimeUtil;
+import ch.sbb.das.backend.common.downstream.Downstream;
+import ch.sbb.das.backend.common.downstream.DownstreamCallHandler;
+import ch.sbb.das.backend.common.error.DownstreamCallException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 
 @Service
 @Slf4j
@@ -17,11 +18,13 @@ public class SferaAuthService {
     public static final String REGISTRATION_ID = "azure";
     public static final int TOKEN_REFRESH_MARGIN_SECONDS = 30;
     private final OAuth2AuthorizedClientManager authorizedClientManager;
+    private final DownstreamCallHandler downstreamCallHandler;
 
     private OAuth2AccessToken accessToken;
 
-    public SferaAuthService(OAuth2AuthorizedClientManager authorizedClientManager) {
+    public SferaAuthService(OAuth2AuthorizedClientManager authorizedClientManager, DownstreamCallHandler downstreamCallHandler) {
         this.authorizedClientManager = authorizedClientManager;
+        this.downstreamCallHandler = downstreamCallHandler;
     }
 
     private static boolean isTokenValid(OAuth2AccessToken token) {
@@ -46,18 +49,15 @@ public class SferaAuthService {
                 .withClientRegistrationId(REGISTRATION_ID)
                 .principal(REGISTRATION_ID)
                 .build();
-            OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(request);
+            OAuth2AuthorizedClient authorizedClient = downstreamCallHandler.call(Downstream.SFERA, "authorize", () -> authorizedClientManager.authorize(request));
             if (authorizedClient == null) {
                 log.atError().log("SFERA OAuth2 authorization returned no client");
                 return;
             }
             this.accessToken = authorizedClient.getAccessToken();
-        } catch (OAuth2AuthorizationException e) {
-            // Handle different types of OAuth2 errors here (e.g., invalid credentials, etc.)
+        } catch (DownstreamCallException e) {
+            // invalid credentials, timeouts and connection failures after the retries
             log.atError().setCause(e).log("SFERA OAuth2 authorization failed");
-        } catch (RestClientException e) {
-            // Handle connection issues, timeouts, etc.
-            log.atError().setCause(e).log("SFERA OAuth2 token endpoint unreachable");
         }
     }
 }

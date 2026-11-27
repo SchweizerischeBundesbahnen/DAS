@@ -1,5 +1,8 @@
 package ch.sbb.das.backend.departures.internal;
 
+import ch.sbb.das.backend.common.downstream.Downstream;
+import ch.sbb.das.backend.common.downstream.DownstreamCallHandler;
+import ch.sbb.das.backend.common.downstream.DownstreamRestClients;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -14,35 +17,37 @@ import org.springframework.web.client.RestClient;
 public class GemsRestClient {
 
     private final RestClient restClient;
+    private final DownstreamCallHandler downstreamCallHandler;
 
     public GemsRestClient(
+        DownstreamRestClients downstreamRestClients,
+        DownstreamCallHandler downstreamCallHandler,
         @Value("${proxy.base-url}") String baseUrl,
         @Value("${proxy.basic-auth}") String auth
     ) {
         String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
 
-        this.restClient = RestClient.builder()
+        this.restClient = downstreamRestClients.builder(Downstream.GEMS)
             .baseUrl(baseUrl)
             .defaultHeaders(h -> h.set(HttpHeaders.AUTHORIZATION, encodedAuth))
             .build();
+        this.downstreamCallHandler = downstreamCallHandler;
     }
 
+    // A retry may subscribe or confirm twice. GEMS accepts that, because DAS-Client resends a subscription with the same messageId until it is confirmed.
     public ResponseEntity<?> subscribe(SubscribeRequest request) {
-        return restClient.post()
+        return downstreamCallHandler.call(Downstream.GEMS, "subscribe", () -> restClient.post()
             .uri("/rest/das/subscribe")
             .body(request)
             .retrieve()
-            .toEntity(String.class);
+            .toEntity(String.class));
     }
 
     public ResponseEntity<?> confirm(String messageId, String deviceId) {
-        return restClient.post()
+        return downstreamCallHandler.call(Downstream.GEMS, "confirm", () -> restClient.post()
             .uri("/rest/das/confirm/{messageId}/{deviceId}", messageId, deviceId)
             .retrieve()
-            .toEntity(String.class);
+            .toEntity(String.class));
     }
 }
-
-
-
 
