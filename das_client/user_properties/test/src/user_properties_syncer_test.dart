@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:user_properties/component.dart';
 import 'package:user_properties/src/api/dto/user_properties_response_dto.dart';
 import 'package:user_properties/src/api/dto/user_property_dto.dart';
+import 'package:user_properties/src/api/dto/user_property_value_dto.dart';
 import 'package:user_properties/src/api/endpoint/user_properties.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';
 import 'package:user_properties/src/repository/user_properties_syncer.dart';
@@ -16,7 +17,6 @@ import 'user_properties_syncer_test.mocks.dart';
   MockSpec<LocalKeyValueStore>(),
   MockSpec<UserPropertiesRequest>(),
   MockSpec<SaveUserPropertyRequest>(),
-  MockSpec<DeleteUserPropertyRequest>(),
 ])
 void main() {
   late MockUserPropertiesApiService mockApiService;
@@ -35,9 +35,15 @@ void main() {
 
   UserPropertyDto dto(String key, int ms, {Object? value = true}) => UserPropertyDto(
     key: key,
-    value: value,
-    lastUpdated: DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true),
+    value: UserPropertyValueDto(
+      value: value,
+      lastModifiedAt: DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true),
+    ),
   );
+
+  Matcher pushedValue(Object? value, int ms) => isA<UserPropertyValueDto>()
+      .having((v) => v.value, 'value', value)
+      .having((v) => v.lastModifiedAt, 'lastModifiedAt', DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true));
 
   void givenRemote(List<UserPropertyDto> remote) {
     when(mockListRequest.call()).thenAnswer(
@@ -102,8 +108,7 @@ void main() {
     givenLocal([model(stationSignals, 100, value: true)]);
     final remote = UserPropertyDto.fromJson({
       'key': stationSignals,
-      'value': false,
-      'lastModifiedAt': '1970-01-01T00:00:00.200Z',
+      'value': {'value': false, 'lastModifiedAt': '1970-01-01T00:00:00.200Z'},
     });
     givenRemote([remote]);
 
@@ -141,7 +146,7 @@ void main() {
     await testee.sync();
 
     // THEN
-    verify(mockApiService.saveUserProperty(stationSignals, false)).called(1);
+    verify(mockApiService.saveUserProperty(stationSignals, argThat(pushedValue(false, 300)))).called(1);
     verifyNever(mockLocalStore.put(any));
   });
 

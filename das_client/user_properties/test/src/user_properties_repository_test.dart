@@ -28,7 +28,7 @@ void main() {
   late MockUserPropertiesSyncer syncer;
   late UserPropertiesRepositoryImpl repository;
 
-  setUp(() {
+  setUp(() async {
     SharedPreferences.setMockInitialValues({});
     syncer = MockUserPropertiesSyncer();
     when(syncer.sync()).thenAnswer((_) async {});
@@ -37,6 +37,8 @@ void main() {
       userIdProvider: _FakeUserIdProvider(),
       syncer: syncer,
     );
+    await Future<void>.delayed(Duration.zero);
+    clearInteractions(syncer);
   });
 
   tearDown(() async => repository.dispose());
@@ -173,6 +175,7 @@ void main() {
       localStore: store,
       syncer: syncer,
     );
+    clearInteractions(syncer);
     final save = repository.saveUserProperty(LocalKeyValueStoreKeys.showStationSignals, false);
     await saveStarted.future;
 

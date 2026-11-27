@@ -19,6 +19,7 @@ class UserPropertiesRepositoryImpl implements UserPropertiesRepository {
     UserPropertiesSyncer? syncer,
   }) : _localStore = localStore ?? LocalKeyValueStore(userIdProvider: userIdProvider) {
     _syncer = syncer ?? UserPropertiesSyncer(apiService, _localStore);
+    _triggerSync();
   }
 
   final LocalKeyValueStore _localStore;

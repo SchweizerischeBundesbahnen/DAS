@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:logging/logging.dart';
 import 'package:user_properties/component.dart';
+import 'package:user_properties/src/api/dto/user_property_value_dto.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';
 
 final _log = Logger('UserPropertiesSyncer');
@@ -74,7 +75,8 @@ class UserPropertiesSyncer {
 
   Future<bool> _tryPush(UserPropertyModel p) async {
     try {
-      await _apiService.saveUserProperty(p.key, p.value).call();
+      final value = UserPropertyValueDto(value: p.value, lastModifiedAt: p.lastUpdated ?? clock.now().toUtc());
+      await _apiService.saveUserProperty(p.key, value).call();
       return true;
     } on Exception catch (e, s) {
       _log.warning('Push failed for key=${p.key}', e, s);

@@ -57,7 +57,6 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaAuthProvider();
     getIt.registerHttpClient();
     getIt.registerUserPropertiesRepository();
-    getIt.syncUserPropertiesInitially();
     getIt.registerLauncher();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
@@ -111,14 +110,6 @@ extension AuthenticatedScopeExtension on GetIt {
         }
       },
     );
-  }
-
-  Future<void> syncUserPropertiesInitially() async {
-    try {
-      await DI.get<UserPropertiesRepository>().syncUserProperties();
-    } on Exception catch (e, s) {
-      _log.warning('Initial user properties sync failed', e, s);
-    }
   }
 
   void registerLauncher() {

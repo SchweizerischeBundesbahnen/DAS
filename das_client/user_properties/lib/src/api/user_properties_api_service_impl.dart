@@ -1,3 +1,4 @@
+import 'package:user_properties/src/api/dto/user_property_value_dto.dart';
 import 'package:user_properties/src/api/endpoint/user_properties.dart';
 import 'package:http_x/component.dart';
 import 'package:user_properties/src/api/user_properties_api_service.dart';
@@ -23,7 +24,7 @@ class UserPropertiesApiServiceImpl({
   );
 
   @override
-  SaveUserPropertyRequest saveUserProperty(String key, Object? value) => SaveUserPropertyRequest(
+  SaveUserPropertyRequest saveUserProperty(String key, UserPropertyValueDto value) => SaveUserPropertyRequest(
     httpClient: httpClient,
     baseUrl: baseUrl,
     key: key,
