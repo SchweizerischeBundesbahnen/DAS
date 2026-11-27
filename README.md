@@ -2,11 +2,11 @@
 
 # Driver Advisory System
 
-The Driver Advisory System (DAS) shows engine drivers all required and supporting information for safe train operation.
+The Driver Advisory System (DAS) shows engine drivers all required and supporting information for safe train operation. It integrates a wide range of data sources to present ideal driving profiles for each journey.
 
-This repository covers the onboard part of the driver advisory system as specified in the normative context - see [Normative Scope](#normative-scope) below. The system integrates a wide range of data sources to present ideal driving profiles for each journey.
+This repository covers the onboard part of the driver advisory system as specified in the normative context - see [Normative Scope](#normative-scope) below.
 
-The onboard system developed within this repository is initially dedicated to railway undertakings operating within Switzerland and its border regions.
+The system is initially dedicated to railway undertakings operating within Switzerland and its border regions.
 
 ## Structure
 
@@ -14,7 +14,7 @@ This is a monorepository with the following applications.
 
 ### DAS-Client
 
-[das_client](das_client/README.md) is the tablet app for Android and iOS that shows train drivers the journey data they need while driving.
+[das_client](das_client/README.md) is the tablet app for Android and iOS that shows train drivers the journey data they need while driving. This is the core of the onboard system.
 
 ### DAS-Backend
 
@@ -22,7 +22,7 @@ This is a monorepository with the following applications.
 
 ### DAS Admin
 
-[das_admin_tool](das_admin_tool/README.md) is a web app in which administrators maintain configuration and master data, such as settings per railway undertaking.
+[das_admin_tool](das_admin_tool/README.md) is a supportive web application in which administrators maintain configuration and master data, such as settings per railway undertaking.
 
 ### Test and demo tools
 
@@ -32,7 +32,7 @@ This is a monorepository with the following applications.
 
 #### DAS-Playground
 
-[das_playground](das_playground/README.md) is a test and debug web app that shows the SFERA messages in the SFERA-Mock queues and sends messages to it.
+[das_playground](das_playground/README.md) is a test and debug web application that shows the SFERA messages in the SFERA-Mock queues and sends messages to it.
  
 ## Normative scope
 
