@@ -2,6 +2,12 @@
 name: Deploy documentation to Pages
 
 on:
+  push:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/documentation_gh_pages.yml'
+    branches: [ "main" ]
+
   pull_request:
     paths:
       - 'docs/**'

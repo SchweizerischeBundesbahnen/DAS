@@ -23,12 +23,11 @@ params:
     logo:
       path: images/logo.svg
       dark: images/logo-dark.svg
-      link: /
       width: 36
       height: 36
   editUrl:
     enable: true
-    base: "https://github.com/SchweizerischeBundesbahnen/DAS/"
+    base: "https://github.com/SchweizerischeBundesbahnen/DAS/edit/main/docs/content"
 module:
   imports:
     - path: github.com/imfing/hextra
