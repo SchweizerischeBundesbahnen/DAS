@@ -75,6 +75,7 @@ class JourneyTableViewModel({
           _decisiveGradientVM.showDecisiveGradient,
           _navigationVM.model,
           _acknowledgedModificationRepository.model,
+          _userPropertiesRepository.model,
         ]).listen(
           (data) => _handleDataChanged(
             journey: data[0] as Journey?,
