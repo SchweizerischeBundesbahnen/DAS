@@ -764,6 +764,45 @@ void main() {
     expect(journey.metadata.availableBrakeSeries.elementAt(4).brakedWeightPercentage, 70);
   });
 
+  test('Test available brake series ignores last service point and bracket stations', () async {
+    // T58 ends with a bracket station (BRA and BRB). Both should be excluded from available brake series.
+    var journey = getJourney('T58');
+    expect(journey.valid, true);
+    expect(journey.metadata.availableBrakeSeries, hasLength(3));
+    expect(
+      journey.metadata.availableBrakeSeries,
+      containsAll([
+        const BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150),
+        const BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 100),
+        const BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 115),
+      ]),
+    );
+    expect(
+      journey.metadata.availableBrakeSeries,
+      isNot(contains(const BrakeSeries(trainSeries: TrainSeries.D, brakedWeightPercentage: 60))),
+    );
+    expect(
+      journey.metadata.availableBrakeSeries,
+      isNot(contains(const BrakeSeries(trainSeries: TrainSeries.N, brakedWeightPercentage: 80))),
+    );
+
+    // T58-3000 ends at ST2 (not a bracket station). ST2 should be excluded as last service point.
+    journey = getJourney('T58', relatedTrainInfoEventId: 3000);
+    expect(journey.valid, true);
+    expect(journey.metadata.availableBrakeSeries, hasLength(2));
+    expect(
+      journey.metadata.availableBrakeSeries,
+      containsAll([
+        const BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 150),
+        const BrakeSeries(trainSeries: TrainSeries.A, brakedWeightPercentage: 100),
+      ]),
+    );
+    expect(
+      journey.metadata.availableBrakeSeries,
+      isNot(contains(const BrakeSeries(trainSeries: TrainSeries.R, brakedWeightPercentage: 115))),
+    );
+  });
+
   test('Test station/curve speeds are parsed correctly', () async {
     final journey = getJourney('T5');
     expect(journey.valid, true);

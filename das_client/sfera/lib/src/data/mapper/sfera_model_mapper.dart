@@ -446,7 +446,22 @@ class SferaModelMapper._() {
     List<JourneyPoint> journeyPoints,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds,
   ) {
-    final speeds = journeyPoints.whereType<JourneyPoint>().expand((it) => it.allStaticSpeeds).toList();
+    final relevantJourneyPoints = [...journeyPoints];
+    final servicePoints = journeyPoints.whereType<ServicePoint>();
+    final lastServicePoint = servicePoints.lastOrNull;
+
+    if (lastServicePoint?.bracketMainStation != null) {
+      final bracketStationServicePoints = servicePoints.where(
+        (it) => it.bracketMainStation == lastServicePoint!.bracketMainStation,
+      );
+      for (final servicePoint in bracketStationServicePoints) {
+        relevantJourneyPoints.remove(servicePoint);
+      }
+    } else {
+      relevantJourneyPoints.remove(lastServicePoint);
+    }
+
+    final speeds = relevantJourneyPoints.expand((it) => it.allStaticSpeeds).toList();
     speeds.addAll(lineSpeeds.values.flattened);
 
     return speeds
