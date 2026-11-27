@@ -24,7 +24,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<UserSettingsViewModel>(
-      create: (_) => UserSettingsViewModel(userSettings: DI.get(), externalLinksRepository: DI.get()),
+      create: (_) => UserSettingsViewModel(
+        userPropertiesRepository: DI.get(),
+        externalLinksRepository: DI.get(),
+      ),
       dispose: (_, vm) => vm.dispose(),
       child: this,
     );

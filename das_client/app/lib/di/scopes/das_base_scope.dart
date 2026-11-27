@@ -2,12 +2,9 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:app/launcher/launcher.dart';
-import 'package:app/launcher/launcher_impl.dart';
 import 'package:app/model/app_info.dart';
 import 'package:app/pages/journey/journey_validation/validation_mode_view_model.dart';
 import 'package:app/pages/login/login_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/app_lifecycle_view_model.dart';
 import 'package:app/util/time_constants.dart';
@@ -44,11 +41,9 @@ class DASBaseScope extends DIScope {
     getIt.registerMotionDataService();
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
-    getIt.registerUserSettings();
     getIt.registerConnectivityManager();
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
-    getIt.registerLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
     getIt.registerAppLifecycleViewModel();
@@ -118,14 +113,6 @@ extension BaseScopeExtension on GetIt {
     registerSingleton<TimeConstants>(TimeConstants());
   }
 
-  void registerUserSettings() {
-    _log.fine('Register UserSettings');
-    registerSingleton<LocalKeyValueStore>(
-      LocalKeyValueStore(),
-      dispose: (store) => store.dispose(),
-    );
-  }
-
   void registerConnectivityManager() {
     _log.fine('Register ConnectivityManager');
     registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
@@ -146,11 +133,6 @@ extension BaseScopeExtension on GetIt {
       factoryFunc,
       dispose: (manager) => manager.dispose(),
     );
-  }
-
-  void registerLauncher() {
-    _log.fine('Register Launcher');
-    registerSingleton<Launcher>(LauncherImpl(userSettings: DI.get(), flavor: DI.get()));
   }
 
   void registerSferaLocalRepo() {

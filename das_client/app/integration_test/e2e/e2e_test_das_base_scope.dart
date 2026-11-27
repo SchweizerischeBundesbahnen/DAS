@@ -27,11 +27,9 @@ class E2ETestDASBaseScope extends DASBaseScope {
     _registerMockMotionDataService();
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
-    getIt.registerUserSettings();
     getIt.registerConnectivityManager();
     getIt.registerLoginViewModel();
     getIt.registerAppLinksManager();
-    getIt.registerLauncher();
     getIt.registerSferaLocalRepo();
     getIt.registerPreloadRepository();
     getIt.registerAppLifecycleViewModel();

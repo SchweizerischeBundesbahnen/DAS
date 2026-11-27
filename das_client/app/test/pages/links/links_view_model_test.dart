@@ -2,21 +2,21 @@ import 'dart:async';
 
 import 'package:app/launcher/launcher.dart';
 import 'package:app/pages/links/links_view_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:user_properties/component.dart';
 
 import '../../test_util.dart';
 import 'links_view_model_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<ExternalLinksRepository>(), MockSpec<LocalKeyValueStore>(), MockSpec<Launcher>()])
+@GenerateNiceMocks([MockSpec<ExternalLinksRepository>(), MockSpec<UserPropertiesRepository>(), MockSpec<Launcher>()])
 void main() {
   late LinksViewModel testee;
   late MockExternalLinksRepository mockExternalLinksRepository;
-  late MockLocalKeyValueStore mockLocalKeyValueStore;
+  late MockUserPropertiesRepository mockUserPropertiesRepository;
   late MockLauncher mockLauncher;
   late StreamController<List<ExternalLink>> linksController;
 
@@ -26,18 +26,18 @@ void main() {
   LinksViewModel createViewModel() {
     return LinksViewModel(
       externalLinksRepository: mockExternalLinksRepository,
-      userSettings: mockLocalKeyValueStore,
+      userPropertiesRepository: mockUserPropertiesRepository,
       launcher: mockLauncher,
     );
   }
 
   setUp(() async {
     mockExternalLinksRepository = MockExternalLinksRepository();
-    mockLocalKeyValueStore = MockLocalKeyValueStore();
+    mockUserPropertiesRepository = MockUserPropertiesRepository();
     mockLauncher = MockLauncher();
     linksController = StreamController<List<ExternalLink>>.broadcast();
 
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(const []);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(const []);
     when(mockExternalLinksRepository.watchExternalLinksByCompanies(any)).thenAnswer((_) => linksController.stream);
   });
 
@@ -57,7 +57,7 @@ void main() {
   });
 
   test('state_whenCompanyAndLinksAvailable_thenLoaded', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -81,7 +81,7 @@ void main() {
   });
 
   test('state_whenCompaniesConfigured_thenEmitsMatchingCompanyLinks', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['1080']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['1080']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -116,7 +116,7 @@ void main() {
   });
 
   test('state_whenDuplicateLinksWithSameTitleAndLink_thenDeduplicates', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -147,7 +147,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameTitleButDifferentLink_thenKeepsBoth', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -177,7 +177,7 @@ void main() {
   });
 
   test('state_whenLinksWithSameLinkButDifferentTitle_thenKeepsBoth', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);
@@ -207,7 +207,7 @@ void main() {
   });
 
   test('state_whenMultipleDuplicates_thenKeepsFirstOccurrence', () async {
-    when(mockLocalKeyValueStore.companyCodes).thenReturn(['2185']);
+    when(mockUserPropertiesRepository.companyCodes).thenReturn(['2185']);
 
     testee = createViewModel();
     subscription = testee.links.listen(states.add);

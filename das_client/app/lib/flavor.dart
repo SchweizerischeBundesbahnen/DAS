@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:app/model/tour_system.dart';
 import 'package:auth/component.dart';
+import 'package:core_data/component.dart';
 import 'package:customer_oriented_departure/component.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

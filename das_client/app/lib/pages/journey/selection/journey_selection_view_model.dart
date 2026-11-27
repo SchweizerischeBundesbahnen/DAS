@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/nav/app_expiration_guard.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/view_model/model/extended_train_identification.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:app_links_x/component.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
@@ -14,6 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:train_identification/component.dart';
+import 'package:user_properties/component.dart';
 
 final _log = Logger('JourneySelectionViewModel');
 
@@ -22,7 +22,7 @@ class JourneySelectionViewModel({
   required final SettingsRepository _settingsRepository,
   required final Future<void> Function(ExtendedTrainIdentification?) _onJourneySelected,
   required final TrainIdentificationRepository _trainIdentificationRepository,
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
 }) {
   this {
     _emitSelectingWithDefaults();
@@ -105,7 +105,7 @@ class JourneySelectionViewModel({
       );
     }
 
-    final lastUsedCompanyCode = _userSettings.lastUsedCompanyCode;
+    final lastUsedCompanyCode = _userPropertiesRepository.lastUsedCompanyCode;
     final lastUsedCompanyMatch = exactDayMatches.firstWhereOrNull((it) => it.companyCode == lastUsedCompanyCode);
     if (lastUsedCompanyMatch != null) {
       _log.info('Found company match with last used company code: $lastUsedCompanyMatch');

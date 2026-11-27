@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:app/model/tour_system.dart';
 import 'package:app/pages/settings/view_model/model/user_settings_model.dart';
-import 'package:app/provider/local_key_value_store.dart';
 import 'package:core_data/component.dart';
 import 'package:external_links/component.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:user_properties/component.dart';
 
 class UserSettingsViewModel({
-  required final LocalKeyValueStore _userSettings,
+  required final UserPropertiesRepository _userPropertiesRepository,
   required final ExternalLinksRepository _externalLinksRepository,
 }) {
   this {
@@ -25,21 +24,24 @@ class UserSettingsViewModel({
 
   Future<void> updateCompanies(List<Company> companies) async {
     final companyCodes = companies.map((it) => it.code).toList();
-    await _userSettings.set(.companyCodes, companyCodes);
+    await _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.companyCodes, companyCodes);
     _externalLinksRepository.reloadExternalLinksByCompanies(companyCodes);
   }
 
-  Future<void> updateTourSystem(TourSystem? tourSystem) => _userSettings.set(.tourSystem, tourSystem?.name);
+  Future<void> updateTourSystem(TourSystem? tourSystem) =>
+      _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.tourSystem, tourSystem?.name);
 
-  Future<void> updateShowDecisiveGradient(bool value) => _userSettings.set(.showDecisiveGradient, value);
+  Future<void> updateShowDecisiveGradient(bool value) =>
+      _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.showDecisiveGradient, value);
 
-  Future<void> updateShowStationSignals(bool value) => _userSettings.set(.showStationSignals, value);
+  Future<void> updateShowStationSignals(bool value) =>
+      _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.showStationSignals, value);
 
   Future<void> updateShowEctsConventionalSpeedSignals(bool value) =>
-      _userSettings.set(.showEctsConventionalSpeedSignals, value);
+      _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.showEctsConventionalSpeedSignals, value);
 
   Future<void> updateShowEctsExtendedSpeedSignals(bool value) =>
-      _userSettings.set(.showEctsExtendedSpeedSignals, value);
+      _userPropertiesRepository.saveUserProperty(LocalKeyValueStoreKeys.showEctsExtendedSpeedSignals, value);
 
   void dispose() {
     _userSettingsSubscription?.cancel();
@@ -47,18 +49,18 @@ class UserSettingsViewModel({
   }
 
   void _init() {
-    _userSettingsSubscription = _userSettings.model.listen((_) => _emitModel());
+    _userSettingsSubscription = _userPropertiesRepository.model.listen((_) => _emitModel());
   }
 
   void _emitModel() {
     _rxModel.add(
       UserSettingsModel(
-        companyCodes: List.unmodifiable(_userSettings.companyCodes),
-        tourSystem: _userSettings.tourSystem,
-        showDecisiveGradient: _userSettings.showDecisiveGradient,
-        showStationSignals: _userSettings.showStationSignals,
-        showEctsConventionalSpeedSignals: _userSettings.showEctsConventionalSpeedSignals,
-        showEctsExtendedSpeedSignals: _userSettings.showEctsExtendedSpeedSignals,
+        companyCodes: List.unmodifiable(_userPropertiesRepository.companyCodes),
+        tourSystem: _userPropertiesRepository.tourSystem,
+        showDecisiveGradient: _userPropertiesRepository.showDecisiveGradient,
+        showStationSignals: _userPropertiesRepository.showStationSignals,
+        showEctsConventionalSpeedSignals: _userPropertiesRepository.showEctsConventionalSpeedSignals,
+        showEctsExtendedSpeedSignals: _userPropertiesRepository.showEctsExtendedSpeedSignals,
       ),
     );
   }
