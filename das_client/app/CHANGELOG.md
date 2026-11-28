@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.57.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.1...das_client-v0.57.0) (2026-11-28)
+
+
+### Features
+
+* use correlationID for reply of SFERA request ([#3026](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3026)) ([#3123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3123)) ([06555bf](https://github.com/SchweizerischeBundesbahnen/DAS/commit/06555bff10cc48b45795b34ca8493b45c0386b00))
+
+
+### Bug Fixes
+
+* handle collapse state and sync of personal notes ([#1009](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1009)) ([#3147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3147)) ([050b04e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/050b04e954632c7742eda5ba1c9f0a4fd47582d7))
+* merge split local regulations ([#3145](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3145)) ([#3146](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3146)) ([d47736a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d47736a26339680b56f27bb296315e542beb8334))
+* migrate jp-version to int ([#3171](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3171)) ([#3233](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3233)) ([4ede2a1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4ede2a1af24868a85974fcaefb1d62ffb51b02e6))
+* prevent journey update during segment profile refresh ([#3149](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3149)) ([fa79b59](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fa79b59a3c99b82994f23e9b9d3f6c15ffea4b54))
+* rare crash when loading new train ([#2191](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2191)) ([#3201](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3201)) ([8946b50](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8946b50b9934560e6e97f8384d593eb680507244))
+* send BCP 47 tag in Accept-Language header ([#3108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3108)) ([b7a0ea4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7a0ea43dcd96b2eb7155e4f5a2cb1f553888aea))
+
 ## [0.56.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.56.0...das_client-v0.56.1) (2026-10-28)
 
 
