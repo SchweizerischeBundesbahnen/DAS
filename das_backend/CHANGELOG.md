@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.19.2...backend-v0.20.0) (2026-11-28)
+
+
+### Features
+
+* secure downstream calls with timeouts and retries ([#2652](https://github.com/SchweizerischeBundesbahnen/DAS/issues/2652)) ([#3222](https://github.com/SchweizerischeBundesbahnen/DAS/issues/3222)) ([30e1944](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30e1944f4875a2ad9e7ec9b40637b5dce9583149))
+
 ## [0.19.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.19.1...backend-v0.19.2) (2026-11-23)
 
 
